@@ -1,10 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-05-10T19:10:22.834Z</id>
+    <id>urn:2025-05-10T19:39:15.276Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-05-10T19:10:22.834Z</updated>
+    <updated>2025-05-10T19:39:15.276Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[JSX Curly Braces {} Got Your Back Behind the Scenes]]></title>
+        <id>https://dev.to/kupumaru21/jsx-curly-braces-got-your-back-behind-the-scenes-ap1</id>
+        <link href="https://dev.to/kupumaru21/jsx-curly-braces-got-your-back-behind-the-scenes-ap1"/>
+        <updated>2025-05-10T19:29:48.000Z</updated>
+        <summary type="html"><![CDATA[Have you ever wondered what {title} in <h1>{title}</h1> really does?
+
+
+At first glance, it looks like just a way to inject JavaScript variables into JSX.
+
+But there's more to it.
+
+It’s security.
+React automatically escapes any content inside JSX curly braces before rendering it to the DOM.
+
+That means special characters like <, >, and & are safely converted, preventing malicious HTML or JavaScript from being interpreted.
+const title = '<script>alert("XSS")</script>';
+// JSX escapes it automatically
+return <h1>{title}</h1>;
+
+Output:
+<h1>&lt;script&gt;alert("XSS")&lt;/script&gt;</h1>
+
+✅ No script executed. Just safe, visible text.
+🔗 By default, React DOM escapes any values embedded in JSX before rendering them.
+Imagine this value came from user input (e.g., a comment form or a URL parameter).
+
+If React didn’t escape it, this line:
+<h1>{userInput}</h1>
+
+could become an open door to XSS (Cross-site Scripting) attacks. But thanks to React's design, it's safe by default.
+dangerouslySetInnerHTML?
+
+
+Now, this is where you need to be careful:
+<div dangerouslySetInnerHTML={{ __html: userInput }} />
+
+This bypasses React's escape mechanism.
+{} in JSX is more than just a way to embed variables.
+It’s a safety mechanism that protects your app from script injection.
+Unless you explicitly bypass it, JSX makes your rendering safe by default.
+So next time you write this:
+<h1>{title}</h1>
+
+Remember — React’s got your back. 😉
+--
+
+
+  
+  
+  Ref]]></summary>
+        <author>
+            <name>Koichi Kimura</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why I Built a New C++ Build System]]></title>
+        <id>https://dev.to/zyntraxis_c908fa8b32e04cb/why-i-built-a-new-c-build-system-1o43</id>
+        <link href="https://dev.to/zyntraxis_c908fa8b32e04cb/why-i-built-a-new-c-build-system-1o43"/>
+        <updated>2025-05-10T19:28:22.000Z</updated>
+        <summary type="html"><![CDATA[🔧 The Pain of Existing Build Systems
+While powerful, these systems often feel like they were made for large enterprise teams — not for indie developers, hobbyists, or anyone who just wants to get started quickly.
+You write 100 lines of CMake just to compile a Hello World with one dependency. You debug cryptic Conan recipes. You spend more time configuring than coding.
+I’ve been there. I was tired of it. So I built something radically simpler.
+🚀 Meet Zyn
+You should be able to build your project and use any GitHub library with a single command — no setup hell
+⚡ Example: Add GoogleTest
+[dependency]
+
+
+Zyn will:
+Clone the repo
+Build it
+Link it to your project
+No CMakeLists.txt, no conanfile.py, no package.json-style complexity.
+🧠 Why Does This Matter?
+Zyn lets you:
+Start a project in seconds
+Add dependencies by just linking to GitHub
+Focus on code, not build logic
+🛠️ Under the Hood Zyn uses a simple project layout:
+/src
+/build
+/include
+Future versions will support:
+IDE project generation (CLion, VSCode, etc.)
+CI/CD build support
+Windows/macOS builds
+Plugin system
+🤔 Isn’t This Reinventing the Wheel?
+CMake, Conan, Meson, Bazel — they all have their strengths. But for 80% of real-world use cases, they’re too heavy, too verbose, and too unfriendly.
+Zyn is not trying to compete with enterprise tooling. It’s trying to make C++ fun again.
+🙌 Try It, Break It, Fork It
+https://github.com/zyntraxis-corp/zyn
+Try it. File issues. Suggest features. Or just tell me why it sucks. I’m building this for real developers, and real feedback is gold.
+Let’s make C++ accessible again.]]></summary>
+        <author>
+            <name>Zyntraxis</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Go Interface Pitfalls: When nil != nil]]></title>
+        <id>https://dev.to/leapcell/go-interface-pitfalls-when-nil-nil-4ai1</id>
+        <link href="https://dev.to/leapcell/go-interface-pitfalls-when-nil-nil-4ai1"/>
+        <updated>2025-05-10T19:21:16.000Z</updated>
+        <summary type="html"><![CDATA[During the process of coding in Go, we may encounter a situation where, when using an interface type parameter (such as any or interface{}) to receive other parameters, the given parameter value is clearly nil, yet the inequality check x == nil does not hold. Why is this the case? This article will reveal the mystery.
+package main
+
+import "fmt"
+
+func main() {
+  var a any = nil
+  var b *int = nil
+  fmt.Println("isNil: ", isNil(a))
+  fmt.Println("isNil: ", isNil(b))
+  fmt.Println("b == nil: ", b == nil)
+}
+
+func isNil(x any) bool {
+  return x == nil
+}
+
+Program output:
+isNil:  true
+isNil:  false
+b == nil:  true
+
+The Go code example above demonstrates some subtle differences when using the any type (i.e., interface{}) to determine whether a variable is nil. Specifically, it shows why, in some c…]]></summary>
+        <author>
+            <name>Leapcell</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Announcing: Cerious Grid - A High-Performance Angular Grid, Open Source and Ready to Launch]]></title>
+        <id>https://dev.to/ryoucerious/announcing-cerious-grid-a-high-performance-angular-grid-open-source-and-ready-to-launch-p8i</id>
+        <link href="https://dev.to/ryoucerious/announcing-cerious-grid-a-high-performance-angular-grid-open-source-and-ready-to-launch-p8i"/>
+        <updated>2025-05-10T19:17:38.000Z</updated>
+        <summary type="html"><![CDATA[After months of building, testing, and fine-tuning, I’m thrilled to announce that Cerious Grid, a feature-rich Angular data grid, is about to be released as an open-source project.
+This isn’t just another table component. Cerious Grid is built from the ground up to handle massive data sets, complex UI needs, and enterprise-level flexibility—all without sacrificing performance. It’s a solution forged from real-world use cases, and now, it’s going public.
+Cerious Grid is the first component to be released in the new Cerious Widgets UI Component Library for Angular.
+🚀 Why Open Source?
+Some might wonder why I’d release such a comprehensive project for free. Here’s why this release matters:
+🧠 Community-Driven Innovation
+Open source invites fresh ideas and outside contributions. I want develop…]]></summary>
+        <author>
+            <name>rYOUcerious</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why is the Blazor form clearing values on save?]]></title>
+        <id>https://dev.to/generatecodedev/why-is-the-blazor-form-clearing-values-on-save-14hi</id>
+        <link href="https://dev.to/generatecodedev/why-is-the-blazor-form-clearing-values-on-save-14hi"/>
+        <updated>2025-05-10T19:15:21.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+If you're encountering an issue where the values in your Blazor form clear after you attempt to save, you're not alone. This common problem can stem from various reasons, including how data binding is handled in your Razor component. In this article, we'll explore how to effectively pass values from a HTML form to a SQL Server database using Blazor, ensuring successful CRUD operations.
+Understanding the Problem
+When filling out a form in Blazor and submitting it, it’s essential to ensure that the OnValidSubmit event properly handles the state of your input fields. If the form data is lost upon clicking 'Save', it typically indicates that the model binding isn't functioning correctly, or there may be issues with how the data is passed to your database context.
+Common Reasons fo…]]></summary>
+        <author>
+            <name>Generatecode</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I built a build system for C/C++ where you add GitHub libraries with a single command — no CMake, no Conan, just code]]></title>
+        <id>https://dev.to/zyntraxis_c908fa8b32e04cb/i-built-a-build-system-for-cc-where-you-add-github-libraries-with-a-single-command-no-cmake-anc</id>
+        <link href="https://dev.to/zyntraxis_c908fa8b32e04cb/i-built-a-build-system-for-cc-where-you-add-github-libraries-with-a-single-command-no-cmake-anc"/>
+        <updated>2025-05-10T19:13:13.000Z</updated>
+        <summary type="html"><![CDATA[Hey everyone,
+It started with a simple frustration: why do I need 50 lines of CMake or Conan config just to use a GitHub library?
+With Zyn you just need to put a reference to the library in config.zyn in the [dependencies] section
+⚙️ Key Features
+Works out of the box — no toolchain hell
+Future plans: IDE project generation, CI/CD integration, Windows/macOS support
+🔧 Why Zyn?
+I’d love your feedback. Especially from those who’ve worked with CMake, Meson, Bazel, or Conan in real projects.
+👉 GitHub: https://github.com/zyntraxis-corp/zyn
+Thanks for reading 🙌]]></summary>
+        <author>
+            <name>Zyntraxis</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Google Gemini 2.5 Pro I/O converts video to code, Apple and Anthropic's vibe coding tool, Qwen 3 model family, and more]]></title>
+        <id>https://dev.to/thisweekinaiengineering/google-gemini-25-pro-io-converts-video-to-code-apple-and-anthropics-vibe-coding-tool-qwen-3-3249</id>
+        <link href="https://dev.to/thisweekinaiengineering/google-gemini-25-pro-io-converts-video-to-code-apple-and-anthropics-vibe-coding-tool-qwen-3-3249"/>
+        <updated>2025-05-10T19:10:35.000Z</updated>
+        <summary type="html"><![CDATA[Hello AI Enthusiasts!
+Welcome to the eighteenth edition of "This Week in AI Engineering"!
+Google's Gemini 2.5 Pro claims the #1 spot for web development with an impressive 1420 ELO score, Gemini 2.0 Flash handles up to 1 million tokens with multimodal capabilities, Apple partners with Anthropic on a new AI-powered coding environment, and Alibaba's Qwen3 introduces an innovative hybrid thinking architecture with MoE models.
+With this, we'll also explore some under-the-radar tools that can supercharge your development workflow.
+Gemini 2.5 Pro is the Best Choice for Web Development
+
+
+Google has released an early update to Gemini 2.5 Pro (I/O Edition) just weeks before Google I/O, featuring significant improvements to its already impressive coding capabilities. This update (05-06) represents a…]]></summary>
+        <author>
+            <name>This Week in AI Engineering</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Detecting Alzheimer's Disease with EEG and Deep Learning]]></title>
+        <id>https://dev.to/vivekvohra/detecting-alzheimers-disease-with-eeg-and-deep-learning-3ifh</id>
+        <link href="https://dev.to/vivekvohra/detecting-alzheimers-disease-with-eeg-and-deep-learning-3ifh"/>
+        <updated>2025-05-10T19:08:23.000Z</updated>
+        <summary type="html"><![CDATA[Abstract
+
+
+Alzheimer's disease (AD) represents a significant global health challenge. This paper proposes an experimental approach for early AD detection using Electroencephalography (EEG) signals processed through an innovative deep-learning architecture. I suggest a channel-frequency-based attention model that effectively captures spectral features across different brain regions. This model uses depthwise convolutions, squeeze-and-excitation blocks, and spatial dropout regularization to efficiently learn patterns within EEG data. The dataset has 19-channel EEG recordings from subjects with Alzheimer's, healthy controls, and frontotemporal dementia. The model shows 83.81% accuracy, which tells us about its potential.
+Alzheimer's disease (AD) is a progressive neurodegenerative disorder tha…]]></summary>
+        <author>
+            <name>vivekvohra</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fingerprint Not Working After Sleep?]]></title>
+        <id>https://dev.to/redrum_yot/fingerprint-not-working-after-sleep-2nje</id>
+        <link href="https://dev.to/redrum_yot/fingerprint-not-working-after-sleep-2nje"/>
+        <updated>2025-05-10T19:05:57.000Z</updated>
+        <summary type="html"><![CDATA[If you're using fprintd for fingerprint authentication on Linux and encounter this error after waking your system:
+Device reported an error during identify: Cannot run while suspended.
+
+…it likely means the fingerprint device fails to recover correctly after suspend or hibernate.
+You can fix this by restarting the fprintd service automatically after resume. Here's how:
+Create a file at /etc/systemd/system/restart-fprintd-after-suspend.service:
+[Unit]
+Description=Restart fprintd after suspend
+After=suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl restart fprintd.service
+
+[Install]
+WantedBy=suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target
+
+Enable the service running this command:
+sudo systemctl enable --now restart-fprintd-after-suspend.service
+
+Now fprintd will restart automatically after suspend or hibernate, and your fingerprint sensor should work reliably again.]]></summary>
+        <author>
+            <name>Nurlan</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[MCP and the innovation paradox: Why open standards will save AI from itself]]></title>
         <id>https://venturebeat.com/?p=3007210</id>
@@ -13,6 +255,35 @@
         <summary type="html"><![CDATA[Much like HTTP and REST standardized how web applications connect to services, MCP standardizes how AI models connect to tools.]]></summary>
         <author>
             <name>Noah Schwartz, Postman API Network</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building AI Model]]></title>
+        <id>https://dev.to/theaniketraj/building-ai-model-19c4</id>
+        <link href="https://dev.to/theaniketraj/building-ai-model-19c4"/>
+        <updated>2025-05-10T19:03:26.000Z</updated>
+        <summary type="html"><![CDATA[Hello Readers
+
+
+It's day #14 of building an AI - Model.
+Explore more here]]></summary>
+        <author>
+            <name>Aniket Raj</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Simulate Laravel and Vue.js Production Deployment Locally?]]></title>
+        <id>https://dev.to/generatecodedev/how-to-simulate-laravel-and-vuejs-production-deployment-locally-5ejg</id>
+        <link href="https://dev.to/generatecodedev/how-to-simulate-laravel-and-vuejs-production-deployment-locally-5ejg"/>
+        <updated>2025-05-10T19:01:22.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+If you're developing a web application using Laravel (version 11) and Vue.js (version 3), it’s crucial to ensure that your application performs optimally before the actual deployment. This article will guide you through the steps to simulate a production deployment locally, allowing you to test your compiled assets, configuration settings, and the overall performance of your app in a real-world-like environment. By serving compiled frontend assets with Vite and running Laravel in production mode, you’ll gain insight into any potential issues that could arise when going live.
+Why Simulate Production Environment?
+Simulating a production environment locally is essential for several reasons:
+Performance Testing: Examine how your application performs under typical user loads.
+Reali…]]></summary>
+        <author>
+            <name>Generatecode</name>
         </author>
     </entry>
     <entry>
@@ -26,158 +297,6 @@
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Implementing a Scalable Filtering and Segmentation Panel for Large-Scale MongoDB Database]]></title>
-        <id>https://dev.to/devaaai/implementing-a-scalable-filtering-and-segmentation-panel-for-large-scale-mongodb-database-37fh</id>
-        <link href="https://dev.to/devaaai/implementing-a-scalable-filtering-and-segmentation-panel-for-large-scale-mongodb-database-37fh"/>
-        <updated>2025-05-10T18:49:44.000Z</updated>
-        <summary type="html"><![CDATA[Modern applications managing millions of person records require sophisticated filtering and segmentation capabilities while maintaining performance and scalability. This technical guide presents a comprehensive architecture combining MongoDB, Spring Boot, React, and Elasticsearch to handle datasets exceeding 10 million records with sub-second response times. The solution leverages MongoDB's flexible document model, Spring Data's dynamic query capabilities, React's component-based UI, and Elasticsearch's full-text search optimization.
-The MongoDB document model combines static and dynamic fields using a hybrid schema approach:
-{
-  "_id": ObjectId("665f1d9b1a41c8523e48f791"),
-  "identity": {
-    "firstName": "Emily",
-    "lastName": "Zhang",
-    "dob": ISODate("1985-07-19T00:00:00Z"),
-    "n…]]></summary>
-        <author>
-            <name>DEV-AI</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Add Custom Fields to HubSpot Forms with ClickPatrol?]]></title>
-        <id>https://dev.to/generatecodedev/how-to-add-custom-fields-to-hubspot-forms-with-clickpatrol-145i</id>
-        <link href="https://dev.to/generatecodedev/how-to-add-custom-fields-to-hubspot-forms-with-clickpatrol-145i"/>
-        <updated>2025-05-10T18:45:32.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-Integrating ClickPatrol’s form protection with HubSpot can significantly enhance your forms by allowing the injection of custom fields like email addresses and user IDs. However, many users face challenges with these fields not appearing in their HubSpot account, even after implementing the provided code snippets. In this article, we will explore the correct methods to add these custom fields to your HubSpot forms effectively.
-Understanding the Integration Challenge
-One common issue when using ClickPatrol's form protection with HubSpot is the failure of custom fields to display as expected. You might have added a field, such as customfield, but not seen it reflected when viewing your forms in HubSpot. This could happen due to incorrect code implementation or configuration sett…]]></summary>
-        <author>
-            <name>Generatecode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Essential Collaboration Tools for Remote Development Teams]]></title>
-        <id>https://dev.to/jetthoughts/essential-collaboration-tools-for-remote-development-teams-2n8f</id>
-        <link href="https://dev.to/jetthoughts/essential-collaboration-tools-for-remote-development-teams-2n8f"/>
-        <updated>2025-05-10T18:42:23.000Z</updated>
-        <summary type="html"><![CDATA[In today's digital landscape, remote work has become a norm, especially in software development. To facilitate effective collaboration among remote developers, utilizing the right tools is crucial. Here are eight essential collaboration tools that can streamline communication, project management, and code development for distributed teams.
-  Effective communication is vital for remote teams.
-  Task management tools help organize workflows.
-  Code management is essential for collaborative development.
-  Time tracking tools ensure accountability.
-  Continuous integration tools enhance code quality.
-Effective communication is the backbone of any remote team. Here are some popular tools:
-  Slack: Ideal for instant messaging and creating project-specific channels. Integrates well with other too…]]></summary>
-        <author>
-            <name>JetThoughts Dev</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Getting Started with Unreal Engine Game Development: My Journey and Insights]]></title>
-        <id>https://dev.to/winterturtle23/getting-started-with-unreal-engine-game-development-my-journey-and-insights-5gl4</id>
-        <link href="https://dev.to/winterturtle23/getting-started-with-unreal-engine-game-development-my-journey-and-insights-5gl4"/>
-        <updated>2025-05-10T18:39:33.000Z</updated>
-        <summary type="html"><![CDATA[Unreal Engine has become one of the most powerful and accessible platforms for game developers, from indie devs to AAA studios. In this post, I’ll walk you through what makes Unreal Engine amazing, how I got started, and practical tips if you're planning to dive into this world.
-Unreal Engine, especially version 5, offers:
-Photorealistic visuals thanks to Lumen and Nanite
-Robust multiplayer framework using C++ and Blueprints
-VR and mobile support out of the box
-An intuitive Blueprint system for non-coders or rapid prototyping
-A strong community and ecosystem (plugins, marketplace, forums)
-Whether you’re building a narrative game, a tactical shooter, or a training simulation — Unreal can do it all.
-I've worked on a range of games and simulations including:
-Offensive Warfare – A 5v5 multipla…]]></summary>
-        <author>
-            <name>WinterTurtle23</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Simplify Your Cypress Intercept Assertions: cypress-intercept-search]]></title>
-        <id>https://dev.to/cypress/simplify-your-cypress-intercept-assertions-cypress-intercept-search-53mp</id>
-        <link href="https://dev.to/cypress/simplify-your-cypress-intercept-assertions-cypress-intercept-search-53mp"/>
-        <updated>2025-05-10T18:38:46.000Z</updated>
-        <summary type="html"><![CDATA[When writing end-to-end tests with Cypress, you must often validate that your application sends or receives the correct data. Cypress’s cy.intercept() gives you robust control over network requests. However, digging through nested bodies, headers, and query parameters to find the exact key/value you care about can become repetitive and error-prone.
-That’s why I created cypress-intercept-search, a small plugin that lets you recursively search through every part of one or more intercepted requests or responses for a given key and (optionally) a matching value. Then, wrap the results in a chainable Cypress command for easy assertions.
-## Why Built cypress-intercept-search
-cy.wait('@savePlay').then((i) => {
-  const { players } = i.request.body;
-  expect(players).to.exist;
-  Object.entries(play…]]></summary>
-        <author>
-            <name>Lasitha Wijenayake</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How To Find the Right Tech Mentor in 2025]]></title>
-        <id>https://dev.to/scofieldidehen/how-to-find-the-right-tech-mentor-in-2025-op3</id>
-        <link href="https://dev.to/scofieldidehen/how-to-find-the-right-tech-mentor-in-2025-op3"/>
-        <updated>2025-05-10T18:35:37.000Z</updated>
-        <summary type="html"><![CDATA[Many years ago, I came across a profile on Twitter, now X, doing amazing things in development, and I was intrigued and wanted to get close to this person. I sent a couple of messages just to catch his attention, and when I asked him to be my mentor, he ghosted me. 
-I felt so bad, like it hurt, but many years later, I understood. 
-Because you feel he inspires you, it does not mean he/she is the right person to guide your growth. 
-Mentorship has long been the cornerstone of personal and professional growth, especially in tech. Yet, in 2025, finding the right mentor remains one of the most elusive achievements for young professionals. 
-It’s not just about guidance, it’s about survival in a fast-moving industry where knowledge gaps can determine one’s relevance.
-In this article, we unpack why…]]></summary>
-        <author>
-            <name>Scofield Idehen</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Prevent an Image from Resizing in HTML?]]></title>
-        <id>https://dev.to/generatecodedev/how-to-prevent-an-image-from-resizing-in-html-1icl</id>
-        <link href="https://dev.to/generatecodedev/how-to-prevent-an-image-from-resizing-in-html-1icl"/>
-        <updated>2025-05-10T18:30:20.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-In web design, ensuring that images maintain their size when a user resizes their browser can be crucial. Many developers face challenges in retaining the original dimensions of images while still creating a responsive layout. If you've encountered similar frustrations—like trying to prevent an image from resizing, despite applying various styles—you're not alone. This guide will help you understand how to achieve this.
-Why Images Resize in a Responsive Layout
-Images typically resize in a responsive layout owing to CSS settings such as width, max-width, and other stylesheet rules. By default, images are treated as inline elements, and their sizing depends on the surrounding container. When modifying the browser window, the layout recalibrates, and unless the styles are explici…]]></summary>
-        <author>
-            <name>Generatecode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A Real-World Code Chaos Sandbox Powered by Amazon Q]]></title>
-        <id>https://dev.to/stark_1392/a-real-world-code-chaos-sandbox-powered-by-amazon-q-bdo</id>
-        <link href="https://dev.to/stark_1392/a-real-world-code-chaos-sandbox-powered-by-amazon-q-bdo"/>
-        <updated>2025-05-10T18:29:39.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for the Amazon Q Developer "Quack The Code" Challenge: Exploring the Possibilities
-ChaosBox is an advanced, developer-friendly code execution sandbox that lets you run Python code in fully isolated Docker containers, simulating real-world network and resource chaos with surgical precision.
-What makes it novel?
-Programmable Chaos: Users can inject network latency, bandwidth throttling, timeouts, CPU/memory stress, artificial delays, and even forced crashes-on demand, per job.
-API-Driven and Concurrent: The REST API supports multiple, concurrent, isolated jobs, each with its own scenario.
-Resilience Education: This is more than a code runner-it’s a resilience lab, showing how code responds to edge cases and failures you can’t easily reproduce elsewhere.
-Amazon Q Develope…]]></summary>
-        <author>
-            <name>Hardik Patel</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[None of the top 10 projects in GitHub is actually a software project 🤯]]></title>
-        <id>https://dev.to/jcabot/none-of-the-top-10-projects-in-github-is-actually-a-software-project-47nh</id>
-        <link href="https://dev.to/jcabot/none-of-the-top-10-projects-in-github-is-actually-a-software-project-47nh"/>
-        <updated>2025-05-10T18:28:33.000Z</updated>
-        <summary type="html"><![CDATA[As part of our ongoing research, we periodically monitor GitHub to understand what is gaining traction and popularity within the community, using stars as a proxy. In May 2022, our analysis of the top 25 starred repositories revealed some surprising trends, particularly the prominence of non-software development projects. We analyzed the projects following the previously identified six main categories according to the project's content: software, awesome list, books, study plan, algorithm collection and style guide. You can refer to our previous post for a description of the categories.
-We have now repeated the analysis, using the same categories. And we have observed some interesting shifts. The following figure shows the distribution of these categories for the top 25 starred repositorie…]]></summary>
-        <author>
-            <name>Jordi Cabot</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Android 15 e Páginas de 16KB: Performance Turbinada para Seus Apps React Native]]></title>
-        <id>https://dev.to/mensonones/android-15-e-paginas-de-16kb-performance-turbinada-para-seus-apps-react-native-8fl</id>
-        <link href="https://dev.to/mensonones/android-15-e-paginas-de-16kb-performance-turbinada-para-seus-apps-react-native-8fl"/>
-        <updated>2025-05-10T18:23:43.000Z</updated>
-        <summary type="html"><![CDATA[Com a chegada do Android 15, uma das novidades mais interessantes "por baixo do capô" é o suporte aprimorado para páginas de memória de 16KB. Pode parecer um detalhe técnico, mas o impacto na performance dos aplicativos, incluindo os desenvolvidos com React Native, pode ser bem expressivo!
-Vamos entender o que isso significa e como nós, desenvolvedores React Native, podemos nos beneficiar.
-De forma simplificada, o sistema operacional gerencia a memória RAM em blocos chamados "páginas". Tradicionalmente, o Android utilizava páginas de 4KB. O Android 15 está expandindo o suporte e incentivando o uso de páginas de 16KB em dispositivos compatíveis.
-Por que isso importa?
-Menos "Viagens": Com páginas maiores, o sistema precisa gerenciar um número menor de páginas para a mesma quantidade de memór…]]></summary>
-        <author>
-            <name>Emerson Vieira</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Update turns Google Gemini into a prude, breaking apps for trauma survivors]]></title>
         <id>https://www.theregister.com/2025/05/08/google_gemini_update_prevents_disabling/</id>
         <link href="https://www.theregister.com/2025/05/08/google_gemini_update_prevents_disabling/"/>
@@ -185,19 +304,6 @@ Menos "Viagens": Com páginas maiores, o sistema precisa gerenciar um número me
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Sobre operações comutativas e associativas]]></title>
-        <id>https://dev.to/jeffque/sobre-operacoes-comutativas-e-associativas-1hg</id>
-        <link href="https://dev.to/jeffque/sobre-operacoes-comutativas-e-associativas-1hg"/>
-        <updated>2025-05-10T18:18:20.000Z</updated>
-        <summary type="html"><![CDATA[Comutativa Não-Associativa e Associativa Não-Comutativa
-Alexandre Pierre for cataploft ・ May 10
-#computerscience
-        #learning]]></summary>
-        <author>
-            <name>Jefferson Quesado</name>
         </author>
     </entry>
     <entry>
@@ -255,16 +361,6 @@ Additionally, Strategy acts as…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Sam Altman Wants Your Eyeball]]></title>
-        <id>https://www.privacyguides.org/articles/2025/05/10/sam-altman-wants-your-eyeball/</id>
-        <link href="https://www.privacyguides.org/articles/2025/05/10/sam-altman-wants-your-eyeball/"/>
-        <updated>2025-05-10T16:14:55.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Lido Proposes a Bold Governance Model to Give stETH Holders a Say in Protocol Decisions]]></title>
         <id>ac9bc6c9-5788-4edf-8314-57af8d11b1c6</id>
         <link href="https://www.coindesk.com/tech/2025/05/10/lido-proposes-a-bold-governance-model-to-give-steth-holders-a-say-in-protocol-decisions"/>
@@ -279,6 +375,16 @@ Additionally, Strategy acts as…]]></summary>
         <id>https://www.newsweek.com/seattle-port-says-no-container-ships-tariffs-2069464</id>
         <link href="https://www.newsweek.com/seattle-port-says-no-container-ships-tariffs-2069464"/>
         <updated>2025-05-10T15:49:27.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA['It cannot provide nuance': UK experts warn AI therapy chatbots are not safe]]></title>
+        <id>https://www.theguardian.com/technology/2025/may/07/experts-warn-therapy-ai-chatbots-are-not-safe-to-use</id>
+        <link href="https://www.theguardian.com/technology/2025/may/07/experts-warn-therapy-ai-chatbots-are-not-safe-to-use"/>
+        <updated>2025-05-10T15:35:24.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -335,7 +441,7 @@ Additionally, Strategy acts as…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[US vs. Google Amicus Curiae Brief of Y Combinator in Support of Plaintiffs [pdf]]]></title>
+        <title type="html"><![CDATA[US vs. Google amicus curiae brief of Y Combinator in support of plaintiffs [pdf]]]></title>
         <id>https://storage.courtlistener.com/recap/gov.uscourts.dcd.223205/gov.uscourts.dcd.223205.1300.1.pdf</id>
         <link href="https://storage.courtlistener.com/recap/gov.uscourts.dcd.223205/gov.uscourts.dcd.223205.1300.1.pdf"/>
         <updated>2025-05-10T14:15:56.000Z</updated>
@@ -499,7 +605,7 @@ Rather than opting for a light-touch regime similar to the EU’s Markets in Cry
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The deathbed fallacy]]></title>
+        <title type="html"><![CDATA[The Deathbed Fallacy (2018)]]></title>
         <id>https://www.hjorthjort.xyz/2018/02/21/the-deathbed-fallacy.html</id>
         <link href="https://www.hjorthjort.xyz/2018/02/21/the-deathbed-fallacy.html"/>
         <updated>2025-05-10T10:04:47.000Z</updated>
@@ -562,10 +668,10 @@ Prior to the current 19-day str…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Slow software for a burning world]]></title>
-        <id>https://bonfirenetworks.org/posts/slow_software_for_a_burning_world/</id>
-        <link href="https://bonfirenetworks.org/posts/slow_software_for_a_burning_world/"/>
-        <updated>2025-05-10T06:38:56.000Z</updated>
+        <title type="html"><![CDATA[Not a three-year-old chimney sweep (2022)]]></title>
+        <id>https://fakehistoryhunter.net/2022/07/26/not-a-3-year-old-chimney-sweep/</id>
+        <link href="https://fakehistoryhunter.net/2022/07/26/not-a-3-year-old-chimney-sweep/"/>
+        <updated>2025-05-10T06:58:15.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
