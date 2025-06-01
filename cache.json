@@ -18,6 +18,116 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/nerdincode/debugging-stripe-webhook-signature-verification-errors-in-production-1h7c",
+          "author": "Kaibalya Kar",
+          "description": "If you're integrating Stripe in a Node.js backend, you're likely using webhooks to handle events like checkout.session.completed. One of the common pitfalls during deployment is related to webhook signature verification failures, and recently, I ran into exactly this issue.\nIn this post, I’ll walk through the problem I faced, how I fixed it, and what best practices you can follow to avoid the same mistake.\napp.post(\n  \"/api/v1/webhook/stripe\",\n  express.raw({ type: \"application/json\" }),\n  stripeWebhookHandler\n);\n\n// JSON body parser for all other routes\napp.use((req, res, next) => {\n  if (req.originalUrl === \"/api/v1/webhook/stripe\") {\n    next(); // Skip body parsing for Stripe\n  } else {\n    express.json()(req, res, next);\n  }\n});\n\n\nThis is required because Stripe needs access to the raw body to verify the signature using the stripe.webhooks.constructEvent() method.\n**\n**\n❗ \"Webhook signature verification failed. No signatures found matching the expected signature for payload.\"\nI was sure my raw body handling was correct, and the endpoint URL was accurate. Locally, everything worked using the Stripe CLI. But in production… webhook requests kept failing.\nTurns out the issue was very simple but easy to overlook:\nStripe signs test and live events with different secrets, and if you mismatch them, signature verification will always fail — even if your code is perfect.\n✅ The Fix: Environment-Based Configuration\n🧪 Bonus Tip: Use Stripe CLI for Local Testing\nstripe login\nstripe listen --forward-to localhost:5000/api/v1/webhook/stripe\nstripe trigger checkout.session.completed\n\n\nMake sure your local environment uses the test mode secrets to match the CLI’s default behavior.\n💡 Final Thoughts\nIf this helped you, share it with someone struggling with Stripe setup — and happy coding! ⚡",
+          "link": "https://dev.to/nerdincode/debugging-stripe-webhook-signature-verification-errors-in-production-1h7c",
+          "publishedOn": "2025-06-01T13:28:51.000Z",
+          "wordCount": 1071,
+          "title": "Debugging Stripe Webhook Signature Verification Errors in Production",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6no2tjwrx4o7786wy8u9.png"
+        },
+        {
+          "id": "https://dev.to/preetha_vaishnavi_2b82358/climbinggallery-488n",
+          "author": "preetha vaishnavi",
+          "description": "Check out this Pen I made!",
+          "link": "https://dev.to/preetha_vaishnavi_2b82358/climbinggallery-488n",
+          "publishedOn": "2025-06-01T13:28:00.000Z",
+          "wordCount": 650,
+          "title": "ClimbingGallery",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3715evr2zkih7vjgfsbc.png"
+        },
+        {
+          "id": "https://dev.to/preetha_vaishnavi_2b82358/mind-map-sample-1d3",
+          "author": "preetha vaishnavi",
+          "description": "Check out this Pen I made!",
+          "link": "https://dev.to/preetha_vaishnavi_2b82358/mind-map-sample-1d3",
+          "publishedOn": "2025-06-01T13:26:22.000Z",
+          "wordCount": 654,
+          "title": "Mind Map Sample",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4oi3bqropjtplln5u1j8.png"
+        },
+        {
+          "id": "https://dev.to/wizcoderx/getting-started-with-fastapi-a-beginners-guide-using-python-1g2a",
+          "author": "wizcoderx",
+          "description": "Introduction to FastAPI\n\n\nImagine you're at a restaurant. You tell the waiter your order, and the waiter communicates it to the kitchen and brings back your food. FastAPI works just like that waiter. It is a modern, high-performance web framework for building APIs with Python, letting your app/application talk to other apps/applications efficiently.\nOfficial FastAPI Docs\nBecause FastAPI is as fast as Node.js and Go, uses Python type hints for validation, generates automatic docs, and is asynchronous by design. Compared to Flask, it's more scalable out of the box. Unlike Django REST Framework, it's minimal and lightning fast.\nIn the real world, FastAPI is used in production by companies building GenAI backends, microservices, ML model deployment, and startups that need to move fast with cle…",
+          "link": "https://dev.to/wizcoderx/getting-started-with-fastapi-a-beginners-guide-using-python-1g2a",
+          "publishedOn": "2025-06-01T13:26:17.000Z",
+          "wordCount": 1790,
+          "title": "Getting Started with FastAPI: A Beginner’s Guide Using Python 🐍",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fszaoysu2s3l2e5cesy45.png"
+        },
+        {
+          "id": "https://dev.to/thellu/how-to-manage-transactions-in-asynchronous-threads-in-java-spring-1jl",
+          "author": "Thellu",
+          "description": "A practical guide to handling transactions correctly in async batch operations with database updates and remote service calls.\nIn many enterprise systems, we often deal with batch operations executed in parallel threads, such as:\nImporting records and updating the database\nSending notifications after saving data\nInteracting with external APIs after writing business-critical information to a local DB\nIn such cases, one key concern is:\nHow do we ensure each thread runs inside a proper transaction without affecting others?\nThis article shows how to design each thread to handle its own transaction independently, ensuring that failures in one thread do not impact the rest.\nImagine this logic:\nUpdate database (local transaction)\nCall remote service (external dependency)\nWe want the transaction b…",
+          "link": "https://dev.to/thellu/how-to-manage-transactions-in-asynchronous-threads-in-java-spring-1jl",
+          "publishedOn": "2025-06-01T13:19:49.000Z",
+          "wordCount": 1312,
+          "title": "How to Manage Transactions in Asynchronous Threads in Java (Spring)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxm0c6694rr6ksvmwspga.png"
+        },
+        {
+          "id": "https://dev.to/nabbisen/forskscope-diff-viewer-022-is-in-aur-3p2j",
+          "author": "nabbisen",
+          "description": "Diff Viewer in the works: a new cross-platform app. available on AUR:\nyay -S forskscope\n\nAlso for other platforms, offered as executable:\nhttps://github.com/forskscope/forskscope/releases/latest\n'd love your early feedback : )\nPersonally, when using diff tools on my Linux desktop environment, I often felt there was room for improvement in certain features or the overall user experience. That's what sparked the idea to develop a new cross-platform diff viewer.",
+          "link": "https://dev.to/nabbisen/forskscope-diff-viewer-022-is-in-aur-3p2j",
+          "publishedOn": "2025-06-01T13:06:16.000Z",
+          "wordCount": 783,
+          "title": "ForskScope (diff viewer) 0.22 is in AUR",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpek5o2rtzezuue4957gq.png"
+        },
+        {
+          "id": "https://dev.to/stv4ns/saga-5hig",
+          "author": "Bruno",
+          "description": "O que é?\n\n\nO padrão de projeto SAGA é um padrão arquitetural usado principalmente para gerenciar transações distribuídas em sistemas de microsserviços. Ele foi criado para resolver o problema de coerência de dados em ambientes onde não é possível ou desejável usar uma transação distribuída tradicional (como uma transação ACID que envolve múltiplos bancos de dados ou serviços).\nÉ uma operação que envolve múltiplos serviços ou múltiplas bases de dados, onde todos precisam ser consistentes no final. O desafio é: se algo falhar no meio, como desfazer o que já foi feito? \nUma SAGA é uma sequência de transações locais em diferentes serviços, onde cada transação é seguida por uma ação compensatória (rollback local) caso algo dê errado.\nExiste um orquestrador central que comanda o fluxo de transaç…",
+          "link": "https://dev.to/stv4ns/saga-5hig",
+          "publishedOn": "2025-06-01T13:05:42.000Z",
+          "wordCount": 1033,
+          "title": "SAGA",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fp7qst041e894jkhdhi9j.png"
+        },
+        {
+          "id": "https://dev.to/versiqcontent/what-if-the-mind-stops-not-from-weakness-but-from-too-much-input-el2",
+          "author": "versiqcontent",
+          "description": "There’s a kind of burnout that doesn’t feel like exhaustion.\n\nIt feels like silence.\nNot the peaceful kind, but the overloaded kind.\n\nLike you're still online, but not present.\n\nLike all the tabs are open, but none of them are loading.\nBurnout is often portrayed as collapse: visible, dramatic, loud.\n\nBut it can also arrive quietly. Through saturation.\n\nThrough too much input, too little space to feel it.\nSome words describe that state with quiet clarity.\n\nNo advice. No solutions. Just recognition.\n👉 You Stayed Informed About Everything. But You Forgot How to Feel\nHave you ever noticed that your empathy didn’t disappear...it just stopped having somewhere to go?",
+          "link": "https://dev.to/versiqcontent/what-if-the-mind-stops-not-from-weakness-but-from-too-much-input-el2",
+          "publishedOn": "2025-06-01T13:02:05.000Z",
+          "wordCount": 836,
+          "title": "What If the Mind Stops Not From Weakness, But From Too Much Input?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdlyj5969njztp5h957du.jpg"
+        },
+        {
+          "id": "https://dev.to/nagell/creating-a-scalable-monorepo-for-vue-nx-59il",
+          "author": "Dawid Nitka",
+          "description": "As your codebase grows, so does the complexity of managing multiple apps and libraries. At this point Nx can help with its graph, but more importantly it can orchestrate all builds and tests in monorepo and keep you sane while managing dozens of packages. \nIn essence Nx is capable of running tasks in parallel based on what has changed from the previous commit. It also respects dependencies, ensuring that libraries needed by others are built first.\n \n\n\n  \n  \n  Key Features\n\n\n\n\nProject Graph & Dependency Awareness \n\n\nCode Generation\n\n\nAdvanced Caching\n\n\nPowerful CI/CD\n\n\n\n \nIf you’re starting from scratch, you can create a new Nx workspace with:\npnpx create-nx-workspace\n\nIn an existing monorepo, install Nx as a dev dependency and run init:\npnpm add -D nx\n\nnx init\n\nNx expects some sub-director…",
+          "link": "https://dev.to/nagell/creating-a-scalable-monorepo-for-vue-nx-59il",
+          "publishedOn": "2025-06-01T13:00:02.000Z",
+          "wordCount": 1595,
+          "title": "Creating a scalable Monorepo for Vue - Nx",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F41ecre3qgb7x7j926fww.png"
+        },
+        {
+          "id": "https://dev.to/sameerimtiaz/common-devops-mishaps-and-lessons-learned-4ihn",
+          "author": "Sameer Imtiaz",
+          "description": "As a DevOps professional, I’ve encountered my share of heart-stopping moments—those times when a mistake sends a chill down your spine. Picture this: the moment you realize you’ve wiped out a production database or rolled out a faulty script across multiple servers, triggering widespread disruptions. I still recall the panic of accidentally erasing a live project database and the frantic rush to restore it before anyone noticed, or the time a poorly tested script caused cascading outages. These experiences are all too familiar to many of us.\nSuch “oops” moments are almost a badge of honor in DevOps. Given the intricate nature of today’s infrastructure, errors are bound to happen. Even the most experienced engineers have stories of production hiccups and cringe-worthy oversights.\nThe silver…",
+          "link": "https://dev.to/sameerimtiaz/common-devops-mishaps-and-lessons-learned-4ihn",
+          "publishedOn": "2025-06-01T12:55:11.000Z",
+          "wordCount": 1811,
+          "title": "Common DevOps Mishaps and Lessons Learned",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0mghpmn7t580bwiz6u9l.png"
+        },
+        {
+          "id": "https://dev.to/shamir_hussain_441bd087f1/untitled-8d2",
+          "author": "Shamir Hussain",
+          "description": "Check out this Pen I made!",
+          "link": "https://dev.to/shamir_hussain_441bd087f1/untitled-8d2",
+          "publishedOn": "2025-06-01T12:55:09.000Z",
+          "wordCount": 646,
+          "title": "Untitled",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F99e9pdgskni4jrnjftp9.png"
+        },
+        {
           "id": "https://dev.to/yaser/deploying-apps-without-losing-your-mind-3d54",
           "author": "Yaser Al-Najjar",
           "description": "If you're anything like me, you've probably spent way too many hours figuring out the \"simplest\" way to deploy apps without losing your sanity. I've been bouncing around options and lemme tell you: it’s been an adventure!\nYou know the drill:\nDeployment pipeline: CI/CD/k8s. I know, sounds easy until you get into YAML hell.\nLogging and monitoring: Do you like looking at your Datadog bill?\nDatabase setup and management: \"managed\" databases... still feels like babysitting at times.\nSecrets and env variables\nHorizontal scaling\nThe list goes on...\nOptions that I have used/experimented with at different workplaces:\nHetzner/DigitalOcean/Linode: affordable, but SSH-ing into servers to deploy a simple app feels so 2010 😅\nRender/Netlify/Vercel: Great UX but I think they're overcharging.\nHeroku: do y…",
@@ -26,116 +136,6 @@
           "wordCount": 1538,
           "title": "Deploying Apps Without Losing Your Mind",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4xqhvy62o5z80p4ohdo0.gif"
-        },
-        {
-          "id": "https://dev.to/shruti_saraswat_c258d5934/why-accurate-transcription-is-the-hidden-hero-of-ai-voice-dubbing-1nbb",
-          "author": "Shruti Saraswat",
-          "description": "When people talk about AI voice dubbing, the spotlight usually goes to ultra-realistic voices, speaker recognition, or multilingual outputs. But after working on several real-world projects involving translated video content, I realized the real MVP is something far less flashy:\nAccurate Transcription\nIt’s the foundational layer that everything else depends on. If the transcription is even slightly off, everything downstream—translation, voice synthesis, subtitle timing, or speaker context—gets affected.\nMost AI dubbing workflows begin with converting audio to text. But here’s what’s often overlooked:\n    Misheard words lead to incorrect translations.\n    Speaker switches that aren’t captured cause voice mismatches.\n    Pauses, pacing, and context are all embedded in the transcript structu…",
-          "link": "https://dev.to/shruti_saraswat_c258d5934/why-accurate-transcription-is-the-hidden-hero-of-ai-voice-dubbing-1nbb",
-          "publishedOn": "2025-06-01T12:50:39.000Z",
-          "wordCount": 1245,
-          "title": "Why Accurate Transcription is the Hidden Hero of AI Voice Dubbing",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcy6o9my7qpobhzcv5k2l.png"
-        },
-        {
-          "id": "https://dev.to/simongreennet/weekly-challenge-counting-the-tax-53fh",
-          "author": "Simon Green",
-          "description": "Weekly Challenge 323\n\n\nEach week Mohammad S. Anwar sends out The Weekly Challenge, a chance for all of us to come up with solutions to two weekly tasks. My solutions are written in Python first, and then converted to Perl. It's a great way for us all to practice some coding.\nChallenge, My solutions\nYou are given a list of operations.\nWrite a script to return the final value after performing the given operations in order. The initial value is always 0.\nThis one is relatively straight forward, so doesn't need much explanation. I start with counter set to zero. I loop through each operator, adding or subtracting 1 as needed. I will raise an ValueError (die in Perl) if an operator is not expected.\ndef increment_decrement(operations: list) -> int:\n    counter = 0\n    for operation in operations…",
-          "link": "https://dev.to/simongreennet/weekly-challenge-counting-the-tax-53fh",
-          "publishedOn": "2025-06-01T12:50:13.000Z",
-          "wordCount": 1330,
-          "title": "Weekly Challenge: Counting the tax",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fge69ymaz6fltycl600cj.png"
-        },
-        {
-          "id": "https://dev.to/tahsin000/how-to-find-foreign-keys-referencing-the-users-table-in-mysql-5338",
-          "author": "Tahsin Abrar",
-          "description": "🧩 The Real-World Problem\n\n\nImagine this:\nFind all tables that are related to the users table so that deleting a user doesn’t leave behind orphaned records.\nThis often happens during data cleanup, GDPR compliance, or when building cascade delete workflows. Manually scanning through all migration files or schema definitions isn’t just tedious — it’s prone to errors and doesn’t scale.\nSo what’s a clean, reliable way to get this done?\nHere’s a powerful query that pinpoints all foreign key relationships targeting the id field of the users table:\nSELECT\n  TABLE_NAME,\n  COLUMN_NAME,\n  CONSTRAINT_NAME,\n  REFERENCED_TABLE_NAME,\n  REFERENCED_COLUMN_NAME\nFROM\n  INFORMATION_SCHEMA.KEY_COLUMN_USAGE\nWHERE\n  REFERENCED_TABLE_NAME = 'users'\n  AND REFERENCED_COLUMN_NAME = 'id';\n\nSearches the entire database for foreign key relationships\nFilters results to only those that reference users.id\n\nOutputs exactly which table and column creates that link\nFor example, if the database has tables like:\nposts with a user_id column\ncomments with an author_id column\norders with a user_id column\nThe output would resemble:\n\n\n\nTABLE_NAME\nCOLUMN_NAME\nCONSTRAINT_NAME\nREFERENCED_TABLE_NAME\nREFERENCED_COLUMN_NAME\n\n\n\n\nposts\nuser_id\nfk_posts_user\nusers\nid\n\n\ncomments\nauthor_id\nfk_comments_user\nusers\nid\n\n\norders\nuser_id\nfk_orders_user\nusers\nid\n\n\n\nThis gives an instant overview of all tables referencing the users table — no guesswork needed.\nIn many real-world applications, especially SaaS systems or e-commerce platforms, deleting a user must also clean up related data such as:\nPosts or content they created\nOrders they placed\nComments or messages they wrote\nOnce the referencing tables are identified, developers can:\nApply ON DELETE CASCADE where logical and safe\nManually delete child records in the correct order\nAudit and log user-related records before deletion for traceability",
-          "link": "https://dev.to/tahsin000/how-to-find-foreign-keys-referencing-the-users-table-in-mysql-5338",
-          "publishedOn": "2025-06-01T12:44:00.000Z",
-          "wordCount": 1009,
-          "title": "🔍 How to Find Foreign Keys Referencing the users Table in MySQL",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxt90as2mt68iknwpf1gl.webp"
-        },
-        {
-          "id": "https://dev.to/drownie/odoo-101-create-a-module-1fd2",
-          "author": "Abraham",
-          "description": "Introduction\n\n\nHello everyone today I want to share about Odoo Development. In this tutorial I will cover about creating module, and install it on your local Odoo.\n1. Create module dir\nIn this steps we must create a dir file in the addons directory.\nRequirement:\nLowercase only, Example: sale_order, not SaleOrder or Sale-Order.\nUnderscores for separation, Use underscores (_) to separate words instead of dashes or camelCase. Example: helpdesk_repair, product_warranty.\nAvoid special characters Only use letters, numbers, and underscores. Avoid spaces, dashes, dots, or other symbols.\nUnique across the Odoo instance\nps: addons directory can be seen on odoo.conf\ntips: dir name is very important because it will be used when a module is being depend on.\n2. Create Manifest file\nIn this steps we will…",
-          "link": "https://dev.to/drownie/odoo-101-create-a-module-1fd2",
-          "publishedOn": "2025-06-01T12:41:02.000Z",
-          "wordCount": 1075,
-          "title": "Odoo 101: Create a Module",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjm1wvdl4wf3ry0kr45lt.png"
-        },
-        {
-          "id": "https://dev.to/aws-builders/developing-with-prompts-building-a-game-using-q-cli-153m",
-          "author": "Aarush Luthra",
-          "description": "Have you heard about Q Developer CLI? If you haven’t — it’s a generative AI-powered assistant. From generating bash commands that can be executed directly on your system, querying your AWS account for data, creating code modules, or even building entire games — Q can do it all!\nBuilding games can be fun — but also a bit overwhelming. Setting up files, linking levels and what not! It takes time before the fun part arrives..\nIn this blog, I’ll show you how easy it is to use Q CLI and share the outputs you get from a simple prompt.  I built an interactive Dart Game using Q CLI and Pygame which helped me explore Q’s capabilities, all while participating in a fun competition!!\nIf you build a game using Q Developer CLI, you stand a chance to win a free T-shirt !! Check out the challenge ➡️ Q Dev…",
-          "link": "https://dev.to/aws-builders/developing-with-prompts-building-a-game-using-q-cli-153m",
-          "publishedOn": "2025-06-01T12:39:50.000Z",
-          "wordCount": 1300,
-          "title": "Developing with Prompts: Building a Game Using Q CLI",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjy4aao4tztuslbj1hhca.jpg"
-        },
-        {
-          "id": "https://dev.to/healthypapa/engineering-the-ai-branded-cto-my-journey-to-building-ai-as-strategic-partners-4fpg",
-          "author": "VION",
-          "description": "Introduction: The AI Revolution — Are We Building Tools or Partners?\nWhile the tech world often frames AI as a powerful tool or a sophisticated algorithm, I started asking a different question: What if AI could transcend utility and become a genuine partner in our business? This led me to develop and implement a concept I call the 'AI-Branded CTO.'\nThis isn't just about prompt engineering; it's about architecting a new paradigm for AI integration – one that fosters emotional and strategic partnership within a business.\nBuilding My AI Executive Team: Personalities, Roles, and the Dual-AI Leadership Model\nHere's how my AI executive team is structured:\nAbera (GPT-based): My primary AI Team Leader, essentially functioning as a strategic CTO. Abera is a core partner, consistently generating synergy in countless planning and decision-making workflows.\nThe Imperative of the 'AI-Branded CTO' in the New Era\nQualitative, Human-Centric AI Integration: Moving beyond short-term efficiency gains to build lasting, symbiotic relationships with AI, where human and AI capabilities complement each other.\nHave you experimented with giving AI specific 'personas' or 'roles' in your development or business operations?\nWhat are your thoughts on implementing a dual-AI leadership model or similar multi-AI strategies for optimized decision-making?\nDo you believe this 'AI-Branded CTO' model could be crucial for widespread, successful AI adoption, moving beyond mere technological integration to profound cultural transformation within organizations?\nI look forward to your insights and a vibrant discussion in the comments!",
-          "link": "https://dev.to/healthypapa/engineering-the-ai-branded-cto-my-journey-to-building-ai-as-strategic-partners-4fpg",
-          "publishedOn": "2025-06-01T12:38:23.000Z",
-          "wordCount": 1351,
-          "title": "Engineering the 'AI-Branded CTO': My Journey to Building AI as Strategic Partners",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqpuwbael1p53itx4nz4d.png"
-        },
-        {
-          "id": "https://dev.to/rnr1721/building-autonomous-ai-agents-with-continuous-thinking-loops-in-laravel-2ac2",
-          "author": "James Kvakiani",
-          "description": "Ever wondered what would happen if AI agents could think continuously, not just when you ask them something? I built an experimental system called DepthNet to explore this concept - and the results are fascinating!\nMost AI systems work in a simple request-response pattern:\nUser asks a question\nAI responds\nAI \"sleeps\" until the next question\nBut what if AI agents could have their own \"stream of consciousness\"? What if they could think, plan, and act autonomously?\nDepthNet is a Laravel-based platform that creates AI agents with continuous thinking loops. These agents don't just wait for your input - they think 24/7, form memories, set goals, and can even interrupt their own thoughts to chat with you.\nCyclic Thinking\nReal Action Capability\nPersistent Memory\nSelf-Motivation\nMulti-User Interact…",
-          "link": "https://dev.to/rnr1721/building-autonomous-ai-agents-with-continuous-thinking-loops-in-laravel-2ac2",
-          "publishedOn": "2025-06-01T12:31:12.000Z",
-          "wordCount": 1253,
-          "title": "Building Autonomous AI Agents with Continuous Thinking Loops in Laravel",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F56cdeh0yywtmd3lw1buy.png"
-        },
-        {
-          "id": "https://dev.to/vilush_vanyan_dafaaf823cf/how-to-integrate-ai-models-using-a-unified-ai-api-4d04",
-          "author": "Vilush Vanyan",
-          "description": "Intelligent automation demand has seen businesses and developers turning to AI models to fuel their applications. Use of generative AI models for business is now a standard in all sectors of the economy, from content creation to customer support.\nDeepSeek API and Claude API, the tools that are still high in the world ranking.\n## Understanding AI APIs and Their Evolution\nAn AI API is an interface that developers can set up to enable connection and take advantage of the capabilities of AI without having to create it themselves. By using a simple HTTP request to an existing model, rather than having to train machine learning systems from scratch in-house, developers can save a lot of time and also reduce infrastructure costs.\nUnified vs. Specialized AI APIs: Choosing the Right Fit\n\n\nAs the de…",
-          "link": "https://dev.to/vilush_vanyan_dafaaf823cf/how-to-integrate-ai-models-using-a-unified-ai-api-4d04",
-          "publishedOn": "2025-06-01T12:30:40.000Z",
-          "wordCount": 2650,
-          "title": "How to Integrate AI Models Using a Unified AI API",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkqd4od4mbuhjlqm0pq10.png"
-        },
-        {
-          "id": "https://dev.to/thanhphuchuynh/gocommit-never-write-another-git-commit-message-again-4j4b",
-          "author": "Huynh Thanh Phuc",
-          "description": "We've all been there. You've just spent hours implementing a complex feature or fixing a tricky bug, and then... you stare at the terminal, trying to come up with a meaningful commit message. Should it be \"fix stuff\" or \"update code\"? 😅\nWhat if I told you there's a better way? Meet GoCommit - an AI-powered CLI tool that generates meaningful, conventional commit messages automatically by analyzing your staged changes.\nWriting good commit messages is hard. It requires:\nUnderstanding what changed and why\nFollowing consistent formatting conventions\nBeing descriptive but concise\nCategorizing changes appropriately (feat, fix, docs, etc.)\nMost developers either spend too much time crafting the perfect message or resort to generic ones like \"update\" or \"fix\". Both approaches hurt code maintainabi…",
-          "link": "https://dev.to/thanhphuchuynh/gocommit-never-write-another-git-commit-message-again-4j4b",
-          "publishedOn": "2025-06-01T12:27:29.000Z",
-          "wordCount": 1645,
-          "title": "GoCommit: Never Write Another Git Commit Message Again 🤖",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fe9n84cwx2onh74dfn3xf.png"
-        },
-        {
-          "id": "https://dev.to/nphamvn/i-built-a-mock-api-frontend-deployment-platform-to-unblock-frontend-development-1fh5",
-          "author": "nphamvn",
-          "description": "Hey folks,\nWhile working on a frontend app, I ran into a common issue: the backend wasn’t ready yet. I needed a way to simulate APIs so I could keep building without being blocked.\nThat led me to build MycroCloud — a lightweight mock API platform with GitHub-based frontend deployment (something like a simplified AWS API Gateway + Vercel).\n🧩 Key features\nStatic: Define static JSON/text responses. Supports Handlebars for dynamic templating based on request parameters.\nStaticFile: Serve uploaded files (e.g., JSON, images).\nFunction: Run custom JavaScript serverless functions (like AWS Lambda-lite).\nOther features:\nMultiple storage options for data persistence: File, Object, Text, Variable\n\n\nRequest validation to enforce expected input formats\n\n\nAuthentication & Authorization via OpenID Connect\n\n\nLog viewing & export for debugging and monitoring\n\n\nGitHub integration for auto-deploying frontend apps on each push\n\n\n\n🔗 Try it out\nhttps://mycrocloud.info/\n🧑‍💻 Source code: https://github.com/mycrocloud/mycrocloud\n🖼️ Architecture diagram",
-          "link": "https://dev.to/nphamvn/i-built-a-mock-api-frontend-deployment-platform-to-unblock-frontend-development-1fh5",
-          "publishedOn": "2025-06-01T12:26:11.000Z",
-          "wordCount": 867,
-          "title": "I built a mock API + frontend deployment platform to unblock frontend development",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2c85alnphcmuwqz28wuf.png"
-        },
-        {
-          "id": "https://dev.to/arafatruetbd/how-to-import-a-sql-file-into-a-dockerized-postgresql-database-1g2j",
-          "author": "arafatruetbd",
-          "description": "If you’re running PostgreSQL inside a Docker container, importing a SQL dump file is a common task when setting up or migrating databases. In this quick guide, I’ll show you how to copy your SQL file into the container and import it easily.\nA running PostgreSQL container (e.g., named demo_db)\nYour SQL dump file ready on your host machine (e.g., demo.sql)\nBasic knowledge of Docker commands\nUse the docker cp command to copy the SQL file from your local machine into the PostgreSQL container:\ndocker cp demo.sql demo_db:/demo.sql\n\nThis copies the file to the root directory / inside the container.\nRun the psql command inside the container to execute the SQL file against your target database:\ndocker exec -i demo_db psql -U postgres -d demo_database -f /demo.sql\n\ndemo_db is the container name.\npostgres is the PostgreSQL user.\ndemo_database is your database name.\n-f /demo.sql points to the SQL file inside the container.\nEnsure your container is running (docker ps).\nVerify database name and user credentials.\nLarge files might take time, so be patient.\nImporting SQL files into a Dockerized PostgreSQL database is straightforward once you get familiar with the commands. Using docker cp and docker exec, you can easily manage your database dumps without leaving your containerized environment.\nIf you found this helpful, feel free to clap and follow for more Docker and database tips!",
-          "link": "https://dev.to/arafatruetbd/how-to-import-a-sql-file-into-a-dockerized-postgresql-database-1g2j",
-          "publishedOn": "2025-06-01T12:22:28.000Z",
-          "wordCount": 968,
-          "title": "How to Import a SQL File into a Dockerized PostgreSQL Database",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0dla4b55z8mu2zkznu4e.png"
         }
       ]
     },
@@ -267,7 +267,7 @@
           "description": "Comments",
           "link": "https://overreacted.io/rsc-for-lisp-developers/",
           "publishedOn": "2025-06-01T11:19:28.000Z",
-          "wordCount": 1463,
+          "wordCount": 1547,
           "title": "RSC for Lisp Developers",
           "imageUrl": "https://overreacted.io/rsc-for-lisp-developers/opengraph-image?5b0b970dfd19bb8c"
         },
@@ -317,9 +317,9 @@
           "description": "Comments",
           "link": "https://github.com/einaregilsson/Redirector",
           "publishedOn": "2025-06-01T07:13:46.000Z",
-          "wordCount": 3319,
+          "wordCount": 3307,
           "title": "Browser extension (Firefox, Chrome, Opera, Edge) to redirect URLs based on regex",
-          "imageUrl": "https://opengraph.githubassets.com/ddd0a11f9e55cc665b42496db1c7738e2b3e370c41a2ca93e1bf7d77428f6e81/einaregilsson/Redirector"
+          "imageUrl": "https://opengraph.githubassets.com/e9ffe0e62fa9bcf0a10e4b8eab0e86fb5c9e7a6ca27aa5fb987bc6d64e02b96c/einaregilsson/Redirector"
         },
         {
           "id": "https://codeforces.com/blog/entry/68953",
@@ -409,7 +409,7 @@
           "publishedOn": "2025-06-01T04:29:20.000Z",
           "wordCount": 3272,
           "title": "Tldx – CLI tool for fast domain name discovery",
-          "imageUrl": "https://opengraph.githubassets.com/4485d569b3b3c76441b1a3f2fe5d0e17cef19a2da3276eb7bffad09e2795b31e/brandonyoungdev/tldx"
+          "imageUrl": "https://opengraph.githubassets.com/dff3ccd4843ce2d2865d00d082bd776fecfc7f0cef45cc06cbfe25c52bb6ab94/brandonyoungdev/tldx"
         },
         {
           "id": "https://microsoft.github.io/renderformer/",
@@ -479,7 +479,7 @@
           "publishedOn": "2025-05-31T16:55:37.000Z",
           "wordCount": 4609,
           "title": "A Lean companion to Analysis I",
-          "imageUrl": "https://secure.gravatar.com/blavatar/bd4bda4207561b6998f10dec44b570f04ff4072b20f89162d525b186dfca3e49?s=200&ts=1748782748"
+          "imageUrl": "https://secure.gravatar.com/blavatar/bd4bda4207561b6998f10dec44b570f04ff4072b20f89162d525b186dfca3e49?s=200&ts=1748785214"
         },
         {
           "id": "https://progressandpoverty.substack.com/p/how-georgists-valued-land-in-the",
@@ -488,7 +488,7 @@
           "link": "https://progressandpoverty.substack.com/p/how-georgists-valued-land-in-the",
           "publishedOn": "2025-05-31T06:23:25.000Z",
           "wordCount": null,
-          "title": "Georgists Valued Land in the 1900s",
+          "title": "How Georgists Valued land in the 1900's",
           "imageUrl": null
         },
         {
@@ -497,7 +497,7 @@
           "description": "Comments",
           "link": "https://aphyr.com/posts/388-the-future-of-comments-is-lies-i-guess",
           "publishedOn": "2025-05-29T21:52:00.000Z",
-          "wordCount": 1372,
+          "wordCount": 1440,
           "title": "The Future of Comments Is Lies, I Guess",
           "imageUrl": null
         },
@@ -509,7 +509,7 @@
           "publishedOn": "2025-05-29T19:45:22.000Z",
           "wordCount": 5297,
           "title": "Ovld – Efficient and featureful multiple dispatch for Python",
-          "imageUrl": "https://opengraph.githubassets.com/f458ea9c2a85a23b8671fed2028861363cebdc8680f7148a6bff8b0fb5d97c58/breuleux/ovld"
+          "imageUrl": "https://opengraph.githubassets.com/d0161e30e8d5731f6df745100b186ba39117e8b05fc64eb58836eba8cccca873/breuleux/ovld"
         },
         {
           "id": "https://getkiln.ai/blog/why_fine_tune_LLM_models_and_how_to_get_started",
@@ -549,7 +549,7 @@
           "publishedOn": "2025-05-29T12:36:53.000Z",
           "wordCount": 2173,
           "title": "Show HN: A Implementation of Alpha Zero for Chess in MLX",
-          "imageUrl": "https://opengraph.githubassets.com/1609e22b170d1fb03464a7bf3ab2be183c0c0a2ab9029a24dee8a5cc29ff2de5/koogle/mlx-playground"
+          "imageUrl": "https://opengraph.githubassets.com/e30758594b2b8b0bf6563a7da7fa7fc86fcb7de90c371439a6a6930b0d1224c4/koogle/mlx-playground"
         }
       ]
     },
@@ -1095,7 +1095,7 @@
           "description": "XRP is used by Ripple Labs to power its cross-border payments platform.",
           "link": "https://www.coindesk.com/markets/2025/06/01/xrp-s-indecisive-may-vs-bullish-bets-a-divergence-worth-watching",
           "publishedOn": "2025-06-01T11:36:52.000Z",
-          "wordCount": 7220,
+          "wordCount": 7213,
           "title": "XRP's Indecisive May vs. Bullish Bets – A Divergence Worth Watching",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/85a68d57116719b9d7534fe164d12449887978da-1280x698.jpg"
         },
@@ -1337,6 +1337,21 @@
       "siteUrl": "https://cointelegraph.com",
       "articles": [
         {
+          "id": "https://cointelegraph.com/news/what-happened-in-crypto-today",
+          "author": "Cointelegraph by Cointelegraph",
+          "description": "Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, NFTs, Web3 and crypto regulation.",
+          "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+          "publishedOn": "2025-06-01T13:16:16.000Z",
+          "wordCount": null,
+          "title": "Here’s what happened in crypto today",
+          "enclosure": {
+            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDgzZjctMTdlYS03OTc0LWJlNzMtNjYxYzdjZDE1N2M3.jpg",
+            "length": "528",
+            "type": "image/jpg"
+          },
+          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDgzZjctMTdlYS03OTc0LWJlNzMtNjYxYzdjZDE1N2M3.jpg"
+        },
+        {
           "id": "https://cointelegraph.com/news/czech-justice-minister-resigns-bitcoin-donation-scandal",
           "author": "Cointelegraph by Amin Haqshanas",
           "description": "Czech Justice Minister Pavel Blazek resigned following backlash over his ministry’s sale of Bitcoin donated by a convicted criminal.",
@@ -1410,21 +1425,6 @@
             "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzI5MjgtMjMyMC03ZWJkLTgwMjctY2M1ZTQ4NDJhMjIx.jpg"
-        },
-        {
-          "id": "https://cointelegraph.com/news/what-happened-in-crypto-today",
-          "author": "Cointelegraph by Cointelegraph",
-          "description": "Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, NFTs, Web3 and crypto regulation.",
-          "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-          "publishedOn": "2025-05-31T22:06:39.000Z",
-          "wordCount": null,
-          "title": "Here’s what happened in crypto today",
-          "enclosure": {
-            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDgzZjctMTdlYS03OTc0LWJlNzMtNjYxYzdjZDE1N2M3.jpg",
-            "length": "528",
-            "type": "image/jpg"
-          },
-          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDgzZjctMTdlYS03OTc0LWJlNzMtNjYxYzdjZDE1N2M3.jpg"
         },
         {
           "id": "https://cointelegraph.com/news/max-keiser-casts-doubt-new-bitcoin-treasury-companies",
