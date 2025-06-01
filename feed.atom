@@ -1,10 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-06-01T22:13:07.160Z</id>
+    <id>urn:2025-06-01T22:43:56.379Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-06-01T22:13:07.160Z</updated>
+    <updated>2025-06-01T22:43:56.379Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[Import specific properties from JSON]]></title>
+        <id>https://dev.to/karenpayneoregon/import-specific-properties-from-json-8e2</id>
+        <link href="https://dev.to/karenpayneoregon/import-specific-properties-from-json-8e2"/>
+        <updated>2025-06-01T22:21:15.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+
+
+Learn how to read a json string with known properties and remove unwanted properties, followed by deserializing to a strongly typed class.
+For this demonstration, the following data is incoming data with an extra property, Age, and two properties, Name and Last, which need to be FirstName and LastName.
+[
+  {
+    "Id": 1,
+    "Name": "Mary",
+    "Last": "Jones",
+    "Age": 22
+  },
+  {
+    "Id": 2,
+    "Name": "John",
+    "Last": "Burger",
+    "Age": 44
+  },
+  {
+    "Id": 3,
+    "Name": "Anne",
+    "Last": "Adams",
+    "Age": 33
+  },
+  {
+    "Id": 4,
+    "Name": "Paul",
+    "Last": "Smith",
+    "Age": 29
+  },
+  {
+    "Id": 5,
+    "Name": "Lucy",
+    "Last": "Brown",
+    "Age": 25
+  }
+]
+
+The class to import data into.
+public class Person
+{
+    public int Id { get; set; }
+    [JsonPropertyName("Name")]
+    public string FirstName { get; set; }
+    [JsonPropertyName("Last")]
+    public string LastName { get; set; }
+}
+
+JsonPropertyName is used to alias from property names in json to what is in the class.
+This is a simple process, read in a json file with the correct format followed iterating the array and for each item remove one or more properties. Here only one property is being removed.
+var jsonArray = JsonNode.Parse(File.ReadAllText("peopleIncoming.json"))!.AsArray();
+
+foreach (var item in jsonArray)
+{
+    JsonObject obj = item!.AsObject();
+    obj.Remove("Age");
+}
+
+Next, place the modified json into a variable and write the json to a file.
+var updatedJson = jsonArray.ToJsonString(Indented);
+
+DisplayUpdatedJsonPanel(updatedJson);
+
+Console.WriteLine();
+
+File.WriteAllText("People.json", updatedJson);
+
+Indented definition
+public static JsonSerializerOptions Indented => new() { WriteIndented = true };
+
+Deserializing to the Person class
+var people = JsonSerializer.Deserialize<Person[]>(updatedJson);
+
+The following screenshot is from a sample project that is included.
+
+With the provided instructions, it is easy to import json data into a desired format.
+C# System.Text.Json
+Source code]]></summary>
+        <author>
+            <name>Karen Payne</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A Voyage through Algorithms using Javascript - Quick Sort]]></title>
+        <id>https://dev.to/humblecoder00/a-voyage-through-algorithms-using-javascript-quick-sort-92o</id>
+        <link href="https://dev.to/humblecoder00/a-voyage-through-algorithms-using-javascript-quick-sort-92o"/>
+        <updated>2025-06-01T22:08:20.000Z</updated>
+        <summary type="html"><![CDATA[What is Quick Sort?
+
+
+Quick Sort is one of the most efficient and widely-used sorting algorithms in computer science. As a "divide and conquer" algorithm, it works by selecting a 'pivot' element and partitioning the array around it. Unlike Merge Sort, which always divides arrays exactly in half, Quick Sort's divisions depend on the chosen pivot.
+Quick Sort offers average-case time complexity of O(n log n) with in-place sorting capability, requiring only O(log n) additional memory for the recursion stack. However, its performance can degrade to O(n²) in worst-case scenarios, which makes pivot selection strategy important for optimal performance.
+The tone of this article is assumes you are already familiar with Recursion. If that’s not the case or you need a quick refreshment, I’d suggest yo…]]></summary>
+        <author>
+            <name>Şahin Arslan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Visual World of 'Samurai Jack']]></title>
+        <id>https://animationobsessive.substack.com/p/the-visual-world-of-samurai-jack</id>
+        <link href="https://animationobsessive.substack.com/p/the-visual-world-of-samurai-jack"/>
+        <updated>2025-06-01T21:57:35.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Here’s what happened in crypto today]]></title>
         <id>https://cointelegraph.com/news/what-happened-in-crypto-today</id>
@@ -51,16 +163,6 @@ Having led engineering teams building these systems at Amazon, I can tell you: t
         <summary type="html"><![CDATA[Traders are maximizing short-term profit strategies as the long-term economic outlook becomes increasingly unclear, Arrash Yasavolian said.]]></summary>
         <author>
             <name>Cointelegraph by Vince Quill</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Making $1M from my personal projects]]></title>
-        <id>https://www.alexwest.co/book-one</id>
-        <link href="https://www.alexwest.co/book-one"/>
-        <updated>2025-06-01T21:13:54.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -422,54 +524,6 @@ Primary goal of GitHub's community:
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[🚀 Criando o meu Projeto de Portfólio pessoal com Deploy na AWS!]]></title>
-        <id>https://dev.to/marcelomagario/criando-o-meu-projeto-de-portfolio-pessoal-com-deploy-na-aws-2ei9</id>
-        <link href="https://dev.to/marcelomagario/criando-o-meu-projeto-de-portfolio-pessoal-com-deploy-na-aws-2ei9"/>
-        <updated>2025-06-01T20:40:47.000Z</updated>
-        <summary type="html"><![CDATA[E aí, devs! Hoje falo um pouco mais sobre o projeto que estou criando que envolve desenvolvimento full-stack e cloud: meu novo Portfólio Pessoal com Blog e CMS integrados. E o melhor: todo o deploy será feito na AWS, transformando este projeto em uma experiência completa, do código à nuvem!
-O Projeto: Visão Geral
-A idéia é criar uma plataforma completa unificada para exibir meus trabalhos e compartilhar conhecimento técnico. O sistema é composto por:
-
-Backend (API): Uma API robusta e completa desenvolvida com Node.js, TypeScript e Express. Ela já está pronta e lidando com posts do blog, tags, autenticação para o CMS (via JWT com bcryptjs), e até mesmo o envio de e-mails do formulário de contato usando AWS SES. Tudo isso conectado a um banco de dados PostgreSQL.
-Frontend (React): Uma interface de usuário responsiva, construída com React e TypeScript, utilizando Vite para agilidade no desenvolvimento. O frontend consome a API para mostrar os posts, o formulário de contato, e em breve, a seção de portfólio e o painel de gerenciamento de conteúdo (CMS).
-Tecnologias no Comando 🛠️
-No Backend (API):
-Linguagem: TypeScript
-Runtime: Node.js
-Framework: Express.js
-Banco de Dados: PostgreSQL
-Autenticação: JWT + bcryptjs
-Serviços AWS: SES (para e-mails)
-No Frontend
-Biblioteca: React.js
-Linguagem: TypeScript
-Build Tool: Vite
-Roteamento: react-router-dom
-Este projeto não é apenas um portfólio; é um campo de aprendizado prático para arquitetura de software, boas práticas e, crucialmente, operações DevOps com foco em AWS. O backend já está 100% funcional, e o frontend está evoluindo rapidamente.
-Quer dar uma olhada no código para ver a evolução? O repositório está aqui: https://github.com/marcelomagario/portfolio
-Nos próximos posts, vou compartilhar mais sobre cada detalhes de cada tarefas e também os desafios do caminho. Valeu!]]></summary>
-        <author>
-            <name>Marcelo Magario</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Sandbox: bash deny(1) file-read-data Pods-App-frameworks.sh]]></title>
-        <id>https://dev.to/itamartati/sandbox-bash-deny1-file-read-data-pods-app-frameworkssh-apo</id>
-        <link href="https://dev.to/itamartati/sandbox-bash-deny1-file-read-data-pods-app-frameworkssh-apo"/>
-        <updated>2025-06-01T20:30:46.000Z</updated>
-        <summary type="html"><![CDATA[The Problem
-
-
-If you're developing an Ionic iOS application and recently upgraded to macOS Sonoma 14.4.1 with Xcode 15.3, you may have encountered a frustrating sandbox error that prevents your project from building:
-Sandbox: bash(2538) deny(1) file-read-data /Users/.../ios/App/Pods/Target Support Files/Pods-App/Pods-App-frameworks.sh
-
-This error typically appears when Xcode's User Script Sandboxing feature blocks access to CocoaPods-generated scripts, preventing the build process from completing successfully.
-User Script Sandboxing is a security feature introduced in recent versions of Xcode that restricts the file system access of build scripts. While this enhances security by limiting what scripts can access during the build process, it can interfere with legitimate build operations, pa…]]></summary>
-        <author>
-            <name>Itamar Tati</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Model Context Protocol: A promising AI integration layer, but not a standard (yet)]]></title>
         <id>https://venturebeat.com/?p=3009642</id>
         <link href="https://venturebeat.com/ai/model-context-protocol-a-promising-ai-integration-layer-but-not-a-standard-yet/"/>
@@ -731,7 +785,7 @@ The post Google To Phase Out Play Gift Cards, Prepaid Balance In Malaysia Starti
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Google AI Edge – on-device cross-platform AI deployment]]></title>
+        <title type="html"><![CDATA[Google AI Edge – On-device cross-platform AI deployment]]></title>
         <id>https://ai.google.dev/edge</id>
         <link href="https://ai.google.dev/edge"/>
         <updated>2025-06-01T06:32:20.000Z</updated>
@@ -1520,6 +1574,16 @@ The post JBL Flip 7, Charge 6 Land In Malaysia; Priced From RM799 appeared first
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Toying with the Lambda Calculus]]></title>
+        <id>https://github.com/WinVector/Examples/blob/main/lambda_calculus/toying_with_the_lambda_calculus.ipynb</id>
+        <link href="https://github.com/WinVector/Examples/blob/main/lambda_calculus/toying_with_the_lambda_calculus.ipynb"/>
+        <updated>2025-05-29T17:11:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[How to Build an AI-Powered Cooking Assistant with Flutter and Gemini]]></title>
         <id>68388c4c973615b7f6864e63</id>
         <link href="https://www.freecodecamp.org/news/build-an-ai-powered-cooking-assistant-with-flutter-and-gemini/"/>
@@ -1537,16 +1601,6 @@ The post JBL Flip 7, Charge 6 Land In Malaysia; Priced From RM799 appeared first
         <summary type="html"><![CDATA[Explore Galxe Gravity’s omnichain power on QuickNode. Build scalable, identity-centric dApps effortlessly with dedicated endpoints and developer tools.]]></summary>
         <author>
             <name>QuickNode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A Pokémon battle simulation engine]]></title>
-        <id>https://github.com/pkmn/engine</id>
-        <link href="https://github.com/pkmn/engine"/>
-        <updated>2025-05-29T13:33:14.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1760,16 +1814,6 @@ The post JBL Flip 7, Charge 6 Land In Malaysia; Priced From RM799 appeared first
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[QuickNode Accelerator - Kyros]]></title>
-        <id>6824f2a5bf73460001094981</id>
-        <link href="https://blog.quicknode.com/quicknode-accelerator-kyros/"/>
-        <updated>2025-05-28T15:59:00.000Z</updated>
-        <summary type="html"><![CDATA[KYROS delivers AI-enhanced DeFi with real-time, in-chart insights and an intuitive trading experience across major blockchains.]]></summary>
-        <author>
-            <name>QuickNode</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[QuickNode Accelerator - Hangry Animals]]></title>
         <id>68236ae084101f00013a5cd0</id>
         <link href="https://blog.quicknode.com/quicknode-accelerator-hangry-animals/"/>
@@ -1835,6 +1879,16 @@ The post JBL Flip 7, Charge 6 Land In Malaysia; Priced From RM799 appeared first
         <link href="https://blog.quicknode.com/quicknode-accelerator-snft/"/>
         <updated>2025-05-28T15:55:43.000Z</updated>
         <summary type="html"><![CDATA[SNFT Chain connects digital assets and physical devices through scalable L2 infrastructure built for creators and tokenized experiences.]]></summary>
+        <author>
+            <name>QuickNode</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[QuickNode Accelerator - Creator Network]]></title>
+        <id>682234a636cbae0001089a75</id>
+        <link href="https://blog.quicknode.com/quicknode-accelerator-creator-network/"/>
+        <updated>2025-05-28T15:55:23.000Z</updated>
+        <summary type="html"><![CDATA[Creator Network is a modular L2 for AI-native applications, empowering builders, creators, and ecosystems with low fees and fast UX.]]></summary>
         <author>
             <name>QuickNode</name>
         </author>

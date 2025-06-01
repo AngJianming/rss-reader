@@ -18,6 +18,26 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/karenpayneoregon/import-specific-properties-from-json-8e2",
+          "author": "Karen Payne",
+          "description": "Introduction\n\n\nLearn how to read a json string with known properties and remove unwanted properties, followed by deserializing to a strongly typed class.\nFor this demonstration, the following data is incoming data with an extra property, Age, and two properties, Name and Last, which need to be FirstName and LastName.\n[\n  {\n    \"Id\": 1,\n    \"Name\": \"Mary\",\n    \"Last\": \"Jones\",\n    \"Age\": 22\n  },\n  {\n    \"Id\": 2,\n    \"Name\": \"John\",\n    \"Last\": \"Burger\",\n    \"Age\": 44\n  },\n  {\n    \"Id\": 3,\n    \"Name\": \"Anne\",\n    \"Last\": \"Adams\",\n    \"Age\": 33\n  },\n  {\n    \"Id\": 4,\n    \"Name\": \"Paul\",\n    \"Last\": \"Smith\",\n    \"Age\": 29\n  },\n  {\n    \"Id\": 5,\n    \"Name\": \"Lucy\",\n    \"Last\": \"Brown\",\n    \"Age\": 25\n  }\n]\n\nThe class to import data into.\npublic class Person\n{\n    public int Id { get; set; }\n    [JsonPropertyName(\"Name\")]\n    public string FirstName { get; set; }\n    [JsonPropertyName(\"Last\")]\n    public string LastName { get; set; }\n}\n\nJsonPropertyName is used to alias from property names in json to what is in the class.\nThis is a simple process, read in a json file with the correct format followed iterating the array and for each item remove one or more properties. Here only one property is being removed.\nvar jsonArray = JsonNode.Parse(File.ReadAllText(\"peopleIncoming.json\"))!.AsArray();\n\nforeach (var item in jsonArray)\n{\n    JsonObject obj = item!.AsObject();\n    obj.Remove(\"Age\");\n}\n\nNext, place the modified json into a variable and write the json to a file.\nvar updatedJson = jsonArray.ToJsonString(Indented);\n\nDisplayUpdatedJsonPanel(updatedJson);\n\nConsole.WriteLine();\n\nFile.WriteAllText(\"People.json\", updatedJson);\n\nIndented definition\npublic static JsonSerializerOptions Indented => new() { WriteIndented = true };\n\nDeserializing to the Person class\nvar people = JsonSerializer.Deserialize<Person[]>(updatedJson);\n\nThe following screenshot is from a sample project that is included.\n\nWith the provided instructions, it is easy to import json data into a desired format.\nC# System.Text.Json\nSource code",
+          "link": "https://dev.to/karenpayneoregon/import-specific-properties-from-json-8e2",
+          "publishedOn": "2025-06-01T22:21:15.000Z",
+          "wordCount": 1647,
+          "title": "Import specific properties from JSON",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmxca9x2dzl0lz77oe2vl.png"
+        },
+        {
+          "id": "https://dev.to/humblecoder00/a-voyage-through-algorithms-using-javascript-quick-sort-92o",
+          "author": "Şahin Arslan",
+          "description": "What is Quick Sort?\n\n\nQuick Sort is one of the most efficient and widely-used sorting algorithms in computer science. As a \"divide and conquer\" algorithm, it works by selecting a 'pivot' element and partitioning the array around it. Unlike Merge Sort, which always divides arrays exactly in half, Quick Sort's divisions depend on the chosen pivot.\nQuick Sort offers average-case time complexity of O(n log n) with in-place sorting capability, requiring only O(log n) additional memory for the recursion stack. However, its performance can degrade to O(n²) in worst-case scenarios, which makes pivot selection strategy important for optimal performance.\nThe tone of this article is assumes you are already familiar with Recursion. If that’s not the case or you need a quick refreshment, I’d suggest yo…",
+          "link": "https://dev.to/humblecoder00/a-voyage-through-algorithms-using-javascript-quick-sort-92o",
+          "publishedOn": "2025-06-01T22:08:20.000Z",
+          "wordCount": 2629,
+          "title": "A Voyage through Algorithms using Javascript - Quick Sort",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fra76wgfl9d65hfyk4j61.jpg"
+        },
+        {
           "id": "https://dev.to/kpcofgs/what-was-your-first-programming-language-and-why-did-you-start-with-it-1ff7",
           "author": "Shixian Sheng",
           "description": "There’s something special about the first programming language you learn. For many developers, it becomes a nostalgic memory — one tied to discovery, frustration, creativity, and the thrill of solving problems for the first time. Whether it was the blinking cursor of a BASIC interpreter, a Python “Hello, World,” or writing HTML in a notepad file, that first step into code often shapes how we see technology and continue to learn it.\nSo, let’s talk about it:\nWhat was your first programming language, and what got you started with it?\nMaybe it was a class assignment, a YouTube tutorial, a book someone gave you, or pure curiosity. Some of us started with languages that are now considered “old school,” while others dove in through newer, high-level languages designed to be beginner-friendly. Some were drawn in by game modding, others by web development, and some just wanted to automate tedious tasks.\nAnd how do you feel about that first language now? Was it a good starting point? Would you recommend it to beginners today, or do you wish you’d started with something else?\nShare your story in the comments below.\nI’d love to hear what language kicked off your programming journey!",
@@ -116,26 +136,6 @@
           "wordCount": 695,
           "title": "Flappy bird game",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fr03by1ytxwrdtwzcgx02.png"
-        },
-        {
-          "id": "https://dev.to/marcelomagario/criando-o-meu-projeto-de-portfolio-pessoal-com-deploy-na-aws-2ei9",
-          "author": "Marcelo Magario",
-          "description": "E aí, devs! Hoje falo um pouco mais sobre o projeto que estou criando que envolve desenvolvimento full-stack e cloud: meu novo Portfólio Pessoal com Blog e CMS integrados. E o melhor: todo o deploy será feito na AWS, transformando este projeto em uma experiência completa, do código à nuvem!\nO Projeto: Visão Geral\nA idéia é criar uma plataforma completa unificada para exibir meus trabalhos e compartilhar conhecimento técnico. O sistema é composto por:\n\nBackend (API): Uma API robusta e completa desenvolvida com Node.js, TypeScript e Express. Ela já está pronta e lidando com posts do blog, tags, autenticação para o CMS (via JWT com bcryptjs), e até mesmo o envio de e-mails do formulário de contato usando AWS SES. Tudo isso conectado a um banco de dados PostgreSQL.\nFrontend (React): Uma interface de usuário responsiva, construída com React e TypeScript, utilizando Vite para agilidade no desenvolvimento. O frontend consome a API para mostrar os posts, o formulário de contato, e em breve, a seção de portfólio e o painel de gerenciamento de conteúdo (CMS).\nTecnologias no Comando 🛠️\nNo Backend (API):\nLinguagem: TypeScript\nRuntime: Node.js\nFramework: Express.js\nBanco de Dados: PostgreSQL\nAutenticação: JWT + bcryptjs\nServiços AWS: SES (para e-mails)\nNo Frontend\nBiblioteca: React.js\nLinguagem: TypeScript\nBuild Tool: Vite\nRoteamento: react-router-dom\nEste projeto não é apenas um portfólio; é um campo de aprendizado prático para arquitetura de software, boas práticas e, crucialmente, operações DevOps com foco em AWS. O backend já está 100% funcional, e o frontend está evoluindo rapidamente.\nQuer dar uma olhada no código para ver a evolução? O repositório está aqui: https://github.com/marcelomagario/portfolio\nNos próximos posts, vou compartilhar mais sobre cada detalhes de cada tarefas e também os desafios do caminho. Valeu!",
-          "link": "https://dev.to/marcelomagario/criando-o-meu-projeto-de-portfolio-pessoal-com-deploy-na-aws-2ei9",
-          "publishedOn": "2025-06-01T20:40:47.000Z",
-          "wordCount": 996,
-          "title": "🚀 Criando o meu Projeto de Portfólio pessoal com Deploy na AWS!",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsd6majb9mhl58ebn2pg6.png"
-        },
-        {
-          "id": "https://dev.to/itamartati/sandbox-bash-deny1-file-read-data-pods-app-frameworkssh-apo",
-          "author": "Itamar Tati",
-          "description": "The Problem\n\n\nIf you're developing an Ionic iOS application and recently upgraded to macOS Sonoma 14.4.1 with Xcode 15.3, you may have encountered a frustrating sandbox error that prevents your project from building:\nSandbox: bash(2538) deny(1) file-read-data /Users/.../ios/App/Pods/Target Support Files/Pods-App/Pods-App-frameworks.sh\n\nThis error typically appears when Xcode's User Script Sandboxing feature blocks access to CocoaPods-generated scripts, preventing the build process from completing successfully.\nUser Script Sandboxing is a security feature introduced in recent versions of Xcode that restricts the file system access of build scripts. While this enhances security by limiting what scripts can access during the build process, it can interfere with legitimate build operations, pa…",
-          "link": "https://dev.to/itamartati/sandbox-bash-deny1-file-read-data-pods-app-frameworkssh-apo",
-          "publishedOn": "2025-06-01T20:30:46.000Z",
-          "wordCount": 1348,
-          "title": "Sandbox: bash deny(1) file-read-data Pods-App-frameworks.sh",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwpnyx9r9z5i0t2re69m0.png"
         }
       ]
     },
@@ -252,14 +252,14 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
-          "id": "https://www.alexwest.co/book-one",
+          "id": "https://animationobsessive.substack.com/p/the-visual-world-of-samurai-jack",
           "author": null,
           "description": "Comments",
-          "link": "https://www.alexwest.co/book-one",
-          "publishedOn": "2025-06-01T21:13:54.000Z",
-          "wordCount": 9116,
-          "title": "Making $1M from my personal projects",
-          "imageUrl": "https://i.imgur.com/xxjGUjj.jpg"
+          "link": "https://animationobsessive.substack.com/p/the-visual-world-of-samurai-jack",
+          "publishedOn": "2025-06-01T21:57:35.000Z",
+          "wordCount": null,
+          "title": "The Visual World of 'Samurai Jack'",
+          "imageUrl": null
         },
         {
           "id": "https://www.youtube.com/watch?v=7cta91Y53gs",
@@ -287,7 +287,7 @@
           "description": "Comments",
           "link": "https://www.theregister.com/2021/07/22/bugs_expense_bs/",
           "publishedOn": "2025-06-01T21:02:25.000Z",
-          "wordCount": 1731,
+          "wordCount": 1730,
           "title": "“Bugs are 100x more expensive to fix in production” study might not exist (2021)",
           "imageUrl": "https://regmedia.co.uk/2020/04/23/shutterstock_bug.jpg"
         },
@@ -327,7 +327,7 @@
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=44152012",
           "publishedOn": "2025-06-01T16:27:54.000Z",
-          "wordCount": 5407,
+          "wordCount": 5458,
           "title": "Ask HN: How are parents who program teaching their kids today?",
           "imageUrl": null
         },
@@ -357,7 +357,7 @@
           "description": "Comments",
           "link": "https://www.goto10retro.com/p/atari-means-business-with-the-mega",
           "publishedOn": "2025-06-01T11:01:31.000Z",
-          "wordCount": 4367,
+          "wordCount": 4121,
           "title": "Atari Means Business with the Mega ST",
           "imageUrl": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F42c7167b-d0c9-4160-8309-3fb99413f195_960x640.jpeg"
         },
@@ -387,9 +387,9 @@
           "description": "Comments",
           "link": "https://github.com/einaregilsson/Redirector",
           "publishedOn": "2025-06-01T07:13:46.000Z",
-          "wordCount": 3307,
+          "wordCount": 3319,
           "title": "Browser extension (Firefox, Chrome, Opera, Edge) to redirect URLs based on regex",
-          "imageUrl": "https://opengraph.githubassets.com/1dd26500e4d9bdeb0e57004fb94063372c07cbe2424d3cf135df10e2ee2f3390/einaregilsson/Redirector"
+          "imageUrl": "https://opengraph.githubassets.com/eee666cc5cfb9d05dfb6fa1de3512d601a661fdcfe761768d3a6b3651897399f/einaregilsson/Redirector"
         },
         {
           "id": "https://ai.google.dev/edge",
@@ -398,7 +398,7 @@
           "link": "https://ai.google.dev/edge",
           "publishedOn": "2025-06-01T06:32:20.000Z",
           "wordCount": 9145,
-          "title": "Google AI Edge – on-device cross-platform AI deployment",
+          "title": "Google AI Edge – On-device cross-platform AI deployment",
           "imageUrl": "https://ai.google.dev/static/site-assets/images/share.png"
         },
         {
@@ -522,14 +522,14 @@
           "imageUrl": "https://tailscale.com/api/og-image?id=c8099587-c6d3-4232-9eeb-da16a8a4508f"
         },
         {
-          "id": "https://github.com/pkmn/engine",
+          "id": "https://github.com/WinVector/Examples/blob/main/lambda_calculus/toying_with_the_lambda_calculus.ipynb",
           "author": null,
           "description": "Comments",
-          "link": "https://github.com/pkmn/engine",
-          "publishedOn": "2025-05-29T13:33:14.000Z",
-          "wordCount": 7066,
-          "title": "A Pokémon battle simulation engine",
-          "imageUrl": "https://repository-images.githubusercontent.com/426400802/7ac55283-88c8-40ff-b7ac-6715425270f1"
+          "link": "https://github.com/WinVector/Examples/blob/main/lambda_calculus/toying_with_the_lambda_calculus.ipynb",
+          "publishedOn": "2025-05-29T17:11:12.000Z",
+          "wordCount": 6984,
+          "title": "Toying with the Lambda Calculus",
+          "imageUrl": "https://opengraph.githubassets.com/270692478876796ebe5d33ba637777e3cc714185ea57b97977d0468cc73368ff/WinVector/Examples"
         },
         {
           "id": "https://www.fourmilab.ch/documents/chemistry/NI3/",
@@ -1870,16 +1870,6 @@
           "imageUrl": "https://blog.quicknode.com/content/images/2025/05/Rivalz-Network.png"
         },
         {
-          "id": "6824f2a5bf73460001094981",
-          "author": "QuickNode",
-          "description": "KYROS delivers AI-enhanced DeFi with real-time, in-chart insights and an intuitive trading experience across major blockchains.",
-          "link": "https://blog.quicknode.com/quicknode-accelerator-kyros/",
-          "publishedOn": "2025-05-28T15:59:00.000Z",
-          "wordCount": 1334,
-          "title": "QuickNode Accelerator - Kyros",
-          "imageUrl": "https://blog.quicknode.com/content/images/2025/05/Kyros.png"
-        },
-        {
           "id": "68236ae084101f00013a5cd0",
           "author": "QuickNode",
           "description": "Hangry Animals blends storytelling, Web3, and social good into a transmedia universe where players own, earn, and impact real causes.",
@@ -1948,6 +1938,16 @@
           "wordCount": 1043,
           "title": "QuickNode Accelerator - SNFT Chain",
           "imageUrl": "https://blog.quicknode.com/content/images/2025/05/SNFT.png"
+        },
+        {
+          "id": "682234a636cbae0001089a75",
+          "author": "QuickNode",
+          "description": "Creator Network is a modular L2 for AI-native applications, empowering builders, creators, and ecosystems with low fees and fast UX.",
+          "link": "https://blog.quicknode.com/quicknode-accelerator-creator-network/",
+          "publishedOn": "2025-05-28T15:55:23.000Z",
+          "wordCount": 1035,
+          "title": "QuickNode Accelerator - Creator Network",
+          "imageUrl": "https://blog.quicknode.com/content/images/2025/05/Creator-Network.png"
         }
       ]
     }
