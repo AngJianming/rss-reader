@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/shen-ru-li-jie-hyperlanede-zhong-jian-jian-xi-tong-ge-da-san-xue-sheng-de-shi-jian-bi-ji-3b9j",
-          "author": "Eastspire",
-          "description": "深入理解Hyperlane的中间件系统：一个大三学生的实践笔记\n\n\n作为一名大三计算机专业的学生，我在使用 Hyperlane 框架开发校园项目的过程中，对其中间件系统有了深入的理解。今天，我想分享一下我在实践中的心得体会。\ngraph TD\n    A[客户端请求] --> B[认证中间件]\n    B --> C[日志中间件]\n    C --> D[控制器]\n\nHyperlane 的中间件采用洋葱模型，请求从外层向内层传递，这种设计让请求处理流程清晰可控。\nasync fn request_middleware(ctx: Context) {\n    let socket_addr = ctx.get_socket_addr_or_default_string().await;\n    ctx.set_response_header(SERVER, HYPERLANE)\n        .await\n        .set_response_header(\"SocketAddr\", socket_addr)\n        .await;\n}\n\n相比其他框架需要通过 trait 或层注册中间件，Hyperlane 直接使用异步函数注册，更加直观。\nasync fn auth_middleware(ctx: Context) {\n    let token = ctx.get_request_header(\"Authorization\").await;\n    match token {\n        Some(token) => {\n            // 验证逻辑\n            ctx.set_request_data(\"user_id\", \"123\").await;\n        }\n        None => {\n           …",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/shen-ru-li-jie-hyperlanede-zhong-jian-jian-xi-tong-ge-da-san-xue-sheng-de-shi-jian-bi-ji-3b9j",
-          "publishedOn": "2025-06-13T04:59:32.000Z",
-          "wordCount": 951,
-          "title": "深入理解Hyperlane的中间件系统：一个大三学生的实践笔记",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fq2apyoiumx9uf3t3bw9o.png"
-        },
-        {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/xiao-yuan-er-shou-jiao-yi-ping-tai-de-ji-zhu-xuan-xing-wei-shi-yao-wo-xuan-ze-liao-hyperlanekuang-jia-2ngg",
-          "author": "Eastspire",
-          "description": "校园二手交易平台的技术选型：为什么我选择了Hyperlane框架\n\n\n作为一名大三计算机系的学生，上学期我负责开发了一个校园二手交易平台。在技术选型时，我最终选择了 Hyperlane 这个 Rust Web 框架。今天，我想分享一下这个选择背后的思考过程和实际使用体验。\n高并发处理：学期末是二手交易的高峰期，需要处理大量并发请求\n实时通信：买卖双方需要实时聊天功能\n开发效率：作为学生项目，需要快速开发和迭代\n学习价值：希望通过项目深入学习 Rust 语言\n\n\n\n特性\nHyperlane\nActix-Web\nAxum\n\n\n\n\n学习曲线\n平缓\n较陡\n中等\n\n\n文档友好度\n优秀\n良好\n良好\n\n\n社区活跃度\n活跃\n非常活跃\n活跃\n\n\n性能表现\n极佳\n优秀\n优秀\n\n\nWebSocket支持\n原生\n插件\n扩展\n\n\n\n#[methods(get, post)]\nasync fn product_route(ctx: Context) {\n    let id = ctx.get_route_param(\"id\").await.parse::<u32>().unwrap();\n    // 商品详情查询逻辑\n    ctx.set_response_body(format!(\"Product {}\", id))\n        .await\n        .send_body()\n        .await;\n}\n\n路由宏的设计非常直观，让代码结构更加清晰。\n#[get]\nasync fn chat_ws(ctx: Context) {\n    let key = ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();\n    ctx.set_response_header(CONTENT_TYPE, \"application/json\")\n        .await\n        .set_response_body(key)\n        .await\n        .send_body()\n        .await;\n}\n\n原生的 WebSocket 支持让实时聊天功能的实现变得简单。\nserver\n    .enable_nodelay().await\n    .disable_linger().await\n    .http_line_buffer_size(4096).await\n    .run().await;\n\n框架默认的性能优化配置就足以应对校园平台的访问压力。\n在普通笔记本上的压测结果：\nwrk -c360 -d60s http://localhost:8000/\n\n\n\n\n场景\nQPS\n响应时间\n\n\n\n\n首页\n324,323\n<10ms\n\n\n商品列表\n298,945\n<15ms\n\n\nWebSocket连接\n242,570\n<20ms\n\n\n\n// 传统框架的写法\nlet method = ctx.get_request().await.get_method();\n\n// Hyperlane的写法\nlet method = ctx.get_request_method().await;\n\n扁平化的 API 设计大大提高了开发效率。\n正则路由参数验证\nWebSocket 连接状态管理\n数据库连接池优化\n在升级到 v4.89+ 时遇到了一些变化：\n// 新版本中断请求的方式\nif should_abort {\n    ctx.aborted().await;\n    return;\n}\n\n通过仔细阅读更新文档，很快适应了新的API。\nAPI 设计直观：减少了查文档的频率\n错误提示友好：编译错误信息清晰明确\n性能无忧：默认配置已经够用\n文档完善：示例代码可以直接使用\n从小项目开始：先实现基本的 CRUD 功能\n重视类型系统：利用 Rust 的类型检查避免运行时错误\n参与社区讨论：遇到问题多与社区交流\n关注性能监控：学习使用性能分析工具\n平台已在校内正式运行\n日均处理数百笔交易\n获得了师生的好评\n个人对 Rust Web 开发有了深入理解\n计划添加更多社交功能\n优化移动端体验\n探索微服务架构\n尝试贡献社区代码\n作为一名学生开发者，我认为选择 Hyperlane 是一个正确的决定。它不仅帮助我完成了项目，还提升了我的技术水平。对于想要入门 Rust Web 开发的同学，我强烈推荐从 Hyperlane 开始！",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/xiao-yuan-er-shou-jiao-yi-ping-tai-de-ji-zhu-xuan-xing-wei-shi-yao-wo-xuan-ze-liao-hyperlanekuang-jia-2ngg",
-          "publishedOn": "2025-06-13T04:58:32.000Z",
-          "wordCount": 917,
-          "title": "校园二手交易平台的技术选型：为什么我选择了Hyperlane框架",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0a2t8h785hcnrfqus20h.png"
-        },
-        {
-          "id": "https://dev.to/nikl/pieces-ai-memory-built-for-real-developer-workflows-h0e",
-          "author": "Nik L.",
-          "description": "Memory is the new frontier in AI.\nFrom OpenAI’s persistent memory in ChatGPT, to Claude’s evolving context windows, to Copilot and Cursor tracking dev history—memory is transforming the way we build software.\nAt Pieces, we’ve embraced this shift from day one.\nPieces AI Memory isn't just reactive. It’s a proactive layer that silently powers your dev workflow, in real-time.\nBy the time you take a screenshot, Pieces has already created contextual memories of what you're working on.\nNo prompts.\nThis is true developer memory:\nStores what matters—code blocks, conversations, tasks\nWorks behind the scenes\nDoesn’t interrupt your flow\nIt’s not a clipboard. It’s continuity.\nMemory should work wherever you do. So we integrated Pieces AI Memory into a growing ecosystem of tools:\nSupported Platforms Inc…",
-          "link": "https://dev.to/nikl/pieces-ai-memory-built-for-real-developer-workflows-h0e",
-          "publishedOn": "2025-06-13T04:49:46.000Z",
-          "wordCount": 1256,
-          "title": "🧠 Pieces AI Memory: Built for Real Developer Workflows",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiblx4kvwhf9l9rr81180.png"
-        },
-        {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/my-experience-with-hyperlane-a-rust-newbies-journey-in-developing-a-campus-api-4fmb",
-          "author": "Eastspire",
-          "description": "As a junior computer science student, I was working on a campus second-hand trading platform project last semester when I stumbled upon the Hyperlane Rust HTTP framework. I was in a dilemma about choosing a framework— it needed to be powerful enough to handle the peak trading at the end of the semester, and its syntax had to be simple so that I, as a Rust newbie, could get up to speed quickly. To my pleasant surprise, Hyperlane exceeded all my expectations. Today, I want to share my experience with this amazing framework!\nWhen I first started writing route functions, I was amazed by Hyperlane’s Context (or ctx for short). I remember the first time I wanted to get the request method. In traditional Rust HTTP frameworks, I would have to write:\nlet method = ctx.get_request().await.get_method(…",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/my-experience-with-hyperlane-a-rust-newbies-journey-in-developing-a-campus-api-4fmb",
-          "publishedOn": "2025-06-13T04:49:32.000Z",
-          "wordCount": 1886,
-          "title": "My Experience with Hyperlane A Rust Newbie’s Journey in Developing a Campus API",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fm4qdtlng9ghimqry12xm.png"
-        },
-        {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-cfh",
-          "author": "Eastspire",
-          "description": "Hyperlane：新一代高性能Rust框架的实战体验\n\n\n作为一名大三计算机专业的学生，我在最近的课程项目中深入使用了 Hyperlane 框架。这个被称为\"新一代轻量级高性能框架\"的 Rust Web 框架确实给我留下了深刻印象。本文将从实战角度，分享我对 Hyperlane 的使用体验。\n在项目开始时，我对比了几个主流的 Web 框架：\n\n\n\n框架\n依赖模型\n异步运行时\n中间件支持\nSSE/WebSocket\n路由匹配能力\n\n\n\n\nHyperlane\n仅依赖 Tokio + 标准库\nTokio\n✅ 支持请求/响应\n✅ 原生支持\n✅ 支持正则表达式\n\n\nActix-Web\n较多内部抽象层\nActix\n✅ 请求中间件\n部分支持(需插件)\n⚠️ 路径宏需显式配置\n\n\nAxum\n复杂的 Tower 架构\nTokio\n✅ Tower 中间件\n✅ 需依赖扩展\n⚠️ 动态路由较弱\n\n\n\n最终选择 Hyperlane 的原因是：\n极简的依赖关系\n完整的异步支持\n原生的 WebSocket 集成\n灵活的路由系统\nserver.enable_nodelay().await;\nserver.disable_linger().await;\nserver.http_line_buffer_size(4096).await;\n\nHyperlane 默认启用了这些性能优化选项，这意味着它为高并发连接场景预设了合适的 TCP 和缓冲区参数。\n在实际项目中，我使用 wrk 进行了压力测试：\nwrk -c360 -d60s http://localhost:8000/\n\n测试结果令人惊喜：\n\n\n\n框架\nQPS\n内存占用\n\n\n\n\nHyperlane\n324,323\n最低\n\n\nRocket\n298,945\n中等\n\n\nGin (Go)\n242,570\n较高\n\n\n\nserver\n    .host(\"0.0.0.0\").await\n    .port(60000).await\n    .route(\"/\", root_route).await\n    .route(\"/goods/{id:\\\\d+}\", goods_detail).await\n    .run().await\n    .unwrap();\n\n所有配置都采用异步链式调用模式，无需嵌套配置或宏组合。\n#[get]\nasync fn ws_route(ctx: Context) {\n    let key = ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();\n    ctx.set_response_body(key)\n        .await\n        .send_body()\n        .await;\n}\n\n原生的 WebSocket 支持让实时消息推送变得简单。\n#[post]\nasync fn sse_route(ctx: Context) {\n    ctx.set_response_header(CONTENT_TYPE, TEXT_EVENT_STREAM)\n        .await\n        .send()\n        .await;\n\n    for i in 0..10 {\n        ctx.set_response_body(format!(\"data:{}{}\", i, HTTP_DOUBLE_BR))\n            .await\n            .send_body()\n            .await;\n    }\n}\n\n零平台依赖：纯 Rust 实现，跨平台一致性强\n极致性能优化：底层 I/O 使用 Tokio 的 TcpStream 和异步缓冲\n灵活的中间件机制：支持请求和响应中间件，生命周期划分清晰\n开箱即用的实时通信：原生支持 WebSocket 和 SSE\nv4.22.0 后，ctx.aborted() 可以中断请求\nv5.25.1 中的 ctx.closed() 可以主动关闭连接\n从简单路由开始：先熟悉基本的 GET/POST 路由\n理解 Context 抽象：这是框架的核心概念\n循序渐进学习中间件：先使用内置中间件，再尝试自定义\n关注性能优化选项：了解默认配置的作用\n探索在微服务架构中的应用\n研究与其他 Rust 生态系统的集成\n尝试贡献一些社区插件\n作为一个学生开发者，我认为 Hyperlane 是一个非常值得投入时间学习的框架。它不仅让我深入理解了 Web 开发的本质，还让我体会到了 Rust 在 Web 领域的强大潜力。如果你也在寻找一个性能强大且易于上手的 Rust Web 框架，Hyperlane 绝对值得一试！",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-cfh",
-          "publishedOn": "2025-06-13T04:47:32.000Z",
-          "wordCount": 908,
-          "title": "Hyperlane：新一代高性能Rust框架的实战体验",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F94w20m9s3y554mgl36tv.png"
-        },
-        {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlanecuo-wu-chu-li-yu-diao-shi-zhi-nan-ge-da-san-xue-sheng-de-shi-zhan-zong-jie-h9p",
+          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlanecuo-wu-chu-li-yu-diao-shi-zhi-nan-ge-da-san-xue-sheng-de-shi-zhan-zong-jie-34ka",
           "author": "Eastspire",
           "description": "Hyperlane错误处理与调试指南：一个大三学生的实战总结\n\n\n作为一名大三计算机系的学生，在使用 Hyperlane 开发校园项目的过程中，我深刻体会到了良好的错误处理和调试机制的重要性。这篇文章将分享我在这方面的实战经验。\nasync fn handle_request(ctx: Context) {\n    match process_data().await {\n        Ok(data) => {\n            ctx.set_response_body(data)\n                .await\n                .send_body()\n                .await;\n        }\n        Err(e) => {\n            ctx.set_response_status_code(500)\n                .await\n                .set_response_body(e.to_string())\n                .await;\n        }\n    }\n}\n\nasync fn error_middleware(ctx: Context) {\n    if let Some(err) = ctx.get_error().await {\n        let status_code = match err {\n            AppError::NotFound => 404,\n            AppError::Unauthorized => 401,\n            _ => 500,\n        };\n\n        ctx.set_response_status_code(st…",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlanecuo-wu-chu-li-yu-diao-shi-zhi-nan-ge-da-san-xue-sheng-de-shi-zhan-zong-jie-h9p",
-          "publishedOn": "2025-06-13T04:46:32.000Z",
-          "wordCount": 1092,
+          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlanecuo-wu-chu-li-yu-diao-shi-zhi-nan-ge-da-san-xue-sheng-de-shi-zhan-zong-jie-34ka",
+          "publishedOn": "2025-06-13T05:40:33.000Z",
+          "wordCount": 1089,
           "title": "Hyperlane错误处理与调试指南：一个大三学生的实战总结",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7hcb2w8pszhpz0eq4ogu.png"
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7h7n2l4ujysv9wyjlgqf.png"
         },
         {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlanelu-you-xi-tong-xiang-jie-cong-ru-men-dao-shi-jian-de-wan-zheng-zhi-nan-42cp",
+          "id": "https://dev.to/theaniketraj/project-karl-j80",
+          "author": "Aniket Raj",
+          "description": "Greetings, Readers\n\n\nToday marks day #49 of the development for KARL - AI.\nCurrent Update: The AI is in its Development Stage. \nDocumentation efforts are progressing simultaneously.\nDiscover more here ↗",
+          "link": "https://dev.to/theaniketraj/project-karl-j80",
+          "publishedOn": "2025-06-13T05:40:08.000Z",
+          "wordCount": 726,
+          "title": "Project KARL",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft7ynoqqivrvv8ttjuzst.webp"
+        },
+        {
+          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlanelu-you-xi-tong-xiang-jie-cong-ru-men-dao-shi-jian-de-wan-zheng-zhi-nan-2071",
           "author": "Eastspire",
           "description": "Hyperlane路由系统详解：从入门到实践的完整指南\n\n\n作为一名大三计算机系的学生，我在使用 Hyperlane 开发校园项目的过程中，对其路由系统有了深入的理解。这篇文章将从实践角度，详细介绍 Hyperlane 的路由系统特性。\n#[get]\nasync fn hello_route(ctx: Context) {\n    ctx.set_response_body(\"Hello, Hyperlane!\")\n        .await\n        .send_body()\n        .await;\n}\n\n#[methods(get, post)]\nasync fn multi_method_route(ctx: Context) {\n    let method = ctx.get_request_method().await;\n    ctx.set_response_body(format!(\"Method: {}\", method))\n        .await\n        .send_body()\n        .await;\n}\n\nserver.route(\"/user/{id}\", |ctx| async move {\n    let user_id = ctx.get_route_param(\"id\").await;\n    // 处理用户信息...\n}).await;\n\nserver.route(\"/product/{id:\\\\d+}\", |ctx| async move {\n    let product_id = ctx.get_route_param(\"id\").await.parse::<u32>().unwrap();\n    // 商品详情处理...\n}).await;\n\nasync fn api_routes(ser…",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlanelu-you-xi-tong-xiang-jie-cong-ru-men-dao-shi-jian-de-wan-zheng-zhi-nan-42cp",
-          "publishedOn": "2025-06-13T04:45:32.000Z",
-          "wordCount": 988,
+          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlanelu-you-xi-tong-xiang-jie-cong-ru-men-dao-shi-jian-de-wan-zheng-zhi-nan-2071",
+          "publishedOn": "2025-06-13T05:39:33.000Z",
+          "wordCount": 985,
           "title": "Hyperlane路由系统详解：从入门到实践的完整指南",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7ncrwkr1uyp97f0nt9jg.png"
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2urpp7sejpfiaccer3if.png"
         },
         {
-          "id": "https://dev.to/hyperkai/iterator-in-python-11-34de",
-          "author": "Super Kai (Kazuya Ito)",
-          "description": "Buy Me a Coffee☕\n*Memos:\nMy post explains an iterator (1).\nMy post explains an iterator (2).\nMy post explains a generator.\nMy post explains a class-based iterator with __iter__() and/or __next__().\nMy post explains itertools about count(), cycle() and repeat().\nMy post explains itertools about accumulate(), batched(), chain() and chain.from_iterable().\nMy post explains itertools about compress(), filterfalse(), takewhile() and \ndropwhile().\nMy post explains itertools about groupby() and islice().\nMy post explains itertools about pairwise(), starmap(), tee() and zip_longest().\nMy post explains itertools about product() and permutations().\nitertools has the functions to create iterators.\n\n\n\n\n\ncombinations() can return the iterator which uniquely combines the elements of iterable one by one t…",
-          "link": "https://dev.to/hyperkai/iterator-in-python-11-34de",
-          "publishedOn": "2025-06-13T04:45:22.000Z",
-          "wordCount": 1382,
-          "title": "Iterator in Python (11)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdsyrlomhvgq1drcjzvxf.png"
+          "id": "https://dev.to/iixpreyliet/a-tribute-to-the-ai-171-crash-victims-built-with-just-html-css-55nl",
+          "author": "Rohan Nilatkar",
+          "description": "🕯️ A Tribute to the AI‑171 Crash Victims — Built with Just HTML & CSS\n\n\nOn June 12, 2025, Air India Flight AI‑171 tragically crashed in Ahmedabad.\n\nOut of 270 people on board, only one person survived.\nLike many others, I was deeply affected by the news.\n\nAs a frontend development student, I decided to use my skills to pay tribute — in the simplest but most heartfelt way I could.\n⮕🔗 Live Demo: [Visit the tribute site (https://preyliet.github.io/ai171-tribute/)\n⮕🧾 Source Code: GitHub Repository\n⮕ ⚠️ This site contains no images of the crash only soft, respectful design and text.*\n✅ HTML for structure\n\n🎨 CSS for design and responsiveness\n\n☁️ GitHub Pages to host it for free\n\n\n\nNo JavaScript. No frameworks.\n\nJust clean code and emotion.\nI asked myself:\nHow can I design something respectful with no distractions?\nHow can HTML & CSS alone carry the weight of emotion?\nWhat kind of layout calms the eyes, yet delivers a message?\nI kept the colours subtle, the layout clean, and the typography soft.\n\nThere’s no noise — only tribute.\n\nThis was a personal, emotional project but I'm also looking to grow as a developer.\n🙏 I would love to hear your feedback:\nWhat did you feel while visiting the site?\nAny design tips you’d suggest?\nDo you think devs should do more human-cantered projects like this?\nSometimes, we code to solve problems.\n\nOther times, we code to honour people, tell stories, and offer a moment of silence in a digital world.\nThank you for reading. If this touched you even a little, please leave a comment or share.\n💬 Connect with me on X (Twitter)  I'm always open to thoughts, suggestions, and conversations.",
+          "link": "https://dev.to/iixpreyliet/a-tribute-to-the-ai-171-crash-victims-built-with-just-html-css-55nl",
+          "publishedOn": "2025-06-13T05:39:29.000Z",
+          "wordCount": 1056,
+          "title": "🕯️ A Tribute to the AI‑171 Crash Victims Built with Just HTML & CSS",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8983u0trpj9o0h2t2xop.jpg"
         },
         {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-1cgc",
+          "id": "https://dev.to/shruti_saraswat_c258d5934/ai-vs-human-which-is-better-for-translating-technical-documents-3gb2",
+          "author": "Shruti Saraswat",
+          "description": "In 2025, with document translation tools evolving rapidly, the debate has sharpened—are AI translation systems finally better than human experts when it comes to translating technical documents?\nIf you’ve ever dealt with technical documentation translation—be it user manuals, legal disclaimers, engineering guides, or medical instructions—you know how high the stakes are. One mistranslated term in a user safety guide or software specification can lead to real-world confusion or compliance issues.\nIn this post, we’ll explore:\n    The core differences between human and AI translation in high-stakes documents\n    When AI outperforms humans (and when it doesn't)\n    How hybrid translation workflows are becoming the norm\n    Which tools are leading the race in technical translation automation\n  …",
+          "link": "https://dev.to/shruti_saraswat_c258d5934/ai-vs-human-which-is-better-for-translating-technical-documents-3gb2",
+          "publishedOn": "2025-06-13T05:39:08.000Z",
+          "wordCount": 1364,
+          "title": "AI vs Human: Which Is Better for Translating Technical Documents?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fykpvwkukpv13hmtn3hqh.png"
+        },
+        {
+          "id": "https://dev.to/om_shree_0709/beginner-friendly-guide-minimize-the-maximum-difference-of-pairs-leetcode-2616-c--6p9",
+          "author": "Om Shree",
+          "description": "Hello coders! 🔧\nToday, let’s tackle a beautiful binary search + greedy problem from LeetCode — 2616: Minimize the Maximum Difference of Pairs. It's one of those problems that seems hard at first glance but becomes elegant with the right strategy.\nLet’s decode it together. 🧩\nGiven:\nAn integer array nums\n\nAn integer p (number of index pairs to form)\nObjective:\np disjoint pairs (no overlapping indices) such that the maximum absolute difference across all selected pairs is minimized.\nInput:\nnums = [10,1,2,7,1,3], p = 2\nOutput: 1\nExplanation:\n(1,4) and (2,5):\n|1 - 1| = 0, |2 - 3| = 1 → Max = 1 (minimum possible maximum).\nThis is a \"minimize the maximum\" problem — a perfect use case for binary search on the answer.\nSort the array to allow greedy pairing.\nUse binary search to test if a given ma…",
+          "link": "https://dev.to/om_shree_0709/beginner-friendly-guide-minimize-the-maximum-difference-of-pairs-leetcode-2616-c--6p9",
+          "publishedOn": "2025-06-13T05:39:01.000Z",
+          "wordCount": 1512,
+          "title": "🔧 Beginner-Friendly Guide \"Minimize the Maximum Difference of Pairs\" LeetCode 2616 (C++ | JavaScript | Python)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fa7d6i17c7fg2gcex7mvf.png"
+        },
+        {
+          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-4g56",
           "author": "Eastspire",
           "description": "Hyperlane性能优化实战：从理论到实践的深度探索\n\n\n作为一名大三计算机系的学生，我在使用 Hyperlane 开发高并发校园服务时，积累了不少性能优化的经验。这篇文章将从实战角度分享我的优化心得。\nserver\n    .enable_nodelay().await\n    .disable_linger().await\n    .http_line_buffer_size(4096).await\n    .run().await;\n\nwrk -c360 -d60s http://localhost:8000/\n\n\n\n\n框架\nQPS\n延迟\n内存占用\n\n\n\n\nTokio\n340,130\n1.2ms\n基准线\n\n\nHyperlane\n324,323\n1.5ms\n+5%\n\n\nRocket\n298,945\n1.8ms\n+15%\n\n\nGin (Go)\n242,570\n2.1ms\n+25%\n\n\n\nasync fn optimize_connection_pool() {\n    let pool = Pool::builder()\n        .max_size(100)\n        .min_idle(Some(10))\n        .build()\n        .await;\n\n    // 使用连接池\n    let conn = pool.get().await?;\n}\n\nasync fn reuse_buffers(ctx: Context) {\n    let buffer = get_buffer_from_pool().await;\n    ctx.set_response_body(buffer)\n        .await\n        .send_body()\n        .await;\n    return_buffer_to_po…",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-1cgc",
-          "publishedOn": "2025-06-13T04:44:32.000Z",
-          "wordCount": 1087,
+          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-4g56",
+          "publishedOn": "2025-06-13T05:38:33.000Z",
+          "wordCount": 1084,
           "title": "Hyperlane性能优化实战：从理论到实践的深度探索",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqli8p8cy0ks92vssdq69.png"
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjj1ww7e0durf3a1hmuhj.png"
         },
         {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlaneshi-shi-tong-xin-zhi-nan-websockethe-sseshi-zhan-jing-yan-fen-xiang-1l69",
+          "id": "https://dev.to/vikasdotdev/css-day-1-what-i-learned-as-a-beginner-4f8l",
+          "author": "Vikas Singh",
+          "description": "Hey folks 👋\nToday I started learning CSS — and here’s a quick recap of everything I covered.\nTopics I Learned Today:\nWhat is CSS?\nBasic format of writing CSS\nDifferent ways to apply styles:\n\n\nInline styles\n\n\n<style> tag\n\nExternal stylesheet\nColor & background-color properties\nColor systems in CSS:\n\n\nNamed colors\n\nRGB values\n\nHexadecimal codes\nBasic text properties:\n\n\n\ntext-align, font-weight, font-family,\n\n\ntext-decoration, line-height, letter-spacing\n\n\n\n\n\n\n\n\nWatch My CSS Day 1 Video: \nhttps://linktr.ee/vikasdotdev\nIf you want notes for this — just comment \"notes\" and I’ll DM them to you.\n\nLet's keep learning, one day at a time.\n🔗Connect With Me Across Platforms:\n\nhttps://linktr.ee/vikasdotdev",
+          "link": "https://dev.to/vikasdotdev/css-day-1-what-i-learned-as-a-beginner-4f8l",
+          "publishedOn": "2025-06-13T05:37:56.000Z",
+          "wordCount": 825,
+          "title": "CSS Day 1 – What I Learned as a Beginner",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffmdz9aidslyywz23qfhf.png"
+        },
+        {
+          "id": "https://dev.to/kye_s/dinktopdf-alternatives-ironpdf-for-c-html-to-pdf-350",
+          "author": "Kye Stuart",
+          "description": "When building .NET applications that require PDF generation, developers often face the decision between using open-source tools like DinkToPdf or commercial libraries such as IronPDF. While both can convert HTML to PDF, they differ significantly in capabilities, support, performance, and ease of use. Choosing the appropriate library for your needs can be difficult, this article provides a clear, side-by-side comparison to help .NET developers choose the right library for their project.\n\nDinkToPdf is a .NET Core wrapper for the popular open-source wkhtmltopdf library. It allows you to convert HTML documents into PDFs using WebKit-based rendering. While it's free to use, it has limitations, especially around modern HTML/CSS rendering and error handling. It also requires native binaries and c…",
+          "link": "https://dev.to/kye_s/dinktopdf-alternatives-ironpdf-for-c-html-to-pdf-350",
+          "publishedOn": "2025-06-13T05:34:10.000Z",
+          "wordCount": 1719,
+          "title": "DinkToPdf Alternatives: IronPDF for C# HTML to PDF",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fn5k2z6mij7djvuuwyfzg.png"
+        },
+        {
+          "id": "https://dev.to/asran_2025/day-5-465c",
+          "author": "Ranjani R",
+          "description": "Today I learnt about lists in HTML which are very useful when we need to group certain data or highlight certain points in an website. There are mainly three types of list Ordered Unordered and Description.\nOrdered List\nNumbers are used by default as markers for each list item. We can also use Alphabets(Capital and Small) and Roman Numerals as markers by setting the type attribute of list tag.\nUnordered List\nBullets are used as markers. We can change that to Circle or Square using the list-style-type attribute.\nDescription List\n  This list is mainly used to provide important details regarding a topic in a short format. It is like a nested list in which content is nested inside a heading. No markers are used for this type of list.",
+          "link": "https://dev.to/asran_2025/day-5-465c",
+          "publishedOn": "2025-06-13T05:32:48.000Z",
+          "wordCount": 820,
+          "title": "DAY 5",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffy9ygxmlp5rthzqghbsp.png"
+        },
+        {
+          "id": "https://dev.to/_95e41982c9ad08a13458d/wo-yong-hyperlanekai-fa-xiao-yuan-apide-na-xie-shi-er-ge-rustxin-shou-de-kuang-jia-ti-yan-4dh5",
           "author": "Eastspire",
-          "description": "Hyperlane实时通信指南：WebSocket和SSE实战经验分享\n\n\n作为一名大三计算机系的学生，我在使用 Hyperlane 开发校园实时聊天系统时，深入体验了它的 WebSocket 和 SSE 功能。这篇文章将分享我的实战经验。\n#[get]\nasync fn ws_route(ctx: Context) {\n    let key = ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();\n    let body = ctx.get_request_body().await;\n\n    ctx.set_response_header(\"Connection\", \"Upgrade\")\n        .await\n        .set_response_header(\"Upgrade\", \"websocket\")\n        .await\n        .set_response_body(key)\n        .await\n        .send_body()\n        .await;\n}\n\nasync fn handle_ws_message(ctx: Context) {\n    let message = ctx.get_ws_message().await;\n    match message {\n        WSMessage::Text(text) => {\n            // 处理文本消息\n            ctx.send_ws_text(format!(\"收到消息: {}\", text)).await;\n        }\n        WSMessage::Binary(data) => {\n            // 处理二进制消…",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlaneshi-shi-tong-xin-zhi-nan-websockethe-sseshi-zhan-jing-yan-fen-xiang-1l69",
-          "publishedOn": "2025-06-13T04:43:34.000Z",
-          "wordCount": 1032,
-          "title": "Hyperlane实时通信指南：WebSocket和SSE实战经验分享",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbcyuxg58wxo145uk5flw.png"
+          "description": "作为计算机系大三学生，上学期我在做校园二手交易平台项目时，偶然发现了 Hyperlane 这个 Rust HTTP 框架。当时正为选框架发愁——既要性能够强扛住期末交易高峰，又得语法简洁让我这个 Rust 萌新能快速上手。没想到用下来完全超出预期，今天就来聊聊这个宝藏框架的使用体验！\n刚开始写路由函数时，我被 Hyperlane 的 Context（简称 ctx）惊艳到了。记得第一次想获取请求方法，按照 Rust 传统 HTTP 框架的写法，得这样：\nlet method = ctx.get_request().await.get_method();\n\n但 Hyperlane 直接把方法\"扁平化\"了，现在我写的是：\nlet method = ctx.get_request_method().await;\n\n就像给书包分层整理一样，框架把请求/响应的子字段都按规则重命名了。设置响应状态码从set_status_code变成set_response_status_code，虽然多了几个字母，但代码逻辑像流程图一样清晰，再也不用翻文档找方法层级了！\n最让我上瘾的是它的请求方法宏。写首页路由时，我试着用了#[methods(get, post)]组合标注，结果比用枚举值一个个声明简单太多。后来发现还能简写#[get]，瞬间觉得写路由像写 Markdown 一样轻松：\n#[get]\nasync fn ws_route(ctx: Context) {\n    let key = ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();\n    let body = ctx.get_request_body().await;\n    ctx.set_response_body(key).await.send_body().awai…",
+          "link": "https://dev.to/_95e41982c9ad08a13458d/wo-yong-hyperlanekai-fa-xiao-yuan-apide-na-xie-shi-er-ge-rustxin-shou-de-kuang-jia-ti-yan-4dh5",
+          "publishedOn": "2025-06-13T05:32:33.000Z",
+          "wordCount": 891,
+          "title": "我用Hyperlane开发校园API的那些事儿：一个Rust新手的框架体验",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffnco9jjcs4g2yrehiovs.png"
         },
         {
-          "id": "https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-27kp",
+          "id": "https://dev.to/_95e41982c9ad08a13458d/wo-yu-hyperlanekuang-jia-de-tan-suo-zhi-lu-cong-ru-men-dao-xing-neng-you-hua-3l55",
           "author": "Eastspire",
-          "description": "Hyperlane与微服务架构：校园应用的实战案例分析\n\n\n作为一名大三计算机系的学生，我在使用 Hyperlane 开发校园服务时，尝试了微服务架构的实践。这篇文章将分享我在这个过程中的经验和思考。\n// 用户服务\n#[get]\nasync fn user_service(ctx: Context) {\n    ctx.set_response_header(CONTENT_TYPE, APPLICATION_JSON)\n        .await\n        .set_response_body(\"{\\\"service\\\": \\\"user\\\"}\");\n}\n\n// 商品服务\n#[get]\nasync fn product_service(ctx: Context) {\n    ctx.set_response_header(CONTENT_TYPE, APPLICATION_JSON)\n        .await\n        .set_response_body(\"{\\\"service\\\": \\\"product\\\"}\");\n}\n\nasync fn register_service(service_name: &str, port: u16) {\n    let server = Server::new()\n        .host(\"0.0.0.0\")\n        .await\n        .port(port)\n        .await;\n\n    // 向服务注册中心注册\n    register_to_discovery(service_name, port).await;\n}\n\nasync fn call_service(ctx: Context) {\n    let service_url = discover_service(\"use…",
-          "link": "https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-27kp",
-          "publishedOn": "2025-06-13T04:42:32.000Z",
-          "wordCount": 1036,
-          "title": "Hyperlane与微服务架构：校园应用的实战案例分析",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjzg9dzeh0z6td5nxtmjx.png"
-        },
-        {
-          "id": "https://dev.to/nikhil_sachapara/-2i5m",
-          "author": "nikhil sachapara",
-          "description": "The Great Developer Productivity Myth: What IT Leaders Measure vs. What Actually Drives Results\nPratham naik for Teamcamp ・ Jun 13\n#webdev\n        #productivity\n        #devops\n        #opensource",
-          "link": "https://dev.to/nikhil_sachapara/-2i5m",
-          "publishedOn": "2025-06-13T04:42:31.000Z",
-          "wordCount": 726,
-          "title": "[Boost]",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbp3h070k9aboh5obc9s7.png"
+          "description": "作为一名大三计算机专业的学生，我在构建 Web 服务项目时接触到了 Hyperlane 框架。这个高性能的 Rust HTTP 框架彻底改变了我对 Web 开发的认知。下面是我学习并应用 Hyperlane 的真实经历。\n刚开始使用 Hyperlane 时，最让我惊喜的是它简洁的 Context 封装。以前在其它框架中需要冗长的调用：\nlet method = ctx.get_request().await.get_method();\n\n现在只需要一行代码就能搞定：\nlet method = ctx.get_request_method().await;\n\n这种设计让我的代码可读性大幅提升，特别是处理复杂业务逻辑时，不再需要嵌套多个方法调用。\n在实现 RESTful API 时，Hyperlane 的请求方法宏让路由定义变得异常简单：\n#[methods(get, post)]\nasync fn user_profile(ctx: Context) {\n    // 处理GET和POST请求\n    ctx.set_response_status_code(200).await;\n    ctx.set_response_body(\"用户个人资料\").await;\n}\n\n#[get]\nasync fn get_users(ctx: Context) {\n    // 仅处理GET请求\n    let users = fetch_all_users().await;\n    ctx.set_response_body(users).await;\n}\n\n这种声明式语法让我可以专注于业务逻辑而非 HTTP 细节。\n在开发过程中，我发现响应处理特别直观：\n// 设置响应状态\nctx.set_response_status_code(404).await;\n\n// 添加自定义响应头\n…",
+          "link": "https://dev.to/_95e41982c9ad08a13458d/wo-yu-hyperlanekuang-jia-de-tan-suo-zhi-lu-cong-ru-men-dao-xing-neng-you-hua-3l55",
+          "publishedOn": "2025-06-13T05:31:33.000Z",
+          "wordCount": 957,
+          "title": "我与Hyperlane框架的探索之旅：从入门到性能优化",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fd711mgehgwryhcfgd27y.png"
         }
       ]
     },
@@ -252,14 +252,34 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://www.nytimes.com/interactive/2025/06/12/books/kay-ryan-turtle-poem.html",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.nytimes.com/interactive/2025/06/12/books/kay-ryan-turtle-poem.html",
+          "publishedOn": "2025-06-13T05:12:36.000Z",
+          "wordCount": 5105,
+          "title": "Slow and Steady, This Poem Will Win Your Heart",
+          "imageUrl": "https://static01.nyt.com/images/2025/06/11/books/turtle-poem-illo/turtle-poem-illo-facebookJumbo.jpg"
+        },
+        {
           "id": "https://github.com/piyushgupta53/go-torrent-client",
           "author": null,
           "description": "Comments",
           "link": "https://github.com/piyushgupta53/go-torrent-client",
           "publishedOn": "2025-06-13T05:08:05.000Z",
-          "wordCount": 2027,
+          "wordCount": 2035,
           "title": "Show HN: I wrote a BitTorrent Client from scratch",
-          "imageUrl": "https://opengraph.githubassets.com/0e609ee8da059d421a758828157c92061030a603ab0d1686e1dacea3b6112716/piyushgupta53/go-torrent-client"
+          "imageUrl": "https://opengraph.githubassets.com/b6b1aa8e9f57399df6c0f9b17576bb56a67b0b8753c0b92ad3abd87e2ab0d9e6/piyushgupta53/go-torrent-client"
+        },
+        {
+          "id": "https://www.parseable.com/blog/zero-shot-forecasting",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.parseable.com/blog/zero-shot-forecasting",
+          "publishedOn": "2025-06-13T05:04:56.000Z",
+          "wordCount": 14630,
+          "title": "Zero shot forecasting: finding the right foundation model for O11Y forecasting",
+          "imageUrl": "https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/cLx-ilXp_pI/upload/dd1cd22d387ed4c8f4bd24cbb3a7613f.jpeg"
         },
         {
           "id": "https://osor.io/text",
@@ -287,7 +307,7 @@
           "description": "Comments",
           "link": "https://www.governance.fyi/p/adaptive-reuse-across-asia-singapores",
           "publishedOn": "2025-06-13T02:01:56.000Z",
-          "wordCount": 15240,
+          "wordCount": 15239,
           "title": "Urban Design and Adaptive Reuse in North Korea, Japan, and Singapore",
           "imageUrl": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4bddd6f6-d9bb-4b14-b3e8-cd7b198b4ef2_1575x1173.heic"
         },
@@ -372,16 +392,6 @@
           "imageUrl": "https://tailscale.com/api/og-image?id=2c6cdf4d-1171-40e1-8147-49a14b12d7c3"
         },
         {
-          "id": "https://www.axios.com/pro/climate-deals/2025/06/12/sorcerer-seed-weather-balloons",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.axios.com/pro/climate-deals/2025/06/12/sorcerer-seed-weather-balloons",
-          "publishedOn": "2025-06-12T16:46:24.000Z",
-          "wordCount": null,
-          "title": "Sorcerer (YC S24) raises $3.9M to launch more weather balloons",
-          "imageUrl": null
-        },
-        {
           "id": "https://buttondown.com/hillelwayne/archive/solving-linkedin-queens-with-smt/",
           "author": null,
           "description": "Comments",
@@ -409,7 +419,7 @@
           "publishedOn": "2025-06-12T15:04:59.000Z",
           "wordCount": 3045,
           "title": "iPhone 11 emulation done in QEMU",
-          "imageUrl": "https://opengraph.githubassets.com/81d835346c1ff0ad5f480e9851c4f2383983305d530e4012eacdd3f2c33b83fd/ChefKissInc/QEMUAppleSilicon"
+          "imageUrl": "https://opengraph.githubassets.com/96525116439fe454fc82f8f195a330b6c1e62ad36a00089b6ed6e5a7dab913a3/ChefKissInc/QEMUAppleSilicon"
         },
         {
           "id": "https://www.akpain.net/blog/inside-a-cd/",
@@ -422,16 +432,6 @@
           "imageUrl": "/assets/img/metaimg.png"
         },
         {
-          "id": "https://seed.bytedance.com/en/seedance",
-          "author": null,
-          "description": "Comments",
-          "link": "https://seed.bytedance.com/en/seedance",
-          "publishedOn": "2025-06-12T14:26:59.000Z",
-          "wordCount": 3118,
-          "title": "Seedance 1.0",
-          "imageUrl": null
-        },
-        {
           "id": "https://github.com/hunterirving/pico-crossing",
           "author": null,
           "description": "Comments",
@@ -439,7 +439,7 @@
           "publishedOn": "2025-06-12T13:37:06.000Z",
           "wordCount": 5236,
           "title": "Show HN: Tool-Assisted Speedrunning the Boring Parts of Animal Crossing (GCN)",
-          "imageUrl": "https://opengraph.githubassets.com/d06e95cb5ad82ef5ee41ff3a2f6c431b5865262c850b5f62e506b44aa4c22e03/hunterirving/pico-crossing"
+          "imageUrl": "https://opengraph.githubassets.com/1f6e9037b3c058f0c8015724902cdb0bf54532d6139107e1e1736aa49cf6af85/hunterirving/pico-crossing"
         },
         {
           "id": "https://github.com/firstrow/mcwig",
@@ -449,7 +449,7 @@
           "publishedOn": "2025-06-12T13:32:56.000Z",
           "wordCount": 1604,
           "title": "Show HN: McWig – A modal, Vim-like text editor written in Go",
-          "imageUrl": "https://opengraph.githubassets.com/7c343c6108d09a0f52e44a589dd89a54e7667c8f17c49bd85682ad3622846950/firstrow/mcwig"
+          "imageUrl": "https://opengraph.githubassets.com/d25e0b4d43559e293c435d95c445c64b9fd93658ae3793ada794785472f0dd7d/firstrow/mcwig"
         },
         {
           "id": "https://tritium.legal/preview",
@@ -477,7 +477,7 @@
           "description": "Comments",
           "link": "https://arxiv.org/abs/2504.06932",
           "publishedOn": "2025-06-12T09:43:47.000Z",
-          "wordCount": 795,
+          "wordCount": 763,
           "title": "Maximizing Battery Storage Profits via High-Frequency Intraday Trading",
           "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
         },
@@ -497,9 +497,9 @@
           "description": "Comments",
           "link": "https://github.com/resemble-ai/chatterbox",
           "publishedOn": "2025-06-11T20:23:52.000Z",
-          "wordCount": 3062,
+          "wordCount": 3050,
           "title": "Chatterbox TTS",
-          "imageUrl": "https://opengraph.githubassets.com/f5791b2f521e089558f15e7cddc9e1b1a23f7e9b264ffa1fe167e0cc0a5eeba5/resemble-ai/chatterbox"
+          "imageUrl": "https://opengraph.githubassets.com/5c08af8c568e1a4e89581da34e9304898f9c29a4c0b24403fbd39f26c6cc4abc/resemble-ai/chatterbox"
         },
         {
           "id": "https://github.com/Helion-Engine/Helion",
@@ -509,7 +509,7 @@
           "publishedOn": "2025-06-10T22:56:51.000Z",
           "wordCount": 1978,
           "title": "Helion: A modern fast paced Doom FPS engine in C#",
-          "imageUrl": "https://opengraph.githubassets.com/ace4eedafd86592bcb4bea1d231d0750bb274ac1f7ca6a0735fc10c8e51396e4/Helion-Engine/Helion"
+          "imageUrl": "https://opengraph.githubassets.com/a43708eae45ed8853b57d6ee5cb12a644ecbd52c96ab35e120befd5d1e4a4860/Helion-Engine/Helion"
         },
         {
           "id": "https://www.latent.space/p/o3-pro",
@@ -559,12 +559,22 @@
       "siteUrl": "https://www.lowyat.net/",
       "articles": [
         {
+          "id": "https://www.lowyat.net/?p=355780",
+          "author": "John Law",
+          "description": "Luno recently gained approval from the Securities Commission Malaysia (SC) to add two more altcoins, Hedera (HBAR) and The Graph (GRT), to its portfolio. That brings the total number of coins the cryptoexchange can service to 22 options. “We’re pleased to receive SC’s approval in listing HBAR and GRT to all Malaysians, with our customers […]\nThe post Luno Adds HBAR And GRT Coins To Its Portfolio appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2025/355780/luno-hbar-grt-approved/",
+          "publishedOn": "2025-06-13T05:41:05.000Z",
+          "wordCount": 9895,
+          "title": "Luno Adds HBAR And GRT Coins To Its Portfolio",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2022/09/luno-my-btc-link-uni-01.jpg"
+        },
+        {
           "id": "https://www.lowyat.net/?p=355772",
           "author": "Ian Chee",
           "description": "The last entry into the Razer Kishi line of mobile controllers was the Ultra, which was made large enough to take small tablets like the iPad mini in addition to the usual range of phones. But if that’s still not big enough – because you want to game on your 13-inch tablets, like the iPad […]\nThe post Razer Kishi Lineup Gets V3 Expansion; Prices Start From RM499 appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2025/355772/razer-kishi-lineup-v3-expansion-from-rm499/",
           "publishedOn": "2025-06-13T04:29:23.000Z",
-          "wordCount": 10249,
+          "wordCount": 10242,
           "title": "Razer Kishi Lineup Gets V3 Expansion; Prices Start From RM499",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/06/Razer-Kishi-V3-line.jpg"
         },
@@ -574,7 +584,7 @@
           "description": "Apple avoided mentioning the Siri AI upgrade at this year’s WWDC keynote despite heavily promoting the on-device assistant at last year’s event. Of course, this hardly comes as a surprise given the fact that the promised upgrades to the on-device assistant kept being delayed. At the moment, the company is looking to release these upgrades […]\nThe post Apple Might Ship Siri AI Upgrade With iOS 26.4 appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2025/355768/apple-might-ship-siri-ai-upgrade-with-ios-26-4/",
           "publishedOn": "2025-06-13T03:10:31.000Z",
-          "wordCount": 9934,
+          "wordCount": 9941,
           "title": "Apple Might Ship Siri AI Upgrade With iOS 26.4",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/06/Apple-Siri-iOS-WWDC-2025-1.jpg"
         },
@@ -584,7 +594,7 @@
           "description": "WhatsApp has many features that it tests before being rolled out to the general user base, and one of them that has been recently discovered is AI summaries for unread chat messages. WABetaInfo reports that it’s being gradually rolled out to beta testers, but as of now there’s no word on a general release yet. […]\nThe post WhatsApp Tests AI Summaries For Unread Chat Messages appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2025/355724/whatsapp-tests-ai-summaries-for-unread-chat-messages/",
           "publishedOn": "2025-06-13T02:00:15.000Z",
-          "wordCount": 9923,
+          "wordCount": 9916,
           "title": "WhatsApp Tests AI Summaries For Unread Chat Messages",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/06/WhatsApp-AI-chat-summaries.jpg"
         },
@@ -601,10 +611,10 @@
         {
           "id": "https://www.lowyat.net/?p=355749",
           "author": "Heirul Kamel",
-          "description": "While consumers in other Southeast Asian countries – including Singapore, Thailand, and the Philippines – eagerly anticipate the arrival of the Switch 2 on 26 June, those of us in Malaysia are still left in suspense. As we’ve reported previously, sources familiar with the matter have informed us that Nintendo’s next-gen handheld console is still […]\nThe post New Nintendo Products Spotted On SIRIM, But… appeared first on Lowyat.NET.",
+          "description": "[UPDATE: 13 June 2025 – 1:35pm] Good news. We’ve discovered that the Nintendo Switch 2’s left Joy-Con had just received its approval from SIRIM today. Unfortunately, the hero product itself is still nowhere to be seen, but seeing how things are progressing, it might just get its approval soon enough. [Original Story: 12 June 2025 […]\nThe post New Nintendo Products Spotted On SIRIM, But… appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2025/355749/new-nintendo-products-spotted-on-sirim/",
           "publishedOn": "2025-06-12T10:47:33.000Z",
-          "wordCount": 10051,
+          "wordCount": 10216,
           "title": "New Nintendo Products Spotted On SIRIM, But…",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/04/Nintendo-file-photo-2.jpg"
         },
@@ -614,7 +624,7 @@
           "description": "The Leapmotor C10, which was launched last October by Stellantis Malaysia, has now gained some updates for the 2025 model year. The major update is the price drop from RM159,000 to RM125,000, which is RM34,000 less. This price drop puts the SUV EV right in the lanes of BYD Atto 3 and Proton eMAS further […]\nThe post Leapmotor C10 Now Priced At RM125,000; Comes With Updated Features appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2025/355726/leapmotor-c10-update-gets-price-cut/",
           "publishedOn": "2025-06-12T10:24:33.000Z",
-          "wordCount": 10166,
+          "wordCount": 10173,
           "title": "Leapmotor C10 Now Priced At RM125,000; Comes With Updated Features",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2024/10/Leapmotor-C10.jpg"
         },
@@ -647,16 +657,6 @@
           "wordCount": 10098,
           "title": "Qualcomm Snapdragon 8 Elite 3 May Come In Two Variants",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2024/10/qualcomm-snapdragon-8-elite-launch_04.jpg"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=355719",
-          "author": "John Law",
-          "description": "Remember when EVGA decided to leave the GPU market in 2022? Beyond its once thriving GPU business, the company has since been forced to downsize itself by staff reductions, which has led to being large unable to provide support for other PC components and, in this case, to its Intel 600 Series motherboards. Recently, a […]\nThe post Redditor Fix NVIDIA RTX 50 Series Incompatibility Issue With EVGA Z690 Board By Taping Pins appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2025/355719/redditor-rtx-50-series-evga-z690-board/",
-          "publishedOn": "2025-06-12T08:19:22.000Z",
-          "wordCount": 10232,
-          "title": "Redditor Fix NVIDIA RTX 50 Series Incompatibility Issue With EVGA Z690 Board By Taping Pins",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2022/11/EVGA-RTX-4090-FTW3-JTC-Glamour-Shot-1.jpg"
         }
       ]
     },
@@ -1085,7 +1085,7 @@
           "description": "Al-Jazeera reports that explosions were heard in Tehran.",
           "link": "https://www.coindesk.com/markets/2025/06/12/btc-trading-under-104k-as-israel-appears-to-strike-iran",
           "publishedOn": "2025-06-13T00:33:34.000Z",
-          "wordCount": 7523,
+          "wordCount": 7527,
           "title": "Bitcoin Tumbles Below $104K as Israel Strikes Iran",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2ef935f31d0d24917c5f0b5bf97fe5a9e1f87925-1900x1268.jpg"
         },
@@ -1185,7 +1185,7 @@
           "description": "Network becomes second most popular L1 blockchain with 46 million monthly active users, yet price struggles amid inflation concerns.",
           "link": "https://www.coindesk.com/markets/2025/06/12/near-protocol-plunges-9-as-volatility-spikes-despite-user-growth",
           "publishedOn": "2025-06-12T15:03:36.000Z",
-          "wordCount": 8047,
+          "wordCount": 8025,
           "title": "NEAR Protocol Plunges 9% as Volatility Spikes Despite User Growth",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a800aef041ecbece6d2dba957aee367f0f91a345-700x430.png"
         },
@@ -1316,6 +1316,21 @@
       "feedUrl": "https://cointelegraph.com/rss",
       "siteUrl": "https://cointelegraph.com",
       "articles": [
+        {
+          "id": "https://cointelegraph.com/news/czech-government-no-confidence-vote-bitcoin-scandal",
+          "author": "Cointelegraph by Stephen Katte",
+          "description": "Czech Justice Minister Pavel Blazek resigned last month after the Justice Ministry auctioned off nearly 500 Bitcoin it received from a convicted online drug trafficker.",
+          "link": "https://cointelegraph.com/news/czech-government-no-confidence-vote-bitcoin-scandal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+          "publishedOn": "2025-06-13T05:17:22.000Z",
+          "wordCount": null,
+          "title": "Czech government hit with no-confidence vote over $45M Bitcoin scandal",
+          "enclosure": {
+            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3MDItZTAyNC03N2YyLThkNTItMTI3Y2RmODNiZTcx.jpg",
+            "length": "528",
+            "type": "image/jpg"
+          },
+          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3MDItZTAyNC03N2YyLThkNTItMTI3Y2RmODNiZTcx.jpg"
+        },
         {
           "id": "https://cointelegraph.com/news/sec-axes-biden-era-proposed-rules-on-crypto-in-flurry-of-repeals",
           "author": "Cointelegraph by Martin Young",
@@ -1750,21 +1765,6 @@
             "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy84NzllNGQ1OGEwZWYxZWMxMWQxYjAwMDNmZDgyNjU4NS5qcGc=.jpg"
-        },
-        {
-          "id": "https://cointelegraph.com/news/jack-ma-ant-group-stablecoin-license-for-singapore-hong-kong",
-          "author": "Cointelegraph by Zoltan Vardai",
-          "description": "Ant International plans to apply for stablecoin licenses in Hong Kong and Singapore, signaling growing fintech interest in regulated crypto payment systems, Bloomberg reported.",
-          "link": "https://cointelegraph.com/news/jack-ma-ant-group-stablecoin-license-for-singapore-hong-kong?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-          "publishedOn": "2025-06-12T09:21:39.000Z",
-          "wordCount": null,
-          "title": "Jack Ma’s Ant International eyes stablecoin licenses in Singapore, Hong Kong",
-          "enclosure": {
-            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NGE3OTQtNzc3Mi03YjVhLTg3NGUtYzE0OTQwNzZjMDM3.jpg",
-            "length": "528",
-            "type": "image/jpg"
-          },
-          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NGE3OTQtNzc3Mi03YjVhLTg3NGUtYzE0OTQwNzZjMDM3.jpg"
         }
       ]
     },
