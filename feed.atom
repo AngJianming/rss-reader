@@ -1,494 +1,316 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-06-13T18:19:33.323Z</id>
+    <id>urn:2025-06-13T18:50:57.655Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-06-13T18:19:33.323Z</updated>
+    <updated>2025-06-13T18:50:57.655Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Hyperlane：新一代高性能Rust框架的实战体验]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-13c3</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-13c3"/>
-        <updated>2025-06-13T18:09:51.000Z</updated>
-        <summary type="html"><![CDATA[Hyperlane：新一代高性能Rust框架的实战体验
+        <title type="html"><![CDATA[Content Moderation in Node.js: Building a Scalable Image Moderation Pipeline with MinIO, BullMQ, ClamAV, DeepStack & Hashing 🧬]]></title>
+        <id>https://dev.to/silentwatcher_95/content-moderation-in-nodejs-building-a-scalable-image-moderation-pipeline-with-minio-bullmq-f53</id>
+        <link href="https://dev.to/silentwatcher_95/content-moderation-in-nodejs-building-a-scalable-image-moderation-pipeline-with-minio-bullmq-f53"/>
+        <updated>2025-06-13T18:43:40.000Z</updated>
+        <summary type="html"><![CDATA[Content moderation is critical in user-generated platforms. Whether you're running a social app, marketplace, or community site, you need to filter out inappropriate, violent, or malicious media—without compromising on performance.
+In this guide, we’ll walk through how to build a scalable image moderation pipeline using:
+✅ Virus scanning with ClamAV
 
+🖼️ Multi-size conversion via Sharp
 
-作为一名大三计算机专业的学生，我在最近的课程项目中深入使用了 Hyperlane 框架。这个被称为"新一代轻量级高性能框架"的 Rust Web 框架确实给我留下了深刻印象。本文将从实战角度，分享我对 Hyperlane 的使用体验。
-在项目开始时，我对比了几个主流的 Web 框架：
+🧠 NSFW detection via Google Vision API or NudeNet
 
+🔐 Private file storage in MinIO
 
+📦 Asynchronous job handling with BullMQ
 
-框架
-依赖模型
-异步运行时
-中间件支持
-SSE/WebSocket
-路由匹配能力
-
-
-
-
-Hyperlane
-仅依赖 Tokio + 标准库
-Tokio
-✅ 支持请求/响应
-✅ 原生支持
-✅ 支持正则表达式
-
-
-Actix-Web
-较多内部抽象层
-Actix
-✅ 请求中间件
-部分支持(需插件)
-⚠️ 路径宏需显式配置
-
-
-Axum
-复杂的 Tower 架构
-Tokio
-✅ Tower 中间件
-✅ 需依赖扩展
-⚠️ 动态路由较弱
+🧬 Known-bad image matching via perceptual hashing
 
 
 
-最终选择 Hyperlane 的原因是：
-极简的依赖关系
-完整的异步支持
-原生的 WebSocket 集成
-灵活的路由系统
-server.enable_nodelay().await;
-server.disable_linger().await;
-server.http_line_buffer_size(4096).await;
-
-Hyperlane 默认启用了这些性能优化选项，这意味着它为高并发连接场景预设了合适的 TCP 和缓冲区参数。
-在实际项目中，我使用 wrk 进行了压力测试：
-wrk -c360 -d60s http://localhost:8000/
-
-测试结果令人惊喜：
-
-
-
-框架
-QPS
-内存占用
-
-
-
-
-Hyperlane
-324,323
-最低
-
-
-Rocket
-298,945
-中等
-
-
-Gin (Go)
-242,570
-较高
-
-
-
-server
-    .host("0.0.0.0").await
-    .port(60000).await
-    .route("/", root_route).await
-    .route("/goods/{id:\\d+}", goods_detail).await
-    .run().await
-    .unwrap();
-
-所有配置都采用异步链式调用模式，无需嵌套配置或宏组合。
-#[get]
-async fn ws_route(ctx: Context) {
-    let key = ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();
-    ctx.set_response_body(key)
-        .await
-        .send_body()
-        .await;
-}
-
-原生的 WebSocket 支持让实时消息推送变得简单。
-#[post]
-async fn sse_route(ctx: Context) {
-    ctx.set_response_header(CONTENT_TYPE, TEXT_EVENT_STREAM)
-        .await
-        .send()
-        .await;
-
-    for i in 0..10 {
-        ctx.set_response_body(format!("data:{}{}", i, HTTP_DOUBLE_BR))
-            .await
-            .send_body()
-            .await;
-    }
-}
-
-零平台依赖：纯 Rust 实现，跨平台一致性强
-极致性能优化：底层 I/O 使用 Tokio 的 TcpStream 和异步缓冲
-灵活的中间件机制：支持请求和响应中间件，生命周期划分清晰
-开箱即用的实时通信：原生支持 WebSocket 和 SSE
-v4.22.0 后，ctx.aborted() 可以中断请求
-v5.25.1 中的 ctx.closed() 可以主动关闭连接
-从简单路由开始：先熟悉基本的 GET/POST 路由
-理解 Context 抽象：这是框架的核心概念
-循序渐进学习中间件：先使用内置中间件，再尝试自定义
-关注性能优化选项：了解默认配置的作用
-探索在微服务架构中的应用
-研究与其他 Rust 生态系统的集成
-尝试贡献一些社区插件
-作为一个学生开发者，我认为 Hyperlane 是一个非常值得投入时间学习的框架。它不仅让我深入理解了 Web 开发的本质，还让我体会到了 Rust 在 Web 领域的强大潜力。如果你也在寻找一个性能强大且易于上手的 Rust Web 框架，Hyperlane 绝对值得一试！]]></summary>
+Let’s build it, step by step.
+Problem: Don’t immediately expose uploaded images to the public or other users. What if they’re dangerous or explicit?
+// Save original image temporarily before moderation
+await minio.putObject('qua…]]></summary>
         <author>
-            <name>Eastspire</name>
+            <name>Ali nazari</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Junior Year Self-Study Notes My Journey with the Hyperlane Framework]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-38hi</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-38hi"/>
-        <updated>2025-06-13T18:08:48.000Z</updated>
-        <summary type="html"><![CDATA[Day 1: First Encounter with Hyperlane
+        <title type="html"><![CDATA[Flappy Bird Game using Amazon Q CLI 🎮]]></title>
+        <id>https://dev.to/afnan_khan/flappy-bird-game-using-amazon-q-cli-25c2</id>
+        <link href="https://dev.to/afnan_khan/flappy-bird-game-using-amazon-q-cli-25c2"/>
+        <updated>2025-06-13T18:40:23.000Z</updated>
+        <summary type="html"><![CDATA[Hey there! 
+Amazon Q CLI. In this blog post, I'll walk you through everything you need to create your own version of the game, including setup, game mechanics, and running the project on Windows.
+Install Python(if you don’t have it already):
+python.org and make sure to check the box to add Python to your system’s PATH during installation.
+Install AWS CLI using pip:
+pip install awscli
 
+Configure AWS CLI with your credentials:
+aws configure
 
-I stumbled upon the Hyperlane Rust HTTP framework on GitHub and was immediately captivated by its performance metrics. The official documentation states:
-"Hyperlane is a high-performance and lightweight Rust HTTP framework designed to simplify the development of modern web services while balancing flexibility and performance."
-I decided to use it for my distributed systems course project. I started with the Cargo.toml file:
-[dependencies]
-hyperlane = "5.25.1"
+You’ll need to provide your AWS Access Key ID and Secret Access Key, which you can get from the AWS Console.
+Install Amazon Q CLI:
+pip install amazon-q-cli
 
-Today, I delved into the design of Hyperlane's Context. In traditional frameworks, you would retrieve the request method like this:
-let method = ctx.get_request().await.get_method();
+Verify the installation:
+q --version
 
-But Hyperlane offers a more elegant approach:
-let method = ctx.get_request_method().await;
+Start Amazon Q CLI by running:
+q chat
 
-My Understanding:
-T…]]></summary>
+In the chat, ask:
+Can you help me make a Flappy Bird game using Pygame?
+I wanted my Flappy Bird clone to have the following features:
+Menu State: A welcoming main menu where the player can start the game.
+Playing State: The player controls the bird’s jump.
+Result State: When the game ends, the player can restart.
+Let’s talk about how the game works under the hood:
+Bird Movement: The bird continuously falls due to gravity, but when the player presses Space, the bird jumps!
+Pipe Generation: Pipes randomly appear from the right side and move leftward at a constant speed.
+Collision Detection: The bird collides with pipes or the ceiling/floor, ending the game if either happens.
+Now, let’s get this game up and running. Here’s how you can set up the game on your own machine:
+Clone the Repository:
+git clone https://github.com/afnank070/flappy-bird-amazon-q-cli
+
+Navigate to the Project Folder:
+cd flappy-bird-python
+
+Install Pygame:
+pip install pygame
+
+Run the Game:
+flappy_bird.py
+
+Final Thoughts
+Building this game was an absolute blast! Amazon Q CLI really sped up the development process.
+If you're new to game development or want to make your own version of Flappy Bird, I highly recommend giving this a try.]]></summary>
         <author>
-            <name>Eastspire</name>
+            <name>Afnan Khan</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[SUI Drops 10% to $3.02, but Is a Turnaround Forming After Buyers Step In Near $3?]]></title>
-        <id>01445cbe-8f76-4b8a-ac8d-58b640fa7c49</id>
-        <link href="https://www.coindesk.com/markets/2025/06/13/sui-drops-10-to-usd3-02-but-is-a-turnaround-forming-after-buyers-step-in-near-usd3"/>
-        <updated>2025-06-13T18:05:54.000Z</updated>
-        <summary type="html"><![CDATA[SUI plunged nearly 13% before stabilizing above $3 as high-volume sell pressure gave way to cautious dip buying.]]></summary>
+        <title type="html"><![CDATA[Circle’s NYSE debut marks start of crypto IPO season: Are Kraken, Gemini and Bullish next?]]></title>
+        <id>https://cointelegraph.com/news/crypto-ipos-circle-gemini-kraken-wall-street-2025</id>
+        <link href="https://cointelegraph.com/news/crypto-ipos-circle-gemini-kraken-wall-street-2025?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-06-13T18:40:00.000Z</updated>
+        <summary type="html"><![CDATA[Crypto IPO season is underway. Circle’s explosive debut has fueled filings from Gemini and Bullish, with Kraken, BitGo, and Consensys potentially next.]]></summary>
         <author>
-            <name>CD Analytics</name>
+            <name>Cointelegraph by Marie Poteriaieva</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Convinced HP's Board to Buy Palm for $1.2B. I Watched Them Kill It in 49 Days]]></title>
-        <id>https://philmckinney.substack.com/p/i-convinced-hps-board-to-buy-palm</id>
-        <link href="https://philmckinney.substack.com/p/i-convinced-hps-board-to-buy-palm"/>
-        <updated>2025-06-13T18:03:30.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Saylor says Bitcoin could fix Apple’s stock buybacks: Finance Redefined]]></title>
-        <id>https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined</id>
-        <link href="https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-06-13T18:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Bitcoin exposure may provide more shareholder value to Apple investors, as the tech firm’s stock is struggling to reverse a downtrend.]]></summary>
-        <author>
-            <name>Cointelegraph by Zoltan Vardai</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Mastering the JavaScript Cache API: A Comprehensive Guide]]></title>
-        <id>https://dev.to/maximlogunov/mastering-the-javascript-cache-api-a-comprehensive-guide-d38</id>
-        <link href="https://dev.to/maximlogunov/mastering-the-javascript-cache-api-a-comprehensive-guide-d38"/>
-        <updated>2025-06-13T17:59:54.000Z</updated>
+        <title type="html"><![CDATA[How to Launch an EC2 Instance and Deploy a Custom NGINX Web Server on AWS Free Tier Using Git Bash]]></title>
+        <id>https://dev.to/peter_samuel_052b9056e236/how-to-launch-an-ec2-instance-and-deploy-a-custom-nginx-web-server-on-aws-free-tier-using-git-bash-4kj8</id>
+        <link href="https://dev.to/peter_samuel_052b9056e236/how-to-launch-an-ec2-instance-and-deploy-a-custom-nginx-web-server-on-aws-free-tier-using-git-bash-4kj8"/>
+        <updated>2025-06-13T18:39:44.000Z</updated>
         <summary type="html"><![CDATA[Introduction
+As part of this tutorial, I will also show detailed screenshots annotated using Screenpresso at each step to make the process clear and easy to follow.
+This guide is perfect for beginners using AWS Free Tier who want to deploy a simple web server manually.
+Prerequisites
+✅ A valid AWS Free Tier account.
+✅ Git Bash installed on your local machine (Windows).
+✅ Basic understanding of web servers and SSH.
+Step 1: Log In to the AWS Management Console
+First, we need to log in to our AWS account.
+Open your web browser and go to https://console.aws.amazon.com/.
+Enter your login credentials and sign in.
+Why this is important:The AWS Console is the web interface that allows you to manage all AWS services
 
 
-In today's web development landscape, performance is paramount. Users expect fast, responsive web applications that work reliably, even in poor network conditions. The JavaScript Cache API is a powerful tool that enables developers to store network requests and retrieve them efficiently, significantly improving the user experience. This article will explore the Cache API in depth, covering its fundamentals, practical implementations, and best practices.
-The Cache API is part of the Service Worker specification that provides a storage mechanism for Request/Response object pairs. Unlike other browser storage options (like localStorage or sessionStorage), the Cache API is specifically designed to handle HTTP responses, making it ideal for:
-Offline web applications
-Resource cach…]]></summary>
+Step 2: Launch a New EC2 Instance
+2.1 Go to the EC2 Dashboard
+In the AWS search ba…]]></summary>
         <author>
-            <name>Maxim Logunov</name>
+            <name>PETER Samuel</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Junior Year Self-Study Notes My Journey with the Hyperlane Framework]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-3d5h</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-3d5h"/>
-        <updated>2025-06-13T17:59:10.000Z</updated>
-        <summary type="html"><![CDATA[Day 1: First Encounter with Hyperlane
-
-
-I stumbled upon the Hyperlane Rust HTTP framework on GitHub and was immediately captivated by its performance metrics. The official documentation states:
-"Hyperlane is a high-performance and lightweight Rust HTTP framework designed to simplify the development of modern web services while balancing flexibility and performance."
-I decided to use it for my distributed systems course project. I started with the Cargo.toml file:
-[dependencies]
-hyperlane = "5.25.1"
-
-Today, I delved into the design of Hyperlane's Context. In traditional frameworks, you would retrieve the request method like this:
-let method = ctx.get_request().await.get_method();
-
-But Hyperlane offers a more elegant approach:
-let method = ctx.get_request_method().await;
-
-My Understanding:
-T…]]></summary>
+        <title type="html"><![CDATA[Day 0: From Tutorial Hell to Building Real Things]]></title>
+        <id>https://dev.to/somay_kaush_59976eb36c08b/day-0-from-tutorial-hell-to-building-real-things-hnk</id>
+        <link href="https://dev.to/somay_kaush_59976eb36c08b/day-0-from-tutorial-hell-to-building-real-things-hnk"/>
+        <updated>2025-06-13T18:38:24.000Z</updated>
+        <summary type="html"><![CDATA[Fellow developers, we need to talk about tutorial hell.
+Not the coding kind - the entrepreneurship kind.
+I've spent 3 months in startup tutorial hell. Every framework, every methodology, every 'proven system' for building a business. I could probably teach a course on startup theory at this point.
+But theory doesn't ship products. Theory doesn't get customers. Theory doesn't generate revenue.
+So today I'm switching from learning to building. One roadmap, one focus, public accountability.
+This isn't another 'follow my journey' post. This is documentation for my future self and anyone else stuck in the same cycle.
+The plan: build something, measure what matters, iterate based on real feedback from real users.
+Revolutionary, I know.
+First commit coming tomorrow. Time to write some code that actually solves a problem instead of just following along with tutorials.
+Who's with me?]]></summary>
         <author>
-            <name>Eastspire</name>
+            <name>SOMAY</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Hyperlane实时通信指南：WebSocket和SSE实战经验分享]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/hyperlaneshi-shi-tong-xin-zhi-nan-websockethe-sseshi-zhan-jing-yan-fen-xiang-4jji</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/hyperlaneshi-shi-tong-xin-zhi-nan-websockethe-sseshi-zhan-jing-yan-fen-xiang-4jji"/>
-        <updated>2025-06-13T17:50:39.000Z</updated>
-        <summary type="html"><![CDATA[Hyperlane实时通信指南：WebSocket和SSE实战经验分享
+        <title type="html"><![CDATA[Jakarta validation annotations on the wrong place]]></title>
+        <id>https://dev.to/kubenetic/jakarta-validation-annotations-on-the-wrong-place-4bjh</id>
+        <link href="https://dev.to/kubenetic/jakarta-validation-annotations-on-the-wrong-place-4bjh"/>
+        <updated>2025-06-13T18:37:48.000Z</updated>
+        <summary type="html"><![CDATA[During work on my current project I tried to find the optimal solution how to validate the arguments of some service level methods. I don't want to write every time an if clause for nullcheck or add additional validation logic, for example ensure a numeric value not to be less then 0. 
+I added jakarta.validation annotations as you can see below, but first on the implementations of the functions. During the build this error was thrown:
+HV000151: A method overriding another method must not redefine the parameter constraint configuration ...
 
-
-作为一名大三计算机系的学生，我在使用 Hyperlane 开发校园实时聊天系统时，深入体验了它的 WebSocket 和 SSE 功能。这篇文章将分享我的实战经验。
-#[get]
-async fn ws_route(ctx: Context) {
-    let key = ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();
-    let body = ctx.get_request_body().await;
-
-    ctx.set_response_header("Connection", "Upgrade")
-        .await
-        .set_response_header("Upgrade", "websocket")
-        .await
-        .set_response_body(key)
-        .await
-        .send_body()
-        .await;
-}
-
-async fn handle_ws_message(ctx: Context) {
-    let message = ctx.get_ws_message().await;
-    match message {
-        WSMessage::Text(text) => {
-            // 处理文本消息
-            ctx.send_ws_text(format!("收到消息: {}", text)).await;
-        }
-        WSMessage::Binary(data) => {
-            // 处理二进制消…]]></summary>
+This occurs when you define validation annotations on a method parameter that overrides a method from an interface or superclass that already has validation constraints. Jakarta Bean Validation enforces constraints defined by interfaces or base classes a…]]></summary>
         <author>
-            <name>Eastspire</name>
+            <name>Miklos Halasz</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What really stood out was the idea that structure is the solution, not more apps or tools. That’s a shift in thinking for me.]]></title>
-        <id>https://dev.to/theangeloreyes/what-really-stood-out-was-the-idea-that-structure-is-the-solution-not-more-apps-or-tools-thats-a-5hh3</id>
-        <link href="https://dev.to/theangeloreyes/what-really-stood-out-was-the-idea-that-structure-is-the-solution-not-more-apps-or-tools-thats-a-5hh3"/>
-        <updated>2025-06-13T17:49:48.000Z</updated>
-        <summary type="html"><![CDATA[Remote Work Isn't Freedom Without Structure: What TDZ PRO Knows That Most Don't
-Anthony James ・ Jun 10
-#remotework
-        #productivity
-        #entrepreneurship
-        #mindset]]></summary>
+        <title type="html"><![CDATA[Building a Custom NGINX Module with Ansible: A Dev-Friendly Guide]]></title>
+        <id>https://dev.to/lovestaco/building-a-custom-nginx-module-with-ansible-a-dev-friendly-guide-4jo6</id>
+        <link href="https://dev.to/lovestaco/building-a-custom-nginx-module-with-ansible-a-dev-friendly-guide-4jo6"/>
+        <updated>2025-06-13T18:36:52.000Z</updated>
+        <summary type="html"><![CDATA[Hi there! I'm Maneshwar. Right now, I’m building LiveAPI, a first-of-its-kind tool that helps you automatically index API endpoints across all your repositories. LiveAPI makes it easier to discover, understand, and interact with APIs in large infrastructures.
+NGINX is a powerful and versatile web server, and its extensibility through modules is one of its greatest strengths. 
+Sometimes, however, you need functionality that isn't available out-of-the-box or as a pre-compiled dynamic module. 
+This is where custom NGINX modules come in.
+In this blog post, we'll walk through a real-world scenario: building NGINX with the ngx_http_consul_backend_module and the ngx_devel_kit (NDK) module. 
+We'll leverage Ansible to automate the entire process, making it repeatable, reliable, and dev-friendly.
+Ma…]]></summary>
         <author>
-            <name>Angelo Reyes</name>
+            <name>Athreya aka Maneshwar</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[新一代 Rust Web 框架的高性能之选]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/xin-dai-rust-web-kuang-jia-de-gao-xing-neng-zhi-xuan-15oe</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/xin-dai-rust-web-kuang-jia-de-gao-xing-neng-zhi-xuan-15oe"/>
-        <updated>2025-06-13T17:49:35.000Z</updated>
-        <summary type="html"><![CDATA[在当前的 Rust Web 框架生态中，Hyperlane 正逐步展现出其作为“新一代轻量级高性能框架”的强大竞争力。本文将通过与主流框架（如 Actix-Web、Axum）对比，全面剖析 Hyperlane 的优势，特别是在性能、特性集成、开发体验和底层架构方面的领先之处。
+        <title type="html"><![CDATA[10 Real-World DevOps Team Lead Scenarios and How to Master Them]]></title>
+        <id>https://dev.to/kubenetic/10-real-world-devops-team-lead-scenarios-and-how-to-master-them-5dn9</id>
+        <link href="https://dev.to/kubenetic/10-real-world-devops-team-lead-scenarios-and-how-to-master-them-5dn9"/>
+        <updated>2025-06-13T18:32:38.000Z</updated>
+        <summary type="html"><![CDATA[As part of my journey into leadership in the DevOps space, I recently walked through ten common but complex scenarios that a DevOps Team Lead might face.
+Note: These scenarios were generated by ChatGPT at my request as part of preparing for a DevOps Team Lead interview. The answers and strategies are entirely my own, reflecting how I would handle each situation.
+Challenge: Two junior engineers were constantly blocking senior engineers with minor requests.
+Approach: I initiated 1:1s to understand their blockers and assess if the tasks assigned to them matched their current skill level. I discovered they often lacked confidence or context. To balance support and senior focus time, I introduced scheduled daily sync slots for juniors to raise their questions in batches. I also encouraged them …]]></summary>
+        <author>
+            <name>Miklos Halasz</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Crypto Biz: Meta’s AI bet, Fortune 500’s stablecoin push]]></title>
+        <id>https://cointelegraph.com/news/stablecoins-meta-ai-scale-ripple-crypto-biz</id>
+        <link href="https://cointelegraph.com/news/stablecoins-meta-ai-scale-ripple-crypto-biz?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-06-13T18:31:04.000Z</updated>
+        <summary type="html"><![CDATA[Mark Zuckerberg bets $15 billion on an AI company as stablecoins win over Fortune 500 companies.]]></summary>
+        <author>
+            <name>Cointelegraph by Sam Bourgi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Apache Kafka and Spring Boot: A Simple Example]]></title>
+        <id>https://dev.to/nanditha_vuppunuthula_d09/apache-kafka-and-spring-boot-a-simple-example-5e05</id>
+        <link href="https://dev.to/nanditha_vuppunuthula_d09/apache-kafka-and-spring-boot-a-simple-example-5e05"/>
+        <updated>2025-06-13T18:29:47.000Z</updated>
+        <summary type="html"><![CDATA[Part 1: Install and Run Kafka on Windows
+Java 8+
+Kafka 3.x (includes Zookeeper)
+A terminal like Command Prompt, Git Bash, or PowerShell
+Go to: https://kafka.apache.org/downloads
+Choose a binary (e.g., Kafka 3.6.0 with Scala 2.13)
+Extract it to C:\kafka
+Kafka uses Zookeeper for managing brokers. In a terminal:
+cd C:\kafka
+
+Keep this terminal open.
+Open a new terminal:
+cd C:\kafka
+
+Kafka is now running on localhost:9092.
+bin\windows\kafka-topics.bat --create --topic test-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+You can use Spring Initializr with the following settings:
+Dependencies: Spring Web, Spring for Apache Kafka
+Name: kafka-demo
+Package: com.example.kafkademo
+src/
+spring:
 
 
 
-框架
-依赖模型
-异步运行时
-中间件支持
+  
+  …]]></summary>
+        <author>
+            <name>Nanditha Vuppunuthula</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🚀 Lovable vs. Cursor vs. Windsurf: Choosing the Right AI Development Tool for Your Needs]]></title>
+        <id>https://dev.to/icornea/lovable-vs-cursor-vs-windsurf-choosing-the-right-ai-development-tool-for-your-needs-1jmm</id>
+        <link href="https://dev.to/icornea/lovable-vs-cursor-vs-windsurf-choosing-the-right-ai-development-tool-for-your-needs-1jmm"/>
+        <updated>2025-06-13T18:18:55.000Z</updated>
+        <summary type="html"><![CDATA[🧱INTRODUCTION
+
+
+In today’s fast-evolving tech world, AI coding assistants have become essential tools for developers aiming to speed up their workflow, reduce repetitive tasks, and build smarter, faster. In this article, we’ll break down three popular AI tools Cursor, Windsurf, and Loveable to help you make an informed choice.
+Whether you're a freelancer, part of a startup team, coding in a corporate environment, or even an entrepreneur who wants to build a product, this honest comparison will clarify which AI companion best fits your workflow and goals.
+Cursor is an AI-powered code editor built on VS Code. It integrates deeply with GitHub Copilot X and offers features like local agents, natural language chat, and smart code suggestions. It feels familiar to existing VS Code users, with a…]]></summary>
+        <author>
+            <name>Ionut Cornea</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The New Generation of High-Performance Rust Web Frameworks]]></title>
+        <id>https://dev.to/_95e41982c9ad08a13458d/the-new-generation-of-high-performance-rust-web-frameworks-3de6</id>
+        <link href="https://dev.to/_95e41982c9ad08a13458d/the-new-generation-of-high-performance-rust-web-frameworks-3de6"/>
+        <updated>2025-06-13T18:18:23.000Z</updated>
+        <summary type="html"><![CDATA[In the current ecosystem of Rust Web frameworks, Hyperlane is increasingly demonstrating its strong competitiveness as a "new generation of lightweight and high-performance frameworks." This article will comprehensively analyze the advantages of Hyperlane by comparing it with mainstream frameworks such as Actix-Web and Axum, especially in terms of performance, feature integration, development experience, and underlying architecture.
+
+
+
+Framework
+Dependency Model
+Async Runtime
+Middleware Support
 SSE/WebSocket
-路由匹配能力
+Routing Matching Capability
 
 
 
 
 Hyperlane
-仅依赖 Tokio + 标准库
+Only depends on Tokio + Standard Library
 Tokio
-✅ 支持请求/响应
-✅ 原生支持
-✅ 支持正则表达式
+✅ Supports request/response
+✅ Native support
+✅ Supports regular expressions
 
 
 Actix-Web
-大量内部抽象层
+Many internal abstraction layers
 Actix
-✅ 请求中间件
-部分支持（需插件）
-⚠️ 路径宏需显式配置
-
-
-Axum
-Tower 架构复杂
-Tokio
-✅ Tower 中间件
-✅ 需依赖层扩展
-⚠️ 动态路由较弱
-
-
-
-零平台依赖：纯 Rust 实现，跨平台一致性强，无需额外 C 库绑定。
-极致性能优化：底层 I/O 使用 Tokio 的 TcpStream 和异步缓冲处理，自动开启 TCP_NODELAY，默认关闭 SO_LINGER，适合高频请求环境。
-中间件机制灵活：支持 request_middleware 与 response_middleware 明确划分，便于请求生命周期控制。
-实时通信开箱即用：原生支持 WebSocket 与 SSE，无需第三方插件扩展。
-下面我们将拆解一个完整 Hyperlane 服务示例，说明其设计理念与开发者友好性。
-async fn request_middleware(ctx: Context) {
-    let socket_addr = ctx.get_socket_addr_or_default_string().await;
-    ctx.set_response_header(SERVER, HYPERLANE)
-      …]]></summary>
+✅ Request middleware
+Partial support (requires plugins)
+⚠️ Path macros…]]></summary>
         <author>
             <name>Eastspire</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Weekly Recap: Milestones Galore for Stablecoins]]></title>
-        <id>c16822b7-82a2-449f-bbc9-9f488bfce38f</id>
-        <link href="https://www.coindesk.com/news-analysis/2025/06/13/weekly-recap-milestones-galore-for-stablecoins"/>
-        <updated>2025-06-13T17:49:08.000Z</updated>
-        <summary type="html"><![CDATA[Walmart and Amazon are both considering issuing stablecoins, potentially revolutionizing payments.]]></summary>
+        <title type="html"><![CDATA[Regular Expression or Regex-NLP]]></title>
+        <id>https://dev.to/datatoinfinity/regular-expression-or-regex-nlp-nd4</id>
+        <link href="https://dev.to/datatoinfinity/regular-expression-or-regex-nlp-nd4"/>
+        <updated>2025-06-13T18:17:27.000Z</updated>
+        <summary type="html"><![CDATA[Regular Expression or Regex is basically a tool which we use to find pattern or find word, character or sentence in sequence of character. Here is the analogy:
+You have been an overflowing inbox of emails and you want specific email to show up your criteria for it is:
+Find all emails with meeting.
+Find all emails with dollar amount.
+Spot all the emails which contains word like URGENT and IMPORTANT.
+Now you can't open email one by one because it will take forever. So you decided setup a Smart Filter using rules like:
+If emails contains '$' sign then it must be finance show me.
+If emails have date or word like meeting show me.
+If subject contains ‘URGENT’ followed by ! marks, show me.
+It acts like a smart filter for text — scanning through messy, unstructured language and pulling out what you’re interested in, based on patterns.
+In coming lecture I will be explaining about regex.]]></summary>
         <author>
-            <name>Benjamin Schiller</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[深入理解Hyperlane的中间件系统：一个大三学生的实践笔记]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/shen-ru-li-jie-hyperlanede-zhong-jian-jian-xi-tong-ge-da-san-xue-sheng-de-shi-jian-bi-ji-nph</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/shen-ru-li-jie-hyperlanede-zhong-jian-jian-xi-tong-ge-da-san-xue-sheng-de-shi-jian-bi-ji-nph"/>
-        <updated>2025-06-13T17:48:28.000Z</updated>
-        <summary type="html"><![CDATA[深入理解Hyperlane的中间件系统：一个大三学生的实践笔记
-
-
-作为一名大三计算机专业的学生，我在使用 Hyperlane 框架开发校园项目的过程中，对其中间件系统有了深入的理解。今天，我想分享一下我在实践中的心得体会。
-graph TD
-    A[客户端请求] --> B[认证中间件]
-    B --> C[日志中间件]
-    C --> D[控制器]
-
-Hyperlane 的中间件采用洋葱模型，请求从外层向内层传递，这种设计让请求处理流程清晰可控。
-async fn request_middleware(ctx: Context) {
-    let socket_addr = ctx.get_socket_addr_or_default_string().await;
-    ctx.set_response_header(SERVER, HYPERLANE)
-        .await
-        .set_response_header("SocketAddr", socket_addr)
-        .await;
-}
-
-相比其他框架需要通过 trait 或层注册中间件，Hyperlane 直接使用异步函数注册，更加直观。
-async fn auth_middleware(ctx: Context) {
-    let token = ctx.get_request_header("Authorization").await;
-    match token {
-        Some(token) => {
-            // 验证逻辑
-            ctx.set_request_data("user_id", "123").await;
-        }
-        None => {
-           …]]></summary>
-        <author>
-            <name>Eastspire</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hyperlane性能优化实战：从理论到实践的深度探索]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-230a</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-230a"/>
-        <updated>2025-06-13T17:47:23.000Z</updated>
-        <summary type="html"><![CDATA[Hyperlane性能优化实战：从理论到实践的深度探索
-
-
-作为一名大三计算机系的学生，我在使用 Hyperlane 开发高并发校园服务时，积累了不少性能优化的经验。这篇文章将从实战角度分享我的优化心得。
-server
-    .enable_nodelay().await
-    .disable_linger().await
-    .http_line_buffer_size(4096).await
-    .run().await;
-
-wrk -c360 -d60s http://localhost:8000/
-
-
-
-
-框架
-QPS
-延迟
-内存占用
-
-
-
-
-Tokio
-340,130
-1.2ms
-基准线
-
-
-Hyperlane
-324,323
-1.5ms
-+5%
-
-
-Rocket
-298,945
-1.8ms
-+15%
-
-
-Gin (Go)
-242,570
-2.1ms
-+25%
-
-
-
-async fn optimize_connection_pool() {
-    let pool = Pool::builder()
-        .max_size(100)
-        .min_idle(Some(10))
-        .build()
-        .await;
-
-    // 使用连接池
-    let conn = pool.get().await?;
-}
-
-async fn reuse_buffers(ctx: Context) {
-    let buffer = get_buffer_from_pool().await;
-    ctx.set_response_body(buffer)
-        .await
-        .send_body()
-        .await;
-    return_buffer_to_po…]]></summary>
-        <author>
-            <name>Eastspire</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Solana's SOL Falls 8% to $147 Despite Standard Chartered’s $275 Year-End Target]]></title>
-        <id>cc9710c7-c958-4e14-b7e6-98ad5d827709</id>
-        <link href="https://www.coindesk.com/markets/2025/06/13/solana-s-sol-falls-8-to-usd147-despite-standard-chartered-s-usd275-year-end-target"/>
-        <updated>2025-06-13T17:46:52.000Z</updated>
-        <summary type="html"><![CDATA[Solana’s SOL sharp pullback contrasts with Standard Chartered’s late-May forecast calling for nearly 90% upside by the end of the year.]]></summary>
-        <author>
-            <name>Siamak Masnavi</name>
+            <name>datatoinfinity</name>
         </author>
     </entry>
     <entry>
         <title type="html"><![CDATA[Hyperlane与微服务架构：校园应用的实战案例分析]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-3pa0</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-3pa0"/>
-        <updated>2025-06-13T17:46:15.000Z</updated>
+        <id>https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-1jcg</id>
+        <link href="https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-1jcg"/>
+        <updated>2025-06-13T18:17:19.000Z</updated>
         <summary type="html"><![CDATA[Hyperlane与微服务架构：校园应用的实战案例分析
 
 
@@ -527,157 +349,63 @@ async fn call_service(ctx: Context) {
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Top Apple Device Management Software for 2025 | Easy & Secure]]></title>
-        <id>https://dev.to/vantagemdm/top-apple-device-management-software-for-2025-easy-secure-n4n</id>
-        <link href="https://dev.to/vantagemdm/top-apple-device-management-software-for-2025-easy-secure-n4n"/>
-        <updated>2025-06-13T17:46:04.000Z</updated>
-        <summary type="html"><![CDATA[Apple device management software is critical for ensuring seamless operation, robust security, and efficient IT workflows. In 2025, several solutions stand out for their features, ease of use, and adaptability to different organizational needs. Let’s dive into the top options and why they are must-haves for any Apple-heavy environment.
-Apple products are synonymous with reliability, innovation, and user satisfaction. With increasing adoption in corporate and educational settings, managing these devices effectively ensures that operations stay smooth and secure.
-Security Risks: With great technology comes great responsibility. Safeguarding sensitive data on Apple devices is a priority.
-Compatibility: Seamlessly integrating Apple devices with existing infrastructure is often complex.
-Device …]]></summary>
+        <title type="html"><![CDATA[SUI Drops 10% to $3.02, but Is a Turnaround Forming After Buyers Step In Near $3?]]></title>
+        <id>01445cbe-8f76-4b8a-ac8d-58b640fa7c49</id>
+        <link href="https://www.coindesk.com/markets/2025/06/13/sui-drops-10-to-usd3-02-but-is-a-turnaround-forming-after-buyers-step-in-near-usd3"/>
+        <updated>2025-06-13T18:05:54.000Z</updated>
+        <summary type="html"><![CDATA[SUI plunged nearly 13% before stabilizing above $3 as high-volume sell pressure gave way to cautious dip buying.]]></summary>
         <author>
-            <name>vantage mdm</name>
+            <name>CD Analytics</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Hyperlane：新一代高性能Rust框架的实战体验]]></title>
-        <id>https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-3mci</id>
-        <link href="https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-3mci"/>
-        <updated>2025-06-13T17:45:08.000Z</updated>
-        <summary type="html"><![CDATA[Hyperlane：新一代高性能Rust框架的实战体验
-
-
-作为一名大三计算机专业的学生，我在最近的课程项目中深入使用了 Hyperlane 框架。这个被称为"新一代轻量级高性能框架"的 Rust Web 框架确实给我留下了深刻印象。本文将从实战角度，分享我对 Hyperlane 的使用体验。
-在项目开始时，我对比了几个主流的 Web 框架：
-
-
-
-框架
-依赖模型
-异步运行时
-中间件支持
-SSE/WebSocket
-路由匹配能力
-
-
-
-
-Hyperlane
-仅依赖 Tokio + 标准库
-Tokio
-✅ 支持请求/响应
-✅ 原生支持
-✅ 支持正则表达式
-
-
-Actix-Web
-较多内部抽象层
-Actix
-✅ 请求中间件
-部分支持(需插件)
-⚠️ 路径宏需显式配置
-
-
-Axum
-复杂的 Tower 架构
-Tokio
-✅ Tower 中间件
-✅ 需依赖扩展
-⚠️ 动态路由较弱
-
-
-
-最终选择 Hyperlane 的原因是：
-极简的依赖关系
-完整的异步支持
-原生的 WebSocket 集成
-灵活的路由系统
-server.enable_nodelay().await;
-server.disable_linger().await;
-server.http_line_buffer_size(4096).await;
-
-Hyperlane 默认启用了这些性能优化选项，这意味着它为高并发连接场景预设了合适的 TCP 和缓冲区参数。
-在实际项目中，我使用 wrk 进行了压力测试：
-wrk -c360 -d60s http://localhost:8000/
-
-测试结果令人惊喜：
-
-
-
-框架
-QPS
-内存占用
-
-
-
-
-Hyperlane
-324,323
-最低
-
-
-Rocket
-298,945
-中等
-
-
-Gin (Go)
-242,570
-较高
-
-
-
-server
-    .host("0.0.0.0").await
-    .port(60000).await
-    .route("/", root_route).await
-    .route("/goods/{id:\\d+}", goods_detail).await
-    .run().await
-    .unwrap();
-
-所有配置都采用异步链式调用模式，无需嵌套配置或宏组合。
-#[get]
-async fn ws_route(ctx: Context) {
-    let key = ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();
-    ctx.set_response_body(key)
-        .await
-        .send_body()
-        .await;
-}
-
-原生的 WebSocket 支持让实时消息推送变得简单。
-#[post]
-async fn sse_route(ctx: Context) {
-    ctx.set_response_header(CONTENT_TYPE, TEXT_EVENT_STREAM)
-        .await
-        .send()
-        .await;
-
-    for i in 0..10 {
-        ctx.set_response_body(format!("data:{}{}", i, HTTP_DOUBLE_BR))
-            .await
-            .send_body()
-            .await;
-    }
-}
-
-零平台依赖：纯 Rust 实现，跨平台一致性强
-极致性能优化：底层 I/O 使用 Tokio 的 TcpStream 和异步缓冲
-灵活的中间件机制：支持请求和响应中间件，生命周期划分清晰
-开箱即用的实时通信：原生支持 WebSocket 和 SSE
-v4.22.0 后，ctx.aborted() 可以中断请求
-v5.25.1 中的 ctx.closed() 可以主动关闭连接
-从简单路由开始：先熟悉基本的 GET/POST 路由
-理解 Context 抽象：这是框架的核心概念
-循序渐进学习中间件：先使用内置中间件，再尝试自定义
-关注性能优化选项：了解默认配置的作用
-探索在微服务架构中的应用
-研究与其他 Rust 生态系统的集成
-尝试贡献一些社区插件
-作为一个学生开发者，我认为 Hyperlane 是一个非常值得投入时间学习的框架。它不仅让我深入理解了 Web 开发的本质，还让我体会到了 Rust 在 Web 领域的强大潜力。如果你也在寻找一个性能强大且易于上手的 Rust Web 框架，Hyperlane 绝对值得一试！]]></summary>
+        <title type="html"><![CDATA[The fastest way to detect a vowel in a string]]></title>
+        <id>https://austinhenley.com/blog/vowels.html</id>
+        <link href="https://austinhenley.com/blog/vowels.html"/>
+        <updated>2025-06-13T18:04:07.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Eastspire</name>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Convinced HP's Board to Buy Palm for $1.2B. I Watched Them Kill It in 49 Days]]></title>
+        <id>https://philmckinney.substack.com/p/i-convinced-hps-board-to-buy-palm</id>
+        <link href="https://philmckinney.substack.com/p/i-convinced-hps-board-to-buy-palm"/>
+        <updated>2025-06-13T18:03:30.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Saylor says Bitcoin could fix Apple’s stock buybacks: Finance Redefined]]></title>
+        <id>https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined</id>
+        <link href="https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-06-13T18:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bitcoin exposure may provide more shareholder value to Apple investors, as the tech firm’s stock is struggling to reverse a downtrend.]]></summary>
+        <author>
+            <name>Cointelegraph by Zoltan Vardai</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Weekly Recap: Milestones Galore for Stablecoins]]></title>
+        <id>c16822b7-82a2-449f-bbc9-9f488bfce38f</id>
+        <link href="https://www.coindesk.com/news-analysis/2025/06/13/weekly-recap-milestones-galore-for-stablecoins"/>
+        <updated>2025-06-13T17:49:08.000Z</updated>
+        <summary type="html"><![CDATA[Walmart and Amazon are both considering issuing stablecoins, potentially revolutionizing payments.]]></summary>
+        <author>
+            <name>Benjamin Schiller</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Solana's SOL Falls 8% to $147 Despite Standard Chartered’s $275 Year-End Target]]></title>
+        <id>cc9710c7-c958-4e14-b7e6-98ad5d827709</id>
+        <link href="https://www.coindesk.com/markets/2025/06/13/solana-s-sol-falls-8-to-usd147-despite-standard-chartered-s-usd275-year-end-target"/>
+        <updated>2025-06-13T17:46:52.000Z</updated>
+        <summary type="html"><![CDATA[Solana’s SOL sharp pullback contrasts with Standard Chartered’s late-May forecast calling for nearly 90% upside by the end of the year.]]></summary>
+        <author>
+            <name>Siamak Masnavi</name>
         </author>
     </entry>
     <entry>
@@ -1490,30 +1218,10 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Czech government hit with no-confidence vote over $45M Bitcoin scandal]]></title>
-        <id>https://cointelegraph.com/news/czech-government-no-confidence-vote-bitcoin-scandal</id>
-        <link href="https://cointelegraph.com/news/czech-government-no-confidence-vote-bitcoin-scandal?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-06-13T05:17:22.000Z</updated>
-        <summary type="html"><![CDATA[Czech Justice Minister Pavel Blazek resigned last month after the Justice Ministry auctioned off nearly 500 Bitcoin it received from a convicted online drug trafficker.]]></summary>
-        <author>
-            <name>Cointelegraph by Stephen Katte</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Slow and steady, this poem will win your heart]]></title>
         <id>https://www.nytimes.com/interactive/2025/06/12/books/kay-ryan-turtle-poem.html</id>
         <link href="https://www.nytimes.com/interactive/2025/06/12/books/kay-ryan-turtle-poem.html"/>
         <updated>2025-06-13T05:12:36.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: I wrote a BitTorrent Client from scratch]]></title>
-        <id>https://github.com/piyushgupta53/go-torrent-client</id>
-        <link href="https://github.com/piyushgupta53/go-torrent-client"/>
-        <updated>2025-06-13T05:08:05.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1527,16 +1235,6 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[SEC axes Biden-era proposed crypto rules in flurry of repeals]]></title>
-        <id>https://cointelegraph.com/news/sec-axes-biden-era-proposed-rules-on-crypto-in-flurry-of-repeals</id>
-        <link href="https://cointelegraph.com/news/sec-axes-biden-era-proposed-rules-on-crypto-in-flurry-of-repeals?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-06-13T04:53:33.000Z</updated>
-        <summary type="html"><![CDATA[The SEC has withdrawn over a dozen rules the agency proposed under Joe Biden, including two crypto-related rules targeting DeFi and digital asset custody.]]></summary>
-        <author>
-            <name>Cointelegraph by Martin Young</name>
         </author>
     </entry>
     <entry>
@@ -1587,16 +1285,6 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
         <summary type="html"><![CDATA[Many AI developers started their morning amid a Google Cloud outage affecting many of the tools they use to build products.]]></summary>
         <author>
             <name>Emilia David</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Worldwide power grid with glass insulated HVDC cables]]></title>
-        <id>https://omattos.com/2025/06/12/glass-hvdc-cables.html</id>
-        <link href="https://omattos.com/2025/06/12/glass-hvdc-cables.html"/>
-        <updated>2025-06-12T20:04:09.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1877,6 +1565,16 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
         <summary type="html"><![CDATA[OpenAI released the latest in its o-series of reasoning model that promises more reliable and accurate responses for enterprises.]]></summary>
         <author>
             <name>Emilia David</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High-speed fluorescence light field tomography of whole freely moving organisms]]></title>
+        <id>https://opg.optica.org/optica/fulltext.cfm?uri=optica-12-5-674&amp;id=570897</id>
+        <link href="https://opg.optica.org/optica/fulltext.cfm?uri=optica-12-5-674&amp;id=570897"/>
+        <updated>2025-06-10T21:43:33.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>

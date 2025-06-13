@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-06-13 datetime="2025-06-13T18:09:51.000Z">2025-06-13</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-06-13 datetime="2025-06-13T18:09:51.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-06-13 datetime="2025-06-13T18:43:40.000Z">2025-06-13</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-06-13 datetime="2025-06-13T18:43:40.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -42,146 +42,35 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-13c3"
+                        data-accordion-key="https://dev.to/silentwatcher_95/content-moderation-in-nodejs-building-a-scalable-image-moderation-pipeline-with-minio-bullmq-f53"
                         open
                       >
-                        <summary class="article-expander__title">Hyperlane：新一代高性能Rust框架的实战体验</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-13c3">
+                        <summary class="article-expander__title">Content Moderation in Node.js: Building a Scalable Image Moderation Pipeline with MinIO, BullMQ, ClamAV, DeepStack &amp; Hashing 🧬</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/silentwatcher_95/content-moderation-in-nodejs-building-a-scalable-image-moderation-pipeline-with-minio-bullmq-f53">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2bpjtf3mqxw4k248xgn8.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fnw8g51uon75geepwukwg.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Hyperlane：新一代高性能Rust框架的实战体验
+                              <span>Content moderation is critical in user-generated platforms. Whether you&#x27;re running a social app, marketplace, or community site, you need to filter out inappropriate, violent, or malicious media—without compromising on performance.
+In this guide, we’ll walk through how to build a scalable image moderation pipeline using:
+✅ Virus scanning with ClamAV
 
+🖼️ Multi-size conversion via Sharp
 
-作为一名大三计算机专业的学生，我在最近的课程项目中深入使用了 Hyperlane 框架。这个被称为&quot;新一代轻量级高性能框架&quot;的 Rust Web 框架确实给我留下了深刻印象。本文将从实战角度，分享我对 Hyperlane 的使用体验。
-在项目开始时，我对比了几个主流的 Web 框架：
+🧠 NSFW detection via Google Vision API or NudeNet
 
+🔐 Private file storage in MinIO
 
+📦 Asynchronous job handling with BullMQ
 
-框架
-依赖模型
-异步运行时
-中间件支持
-SSE/WebSocket
-路由匹配能力
-
-
-
-
-Hyperlane
-仅依赖 Tokio + 标准库
-Tokio
-✅ 支持请求/响应
-✅ 原生支持
-✅ 支持正则表达式
-
-
-Actix-Web
-较多内部抽象层
-Actix
-✅ 请求中间件
-部分支持(需插件)
-⚠️ 路径宏需显式配置
-
-
-Axum
-复杂的 Tower 架构
-Tokio
-✅ Tower 中间件
-✅ 需依赖扩展
-⚠️ 动态路由较弱
+🧬 Known-bad image matching via perceptual hashing
 
 
 
-最终选择 Hyperlane 的原因是：
-极简的依赖关系
-完整的异步支持
-原生的 WebSocket 集成
-灵活的路由系统
-server.enable_nodelay().await;
-server.disable_linger().await;
-server.http_line_buffer_size(4096).await;
-
-Hyperlane 默认启用了这些性能优化选项，这意味着它为高并发连接场景预设了合适的 TCP 和缓冲区参数。
-在实际项目中，我使用 wrk 进行了压力测试：
-wrk -c360 -d60s http://localhost:8000/
-
-测试结果令人惊喜：
-
-
-
-框架
-QPS
-内存占用
-
-
-
-
-Hyperlane
-324,323
-最低
-
-
-Rocket
-298,945
-中等
-
-
-Gin (Go)
-242,570
-较高
-
-
-
-server
-    .host(&quot;0.0.0.0&quot;).await
-    .port(60000).await
-    .route(&quot;/&quot;, root_route).await
-    .route(&quot;/goods/{id:\\d+}&quot;, goods_detail).await
-    .run().await
-    .unwrap();
-
-所有配置都采用异步链式调用模式，无需嵌套配置或宏组合。
-#[get]
-async fn ws_route(ctx: Context) {
-    let key &#x3D; ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();
-    ctx.set_response_body(key)
-        .await
-        .send_body()
-        .await;
-}
-
-原生的 WebSocket 支持让实时消息推送变得简单。
-#[post]
-async fn sse_route(ctx: Context) {
-    ctx.set_response_header(CONTENT_TYPE, TEXT_EVENT_STREAM)
-        .await
-        .send()
-        .await;
-
-    for i in 0..10 {
-        ctx.set_response_body(format!(&quot;data:{}{}&quot;, i, HTTP_DOUBLE_BR))
-            .await
-            .send_body()
-            .await;
-    }
-}
-
-零平台依赖：纯 Rust 实现，跨平台一致性强
-极致性能优化：底层 I/O 使用 Tokio 的 TcpStream 和异步缓冲
-灵活的中间件机制：支持请求和响应中间件，生命周期划分清晰
-开箱即用的实时通信：原生支持 WebSocket 和 SSE
-v4.22.0 后，ctx.aborted() 可以中断请求
-v5.25.1 中的 ctx.closed() 可以主动关闭连接
-从简单路由开始：先熟悉基本的 GET/POST 路由
-理解 Context 抽象：这是框架的核心概念
-循序渐进学习中间件：先使用内置中间件，再尝试自定义
-关注性能优化选项：了解默认配置的作用
-探索在微服务架构中的应用
-研究与其他 Rust 生态系统的集成
-尝试贡献一些社区插件
-作为一个学生开发者，我认为 Hyperlane 是一个非常值得投入时间学习的框架。它不仅让我深入理解了 Web 开发的本质，还让我体会到了 Rust 在 Web 领域的强大潜力。如果你也在寻找一个性能强大且易于上手的 Rust Web 框架，Hyperlane 绝对值得一试！</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
+Let’s build it, step by step.
+Problem: Don’t immediately expose uploaded images to the public or other users. What if they’re dangerous or explicit?
+// Save original image temporarily before moderation
+await minio.putObject(&#x27;qua…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -192,32 +81,61 @@ v5.25.1 中的 ctx.closed() 可以主动关闭连接
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-38hi"
+                        data-accordion-key="https://dev.to/afnan_khan/flappy-bird-game-using-amazon-q-cli-25c2"
                         open
                       >
-                        <summary class="article-expander__title">Junior Year Self-Study Notes My Journey with the Hyperlane Framework</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-38hi">
+                        <summary class="article-expander__title">Flappy Bird Game using Amazon Q CLI 🎮</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/afnan_khan/flappy-bird-game-using-amazon-q-cli-25c2">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwiiwnfnvghglvw2d6rut.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fipz1v5c2thb6jij3fjj0.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Day 1: First Encounter with Hyperlane
+                              <span>Hey there! 
+Amazon Q CLI. In this blog post, I&#x27;ll walk you through everything you need to create your own version of the game, including setup, game mechanics, and running the project on Windows.
+Install Python(if you don’t have it already):
+python.org and make sure to check the box to add Python to your system’s PATH during installation.
+Install AWS CLI using pip:
+pip install awscli
 
+Configure AWS CLI with your credentials:
+aws configure
 
-I stumbled upon the Hyperlane Rust HTTP framework on GitHub and was immediately captivated by its performance metrics. The official documentation states:
-&quot;Hyperlane is a high-performance and lightweight Rust HTTP framework designed to simplify the development of modern web services while balancing flexibility and performance.&quot;
-I decided to use it for my distributed systems course project. I started with the Cargo.toml file:
-[dependencies]
-hyperlane &#x3D; &quot;5.25.1&quot;
+You’ll need to provide your AWS Access Key ID and Secret Access Key, which you can get from the AWS Console.
+Install Amazon Q CLI:
+pip install amazon-q-cli
 
-Today, I delved into the design of Hyperlane&#x27;s Context. In traditional frameworks, you would retrieve the request method like this:
-let method &#x3D; ctx.get_request().await.get_method();
+Verify the installation:
+q --version
 
-But Hyperlane offers a more elegant approach:
-let method &#x3D; ctx.get_request_method().await;
+Start Amazon Q CLI by running:
+q chat
 
-My Understanding:
-T…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
+In the chat, ask:
+Can you help me make a Flappy Bird game using Pygame?
+I wanted my Flappy Bird clone to have the following features:
+Menu State: A welcoming main menu where the player can start the game.
+Playing State: The player controls the bird’s jump.
+Result State: When the game ends, the player can restart.
+Let’s talk about how the game works under the hood:
+Bird Movement: The bird continuously falls due to gravity, but when the player presses Space, the bird jumps!
+Pipe Generation: Pipes randomly appear from the right side and move leftward at a constant speed.
+Collision Detection: The bird collides with pipes or the ceiling/floor, ending the game if either happens.
+Now, let’s get this game up and running. Here’s how you can set up the game on your own machine:
+Clone the Repository:
+git clone https://github.com/afnank070/flappy-bird-amazon-q-cli
+
+Navigate to the Project Folder:
+cd flappy-bird-python
+
+Install Pygame:
+pip install pygame
+
+Run the Game:
+flappy_bird.py
+
+Final Thoughts
+Building this game was an absolute blast! Amazon Q CLI really sped up the development process.
+If you&#x27;re new to game development or want to make your own version of Flappy Bird, I highly recommend giving this a try.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -228,21 +146,31 @@ T…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/maximlogunov/mastering-the-javascript-cache-api-a-comprehensive-guide-d38"
+                        data-accordion-key="https://dev.to/peter_samuel_052b9056e236/how-to-launch-an-ec2-instance-and-deploy-a-custom-nginx-web-server-on-aws-free-tier-using-git-bash-4kj8"
                         open
                       >
-                        <summary class="article-expander__title">Mastering the JavaScript Cache API: A Comprehensive Guide</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/maximlogunov/mastering-the-javascript-cache-api-a-comprehensive-guide-d38">
+                        <summary class="article-expander__title">How to Launch an EC2 Instance and Deploy a Custom NGINX Web Server on AWS Free Tier Using Git Bash</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/peter_samuel_052b9056e236/how-to-launch-an-ec2-instance-and-deploy-a-custom-nginx-web-server-on-aws-free-tier-using-git-bash-4kj8">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0ew9j9uwf7nv9efz60ph.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffwa8qimhlqizozentyv7.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Introduction
+As part of this tutorial, I will also show detailed screenshots annotated using Screenpresso at each step to make the process clear and easy to follow.
+This guide is perfect for beginners using AWS Free Tier who want to deploy a simple web server manually.
+Prerequisites
+✅ A valid AWS Free Tier account.
+✅ Git Bash installed on your local machine (Windows).
+✅ Basic understanding of web servers and SSH.
+Step 1: Log In to the AWS Management Console
+First, we need to log in to our AWS account.
+Open your web browser and go to https://console.aws.amazon.com/.
+Enter your login credentials and sign in.
+Why this is important:The AWS Console is the web interface that allows you to manage all AWS services
 
 
-In today&#x27;s web development landscape, performance is paramount. Users expect fast, responsive web applications that work reliably, even in poor network conditions. The JavaScript Cache API is a powerful tool that enables developers to store network requests and retrieve them efficiently, significantly improving the user experience. This article will explore the Cache API in depth, covering its fundamentals, practical implementations, and best practices.
-The Cache API is part of the Service Worker specification that provides a storage mechanism for Request/Response object pairs. Unlike other browser storage options (like localStorage or sessionStorage), the Cache API is specifically designed to handle HTTP responses, making it ideal for:
-Offline web applications
-Resource cach…</span>
+Step 2: Launch a New EC2 Instance
+2.1 Go to the EC2 Dashboard
+In the AWS search ba…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
                                   min&hairsp;)</span>
                             </span>
@@ -254,78 +182,24 @@ Resource cach…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-3d5h"
+                        data-accordion-key="https://dev.to/somay_kaush_59976eb36c08b/day-0-from-tutorial-hell-to-building-real-things-hnk"
                         open
                       >
-                        <summary class="article-expander__title">Junior Year Self-Study Notes My Journey with the Hyperlane Framework</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/junior-year-self-study-notes-my-journey-with-the-hyperlane-framework-3d5h">
+                        <summary class="article-expander__title">Day 0: From Tutorial Hell to Building Real Things</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/somay_kaush_59976eb36c08b/day-0-from-tutorial-hell-to-building-real-things-hnk">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frbefzyhv5qg0bay70xkn.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fyyl55418dtcctn31o5my.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Day 1: First Encounter with Hyperlane
-
-
-I stumbled upon the Hyperlane Rust HTTP framework on GitHub and was immediately captivated by its performance metrics. The official documentation states:
-&quot;Hyperlane is a high-performance and lightweight Rust HTTP framework designed to simplify the development of modern web services while balancing flexibility and performance.&quot;
-I decided to use it for my distributed systems course project. I started with the Cargo.toml file:
-[dependencies]
-hyperlane &#x3D; &quot;5.25.1&quot;
-
-Today, I delved into the design of Hyperlane&#x27;s Context. In traditional frameworks, you would retrieve the request method like this:
-let method &#x3D; ctx.get_request().await.get_method();
-
-But Hyperlane offers a more elegant approach:
-let method &#x3D; ctx.get_request_method().await;
-
-My Understanding:
-T…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/hyperlaneshi-shi-tong-xin-zhi-nan-websockethe-sseshi-zhan-jing-yan-fen-xiang-4jji"
-                        open
-                      >
-                        <summary class="article-expander__title">Hyperlane实时通信指南：WebSocket和SSE实战经验分享</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/hyperlaneshi-shi-tong-xin-zhi-nan-websockethe-sseshi-zhan-jing-yan-fen-xiang-4jji">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0vmssipzrutszmjr9ci5.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hyperlane实时通信指南：WebSocket和SSE实战经验分享
-
-
-作为一名大三计算机系的学生，我在使用 Hyperlane 开发校园实时聊天系统时，深入体验了它的 WebSocket 和 SSE 功能。这篇文章将分享我的实战经验。
-#[get]
-async fn ws_route(ctx: Context) {
-    let key &#x3D; ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();
-    let body &#x3D; ctx.get_request_body().await;
-
-    ctx.set_response_header(&quot;Connection&quot;, &quot;Upgrade&quot;)
-        .await
-        .set_response_header(&quot;Upgrade&quot;, &quot;websocket&quot;)
-        .await
-        .set_response_body(key)
-        .await
-        .send_body()
-        .await;
-}
-
-async fn handle_ws_message(ctx: Context) {
-    let message &#x3D; ctx.get_ws_message().await;
-    match message {
-        WSMessage::Text(text) &#x3D;&gt; {
-            // 处理文本消息
-            ctx.send_ws_text(format!(&quot;收到消息: {}&quot;, text)).await;
-        }
-        WSMessage::Binary(data) &#x3D;&gt; {
-            // 处理二进制消…</span>
+                              <span>Fellow developers, we need to talk about tutorial hell.
+Not the coding kind - the entrepreneurship kind.
+I&#x27;ve spent 3 months in startup tutorial hell. Every framework, every methodology, every &#x27;proven system&#x27; for building a business. I could probably teach a course on startup theory at this point.
+But theory doesn&#x27;t ship products. Theory doesn&#x27;t get customers. Theory doesn&#x27;t generate revenue.
+So today I&#x27;m switching from learning to building. One roadmap, one focus, public accountability.
+This isn&#x27;t another &#x27;follow my journey&#x27; post. This is documentation for my future self and anyone else stuck in the same cycle.
+The plan: build something, measure what matters, iterate based on real feedback from real users.
+Revolutionary, I know.
+First commit coming tomorrow. Time to write some code that actually solves a problem instead of just following along with tutorials.
+Who&#x27;s with me?</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
                             </span>
@@ -337,21 +211,20 @@ async fn handle_ws_message(ctx: Context) {
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/theangeloreyes/what-really-stood-out-was-the-idea-that-structure-is-the-solution-not-more-apps-or-tools-thats-a-5hh3"
+                        data-accordion-key="https://dev.to/kubenetic/jakarta-validation-annotations-on-the-wrong-place-4bjh"
                         open
                       >
-                        <summary class="article-expander__title">What really stood out was the idea that structure is the solution, not more apps or tools. That’s a shift in thinking for me.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/theangeloreyes/what-really-stood-out-was-the-idea-that-structure-is-the-solution-not-more-apps-or-tools-thats-a-5hh3">
+                        <summary class="article-expander__title">Jakarta validation annotations on the wrong place</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/kubenetic/jakarta-validation-annotations-on-the-wrong-place-4bjh">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzovsom89r5vzwhks5fj6.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fspgcqgmsk0ijtrdhot72.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Remote Work Isn&#x27;t Freedom Without Structure: What TDZ PRO Knows That Most Don&#x27;t
-Anthony James ・ Jun 10
-#remotework
-        #productivity
-        #entrepreneurship
-        #mindset</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;2
+                              <span>During work on my current project I tried to find the optimal solution how to validate the arguments of some service level methods. I don&#x27;t want to write every time an if clause for nullcheck or add additional validation logic, for example ensure a numeric value not to be less then 0. 
+I added jakarta.validation annotations as you can see below, but first on the implementations of the functions. During the build this error was thrown:
+HV000151: A method overriding another method must not redefine the parameter constraint configuration ...
+
+This occurs when you define validation annotations on a method parameter that overrides a method from an interface or superclass that already has validation constraints. Jakarta Bean Validation enforces constraints defined by interfaces or base classes a…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -362,63 +235,164 @@ Anthony James ・ Jun 10
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/xin-dai-rust-web-kuang-jia-de-gao-xing-neng-zhi-xuan-15oe"
+                        data-accordion-key="https://dev.to/lovestaco/building-a-custom-nginx-module-with-ansible-a-dev-friendly-guide-4jo6"
                         open
                       >
-                        <summary class="article-expander__title">新一代 Rust Web 框架的高性能之选</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/xin-dai-rust-web-kuang-jia-de-gao-xing-neng-zhi-xuan-15oe">
+                        <summary class="article-expander__title">Building a Custom NGINX Module with Ansible: A Dev-Friendly Guide</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/lovestaco/building-a-custom-nginx-module-with-ansible-a-dev-friendly-guide-4jo6">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fyq15m3j7fhvjt4nbk4ds.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fo4k3wa0glhhr5wrtyxdv.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>在当前的 Rust Web 框架生态中，Hyperlane 正逐步展现出其作为“新一代轻量级高性能框架”的强大竞争力。本文将通过与主流框架（如 Actix-Web、Axum）对比，全面剖析 Hyperlane 的优势，特别是在性能、特性集成、开发体验和底层架构方面的领先之处。
+                              <span>Hi there! I&#x27;m Maneshwar. Right now, I’m building LiveAPI, a first-of-its-kind tool that helps you automatically index API endpoints across all your repositories. LiveAPI makes it easier to discover, understand, and interact with APIs in large infrastructures.
+NGINX is a powerful and versatile web server, and its extensibility through modules is one of its greatest strengths. 
+Sometimes, however, you need functionality that isn&#x27;t available out-of-the-box or as a pre-compiled dynamic module. 
+This is where custom NGINX modules come in.
+In this blog post, we&#x27;ll walk through a real-world scenario: building NGINX with the ngx_http_consul_backend_module and the ngx_devel_kit (NDK) module. 
+We&#x27;ll leverage Ansible to automate the entire process, making it repeatable, reliable, and dev-friendly.
+Ma…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/kubenetic/10-real-world-devops-team-lead-scenarios-and-how-to-master-them-5dn9"
+                        open
+                      >
+                        <summary class="article-expander__title">10 Real-World DevOps Team Lead Scenarios and How to Master Them</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/kubenetic/10-real-world-devops-team-lead-scenarios-and-how-to-master-them-5dn9">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwkh433lq00btnw8oljya.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>As part of my journey into leadership in the DevOps space, I recently walked through ten common but complex scenarios that a DevOps Team Lead might face.
+Note: These scenarios were generated by ChatGPT at my request as part of preparing for a DevOps Team Lead interview. The answers and strategies are entirely my own, reflecting how I would handle each situation.
+Challenge: Two junior engineers were constantly blocking senior engineers with minor requests.
+Approach: I initiated 1:1s to understand their blockers and assess if the tasks assigned to them matched their current skill level. I discovered they often lacked confidence or context. To balance support and senior focus time, I introduced scheduled daily sync slots for juniors to raise their questions in batches. I also encouraged them …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/nanditha_vuppunuthula_d09/apache-kafka-and-spring-boot-a-simple-example-5e05"
+                        open
+                      >
+                        <summary class="article-expander__title">Apache Kafka and Spring Boot: A Simple Example</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nanditha_vuppunuthula_d09/apache-kafka-and-spring-boot-a-simple-example-5e05">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxehmtsoun7vm4uajg2bb.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Part 1: Install and Run Kafka on Windows
+Java 8+
+Kafka 3.x (includes Zookeeper)
+A terminal like Command Prompt, Git Bash, or PowerShell
+Go to: https://kafka.apache.org/downloads
+Choose a binary (e.g., Kafka 3.6.0 with Scala 2.13)
+Extract it to C:\kafka
+Kafka uses Zookeeper for managing brokers. In a terminal:
+cd C:\kafka
+
+Keep this terminal open.
+Open a new terminal:
+cd C:\kafka
+
+Kafka is now running on localhost:9092.
+bin\windows\kafka-topics.bat --create --topic test-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+You can use Spring Initializr with the following settings:
+Dependencies: Spring Web, Spring for Apache Kafka
+Name: kafka-demo
+Package: com.example.kafkademo
+src/
+spring:
 
 
 
-框架
-依赖模型
-异步运行时
-中间件支持
+  
+  …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/icornea/lovable-vs-cursor-vs-windsurf-choosing-the-right-ai-development-tool-for-your-needs-1jmm"
+                        open
+                      >
+                        <summary class="article-expander__title">🚀 Lovable vs. Cursor vs. Windsurf: Choosing the Right AI Development Tool for Your Needs</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/icornea/lovable-vs-cursor-vs-windsurf-choosing-the-right-ai-development-tool-for-your-needs-1jmm">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3ahiohymq8g99k8y62sc.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>🧱INTRODUCTION
+
+
+In today’s fast-evolving tech world, AI coding assistants have become essential tools for developers aiming to speed up their workflow, reduce repetitive tasks, and build smarter, faster. In this article, we’ll break down three popular AI tools Cursor, Windsurf, and Loveable to help you make an informed choice.
+Whether you&#x27;re a freelancer, part of a startup team, coding in a corporate environment, or even an entrepreneur who wants to build a product, this honest comparison will clarify which AI companion best fits your workflow and goals.
+Cursor is an AI-powered code editor built on VS Code. It integrates deeply with GitHub Copilot X and offers features like local agents, natural language chat, and smart code suggestions. It feels familiar to existing VS Code users, with a…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/the-new-generation-of-high-performance-rust-web-frameworks-3de6"
+                        open
+                      >
+                        <summary class="article-expander__title">The New Generation of High-Performance Rust Web Frameworks</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/the-new-generation-of-high-performance-rust-web-frameworks-3de6">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbd1770chzwtab6cvato2.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>In the current ecosystem of Rust Web frameworks, Hyperlane is increasingly demonstrating its strong competitiveness as a &quot;new generation of lightweight and high-performance frameworks.&quot; This article will comprehensively analyze the advantages of Hyperlane by comparing it with mainstream frameworks such as Actix-Web and Axum, especially in terms of performance, feature integration, development experience, and underlying architecture.
+
+
+
+Framework
+Dependency Model
+Async Runtime
+Middleware Support
 SSE/WebSocket
-路由匹配能力
+Routing Matching Capability
 
 
 
 
 Hyperlane
-仅依赖 Tokio + 标准库
+Only depends on Tokio + Standard Library
 Tokio
-✅ 支持请求/响应
-✅ 原生支持
-✅ 支持正则表达式
+✅ Supports request/response
+✅ Native support
+✅ Supports regular expressions
 
 
 Actix-Web
-大量内部抽象层
+Many internal abstraction layers
 Actix
-✅ 请求中间件
-部分支持（需插件）
-⚠️ 路径宏需显式配置
-
-
-Axum
-Tower 架构复杂
-Tokio
-✅ Tower 中间件
-✅ 需依赖层扩展
-⚠️ 动态路由较弱
-
-
-
-零平台依赖：纯 Rust 实现，跨平台一致性强，无需额外 C 库绑定。
-极致性能优化：底层 I/O 使用 Tokio 的 TcpStream 和异步缓冲处理，自动开启 TCP_NODELAY，默认关闭 SO_LINGER，适合高频请求环境。
-中间件机制灵活：支持 request_middleware 与 response_middleware 明确划分，便于请求生命周期控制。
-实时通信开箱即用：原生支持 WebSocket 与 SSE，无需第三方插件扩展。
-下面我们将拆解一个完整 Hyperlane 服务示例，说明其设计理念与开发者友好性。
-async fn request_middleware(ctx: Context) {
-    let socket_addr &#x3D; ctx.get_socket_addr_or_default_string().await;
-    ctx.set_response_header(SERVER, HYPERLANE)
-      …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
+✅ Request middleware
+Partial support (requires plugins)
+⚠️ Path macros…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -429,42 +403,25 @@ async fn request_middleware(ctx: Context) {
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/shen-ru-li-jie-hyperlanede-zhong-jian-jian-xi-tong-ge-da-san-xue-sheng-de-shi-jian-bi-ji-nph"
+                        data-accordion-key="https://dev.to/datatoinfinity/regular-expression-or-regex-nlp-nd4"
                         open
                       >
-                        <summary class="article-expander__title">深入理解Hyperlane的中间件系统：一个大三学生的实践笔记</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/shen-ru-li-jie-hyperlanede-zhong-jian-jian-xi-tong-ge-da-san-xue-sheng-de-shi-jian-bi-ji-nph">
+                        <summary class="article-expander__title">Regular Expression or Regex-NLP</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/datatoinfinity/regular-expression-or-regex-nlp-nd4">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9nuo9vrqyozgx0a15c0x.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F724ppct8soxhhjfbczxb.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>深入理解Hyperlane的中间件系统：一个大三学生的实践笔记
-
-
-作为一名大三计算机专业的学生，我在使用 Hyperlane 框架开发校园项目的过程中，对其中间件系统有了深入的理解。今天，我想分享一下我在实践中的心得体会。
-graph TD
-    A[客户端请求] --&gt; B[认证中间件]
-    B --&gt; C[日志中间件]
-    C --&gt; D[控制器]
-
-Hyperlane 的中间件采用洋葱模型，请求从外层向内层传递，这种设计让请求处理流程清晰可控。
-async fn request_middleware(ctx: Context) {
-    let socket_addr &#x3D; ctx.get_socket_addr_or_default_string().await;
-    ctx.set_response_header(SERVER, HYPERLANE)
-        .await
-        .set_response_header(&quot;SocketAddr&quot;, socket_addr)
-        .await;
-}
-
-相比其他框架需要通过 trait 或层注册中间件，Hyperlane 直接使用异步函数注册，更加直观。
-async fn auth_middleware(ctx: Context) {
-    let token &#x3D; ctx.get_request_header(&quot;Authorization&quot;).await;
-    match token {
-        Some(token) &#x3D;&gt; {
-            // 验证逻辑
-            ctx.set_request_data(&quot;user_id&quot;, &quot;123&quot;).await;
-        }
-        None &#x3D;&gt; {
-           …</span>
+                              <span>Regular Expression or Regex is basically a tool which we use to find pattern or find word, character or sentence in sequence of character. Here is the analogy:
+You have been an overflowing inbox of emails and you want specific email to show up your criteria for it is:
+Find all emails with meeting.
+Find all emails with dollar amount.
+Spot all the emails which contains word like URGENT and IMPORTANT.
+Now you can&#x27;t open email one by one because it will take forever. So you decided setup a Smart Filter using rules like:
+If emails contains &#x27;$&#x27; sign then it must be finance show me.
+If emails have date or word like meeting show me.
+If subject contains ‘URGENT’ followed by ! marks, show me.
+It acts like a smart filter for text — scanning through messy, unstructured language and pulling out what you’re interested in, based on patterns.
+In coming lecture I will be explaining about regex.</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
                             </span>
@@ -476,98 +433,13 @@ async fn auth_middleware(ctx: Context) {
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-230a"
-                        open
-                      >
-                        <summary class="article-expander__title">Hyperlane性能优化实战：从理论到实践的深度探索</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/hyperlanexing-neng-you-hua-shi-zhan-cong-li-lun-dao-shi-jian-de-shen-du-tan-suo-230a">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0wi8ebk4aqo4ozmcqfl1.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hyperlane性能优化实战：从理论到实践的深度探索
-
-
-作为一名大三计算机系的学生，我在使用 Hyperlane 开发高并发校园服务时，积累了不少性能优化的经验。这篇文章将从实战角度分享我的优化心得。
-server
-    .enable_nodelay().await
-    .disable_linger().await
-    .http_line_buffer_size(4096).await
-    .run().await;
-
-wrk -c360 -d60s http://localhost:8000/
-
-
-
-
-框架
-QPS
-延迟
-内存占用
-
-
-
-
-Tokio
-340,130
-1.2ms
-基准线
-
-
-Hyperlane
-324,323
-1.5ms
-+5%
-
-
-Rocket
-298,945
-1.8ms
-+15%
-
-
-Gin (Go)
-242,570
-2.1ms
-+25%
-
-
-
-async fn optimize_connection_pool() {
-    let pool &#x3D; Pool::builder()
-        .max_size(100)
-        .min_idle(Some(10))
-        .build()
-        .await;
-
-    // 使用连接池
-    let conn &#x3D; pool.get().await?;
-}
-
-async fn reuse_buffers(ctx: Context) {
-    let buffer &#x3D; get_buffer_from_pool().await;
-    ctx.set_response_body(buffer)
-        .await
-        .send_body()
-        .await;
-    return_buffer_to_po…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-3pa0"
+                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-1jcg"
                         open
                       >
                         <summary class="article-expander__title">Hyperlane与微服务架构：校园应用的实战案例分析</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-3pa0">
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/hyperlaneyu-wei-fu-wu-jia-gou-xiao-yuan-ying-yong-de-shi-zhan-an-li-fen-xi-1jcg">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fr6w5klrs6iszcx5dejtm.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Foq1x0d5dd6t6qh5px0bs.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Hyperlane与微服务架构：校园应用的实战案例分析
 
@@ -602,8 +474,40 @@ async fn register_service(service_name: &amp;str, port: u16) {
 
 async fn call_service(ctx: Context) {
     let service_url &#x3D; discover_service(&quot;use…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                &ensp;<span class="article-reading-time">(&hairsp;4
                                   min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Cointelegraph.com News</button>
+                  <a class="source-heading__link" href="https://cointelegraph.com">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/crypto-ipos-circle-gemini-kraken-wall-street-2025"
+                        open
+                      >
+                        <summary class="article-expander__title">Circle’s NYSE debut marks start of crypto IPO season: Are Kraken, Gemini and Bullish next?</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/crypto-ipos-circle-gemini-kraken-wall-street-2025?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDUvMDE5NmVhNDItYjllZS03ODcwLThhNWYtNmMzNzM0OGMwMmYw.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Crypto IPO season is underway. Circle’s explosive debut has fueled filings from Gemini and Bullish, with Kraken, BitGo, and Consensys potentially next.</span>
                             </span>
                           </div>
                         </a>
@@ -613,21 +517,15 @@ async fn call_service(ctx: Context) {
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/vantagemdm/top-apple-device-management-software-for-2025-easy-secure-n4n"
+                        data-accordion-key="https://cointelegraph.com/news/stablecoins-meta-ai-scale-ripple-crypto-biz"
                         open
                       >
-                        <summary class="article-expander__title">Top Apple Device Management Software for 2025 | Easy &amp; Secure</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vantagemdm/top-apple-device-management-software-for-2025-easy-secure-n4n">
+                        <summary class="article-expander__title">Crypto Biz: Meta’s AI bet, Fortune 500’s stablecoin push</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/stablecoins-meta-ai-scale-ripple-crypto-biz?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F940zxfgkh3wl1ml9oq10.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzZhM2ItZjFiMS03NTZjLWI3YTAtNmFiNWRhNWJkZTk1.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Apple device management software is critical for ensuring seamless operation, robust security, and efficient IT workflows. In 2025, several solutions stand out for their features, ease of use, and adaptability to different organizational needs. Let’s dive into the top options and why they are must-haves for any Apple-heavy environment.
-Apple products are synonymous with reliability, innovation, and user satisfaction. With increasing adoption in corporate and educational settings, managing these devices effectively ensures that operations stay smooth and secure.
-Security Risks: With great technology comes great responsibility. Safeguarding sensitive data on Apple devices is a priority.
-Compatibility: Seamlessly integrating Apple devices with existing infrastructure is often complex.
-Device …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
+                              <span>Mark Zuckerberg bets $15 billion on an AI company as stablecoins win over Fortune 500 companies.</span>
                             </span>
                           </div>
                         </a>
@@ -637,147 +535,501 @@ Device …</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-3mci"
+                        data-accordion-key="https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined"
                         open
                       >
-                        <summary class="article-expander__title">Hyperlane：新一代高性能Rust框架的实战体验</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/_95e41982c9ad08a13458d/hyperlanexin-dai-gao-xing-neng-rustkuang-jia-de-shi-zhan-ti-yan-3mci">
+                        <summary class="article-expander__title">Saylor says Bitcoin could fix Apple’s stock buybacks: Finance Redefined</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fuk33cla601yu6muhczaa.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4YmUtMGFhYi03MmFiLWI3NDctZjNiMTU5OGRkNzc2.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Hyperlane：新一代高性能Rust框架的实战体验
-
-
-作为一名大三计算机专业的学生，我在最近的课程项目中深入使用了 Hyperlane 框架。这个被称为&quot;新一代轻量级高性能框架&quot;的 Rust Web 框架确实给我留下了深刻印象。本文将从实战角度，分享我对 Hyperlane 的使用体验。
-在项目开始时，我对比了几个主流的 Web 框架：
-
-
-
-框架
-依赖模型
-异步运行时
-中间件支持
-SSE/WebSocket
-路由匹配能力
-
-
-
-
-Hyperlane
-仅依赖 Tokio + 标准库
-Tokio
-✅ 支持请求/响应
-✅ 原生支持
-✅ 支持正则表达式
-
-
-Actix-Web
-较多内部抽象层
-Actix
-✅ 请求中间件
-部分支持(需插件)
-⚠️ 路径宏需显式配置
-
-
-Axum
-复杂的 Tower 架构
-Tokio
-✅ Tower 中间件
-✅ 需依赖扩展
-⚠️ 动态路由较弱
-
-
-
-最终选择 Hyperlane 的原因是：
-极简的依赖关系
-完整的异步支持
-原生的 WebSocket 集成
-灵活的路由系统
-server.enable_nodelay().await;
-server.disable_linger().await;
-server.http_line_buffer_size(4096).await;
-
-Hyperlane 默认启用了这些性能优化选项，这意味着它为高并发连接场景预设了合适的 TCP 和缓冲区参数。
-在实际项目中，我使用 wrk 进行了压力测试：
-wrk -c360 -d60s http://localhost:8000/
-
-测试结果令人惊喜：
-
-
-
-框架
-QPS
-内存占用
-
-
-
-
-Hyperlane
-324,323
-最低
-
-
-Rocket
-298,945
-中等
-
-
-Gin (Go)
-242,570
-较高
-
-
-
-server
-    .host(&quot;0.0.0.0&quot;).await
-    .port(60000).await
-    .route(&quot;/&quot;, root_route).await
-    .route(&quot;/goods/{id:\\d+}&quot;, goods_detail).await
-    .run().await
-    .unwrap();
-
-所有配置都采用异步链式调用模式，无需嵌套配置或宏组合。
-#[get]
-async fn ws_route(ctx: Context) {
-    let key &#x3D; ctx.get_request_header(SEC_WEBSOCKET_KEY).await.unwrap();
-    ctx.set_response_body(key)
-        .await
-        .send_body()
-        .await;
-}
-
-原生的 WebSocket 支持让实时消息推送变得简单。
-#[post]
-async fn sse_route(ctx: Context) {
-    ctx.set_response_header(CONTENT_TYPE, TEXT_EVENT_STREAM)
-        .await
-        .send()
-        .await;
-
-    for i in 0..10 {
-        ctx.set_response_body(format!(&quot;data:{}{}&quot;, i, HTTP_DOUBLE_BR))
-            .await
-            .send_body()
-            .await;
-    }
-}
-
-零平台依赖：纯 Rust 实现，跨平台一致性强
-极致性能优化：底层 I/O 使用 Tokio 的 TcpStream 和异步缓冲
-灵活的中间件机制：支持请求和响应中间件，生命周期划分清晰
-开箱即用的实时通信：原生支持 WebSocket 和 SSE
-v4.22.0 后，ctx.aborted() 可以中断请求
-v5.25.1 中的 ctx.closed() 可以主动关闭连接
-从简单路由开始：先熟悉基本的 GET/POST 路由
-理解 Context 抽象：这是框架的核心概念
-循序渐进学习中间件：先使用内置中间件，再尝试自定义
-关注性能优化选项：了解默认配置的作用
-探索在微服务架构中的应用
-研究与其他 Rust 生态系统的集成
-尝试贡献一些社区插件
-作为一个学生开发者，我认为 Hyperlane 是一个非常值得投入时间学习的框架。它不仅让我深入理解了 Web 开发的本质，还让我体会到了 Rust 在 Web 领域的强大潜力。如果你也在寻找一个性能强大且易于上手的 Rust Web 框架，Hyperlane 绝对值得一试！</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
-                                  min&hairsp;)</span>
+                              <span>Bitcoin exposure may provide more shareholder value to Apple investors, as the tech firm’s stock is struggling to reverse a downtrend.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/price-predictions-6-13-btc-eth-xrp-bnb-sol-doge-ada-hype-sui-link"
+                        open
+                      >
+                        <summary class="article-expander__title">Price predictions 6/13: BTC, ETH, XRP, BNB, SOL, DOGE, ADA, HYPE, SUI, LINK</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/price-predictions-6-13-btc-eth-xrp-bnb-sol-doge-ada-hype-sui-link?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzZhMjctZmI1YS03OGE2LTljMGQtOGFlMDliYzc2NzY5.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Dip buyers stepped in to absorb this week’s downside in Bitcoin and select altcoins.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/closing-strait-hormuz-biggest-risk-btc-price-weekend"
+                        open
+                      >
+                        <summary class="article-expander__title">Closing Strait of Hormuz is biggest risk to BTC price this weekend — Analyst</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/closing-strait-hormuz-biggest-risk-btc-price-weekend?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NGIwOGMtOGUwNy03NzU0LWI2MTEtMjJlMjZhZmNlOWU0.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Risk assets would take a significant hit if Iran closes the Strait of Hormuz, a narrow waterway supplying 20% of the global oil trade.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/how-to-legally-stake-crypto"
+                        open
+                      >
+                        <summary class="article-expander__title">How to legally stake crypto in 2025: What is now allowed after the SEC’s latest move</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/how-to-legally-stake-crypto?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY5ZjQtODVhYi03MmU0LThlZDEtN2M4MTU3YWMzNzRj.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The SEC’s 2025 guideline clarifies the regulatory stance regarding crypto staking. It states what is and isn’t allowed and how you can stake lawfully.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/crypto-legislation-deadline-2026-marta-belcher-warning"
+                        open
+                      >
+                        <summary class="article-expander__title">Crypto legislation in the US is at a ‘critical’ juncture, says industry exec</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/crypto-legislation-deadline-2026-marta-belcher-warning?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDMvMDE5NWQ0MmItNWYzNi03YTMzLThlNTktZmFmMTY3MmY3YTE1.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The latest episode of Decentralize with Cointelegraph unpacks why US crypto legislation must pass in 2025 or risk renewed crackdowns and political blowback.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/what-is-crypto-market-capitulation-and-its-significance"
+                        open
+                      >
+                        <summary class="article-expander__title">Panic or opportunity? What crypto capitulation tells smart investors</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/what-is-crypto-market-capitulation-and-its-significance?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzNhMGUtNDIzNi03NTJiLTgxZmItNDM1MjI4N2E5MWFh.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Crypto market capitulation refers to a point of extreme selling pressure when investors panic and sell off assets, often marking the bottom of a market cycle.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/bitcoin-clings-to-105k-opinions-diverge-oil-price-outlook"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin clings to $105K as opinions diverge on oil price outlook</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-clings-to-105k-opinions-diverge-oil-price-outlook?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY5ZGUtYWFhMC03MWFkLTlhYTEtODJhNzMwOGI0Njdl.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Oil price talk leads macro analysis amid Middle East tensions, but whether Bitcoin will suffer as a result is up for debate as traders see a BTC price comeback.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/senate-amended-stablecoin-bill-vote"
+                        open
+                      >
+                        <summary class="article-expander__title">US Senate to vote on amended stablecoin bill on June 17</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/senate-amended-stablecoin-bill-vote?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5NWY5ZDMtNWQ3Yy03OWZjLTk4MDAtYWYxNjNmMGU2MzA2.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Though concerns about the Trump family’s connections to World Liberty Financial’s stablecoin shadowed debate on the GENIUS Act, the bill is closer to passing the Senate.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/etf-filings-2025-altcoin-summer"
+                        open
+                      >
+                        <summary class="article-expander__title">ETF filings explode in 2025, heating hopes of an ‘altcoin summer’</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/etf-filings-2025-altcoin-summer?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzZhMmQtNzAyNi03ZTc3LWI3ZjgtZDA4YzczMDg2YjY2.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>This year has seen an uptick in the number of altcoin ETF applications, with at least 31 filed in the first half of 2025, Cointelegraph Research found.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/blockchain-sports-analytics"
+                        open
+                      >
+                        <summary class="article-expander__title">Blockchain is the missing trust layer in sports analytics</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/blockchain-sports-analytics?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzU5NWYtMjAzNS03MThiLThmZGQtOGM4MzVjMGM2YTEy.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Blockchain can reshape sports analytics as a secure, open and verifiable source of truth for performance data. From elite leagues to fantasy sports, blockchain breaks down data silos, ensures real-time accuracy and embeds trust in the sports ecosystem.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/explained/how-a-youtuber-hacked-an-800k-crypto-scam-hub-in-cebu-philippines"
+                        open
+                      >
+                        <summary class="article-expander__title">How a YouTuber hacked an $800K crypto scam hub in Cebu, Philippines</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/explained/how-a-youtuber-hacked-an-800k-crypto-scam-hub-in-cebu-philippines?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy8xY2RhODA2ZDZlNjA4NmRiYWFiZWFkMDBiMmRkNTUzZi5qcGc&#x3D;.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>A YouTuber exposed an $800,000 crypto scam in Cebu by hacking CCTV, confronting scammers live and revealing their global fraud operation.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/sharplink-largest-public-eth-holder-463m"
+                        open
+                      >
+                        <summary class="article-expander__title">SharpLink buys $463M in ETH, becomes largest public ETH holder</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/sharplink-largest-public-eth-holder-463m?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY5ODQtYTIyOC03ZWY0LTkyZDAtMzUzMGU0MmI4YWNj.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>While SharpLink has become the largest publicly traded holder of Ether globally, some entities, including the Ethereum Foundation and BlackRock, are still holding more ETH.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/what-happened-in-crypto-today"
+                        open
+                      >
+                        <summary class="article-expander__title">Here’s what happened in crypto today</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDgzZjctMTdlYS03OTc0LWJlNzMtNjYxYzdjZDE1N2M3.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, NFTs, Web3 and crypto regulation.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/how-to-use-grok-for-crypto-trading"
+                        open
+                      >
+                        <summary class="article-expander__title">How to use Grok for real-time crypto trading signals</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/how-to-use-grok-for-crypto-trading?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzVhZGMtNWZlYy03YzZjLWJkMmYtNGFkMzZiNTUwMzE1.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Grok scans posts and sentiment shifts on X to help crypto traders identify early signals, memes and macro-driven momentum plays.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/explained/blackrock-quietly-accumulated-3-of-all-bitcoin-heres-what-that-means"
+                        open
+                      >
+                        <summary class="article-expander__title">BlackRock quietly accumulated 3% of all Bitcoin. Here’s what that means</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/explained/blackrock-quietly-accumulated-3-of-all-bitcoin-heres-what-that-means?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy83YzIyOGRiMjRlNGJjMDdjZWE0ZTU1ZDMwOGNhN2M5Zi5qcGc&#x3D;.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>How Much Bitcoin Does BlackRock Own and Why It Matters in 2025.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/bitcoin-mirrors-80-rally-setup-that-preceded-2024-israel-iran-conflict"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin mirrors 80% rally setup that preceded 2024 Israel-Iran conflict</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-mirrors-80-rally-setup-that-preceded-2024-israel-iran-conflict?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4Y2QtNmJkNy03MmZkLTg0YTUtY2Y3MDAzYTZjNjk5.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>One analyst spots a bullish fractal driven by 2024-like liquidity grabs, hinting that Bitcoin may breakout toward new all-time highs.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/bitcoin-2025-defi-traditional-finance"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin 2025 builders predict DeFi will unseat traditional finance</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-2025-defi-traditional-finance?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY0ZDktM2UwMi03NjE1LThjNTYtNjU5NDViODZiMGNk.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Bitcoin’s foundational security is powering a new frontier: DeFi systems built on self-sovereignty, security and real-world financial inclusion.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/anthony-pompliano-lead-bitcoin-buying-vehicle-raise-750-million-ft"
+                        open
+                      >
+                        <summary class="article-expander__title">Anthony Pompliano to lead new Bitcoin-buying group raising $750M: FT</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/anthony-pompliano-lead-bitcoin-buying-vehicle-raise-750-million-ft?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4YWMtM2ViZi03MjU4LWI3NTctNGE5YmNjNTFjOTIx.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Under Pompliano’s leadership, ProCapBTC would reportedly seek to raise $750 million in equity and convertible debt as part of a merger with Columbus Circle Capital 1.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/walmart-amazon-explore-stablecoins-payments"
+                        open
+                      >
+                        <summary class="article-expander__title">Walmart, Amazon consider issuing own stablecoins: WSJ</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/walmart-amazon-explore-stablecoins-payments?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5MzhjMWQtYjU4ZS03OWU1LThlNGItYTQxNzlhODk0NWY3.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Retail giants Walmart and Amazon are reportedly evaluating digital currencies to streamline e‑commerce and boost cross‑border transactions.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/polkadot-bitcoin-reserve-proposal-sparks-mixed-reactions"
+                        open
+                      >
+                        <summary class="article-expander__title">Polkadot community split on selling 500K DOT for Bitcoin reserve</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/polkadot-bitcoin-reserve-proposal-sparks-mixed-reactions?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4YWItZGRkMS03MGFiLWJjOGUtMzg4M2JjMjQxOTNm.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Polkadot’s community is split over a proposal to convert 500,000 DOT tokens into tBTC using a year-long DCA strategy amid market volatility.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/bitcoin-price-bollinger-bands-failure-risks-end-uptrend-112k"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin price Bollinger Bands &#x27;failure&#x27; risks end of uptrend at $112K</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-price-bollinger-bands-failure-risks-end-uptrend-112k?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDIvMDE5NTI0ZjktM2U5Mi03NmE2LWFiODEtMmQ2M2Y3ZjE1MzA0.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Bitcoin Bollinger Bands analysis leads to potentially grim conclusions about the fate of the BTC price rebound, which began at sub-$75,000 lows in April.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/gamestop-sink-20-500m-upsizing-btc-investments"
+                        open
+                      >
+                        <summary class="article-expander__title">GameStop shares tank 22% after boosting raise to $2.25B for Bitcoin strategy</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/gamestop-sink-20-500m-upsizing-btc-investments?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzVjOTEtNWYwYi03ZTcxLWIyM2MtZTE5MjM1NzY2NmJk.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>GameStop boosted its convertible note offering to $2.25 billion, fueling its Bitcoin treasury strategy and raising speculation about future crypto investments.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/why-is-the-crypto-market-down-today"
+                        open
+                      >
+                        <summary class="article-expander__title">Why is the crypto market down today?</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/why-is-the-crypto-market-down-today?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMDgvODAzMjgxMmQtMWQ1MC00NmFiLWI5NjUtYTBjYjZkZDQxYTYz.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Crypto market volatility rises in reaction to Israel’s attack on Iran, but the technical setup suggesting that the uptrend still remains intact.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/shopify-early-access-usdc-stablecoin-payments-base"
+                        open
+                      >
+                        <summary class="article-expander__title">Shopify launches early access to USDC stablecoin payments on Base</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/shopify-early-access-usdc-stablecoin-payments-base?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzYxMzItNjYyYy03ODI0LTk5MGQtMzBkYzZjNDlkYzNm.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Shopify is rolling out USDC payments via Coinbase’s Base network, offering cashback perks and expanding crypto checkout options through Shopify Payments.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/kucoin-launches-regulated-thailand-exchange-after-erx-acquisition"
+                        open
+                      >
+                        <summary class="article-expander__title">KuCoin expands into Thailand with SEC-approved exchange</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/kucoin-launches-regulated-thailand-exchange-after-erx-acquisition?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4NDUtZWMzZi03ZDFkLTkyZjEtOGEzNDVmMDg4MzNj.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>KuCoin enters the Thai market with a fully licensed exchange after acquiring ERX, Thailand’s first SEC-supervised digital token platform.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/my-big-coin-to-pay-26m-fines-to-ctfc"
+                        open
+                      >
+                        <summary class="article-expander__title">My Big Coin execs to pay nearly $26M in fines to CTFC</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/my-big-coin-to-pay-26m-fines-to-ctfc?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3M2ItNzQzMi03YzAwLWFlMGMtYzZmMDU4MWQyY2Ri.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The CFTC said that My Big Coin investors might not get their money back as the alleged operators “may not have sufficient funds or assets.”</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/huione-still-thriving-despite-shutdown-chainalysis"
+                        open
+                      >
+                        <summary class="article-expander__title">Huione darknet humming at ‘full capacity’ despite shutdown</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/huione-still-thriving-despite-shutdown-chainalysis?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3YTMtODAyYy03YzI4LWE4M2ItMmM1ZDgyZDQzZDIx.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Despite repeated attempts to stamp out the crypto-crime-linked Huione, Chainalysis says there’s been no meaningful decline in transactions.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/bitcoin-price-declines-israel-airstrikes-iran"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin slides to $103K as Israel launches airstrikes on Iran</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-price-declines-israel-airstrikes-iran?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5M2RmMzUtOTlkYi03ZTk5LWIzZWQtNDM0ZTFhYzQyZjM0.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Jan3 founder Samson Mow tells GameStop CEO, “This is where you buy” as Bitcoin’s price tumbled after Israel launched a series of airstrikes on Iran.</span>
                             </span>
                           </div>
                         </a>
@@ -1315,6 +1567,26 @@ v5.25.1 中的 ctx.closed() 可以主动关闭连接
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="https://austinhenley.com/blog/vowels.html"
+                        open
+                      >
+                        <summary class="article-expander__title">The fastest way to detect a vowel in a string</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://austinhenley.com/blog/vowels.html">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://austinhenley.com/blog/images/vowelscode.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="https://philmckinney.substack.com/p/i-convinced-hps-board-to-buy-palm"
                         open
                       >
@@ -1474,7 +1746,7 @@ v5.25.1 中的 ctx.closed() 可以主动关闭连接
                         <summary class="article-expander__title">Show HN: Qrkey – Offline private key backup on paper</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/Techwolf12/qrkey">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/f810236b3fdd6585b5718ffa78b87e5dbc56e598895f6e881136f529b5ba5882/Techwolf12/qrkey" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/b97bb4309308f1bce99086c43dc1689eb70be2f5b0b457460c7da41f39e27713/Techwolf12/qrkey" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
@@ -1496,7 +1768,7 @@ v5.25.1 中的 ctx.closed() 可以主动关闭连接
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;25
+                                &ensp;<span class="article-reading-time">(&hairsp;26
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1643,26 +1915,6 @@ v5.25.1 中的 ctx.closed() 可以主动关闭连接
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/piyushgupta53/go-torrent-client"
-                        open
-                      >
-                        <summary class="article-expander__title">Show HN: I wrote a BitTorrent Client from scratch</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/piyushgupta53/go-torrent-client">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/068b56a658dcc6fad2723c9706670641924125b598f4f93ed774bef1c1c9d6e9/piyushgupta53/go-torrent-client" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.parseable.com/blog/zero-shot-forecasting"
                         open
                       >
@@ -1713,560 +1965,6 @@ v5.25.1 中的 ctx.closed() 可以主动关闭连接
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Cointelegraph.com News</button>
-                  <a class="source-heading__link" href="https://cointelegraph.com">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined"
-                        open
-                      >
-                        <summary class="article-expander__title">Saylor says Bitcoin could fix Apple’s stock buybacks: Finance Redefined</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/saylor-bitcoin-fix-apple-stock-buybacks-finance-redefined?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4YmUtMGFhYi03MmFiLWI3NDctZjNiMTU5OGRkNzc2.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Bitcoin exposure may provide more shareholder value to Apple investors, as the tech firm’s stock is struggling to reverse a downtrend.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/price-predictions-6-13-btc-eth-xrp-bnb-sol-doge-ada-hype-sui-link"
-                        open
-                      >
-                        <summary class="article-expander__title">Price predictions 6/13: BTC, ETH, XRP, BNB, SOL, DOGE, ADA, HYPE, SUI, LINK</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/price-predictions-6-13-btc-eth-xrp-bnb-sol-doge-ada-hype-sui-link?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzZhMjctZmI1YS03OGE2LTljMGQtOGFlMDliYzc2NzY5.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Dip buyers stepped in to absorb this week’s downside in Bitcoin and select altcoins.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/closing-strait-hormuz-biggest-risk-btc-price-weekend"
-                        open
-                      >
-                        <summary class="article-expander__title">Closing Strait of Hormuz is biggest risk to BTC price this weekend — Analyst</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/closing-strait-hormuz-biggest-risk-btc-price-weekend?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NGIwOGMtOGUwNy03NzU0LWI2MTEtMjJlMjZhZmNlOWU0.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Risk assets would take a significant hit if Iran closes the Strait of Hormuz, a narrow waterway supplying 20% of the global oil trade.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/how-to-legally-stake-crypto"
-                        open
-                      >
-                        <summary class="article-expander__title">How to legally stake crypto in 2025: What is now allowed after the SEC’s latest move</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/how-to-legally-stake-crypto?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY5ZjQtODVhYi03MmU0LThlZDEtN2M4MTU3YWMzNzRj.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The SEC’s 2025 guideline clarifies the regulatory stance regarding crypto staking. It states what is and isn’t allowed and how you can stake lawfully.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/crypto-legislation-deadline-2026-marta-belcher-warning"
-                        open
-                      >
-                        <summary class="article-expander__title">Crypto legislation in the US is at a ‘critical’ juncture, says industry exec</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/crypto-legislation-deadline-2026-marta-belcher-warning?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDMvMDE5NWQ0MmItNWYzNi03YTMzLThlNTktZmFmMTY3MmY3YTE1.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The latest episode of Decentralize with Cointelegraph unpacks why US crypto legislation must pass in 2025 or risk renewed crackdowns and political blowback.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/what-is-crypto-market-capitulation-and-its-significance"
-                        open
-                      >
-                        <summary class="article-expander__title">Panic or opportunity? What crypto capitulation tells smart investors</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/what-is-crypto-market-capitulation-and-its-significance?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzNhMGUtNDIzNi03NTJiLTgxZmItNDM1MjI4N2E5MWFh.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Crypto market capitulation refers to a point of extreme selling pressure when investors panic and sell off assets, often marking the bottom of a market cycle.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/bitcoin-clings-to-105k-opinions-diverge-oil-price-outlook"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin clings to $105K as opinions diverge on oil price outlook</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-clings-to-105k-opinions-diverge-oil-price-outlook?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY5ZGUtYWFhMC03MWFkLTlhYTEtODJhNzMwOGI0Njdl.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Oil price talk leads macro analysis amid Middle East tensions, but whether Bitcoin will suffer as a result is up for debate as traders see a BTC price comeback.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/senate-amended-stablecoin-bill-vote"
-                        open
-                      >
-                        <summary class="article-expander__title">US Senate to vote on amended stablecoin bill on June 17</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/senate-amended-stablecoin-bill-vote?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5NWY5ZDMtNWQ3Yy03OWZjLTk4MDAtYWYxNjNmMGU2MzA2.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Though concerns about the Trump family’s connections to World Liberty Financial’s stablecoin shadowed debate on the GENIUS Act, the bill is closer to passing the Senate.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/etf-filings-2025-altcoin-summer"
-                        open
-                      >
-                        <summary class="article-expander__title">ETF filings explode in 2025, heating hopes of an ‘altcoin summer’</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/etf-filings-2025-altcoin-summer?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzZhMmQtNzAyNi03ZTc3LWI3ZjgtZDA4YzczMDg2YjY2.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>This year has seen an uptick in the number of altcoin ETF applications, with at least 31 filed in the first half of 2025, Cointelegraph Research found.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/blockchain-sports-analytics"
-                        open
-                      >
-                        <summary class="article-expander__title">Blockchain is the missing trust layer in sports analytics</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/blockchain-sports-analytics?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzU5NWYtMjAzNS03MThiLThmZGQtOGM4MzVjMGM2YTEy.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Blockchain can reshape sports analytics as a secure, open and verifiable source of truth for performance data. From elite leagues to fantasy sports, blockchain breaks down data silos, ensures real-time accuracy and embeds trust in the sports ecosystem.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/explained/how-a-youtuber-hacked-an-800k-crypto-scam-hub-in-cebu-philippines"
-                        open
-                      >
-                        <summary class="article-expander__title">How a YouTuber hacked an $800K crypto scam hub in Cebu, Philippines</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/explained/how-a-youtuber-hacked-an-800k-crypto-scam-hub-in-cebu-philippines?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy8xY2RhODA2ZDZlNjA4NmRiYWFiZWFkMDBiMmRkNTUzZi5qcGc&#x3D;.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>A YouTuber exposed an $800,000 crypto scam in Cebu by hacking CCTV, confronting scammers live and revealing their global fraud operation.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/sharplink-largest-public-eth-holder-463m"
-                        open
-                      >
-                        <summary class="article-expander__title">SharpLink buys $463M in ETH, becomes largest public ETH holder</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/sharplink-largest-public-eth-holder-463m?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY5ODQtYTIyOC03ZWY0LTkyZDAtMzUzMGU0MmI4YWNj.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>While SharpLink has become the largest publicly traded holder of Ether globally, some entities, including the Ethereum Foundation and BlackRock, are still holding more ETH.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/what-happened-in-crypto-today"
-                        open
-                      >
-                        <summary class="article-expander__title">Here’s what happened in crypto today</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDgzZjctMTdlYS03OTc0LWJlNzMtNjYxYzdjZDE1N2M3.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, NFTs, Web3 and crypto regulation.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/how-to-use-grok-for-crypto-trading"
-                        open
-                      >
-                        <summary class="article-expander__title">How to use Grok for real-time crypto trading signals</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/how-to-use-grok-for-crypto-trading?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzVhZGMtNWZlYy03YzZjLWJkMmYtNGFkMzZiNTUwMzE1.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Grok scans posts and sentiment shifts on X to help crypto traders identify early signals, memes and macro-driven momentum plays.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/explained/blackrock-quietly-accumulated-3-of-all-bitcoin-heres-what-that-means"
-                        open
-                      >
-                        <summary class="article-expander__title">BlackRock quietly accumulated 3% of all Bitcoin. Here’s what that means</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/explained/blackrock-quietly-accumulated-3-of-all-bitcoin-heres-what-that-means?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy83YzIyOGRiMjRlNGJjMDdjZWE0ZTU1ZDMwOGNhN2M5Zi5qcGc&#x3D;.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>How Much Bitcoin Does BlackRock Own and Why It Matters in 2025.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/bitcoin-mirrors-80-rally-setup-that-preceded-2024-israel-iran-conflict"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin mirrors 80% rally setup that preceded 2024 Israel-Iran conflict</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-mirrors-80-rally-setup-that-preceded-2024-israel-iran-conflict?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4Y2QtNmJkNy03MmZkLTg0YTUtY2Y3MDAzYTZjNjk5.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>One analyst spots a bullish fractal driven by 2024-like liquidity grabs, hinting that Bitcoin may breakout toward new all-time highs.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/bitcoin-2025-defi-traditional-finance"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin 2025 builders predict DeFi will unseat traditional finance</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-2025-defi-traditional-finance?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY0ZDktM2UwMi03NjE1LThjNTYtNjU5NDViODZiMGNk.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Bitcoin’s foundational security is powering a new frontier: DeFi systems built on self-sovereignty, security and real-world financial inclusion.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/anthony-pompliano-lead-bitcoin-buying-vehicle-raise-750-million-ft"
-                        open
-                      >
-                        <summary class="article-expander__title">Anthony Pompliano to lead new Bitcoin-buying group raising $750M: FT</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/anthony-pompliano-lead-bitcoin-buying-vehicle-raise-750-million-ft?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4YWMtM2ViZi03MjU4LWI3NTctNGE5YmNjNTFjOTIx.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Under Pompliano’s leadership, ProCapBTC would reportedly seek to raise $750 million in equity and convertible debt as part of a merger with Columbus Circle Capital 1.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/walmart-amazon-explore-stablecoins-payments"
-                        open
-                      >
-                        <summary class="article-expander__title">Walmart, Amazon consider issuing own stablecoins: WSJ</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/walmart-amazon-explore-stablecoins-payments?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5MzhjMWQtYjU4ZS03OWU1LThlNGItYTQxNzlhODk0NWY3.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Retail giants Walmart and Amazon are reportedly evaluating digital currencies to streamline e‑commerce and boost cross‑border transactions.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/polkadot-bitcoin-reserve-proposal-sparks-mixed-reactions"
-                        open
-                      >
-                        <summary class="article-expander__title">Polkadot community split on selling 500K DOT for Bitcoin reserve</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/polkadot-bitcoin-reserve-proposal-sparks-mixed-reactions?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4YWItZGRkMS03MGFiLWJjOGUtMzg4M2JjMjQxOTNm.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Polkadot’s community is split over a proposal to convert 500,000 DOT tokens into tBTC using a year-long DCA strategy amid market volatility.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/bitcoin-price-bollinger-bands-failure-risks-end-uptrend-112k"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin price Bollinger Bands &#x27;failure&#x27; risks end of uptrend at $112K</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-price-bollinger-bands-failure-risks-end-uptrend-112k?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDIvMDE5NTI0ZjktM2U5Mi03NmE2LWFiODEtMmQ2M2Y3ZjE1MzA0.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Bitcoin Bollinger Bands analysis leads to potentially grim conclusions about the fate of the BTC price rebound, which began at sub-$75,000 lows in April.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/gamestop-sink-20-500m-upsizing-btc-investments"
-                        open
-                      >
-                        <summary class="article-expander__title">GameStop shares tank 22% after boosting raise to $2.25B for Bitcoin strategy</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/gamestop-sink-20-500m-upsizing-btc-investments?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzVjOTEtNWYwYi03ZTcxLWIyM2MtZTE5MjM1NzY2NmJk.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>GameStop boosted its convertible note offering to $2.25 billion, fueling its Bitcoin treasury strategy and raising speculation about future crypto investments.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/why-is-the-crypto-market-down-today"
-                        open
-                      >
-                        <summary class="article-expander__title">Why is the crypto market down today?</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/why-is-the-crypto-market-down-today?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMDgvODAzMjgxMmQtMWQ1MC00NmFiLWI5NjUtYTBjYjZkZDQxYTYz.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Crypto market volatility rises in reaction to Israel’s attack on Iran, but the technical setup suggesting that the uptrend still remains intact.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/shopify-early-access-usdc-stablecoin-payments-base"
-                        open
-                      >
-                        <summary class="article-expander__title">Shopify launches early access to USDC stablecoin payments on Base</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/shopify-early-access-usdc-stablecoin-payments-base?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzYxMzItNjYyYy03ODI0LTk5MGQtMzBkYzZjNDlkYzNm.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Shopify is rolling out USDC payments via Coinbase’s Base network, offering cashback perks and expanding crypto checkout options through Shopify Payments.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/kucoin-launches-regulated-thailand-exchange-after-erx-acquisition"
-                        open
-                      >
-                        <summary class="article-expander__title">KuCoin expands into Thailand with SEC-approved exchange</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/kucoin-launches-regulated-thailand-exchange-after-erx-acquisition?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY4NDUtZWMzZi03ZDFkLTkyZjEtOGEzNDVmMDg4MzNj.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>KuCoin enters the Thai market with a fully licensed exchange after acquiring ERX, Thailand’s first SEC-supervised digital token platform.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/my-big-coin-to-pay-26m-fines-to-ctfc"
-                        open
-                      >
-                        <summary class="article-expander__title">My Big Coin execs to pay nearly $26M in fines to CTFC</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/my-big-coin-to-pay-26m-fines-to-ctfc?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3M2ItNzQzMi03YzAwLWFlMGMtYzZmMDU4MWQyY2Ri.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The CFTC said that My Big Coin investors might not get their money back as the alleged operators “may not have sufficient funds or assets.”</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/huione-still-thriving-despite-shutdown-chainalysis"
-                        open
-                      >
-                        <summary class="article-expander__title">Huione darknet humming at ‘full capacity’ despite shutdown</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/huione-still-thriving-despite-shutdown-chainalysis?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3YTMtODAyYy03YzI4LWE4M2ItMmM1ZDgyZDQzZDIx.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Despite repeated attempts to stamp out the crypto-crime-linked Huione, Chainalysis says there’s been no meaningful decline in transactions.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/bitcoin-price-declines-israel-airstrikes-iran"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin slides to $103K as Israel launches airstrikes on Iran</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-price-declines-israel-airstrikes-iran?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5M2RmMzUtOTlkYi03ZTk5LWIzZWQtNDM0ZTFhYzQyZjM0.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Jan3 founder Samson Mow tells GameStop CEO, “This is where you buy” as Bitcoin’s price tumbled after Israel launched a series of airstrikes on Iran.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/czech-government-no-confidence-vote-bitcoin-scandal"
-                        open
-                      >
-                        <summary class="article-expander__title">Czech government hit with no-confidence vote over $45M Bitcoin scandal</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/czech-government-no-confidence-vote-bitcoin-scandal?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3MDItZTAyNC03N2YyLThkNTItMTI3Y2RmODNiZTcx.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Czech Justice Minister Pavel Blazek resigned last month after the Justice Ministry auctioned off nearly 500 Bitcoin it received from a convicted online drug trafficker.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/sec-axes-biden-era-proposed-rules-on-crypto-in-flurry-of-repeals"
-                        open
-                      >
-                        <summary class="article-expander__title">SEC axes Biden-era proposed crypto rules in flurry of repeals</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/sec-axes-biden-era-proposed-rules-on-crypto-in-flurry-of-repeals?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5NzY3MmItMWI5ZC03ZGFiLWI2MGUtYTMxNzUwZjg4YjA3.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The SEC has withdrawn over a dozen rules the agency proposed under Joe Biden, including two crypto-related rules targeting DeFi and digital asset custody.</span>
                             </span>
                           </div>
                         </a>
@@ -2808,25 +2506,6 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://omattos.com/2025/06/12/glass-hvdc-cables.html"
-                        open
-                      >
-                        <summary class="article-expander__title">Worldwide power grid with glass insulated HVDC cables</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://omattos.com/2025/06/12/glass-hvdc-cables.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://tailscale.com/blog/frequent-reath-security"
                         open
                       >
@@ -2853,7 +2532,7 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
                         <summary class="article-expander__title">iPhone 11 emulation done in QEMU</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/ChefKissInc/QEMUAppleSilicon">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/51cb2f876ec4f3e58a33b5ef4954c34eb3561ef3161092e373945f8f8a43e791/ChefKissInc/QEMUAppleSilicon" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/e7ff3233f84cf7e02840675917ce70dce694f4310c84975ceb3be3723213fcd7/ChefKissInc/QEMUAppleSilicon" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;10
@@ -3589,6 +3268,75 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
                     class="source-heading__name"
                     data-action="toggle-accordions"
                     title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://opg.optica.org/optica/fulltext.cfm?uri&#x3D;optica-12-5-674&amp;id&#x3D;570897"
+                        open
+                      >
+                        <summary class="article-expander__title">High-speed fluorescence light field tomography of whole freely moving organisms</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://opg.optica.org/optica/fulltext.cfm?uri&#x3D;optica-12-5-674&amp;id&#x3D;570897">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://kobzol.github.io/rust/rustc/2025/06/09/why-doesnt-rust-care-more-about-compiler-performance.html"
+                        open
+                      >
+                        <summary class="article-expander__title">Rust compiler performance</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://kobzol.github.io/rust/rustc/2025/06/09/why-doesnt-rust-care-more-about-compiler-performance.html">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;14
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://blog.polybdenum.com/2020/07/04/subtype-inference-by-example-part-1-introducing-cubiml.html"
+                        open
+                      >
+                        <summary class="article-expander__title">Subtype Inference by Example</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://blog.polybdenum.com/2020/07/04/subtype-inference-by-example-part-1-introducing-cubiml.html">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
                   >freeCodeCamp Programming Tutorials: Python, JavaScript, Git &amp; More</button>
                   <a class="source-heading__link" href="https://www.freecodecamp.org/news/">Open</a>
                 </h3>
@@ -3681,58 +3429,6 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
                             <span class="media-object__text">
                               <span>Explore how hyperliquid became the leading perp DEX: A deep dive of architecture, metrics, tokenomics, and vision for onchain finance.</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;15
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://kobzol.github.io/rust/rustc/2025/06/09/why-doesnt-rust-care-more-about-compiler-performance.html"
-                        open
-                      >
-                        <summary class="article-expander__title">Rust compiler performance</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://kobzol.github.io/rust/rustc/2025/06/09/why-doesnt-rust-care-more-about-compiler-performance.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;14
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://blog.polybdenum.com/2020/07/04/subtype-inference-by-example-part-1-introducing-cubiml.html"
-                        open
-                      >
-                        <summary class="article-expander__title">Subtype Inference by Example</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://blog.polybdenum.com/2020/07/04/subtype-inference-by-example-part-1-introducing-cubiml.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -4044,8 +3740,8 @@ The post Casio G-Shock GA-V01 Priced At RM679; Pre-Orders Now Available Exclusiv
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/15641297763">
-        <time id="build-timestamp" datetime="2025-06-13T18:19:33.301Z">2025-06-13T18:19:33.301Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/15641838624">
+        <time id="build-timestamp" datetime="2025-06-13T18:50:57.633Z">2025-06-13T18:50:57.633Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
