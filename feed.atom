@@ -1,81 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-07-13T06:53:36.043Z</id>
+    <id>urn:2025-07-13T07:14:54.586Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-07-13T06:53:36.043Z</updated>
+    <updated>2025-07-13T07:14:54.586Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Kubernetes Workshop1 : Step8 : Service]]></title>
-        <id>https://dev.to/cross1308/kubernetes-workshop1-step8-service-39ho</id>
-        <link href="https://dev.to/cross1308/kubernetes-workshop1-step8-service-39ho"/>
-        <updated>2025-07-13T06:36:53.000Z</updated>
-        <summary type="html"><![CDATA[Service คือ Virtual IP ช่วยให้เข้าถึง Pod ได้โดยไม่ต้องรู้ Pod IP ตรง ๆ มีหลายประเภท:
-ClusterIP → ภายใน Cluster
-NodePort → เปิด Port ภายนอก
-LoadBalancer → สร้าง Load Balancer ภายนอก
-ClusterIP
-ใช้งานภายใน Cluster เท่านั้น
-ใช้ IP ภายใน (เช่น 10.96.5.42)
-Pod อื่นใน Cluster เรียกผ่าน ClusterIP ได้
-เหมาะสำหรับใช้งานภายใน เช่น Backend, Database
+        <title type="html"><![CDATA[NodeJS Fundamentals: domain]]></title>
+        <id>https://dev.to/devopsfundamentals/nodejs-fundamentals-domain-3b04</id>
+        <link href="https://dev.to/devopsfundamentals/nodejs-fundamentals-domain-3b04"/>
+        <updated>2025-07-13T07:11:20.000Z</updated>
+        <summary type="html"><![CDATA[Mastering Node.js Domains: Error Handling and Beyond
 
 
 
+  
+  
+  Introduction
 
-+-----------------------------+
-|       Kubernetes Cluster    |
-|                             |
-|  +-----------------------+  |
-|  |     Service (ClusterIP)| |
-|  |  10.96.5.42:80         | |
-|  +----------+------------+  |
-|             |               |
-|     +-------+--------+      |
-|     |       |        |      |
-| +---v--+ +--v---+ +--v---+  |
-| | Pod1 | | Pod2 | | Pod3 |  |
-| |:8080 | |:8080 | |:8080 |  |
-| +------+ +------+ +------+  |
-|      …]]></summary>
+
+In high-throughput Node.js backend systems, unhandled exceptions are a silent killer. They crash processes, disrupt service, and often leave you scrambling through logs to pinpoint the root cause.  We recently encountered a critical issue in our microservice-based order processing system where a malformed input to a third-party payment gateway was causing unhandled rejections, leading to cascading failures across several downstream services.  The problem wasn’t the gateway itself, but our lack of robust error isolation within the Node.js event loop.  This led us to revisit and deeply implement Node.js domain module, and subsequently, its modern alternatives. While deprecated, understanding the core concepts behi…]]></summary>
+        <author>
+            <name>DevOps Fundamental</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Kubernetes Workshop1 : Step10 : Service Loadbalancer]]></title>
+        <id>https://dev.to/cross1308/kubernetes-workshop1-step9-service-loadbalancer-565i</id>
+        <link href="https://dev.to/cross1308/kubernetes-workshop1-step9-service-loadbalancer-565i"/>
+        <updated>2025-07-13T07:10:49.000Z</updated>
+        <summary type="html"><![CDATA[เราจะมาลองทำ service loadbalancer ด้วย minikube กัน
+
+
+http://10.244.0.108 ต้อง ssh เข้าไปใน node ก่อน
+
+สร้าง service loadbalancer เพื่อให้สามารถเข้าถึง nginx จากภายนอกได้
+1. สร้างไฟล์ service-definition.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30008
+  selector:
+    app: nginx
+    tier: frontend
+
+ในส่วนของ selector ต้องกำหนดให้ตรงกับ label ของ pod ที่สร้างไว้ และสั่ง apply
+kubectl apply -f service-definition.yaml
+
+
+2. เปิด minikube tunnel จำลอง load balance ในเครื่อง
+minikube tunnel
+
+
+_3. ทดสอบการทำงาน _
+minikube service myapp-service
+
+
+http://127.0.0.1:64208]]></summary>
         <author>
             <name>Tossapol Ritcharoenwattu</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[2D array (matrix) in Swift, along with how to access, modify, and iterate through it.]]></title>
-        <id>https://dev.to/harshpdev/2d-array-matrix-in-swift-along-with-how-to-access-modify-and-iterate-through-it-13e0</id>
-        <link href="https://dev.to/harshpdev/2d-array-matrix-in-swift-along-with-how-to-access-modify-and-iterate-through-it-13e0"/>
-        <updated>2025-07-13T06:34:57.000Z</updated>
-        <summary type="html"><![CDATA[✅ 2D Array in Swift
-// Define a 2D array (3x3 matrix)
-var matrix: [[Int]] = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-
-// Access element at row 1, column 2 (value = 6)
-print("Element at [1][2] is:", matrix[1][2])
-
-// Modify element at [2][1] (change 8 to 88)
-matrix[2][1] = 88
-
-// Iterate through the 2D array
-for row in matrix {
-    for value in row {
-        print(value, terminator: " ")
-    }
-    print()
-}
-
-🧾 Output:
-Element at [1][2] is: 6
-1 2 3 
-4 5 6 
-7 88 9]]></summary>
+        <title type="html"><![CDATA[Breaking Circular Dependencies in Kotlin with the Mediator Pattern]]></title>
+        <id>https://dev.to/mikesplore/breaking-circular-dependencies-in-kotlin-with-the-mediator-pattern-136d</id>
+        <link href="https://dev.to/mikesplore/breaking-circular-dependencies-in-kotlin-with-the-mediator-pattern-136d"/>
+        <updated>2025-07-13T07:08:02.000Z</updated>
+        <summary type="html"><![CDATA[Have you ever run into a StackOverflowError when starting your application and wondered what went wrong? If you're working with dependency injection in Kotlin, chances are you've encountered the dreaded circular dependency problem. In this post, I'll share how I solved this issue in a real-world application using the Mediator Pattern.
+Picture this scenario: You have two repositories that need each other to function properly.
+TokenRepositoryImpl needs UsersRepository to look up user profiles
+UsersRepositoryImpl needs TokenRepository to invalidate tokens
+This creates a classic chicken-and-egg problem. When your dependency injection framework (in my case, Koin) tries to create these objects, it gets caught in an infinite loop:
+To create TokenRepositoryImpl, it needs to create UsersRepository …]]></summary>
         <author>
-            <name>Harsh Prajapat</name>
+            <name>Michael Odhiambo</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Understanding Tech Debt]]></title>
+        <id>https://dev.to/clifford_otieno/understanding-tech-debt-5e2f</id>
+        <link href="https://dev.to/clifford_otieno/understanding-tech-debt-5e2f"/>
+        <updated>2025-07-13T07:00:29.000Z</updated>
+        <summary type="html"><![CDATA[Understanding Tech Debt
+
+
+What is Tech Debt in Software Development?
+What is Tech Debt in Agile and Scrum?
+Common Examples of Tech Debt
+Code-Level Debt
+Database Debt
+Architecture and Infrastructure Debt
+Conclusion
+Think of technical debt (or tech debt) as taking a shortcut when writing code. You choose a quick and easy solution for now, knowing that you'll have to come back and fix it properly later. It's like borrowing money. You get something now, but you have to pay it back later, and often with "interest." This "interest" means that making changes to your software in the future will be slower and more difficult because of the shortcut you took.
+In agile development, where the goal is to release software in short cycles (sprints), teams can easily create tech debt. The pressure to finis…]]></summary>
+        <author>
+            <name>Clifford Otieno</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Standalone Components and Signals Are Game-Changers for Angular Developers]]></title>
+        <id>https://dev.to/karol_modelski/why-standalone-components-and-signals-are-game-changers-for-angular-developers-5228</id>
+        <link href="https://dev.to/karol_modelski/why-standalone-components-and-signals-are-game-changers-for-angular-developers-5228"/>
+        <updated>2025-07-13T07:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Are you ready to break free from the constraints of NgModules and embrace a more reactive, streamlined Angular experience? Recent advancements in Angular - specifically, standalone components and signals - are reshaping how developers build modern web applications.
+What standalone components and signals are, and why they matter.
+
+
+How these features work together to simplify and modernize Angular development.
+
+
+Practical steps and real-world tips for adopting these innovations in your own projects.
+
+
+
+Whether you're a seasoned Angular developer or just starting out, this chapter will empower you to leverage the latest tools and patterns for building faster, more maintainable, and truly reactive applications.
+Angular has always aimed to help developers build robust apps, but its traditional…]]></summary>
+        <author>
+            <name>Karol Modelski</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sunrise]]></title>
+        <id>https://dev.to/preetha_vaishnavi_2b82358/sunrise-59lc</id>
+        <link href="https://dev.to/preetha_vaishnavi_2b82358/sunrise-59lc"/>
+        <updated>2025-07-13T06:57:45.000Z</updated>
+        <summary type="html"><![CDATA[Check out this Pen I made!]]></summary>
+        <author>
+            <name>preetha vaishnavi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Looking for a full-stack Django project idea that’s actually useful, and looks amazing in your portfolio?]]></title>
+        <id>https://dev.to/iamrealzippo/looking-for-a-full-stack-django-project-idea-thats-actually-useful-and-looks-amazing-in-your-1flk</id>
+        <link href="https://dev.to/iamrealzippo/looking-for-a-full-stack-django-project-idea-thats-actually-useful-and-looks-amazing-in-your-1flk"/>
+        <updated>2025-07-13T06:56:55.000Z</updated>
+        <summary type="html"><![CDATA[Looking for a full-stack Django project idea that’s actually useful, and looks amazing in your portfolio?
+SkillZone – A Mini Platform to Share & Showcase Skills
+
+
+
+
+
+
+What Is SkillZone?
+Create personal skill profiles
+List and get endorsed for skills
+Upload certificates
+Join skill-based groups
+Explore others’ profiles and connect
+It’s like a mini LinkedIn, but much more fun to build.
+Tech Stack We’re using:
+Frontend: HTML, CSS, JavaScript
+Backend: Django
+Database: SQLite (for now)
+🙌 Looking for Contributors!
+🤝 Who Can Join?
+Django 
+HTML, CSS, JavaScript
+Git & GitHub collaboration
+…you’re welcome to join! Even if you're just learning — this is a great project to grow with.
+🌐 Live Project Portfolio
+ZIPPTECH
+📂 Source Code
+📦 GitHub Repo:
+👉 github.com/ZiPPO7777/SkillZone
+Fork it, star it, or open a pull request — I’d love your support!
+
+
+  
+  
+  django #python #opensource #projectidea #beginners #portfolio #webdev #collaboration]]></summary>
+        <author>
+            <name>ZIPPO</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Reminder App]]></title>
+        <id>https://dev.to/preetha_vaishnavi_2b82358/reminder-app-4ehd</id>
+        <link href="https://dev.to/preetha_vaishnavi_2b82358/reminder-app-4ehd"/>
+        <updated>2025-07-13T06:56:33.000Z</updated>
+        <summary type="html"><![CDATA[Check out this Pen I made!]]></summary>
+        <author>
+            <name>preetha vaishnavi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Leetcode 3613. Minimize Maximum Component Cost]]></title>
+        <id>https://dev.to/rohithv07/leetcode-3613-minimize-maximum-component-cost-45ah</id>
+        <link href="https://dev.to/rohithv07/leetcode-3613-minimize-maximum-component-cost-45ah"/>
+        <updated>2025-07-13T06:55:46.000Z</updated>
+        <summary type="html"><![CDATA[Problem Statement
+
+
+You are given an undirected connected graph with n nodes labeled from 0 to n - 1 and a 2D integer array edges where edges[i] = [ui, vi, wi] denotes an undirected edge between node ui and node vi with weight wi, and an integer k.
+You are allowed to remove any number of edges from the graph such that the resulting graph has at most k connected components.
+The cost of a component is defined as the maximum edge weight in that component. If a component has no edges, its cost is 0.
+Return the minimum possible value of the maximum cost among all components after such removals.
+Example 1:
+Input: n = 5, edges = [[0,1,4],[1,2,3],[1,3,2],[3,4,6]], k = 2
+Output: 4
+Explanation:
+Remove the edge between nodes 3 and 4 (weight 6).
+Input: n = 4, edges = [[0,1,5],[1,2,5],[2,3,5]], k = 1
+O…]]></summary>
+        <author>
+            <name>Rohith V</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Pydantic have very bad performance]]></title>
+        <id>https://dev.to/jneeee/pydantic-have-very-bad-performance-4eii</id>
+        <link href="https://dev.to/jneeee/pydantic-have-very-bad-performance-4eii"/>
+        <updated>2025-07-13T06:54:25.000Z</updated>
+        <summary type="html"><![CDATA[I have compare it with dataclasses, Nametuple, msgspec.Struct
+Pydantic is the heavest package but with badest performace. I do not understand why still so many people use it.
+Here is my test code:
+import time
+import sys
+from typing import NamedTuple
+from dataclasses import dataclass
+
+from msgspec import Struct
+from pydantic import BaseModel
+
+class PointNamedTuple(NamedTuple):
+    x: int
+    y: int
+
+@dataclass
+class PointDataClass:
+    x: int
+    y: int
+
+@dataclass(slots=True)
+class PointDataClassSlots:
+    x: int
+    y: int
+
+
+class Pointbymsgspec(Struct):
+    x: int
+    y: int
+
+
+class Pointbypydantic(BaseModel):
+    x: int
+    y: int
+
+
+NUM_OBJECTS = 1_000_000
+
+
+def test_create_instance(func, num_objects=NUM_OBJECTS):
+    start = time.perf_counter()
+    _list = [func(x=i, y=i) for i in range(num_objects)]
+    _size = sys.getsizeof(_list[0])
+    print(f"{func.__name__}: {time.perf_counter() - start:.5f}s, {_size/1024} Bit")
+    return time.perf_counter() - start, _size
+
+print(f"Create {NUM_OBJECTS} instance, funcs: time(s): size(Bit)")
+test_create_instance(PointNamedTuple)
+test_create_instance(PointDataClass)
+test_create_instance(PointDataClassSlots)
+test_create_instance(Pointbymsgspec)
+test_create_instance(Pointbypydantic)
+
+The result:
+Create 1000000 instance, funcs: time(s): size(Bit)
+PointNamedTuple: 1.08123s, 0.0546875 Bit
+PointDataClass: 1.09183s, 0.046875 Bit
+PointDataClassSlots: 1.02618s, 0.046875 Bit
+Pointbymsgspec: 0.15777s, 0.046875 Bit
+Pointbypydantic: 3.67236s, 0.0703125 Bit]]></summary>
+        <author>
+            <name>jneeee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Replication Is Critical in 2025 — And Why Legacy Tools Like GoldenGate, Fivetran, and Hevo Are Falling Behind]]></title>
+        <id>https://dev.to/pokhraj_das_oracle/why-replication-is-critical-in-2025-and-why-legacy-tools-like-goldengate-fivetran-and-hevo-are-52gh</id>
+        <link href="https://dev.to/pokhraj_das_oracle/why-replication-is-critical-in-2025-and-why-legacy-tools-like-goldengate-fivetran-and-hevo-are-52gh"/>
+        <updated>2025-07-13T06:53:36.000Z</updated>
+        <summary type="html"><![CDATA[Database replication has become the backbone of modern IT — powering real-time data pipelines, multi-cloud systems, and zero-downtime migrations.
+But here’s the challenge: legacy tools like Oracle GoldenGate and even popular SaaS ETL tools like Fivetran and Hevo are struggling to keep up with the demands of modern, heterogeneous systems.
+This post explores why — and introduces a new alternative: Helyx, a CLI-first, Kafka-native replication engine built for agility, schema evolution, and hybrid-cloud scale.
+🚨 Why Replication Is More Important Than Ever
+📊 Analytics platforms
+☁️ Cloud-native data lakes
+🔁 Microservices and polyglot persistence
+🌍 Multi-region and hybrid architectures
+🏥 Regulated, mission-critical systems
+Downtime, lag, or mismatched data? It can break systems, dashboards, …]]></summary>
+        <author>
+            <name>Pokhraj Das</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AI agent observability with OpenTelemetry and Grafana LGTM]]></title>
+        <id>https://dev.to/trottomv/ai-agent-observability-with-opentelemetry-and-grafana-lgtm-4m57</id>
+        <link href="https://dev.to/trottomv/ai-agent-observability-with-opentelemetry-and-grafana-lgtm-4m57"/>
+        <updated>2025-07-13T06:52:39.000Z</updated>
+        <summary type="html"><![CDATA[AI is powerful. But why does observing it matter?
+AI agents are becoming more and more common in production. However, they often behave like black boxes: we send a prompt, we get a response… but what happens in between?
+In this post, I’ll show why instrumenting AI agents matters more than ever, using open source tools like OpenTelemetry and the Grafana LGTM stack — that is, Loki, Grafana, Tempo, and Mimir (and yes, also “Looks Good To Me”! 😉).
+LLMs and AI agents are 'black boxes' systems:
+Complex, non-deterministic behavior
+Internal 'reasoning' is invisible at runtime
+
+
+Hard to explain, trust, or debug outputs
+
+
+
+🛡️ “You can’t govern or secure what you can’t observe.” (semicit.)
+The OWASP Agent Observability Standard (AOS)
+OWASP AOS wants to bring standardized observability to AI systems…]]></summary>
+        <author>
+            <name>Matteo Vitali</name>
         </author>
     </entry>
     <entry>
@@ -86,300 +333,6 @@ Element at [1][2] is: 6
         <summary type="html"><![CDATA[The corporate Bitcoin adoption race is “mostly being spearheaded by brand new companies or dying companies you’ve never heard of,” says Blockware.]]></summary>
         <author>
             <name>Cointelegraph by Ciaran Lyons</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[IDEA] Flutter で本格的な HTTP キャッシュライブラリ「AeroCache」を作ってみた ☁️]]></title>
-        <id>https://dev.to/nikaera/idea-flutter-deben-ge-de-na-http-kiyatusiyuraiburariaerocache-wozuo-tutemita-477p</id>
-        <link href="https://dev.to/nikaera/idea-flutter-deben-ge-de-na-http-kiyatusiyuraiburariaerocache-wozuo-tutemita-477p"/>
-        <updated>2025-07-13T06:29:16.000Z</updated>
-        <summary type="html"><![CDATA[はじめに
-
-
-Flutter は既存のキャッシュライブラリに HTTP のプライベートキャッシュ に準拠したものが少なく、想定と異なる挙動により意図した形でキャッシュが更新されない状況に遭遇することが多々あります。例えば、Varyに未対応であったり、キャッシュ再検証周りのロジックが独自実装だったりが該当します。
-そこで、RFC 9111 に準拠したキャッシュライブラリ AeroCache を開発しました。この記事では、その実装過程で学んだ HTTP のプライベートキャッシュに関する知識を簡潔に解説しつつ AeroCache を紹介します。
-https://nikaera.com/aero_cache/
-主にパフォーマンス向上や帯域節約、細やかなキャッシュ管理を実現するための仕組みとして、活用されるヘッダは以下の通りです。
-
-
-
-ヘッダー
-説明
-
-
-
-
-Cache-Control
-レスポンスキャッシュの有効期限や再検証ルールを指示するディレクティブ群、max-age や no-cache などが代表的
-
-
-ETag
-レスポンスごとに発行される一意の識別子、クライアントは ETag を使って「内容が変わったか」を効率的に判定可能
-
-
-Last-Modified
-レスポンスの最終更新日時、If-Modified-Since ヘッダーと組み合わせて、キャッシュの更新判定に利用される
-
-
-Vary
-
-Accept-Language や User-Agent などを指定することで、端末やリクエストごとに異なるキャッシュを保持可能
-
-
-
-以降では、各要素の具体的な動作について詳しく解説します。
-Cache-Control ディレクティブの対応
-
-
-HTTP レスポンスヘッダーの Cache-Control は、キャッシュ動作を制御する重要な仕組みです。
-Cache-Control で用い…]]></summary>
-        <author>
-            <name>nikaera</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AWS Roadmap]]></title>
-        <id>https://dev.to/avinash_nag_7d138cfd2b16a/aws-roadmap-5b54</id>
-        <link href="https://dev.to/avinash_nag_7d138cfd2b16a/aws-roadmap-5b54"/>
-        <updated>2025-07-13T06:15:16.000Z</updated>
-        <summary type="html"><![CDATA[AWS Learning and Roadmap, Cheat sheets, anything relate to AWS(EC2/S3/Lambda)]]></summary>
-        <author>
-            <name>Avinash Nag</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS Art Office Culture - Frontend Challenge Submission]]></title>
-        <id>https://dev.to/aibughunter/css-art-office-culture-frontend-challenge-submission-93a</id>
-        <link href="https://dev.to/aibughunter/css-art-office-culture-frontend-challenge-submission-93a"/>
-        <updated>2025-07-13T06:15:03.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for Frontend Challenge: Office Edition sponsored by Axero, Holistic Webdev: Office Space
-CSS Art Office Culture is an immersive, interactive web experience that transforms the traditional concept of office culture into a vibrant digital storytelling platform. This project combines visual artistry with sound design to create a comprehensive office environment that users can explore and interact with through multiple senses.
-
-The project features a sophisticated multi-layered approach to showcasing office culture:
-Visual Storytelling Architecture
-
-
-
-
-Six Distinct Office Stories: Each section captures a different aspect of modern office life - from collaborative workspaces and creative brainstorming sessions to coffee culture and remote work excellence
-CSS Art Animations:…]]></summary>
-        <author>
-            <name>AI Bug Slayer 🐞</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Missing Number" problem — a common coding question on LeetCode (#268) and interviews at companies like Amazon.]]></title>
-        <id>https://dev.to/harshpdev/missing-number-problem-a-common-coding-question-on-leetcode-268-and-interviews-at-companies-69d</id>
-        <link href="https://dev.to/harshpdev/missing-number-problem-a-common-coding-question-on-leetcode-268-and-interviews-at-companies-69d"/>
-        <updated>2025-07-13T06:14:29.000Z</updated>
-        <summary type="html"><![CDATA[🧩 Problem Statement (LeetCode 268)
-You are given an array containing n distinct numbers taken from the range 0 to n.
-🧠 Example:
-Input: [3, 0, 1]
-Output: 2
-
-✅ Swift Solutions
-🔹 1. Using Sum Formula (O(n) time, O(1) space)
-func missingNumber(_ nums: [Int]) -> Int {
-    let n = nums.count
-    let expectedSum = n * (n + 1) / 2
-    let actualSum = nums.reduce(0, +)
-    return expectedSum - actualSum
-}
-
-🧠 Explanation:
-The sum of numbers from 0...n is n(n+1)/2.
-Subtract actual array sum from expected sum to get the missing number.
-🔹 2. Using XOR (No Extra Space, O(n) time)
-func missingNumber(_ nums: [Int]) -> Int {
-    var result = nums.count
-    for (i, num) in nums.enumerated() {
-        result ^= i ^ num
-    }
-    return result
-}
-
-🧠 Explanation:
-XOR all indices and values; missing one will cancel out and remain.
-🔹 3. Using Set (Extra Space O(n))
-func missingNumber(_ nums: [Int]) -> Int {
-    let set = Set(nums)
-    for i in 0...nums.count {
-        if !set.contains(i) {
-            return I
-        }
-    }
-    return -1
-}
-
-✅ Example Call:
-let arr = [0, 1, 3]
-print(missingNumber(arr))  // Output: 2]]></summary>
-        <author>
-            <name>Harsh Prajapat</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building a GAN from Scratch: My Journey into Generative AI 🤖]]></title>
-        <id>https://dev.to/gruhesh_kurra_6eb933146da/building-a-gan-from-scratch-my-journey-into-generative-ai-5fg7</id>
-        <link href="https://dev.to/gruhesh_kurra_6eb933146da/building-a-gan-from-scratch-my-journey-into-generative-ai-5fg7"/>
-        <updated>2025-07-13T06:10:59.000Z</updated>
-        <summary type="html"><![CDATA[How I implemented Generative Adversarial Networks to generate MNIST digits and what I learned along the way
-I built a complete GAN implementation from scratch using PyTorch that generates realistic MNIST handwritten digits. The project includes both standard and optimized versions, comprehensive logging, and supports multiple devices (MPS, CUDA, CPU). 
-Links:
-GitHub Repository
-Hugging Face Space
-Generative Adversarial Networks (GANs) have always fascinated me - the idea of two neural networks competing against each other to create realistic data seemed like something out of science fiction. So I decided to dive deep and build one from scratch.
-What I wanted to achieve:
-Generate realistic handwritten digits
-Understand the adversarial training process
-Create both standard and optimized versi…]]></summary>
-        <author>
-            <name>Gruhesh Sri Sai Karthik Kurra</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Git and Version Control Systems: A Developer's Essential Guide]]></title>
-        <id>https://dev.to/matin676/git-and-version-control-systems-a-developers-essential-guide-11bh</id>
-        <link href="https://dev.to/matin676/git-and-version-control-systems-a-developers-essential-guide-11bh"/>
-        <updated>2025-07-13T06:04:36.000Z</updated>
-        <summary type="html"><![CDATA[Version control is the backbone of modern software development, and Git has emerged as the industry standard tool for it. But what makes version control so crucial, and why is Git considered the go-to system by developers across the world?
-In this post, we’ll explore:
-✅ What version control systems are
-Whether you're just starting out or looking to sharpen your skills, understanding Git is a must for every developer.
-🔗 Read the full, in-depth blog here:
-Git and Version Control System - Full Guide
-Thanks for reading! If you find it helpful, share and follow for more developer-friendly content every week 🚀]]></summary>
-        <author>
-            <name>Matin Imam</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[🚀 Think Redux and Zustand Are Fast? We Put Them to the Test.]]></title>
-        <id>https://dev.to/karandeepsingh7070/think-redux-and-zustand-are-fast-we-put-them-to-the-test-5cfi</id>
-        <link href="https://dev.to/karandeepsingh7070/think-redux-and-zustand-are-fast-we-put-them-to-the-test-5cfi"/>
-        <updated>2025-07-13T06:04:06.000Z</updated>
-        <summary type="html"><![CDATA[If you’re building React apps, chances are you’ve either used Redux or Zustand for state management.
-All solid choices for managing state in your React app. But when your app grows, when thousands of updates happen under the hood, and when users expect a smooth UI, does your state manager keep up?
-And for this test, we are also including a new library. That we built ourselves.
-Overwatch, a lightweight, hooks and minimal API based state management library for React and Next.js with a single focus.
-Keep your apps fast while making state management feel effortless.
-and are these popular libraries really the best for your app’s performance?
-Anyone can claim “fast”, so I decided to put Redux, Zustand, and Overwatch Ts to the test under realistic conditions.
-In this benchmark I used the best pra…]]></summary>
-        <author>
-            <name>Karandeep Singh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why do you contribute to Open Source? What is your motivation?]]></title>
-        <id>https://dev.to/szabgab/why-do-you-contribute-to-open-source-what-is-your-motivation-2pdo</id>
-        <link href="https://dev.to/szabgab/why-do-you-contribute-to-open-source-what-is-your-motivation-2pdo"/>
-        <updated>2025-07-13T06:00:50.000Z</updated>
-        <summary type="html"><![CDATA[Do you get paid for it? - Then probably you are told which project(s) to work on.
-Are you passionate about it?
-To "show off"?
-There are people who work at some company that happens to develop an open source product (e.g. GitLab, Wordpress) or an open source library (e.g. a driver to their own proprietary database).
-Other people work on open source projects because they are passionate about them. They might have built a solution for themselves that caught on and now they keep maintaining and developing that piece of software. They might have used an open source project written by others, but wanted to make improvements or just wanted to "give back".
-There are others who think that contributing to open source will help them with their career. I have been promoting this idea for many years, so do the people in the Maakaf community and probably elsewhere. There were various efforts (e.g. Google Summer of code) to get more people introduced to the world of open source contribution. These programs usually manage to get people make some contributions, but as far as I can tell very few of the participants became long-term open source contributors. Once the monetary incentive was gone, very few retained the passion.
-So while I still think that contributing to open source can help with your career (e.g. by gaining experience), these days I think that you need to work on your motivation, on your passion to contribute. To see that your volunteer contribution makes the world a better place.]]></summary>
-        <author>
-            <name>Gabor Szabo</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Day 1 & 2 of My Java Full Stack Journey:Starting with HTML & CSS Basis]]></title>
-        <id>https://dev.to/bhuvanasri/day-1-2-of-my-java-full-stack-journeystarting-with-html-css-basis-13a</id>
-        <link href="https://dev.to/bhuvanasri/day-1-2-of-my-java-full-stack-journeystarting-with-html-css-basis-13a"/>
-        <updated>2025-07-13T05:56:26.000Z</updated>
-        <summary type="html"><![CDATA[Hii Everyone,
-I'm starting my Java Full Stack Learning and it's my first day!
-HTML Tags I've Learned
-What is HTML?
-HTML stands for HyperText Markup Language
-Create web pages,It's like Skeleton of a webpage
-Use simple tags
-Whether it's an online store or social media-they all use HTML     in background
-Why is HTML?
-Displays web content
-foundation of web development
-Basic Structure of HTML
-<html>
-<head>
-     <title>My First web Page</title>
-</head>
-<body>
-     <h1>Welcome</h1>
-</body>
-</html>
-
-
-CSS
-What is CSS?
-Stands for Cascading Style Sheet
-Used to style HTML element
-With CSS,you can control color,size,font etc...
-CSS Rule
-p{
-color:red;
-}
-
-Explanation
-In this,P is a selector
-Inside that declaration,we use property and a value
-Types of CSS
-Inline CSS
-Internal CSS
-External CSS
-Inline CSS
-Ap…]]></summary>
-        <author>
-            <name>Bhuvana Sri R</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Weekly #28-2025: Git Mastery, Algorithms, Why are there So many Databases, AI Agents & Prompting]]></title>
-        <id>https://dev.to/weekly/weekly-28-2025-git-mastery-algorithms-why-are-there-so-many-databases-ai-agents-prompting-ohg</id>
-        <link href="https://dev.to/weekly/weekly-28-2025-git-mastery-algorithms-why-are-there-so-many-databases-ai-agents-prompting-ohg"/>
-        <updated>2025-07-13T05:55:08.000Z</updated>
-        <summary type="html"><![CDATA[Madhu Sudhan Subedi Tech Weekly
-
-
-
-
-
-
-
-
-  
-  
-  Git Mastery: 5 Tips to Level Up Your Workflow
-
-
-Developers, are you ready to become Git power-users? This week, we're sharing 5 must-know tips to streamline your Git workflow and take your skills to new heights. 
-Link
-Memory Over Time for Algorithms
-
-
-Today, I’m talking about a groundbreaking discovery in computer science.
-Link
-Why Are There So Many Databases?
-
-
-The world of databases has changed — big time.
-Link
-MCP vs. API: The Future of AI Agents
-
-
-Traditional HTTP APIs have long been the standard for web development, but a new protocol called Model Context Protocol (MCP) is challenging the status quo. MCP is designed specifically for AI agents, offering key advantages over traditional APIs.
-Link
-Cursor's Clever Prompting: Unlocks the Power of AI Assistants
-
-
-Cursor, the AI coding assistant, is turning heads with its remarkably effective prompting system. By precisely defining the AI's role, personality, and operational constraints, Cursor has managed to create a truly autonomous agent that can tackle coding tasks with impressive autonomy and natural language communication.
-Link]]></summary>
-        <author>
-            <name>Madhu Sudhan Subedi</name>
         </author>
     </entry>
     <entry>
@@ -616,7 +569,7 @@ The post YouTube To Replace Trending Page With Charts appeared first on Lowyat.N
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Kimi k2 largest open source SOTA model?]]></title>
+        <title type="html"><![CDATA[Kimi K2 is a state-of-the-art mixture-of-experts (MoE) language model]]></title>
         <id>https://github.com/MoonshotAI/Kimi-K2</id>
         <link href="https://github.com/MoonshotAI/Kimi-K2"/>
         <updated>2025-07-12T17:26:24.000Z</updated>
@@ -693,16 +646,6 @@ The post YouTube To Replace Trending Page With Charts appeared first on Lowyat.N
         <summary type="html"><![CDATA[The decision is due to declining usage of USDT on these networks over the past two years and as the company moves its focus to newer platforms such as Layer 2s.]]></summary>
         <author>
             <name>Francisco Rodrigues</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: DesignArena – crowdsourced benchmark for AI-generated UI/UX]]></title>
-        <id>https://www.designarena.ai/</id>
-        <link href="https://www.designarena.ai/"/>
-        <updated>2025-07-12T15:07:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1349,6 +1292,16 @@ The post Pre-Orders For Nothing Headphone (1) Begins Tomorrow; Priced At RM1,099
         <summary type="html"><![CDATA[This week I’m sending congratulations to two sets of parents in South Africa. Babies Milayah and Rossouw arrived a few weeks ago. All babies are special, but these two set a new precedent. They’re the first to be born following “simplified” IVF performed in a mobile lab. This new mobile lab is essentially a trailer…]]></summary>
         <author>
             <name>Jessica Hamzelou</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[C++: Maps on Chains]]></title>
+        <id>http://bannalia.blogspot.com/2025/07/maps-on-chains.html</id>
+        <link href="http://bannalia.blogspot.com/2025/07/maps-on-chains.html"/>
+        <updated>2025-07-11T07:27:47.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
