@@ -18,6 +18,56 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/freedom_coder/cve-2025-49706-microsoft-sharepoint-improper-authentication-vulnerability-1188",
+          "author": "Freedom Coder",
+          "description": "CVE ID\n\n\nCVE-2025-49706\nMicrosoft SharePoint Improper Authentication Vulnerability\nProject: Microsoft\n\nProduct: SharePoint\n\n\n\n\n  \n  \n  Date\n\n\n\nDate Added: 2025-07-22\nDue Date: 2025-07-23\nMicrosoft SharePoint contains an improper authentication vulnerability that allows an authorized attacker to perform spoofing over a network. Successfully exploitation could allow an attacker to view sensitive information and make some changes to disclosed information. This vulnerability could be chained with CVE-2025-49704. The update for CVE-2025-53771 includes more robust protections than the update for CVE-2025-49706.\nUnknown\nCISA recommends disconnecting public-facing versions of SharePoint Server that have reached their end-of-life (EOL) or end-of-service (EOS). For example, SharePoint Server 2013 and earlier versions are end-of-life and should be discontinued if still in use. For supported versions, please follow the mitigations according to CISA and vendor instructions. Adhere to the applicable BOD 22-01 guidance for cloud services or discontinue use of the product if mitigations are not available.\nCISA Mitigation Instructions: https://www.cisa.gov/news-events/alerts/2025/07/20/microsoft-releases-guidance-exploitation-sharepoint-vulnerability-cve-2025-53770; https://www.microsoft.com/en-us/security/blog/2025/07/22/disrupting-active-exploitation-of-on-premises-sharepoint-vulnerabilities/ ; https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-49706 ; https://nvd.nist.gov/vuln/detail/CVE-2025-49706\nCommon Vulnerabilities & Exposures (CVE) List",
+          "link": "https://dev.to/freedom_coder/cve-2025-49706-microsoft-sharepoint-improper-authentication-vulnerability-1188",
+          "publishedOn": "2025-07-22T22:09:58.000Z",
+          "wordCount": 880,
+          "title": "CVE-2025-49706: Microsoft SharePoint Improper Authentication Vulnerability",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fwww.scyscan.com%2Fimages%2Fthumbnail%2Fimages%2F2024%2F05%2F11%2F10ab462ffff9545a2712de72cf10679b_1200x630.jpg"
+        },
+        {
+          "id": "https://dev.to/freedom_coder/cve-2025-49704-microsoft-sharepoint-code-injection-vulnerability-20kk",
+          "author": "Freedom Coder",
+          "description": "CVE ID\n\n\nCVE-2025-49704\nMicrosoft SharePoint Code Injection Vulnerability\nProject: Microsoft\n\nProduct: SharePoint\n\n\n\n\n  \n  \n  Date\n\n\n\nDate Added: 2025-07-22\nDue Date: 2025-07-23\nMicrosoft SharePoint contains a code injection vulnerability that could allow an authorized attacker to execute code over a network. This vulnerability could be chained with CVE-2025-49706. The update for CVE-2025-53770 includes more robust protections than the update for CVE-2025-49704.\nUnknown\nCISA recommends disconnecting public-facing versions of SharePoint Server that have reached their end-of-life (EOL) or end-of-service (EOS). For example, SharePoint Server 2013 and earlier versions are end-of-life and should be discontinued if still in use. For supported versions, please follow the mitigations according to CISA and vendor instructions. Adhere to the applicable BOD 22-01 guidance for cloud services or discontinue use of the product if mitigations are not available.\nCISA Mitigation Instructions: https://www.cisa.gov/news-events/alerts/2025/07/20/microsoft-releases-guidance-exploitation-sharepoint-vulnerability-cve-2025-53770; https://www.microsoft.com/en-us/security/blog/2025/07/22/disrupting-active-exploitation-of-on-premises-sharepoint-vulnerabilities/ ; https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-49704 ; https://nvd.nist.gov/vuln/detail/CVE-2025-49704\nCommon Vulnerabilities & Exposures (CVE) List",
+          "link": "https://dev.to/freedom_coder/cve-2025-49704-microsoft-sharepoint-code-injection-vulnerability-20kk",
+          "publishedOn": "2025-07-22T22:08:17.000Z",
+          "wordCount": 864,
+          "title": "CVE-2025-49704: Microsoft SharePoint Code Injection Vulnerability",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fwww.scyscan.com%2Fimages%2Fthumbnail%2Fimages%2F2024%2F05%2F11%2F10ab462ffff9545a2712de72cf10679b_1200x630.jpg"
+        },
+        {
+          "id": "https://dev.to/methodox/devlog-20250722-special-project-correct-physics-handling-36pk",
+          "author": "Charles Zhang",
+          "description": "Overview\n\n\nThis little project deals with very simple (2D) right body physics. I will not spoil all the fun - essentially we control a 2D rocket. It would be fun to visualize data processing in such a fashion on a node canvas - kind of matches our Divooka visual programming scheme.\nThe hypothesis is that at least for 2-dimensional cruise control, a simple PID should be able to do something useful, and it's with that gut I am set to experiment a bit to verify my idea.\nI've done some experiments in July last year but ended up not going far due to technical challenges.\nThe challenge was to get it working properly with physics setup. Per RigidBody2D doc:\n\nSo is it relative or global? Without being able to visualize the force, it's a bit hard to tell also whether to use a force, or to use impulse.\n\nIt's been a while and I almost gave up - never really have time to create our own physics engine. But Godot got a new physics kernel and I thought maybe give it a try.\nI've been doing some analytics and talking with ChatGPT on a new airship design that puts the air vessel at the bottom of the ship instead of hanging overhead - that inspired me maybe there are two things with current setup that's not working:\n\nAfter fixing a few API calls related to GraphEdit get_children() change. I was looking at the force application code once again:\nfunc _physics_process(delta):   \n    # Remark: We are not using to_global directly because of issues with viewport transform\n    var left_anchor = %LeftThrusterCenterOfAction.position\n    var right_anchor = %RightThrusterCenterOfAction.position\n\n    # Remark: applied force is RELATIVE to the body (aka. current object)\n    apply_force(Vector2(0, -1).rotated(rotation + _left_engine_angle_degrees / 180.0 * PI) * _left_engine_thrust, left_anchor)\n    apply_force(Vector2(0, -1).rotated(rotation + _right_engine_angle_degrees / 180.0 * PI) * _right_engine_thrust, right_anchor)\n\nAgain, it's really simple once we figure out what's the right way to do things.\nVideo and intro: YouTube",
+          "link": "https://dev.to/methodox/devlog-20250722-special-project-correct-physics-handling-36pk",
+          "publishedOn": "2025-07-22T21:57:29.000Z",
+          "wordCount": 1041,
+          "title": "DevLog 20250722: (Special Project) Correct Physics Handling",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fswslrpfzwlf87sslwn4y.png"
+        },
+        {
+          "id": "https://dev.to/avraham_neeman/97-drop-in-traffic-no-code-changes-just-added-a-package-1jba",
+          "author": "Avraham Neeman",
+          "description": "One of our users was sending more Kafka traffic than needed.\nWe added a small package on the client. Didn’t touch the code.\nTraffic dropped by 97%.\nThis isn’t observability. It’s action.\nWant the diff?",
+          "link": "https://dev.to/avraham_neeman/97-drop-in-traffic-no-code-changes-just-added-a-package-1jba",
+          "publishedOn": "2025-07-22T21:45:20.000Z",
+          "wordCount": 770,
+          "title": "97% drop in traffic. No code changes. Just added a package.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1gpdfkz5c268r6vzllxd.jpeg"
+        },
+        {
+          "id": "https://dev.to/0xj0n1/navbar-update-new-documents-feature-wip-16-3gk7",
+          "author": "0xj0n1",
+          "description": "Servus and welcome back to Day 16 of building my CRM – and I’m making small but important progress.\nI’ve restructured the navigation bar to be:\nMore responsive\nCleaner in design\nEasier to extend later\nSimple change, but it already makes the app feel more polished.\nStarted working on a document management feature – the idea is to:\nUpload and store client-related files\nCategorize & tag documents\nMaybe even preview files in-app later on\nStill a work in progress, but the foundation is there.\nDidn’t get everything finished today — but that’s okay.\n\nShipping daily progress is the goal.\nMore updates coming soon!\n\nLet me know if you have ideas for how the documents module should work 🙌\nJonathan (0xj0n1)",
+          "link": "https://dev.to/0xj0n1/navbar-update-new-documents-feature-wip-16-3gk7",
+          "publishedOn": "2025-07-22T21:24:15.000Z",
+          "wordCount": 839,
+          "title": "Navbar Update & New Documents Feature (WIP) #16",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqre3j1i5ev8bja8mwggp.png"
+        },
+        {
           "id": "https://dev.to/sanket_gawas_3d0381846af2/the-ai-tool-no-one-talks-about-is-secretly-winning-3n16",
           "author": "Sanket Gawas",
           "description": "I've spent the past month diving deep into developer subreddits, dev forums and youtube playlists to uncover what developers think about AI coding tools. The landscape is more quality driven and fragmented than most analyses suggest with some surprising winners and notable disappointments.\nThis analysis synthesizes feedback from 100+ sources including Reddit discussions, GitHub issues, developer testimonials and community forums, weighted across technical performance, adoption patterns, pricing concerns and platform specific limitations. The sentiment scores reflect general web sentiment patterns rather than definitive market positions.\nI'll be sharing the detailed criteria, weighting methodology and source breakdown in upcoming issues. Consider this a snapshot of July 2025 developer senti…",
@@ -33,7 +83,7 @@
           "description": "Build a Production-Ready Crypto Alert System in 20 Minutes\n\n\nReal-time price alerts, browser notifications, and professional UI with React + LunarCrush API\nPicture this: It's 3 AM, Bitcoin just hit an all time high, and your phone buzzes with a push notification from an app you built yourself. While everyone else is scrambling to check their portfolio in the morning, you've already captured the perfect entry point thanks to your custom alert system.\n🚀 Try the Live Demo - View the deployed version and explore the code\n\n\n\nThat's exactly what we're building today.\n\nWe're creating a production-ready cryptocurrency alert system that demonstrates modern frontend development skills while solving a real-world problem. Here's what makes this project special:\nKey Features\n\n\n\n🔔 11 Different Alert T…",
           "link": "https://dev.to/dbatson/build-a-production-ready-crypto-alert-system-in-20-minutes-3ja1",
           "publishedOn": "2025-07-22T21:16:26.000Z",
-          "wordCount": 2362,
+          "wordCount": 2368,
           "title": "Build a Production-Ready Crypto Alert System in 20 Minutes",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjou671dpkehxknmiutuw.png"
         },
@@ -86,56 +136,6 @@
           "wordCount": 775,
           "title": "Claude Code Productivity Tip",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F63rxxgp4aoi92vuolh3m.png"
-        },
-        {
-          "id": "https://dev.to/shiva_shanker_k/javascript-in-2025-the-language-that-ate-the-world-4ceh",
-          "author": "shiva shanker",
-          "description": "Started as a \"toy language\" for form validation...\nNow it's running:\n📱 Your banking app (React Native - used by Bloomberg, Facebook)\n🎬 Netflix's backend (Node.js - they rebuilt their entire platform)\n⌚ Your smartwatch (Ionic - powers Sworkit, MarketWatch apps)\n🚀 NASA's desktop apps (Electron - they use it for mission control tools)\n🚗 Your car's dashboard (Tesla uses JS for their touchscreen interface)\nThe language everyone used to hate is now literally everywhere 😅\n*The Funny thing is * Even WhatsApp handles 2+ billion users with Node.js backend.\nWhat's the wildest place you've seen JavaScript running? \nDrop your craziest JS sightings below! 👇",
-          "link": "https://dev.to/shiva_shanker_k/javascript-in-2025-the-language-that-ate-the-world-4ceh",
-          "publishedOn": "2025-07-22T21:07:17.000Z",
-          "wordCount": 851,
-          "title": "JavaScript in 2025: The language that ate the world 🌍",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftvr2lic7f1kw96jasxhf.png"
-        },
-        {
-          "id": "https://dev.to/igorganapolsky/claude-code-tip-claude-code-tip-ask-refactor-1l2k",
-          "author": "Igor Ganapolsky",
-          "description": "Claude Code tip: Ask \"refactor this to use modern patterns\" and watch it transform your legacy code instantly. Just saved 3 hours refactoring a 2000-line React component.\nTry it yourself! What's your favorite Claude Code productivity tip?\nShare in the comments below! 👇\n\n\n  \n  \n  claudecode #productivity #ai #coding #developertools",
-          "link": "https://dev.to/igorganapolsky/claude-code-tip-claude-code-tip-ask-refactor-1l2k",
-          "publishedOn": "2025-07-22T21:06:51.000Z",
-          "wordCount": 788,
-          "title": "Claude Code Tip: Claude Code tip: Ask \"refactor...",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxzem6hb8n7y1l74pomwf.png"
-        },
-        {
-          "id": "https://dev.to/samowolabi/dont-reach-for-redux-just-yet-mastering-state-with-react-context-usereducer-and-typescript-iib",
-          "author": "Samuel Owolabi",
-          "description": "A practical guide by Samuel Owolabi\nWhat if you don't actually need Zustand, Jotai, or Redux for your next project?\nHear me out. Those are fantastic libraries, but for a huge number of applications, you can build a powerful, scalable, and type-safe state management system using the tools React already gives you. The secret lies in combining React Context with the useReducer hook and wrapping it all in the warm, safe blanket of TypeScript.\nThe purpose of this guide is to show you exactly how to set up this pattern in a simple, practical way. We'll cover a real-world example to show how flexible this approach is. Don't be overwhelmed! By the end, you'll be able to manage complex state with confidence.\nWe'll build a state management system for a simple fintech dashboard. This will allow us to…",
-          "link": "https://dev.to/samowolabi/dont-reach-for-redux-just-yet-mastering-state-with-react-context-usereducer-and-typescript-iib",
-          "publishedOn": "2025-07-22T21:03:16.000Z",
-          "wordCount": 2923,
-          "title": "Don't Reach for Redux Just Yet: Mastering State with React Context, useReducer, and TypeScript",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fa772dnsvnrly1wgr6x23.png"
-        },
-        {
-          "id": "https://dev.to/stevemureithi/application-of-measures-of-central-tendency-in-data-science-2b10",
-          "author": "Steve Mureithi",
-          "description": "The three common measures of central tendency are:\nMean\n\n\nMode\n\n\nMedian\n\n\n\n1. Mean\nUse Case in Data Science:\n2. Mode\nUse Case in Data Science:\n3. Median\nUse Case in Data Science:\nThe median can help in evaluating elements such as household income and educational attainment during household surveys. This helps retrieve a representative figure that policy makers can base their planning and development decisions.",
-          "link": "https://dev.to/stevemureithi/application-of-measures-of-central-tendency-in-data-science-2b10",
-          "publishedOn": "2025-07-22T21:02:28.000Z",
-          "wordCount": 917,
-          "title": "Application of Measures of Central Tendency in Data Science",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Foewya9q9ppqwlky9t6lm.png"
-        },
-        {
-          "id": "https://dev.to/franckpachot/hint-in-mongodb-is-different-that-sql-optimizer-hints-they-force-indexes-4c33",
-          "author": "Franck Pachot",
-          "description": "MongoDB sits at the crossroads between SQL, where developers can write queries on a logical model without naming indexes, and the NoSQL world, where developers are accustomed to querying directly by mentioning indexes in their queries.\nExcept for Atlas Search and Vector indexes, where you must explicitly indicate whether it uses approximate search, you typically query a collection, and the MongoDB query planner determines which index to use.\nOne exception to this rule happens when using an optimizer hint to reference an index. This feature is supported in most popular databases, except PostgreSQL, where it requires pg_hint_plan. When the hint isn't fully compatible with the query planner's execution plans, different databases may behave differently.\nHere is my test case to show how it beha…",
-          "link": "https://dev.to/franckpachot/hint-in-mongodb-is-different-that-sql-optimizer-hints-they-force-indexes-4c33",
-          "publishedOn": "2025-07-22T21:01:51.000Z",
-          "wordCount": 3082,
-          "title": ".hint() in MongoDB is different that SQL optimizer hints: they force indexes",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8hx2dvourw8i0r94fr3a.png"
         }
       ]
     },
@@ -252,6 +252,16 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://qwenlm.github.io/blog/qwen3-coder/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://qwenlm.github.io/blog/qwen3-coder/",
+          "publishedOn": "2025-07-22T21:12:30.000Z",
+          "wordCount": 2073,
+          "title": "Qwen3-Coder: Agentic Coding in the World",
+          "imageUrl": "https://qwenlm.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"
+        },
+        {
           "id": "https://www.ycombinator.com/companies/firebender/jobs/yisDXr5-founding-engineer-generalist",
           "author": null,
           "description": "Comments",
@@ -269,7 +279,7 @@
           "publishedOn": "2025-07-22T20:16:18.000Z",
           "wordCount": 6170,
           "title": "NonRAID – fork of unRAID array kernel module",
-          "imageUrl": "https://opengraph.githubassets.com/4fd450cfc3bab8684cbcad800ed8e62a70851faf2d9b478d151655ae6fb66a38/qvr/nonraid"
+          "imageUrl": "https://opengraph.githubassets.com/67b818be8bcf5216960c4872b84808ed1218d65c79fd78643908fa1c5bfb0b11/qvr/nonraid"
         },
         {
           "id": "https://www.myvolvoex90.com/",
@@ -302,6 +312,16 @@
           "imageUrl": "https://images.plane.so/airgapped/hero.webp"
         },
         {
+          "id": "https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai",
+          "author": null,
+          "description": "Comments",
+          "link": "https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai",
+          "publishedOn": "2025-07-22T19:09:31.000Z",
+          "wordCount": 3653,
+          "title": "Mistral reports on the environmental impact of LLMs",
+          "imageUrl": "https://mistral.ai/img/mistral-cover.png"
+        },
+        {
           "id": "https://forums.swift.org/t/introducing-swift-erlang-actor-system/81248",
           "author": null,
           "description": "Comments",
@@ -320,16 +340,6 @@
           "wordCount": 637,
           "title": "Fun with gzip bombs and email clients",
           "imageUrl": null
-        },
-        {
-          "id": "https://research.google/blog/lsm-2-learning-from-incomplete-wearable-sensor-data/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://research.google/blog/lsm-2-learning-from-incomplete-wearable-sensor-data/",
-          "publishedOn": "2025-07-22T18:27:44.000Z",
-          "wordCount": 2132,
-          "title": "LSM-2: Learning from incomplete wearable sensor data",
-          "imageUrl": "https://storage.googleapis.com/gweb-research2023-media/images/Open_Graph.width-800.format-jpeg.jpg"
         },
         {
           "id": "https://research.google/blog/android-earthquake-alerts-a-global-system-for-early-warning/",
@@ -367,19 +377,9 @@
           "description": "Comments",
           "link": "https://github.com/mozilla-ai/any-llm",
           "publishedOn": "2025-07-22T17:40:40.000Z",
-          "wordCount": 2629,
+          "wordCount": 2625,
           "title": "Show HN: Any-LLM – Lightweight router to access any LLM Provider",
-          "imageUrl": "https://opengraph.githubassets.com/af18bc6e715cb004588d10414bfbcda942e80e02c1796eb52906efdff7f2881d/mozilla-ai/any-llm"
-        },
-        {
-          "id": "https://blog.eladgil.com/p/ai-market-clarity",
-          "author": null,
-          "description": "Comments",
-          "link": "https://blog.eladgil.com/p/ai-market-clarity",
-          "publishedOn": "2025-07-22T16:50:12.000Z",
-          "wordCount": 7308,
-          "title": "AI Market Clarity",
-          "imageUrl": "https://substackcdn.com/image/fetch/$s_!QXsK!,w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F96de5704-be21-4218-b8d5-5f7c5dd17af5_1734x796.png"
+          "imageUrl": "https://opengraph.githubassets.com/6e1e7bb3090dc4dd731a527f5eb79b98293aba69bf014429b7b6f390215fa1b1/mozilla-ai/any-llm"
         },
         {
           "id": "https://bsky.app/profile/astrafoxen.bsky.social/post/3luiwnar3j22o",
@@ -412,6 +412,16 @@
           "imageUrl": null
         },
         {
+          "id": "https://news.ycombinator.com/item?id=44649115",
+          "author": null,
+          "description": "Comments",
+          "link": "https://news.ycombinator.com/item?id=44649115",
+          "publishedOn": "2025-07-22T16:11:45.000Z",
+          "wordCount": 1167,
+          "title": "Launch HN: Promi (YC S24) – Personalize e-commerce discounts and retail offers",
+          "imageUrl": null
+        },
+        {
           "id": "https://blog.kulkan.com/bypassing-watermark-implementations-fe39e98ca22b",
           "author": null,
           "description": "Comments",
@@ -432,13 +442,13 @@
           "imageUrl": "https://vasily.cc/assets/img/facts-dont-change-minds.png"
         },
         {
-          "id": "https://startwithawhy.com/reverseproxy/2025/07/20/ReverseProxy-Deep-Dive-Part2.html",
+          "id": "https://www.nytimes.com/2025/07/22/well/lung-cancer-nonsmokers.html",
           "author": null,
           "description": "Comments",
-          "link": "https://startwithawhy.com/reverseproxy/2025/07/20/ReverseProxy-Deep-Dive-Part2.html",
-          "publishedOn": "2025-07-22T14:47:33.000Z",
-          "wordCount": 1814,
-          "title": "Reverse proxy deep dive: Why HTTP parsing at the edge is harder than it looks",
+          "link": "https://www.nytimes.com/2025/07/22/well/lung-cancer-nonsmokers.html",
+          "publishedOn": "2025-07-22T15:18:56.000Z",
+          "wordCount": null,
+          "title": "Many lung cancers are now in nonsmokers",
           "imageUrl": null
         },
         {
@@ -470,26 +480,6 @@
           "wordCount": 11385,
           "title": "OSS Rebuild: open-source, rebuilt to last",
           "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYIUyQJtaAY06QUHFJwNJq_G2-GyovxH4kqwBEFS_WweUghi5Qkid_Mrt9Qa65XBQ254P_EMWHpRQWIV17U_oQgEyStBSHWel9v8hHlWeP4ncr9BBtfD6QUhjhPlcISln2jWWNWgf2Ol-P/s1600/googlelogo_color_200x200.png"
-        },
-        {
-          "id": "https://github.com/pmarreck/yt-transcriber",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/pmarreck/yt-transcriber",
-          "publishedOn": "2025-07-22T13:51:21.000Z",
-          "wordCount": 2298,
-          "title": "Yt-transcriber – Give a YouTube URL and get a transcription",
-          "imageUrl": "https://opengraph.githubassets.com/3448eba92029caeffc286593702829f24cc9b9cd1964e0d0bbe574ee74f3c945/pmarreck/yt-transcriber"
-        },
-        {
-          "id": "https://daisyui.com/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://daisyui.com/",
-          "publishedOn": "2025-07-22T13:48:55.000Z",
-          "wordCount": 5641,
-          "title": "DaisyUI: Tailwind CSS Components",
-          "imageUrl": "https://img.daisyui.com/images/default.webp"
         },
         {
           "id": "https://sophiebits.com/2025/07/21/todos-arent-for-doing",
@@ -537,9 +527,19 @@
           "description": "Comments",
           "link": "https://plus.nasa.gov/video/cosmic-dawn-the-untold-story-of-the-james-webb-space-telescope/",
           "publishedOn": "2025-07-19T19:24:46.000Z",
-          "wordCount": 2073,
+          "wordCount": 2084,
           "title": "Cosmic Dawn: The Untold Story of the James Webb Space Telescope",
           "imageUrl": "https://plus.nasa.gov/wp-content/uploads/2025/03/cosmic-dawn-thumbnail-horizontal-hero-16-9-without-title-e1743099539966.png?w=1024"
+        },
+        {
+          "id": "https://gizmodo.com/origami-space-planes-could-solve-a-major-problem-in-orbit-2000629875",
+          "author": null,
+          "description": "Comments",
+          "link": "https://gizmodo.com/origami-space-planes-could-solve-a-major-problem-in-orbit-2000629875",
+          "publishedOn": "2025-07-19T14:42:53.000Z",
+          "wordCount": 4155,
+          "title": "Origami Space Planes Could Solve a Major Problem in Orbit",
+          "imageUrl": "https://gizmodo.com/app/uploads/2025/07/iss-paper-plane-1200x675.jpg"
         },
         {
           "id": "https://www.compassrouter.com/",
@@ -665,6 +665,16 @@
       "feedUrl": "https://venturebeat.com/category/ai/feed/",
       "siteUrl": null,
       "articles": [
+        {
+          "id": "https://venturebeat.com/?p=3014558",
+          "author": "Sean Michael Kerner",
+          "description": "Intuit explains how it is solving the needs of the mid-market with a new series of agentic AI experiences.",
+          "link": "https://venturebeat.com/ai/intuit-brings-agentic-ai-to-the-mid-market-saving-organizations-17-to-20-hours-a-month/",
+          "publishedOn": "2025-07-22T22:08:16.000Z",
+          "wordCount": 2265,
+          "title": "Intuit brings agentic AI to the mid-market saving organizations 17 to 20 hours a month",
+          "imageUrl": "https://venturebeat.com/wp-content/uploads/2025/07/AI_agent_helping_companies_save_money-2.png?w=1024?w=1200&strip=all"
+        },
         {
           "id": "https://venturebeat.com/?p=3014539",
           "author": "Emilia David",
@@ -944,16 +954,6 @@
           "wordCount": 2052,
           "title": "AI’s fourth wave is here — are enterprises ready for what’s next?",
           "imageUrl": "https://venturebeat.com/wp-content/uploads/2025/07/VBTRANSFORM25-0526-X2.jpg?w=1024?w=1200&strip=all"
-        },
-        {
-          "id": "https://venturebeat.com/?p=3014143",
-          "author": "Gary Grossman, Edelman",
-          "description": "The future is marked by deepening uncertainty about our place in it, and by growing ambiguity about the nature of human purpose itself.",
-          "link": "https://venturebeat.com/ai/the-human-harbor-navigating-identity-and-meaning-in-the-ai-age/",
-          "publishedOn": "2025-07-13T20:35:00.000Z",
-          "wordCount": 3609,
-          "title": "The human harbor: Navigating identity and meaning in the AI age",
-          "imageUrl": "https://venturebeat.com/wp-content/uploads/2025/07/Human-Harbor-Cover-Image.jpg?w=1024?w=1200&strip=all"
         }
       ]
     },
@@ -968,7 +968,7 @@
           "description": "What if we could permanently remove the toxic “forever chemicals” contaminating our water? That’s the driving force behind Michigan-based startup Enspired Solutions, founded by environmental toxicologist Denise Kay and chemical engineer Meng Wang. The duo left corporate consulting in the rearview mirror to take on one of the most pervasive environmental challenges: PFAS. “PFAS is…",
           "link": "https://www.technologyreview.com/2025/07/22/1117638/fighting-forever-chemicals-and-startup-fatigue/",
           "publishedOn": "2025-07-22T17:38:18.000Z",
-          "wordCount": 10206,
+          "wordCount": 10224,
           "title": "Fighting forever chemicals and startup fatigue",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/05/Denise-Kay.png?resize=1200,600"
         },
@@ -1008,7 +1008,7 @@
           "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. A major AI training data set contains millions of examples of personal data Millions of images of passports, credit cards, birth certificates, and other documents containing personally identifiable information are likely included in…",
           "link": "https://www.technologyreview.com/2025/07/21/1120525/the-download-how-your-data-is-being-used-to-train-ai-and-why-chatbots-arent-doctors/",
           "publishedOn": "2025-07-21T12:10:00.000Z",
-          "wordCount": 6301,
+          "wordCount": 6319,
           "title": "The Download: how your data is being used to train AI, and why chatbots aren’t doctors",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/07/pii-grab-dissolve4.jpg?resize=1200,600"
         },
@@ -1028,7 +1028,7 @@
           "description": "Millions of images of passports, credit cards, birth certificates, and other documents containing personally identifiable information are likely included in one of the biggest open-source AI training sets, new research has found. Thousands of images—including identifiable faces—were found in a small subset of DataComp CommonPool, a major AI training set for image generation scraped from…",
           "link": "https://www.technologyreview.com/2025/07/18/1120466/a-major-ai-training-data-set-contains-millions-of-examples-of-personal-data/",
           "publishedOn": "2025-07-18T13:08:26.000Z",
-          "wordCount": 8044,
+          "wordCount": 8062,
           "title": "A major AI training data set contains millions of examples of personal data",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/07/pii-grab-dissolve4.jpg?resize=1200,600"
         },
@@ -1038,7 +1038,7 @@
           "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. How to run an LLM on your laptop In the early days of large language models, there was a high barrier to entry: it used to be impossible to run anything useful on…",
           "link": "https://www.technologyreview.com/2025/07/18/1120453/the-download-how-to-run-an-llm-and-a-history-of-three-parent-babies/",
           "publishedOn": "2025-07-18T12:10:00.000Z",
-          "wordCount": 6227,
+          "wordCount": 6245,
           "title": "The Download: how to run an LLM, and a history of “three-parent babies”",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/07/llm-install2.jpg?resize=1200,600"
         },
@@ -1048,7 +1048,7 @@
           "description": "This week we heard that eight babies have been born in the UK following an experimental form of IVF that involves DNA from three people. The approach was used to prevent women with genetic mutations from passing mitochondrial diseases to their children. You can read all about the results, and the reception to them, here. …",
           "link": "https://www.technologyreview.com/2025/07/18/1120383/a-brief-history-of-three-parent-babies/",
           "publishedOn": "2025-07-18T09:00:00.000Z",
-          "wordCount": 7353,
+          "wordCount": 7371,
           "title": "A brief history of “three-parent babies”",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/07/GettyImages-1489423262.jpg?resize=1200,600"
         },
@@ -1058,7 +1058,7 @@
           "description": "Imagine AI so sophisticated it could read a customer’s mind? Or identify and close a cybersecurity loophole weeks before hackers strike? How about a team of AI agents equipped to restructure a global supply chain and circumnavigate looming geopolitical disruption? Such disruptive possibilities explain why agentic AI is sending ripples of excitement through corporate boardrooms. …",
           "link": "https://www.technologyreview.com/2025/07/17/1119943/finding-value-from-ai-agents-from-day-one/",
           "publishedOn": "2025-07-17T19:27:23.000Z",
-          "wordCount": 7059,
+          "wordCount": 7077,
           "title": "Finding value from AI agents from day one",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/07/iStock-2179705717.jpg?resize=1200,600"
         }
@@ -1326,6 +1326,21 @@
       "feedUrl": "https://cointelegraph.com/rss",
       "siteUrl": "https://cointelegraph.com",
       "articles": [
+        {
+          "id": "https://cointelegraph.com/news/crypto-confusion-50-non-investors-dont-understand-survey",
+          "author": "Cointelegraph by Turner Wright",
+          "description": "A survey conducted by the National Cryptocurrency Association explored why some people aren’t comfortable investing in digital assets.",
+          "link": "https://cointelegraph.com/news/crypto-confusion-50-non-investors-dont-understand-survey?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+          "publishedOn": "2025-07-22T22:08:22.000Z",
+          "wordCount": null,
+          "title": "Crypto confusion: 50% of non-investors don’t understand it well enough to buy",
+          "enclosure": {
+            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDcvMDE5ODMzY2ItZjAyNy03OWY3LWFhZDMtMDEwZjU4NTZmNTJl.jpg",
+            "length": "528",
+            "type": "image/jpg"
+          },
+          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDcvMDE5ODMzY2ItZjAyNy03OWY3LWFhZDMtMDEwZjU4NTZmNTJl.jpg"
+        },
         {
           "id": "https://cointelegraph.com/news/price-predictions-7-22-spx-dxy-btc-eth-xrp-bnb-sol-doge-ada-hype",
           "author": "Cointelegraph by Rakesh Upadhyay",
@@ -1760,21 +1775,6 @@
             "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDcvMDE5ODMxMmQtY2UyNS03NjEzLWI0MmYtMTQ1NTcyMzAwZWEw.jpg"
-        },
-        {
-          "id": "https://cointelegraph.com/news/strategy-bitcoin-dividend-stock-strc-ipo",
-          "author": "Cointelegraph by Zoltan Vardai",
-          "description": "Strategy aims to launch a stock akin to a synthetic stablecoin, enabling the company to absorb more fiat money to convert into Bitcoin capital.",
-          "link": "https://cointelegraph.com/news/strategy-bitcoin-dividend-stock-strc-ipo?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-          "publishedOn": "2025-07-22T09:08:35.000Z",
-          "wordCount": null,
-          "title": "Strategy launches Bitcoin stock pegged at $100 to increase treasury",
-          "enclosure": {
-            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDVmNDMtZGMwYi03NmQ5LWE0OWEtN2EzMTNiZjJlYTE2.jpg",
-            "length": "528",
-            "type": "image/jpg"
-          },
-          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDEvMDE5NDVmNDMtZGMwYi03NmQ5LWE0OWEtN2EzMTNiZjJlYTE2.jpg"
         }
       ]
     },
