@@ -1,254 +1,369 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-08-06T11:44:41.708Z</id>
+    <id>urn:2025-08-06T12:32:22.139Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-08-06T11:44:41.708Z</updated>
+    <updated>2025-08-06T12:32:22.139Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Complete Guide to Use Midjourney API for Text-to-Image Generation]]></title>
-        <id>https://dev.to/imaginepro/complete-guide-to-use-midjourney-api-for-text-to-image-generation-3hmc</id>
-        <link href="https://dev.to/imaginepro/complete-guide-to-use-midjourney-api-for-text-to-image-generation-3hmc"/>
-        <updated>2025-08-06T11:18:10.000Z</updated>
-        <summary type="html"><![CDATA[Building a Text-to-Image Tool with Midjourney API
+        <title type="html"><![CDATA[ใช้ Typhoon-OCR ดึงข้อความจาก PDF/รูปภาพด้วย Python]]></title>
+        <id>https://dev.to/ubinix_warun/aich-typhoon-ocr-duengkhkhwaamcchaak-pdfruupphaaphdwy-python-1g</id>
+        <link href="https://dev.to/ubinix_warun/aich-typhoon-ocr-duengkhkhwaamcchaak-pdfruupphaaphdwy-python-1g"/>
+        <updated>2025-08-06T12:25:40.000Z</updated>
+        <summary type="html"><![CDATA[Typhoon-OCR จาก SCB 10X คือ LLM ที่ช่วยสกัดข้อความภาษาไทยจากไฟล์ PDF และรูปภาพได้อย่างแม่นยำ นี่คือวิธีใช้งานฉบับรวบรัดผ่าน Python และ Ollama
+อ่านฉบับเต็ม...
+เปิด Terminal แล้วรัน 2 คำสั่งนี้:
+1. ติดตั้งไลบรารีที่จำเป็น:
+pip install typhoon-ocr openai
 
+2. ดาวน์โหลดและรันโมเดลผ่าน Ollama: (ต้องติดตั้ง Ollama ก่อน)
+ollama run scb10x/typhoon-ocr-3b:latest
+
+คำสั่งนี้จะเปิด API Server ที่ http://localhost:11434 ให้โดยอัตโนมัติ
+สร้างไฟล์ Python แล้วนำโค้ดด้านล่างไปวางได้เลย
+from typhoon_ocr import prepare_ocr_messages
+from openai import OpenAI
+
+# เตรียมข้อมูลจากไฟล์ PDF/Image
+messages = prepare_ocr_messages(
+    pdf_or_image_path="YOUR_FILE.pdf",  # <-- แก้เป็นชื่อไฟล์ของคุณ
+    task_type="default"                 # "default" = ดึงข้อความ, "structure" = รักษาตาราง
+    page_num=1              # Process page 1 of a PDF (default is 1, always 1 for images)
+)
+
+# เชื่อมต่อกับโมเดลที่รันบน Ollama
+client = OpenAI(
+    base_url="http://localhost:11434/v1", 
+    api_key="not-needed"
+)
+
+# ส่งคำขอให้โมเดลทำงาน
+response = client.chat.completions.create(
+    model="scb10x/typhoon-ocr-3b:latest",
+    messages=messages,
+     max_tokens=16000,
+    extra_body={
+        "repetition_penalty": 1.2,
+        "temperature": 0.1,
+        "top_p": 0.6,
+    },
+)
+
+# พิมพ์ผลลัพธ์
+print(response.choices[0].message.content)
+
+เพียงแค่แก้ pdf_or_image_path ในโค้ดให้เป็นตำแหน่งไฟล์ของคุณ แล้วสั่งรันสคริปต์ Python ผลลัพธ์ที่ได้คือข้อความที่ถูกสกัดออกมาจากไฟล์ของคุณ ง่ายและทรงพลังสำหรับงาน OCR ภาษาไทยโดยเฉพาะ!
+
+ถูกใจกด  เป็นกำลังใจให้ทำคอนเทนต์ดีๆ & ติดตามเรื่องที่น่าสนใจผ่านทาง 
+Warun Chareonsuk & Super AI Agent -- @ubinix-warun
+ตามลิงค์เข้าไปเลี้ยงกาแฟผมได้ที่ ☕ Buy Me A Coffee]]></summary>
+        <author>
+            <name>Warun C. ⚡</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Learn Basic CSS Media Queries: Build Responsive Layouts for Every Screen Size]]></title>
+        <id>https://dev.to/nganggurdev/learn-basic-css-media-queries-build-responsive-layouts-for-every-screen-size-k4g</id>
+        <link href="https://dev.to/nganggurdev/learn-basic-css-media-queries-build-responsive-layouts-for-every-screen-size-k4g"/>
+        <updated>2025-08-06T12:18:50.000Z</updated>
+        <summary type="html"><![CDATA[Are your web layouts breaking on mobile or tablets?
+Media queries allow your design to adapt to different screen sizes, orientations, and device capabilities without relying on JavaScript.
+📱 In this tutorial, you’ll learn:
+Why Media Queries Matter:
+Quick Example:
+@mesdia (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+This rule changes a flex layout to a stacked column layout on screens 768px wide or smaller.
+👉 Read the full guide with examples, tips, and best practices:
+CSS Media Query Tutorial: Build Mobile-Friendly Responsive Layout]]></summary>
+        <author>
+            <name>Nganggur Dev</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🛠️ Fixing the "Outdated WooCommerce Template Files" Error in WordPress – A Step-by-Step Guide]]></title>
+        <id>https://dev.to/harshchaudhari/fixing-the-outdated-woocommerce-template-files-error-in-wordpress-a-step-by-step-guide-55ac</id>
+        <link href="https://dev.to/harshchaudhari/fixing-the-outdated-woocommerce-template-files-error-in-wordpress-a-step-by-step-guide-55ac"/>
+        <updated>2025-08-06T12:18:19.000Z</updated>
+        <summary type="html"><![CDATA[Have you ever come across this frustrating message in your WordPress dashboard?
+"Your theme contains outdated copies of some WooCommerce template files."
+This error often confuses beginners and even intermediate WordPress developers — but don't worry, I’ve made a step-by-step YouTube tutorial to walk you through the complete fix 👇
+✅ What’s Covered in the Video:
+Creating a full backup (Always backup before making changes!)
+Downloading the latest WooCommerce plugin files
+Locating and replacing outdated theme files
+Verifying the fix by refreshing your WordPress dashboard
+No plugin is required — just a little attention and file-handling.
+💡 Who is This For?
+Developers working with custom or child themes
+Business owners managing their own store
+Freelancers building eCommerce websites
+🙌 Join the Journey
+🚀 Follow my YouTube channel for more tutorials like this:
+💬 Feel free to ask questions in the comments — I’m happy to help or even make videos on your suggestions!
+🧠 Stay Tuned for More
+💥 Let's build better WordPress sites together!
 
 
   
   
-  Introduction
-
-
-Midjourney has revolutionized the world of AI-generated imagery with its powerful text-to-image capabilities. While Midjourney is primarily known for its Discord bot interface, developers can now integrate its image generation capabilities directly into their applications using APIs. This guide will walk you through everything you need to know to build a text-to-image tool using Midjourney's API.
-Before diving into the implementation, ensure you have:
-Basic knowledge of JavaScript/TypeScript
-Node.js installed on your system
-An API key
-Understanding of REST APIs and asynchronous programming
-First, install the necessary SDK. For this guide, we'll use the ImaginePro SDK which provides a clean interface for Midjourney …]]></summary>
+  wordpress #woocommerce #webdev #frontend #ecommerce #tutorial #wordpressdeveloper #fullstack]]></summary>
         <author>
-            <name>ImaginePro</name>
+            <name>Harsh Chaudhari</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Supporting SQL ops - Please Don't Be a Bottleneck]]></title>
-        <id>https://dev.to/alexantartico/supporting-sql-ops-please-dont-be-a-bottleneck-akb</id>
-        <link href="https://dev.to/alexantartico/supporting-sql-ops-please-dont-be-a-bottleneck-akb"/>
-        <updated>2025-08-06T11:15:58.000Z</updated>
-        <summary type="html"><![CDATA[Let's get this straight: In a prod environment you should be having DQL access to the DB's of the applications you support. Any other command belonging to DML, DDL etc are usually reserved to either DBA teams or you will need to go through your organization's formal deployment process. Do not cowboy the system, no exceptions.
-From a resiliency point of view, the absolute bare minimum is to run two database instances on separate hosts. These are usually named prod and a prod-replication (or prod-replica/prod-repl). These instancess MUST live on entirely different infrastructure, be it different physical hosts  or even better, different availability zones. If your primary replication is in the same rack or worse: on the same physical host (I have seen this happened (╯°□°)╯), you have not bui…]]></summary>
+        <title type="html"><![CDATA[Getting Started: Deploying an MCP Server for Data Projects]]></title>
+        <id>https://dev.to/om_shree_0709/getting-started-deploying-an-mcp-server-for-data-projects-e1g</id>
+        <link href="https://dev.to/om_shree_0709/getting-started-deploying-an-mcp-server-for-data-projects-e1g"/>
+        <updated>2025-08-06T12:17:37.000Z</updated>
+        <summary type="html"><![CDATA[Model Context Protocol (MCP) makes it simple to run your own MCP server for data science projects. Using MCP, data teams can register datasets and tools as resources, and agents can interact with them using natural language. This approach simplifies AI workflows, especially when working with ML pipelines and analysis tools 12.
+To begin, install the official MCP SDK in Python and initialize your server environment:
+pip install modelcontextprotocol-sdk
+mcp init data-science-project
+
+
+This command creates a scaffold with tool definitions and resource templates. You can then define resources such as CSV files, DuckDB databases, or Postgres tables in the config file. Each resource is exposed as an MCP endpoint that agents can call via their tools 3.
+OR
+pip install "mcp[cli]"
+uv init data-scienc…]]></summary>
         <author>
-            <name>Eduardo Garcia</name>
+            <name>Om Shree</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[10 Best WordPress Ecommerce Themes for 2025 (Free and Paid)]]></title>
-        <id>https://dev.to/serveravatar/10-best-wordpress-ecommerce-themes-for-2025-free-and-paid-4a9o</id>
-        <link href="https://dev.to/serveravatar/10-best-wordpress-ecommerce-themes-for-2025-free-and-paid-4a9o"/>
-        <updated>2025-08-06T11:14:00.000Z</updated>
-        <summary type="html"><![CDATA[Want to sell stuff online? WordPress Ecommerce Themes are the key to building a great-looking, easy-to-use store. A theme is just how your website looks, it makes things pretty and simple to navigate.
-Not all themes work well for selling things. You need one that’s built for shopping carts, product displays, and payments. That’s what we call ecommerce themes.
-Here are 10 great WordPress ecommerce themes for 2025. Some are free, some cost money — but they all help you create a professional online store.
-Before I tell you about the themes, let me explain what makes one good for selling stuff.
+        <title type="html"><![CDATA[Day 57: The Reality Check I Needed]]></title>
+        <id>https://dev.to/casperday11/day-57-the-reality-check-i-needed-4ld8</id>
+        <link href="https://dev.to/casperday11/day-57-the-reality-check-i-needed-4ld8"/>
+        <updated>2025-08-06T12:16:52.000Z</updated>
+        <summary type="html"><![CDATA[Day 57: The Reality Check I Needed
 
-The people who made WooCommerce also made Storefront. So it works really well with online stores.
-It’s super clean and simple. The design doesn’t get in the way of your products. People can focus on wh…]]></summary>
+
+Another "tomorrow I'll wake up early" turned into another 6 PM realization that I'm still posting late. But something's different about today - I'm finally tired of my own excuses.
+Let's be honest about something most students won't admit: half our lectures are teaching stuff that's already outdated. Don't get me wrong, professors are doing their best, but curriculum updates move slower than Internet Explorer on a dial-up connection.
+So instead of mindlessly gaming through these sessions (yeah, I said it), I'm shifting strategy. Planning actual useful work during lecture hours. Revolutionary concept, right?
+Here's where it gets interesting - I'm implementing a phone ban. One hour before sleep, one hour after waking up. Sounds simple until you realize how much we've trained ourselves to reach for that rectangle of infinite distraction.
+The before-sleep part? That's about letting my brain actually wind down instead of doom-scrolling until 2 AM. The after-waking part? That's about starting the day with intention instead of immediately falling into someone else's content.
+On a completely different note - I need a homepage designer for my current project. It's an unpaid internship (student budget reality), but you get proper certification and portfolio credits. Figma preferred, but talent trumps tools.
+If you nail the homepage and want to continue, there's more design work coming. Sometimes the best opportunities start with taking a chance on something small.
+Today feels different because I'm finally done with performative productivity posts about grinding and small victories. This is just honest documentation of trying to build something meaningful while navigating the weird space between student life and actual professional work.
+Some days you realize you've been playing a game that doesn't serve you anymore. Today's one of those days.
+What outdated systems are you tired of pretending work for you?]]></summary>
         <author>
-            <name>Meghna Meghwani</name>
+            <name>Somay</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Forgot to Release an AWS EIP — Here’s How It Cost Me (And How AWS Helped)]]></title>
-        <id>https://dev.to/nishath_jp/i-forgot-to-release-an-aws-eip-heres-how-it-cost-me-and-how-aws-helped-3jdb</id>
-        <link href="https://dev.to/nishath_jp/i-forgot-to-release-an-aws-eip-heres-how-it-cost-me-and-how-aws-helped-3jdb"/>
-        <updated>2025-08-06T11:10:42.000Z</updated>
-        <summary type="html"><![CDATA[First of all I am just a Newbie to AWS Cloud infrastructure.
-Youtube videos. 
-I also started experimenting with AWS VPC setups.
-In July, I learnt an important lesson on AWS billing which costed me around $2.14.
-It may sound like a tiny amount, but the lesson I learnt is so valuable.
-Let me walk you through what happened and how AWS Helped me.
-The project I was working needed a custom VPC with:
-A public and private subnet
-A NAT Gateway for internet access in the private subnet
-An Elastic IP (EIP) allocated for the NAT Gateway
-The Architectural diagram of the project.
+        <title type="html"><![CDATA[Running all tests from the current branch]]></title>
+        <id>https://dev.to/lucianghinda/running-all-tests-from-the-current-branch-5f22</id>
+        <link href="https://dev.to/lucianghinda/running-all-tests-from-the-current-branch-5f22"/>
+        <updated>2025-08-06T12:16:14.000Z</updated>
+        <summary type="html"><![CDATA[I enjoy creating small automations using Ruby and Bash. While it might be simpler to use Bash, I like #Ruby so much that I want to use it more.
+Here are two examples of how to run all the tests that have changed in the current branch: an example for Minitest and one for RSpec.
+files = []
+files += `git diff --name-only main...HEAD`.split("\n")
+files += `git diff --cached --name-only`.split("\n")
+files += `git diff --name-only`.split("\n")
+files = files.grep(/_test\.rb$/).sort.uniq.reject(&:empty?)
 
-The project worked fine...
-Once I finished with the project. I deleted the Custom VPC manually with all the associated resources that's what I thought.
-After few days, I noticed some charges in my account which is a free tier …]]></summary>
+if files.empty?
+  puts "No spec files found."
+  exit
+end
+
+puts "Files to execute:"
+puts files.map { |f| "  #{f}" }
+exec "bundle exec bin/rails test #{files.join(' ')}"
+
+files = []
+files += `git diff --name-only main...HEAD`.split("\n")
+files += `git diff --cached --name-only`.split("\n")
+files += `git diff --name-only`.split("\n")
+files = files.grep(/_spec\.rb$/).sort.uniq.reject(&:empty?)
+
+if files.empty?
+  puts "No spec files found."
+  exit
+end
+
+puts "Files to execute:"
+puts files.map { |f| "  #{f}" }
+exec "bundle exec rspec #{files.join(' ')}"
+
+You can, of course, modify this script to become an MCP, enabling tools like Claude Code or Cursor to run tests at the end of an implementation. During multiple rounds of test runs and fixes, when focusing on each test individually LLMs may pass the most recent test they fixed but fail previous ones.]]></summary>
         <author>
-            <name>Nishath J P</name>
+            <name>Lucian Ghinda</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Dart Lesson 23: Getting Started with Unit Testing — Ensuring Code Quality]]></title>
-        <id>https://dev.to/jige2025/dart-lesson-23-getting-started-with-unit-testing-ensuring-code-quality-408k</id>
-        <link href="https://dev.to/jige2025/dart-lesson-23-getting-started-with-unit-testing-ensuring-code-quality-408k"/>
-        <updated>2025-08-06T11:08:50.000Z</updated>
-        <summary type="html"><![CDATA[In the previous lessons, we explored the fundamentals of performance optimization and learned techniques to improve program efficiency at the code level. Today, we'll focus on unit testing — a critical practice for ensuring code quality that helps us catch issues early in development, reduce production failures, and make code more maintainable and refactor-friendly.
-Unit testing involves testing the smallest testable units of software (typically functions, methods, or classes). Its core values include:
- Early issue detection: Catching logical errors during development before they reach production.
- Safe refactoring: Quickly verifying that functionality remains intact when modifying or refactoring code.
- Documentation value: Test cases serve as living documentation, clearly showing expected…]]></summary>
+        <title type="html"><![CDATA[Will Cybercrime Ever Be Unstoppable?]]></title>
+        <id>https://dev.to/nightmare-lynx/will-cybercrime-ever-be-unstoppable-2g7e</id>
+        <link href="https://dev.to/nightmare-lynx/will-cybercrime-ever-be-unstoppable-2g7e"/>
+        <updated>2025-08-06T12:14:37.000Z</updated>
+        <summary type="html"><![CDATA[→ As technology evolves, so do the threats.
+In today's hyper-connected world, cybercrime isn’t just a hacker in a hoodie, it’s a billion-dollar industry, run like organized crime syndicates. From ransomware attacks on hospitals to phishing scams targeting everyday users, no one is truly safe.
+But here's the real question:
+Are we reaching a point where cybercrime can’t be stopped anymore?
+Cybercrime is growing faster than any other type of crime globally. Some reasons:
+Digital Everything: More devices = more targets
+High Profit, Low Risk: It's easier to hack a bank than rob it
+Anonymity via VPNs, Tor & Crypto
+AI-powered attacks: Smart phishing, deepfakes, auto-exploits
+According to Cybersecurity Ventures, global cybercrime damage is predicted to hit \$10.5 trillion annually by 2025.
+Cyberse…]]></summary>
         <author>
-            <name>Ge Ji</name>
+            <name>Your's Nightmare</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How AllPassHub Simplifies Credential Sharing—Securely and Seamlessly]]></title>
-        <id>https://dev.to/allpasshub/how-allpasshub-simplifies-credential-sharing-securely-and-seamlessly-1650</id>
-        <link href="https://dev.to/allpasshub/how-allpasshub-simplifies-credential-sharing-securely-and-seamlessly-1650"/>
-        <updated>2025-08-06T11:08:27.000Z</updated>
-        <summary type="html"><![CDATA[Introduction: The Need for Secure Credential Sharing
-
-
-In an age where digital collaboration is essential and remote work is the norm, sharing passwords and credentials securely has become a major challenge. Employees need access to shared accounts, tools, and platforms, but traditional sharing methods like spreadsheets, emails, or unsecured messaging apps are not just outdated—they are dangerous.
-Enter AllPassHub: a password manager built with end-to-end encryption at its core. It is designed to simplify and secure credential sharing for individuals, families, and teams alike. In this blog, we take a deep dive into how AllPassHub achieves seamless, encrypted sharing while keeping your data safe and accessible.
-At the heart of AllPassHub’s security model is end-to-end encryption. This mean…]]></summary>
+        <title type="html"><![CDATA[Adaptive Optical Interconnect Calibration via Reinforcement Learning for Scalable Qubit Networks]]></title>
+        <id>https://dev.to/freederia-research/adaptive-optical-interconnect-calibration-via-reinforcement-learning-for-scalable-qubit-networks-48ef</id>
+        <link href="https://dev.to/freederia-research/adaptive-optical-interconnect-calibration-via-reinforcement-learning-for-scalable-qubit-networks-48ef"/>
+        <updated>2025-08-06T12:13:32.000Z</updated>
+        <summary type="html"><![CDATA[(90 characters)
+1. Research Topic Explanation and Analysis
+This research tackles a significant challenge in building large, powerful quantum computers: effectively connecting and controlling numerous qubits. Qubits, the fundamental units of quantum information, are notoriously sensitive to their environment. Maintaining their quantum state – the delicate superposition and entanglement that allows for quantum calculations – requires incredibly precise control and isolation.  As quantum computers scale up (i.e., incorporate more and more qubits), maintaining this precision becomes exponentially harder. The title highlights a specific solution: using adaptive optical interconnect calibration guided by reinforcement learning to improve the performance of qubit networks. Let's break down these …]]></summary>
         <author>
-            <name>All Pass Hub</name>
+            <name>freederia</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Responsible Use of AI in Coding]]></title>
-        <id>https://dev.to/zrm9901/responsible-use-of-ai-in-coding-5061</id>
-        <link href="https://dev.to/zrm9901/responsible-use-of-ai-in-coding-5061"/>
-        <updated>2025-08-06T11:06:34.000Z</updated>
-        <summary type="html"><![CDATA[Intro
-
-
-Hey, I just wanted to write this real quick as a warning and suggestion on how to use AI with coding.
-There are three types of use cases for AI in coding
-This is one of the most contreversial topic of discussion, its is the idea where you dont do any coding, you do "prompting" and guide an AI while it codes.
-We should use all the tools we have to code
-This isnt coding, this is just editing.
-In this article im not going to weigh in on either side, just give you the facts
-One great and useful feature of AI in coding is for debugging purposes. ChatGPT and others are great for spotting the one error in hundreds of lines of code.
-The main reason I am where I am in Java and Lua is because I utilized ChatGPT for learning. It is great for bouncing ideas off and for learning what things do …]]></summary>
+        <title type="html"><![CDATA[The Download: OpenAI’s open-weight models, and the future of internet search]]></title>
+        <id>https://www.technologyreview.com/?p=1121179</id>
+        <link href="https://www.technologyreview.com/2025/08/06/1121179/the-download-openais-open-weight-models-and-the-future-of-internet-search/"/>
+        <updated>2025-08-06T12:10:00.000Z</updated>
+        <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. OpenAI has finally released open-weight language models The news: OpenAI has finally released its first open-weight large language models since 2019’s GPT-2. Unlike the models available through OpenAI’s web interface, these new open…]]></summary>
         <author>
-            <name>zrm9901</name>
+            <name>Rhiannon Williams</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Build a Simple Notes App with HTML, CSS & JavaScript]]></title>
-        <id>https://dev.to/giftintech/build-a-simple-notes-app-with-html-css-javascript-35g1</id>
-        <link href="https://dev.to/giftintech/build-a-simple-notes-app-with-html-css-javascript-35g1"/>
-        <updated>2025-08-06T11:02:51.000Z</updated>
-        <summary type="html"><![CDATA[Hey friends! 👋
-It's another tutorial Wednesday and this week, we're building a Notes App from scratch, no frameworks, just pure HTML, CSS and JavaScript. You’ll be able to add, display and delete notes. We'll even persist them in your browser using the localStorage.
-Creating and styling a notes interface
-Adding notes dynamically
-Deleting notes
-Saving notes to localStorage
-
-Loading saved notes on page load
-Check out the working version on CodePen:
-
-👉 Notes App – Live Demo
-<div class="container">
-  <h1>Notes App</h1>
-  <form id="note-form">
-    <textarea id="note-input" placeholder="Write your note..." required></textarea>
-    <button type="submit">Add Note</button>
-  </form>
-  <div id="notes-list"></div>
-</div>
-
-body {
-  font-family: sans-serif;
-  background: #f9f9f9;
-  display: flex;
-  j…]]></summary>
+        <title type="html"><![CDATA[Mimicking the Human Brain: Neuromorphic Computing]]></title>
+        <id>https://dev.to/techieflynn/mimicking-the-human-brain-neuromorphic-computing-28lp</id>
+        <link href="https://dev.to/techieflynn/mimicking-the-human-brain-neuromorphic-computing-28lp"/>
+        <updated>2025-08-06T12:09:38.000Z</updated>
+        <summary type="html"><![CDATA[A human brain never fails to surprise! Can you believe this, it has a rare ability to process even the most complex information at a dizzying speed and the amount of energy used while doing so is pretty less. No wonder human brains are considered as a role model for the new age computing technologies. Several known scientists across the globe have stated that neuromorphic computing is the next big thing in computational technology growth. So in simple words, everything is changed, the way we process information, and solve a bunch of comprehensive tasks, etc. As the title suggests, the following post emphasises on what neuromorphic computing is, how these technologies work, and most importantly of all, how they are inspired by human brains.   
+It has been decades, and finally, the moment ha…]]></summary>
         <author>
-            <name>Gift Egbonyi</name>
+            <name>Flynn Juan</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[🚨 The UX Research Revolution Is Already Here]]></title>
-        <id>https://dev.to/adam/the-ux-research-revolution-is-already-here-ib0</id>
-        <link href="https://dev.to/adam/the-ux-research-revolution-is-already-here-ib0"/>
-        <updated>2025-08-06T11:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Hey 👋  
-Hope this week so far is a good one for you!
-This newsletter is packed with goodies I'm sure you'll enjoy.
-See you in the next one  
- Adam at Unicorn Club 🦄
-Get the latest edition delivered straight to your inbox every week. By subscribing, you'll:
-Receive the newsletter earlier than everyone else.
-Access exclusive content not available to non-subscribers.
-Stay updated with the latest trends in design, coding, and innovation.
-Don't miss out! Click the link below to subscribe and be part of our growing community of front-end developers and UX/UI designers.
+        <title type="html"><![CDATA[Scar - A programming language for easy concurrency and parallelism]]></title>
+        <id>https://dev.to/navidm/scar-a-programming-language-for-easy-concurrency-and-parallelism-4il8</id>
+        <link href="https://dev.to/navidm/scar-a-programming-language-for-easy-concurrency-and-parallelism-4il8"/>
+        <updated>2025-08-06T12:07:45.000Z</updated>
+        <summary type="html"><![CDATA[The repo can be found here.
+Due to the relatively poor state of multithreading in Nim and the reliance on external libraries like Arraymancer for heavy numerical workloads (also the performance issues with boxed values due to ref object everywhere), I started writing a language from scratch, with built-in support for concurrency via parallel blocks (without macros) and a C backend, similar to Nim.
+GC is optional and the stdlib will work with or without the GC.
+Example:
+int glob_value = 0
+float glob_value_2 = 0.0
 
-🔗 Subscribe Now - It's Free!
-Sponsored by  Kinsta
-Agency Gets 767% More Traffic, Saves 250 Hours Yearly
+parallel:
+    glob_value = some_heavy_task()
+    glob_value_2 = some_other_heavy_task()
 
+The idea is to make things like accessing shared memory concurrently a trivial process by automating the generation of thread synchronization code.
+Also there are parallel fors, like so:
+parallel for x = 1 to 5:
+    print "x = %d" | x
+    parallel for y = 10 to 20:
+        print "y = %d" | y
+    sleep 0.1
 
+print "Nested parallel for loop completed."
 
-Adapting Social struggled with 50+ client sites spread across multiple hosting providers. After moving to  Kinsta, they…]]></summary>
+In addition to the concurrency features, the language's type system is being designed to avoid common performance pitfalls found in Nim, particularly around the overuse of heap-allocated ref objects. Instead, it encourages value types by default.
+It is not ready for use at all currently, though will likely see further development until it is.
+Compiler implemented in Go, originally with Participle, recursive-descent approach. All examples in the tests/ directory compile.
+The official project site is here.]]></summary>
         <author>
-            <name>Adam Marsden</name>
+            <name>Navid</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Hidden Cost of Intelligence]]></title>
-        <id>https://dev.to/rawveg/the-hidden-cost-of-intelligence-54b7</id>
-        <link href="https://dev.to/rawveg/the-hidden-cost-of-intelligence-54b7"/>
-        <updated>2025-08-06T11:00:00.000Z</updated>
-        <summary type="html"><![CDATA[In the basement of a nondescript data centre in Virginia, thousands of NVIDIA H100 GPUs hum with the intensity of a small city's power grid. Each chip, worth more than a luxury sports car, burns through electricity at a rate that would power dozens of homes. Together, they're training the next generation of artificial intelligence—and quietly rewriting the rules of global energy consumption. As generative AI transforms everything from customer service to scientific research, a less visible revolution is unfolding: the exponential growth of computing's environmental impact, creating an urgent race between technological ambition and planetary sustainability.
-The numbers are staggering, even by Silicon Valley's standards of excess. Training a single large language model like GPT-4 can consume…]]></summary>
+        <title type="html"><![CDATA[KEXP: The Bouncing Souls - United (Live on KEXP)]]></title>
+        <id>https://dev.to/music_youtube/kexp-the-bouncing-souls-united-live-on-kexp-5e44</id>
+        <link href="https://dev.to/music_youtube/kexp-the-bouncing-souls-united-live-on-kexp-5e44"/>
+        <updated>2025-08-06T12:02:17.000Z</updated>
+        <summary type="html"><![CDATA[The Bouncing Souls – “United” (Live on KEXP)
+
+
+KEXP welcomed punk stalwarts The Bouncing Souls into their Seattle studio on May 30, 2025, for a raw-yet-polished take on their fan favorite “United.” Drummer George Rebelo, guitarists/vocalists Pete Steinkopf and Greg Attonito, plus bassist/vocalist Bryan Kienlen delivered the goods under the watchful ears of host Dr. West, audio engineer Kevin Suggs and mastering ace Matt Ogaz.
+A four-camera shoot led by Jim Beckmann, Carlos Cruz, Scott Holpainen & Luke Knecht—edited by Holpainen—captures every punchy riff and sing-along moment. Dive into the full session at KEXP.org or the band’s site, and snag exclusive perks by joining their YouTube channel.
+Watch on YouTube]]></summary>
         <author>
-            <name>Tim Green</name>
+            <name>Music YouTube</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[📦 Understanding Props in React (Beginner-Friendly Guide)]]></title>
-        <id>https://dev.to/himanayk/understanding-props-in-react-beginner-friendly-guide-1dbn</id>
-        <link href="https://dev.to/himanayk/understanding-props-in-react-beginner-friendly-guide-1dbn"/>
-        <updated>2025-08-06T10:59:25.000Z</updated>
-        <summary type="html"><![CDATA[If you're learning React, you might have seen the word "props" and wondered what it means. Don't worry! In this blog, we’ll understand props in the easiest way possible. Think of it like this:
-👉 Props means properties.
+        <title type="html"><![CDATA[KEXP: The Bouncing Souls - Sing Along Forever (Live on KEXP)]]></title>
+        <id>https://dev.to/music_youtube/kexp-the-bouncing-souls-sing-along-forever-live-on-kexp-5aka</id>
+        <link href="https://dev.to/music_youtube/kexp-the-bouncing-souls-sing-along-forever-live-on-kexp-5aka"/>
+        <updated>2025-08-06T12:02:05.000Z</updated>
+        <summary type="html"><![CDATA[The Bouncing Souls live on KEXP
 
-👉 They are used to pass data from one component to another in React.
 
-👉 Just like we pass ingredients to a recipe, we pass data (props) to a React component.
-Imagine you own a juice shop. When someone places an order, they tell you the flavor they want – like mango, orange, or apple. You then prepare the juice using that flavor.
-In React, the juice shop is your component and the flavor is the prop.
-Let’s create a small app that says hello to different people.
-src>components>Welcome.jsx
-import React from 'react'
-
-function Welcome(props) {
-  return <h2>Hello, {props.name}!…]]></summary>
+Punk legends The Bouncing Souls stormed KEXP’s studio on May 30, 2025, ripping through their anthem “Sing Along Forever” with Greg Attonito up front on vocals, Pete Steinkopf shredding guitar, Bryan Kienlen on bass and George Rebelo keeping the beat. The session, hosted by Dr. West, captures the band’s raw energy and sing-along spirit in full tilt.  
+Behind the scenes, audio whiz Kevin Suggs handled the mix, Matt Ogaz mastered the track, and a four-camera team (Jim Beckmann, Carlos Cruz, Scott Holpainen & Luke Knecht) shot every angle—Scott Holpainen even took care of the edit. For more punk-powered goodness, visit bouncingsouls.com or kexp.org.
+Watch on YouTube]]></summary>
         <author>
-            <name>Himanay Khajuria</name>
+            <name>Music YouTube</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[JavaScript Question Part 2]]></title>
-        <id>https://dev.to/shubhamkhatik/javascript-question-part-2-1km8</id>
-        <link href="https://dev.to/shubhamkhatik/javascript-question-part-2-1km8"/>
-        <updated>2025-08-06T10:59:11.000Z</updated>
-        <summary type="html"><![CDATA[🚀 Frontend Performance & React Tips Every Developer Should Know 🚀
-Ever wondered what really happens when you hit a URL in your browser? It’s a fascinating journey through DNS lookup, HTTP requests, and the Critical Rendering Path (CRP)—the secret sauce that transforms code into pixels on your screen. Optimizing the CRP means faster load times and happier users!
-⚡️ Quick Rundown on Key Frontend Concepts:
-Repaint vs. Reflow:
-Repaint updates visual styles (color, visibility) and costs less;
-Reflow recalculates layouts (size, position) and is more expensive.
-Canceling Old API Calls:
-Use AbortController to cancel outdated fetch requests so your app only processes the latest data and stays performant.
-Parallel API Calls:
-Use Promise.all() when all API calls must succeed, as it fails fast on the first rejection. Use Promise.allSettled() when you need to run all calls in parallel and handle both successes and failures individually.
-github
-JavaScript Question Part 1
-
-
-  
-  
-  Frontend #WebDevelopment #ReactJS #JavaScript #Performance #WebPerf #CodingTips]]></summary>
+        <title type="html"><![CDATA[Bitcoin analyst warns of $105K &#039;danger zone&#039; as open interest stays frothy]]></title>
+        <id>https://cointelegraph.com/news/bitcoin-analyst-warns-105k-danger-zone-as-open-interest-stays-frothy</id>
+        <link href="https://cointelegraph.com/news/bitcoin-analyst-warns-105k-danger-zone-as-open-interest-stays-frothy?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-08-06T11:58:04.000Z</updated>
+        <summary type="html"><![CDATA[The short-term outlook for Bitcoin remains cautious, with a possibility of a trip toward $105,000, which one analyst calls the "hidden danger zone" for BTC price.]]></summary>
         <author>
-            <name>shubham khatik</name>
+            <name>Cointelegraph by Biraajmaan Tamuly</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Slopsquatting]]></title>
+        <id>https://en.wikipedia.org/wiki/Slopsquatting</id>
+        <link href="https://en.wikipedia.org/wiki/Slopsquatting"/>
+        <updated>2025-08-06T11:43:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Wired Called Our AirGradient Monitor 'Not Recommended' over a Broken Display]]></title>
+        <id>https://www.airgradient.com/blog/wired-review-of-airgradient-one-not-recommended/</id>
+        <link href="https://www.airgradient.com/blog/wired-review-of-airgradient-one-not-recommended/"/>
+        <updated>2025-08-06T11:27:27.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[NautilusTrader: Open-Source, High-Performance Algorithmic Trading Platform]]></title>
+        <id>https://nautilustrader.io/</id>
+        <link href="https://nautilustrader.io/"/>
+        <updated>2025-08-06T11:23:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin Traders Bet on Sub-$100K Slide: Crypto Daybook Americas]]></title>
+        <id>7a188be5-0689-4a77-ad89-0e20bf74d87f</id>
+        <link href="https://www.coindesk.com/daybook-us/2025/08/06/bitcoin-traders-bet-on-sub-usd100k-slide-crypto-daybook-americas"/>
+        <updated>2025-08-06T11:15:00.000Z</updated>
+        <summary type="html"><![CDATA[Your day-ahead look for Aug. 6, 2025]]></summary>
+        <author>
+            <name>Omkar Godbole</name>
         </author>
     </entry>
     <entry>
@@ -259,6 +374,16 @@ JavaScript Question Part 1
         <summary type="html"><![CDATA[UK-listed Smarter Web Company raised $21 million via Bitcoin-denominated bonds, backed by Tobam, offering a new model for crypto-aligned fundraising.]]></summary>
         <author>
             <name>Cointelegraph by Adrian Zmudzinski</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LLM Inflation]]></title>
+        <id>https://tratt.net/laurie/blog/2025/llm_inflation.html</id>
+        <link href="https://tratt.net/laurie/blog/2025/llm_inflation.html"/>
+        <updated>2025-08-06T10:44:38.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -832,16 +957,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Kyber (YC W23) is hiring enterprise account executives]]></title>
-        <id>https://www.ycombinator.com/companies/kyber/jobs/6RvaAVR-enterprise-account-executive-ae</id>
-        <link href="https://www.ycombinator.com/companies/kyber/jobs/6RvaAVR-enterprise-account-executive-ae"/>
-        <updated>2025-08-05T21:02:21.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How to Improve Web Accessibility with Landmarks - Explained with Examples]]></title>
         <id>68926eb93b7f491bf54aef85</id>
         <link href="https://www.freecodecamp.org/news/improve-web-accessibility-with-landmarks/"/>
@@ -889,16 +1004,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         <summary type="html"><![CDATA[After failing to retrieve a hard drive with 8,000 BTC, James Howells is turning the lost coins into the basis of a new DeFi project.]]></summary>
         <author>
             <name>Cointelegraph by Nate Kostar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AI is propping up the US economy]]></title>
-        <id>https://www.bloodinthemachine.com/p/the-ai-bubble-is-so-big-its-propping</id>
-        <link href="https://www.bloodinthemachine.com/p/the-ai-bubble-is-so-big-its-propping"/>
-        <updated>2025-08-05T19:19:25.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1012,16 +1117,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Bitcoin slumps, but LTC, CRO, ENA and MNT remain strong on the charts]]></title>
-        <id>https://cointelegraph.com/news/bitcoin-slumps-but-ltc-cro-ena-and-mnt-remain-strong-on-the-charts</id>
-        <link href="https://cointelegraph.com/news/bitcoin-slumps-but-ltc-cro-ena-and-mnt-remain-strong-on-the-charts?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-08-05T16:14:32.000Z</updated>
-        <summary type="html"><![CDATA[Bitcoin is facing selling near $115,000, but LTC, CRO, ENA and MNT are bucking the trend and showing strength on the charts.]]></summary>
-        <author>
-            <name>Cointelegraph by Rakesh Upadhyay</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[BNB Falls Below $750 as Crypto Market Sell-Off Erases Corporate-Fueled Optimism]]></title>
         <id>f33b00b3-0d96-4dc4-a9d4-c1eae157090b</id>
         <link href="https://www.coindesk.com/markets/2025/08/05/bnb-falls-below-usd750-as-crypto-market-sell-off-erases-corporate-fueled-optimism"/>
@@ -1132,16 +1227,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[U.S. CFTC Considers Allowing Spot Crypto Trading on Registered Futures Exchanges]]></title>
-        <id>44c85424-e8b7-4f13-8c39-946170cedfea</id>
-        <link href="https://www.coindesk.com/policy/2025/08/05/u-s-cftc-considers-allowing-spot-crypto-trading-on-registered-futures-exchanges"/>
-        <updated>2025-08-05T14:15:49.000Z</updated>
-        <summary type="html"><![CDATA[The U.S. Commodity Futures Trading Commission wants stakeholders to work with it to provide regulatory clarity on listing spot crypto assets.]]></summary>
-        <author>
-            <name>Camomile Shumba</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Things that helped me get out of the AI 10x engineer imposter syndrome]]></title>
         <id>https://colton.dev/blog/curing-your-ai-10x-engineer-imposter-syndrome/</id>
         <link href="https://colton.dev/blog/curing-your-ai-10x-engineer-imposter-syndrome/"/>
@@ -1169,16 +1254,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. These protocols will help AI agents navigate our messy lives A growing number of companies are launching AI agents that can do things on your behalf—actions like sending an email, making a document,…]]></summary>
         <author>
             <name>Charlotte Jee</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Build Your Own Lisp]]></title>
-        <id>https://www.buildyourownlisp.com/</id>
-        <link href="https://www.buildyourownlisp.com/"/>
-        <updated>2025-08-05T11:55:20.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1302,10 +1377,10 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Zigzag Number Spiral - Closed Form Expression]]></title>
-        <id>https://susam.net/zigzag-number-spiral.html</id>
-        <link href="https://susam.net/zigzag-number-spiral.html"/>
-        <updated>2025-08-02T14:27:16.000Z</updated>
+        <title type="html"><![CDATA[Automerge 3.0]]></title>
+        <id>https://automerge.org/blog/automerge-3/</id>
+        <link href="https://automerge.org/blog/automerge-3/"/>
+        <updated>2025-08-03T15:08:58.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1326,16 +1401,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         <id>https://news.ycombinator.com/item?id=44766771</id>
         <link href="https://news.ycombinator.com/item?id=44766771"/>
         <updated>2025-08-02T11:37:00.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The first widespread cure for HIV could be in children]]></title>
-        <id>https://www.wired.com/story/the-first-widespread-cure-for-hiv-could-be-in-children/</id>
-        <link href="https://www.wired.com/story/the-first-widespread-cure-for-hiv-could-be-in-children/"/>
-        <updated>2025-08-02T09:20:42.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1549,16 +1614,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. The two people shaping the future of OpenAI’s research —Will Douglas Heaven For the past couple of years, OpenAI has felt like a one-man brand. With his showbiz style and fundraising glitz, CEO…]]></summary>
         <author>
             <name>Rhiannon Williams</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The two people shaping the future of OpenAI’s research]]></title>
-        <id>https://www.technologyreview.com/?p=1120885</id>
-        <link href="https://www.technologyreview.com/2025/07/31/1120885/the-two-people-shaping-the-future-of-openais-research/"/>
-        <updated>2025-07-31T09:06:48.000Z</updated>
-        <summary type="html"><![CDATA[For the past couple of years, OpenAI has felt like a one-man brand. With his showbiz style and fundraising glitz, CEO Sam Altman overshadows all other big names on the firm’s roster. Even his bungled ouster ended with him back on top—and more famous than ever. But look past the charismatic frontman and you get…]]></summary>
-        <author>
-            <name>Will Douglas Heaven</name>
         </author>
     </entry>
     <entry>

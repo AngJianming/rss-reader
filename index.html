@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-08-06 datetime="2025-08-06T11:18:10.000Z">2025-08-06</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-08-06 datetime="2025-08-06T11:18:10.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-08-06 datetime="2025-08-06T12:25:40.000Z">2025-08-06</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-08-06 datetime="2025-08-06T12:25:40.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -42,31 +42,62 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/imaginepro/complete-guide-to-use-midjourney-api-for-text-to-image-generation-3hmc"
+                        data-accordion-key="https://dev.to/ubinix_warun/aich-typhoon-ocr-duengkhkhwaamcchaak-pdfruupphaaphdwy-python-1g"
                         open
                       >
-                        <summary class="article-expander__title">Complete Guide to Use Midjourney API for Text-to-Image Generation</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/imaginepro/complete-guide-to-use-midjourney-api-for-text-to-image-generation-3hmc">
+                        <summary class="article-expander__title">ใช้ Typhoon-OCR ดึงข้อความจาก PDF/รูปภาพด้วย Python</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ubinix_warun/aich-typhoon-ocr-duengkhkhwaamcchaak-pdfruupphaaphdwy-python-1g">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fr6ivudsisvjnqc4590jf.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ff8ymjm1l33vdnrutncjr.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Building a Text-to-Image Tool with Midjourney API
+                              <span>Typhoon-OCR จาก SCB 10X คือ LLM ที่ช่วยสกัดข้อความภาษาไทยจากไฟล์ PDF และรูปภาพได้อย่างแม่นยำ นี่คือวิธีใช้งานฉบับรวบรัดผ่าน Python และ Ollama
+อ่านฉบับเต็ม...
+เปิด Terminal แล้วรัน 2 คำสั่งนี้:
+1. ติดตั้งไลบรารีที่จำเป็น:
+pip install typhoon-ocr openai
 
+2. ดาวน์โหลดและรันโมเดลผ่าน Ollama: (ต้องติดตั้ง Ollama ก่อน)
+ollama run scb10x/typhoon-ocr-3b:latest
 
+คำสั่งนี้จะเปิด API Server ที่ http://localhost:11434 ให้โดยอัตโนมัติ
+สร้างไฟล์ Python แล้วนำโค้ดด้านล่างไปวางได้เลย
+from typhoon_ocr import prepare_ocr_messages
+from openai import OpenAI
 
-  
-  
-  Introduction
+# เตรียมข้อมูลจากไฟล์ PDF/Image
+messages &#x3D; prepare_ocr_messages(
+    pdf_or_image_path&#x3D;&quot;YOUR_FILE.pdf&quot;,  # &lt;-- แก้เป็นชื่อไฟล์ของคุณ
+    task_type&#x3D;&quot;default&quot;                 # &quot;default&quot; &#x3D; ดึงข้อความ, &quot;structure&quot; &#x3D; รักษาตาราง
+    page_num&#x3D;1              # Process page 1 of a PDF (default is 1, always 1 for images)
+)
 
+# เชื่อมต่อกับโมเดลที่รันบน Ollama
+client &#x3D; OpenAI(
+    base_url&#x3D;&quot;http://localhost:11434/v1&quot;, 
+    api_key&#x3D;&quot;not-needed&quot;
+)
 
-Midjourney has revolutionized the world of AI-generated imagery with its powerful text-to-image capabilities. While Midjourney is primarily known for its Discord bot interface, developers can now integrate its image generation capabilities directly into their applications using APIs. This guide will walk you through everything you need to know to build a text-to-image tool using Midjourney&#x27;s API.
-Before diving into the implementation, ensure you have:
-Basic knowledge of JavaScript/TypeScript
-Node.js installed on your system
-An API key
-Understanding of REST APIs and asynchronous programming
-First, install the necessary SDK. For this guide, we&#x27;ll use the ImaginePro SDK which provides a clean interface for Midjourney …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
+# ส่งคำขอให้โมเดลทำงาน
+response &#x3D; client.chat.completions.create(
+    model&#x3D;&quot;scb10x/typhoon-ocr-3b:latest&quot;,
+    messages&#x3D;messages,
+     max_tokens&#x3D;16000,
+    extra_body&#x3D;{
+        &quot;repetition_penalty&quot;: 1.2,
+        &quot;temperature&quot;: 0.1,
+        &quot;top_p&quot;: 0.6,
+    },
+)
+
+# พิมพ์ผลลัพธ์
+print(response.choices[0].message.content)
+
+เพียงแค่แก้ pdf_or_image_path ในโค้ดให้เป็นตำแหน่งไฟล์ของคุณ แล้วสั่งรันสคริปต์ Python ผลลัพธ์ที่ได้คือข้อความที่ถูกสกัดออกมาจากไฟล์ของคุณ ง่ายและทรงพลังสำหรับงาน OCR ภาษาไทยโดยเฉพาะ!
+
+ถูกใจกด  เป็นกำลังใจให้ทำคอนเทนต์ดีๆ &amp; ติดตามเรื่องที่น่าสนใจผ่านทาง 
+Warun Chareonsuk &amp; Super AI Agent -- @ubinix-warun
+ตามลิงค์เข้าไปเลี้ยงกาแฟผมได้ที่ ☕ Buy Me A Coffee</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -77,16 +108,70 @@ First, install the necessary SDK. For this guide, we&#x27;ll use the ImaginePro 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/alexantartico/supporting-sql-ops-please-dont-be-a-bottleneck-akb"
+                        data-accordion-key="https://dev.to/nganggurdev/learn-basic-css-media-queries-build-responsive-layouts-for-every-screen-size-k4g"
                         open
                       >
-                        <summary class="article-expander__title">Supporting SQL ops - Please Don&#x27;t Be a Bottleneck</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/alexantartico/supporting-sql-ops-please-dont-be-a-bottleneck-akb">
+                        <summary class="article-expander__title">Learn Basic CSS Media Queries: Build Responsive Layouts for Every Screen Size</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nganggurdev/learn-basic-css-media-queries-build-responsive-layouts-for-every-screen-size-k4g">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fyea3qrd8h1f9shaemtw1.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fn16prv6jbsc27k0oltvx.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Let&#x27;s get this straight: In a prod environment you should be having DQL access to the DB&#x27;s of the applications you support. Any other command belonging to DML, DDL etc are usually reserved to either DBA teams or you will need to go through your organization&#x27;s formal deployment process. Do not cowboy the system, no exceptions.
-From a resiliency point of view, the absolute bare minimum is to run two database instances on separate hosts. These are usually named prod and a prod-replication (or prod-replica/prod-repl). These instancess MUST live on entirely different infrastructure, be it different physical hosts  or even better, different availability zones. If your primary replication is in the same rack or worse: on the same physical host (I have seen this happened (╯°□°)╯), you have not bui…</span>
+                              <span>Are your web layouts breaking on mobile or tablets?
+Media queries allow your design to adapt to different screen sizes, orientations, and device capabilities without relying on JavaScript.
+📱 In this tutorial, you’ll learn:
+Why Media Queries Matter:
+Quick Example:
+@mesdia (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+This rule changes a flex layout to a stacked column layout on screens 768px wide or smaller.
+👉 Read the full guide with examples, tips, and best practices:
+CSS Media Query Tutorial: Build Mobile-Friendly Responsive Layout</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/harshchaudhari/fixing-the-outdated-woocommerce-template-files-error-in-wordpress-a-step-by-step-guide-55ac"
+                        open
+                      >
+                        <summary class="article-expander__title">🛠️ Fixing the &quot;Outdated WooCommerce Template Files&quot; Error in WordPress – A Step-by-Step Guide</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/harshchaudhari/fixing-the-outdated-woocommerce-template-files-error-in-wordpress-a-step-by-step-guide-55ac">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fr2iaszuu12tk9ewzvasv.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Have you ever come across this frustrating message in your WordPress dashboard?
+&quot;Your theme contains outdated copies of some WooCommerce template files.&quot;
+This error often confuses beginners and even intermediate WordPress developers — but don&#x27;t worry, I’ve made a step-by-step YouTube tutorial to walk you through the complete fix 👇
+✅ What’s Covered in the Video:
+Creating a full backup (Always backup before making changes!)
+Downloading the latest WooCommerce plugin files
+Locating and replacing outdated theme files
+Verifying the fix by refreshing your WordPress dashboard
+No plugin is required — just a little attention and file-handling.
+💡 Who is This For?
+Developers working with custom or child themes
+Business owners managing their own store
+Freelancers building eCommerce websites
+🙌 Join the Journey
+🚀 Follow my YouTube channel for more tutorials like this:
+💬 Feel free to ask questions in the comments — I’m happy to help or even make videos on your suggestions!
+🧠 Stay Tuned for More
+💥 Let&#x27;s build better WordPress sites together!
+
+
+  
+  
+  wordpress #woocommerce #webdev #frontend #ecommerce #tutorial #wordpressdeveloper #fullstack</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
@@ -98,21 +183,181 @@ From a resiliency point of view, the absolute bare minimum is to run two databas
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/serveravatar/10-best-wordpress-ecommerce-themes-for-2025-free-and-paid-4a9o"
+                        data-accordion-key="https://dev.to/om_shree_0709/getting-started-deploying-an-mcp-server-for-data-projects-e1g"
                         open
                       >
-                        <summary class="article-expander__title">10 Best WordPress Ecommerce Themes for 2025 (Free and Paid)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/serveravatar/10-best-wordpress-ecommerce-themes-for-2025-free-and-paid-4a9o">
+                        <summary class="article-expander__title">Getting Started: Deploying an MCP Server for Data Projects</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/om_shree_0709/getting-started-deploying-an-mcp-server-for-data-projects-e1g">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fa77trtahzfpx2nfswvhs.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F602j4khe62hm6lq4zo1v.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Want to sell stuff online? WordPress Ecommerce Themes are the key to building a great-looking, easy-to-use store. A theme is just how your website looks, it makes things pretty and simple to navigate.
-Not all themes work well for selling things. You need one that’s built for shopping carts, product displays, and payments. That’s what we call ecommerce themes.
-Here are 10 great WordPress ecommerce themes for 2025. Some are free, some cost money — but they all help you create a professional online store.
-Before I tell you about the themes, let me explain what makes one good for selling stuff.
+                              <span>Model Context Protocol (MCP) makes it simple to run your own MCP server for data science projects. Using MCP, data teams can register datasets and tools as resources, and agents can interact with them using natural language. This approach simplifies AI workflows, especially when working with ML pipelines and analysis tools 12.
+To begin, install the official MCP SDK in Python and initialize your server environment:
+pip install modelcontextprotocol-sdk
+mcp init data-science-project
 
-The people who made WooCommerce also made Storefront. So it works really well with online stores.
-It’s super clean and simple. The design doesn’t get in the way of your products. People can focus on wh…</span>
+
+This command creates a scaffold with tool definitions and resource templates. You can then define resources such as CSV files, DuckDB databases, or Postgres tables in the config file. Each resource is exposed as an MCP endpoint that agents can call via their tools 3.
+OR
+pip install &quot;mcp[cli]&quot;
+uv init data-scienc…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/casperday11/day-57-the-reality-check-i-needed-4ld8"
+                        open
+                      >
+                        <summary class="article-expander__title">Day 57: The Reality Check I Needed</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/casperday11/day-57-the-reality-check-i-needed-4ld8">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdutma03eac1se018ex1s.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Day 57: The Reality Check I Needed
+
+
+Another &quot;tomorrow I&#x27;ll wake up early&quot; turned into another 6 PM realization that I&#x27;m still posting late. But something&#x27;s different about today - I&#x27;m finally tired of my own excuses.
+Let&#x27;s be honest about something most students won&#x27;t admit: half our lectures are teaching stuff that&#x27;s already outdated. Don&#x27;t get me wrong, professors are doing their best, but curriculum updates move slower than Internet Explorer on a dial-up connection.
+So instead of mindlessly gaming through these sessions (yeah, I said it), I&#x27;m shifting strategy. Planning actual useful work during lecture hours. Revolutionary concept, right?
+Here&#x27;s where it gets interesting - I&#x27;m implementing a phone ban. One hour before sleep, one hour after waking up. Sounds simple until you realize how much we&#x27;ve trained ourselves to reach for that rectangle of infinite distraction.
+The before-sleep part? That&#x27;s about letting my brain actually wind down instead of doom-scrolling until 2 AM. The after-waking part? That&#x27;s about starting the day with intention instead of immediately falling into someone else&#x27;s content.
+On a completely different note - I need a homepage designer for my current project. It&#x27;s an unpaid internship (student budget reality), but you get proper certification and portfolio credits. Figma preferred, but talent trumps tools.
+If you nail the homepage and want to continue, there&#x27;s more design work coming. Sometimes the best opportunities start with taking a chance on something small.
+Today feels different because I&#x27;m finally done with performative productivity posts about grinding and small victories. This is just honest documentation of trying to build something meaningful while navigating the weird space between student life and actual professional work.
+Some days you realize you&#x27;ve been playing a game that doesn&#x27;t serve you anymore. Today&#x27;s one of those days.
+What outdated systems are you tired of pretending work for you?</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/lucianghinda/running-all-tests-from-the-current-branch-5f22"
+                        open
+                      >
+                        <summary class="article-expander__title">Running all tests from the current branch</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/lucianghinda/running-all-tests-from-the-current-branch-5f22">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4eowanp9cuquto6vhskz.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I enjoy creating small automations using Ruby and Bash. While it might be simpler to use Bash, I like #Ruby so much that I want to use it more.
+Here are two examples of how to run all the tests that have changed in the current branch: an example for Minitest and one for RSpec.
+files &#x3D; []
+files +&#x3D; &#x60;git diff --name-only main...HEAD&#x60;.split(&quot;\n&quot;)
+files +&#x3D; &#x60;git diff --cached --name-only&#x60;.split(&quot;\n&quot;)
+files +&#x3D; &#x60;git diff --name-only&#x60;.split(&quot;\n&quot;)
+files &#x3D; files.grep(/_test\.rb$/).sort.uniq.reject(&amp;:empty?)
+
+if files.empty?
+  puts &quot;No spec files found.&quot;
+  exit
+end
+
+puts &quot;Files to execute:&quot;
+puts files.map { |f| &quot;  #{f}&quot; }
+exec &quot;bundle exec bin/rails test #{files.join(&#x27; &#x27;)}&quot;
+
+files &#x3D; []
+files +&#x3D; &#x60;git diff --name-only main...HEAD&#x60;.split(&quot;\n&quot;)
+files +&#x3D; &#x60;git diff --cached --name-only&#x60;.split(&quot;\n&quot;)
+files +&#x3D; &#x60;git diff --name-only&#x60;.split(&quot;\n&quot;)
+files &#x3D; files.grep(/_spec\.rb$/).sort.uniq.reject(&amp;:empty?)
+
+if files.empty?
+  puts &quot;No spec files found.&quot;
+  exit
+end
+
+puts &quot;Files to execute:&quot;
+puts files.map { |f| &quot;  #{f}&quot; }
+exec &quot;bundle exec rspec #{files.join(&#x27; &#x27;)}&quot;
+
+You can, of course, modify this script to become an MCP, enabling tools like Claude Code or Cursor to run tests at the end of an implementation. During multiple rounds of test runs and fixes, when focusing on each test individually LLMs may pass the most recent test they fixed but fail previous ones.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/nightmare-lynx/will-cybercrime-ever-be-unstoppable-2g7e"
+                        open
+                      >
+                        <summary class="article-expander__title">Will Cybercrime Ever Be Unstoppable?</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nightmare-lynx/will-cybercrime-ever-be-unstoppable-2g7e">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7z8u18hiqnd2v81c9uwo.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>→ As technology evolves, so do the threats.
+In today&#x27;s hyper-connected world, cybercrime isn’t just a hacker in a hoodie, it’s a billion-dollar industry, run like organized crime syndicates. From ransomware attacks on hospitals to phishing scams targeting everyday users, no one is truly safe.
+But here&#x27;s the real question:
+Are we reaching a point where cybercrime can’t be stopped anymore?
+Cybercrime is growing faster than any other type of crime globally. Some reasons:
+Digital Everything: More devices &#x3D; more targets
+High Profit, Low Risk: It&#x27;s easier to hack a bank than rob it
+Anonymity via VPNs, Tor &amp; Crypto
+AI-powered attacks: Smart phishing, deepfakes, auto-exploits
+According to Cybersecurity Ventures, global cybercrime damage is predicted to hit \$10.5 trillion annually by 2025.
+Cyberse…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/freederia-research/adaptive-optical-interconnect-calibration-via-reinforcement-learning-for-scalable-qubit-networks-48ef"
+                        open
+                      >
+                        <summary class="article-expander__title">Adaptive Optical Interconnect Calibration via Reinforcement Learning for Scalable Qubit Networks</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/freederia-research/adaptive-optical-interconnect-calibration-via-reinforcement-learning-for-scalable-qubit-networks-48ef">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1zzb2h8v8vcv4u8qxcbq.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>(90 characters)
+1. Research Topic Explanation and Analysis
+This research tackles a significant challenge in building large, powerful quantum computers: effectively connecting and controlling numerous qubits. Qubits, the fundamental units of quantum information, are notoriously sensitive to their environment. Maintaining their quantum state – the delicate superposition and entanglement that allows for quantum calculations – requires incredibly precise control and isolation.  As quantum computers scale up (i.e., incorporate more and more qubits), maintaining this precision becomes exponentially harder. The title highlights a specific solution: using adaptive optical interconnect calibration guided by reinforcement learning to improve the performance of qubit networks. Let&#x27;s break down these …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;12
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/techieflynn/mimicking-the-human-brain-neuromorphic-computing-28lp"
+                        open
+                      >
+                        <summary class="article-expander__title">Mimicking the Human Brain: Neuromorphic Computing</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/techieflynn/mimicking-the-human-brain-neuromorphic-computing-28lp">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjl75b4dur9wos4evy6md.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>A human brain never fails to surprise! Can you believe this, it has a rare ability to process even the most complex information at a dizzying speed and the amount of energy used while doing so is pretty less. No wonder human brains are considered as a role model for the new age computing technologies. Several known scientists across the globe have stated that neuromorphic computing is the next big thing in computational technology growth. So in simple words, everything is changed, the way we process information, and solve a bunch of comprehensive tasks, etc. As the title suggests, the following post emphasises on what neuromorphic computing is, how these technologies work, and most importantly of all, how they are inspired by human brains.   
+It has been decades, and finally, the moment ha…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;10
                                   min&hairsp;)</span>
                             </span>
@@ -124,30 +369,40 @@ It’s super clean and simple. The design doesn’t get in the way of your produ
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/nishath_jp/i-forgot-to-release-an-aws-eip-heres-how-it-cost-me-and-how-aws-helped-3jdb"
+                        data-accordion-key="https://dev.to/navidm/scar-a-programming-language-for-easy-concurrency-and-parallelism-4il8"
                         open
                       >
-                        <summary class="article-expander__title">I Forgot to Release an AWS EIP — Here’s How It Cost Me (And How AWS Helped)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nishath_jp/i-forgot-to-release-an-aws-eip-heres-how-it-cost-me-and-how-aws-helped-3jdb">
+                        <summary class="article-expander__title">Scar - A programming language for easy concurrency and parallelism</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/navidm/scar-a-programming-language-for-easy-concurrency-and-parallelism-4il8">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fudblwz7wkyeffpyc6og4.webp" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fhjqqlekpl2tkcyh9mfeo.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>First of all I am just a Newbie to AWS Cloud infrastructure.
-Youtube videos. 
-I also started experimenting with AWS VPC setups.
-In July, I learnt an important lesson on AWS billing which costed me around $2.14.
-It may sound like a tiny amount, but the lesson I learnt is so valuable.
-Let me walk you through what happened and how AWS Helped me.
-The project I was working needed a custom VPC with:
-A public and private subnet
-A NAT Gateway for internet access in the private subnet
-An Elastic IP (EIP) allocated for the NAT Gateway
-The Architectural diagram of the project.
+                              <span>The repo can be found here.
+Due to the relatively poor state of multithreading in Nim and the reliance on external libraries like Arraymancer for heavy numerical workloads (also the performance issues with boxed values due to ref object everywhere), I started writing a language from scratch, with built-in support for concurrency via parallel blocks (without macros) and a C backend, similar to Nim.
+GC is optional and the stdlib will work with or without the GC.
+Example:
+int glob_value &#x3D; 0
+float glob_value_2 &#x3D; 0.0
 
-The project worked fine...
-Once I finished with the project. I deleted the Custom VPC manually with all the associated resources that&#x27;s what I thought.
-After few days, I noticed some charges in my account which is a free tier …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
+parallel:
+    glob_value &#x3D; some_heavy_task()
+    glob_value_2 &#x3D; some_other_heavy_task()
+
+The idea is to make things like accessing shared memory concurrently a trivial process by automating the generation of thread synchronization code.
+Also there are parallel fors, like so:
+parallel for x &#x3D; 1 to 5:
+    print &quot;x &#x3D; %d&quot; | x
+    parallel for y &#x3D; 10 to 20:
+        print &quot;y &#x3D; %d&quot; | y
+    sleep 0.1
+
+print &quot;Nested parallel for loop completed.&quot;
+
+In addition to the concurrency features, the language&#x27;s type system is being designed to avoid common performance pitfalls found in Nim, particularly around the overuse of heap-allocated ref objects. Instead, it encourages value types by default.
+It is not ready for use at all currently, though will likely see further development until it is.
+Compiler implemented in Go, originally with Participle, recursive-descent approach. All examples in the tests/ directory compile.
+The official project site is here.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -158,248 +413,80 @@ After few days, I noticed some charges in my account which is a free tier …</s
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/jige2025/dart-lesson-23-getting-started-with-unit-testing-ensuring-code-quality-408k"
+                        data-accordion-key="https://dev.to/music_youtube/kexp-the-bouncing-souls-united-live-on-kexp-5e44"
                         open
                       >
-                        <summary class="article-expander__title">Dart Lesson 23: Getting Started with Unit Testing — Ensuring Code Quality</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jige2025/dart-lesson-23-getting-started-with-unit-testing-ensuring-code-quality-408k">
+                        <summary class="article-expander__title">KEXP: The Bouncing Souls - United (Live on KEXP)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/music_youtube/kexp-the-bouncing-souls-united-live-on-kexp-5e44">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7y3ith9yy43wid83k9bq.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2F0gnafmkvWcU%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>In the previous lessons, we explored the fundamentals of performance optimization and learned techniques to improve program efficiency at the code level. Today, we&#x27;ll focus on unit testing — a critical practice for ensuring code quality that helps us catch issues early in development, reduce production failures, and make code more maintainable and refactor-friendly.
-Unit testing involves testing the smallest testable units of software (typically functions, methods, or classes). Its core values include:
- Early issue detection: Catching logical errors during development before they reach production.
- Safe refactoring: Quickly verifying that functionality remains intact when modifying or refactoring code.
- Documentation value: Test cases serve as living documentation, clearly showing expected…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/allpasshub/how-allpasshub-simplifies-credential-sharing-securely-and-seamlessly-1650"
-                        open
-                      >
-                        <summary class="article-expander__title">How AllPassHub Simplifies Credential Sharing—Securely and Seamlessly</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/allpasshub/how-allpasshub-simplifies-credential-sharing-securely-and-seamlessly-1650">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fa8k8szffw3agmzag5art.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Introduction: The Need for Secure Credential Sharing
+                              <span>The Bouncing Souls – “United” (Live on KEXP)
 
 
-In an age where digital collaboration is essential and remote work is the norm, sharing passwords and credentials securely has become a major challenge. Employees need access to shared accounts, tools, and platforms, but traditional sharing methods like spreadsheets, emails, or unsecured messaging apps are not just outdated—they are dangerous.
-Enter AllPassHub: a password manager built with end-to-end encryption at its core. It is designed to simplify and secure credential sharing for individuals, families, and teams alike. In this blog, we take a deep dive into how AllPassHub achieves seamless, encrypted sharing while keeping your data safe and accessible.
-At the heart of AllPassHub’s security model is end-to-end encryption. This mean…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/zrm9901/responsible-use-of-ai-in-coding-5061"
-                        open
-                      >
-                        <summary class="article-expander__title">Responsible Use of AI in Coding</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/zrm9901/responsible-use-of-ai-in-coding-5061">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fr6vs06wvk4q81tv9wfqw.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Intro
-
-
-Hey, I just wanted to write this real quick as a warning and suggestion on how to use AI with coding.
-There are three types of use cases for AI in coding
-This is one of the most contreversial topic of discussion, its is the idea where you dont do any coding, you do &quot;prompting&quot; and guide an AI while it codes.
-We should use all the tools we have to code
-This isnt coding, this is just editing.
-In this article im not going to weigh in on either side, just give you the facts
-One great and useful feature of AI in coding is for debugging purposes. ChatGPT and others are great for spotting the one error in hundreds of lines of code.
-The main reason I am where I am in Java and Lua is because I utilized ChatGPT for learning. It is great for bouncing ideas off and for learning what things do …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/giftintech/build-a-simple-notes-app-with-html-css-javascript-35g1"
-                        open
-                      >
-                        <summary class="article-expander__title">Build a Simple Notes App with HTML, CSS &amp; JavaScript</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/giftintech/build-a-simple-notes-app-with-html-css-javascript-35g1">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F24ds6wzze88mpq1sy5dj.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hey friends! 👋
-It&#x27;s another tutorial Wednesday and this week, we&#x27;re building a Notes App from scratch, no frameworks, just pure HTML, CSS and JavaScript. You’ll be able to add, display and delete notes. We&#x27;ll even persist them in your browser using the localStorage.
-Creating and styling a notes interface
-Adding notes dynamically
-Deleting notes
-Saving notes to localStorage
-
-Loading saved notes on page load
-Check out the working version on CodePen:
-
-👉 Notes App – Live Demo
-
-  
-Notes App
-
-    Add Note
-  
-  
-
-
-
-body {
-  font-family: sans-serif;
-  background: #f9f9f9;
-  display: flex;
-  j…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/adam/the-ux-research-revolution-is-already-here-ib0"
-                        open
-                      >
-                        <summary class="article-expander__title">🚨 The UX Research Revolution Is Already Here</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/adam/the-ux-research-revolution-is-already-here-ib0">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftq6ro720jdfqrbcnjraz.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hey 👋  
-Hope this week so far is a good one for you!
-This newsletter is packed with goodies I&#x27;m sure you&#x27;ll enjoy.
-See you in the next one  
- Adam at Unicorn Club 🦄
-Get the latest edition delivered straight to your inbox every week. By subscribing, you&#x27;ll:
-Receive the newsletter earlier than everyone else.
-Access exclusive content not available to non-subscribers.
-Stay updated with the latest trends in design, coding, and innovation.
-Don&#x27;t miss out! Click the link below to subscribe and be part of our growing community of front-end developers and UX/UI designers.
-
-🔗 Subscribe Now - It&#x27;s Free!
-Sponsored by  Kinsta
-Agency Gets 767% More Traffic, Saves 250 Hours Yearly
-
-
-
-Adapting Social struggled with 50+ client sites spread across multiple hosting providers. After moving to  Kinsta, they…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/rawveg/the-hidden-cost-of-intelligence-54b7"
-                        open
-                      >
-                        <summary class="article-expander__title">The Hidden Cost of Intelligence</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/rawveg/the-hidden-cost-of-intelligence-54b7">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiqlm4506wgebxw24hqel.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>In the basement of a nondescript data centre in Virginia, thousands of NVIDIA H100 GPUs hum with the intensity of a small city&#x27;s power grid. Each chip, worth more than a luxury sports car, burns through electricity at a rate that would power dozens of homes. Together, they&#x27;re training the next generation of artificial intelligence—and quietly rewriting the rules of global energy consumption. As generative AI transforms everything from customer service to scientific research, a less visible revolution is unfolding: the exponential growth of computing&#x27;s environmental impact, creating an urgent race between technological ambition and planetary sustainability.
-The numbers are staggering, even by Silicon Valley&#x27;s standards of excess. Training a single large language model like GPT-4 can consume…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;16
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/himanayk/understanding-props-in-react-beginner-friendly-guide-1dbn"
-                        open
-                      >
-                        <summary class="article-expander__title">📦 Understanding Props in React (Beginner-Friendly Guide)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/himanayk/understanding-props-in-react-beginner-friendly-guide-1dbn">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftr7m80lwkcugn4r6x3ip.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>If you&#x27;re learning React, you might have seen the word &quot;props&quot; and wondered what it means. Don&#x27;t worry! In this blog, we’ll understand props in the easiest way possible. Think of it like this:
-👉 Props means properties.
-
-👉 They are used to pass data from one component to another in React.
-
-👉 Just like we pass ingredients to a recipe, we pass data (props) to a React component.
-Imagine you own a juice shop. When someone places an order, they tell you the flavor they want – like mango, orange, or apple. You then prepare the juice using that flavor.
-In React, the juice shop is your component and the flavor is the prop.
-Let’s create a small app that says hello to different people.
-src&gt;components&gt;Welcome.jsx
-import React from &#x27;react&#x27;
-
-function Welcome(props) {
-  return 
-Hello, {props.name}!…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/shubhamkhatik/javascript-question-part-2-1km8"
-                        open
-                      >
-                        <summary class="article-expander__title">JavaScript Question Part 2</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/shubhamkhatik/javascript-question-part-2-1km8">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F5i9t14y4du1ymddj43hx.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>🚀 Frontend Performance &amp; React Tips Every Developer Should Know 🚀
-Ever wondered what really happens when you hit a URL in your browser? It’s a fascinating journey through DNS lookup, HTTP requests, and the Critical Rendering Path (CRP)—the secret sauce that transforms code into pixels on your screen. Optimizing the CRP means faster load times and happier users!
-⚡️ Quick Rundown on Key Frontend Concepts:
-Repaint vs. Reflow:
-Repaint updates visual styles (color, visibility) and costs less;
-Reflow recalculates layouts (size, position) and is more expensive.
-Canceling Old API Calls:
-Use AbortController to cancel outdated fetch requests so your app only processes the latest data and stays performant.
-Parallel API Calls:
-Use Promise.all() when all API calls must succeed, as it fails fast on the first rejection. Use Promise.allSettled() when you need to run all calls in parallel and handle both successes and failures individually.
-github
-JavaScript Question Part 1
-
-
-  
-  
-  Frontend #WebDevelopment #ReactJS #JavaScript #Performance #WebPerf #CodingTips</span>
+KEXP welcomed punk stalwarts The Bouncing Souls into their Seattle studio on May 30, 2025, for a raw-yet-polished take on their fan favorite “United.” Drummer George Rebelo, guitarists/vocalists Pete Steinkopf and Greg Attonito, plus bassist/vocalist Bryan Kienlen delivered the goods under the watchful ears of host Dr. West, audio engineer Kevin Suggs and mastering ace Matt Ogaz.
+A four-camera shoot led by Jim Beckmann, Carlos Cruz, Scott Holpainen &amp; Luke Knecht—edited by Holpainen—captures every punchy riff and sing-along moment. Dive into the full session at KEXP.org or the band’s site, and snag exclusive perks by joining their YouTube channel.
+Watch on YouTube</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/music_youtube/kexp-the-bouncing-souls-sing-along-forever-live-on-kexp-5aka"
+                        open
+                      >
+                        <summary class="article-expander__title">KEXP: The Bouncing Souls - Sing Along Forever (Live on KEXP)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/music_youtube/kexp-the-bouncing-souls-sing-along-forever-live-on-kexp-5aka">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FHrxJh0CELZc%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The Bouncing Souls live on KEXP
+
+
+Punk legends The Bouncing Souls stormed KEXP’s studio on May 30, 2025, ripping through their anthem “Sing Along Forever” with Greg Attonito up front on vocals, Pete Steinkopf shredding guitar, Bryan Kienlen on bass and George Rebelo keeping the beat. The session, hosted by Dr. West, captures the band’s raw energy and sing-along spirit in full tilt.  
+Behind the scenes, audio whiz Kevin Suggs handled the mix, Matt Ogaz mastered the track, and a four-camera team (Jim Beckmann, Carlos Cruz, Scott Holpainen &amp; Luke Knecht) shot every angle—Scott Holpainen even took care of the edit. For more punk-powered goodness, visit bouncingsouls.com or kexp.org.
+Watch on YouTube</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >MIT Technology Review</button>
+                  <a class="source-heading__link" href="https://www.technologyreview.com">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.technologyreview.com/?p&#x3D;1121179"
+                        open
+                      >
+                        <summary class="article-expander__title">The Download: OpenAI’s open-weight models, and the future of internet search</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.technologyreview.com/2025/08/06/1121179/the-download-openais-open-weight-models-and-the-future-of-internet-search/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://wp.technologyreview.com/wp-content/uploads/2025/08/250805_openaiopenmodel_hero.jpg?resize&#x3D;1200,600" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. OpenAI has finally released open-weight language models The news: OpenAI has finally released its first open-weight large language models since 2019’s GPT-2. Unlike the models available through OpenAI’s web interface, these new open…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;21
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -420,6 +507,24 @@ JavaScript Question Part 1
                   <a class="source-heading__link" href="https://cointelegraph.com">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/bitcoin-analyst-warns-105k-danger-zone-as-open-interest-stays-frothy"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin analyst warns of $105K &#x27;danger zone&#x27; as open interest stays frothy</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-analyst-warns-105k-danger-zone-as-open-interest-stays-frothy?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDgvMDE5ODdlZGEtZjIxOS03NzExLTljMzgtZTMzZDkxNzBlNjM1.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The short-term outlook for Bitcoin remains cautious, with a possibility of a trip toward $105,000, which one analyst calls the &quot;hidden danger zone&quot; for BTC price.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -762,6 +867,85 @@ JavaScript Question Part 1
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="https://en.wikipedia.org/wiki/Slopsquatting"
+                        open
+                      >
+                        <summary class="article-expander__title">Slopsquatting</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://en.wikipedia.org/wiki/Slopsquatting">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Slopsquatting_flowchart.svg/1200px-Slopsquatting_flowchart.svg.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.airgradient.com/blog/wired-review-of-airgradient-one-not-recommended/"
+                        open
+                      >
+                        <summary class="article-expander__title">Wired Called Our AirGradient Monitor &#x27;Not Recommended&#x27; over a Broken Display</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.airgradient.com/blog/wired-review-of-airgradient-one-not-recommended/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://www.airgradient.com/images/blog/posts/wired-review/wired-one.webp" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://nautilustrader.io/"
+                        open
+                      >
+                        <summary class="article-expander__title">NautilusTrader: Open-Source, High-Performance Algorithmic Trading Platform</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://nautilustrader.io/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://nautilustrader.io/preview.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://tratt.net/laurie/blog/2025/llm_inflation.html"
+                        open
+                      >
+                        <summary class="article-expander__title">LLM Inflation</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://tratt.net/laurie/blog/2025/llm_inflation.html">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="https://github.com/ventoy/Ventoy/issues/3224"
                         open
                       >
@@ -885,7 +1069,7 @@ JavaScript Question Part 1
                         <summary class="article-expander__title">Show HN: Kitten TTS – 25MB CPU-Only, Open-Source TTS Model</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/KittenML/KittenTTS">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/fa23c41f309c8e1141f613814c4713750d46f2c21daea3e557a75e4cd14ac4ca/KittenML/KittenTTS" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/d774206135bf9b939649c16f81e1619a6780a6b9cb27acf488f59f7cb38404b9/KittenML/KittenTTS" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
@@ -924,7 +1108,7 @@ JavaScript Question Part 1
                         <summary class="article-expander__title">I&#x27;m Archiving Picocrypt</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/Picocrypt/Picocrypt/issues/134">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/5afb244c565f917323880dfed0450c92538e66b38d945c2a297d1f8313d6f9c3/Picocrypt/Picocrypt/issues/134" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/fdbc6f3da588e0fc502927d1af1c37d0661ca515bd621f2b5b071d62fcd97820/Picocrypt/Picocrypt/issues/134" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;40
@@ -948,6 +1132,224 @@ JavaScript Question Part 1
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;1
                                   min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
+                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="7a188be5-0689-4a77-ad89-0e20bf74d87f"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin Traders Bet on Sub-$100K Slide: Crypto Daybook Americas</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/daybook-us/2025/08/06/bitcoin-traders-bet-on-sub-usd100k-slide-crypto-daybook-americas">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Your day-ahead look for Aug. 6, 2025</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="fa639a8c-a565-413a-9637-918de0687bbb"
+                        open
+                      >
+                        <summary class="article-expander__title">Nomura-Backed Laser Digital Wins Regulatory Nod for Crypto Derivatives in Dubai</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2025/08/06/nomura-backed-laser-digital-wins-regulatory-nod-for-crypto-derivatives-in-dubai">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Laser Digital secured the first regulated over-the-counter crypto options limited license under VARA’s pilot framework.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="0613b5c3-86de-486c-a3c5-c14b12e19e7e"
+                        open
+                      >
+                        <summary class="article-expander__title">SBI Files for Bitcoin–XRP ETF in Japan, Pushing Dual Crypto Exposure Into Regulated Markets</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/sbi-files-for-bitcoin-xrp-etf-in-japan-pushing-dual-crypto-exposure-into-regulated-markets">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>The ‘Crypto-Assets ETF’ is structured to track the performance of both assets simultaneously, providing a single-entry point for investors seeking crypto exposure.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="b9d18632-31c6-432e-ac00-7bbe454dac43"
+                        open
+                      >
+                        <summary class="article-expander__title">Leveraged Bearish Strategy ETF Surges 19%, Signals Dour Outlook for MSTR and Bitcoin</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/leveraged-bearish-strategy-etf-surges-19-signals-dour-outlook-for-mstr-and-bitcoin">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>The ETF, which bets against MSTR, has seen a net inflow of $16.3 million in the past six months, while its bullish counterpart has experienced significant outflows.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="ec239f03-ee9e-4c22-9ed0-b16541817e34"
+                        open
+                      >
+                        <summary class="article-expander__title">Base Says Sequencer Failure Caused Block Production Halt of 33 Minutes</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2025/08/06/base-says-sequencer-failure-caused-block-production-halt-of-33-minutes">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>The outage began at 06:07 UTC on Aug. 5, when the active sequencer fell behind due to congestion from on-chain activity, according to Base.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="0bf82ab2-431c-4ef2-b747-927764a48bd1"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin ETFs Bleed Millions for 4th Straight Day as U.S. Stagflation Fears Weigh on BTC and Stocks</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/bitcoin-etfs-bleed-millions-for-4th-straight-day-as-u-s-stagflation-fears-weigh-on-btc-and-stocks">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Investors withdrew $196 million from U.S.-listed bitcoin ETFs on Tuesday, while pouring money into ether ETFs.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="fbea3ddc-2797-4cdf-8ea5-c4c370dcca8a"
+                        open
+                      >
+                        <summary class="article-expander__title">Pendle Lets Crypto Traders Bet on Bitcoin, Ether Funding Rates With Boros Platform</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/pendle-lets-crypto-traders-bet-on-bitcoin-and-ether-funding-rates-with-boros-platform">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>For traders who pay or earn funding fees on CEXs, Boros offers a new hedge: short YU if funding is expected to fall; long if rates are projected to spike.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="b042c3b5-d195-4867-9c2d-84b6cc5addfb"
+                        open
+                      >
+                        <summary class="article-expander__title">DOGE Sheds 5% as Volume Quadruples, Testing Key Support Zones</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/doge-sheds-5-as-volume-quadruples-testing-key-support-zones">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Traders are monitoring whether DOGE can stabilize above $0.198 or face further downside toward $0.185.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="1a3a4518-0458-43b5-8ebd-7c4682abd312"
+                        open
+                      >
+                        <summary class="article-expander__title">China Warns Worldcoin-Style Iris Scanning a National Security Threat</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2025/08/06/china-warns-worldcoin-style-iris-scanning-a-national-security-threat">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>A new advisory from China&#x27;s Ministry of State Security highlights what it calls national security risks based on foreign firms collecting biometric data under the guise of crypto giveaways.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="48b1c570-a8c1-479e-9613-876112c7b0dc"
+                        open
+                      >
+                        <summary class="article-expander__title">XRP Prints Lower Highs, Volume Spikes to 169M in Sharp Reversal</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/xrp-prints-lower-highs-volume-spikes-to-169m-in-sharp-reversal">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>rice action accelerated at 14:00 when XRP fell from $3.04 to $2.97 on a 169.41 million volume surge — over 3x its 24-hour average of 52.73 million — establishing $3.04 as interim resistance and validating $2.93 as a local support floor.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="5bad78da-3f7c-4b97-bbb3-3ca1609b96eb"
+                        open
+                      >
+                        <summary class="article-expander__title">Asia Morning Briefing: Architect Bets Credit Will Outshine Crypto Equities as It Builds a Web3 Moody’s</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/asia-morning-briefing-architect-bets-credit-will-outshine-crypto-equities-as-it-builds-a-web3-moody-s">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>As crypto equity markets become overcrowded and illiquid, Architect bets on building a Moody&#x27;s-like credit rating system to unlock new pools of institutional capital.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="9c1d3ca8-8e49-4bf1-a1be-87d82aca6926"
+                        open
+                      >
+                        <summary class="article-expander__title">Ripple’s Partnership With BDACS Pays Off as XRP Support Goes Live at Korean Crypto Custodian</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2025/08/06/ripple-s-partnership-with-bdacs-pays-off-as-xrp-support-goes-live-at-korean-crypto-custodian">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>BDACS launches XRP custody for institutions in Korea, deepening Ripple partnership and boosting regulatory alignment for XRP’s global institutional use.</span>
                             </span>
                           </div>
                         </a>
@@ -1180,207 +1582,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                 </section>
               </section>
             </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
-                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="fa639a8c-a565-413a-9637-918de0687bbb"
-                        open
-                      >
-                        <summary class="article-expander__title">Nomura-Backed Laser Digital Wins Regulatory Nod for Crypto Derivatives in Dubai</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2025/08/06/nomura-backed-laser-digital-wins-regulatory-nod-for-crypto-derivatives-in-dubai">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Laser Digital secured the first regulated over-the-counter crypto options limited license under VARA’s pilot framework.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="0613b5c3-86de-486c-a3c5-c14b12e19e7e"
-                        open
-                      >
-                        <summary class="article-expander__title">SBI Files for Bitcoin–XRP ETF in Japan, Pushing Dual Crypto Exposure Into Regulated Markets</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/sbi-files-for-bitcoin-xrp-etf-in-japan-pushing-dual-crypto-exposure-into-regulated-markets">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>The ‘Crypto-Assets ETF’ is structured to track the performance of both assets simultaneously, providing a single-entry point for investors seeking crypto exposure.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="b9d18632-31c6-432e-ac00-7bbe454dac43"
-                        open
-                      >
-                        <summary class="article-expander__title">Leveraged Bearish Strategy ETF Surges 19%, Signals Dour Outlook for MSTR and Bitcoin</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/leveraged-bearish-strategy-etf-surges-19-signals-dour-outlook-for-mstr-and-bitcoin">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>The ETF, which bets against MSTR, has seen a net inflow of $16.3 million in the past six months, while its bullish counterpart has experienced significant outflows.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="ec239f03-ee9e-4c22-9ed0-b16541817e34"
-                        open
-                      >
-                        <summary class="article-expander__title">Base Says Sequencer Failure Caused Block Production Halt of 33 Minutes</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2025/08/06/base-says-sequencer-failure-caused-block-production-halt-of-33-minutes">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>The outage began at 06:07 UTC on Aug. 5, when the active sequencer fell behind due to congestion from on-chain activity, according to Base.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="0bf82ab2-431c-4ef2-b747-927764a48bd1"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin ETFs Bleed Millions for 4th Straight Day as U.S. Stagflation Fears Weigh on BTC and Stocks</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/bitcoin-etfs-bleed-millions-for-4th-straight-day-as-u-s-stagflation-fears-weigh-on-btc-and-stocks">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Investors withdrew $196 million from U.S.-listed bitcoin ETFs on Tuesday, while pouring money into ether ETFs.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="fbea3ddc-2797-4cdf-8ea5-c4c370dcca8a"
-                        open
-                      >
-                        <summary class="article-expander__title">Pendle Lets Crypto Traders Bet on Bitcoin, Ether Funding Rates With Boros Platform</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/pendle-lets-crypto-traders-bet-on-bitcoin-and-ether-funding-rates-with-boros-platform">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>For traders who pay or earn funding fees on CEXs, Boros offers a new hedge: short YU if funding is expected to fall; long if rates are projected to spike.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="b042c3b5-d195-4867-9c2d-84b6cc5addfb"
-                        open
-                      >
-                        <summary class="article-expander__title">DOGE Sheds 5% as Volume Quadruples, Testing Key Support Zones</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/doge-sheds-5-as-volume-quadruples-testing-key-support-zones">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Traders are monitoring whether DOGE can stabilize above $0.198 or face further downside toward $0.185.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="1a3a4518-0458-43b5-8ebd-7c4682abd312"
-                        open
-                      >
-                        <summary class="article-expander__title">China Warns Worldcoin-Style Iris Scanning a National Security Threat</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2025/08/06/china-warns-worldcoin-style-iris-scanning-a-national-security-threat">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>A new advisory from China&#x27;s Ministry of State Security highlights what it calls national security risks based on foreign firms collecting biometric data under the guise of crypto giveaways.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="48b1c570-a8c1-479e-9613-876112c7b0dc"
-                        open
-                      >
-                        <summary class="article-expander__title">XRP Prints Lower Highs, Volume Spikes to 169M in Sharp Reversal</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/xrp-prints-lower-highs-volume-spikes-to-169m-in-sharp-reversal">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>rice action accelerated at 14:00 when XRP fell from $3.04 to $2.97 on a 169.41 million volume surge — over 3x its 24-hour average of 52.73 million — establishing $3.04 as interim resistance and validating $2.93 as a local support floor.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="5bad78da-3f7c-4b97-bbb3-3ca1609b96eb"
-                        open
-                      >
-                        <summary class="article-expander__title">Asia Morning Briefing: Architect Bets Credit Will Outshine Crypto Equities as It Builds a Web3 Moody’s</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/08/06/asia-morning-briefing-architect-bets-credit-will-outshine-crypto-equities-as-it-builds-a-web3-moody-s">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>As crypto equity markets become overcrowded and illiquid, Architect bets on building a Moody&#x27;s-like credit rating system to unlock new pools of institutional capital.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="9c1d3ca8-8e49-4bf1-a1be-87d82aca6926"
-                        open
-                      >
-                        <summary class="article-expander__title">Ripple’s Partnership With BDACS Pays Off as XRP Support Goes Live at Korean Crypto Custodian</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2025/08/06/ripple-s-partnership-with-bdacs-pays-off-as-xrp-support-goes-live-at-korean-crypto-custodian">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>BDACS launches XRP custody for institutions in Korea, deepening Ripple partnership and boosting regulatory alignment for XRP’s global institutional use.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
         </ul>
       </section>
       <section class="daily-content js-toggle-accordions-scope">
@@ -1604,24 +1805,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/bitcoin-slumps-but-ltc-cro-ena-and-mnt-remain-strong-on-the-charts"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin slumps, but LTC, CRO, ENA and MNT remain strong on the charts</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-slumps-but-ltc-cro-ena-and-mnt-remain-strong-on-the-charts?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDgvMDE5ODdhZjEtZjA4Yy03YWY0LTgyNzQtMTdlZWRjMmI3NTFj.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Bitcoin is facing selling near $115,000, but LTC, CRO, ENA and MNT are bucking the trend and showing strength on the charts.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -1650,46 +1833,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;14
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.ycombinator.com/companies/kyber/jobs/6RvaAVR-enterprise-account-executive-ae"
-                        open
-                      >
-                        <summary class="article-expander__title">Kyber (YC W23) is hiring enterprise account executives</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.ycombinator.com/companies/kyber/jobs/6RvaAVR-enterprise-account-executive-ae">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="/images/original/missing.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.bloodinthemachine.com/p/the-ai-bubble-is-so-big-its-propping"
-                        open
-                      >
-                        <summary class="article-expander__title">AI is propping up the US economy</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.bloodinthemachine.com/p/the-ai-bubble-is-so-big-its-propping">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://substackcdn.com/image/fetch/$s_!01fW!,w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc9f3185f-e6b5-4e08-9dda-7af99a619172_1286x1000.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;26
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1846,25 +1989,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;14
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.buildyourownlisp.com/"
-                        open
-                      >
-                        <summary class="article-expander__title">Build Your Own Lisp</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.buildyourownlisp.com/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;1
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2172,23 +2296,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>This option is particularly appealing when implied volatility is low, providing a &#x27;perfect entry&#x27; for a slightly higher premium, Orbit Markets said.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="44c85424-e8b7-4f13-8c39-946170cedfea"
-                        open
-                      >
-                        <summary class="article-expander__title">U.S. CFTC Considers Allowing Spot Crypto Trading on Registered Futures Exchanges</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2025/08/05/u-s-cftc-considers-allowing-spot-crypto-trading-on-registered-futures-exchanges">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>The U.S. Commodity Futures Trading Commission wants stakeholders to work with it to provide regulatory clarity on listing spot crypto assets.</span>
                             </span>
                           </div>
                         </a>
@@ -2603,20 +2710,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                 </section>
               </section>
             </li>
-        </ul>
-      </section>
-      <section class="daily-content js-toggle-accordions-scope">
-        <h2 class="daily-heading">
-          <button
-            class="daily-heading-toggle"
-            data-action="toggle-accordions"
-            title="Click to toggle the day, Ctrl + click to toggle all."
-          >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-08-02 datetime="2025-08-02T14:27:16.000Z">2025-08-02</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-08-02 datetime="2025-08-02T14:27:16.000Z"></time>
-          </button>
-        </h2>
-        <ul class="sources card">
             <li class="card__section">
               <section class="js-toggle-accordions-scope">
                 <h3 class="source-heading">
@@ -2632,21 +2725,49 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://susam.net/zigzag-number-spiral.html"
+                        data-accordion-key="https://automerge.org/blog/automerge-3/"
                         open
                       >
-                        <summary class="article-expander__title">Zigzag Number Spiral - Closed Form Expression</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://susam.net/zigzag-number-spiral.html">
+                        <summary class="article-expander__title">Automerge 3.0</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://automerge.org/blog/automerge-3/">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;12
+                                &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
                             </span>
                           </div>
                         </a>
                       </details>
                     </article>
+                </section>
+              </section>
+            </li>
+        </ul>
+      </section>
+      <section class="daily-content js-toggle-accordions-scope">
+        <h2 class="daily-heading">
+          <button
+            class="daily-heading-toggle"
+            data-action="toggle-accordions"
+            title="Click to toggle the day, Ctrl + click to toggle all."
+          >
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-08-02 datetime="2025-08-02T12:50:26.000Z">2025-08-02</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-08-02 datetime="2025-08-02T12:50:26.000Z"></time>
+          </button>
+        </h2>
+        <ul class="sources card">
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
                     <article>
                       <details
                         class="article-expander"
@@ -2679,27 +2800,7 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;81
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.wired.com/story/the-first-widespread-cure-for-hiv-could-be-in-children/"
-                        open
-                      >
-                        <summary class="article-expander__title">The first widespread cure for HIV could be in children</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.wired.com/story/the-first-widespread-cure-for-hiv-could-be-in-children/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media.wired.com/photos/6889479b723255eb19aa821a/191:100/w_1280,c_limit/First-Widespread-Cure-HIV-Could-Happen-in-Children-Science-2212118586.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;108
+                                &ensp;<span class="article-reading-time">(&hairsp;84
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -3249,26 +3350,6 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.technologyreview.com/?p&#x3D;1120885"
-                        open
-                      >
-                        <summary class="article-expander__title">The two people shaping the future of OpenAI’s research</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.technologyreview.com/2025/07/31/1120885/the-two-people-shaping-the-future-of-openais-research/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://wp.technologyreview.com/wp-content/uploads/2025/07/250724-AI-hero.jpg?resize&#x3D;1200,600" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>For the past couple of years, OpenAI has felt like a one-man brand. With his showbiz style and fundraising glitz, CEO Sam Altman overshadows all other big names on the firm’s roster. Even his bungled ouster ended with him back on top—and more famous than ever. But look past the charismatic frontman and you get…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -3734,8 +3815,8 @@ The post Some Sonos Roam Speakers Are Suffering From Overheating appeared first 
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/16775960502">
-        <time id="build-timestamp" datetime="2025-08-06T11:44:41.678Z">2025-08-06T11:44:41.678Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/16776995105">
+        <time id="build-timestamp" datetime="2025-08-06T12:32:22.118Z">2025-08-06T12:32:22.118Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
