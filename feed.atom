@@ -1,238 +1,505 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-08-07T12:32:19.820Z</id>
+    <id>urn:2025-08-07T13:24:32.598Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-08-07T12:32:19.820Z</updated>
+    <updated>2025-08-07T13:24:32.598Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Go Beyond Globals: A Practical Guide to Dependency Injection]]></title>
-        <id>https://dev.to/cliffdoyle/go-beyond-globals-a-practical-guide-to-dependency-injection-3i67</id>
-        <link href="https://dev.to/cliffdoyle/go-beyond-globals-a-practical-guide-to-dependency-injection-3i67"/>
-        <updated>2025-08-07T12:19:54.000Z</updated>
-        <summary type="html"><![CDATA[When building an application in Go, it's tempting to reach for global variables to share resources like configuration or a logger. It feels easy, but it's a path laden with technical debt.
-//using global variables
-var logger *slog.Logger
-var appConfig config
+        <title type="html"><![CDATA[Redis vs RAG Speed Test: Sub-5ms Vector Search vs 500ms+ LLM Q&A]]></title>
+        <id>https://dev.to/axrisi/redis-vs-rag-speed-test-sub-5ms-vector-search-vs-500ms-llm-qa-2hag</id>
+        <link href="https://dev.to/axrisi/redis-vs-rag-speed-test-sub-5ms-vector-search-vs-500ms-llm-qa-2hag"/>
+        <updated>2025-08-07T13:14:13.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for the Redis AI Challenge: Beyond the Cache.
+I created Redis RAG Benchmark, a web app that lets you ask one question and compare—in real time—two Q&A pipelines side by side:  
+RAG (no cache): FAISS-based retrieval
+Redis-Powered: RediSearch vector search + RedisJSON answer cache 
+The UI displays both responses in parallel chat panels with millisecond timers to highlight latency differences.
+Watch it in action on YouTube (embedded below), and find the source on GitHub.
 
-func main() {
-    // initialize logger and config...
-    // register handlers...
-}
 
-func HealthcheckHandler(w http.ResponseWriter, r *http.Request) {
-    // This handler secretly depends on global state.
-    // It's not clear from its signature what it needs to run.
-    data := map[string]string{
-        "status": "available",
-        "environment": appConfig.env, // using global config
-    }
-    // ... write response ...
-}
 
-This code works, but it hides a time bomb. It creates implicit, "magical" dependencies that makes our applicati…]]></summary>
-        <author>
-            <name>CLIFF OYOH OMOLLO</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Enhanced Autonomous Underwater Vehicle (AUV) Self-Repair via Predictive Damage Modeling & Dynamic Task Re-allocation]]></title>
-        <id>https://dev.to/freederia-research/enhanced-autonomous-underwater-vehicle-auv-self-repair-via-predictive-damage-modeling-dynamic-2j4f</id>
-        <link href="https://dev.to/freederia-research/enhanced-autonomous-underwater-vehicle-auv-self-repair-via-predictive-damage-modeling-dynamic-2j4f"/>
-        <updated>2025-08-07T12:18:57.000Z</updated>
-        <summary type="html"><![CDATA[This research introduces a novel framework for enhancing Autonomous Underwater Vehicle (AUV) survivability and operational longevity through a predictive damage modeling system coupled with dynamic task re-allocation. Unlike existing reactive repair systems, our approach anticipates potential failures based on environmental data and operational parameters, proactively shifting workload to redundant components or suspending tasks to minimize damage propagation. This methodology promises a 20-30% increase in AUV mission endurance and a significant reduction in costly downtime, impacting the fields of underwater infrastructure inspection, oceanographic research, and defense.
-The core of the system leverages a Coupled Eulerian-Lagrangian (CEL) Finite Element Analysis (FEA) model to predict str…]]></summary>
-        <author>
-            <name>freederia</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Decibel Meter with ArkTS]]></title>
-        <id>https://dev.to/harmonyos/decibel-meter-with-arkts-2b9l</id>
-        <link href="https://dev.to/harmonyos/decibel-meter-with-arkts-2b9l"/>
-        <updated>2025-08-07T12:18:52.000Z</updated>
-        <summary type="html"><![CDATA[Read the original article：Decibel Meter with ArkTS
 
-Decibel Meter with ArkTS
+
+
+Source Code: 
+
+  
+ / 
+        redis-rag-benchmark
+      
+    
+Redis RAG Benchmark
+A performance comparison between traditional RAG (Retrieval-Augmented Generation) and Redis-powered Q&A systems.
+🚀 Quick Start
+Prerequisites
+Node.js 18+
+Docker & Docker Compose
+OpenAI API Key
+Setup
+Clone and setup environment:
+cp .env.example .env
+# Add your OPENAI_API_KEY to .env file
+Start Redis Stack:
+docker-compose up -d
+Install dependencies:
+npm run install-all
+Start the application:
+npm run dev
+Visit http://localhost:3000 to see the comparison interface.
+🏗️ Architecture
+Traditional RAG System
+Vector Store: In-memory FAISS index
+Search: Cosine similarity search (~20-60ms)
+LLM: OpenAI GPT-3.5-turbo on every query
+Caching: None
+Redis-Powered System
+Vector Store: Redis with RediSearch module
+Search: Redis vector search (~2-5ms)
+LLM: OpenAI GPT-3.5-turbo (cache miss only)
+Caching: RedisJSON with TTL (1 hour)
+📊 Performance Comparison
+
+Metric
+
+Traditional RAG
+
+Redis System
+
+
+
+
+
+
+
+
+
+Vector Search
+
+20-60ms
+
+2-5ms
+
+
+
+
+
+Cache Hit
+
+N/A
+
+<10ms
+
+
+
+
+
+Cache Miss
+
+500-1500ms
+
+500-1500ms
+
+
+
+
+
+Cost per Query
+
+1x LLM call
+
+0.1x
+
+
+
+
+
+
+…
 
 
   
-  
-  Introduction
-
-
-Let’s write some magnificent code. Here we will use the AVRecorder to implement a decibel meter.
-Modify module.json5; define required permission.
+View on GitHub
+RediSearch Vector Index: In-memory cosine search (~2–5 ms/query)
 
 
 
-"requestPermissions": [
-  {
-    "name": "ohos.permission.MICROPHONE",
-    "reason": "$string:mic_reason",
-    "usedScene": {
-      "when": "inuse"
+
+RedisAI: Hosted a sentence-embedding model (or stored precomputed vectors) for ultra-fast inference
+
+
+
+
+RedisJSON: Cached full LLM answers with TTL to avoid repeated GPT calls (< 10 ms cache hits)
+By combining these modules, the Redis solution achieves single-digit-millisecond lookups and reduces LLM API usage by up to 90%.]]></summary>
+        <author>
+            <name>Nikoloz Turazashvili (@axrisi)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Infinite Pixels]]></title>
+        <id>https://meyerweb.com/eric/thoughts/2025/08/07/infinite-pixels/</id>
+        <link href="https://meyerweb.com/eric/thoughts/2025/08/07/infinite-pixels/"/>
+        <updated>2025-08-07T13:12:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Reality of Academic Publishing: Why the System Is Rigged]]></title>
+        <id>https://dev.to/owly/the-reality-of-academic-publishing-why-the-system-is-rigged-2e6</id>
+        <link href="https://dev.to/owly/the-reality-of-academic-publishing-why-the-system-is-rigged-2e6"/>
+        <updated>2025-08-07T13:10:00.000Z</updated>
+        <summary type="html"><![CDATA[🧨 The Reality of Academic Publishing: Why the System Is Rigged
+
+
+Academic publishing is broken. If you’re not part of the club, you’re not getting in — no matter how groundbreaking your work is. Let’s break down the dysfunction:
+Unlike patents, there’s no universal procedure. No clear form. No roadmap. You’re expected to “just know” — or better yet, “just know someone.” If you’re not already in the network, you’re invisible.
+Submit your work cold? Expect silence. Many journals won’t even acknowledge your existence unless you’re affiliated with their institution or already in their circle. It’s not merit-based — it’s network-based.
+Peer review sounds noble, but in practice it’s often a gatekeeping mechanism. It’s not about the quality of your discovery — it’s about whether it fits their narrative, their funding, and their comfort zone.
+Platforms like Wikipedia rely on “published literature” as the gold standard. But that literature only recognizes what’s already recognized. It’s a recursive loop that shuts out innovation from the margins.
+Truth isn’t determined by logic or evidence — it’s determined by brand affiliation. If your work isn’t backed by a recognized institution, it’s dismissed. Common sense? Doesn’t matter. It’s all about citations and clout.
+Sites like GitHub, DEV, and independent forums are the new frontier. They host real code, real collaboration, and real transparency. If you’re building something that matters, publish it where people actually care — not where gatekeepers decide what’s “valid.”]]></summary>
+        <author>
+            <name>owly</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Power of Accessibility Testing: Empowering Inclusivity in Digital Experiences]]></title>
+        <id>https://dev.to/devassure/the-power-of-accessibility-testing-empowering-inclusivity-in-digital-experiences-360g</id>
+        <link href="https://dev.to/devassure/the-power-of-accessibility-testing-empowering-inclusivity-in-digital-experiences-360g"/>
+        <updated>2025-08-07T13:09:34.000Z</updated>
+        <summary type="html"><![CDATA[The power of the Web is in its universality. Access by everyone, regardless of disability, is an essential aspect." - Tim Berners-Lee, Inventor of the World Wide Web
+In today's rapidly evolving digital world, accessibility is no longer a luxury but a necessity. It is more than a compliance checklist - it's a responsibility that ensures equal access for all. According to the World Health Organization, over 1 billion people, or 16% of the global population, live with some form of disability. Yet, countless websites and applications still fail to meet accessibility standards, creating barriers that exclude these users from the digital world.
+A study by WebAIM (2024) found that 96.3% of homepages failed to meet the Web Content Accessibility Guidelines (WCAG). This underscores the urgent need f…]]></summary>
+        <author>
+            <name>Anush Chandrasekhar</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CoinDesk 20 Performance Update: SUI Jumps 6.3% as All Assets Climb Higher]]></title>
+        <id>c6cfa0c9-5023-4422-aaad-576bd502b0bd</id>
+        <link href="https://www.coindesk.com/coindesk-indices/2025/08/07/coindesk-20-performance-update-sui-jumps-6-3-as-all-assets-climb-higher"/>
+        <updated>2025-08-07T13:08:42.000Z</updated>
+        <summary type="html"><![CDATA[Polygon (POL) joined Sui (SUI) as a top performer, rising 6.2% from Wednesday.]]></summary>
+        <author>
+            <name>CoinDesk Indices</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A Simple Explanation: What Do 7B, 70B, and 175B Parameters in AI Models Mean?]]></title>
+        <id>https://dev.to/tube_you_16497efa22401797/a-simple-explanation-what-do-7b-70b-and-175b-parameters-in-ai-models-mean-17f</id>
+        <link href="https://dev.to/tube_you_16497efa22401797/a-simple-explanation-what-do-7b-70b-and-175b-parameters-in-ai-models-mean-17f"/>
+        <updated>2025-08-07T13:07:25.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+Author: Richardson
+https://www.iaiuse.com/en/posts/b44d9ec8
+Source: The Path to AI Transformation]]></summary>
+        <author>
+            <name>tube you</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[10 Signs You Need a Custom Software Development Company]]></title>
+        <id>https://dev.to/vrindasharma/10-signs-you-need-a-custom-software-development-company-1d0a</id>
+        <link href="https://dev.to/vrindasharma/10-signs-you-need-a-custom-software-development-company-1d0a"/>
+        <updated>2025-08-07T13:07:16.000Z</updated>
+        <summary type="html"><![CDATA[In today’s digital-first world, off-the-shelf software can only take you so far. As businesses grow and evolve, so do their processes, customer needs, and technology requirements. That’s when a custom software development company becomes not just useful—but essential.
+If you’re unsure whether it’s time to go custom, here are 10 signs that your business might need the help of a custom software development company:
+If you’re juggling multiple tools to manage daily operations, and none of them talk to each other, it’s time to rethink your approach. A custom solution can streamline workflows by integrating all your needs into a single platform.
+Manual data entry, repeated tasks, and inefficient processes eat up time and increase the chances of human error. Custom software can automate repetiti…]]></summary>
+        <author>
+            <name>Vrinda</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[EU banking regulator finalizes capital rules for banks holding Bitcoin, Ether]]></title>
+        <id>https://cointelegraph.com/news/european-banking-authority-crypto-capital-rules</id>
+        <link href="https://cointelegraph.com/news/european-banking-authority-crypto-capital-rules?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-08-07T13:07:11.000Z</updated>
+        <summary type="html"><![CDATA[The European Banking Authority completed rules requiring banks to assign a 1,250% risk weight to unbacked cryptocurrencies like Bitcoin and Ether.]]></summary>
+        <author>
+            <name>Cointelegraph by Adrian Zmudzinski</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Chainlink Launches LINK Reserve to Fuel Network Growth]]></title>
+        <id>71c6abe1-d26f-4937-8bc1-58e865721716</id>
+        <link href="https://www.coindesk.com/markets/2025/08/07/chainlink-launches-link-reserve-to-fuel-network-growth"/>
+        <updated>2025-08-07T13:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The reserve is funded through a process called Payment Abstraction and then automatically converts them into LINK, Chainlink said.]]></summary>
+        <author>
+            <name>Francisco Rodrigues</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BTCFi VC funding hits $175M as investors focus on consumer apps]]></title>
+        <id>https://cointelegraph.com/news/btcfi-vc-funding-175m-h1-2025-on-consumer-apps</id>
+        <link href="https://cointelegraph.com/news/btcfi-vc-funding-175m-h1-2025-on-consumer-apps?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-08-07T13:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bitcoin DeFi is seeing more venture capital interest as institutional investors flock to Bitcoin and its increasing yield-bearing capabilities.]]></summary>
+        <author>
+            <name>Cointelegraph by Zoltan Vardai</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[XRP tops $3 as Ripple case nears potential SEC dismissal]]></title>
+        <id>https://cointelegraph.com/news/xrp-price-rises-sec-ripple-case-dismissal</id>
+        <link href="https://cointelegraph.com/news/xrp-price-rises-sec-ripple-case-dismissal?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-08-07T12:56:26.000Z</updated>
+        <summary type="html"><![CDATA[A joint report due on Aug. 15 may lead to the conclusion of the nearly five-year legal dispute between the SEC and Ripple Labs.]]></summary>
+        <author>
+            <name>Cointelegraph by Zoltan Vardai</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Zeigarnik Effect: Why Your Brain Won't Let Go of Unfinished Tasks (And How to Use This with Super Productivity)]]></title>
+        <id>https://dev.to/johannesjo/the-zeigarnik-effect-why-your-brain-wont-let-go-of-unfinished-tasks-and-how-to-use-this-with-3ocn</id>
+        <link href="https://dev.to/johannesjo/the-zeigarnik-effect-why-your-brain-wont-let-go-of-unfinished-tasks-and-how-to-use-this-with-3ocn"/>
+        <updated>2025-08-07T12:55:13.000Z</updated>
+        <summary type="html"><![CDATA[Have you ever found yourself lying in bed, unable to sleep because your mind keeps circling back to that unfinished report? Or noticed how a half-watched TV episode nags at you more than one you've completed? You're experiencing the Zeigarnik Effect – a fascinating psychological phenomenon that explains why incomplete tasks stick in our minds like cognitive splinters.
+Understanding this effect isn't just academic curiosity. When you know how your brain handles unfinished business, you can turn this quirk of human psychology into a productivity skill – especially when paired with the right tools like Super Productivity.
+The Zeigarnik Effect describes our tendency to remember incomplete or interrupted tasks better than completed ones. This psychological phenomenon was first identified by Rus…]]></summary>
+        <author>
+            <name>Johannes Millan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LLM Does Not Care About MCP]]></title>
+        <id>https://hackteam.io/blog/your-llm-does-not-care-about-mcp/</id>
+        <link href="https://hackteam.io/blog/your-llm-does-not-care-about-mcp/"/>
+        <updated>2025-08-07T12:52:24.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🚀 Introducing Nova AI: My First Chatbot Project with Backend Help from ChatGPT]]></title>
+        <id>https://dev.to/naman_sachdeva/introducing-nova-ai-my-first-chatbot-project-with-backend-help-from-chatgpt-451p</id>
+        <link href="https://dev.to/naman_sachdeva/introducing-nova-ai-my-first-chatbot-project-with-backend-help-from-chatgpt-451p"/>
+        <updated>2025-08-07T12:52:09.000Z</updated>
+        <summary type="html"><![CDATA[Hey Devs! 👋
+Over the past few weeks, I’ve been working on a personal project — Nova AI, a simple AI chatbot built with the help of ChatGPT and hosted on Render. This post is all about how I made it, what I learned, and how you can try it out!
+🔗 Live Demo: https://nova-ai-1-e2ne.onrender.com
+What is Nova AI?
+Think of it as a lightweight version of ChatGPT — just enough to learn from, but still fun to interact with.
+🛠️ Tech Stack
+Frontend: HTML, CSS, JavaScript (Vanilla)
+LLM: llama3-8b-8192 via Groq API
+Deployment: Render (Free Tier)
+🤖 How It Works
+User types a message in the input field on the website.
+The frontend sends a POST request to the Flask backend.
+The backend uses OpenAI’s API (GPT model) to generate a response.
+The response is sent back and displayed in the chat UI.
+All communication is done via fetch() on the frontend and Flask routes on the backend.
+📚 Built with ChatGPT’s Help
+Structuring the Groq API requests
+Writing JavaScript fetch logic
+Building the basic chat interface
+Handling edge cases and async UI behavior
+It was like pair programming with a 24/7 mentor 😄
+🌐 Try It Out!
+https://nova-ai-1-e2ne.onrender.com
+Do note: Since I’m using a free Render instance, it may take a few seconds to "wake up" on first load.
+🧠 Lessons Learned
+You can build real AI apps with just frontend + API
+Groq's OpenAI-compatible API makes integration seamless
+Keeping the UI minimal lets you focus on learning the flow
+Secure API key usage needs careful handling in frontend-only apps
+💬 Feedback Welcome!
+Note:
+Thanks for reading!
+💬 Feedback Welcome!
+Thanks for reading! 🚀]]></summary>
+        <author>
+            <name>Naman Sachdeva</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Embed File Uploads with the Google Drive API]]></title>
+        <id>https://dev.to/ideradevtools/how-to-embed-file-uploads-with-the-google-drive-api-5b9i</id>
+        <link href="https://dev.to/ideradevtools/how-to-embed-file-uploads-with-the-google-drive-api-5b9i"/>
+        <updated>2025-08-07T12:47:43.000Z</updated>
+        <summary type="html"><![CDATA[Modern file sharing and distribution is no longer heavily reliant on emails or manual transfers. Today, you can embed file uploads directly into applications to enable users to share documents, images, videos, and other files. You can take this further by offering cloud-based uploads, which improve user interaction and simplify backend file management.
+To implement cloud uploads efficiently, developers often turn to established cloud storage services like Google Drive and Amazon S3. These are increasingly popular because of their performance, stability, scalability, and convenience. With these services’ APIs (application programming interfaces), you can upload to cloud storage or even choose them as a source.
+In this article, you’ll explore what cloud storage APIs are and how you can integ…]]></summary>
+        <author>
+            <name>IderaDevTools</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Decentralized Finance and Tokenization Growth Still Disappoints: JPMorgan]]></title>
+        <id>acbbedc4-9276-4f6e-b01f-5b4333ee662b</id>
+        <link href="https://www.coindesk.com/markets/2025/08/07/decentralized-finance-and-tokenization-growth-still-disappoints-jpmorgan"/>
+        <updated>2025-08-07T12:46:11.000Z</updated>
+        <summary type="html"><![CDATA[Total value locked (TVL) in DeFi remains below 2021 highs, the report noted.]]></summary>
+        <author>
+            <name>Will Canny</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[You Don't Need Monads]]></title>
+        <id>https://muratkasimov.art/Ya/Articles/You-don%27t-really-need-monads</id>
+        <link href="https://muratkasimov.art/Ya/Articles/You-don%27t-really-need-monads"/>
+        <updated>2025-08-07T12:44:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Links to SBES 2025 Journal-First papers]]></title>
+        <id>https://dev.to/fronteirases/links-to-sbes-2025-39th-brazilian-symposium-on-software-engineering-journal-first-papers-9o5</id>
+        <link href="https://dev.to/fronteirases/links-to-sbes-2025-39th-brazilian-symposium-on-software-engineering-journal-first-papers-9o5"/>
+        <updated>2025-08-07T12:42:26.000Z</updated>
+        <summary type="html"><![CDATA[The Brazilian Symposium on Software Engineering (SBES), organized annually by the Brazilian Computer Society (SBC), is the leading software engineering conference in Latin America. It takes place as part of the Brazilian Conference on Software: Theory and Practice (CBSoft).
+The SBES Research Track traditionally partners with international journals to promote the dissemination of high-quality research. In 2025, SBES established partnerships with the following six journals:
+IEEE Software (IEEE Softw)
+
+
+Journal of Software Engineering Research and Development (JSERD)
+
+
+Information and Software Technology (IST)
+
+
+Journal of Systems and Software (JSS)
+
+
+Empirical Software Engineering (EMSE)
+
+
+Software Quality Journal (SQJ)
+
+
+Journal of Software: Evolution and Process (JSEP)
+
+
+
+These are the jou…]]></summary>
+        <author>
+            <name>Fronteiras da Engenharia de Software</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Coding in the Age of Constant Deprecation?]]></title>
+        <id>https://dev.to/ingosteinke/coding-in-the-age-of-constant-deprecation-4mad</id>
+        <link href="https://dev.to/ingosteinke/coding-in-the-age-of-constant-deprecation-4mad"/>
+        <updated>2025-08-07T12:41:09.000Z</updated>
+        <summary type="html"><![CDATA[The greatest challenges of modern frontend web development aren't CSS, accessibility, or web performance. Leveraging AI agents or mastering JS idioms aren't, either.
+Constantly fighting deprecations, incompatibilities, and breaking changes is the greatest challenge of modern frontend web development.
+Let's say you have finished a project. 
+node_modules folder.
+Your IDE suggests to run npm install.
+npm install
+warning! warning! deprecation! no longer supported! error!!!
+
+Note: the above image mixes two different screenshots, and the error messages show incompatibilites of a new project, not the breaking changes affecting a legacy project, as described above.
+Now we've probably all heard that we're in the age of "forgetting about code", when "programming becomes prompting" and we "simply" ta…]]></summary>
+        <author>
+            <name>Ingo Steinke, web developer</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ripple to Buy Stablecoin Payments Firm Rail for $200M to Boost RLUSD]]></title>
+        <id>b2433ddf-fde0-4340-a08a-edbfa701e5f8</id>
+        <link href="https://www.coindesk.com/business/2025/08/07/ripple-to-buy-stablecoin-payments-firm-rail-for-usd200m-to-boost-rlusd-report"/>
+        <updated>2025-08-07T12:37:34.000Z</updated>
+        <summary type="html"><![CDATA[The Rail acquisition is a way for Ripple to delve deeper into the fast-growing stablecoin ecosystem after launching its RLUSD stablecoin.]]></summary>
+        <author>
+            <name>Parikshit Mishra</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How I Hacked My Hacker Back — A Nigerian Tale]]></title>
+        <id>https://dev.to/dhis_is_jj/how-i-hacked-my-hacker-back-a-nigerian-tale-363o</id>
+        <link href="https://dev.to/dhis_is_jj/how-i-hacked-my-hacker-back-a-nigerian-tale-363o"/>
+        <updated>2025-08-07T12:36:52.000Z</updated>
+        <summary type="html"><![CDATA[The notification sound pierced through the humid Lagos night like a knife. 3:47 AM. My phone buzzed with an alert that would change everything: "Unauthorized access detected on your main server."
+My name is Kemi Adebayo, and I run a small but growing fintech startup from my cramped apartment in Ikeja. What started as a side project helping local market traders accept digital payments had grown into something real...something worth protecting. Or so I thought, until that Tuesday night when I learned just how vulnerable I really was.
+The first thing any cybersecurity expert will tell you is that panic is your worst enemy. But when I saw my carefully built database being systematically copied, when I watched months of customer data flowing out to some unknown destination in real-time, panic w…]]></summary>
+        <author>
+            <name>Jude⚜</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode #1. Two Sum]]></title>
+        <id>https://dev.to/desiato/leetcode-1-two-sum-456l</id>
+        <link href="https://dev.to/desiato/leetcode-1-two-sum-456l"/>
+        <updated>2025-08-07T12:31:10.000Z</updated>
+        <summary type="html"><![CDATA[Brute Force Solution
+
+
+-
+This brute force approach checks every possible pair of numbers exactly once, which guarantees finding the solution if it exists, but at the cost of quadratic time complexity.
+The outer loop runs n times (where n is the length of the array)
+The worst case occurs when no valid pair exists or the pair is at the end of the array
+The algorithm uses only a constant amount of extra space
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if ((nums[i] + nums[j]) == target ) 
+                    return new int[] {i, j};
+            }
+        }
+        return null;
     }
-  }
-]
-
-Modify Index.ets to ask for permission when the app is opened.
-
-
-
-onDidBuild(): void {
-  this.requestMicPermission().then(() => {
-    this.dBMeter.measure(this.getUIContext().getHostContext()!) // we will come to this in a minute
-  })
 }
 
-async requestMicPermission() {
-  const atManager: abilityAccessCtrl.AtManager = abilityAccessCtrl.createAtManager();
-  const context = this.getUIContex…]]></summary>
+The algorithm makes a single pass through the array (one loop that runs n times)
+In the worst case, we might store nearly all elements in the HashMap before finding a solution
+The HashMap solution trades space for time. While the brute force uses O(1) space, it takes O(n²) time. The HashMap approach uses O(n) space but reduces time to O(n). For large inputs, this tradeoff is usually worth it since time complexity improvements from quadratic to linear are much more significant than the linear space overhead.
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+
+        Map<Integer, Integer> storage = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int delta = target - nums[i];
+            if (storage.containsKey(delta)) {
+                return new int[] {storage.get(delta), i};
+            }
+            storage.put(nums[i], i);
+        }
+        return null;
+    }
+}]]></summary>
         <author>
-            <name>HarmonyOS</name>
+            <name>Giuseppe</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Benign - TryHackMe]]></title>
-        <id>https://dev.to/forrestcaffray/benign-tryhackme-299h</id>
-        <link href="https://dev.to/forrestcaffray/benign-tryhackme-299h"/>
-        <updated>2025-08-07T12:18:48.000Z</updated>
-        <summary type="html"><![CDATA[Link to room: https://tryhackme.com/room/benign
-One of the client’s IDS indicated a potentially suspicious process execution indicating one of the hosts from the HR department was compromised. Some tools related to network information gathering / scheduled tasks were executed which confirmed the suspicion. Due to limited resources, we could only pull the process execution logs with Event ID: 4688 and ingested them into Splunk with the index win_eventlogs for further investigation.
-How many logs are ingested from the month of March, 2022?
-We want to set index="win_eventlogs" in the new Search and set the date range for the duration of March 2022:
-
-We can see the result here:
-
-= 13959
-
-
-
-
-
-
-Imposter Alert: There seems to be an imposter account observed in the logs, what is the name of that u…]]></summary>
+        <title type="html"><![CDATA[Maybe we should do an updated Super Cars]]></title>
+        <id>https://spillhistorie.no/2025/07/31/maybe-we-should-do-an-updated-version/</id>
+        <link href="https://spillhistorie.no/2025/07/31/maybe-we-should-do-an-updated-version/"/>
+        <updated>2025-08-07T12:30:23.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Forrest Caffray</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why FinTech Companies Should Embrace Talent from Non-Banking & Diverse IT Backgrounds]]></title>
-        <id>https://dev.to/tracywhodoesnot/why-fintech-companies-should-embrace-talent-from-non-banking-diverse-it-backgrounds-1oe0</id>
-        <link href="https://dev.to/tracywhodoesnot/why-fintech-companies-should-embrace-talent-from-non-banking-diverse-it-backgrounds-1oe0"/>
-        <updated>2025-08-07T12:16:37.000Z</updated>
-        <summary type="html"><![CDATA[Why FinTech Companies Should Embrace Talent from Non-Banking & Diverse IT Backgrounds
-The FinTech industry operates at the intersection of finance and technology, requiring a unique set of skills to drive innovation and challenge traditional banking. However, many FinTech firms tend to focus on hiring candidates with direct banking or financial services experience, often overlooking highly skilled professionals from other sectors.
-Here’s why FinTech firms should actively consider applicants from non-banking backgrounds and IT professionals with transferable skills:
-1. Fresh Perspectives Fuel Innovation
-Creative thinking – Legacy banking norms don’t limit them.
-Cross-industry insights – Experience in scaling startups, UX/UI design, or cybersecurity can be extremely valuable.
-Innovative prob…]]></summary>
+        <title type="html"><![CDATA[Trump may allow crypto in 401(k) plans for US workers: White House]]></title>
+        <id>https://cointelegraph.com/news/trump-crypto-401k-executive-order</id>
+        <link href="https://cointelegraph.com/news/trump-crypto-401k-executive-order?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
+        <updated>2025-08-07T12:28:40.000Z</updated>
+        <summary type="html"><![CDATA[The White House Press Office confirmed to Cointelegraph that President Trump will sign an executive order potentially allowing crypto exposure in US 401(k) retirement plans]]></summary>
         <author>
-            <name>tracywhodoesnot</name>
+            <name>Cointelegraph by Ezra Reguerra</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A battle-tested SRE’/Devops Engineers guide to our robot-assisted future]]></title>
-        <id>https://dev.to/hamtechautomation/a-battle-tested-sredevops-engineers-guide-to-our-robot-assisted-future-1m07</id>
-        <link href="https://dev.to/hamtechautomation/a-battle-tested-sredevops-engineers-guide-to-our-robot-assisted-future-1m07"/>
-        <updated>2025-08-07T12:14:39.000Z</updated>
-        <summary type="html"><![CDATA[In the old days, this meant stumbling to your laptop, squinting at logs that might as well be hieroglyphics, and playing a delightful game of “Was it certificate expiry? It’s always certificate expiry. Wait, maybe it’s the load? Or did Jerry push something to prod again?”
-But here’s the plot twist that would make George R. Martin jealous: My AI-powered monitoring system had already identified the root cause, suggested a fix, and was politely asking if I wanted it to automatically rollback the problematic deployment. I felt like Neo seeing the Matrix code for the first time, except instead of green cascading numbers, it was beautifully formatted incident reports.
-Welcome to 2025, where artificial intelligence isn’t just writing poetry and generating questionable content—it’s keeping your infrastructure running while you sleep. And honestly? I’m only slightly concerned about our future robot overlords. At least they’ll have excellent observability.
-This isn’t another breathless “AI will save/destroy us all” hot take. This is a field report from the trenches, where AI has quietly become the most valuable team member who never complains about being on-call and actually reads the documentation.]]></summary>
+        <title type="html"><![CDATA[The Download: how AI is improving itself, and hidden greenhouse gases]]></title>
+        <id>https://www.technologyreview.com/?p=1121303</id>
+        <link href="https://www.technologyreview.com/2025/08/07/1121303/the-download-how-ai-is-improving-itself-and-hidden-greenhouse-gases/"/>
+        <updated>2025-08-07T12:10:00.000Z</updated>
+        <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Five ways that AI is learning to improve itself Last week, Mark Zuckerberg declared that Meta aims to achieve smarter-than-human AI. He seems to have a recipe for achieving that goal, and the…]]></summary>
         <author>
-            <name>Joshua Ham</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Azure AD says expired, AWS OpenSearch says working: the SAML certificate that refused to die]]></title>
-        <id>https://dev.to/aws-builders/azure-ad-says-expired-aws-opensearch-says-working-the-saml-certificate-that-refused-to-die-5h90</id>
-        <link href="https://dev.to/aws-builders/azure-ad-says-expired-aws-opensearch-says-working-the-saml-certificate-that-refused-to-die-5h90"/>
-        <updated>2025-08-07T12:14:21.000Z</updated>
-        <summary type="html"><![CDATA[It starts innocently enough. You're auditing certificates in Azure AD when you notice the red flag: "EXPIRED" next to your SAML certificate. Has been for months, apparently.
-Your first thought: "oh no, authentication must be broken..."
-Your second thought: "wait... why is everyone still logging in?"
-Welcome to the SAML certificate twilight zone, where expired certificates live forever and security teams question reality.
-You dig deeper into your monitoring (because you're responsible like that) and confirm the timeline: AWS OpenSearch SAML certificate expired back in August. It's now well into the future, and yet...
-Users are happily logging in. 
-No error messages anywhere.
-No angry Teams/Slack messages from the team.
-Your monitoring dashboards show everything green.
-So naturally, you do w…]]></summary>
-        <author>
-            <name>Lucian Patian</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[When nobody should have invested]]></title>
-        <id>https://dev.to/piroska65/when-nobody-should-have-invested-5b8m</id>
-        <link href="https://dev.to/piroska65/when-nobody-should-have-invested-5b8m"/>
-        <updated>2025-08-07T12:13:22.000Z</updated>
-        <summary type="html"><![CDATA[I examined 6 startups whose members deceived their investors in some way. The 6 startups were: Theranos, WeWork, Nikola Motors, builder.ai, FTX, Frank. The primary goal of the investigation was to determine what the early signs and common features are that would indicate that the startup is fraudulent. I found 3 such signs.
-One telltale sign is that a startup's early marketing mix is disproportionately heavy on PR. The founders of such startups are going from studio to studio and conference to conference. And here, alongside our main question, arises why journalists believe them.
-Another telltale sign is that the startup does not appear to pose a threat to the established companies in its market. For example, Uber poses a major threat to traditional taxi services, while WeWork itself did not pose a threat to office publishing companies.
-
-And the third is that they have connections to famous people and it's even possible that they have insiders at big companies that are looking to them to be investors. The second half of the claim is just a hunch for now, I can't prove it.
-There are 3 main reasons why investors don't notice when a startup founder cheats. Reasons that are known in psychology. So I don't blame them. The vast majority of people would do the same as investors.
-I will write about these three reasons in my next post.]]></summary>
-        <author>
-            <name>Rákóczi Piroska</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[OIC integration with OCI]]></title>
-        <id>https://dev.to/nabhaas/oic-integration-with-oci-1h10</id>
-        <link href="https://dev.to/nabhaas/oic-integration-with-oci-1h10"/>
-        <updated>2025-08-07T12:11:01.000Z</updated>
-        <summary type="html"><![CDATA[{ Abhilash Kumar Bhattaram :  Follow on LinkedIn }
-As cloud ecosystems evolve rapidly, businesses seek efficient, secure, and scalable ways to connect applications, automate workflows, and expose APIs across hybrid environments. Oracle Integration Cloud (OIC), part of Oracle’s broader PaaS offerings, is purpose-built to bridge this gap. When integrated with Oracle Cloud Infrastructure (OCI), OIC becomes a powerful enabler for digital transformation, ensuring data flow, business automation, and application connectivity across Oracle and third-party environments.
-In this blog, we explore how OIC integrates with OCI, real-world use cases, and best practices for designing high-performance, secure, and scalable integrations.
-Oracle Integration Cloud is a comprehensive, cloud-native integration …]]></summary>
-        <author>
-            <name>Abhilash Kumar | Oracle ACE ♠</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[Boost]]]></title>
-        <id>https://dev.to/edgar_gomes_1/-5ga5</id>
-        <link href="https://dev.to/edgar_gomes_1/-5ga5"/>
-        <updated>2025-08-07T12:09:25.000Z</updated>
-        <summary type="html"><![CDATA[Kimball Star Schema vs Palantir’s Ontology
-TC Ricks ・ Aug 6
-#ai
-        #datascience
-        #starschema
-        #ontology]]></summary>
-        <author>
-            <name>Edgar Gomes</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Linguistic Optimization Procedure for AI Security]]></title>
-        <id>https://dev.to/gcjordi/linguistic-optimization-procedure-for-ai-security-1idn</id>
-        <link href="https://dev.to/gcjordi/linguistic-optimization-procedure-for-ai-security-1idn"/>
-        <updated>2025-08-07T12:08:30.000Z</updated>
-        <summary type="html"><![CDATA[Linguistic Optimization to Improve AI Security: Patentable Procedure Based on Agglutinative Languages Applied to the AIsecTest System
-
-
-The security of artificial intelligence (AI) has become a central concern in both research and the technology industry. As AI systems become more sophisticated, the risks associated with their autonomous decision-making capabilities increase—making the detection of internal vulnerabilities ever more complex. The abstract and opaque nature of advanced models makes introspection—a system's ability to analyze, understand, and validate its own behavior—a major challenge.
-To overcome these obstacles, our research introduces an innovative methodology that enhances security evaluation by transforming introspective assessment questions into agglutinative languages…]]></summary>
-        <author>
-            <name>Jordi Garcia Castillon</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iPhone 17 Predictions: Everything Rumors Tell Us About Apple's 2025 Lineup]]></title>
-        <id>https://dev.to/arshtechpro/iphone-17-predictions-everything-rumors-tell-us-about-apples-2025-lineup-4o76</id>
-        <link href="https://dev.to/arshtechpro/iphone-17-predictions-everything-rumors-tell-us-about-apples-2025-lineup-4o76"/>
-        <updated>2025-08-07T12:08:16.000Z</updated>
-        <summary type="html"><![CDATA[With the iPhone 16 still fresh on shelves, the rumor mill is already churning about what Apple might unveil in 2025. Based on historical patterns and insider reports, we're piecing together what could be the most ambitious iPhone refresh in years. Here's everything we're hearing about the iPhone 17 and iOS 26.**
-If Apple follows its traditional release schedule, we can expect the iPhone 17 announcement around September 9, 2025. For over a decade, Apple has consistently held iPhone events in early-to-mid September, typically on a Tuesday. While nothing is confirmed until Apple sends invitations, this timeframe seems highly probable based on established patterns.
-Should this timeline hold, pre-orders would likely begin the following Friday, with retail availability around September 19, 2025.…]]></summary>
-        <author>
-            <name>ArshTechPro</name>
+            <name>Rhiannon Williams</name>
         </author>
     </entry>
     <entry>
@@ -246,13 +513,13 @@ Should this timeline hold, pre-orders would likely begin the following Friday, w
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Ultra-Processed Foods Make Up More Than 60% of US Kids' Diets]]></title>
-        <id>https://www.bloomberg.com/news/articles/2025-08-07/sugar-snacks-and-ultra-processed-foods-are-majority-of-us-diet</id>
-        <link href="https://www.bloomberg.com/news/articles/2025-08-07/sugar-snacks-and-ultra-processed-foods-are-majority-of-us-diet"/>
-        <updated>2025-08-07T11:52:28.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
+        <title type="html"><![CDATA[Tether Leads €30M Investment Round in Spanish Crypto Exchange Bit2Me]]></title>
+        <id>c6e99d48-6633-48a4-8a05-389ca838931b</id>
+        <link href="https://www.coindesk.com/business/2025/08/07/tether-leads-eur30m-investment-round-in-spanish-crypto-exchange-bit2me"/>
+        <updated>2025-08-07T12:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The deal follows Bit2Me's authorization under the EU's MiCA license approval, allowing it to operate across the European Union.]]></summary>
         <author>
-            <name>Hacker News</name>
+            <name>Francisco Rodrigues</name>
         </author>
     </entry>
     <entry>
@@ -286,7 +553,7 @@ Should this timeline hold, pre-orders would likely begin the following Friday, w
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Photographer Spends 9 Years on One Street Corner Capturing Same Commuters Daily]]></title>
+        <title type="html"><![CDATA[Photographer spends years on street corner capturing same commuters daily (2017)]]></title>
         <id>https://mymodernmet.com/peter-funch-candid-photographs-commuters/</id>
         <link href="https://mymodernmet.com/peter-funch-candid-photographs-commuters/"/>
         <updated>2025-08-07T11:24:58.000Z</updated>
@@ -296,7 +563,7 @@ Should this timeline hold, pre-orders would likely begin the following Friday, w
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AI ethics is being narrowed on purpose – just like privacy was]]></title>
+        <title type="html"><![CDATA[AI Ethics is being narrowed on purpose, like privacy was]]></title>
         <id>https://nimishg.substack.com/p/ai-ethics-is-being-narrowed-on-purpose</id>
         <link href="https://nimishg.substack.com/p/ai-ethics-is-being-narrowed-on-purpose"/>
         <updated>2025-08-07T11:20:35.000Z</updated>
@@ -314,16 +581,6 @@ Should this timeline hold, pre-orders would likely begin the following Friday, w
 The post KAF Digital Bank To Commence Operations Starting Tomorrow On 8 August 2025 appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Heirul Kamel</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Schools are using AI surveillance to protect students. Sometimes arresting them]]></title>
-        <id>https://apnews.com/article/ai-school-surveillance-gaggle-goguardian-bark-8c531cde8f9aee0b1ef06cfce109724a</id>
-        <link href="https://apnews.com/article/ai-school-surveillance-gaggle-goguardian-bark-8c531cde8f9aee0b1ef06cfce109724a"/>
-        <updated>2025-08-07T11:17:32.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -367,6 +624,16 @@ The post KAF Digital Bank To Commence Operations Starting Tomorrow On 8 August 2
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[The Whispering Earring (Scott Alexander)]]></title>
+        <id>https://croissanthology.com/earring</id>
+        <link href="https://croissanthology.com/earring"/>
+        <updated>2025-08-07T10:16:28.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[What happens if Bitcoin reaches $1 million?]]></title>
         <id>https://cointelegraph.com/explained/what-happens-if-bitcoin-reaches-1-million</id>
         <link href="https://cointelegraph.com/explained/what-happens-if-bitcoin-reaches-1-million?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
@@ -377,7 +644,17 @@ The post KAF Digital Bank To Commence Operations Starting Tomorrow On 8 August 2
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA["I closed MPEG on 2 Jun '20 when I left because obscure forces had hijacked it."]]></title>
+        <title type="html"><![CDATA[How AI Conquered the US Economy: A Visual FAQ]]></title>
+        <id>https://www.derekthompson.org/p/how-ai-conquered-the-us-economy-a</id>
+        <link href="https://www.derekthompson.org/p/how-ai-conquered-the-us-economy-a"/>
+        <updated>2025-08-07T10:12:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Leonardo Chiariglione: “I closed MPEG on 2 June 2020”]]></title>
         <id>https://leonardo.chiariglione.org/</id>
         <link href="https://leonardo.chiariglione.org/"/>
         <updated>2025-08-07T10:09:41.000Z</updated>
@@ -456,16 +733,6 @@ The post AirAsia Lands In Roblox With All-New “AirAsia World” appeared first
         <summary type="html"><![CDATA[A VARA spokesperson told Cointelegraph that while mutual license recognition is a feature, it does not mean automatic passporting to different emirates.]]></summary>
         <author>
             <name>Cointelegraph by Ezra Reguerra</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[About AI]]></title>
-        <id>https://priver.dev/blog/ai/about-ai/</id>
-        <link href="https://priver.dev/blog/ai/about-ai/"/>
-        <updated>2025-08-07T09:05:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -836,16 +1103,6 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Bluesky Dictionary]]></title>
-        <id>https://www.avibagla.com/blueskydictionary/</id>
-        <link href="https://www.avibagla.com/blueskydictionary/"/>
-        <updated>2025-08-06T20:43:08.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Project Hyperion: Interstellar ship design competition]]></title>
         <id>https://www.projecthyperion.org/</id>
         <link href="https://www.projecthyperion.org/"/>
@@ -953,16 +1210,6 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         <summary type="html"><![CDATA[Bakkt is acquiring a 30% stake in Japanese yarn maker Marusho Hotta as part of its pivot to crypto treasury services, with plans to rebrand the firm as bitcoin.jp.]]></summary>
         <author>
             <name>Cointelegraph by Sam Bourgi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A fast, growable array with stable pointers in C]]></title>
-        <id>https://danielchasehooper.com/posts/segment_array/</id>
-        <link href="https://danielchasehooper.com/posts/segment_array/"/>
-        <updated>2025-08-06T18:21:28.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1126,36 +1373,6 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[XRP price faces ‘full pump retrace’ if $2.65 support fails]]></title>
-        <id>https://cointelegraph.com/news/xrp-price-faces-full-pump-retrace-if-2-65-support-fails</id>
-        <link href="https://cointelegraph.com/news/xrp-price-faces-full-pump-retrace-if-2-65-support-fails?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-08-06T15:30:48.000Z</updated>
-        <summary type="html"><![CDATA[XRP price faces mounting pressure as whales exit, and $2.65 emerges as the line between recovery and a bigger correction.]]></summary>
-        <author>
-            <name>Cointelegraph by Biraajmaan Tamuly</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[NEAR Protocol Registers Volume-Backed Breakout Amid Broad Market Consolidation]]></title>
-        <id>6cfbbc72-bf82-40c8-82bc-94db6223d51e</id>
-        <link href="https://www.coindesk.com/markets/2025/08/06/near-protocol-registers-volume-backed-breakout-amid-broad-market-consolidation"/>
-        <updated>2025-08-06T15:26:54.000Z</updated>
-        <summary type="html"><![CDATA[NEAR Protocol registers a volume-backed breakout, climbing above key resistance as institutional activity and cross-chain development fuel bullish sentiment.]]></summary>
-        <author>
-            <name>CD Analytics</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Judge pushes jury to end Storm trial after days of gridlock]]></title>
-        <id>https://cointelegraph.com/news/judge-allen-charge-jury-deadlocks-storm-trial</id>
-        <link href="https://cointelegraph.com/news/judge-allen-charge-jury-deadlocks-storm-trial?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-08-06T15:15:13.000Z</updated>
-        <summary type="html"><![CDATA[Judge issues Allen charge after jury deadlocks in Tornado Cash trial, keeping the case alive as questions mount over crypto developer liability.]]></summary>
-        <author>
-            <name>Cointelegraph by Nate Kostar</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Five ways that AI is learning to improve itself]]></title>
         <id>https://www.technologyreview.com/?p=1121193</id>
         <link href="https://www.technologyreview.com/2025/08/06/1121193/five-ways-that-ai-is-learning-to-improve-itself/"/>
@@ -1163,66 +1380,6 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         <summary type="html"><![CDATA[Last week, Mark Zuckerberg declared that Meta is aiming to achieve smarter-than-human AI. He seems to have a recipe for achieving that goal, and the first ingredient is human talent: Zuckerberg has reportedly tried to lure top researchers to Meta Superintelligence Labs with nine-figure offers. The second ingredient is AI itself.  Zuckerberg recently said on…]]></summary>
         <author>
             <name>Grace Huckins</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Layer 1 Fallacy: Chasing Premium Without Substance]]></title>
-        <id>c3beae01-75ab-432b-8968-9174dcb806ef</id>
-        <link href="https://www.coindesk.com/coindesk-indices/2025/08/06/the-layer-1-fallacy-chasing-premium-without-substance"/>
-        <updated>2025-08-06T15:03:36.000Z</updated>
-        <summary type="html"><![CDATA[DeFi and RWA protocols are rebranding themselves as Layer 1s to capture infrastructure-like valuations. But most remain narrowly focused applications with little sustainable economics — and the market is beginning to see through it, says Avtar Sehra.]]></summary>
-        <author>
-            <name>Avtar Sehra</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ATOM Rebounds Sharply After Sudden Drop, Fueled by Volume Surge and Ecosystem News]]></title>
-        <id>8597e3c3-34e5-49fc-97fb-55d05e2880df</id>
-        <link href="https://www.coindesk.com/markets/2025/08/06/atom-rebounds-sharply-after-sudden-drop-fueled-by-volume-surge-and-ecosystem-news"/>
-        <updated>2025-08-06T15:02:33.000Z</updated>
-        <summary type="html"><![CDATA[Cosmos’ ATOM token rallies after a sharp dip, fueled by heavy trading volume and renewed institutional interest following Coinbase’s addition of COSMOSDYDX to its listing roadmap.]]></summary>
-        <author>
-            <name>CD Analytics</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Retail investors can reclaim crypto&#039;s promise through IDOs]]></title>
-        <id>https://cointelegraph.com/news/retail-investors-crypto-promise</id>
-        <link href="https://cointelegraph.com/news/retail-investors-crypto-promise?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-08-06T15:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Initial DEX offerings have strayed from their retail-first promise, becoming dominated by institutions and high barriers to entry.  IDOs could reclaim their promise.]]></summary>
-        <author>
-            <name>Cointelegraph by Hatu Sheikh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Roman Storm Jury Deadlocked, Judge Tells Them to Keep Deliberating]]></title>
-        <id>3ad21cb9-19bc-43ca-9507-0d41dae12313</id>
-        <link href="https://www.coindesk.com/policy/2025/08/06/roman-storm-jury-deadlocked-judge-tells-them-to-keep-deliberating"/>
-        <updated>2025-08-06T14:50:29.000Z</updated>
-        <summary type="html"><![CDATA[After four days of deliberations, the New York jury deciding Tornado Cash Roman Storm’s fate said they can’t reach a unanimous verdict on all three charges.]]></summary>
-        <author>
-            <name>Cheyenne Ligon</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[This man used a Coinbase-like URL — Now he’s facing a major lawsuit]]></title>
-        <id>https://cointelegraph.com/explained/this-man-used-a-coinbase-like-url-now-hes-facing-a-major-lawsuit</id>
-        <link href="https://cointelegraph.com/explained/this-man-used-a-coinbase-like-url-now-hes-facing-a-major-lawsuit?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
-        <updated>2025-08-06T14:35:00.000Z</updated>
-        <summary type="html"><![CDATA[A German man is facing a US federal lawsuit after allegedly using a Coinbase‑like domain name to earn affiliate commissions and pose phishing risks.]]></summary>
-        <author>
-            <name>Cointelegraph by Onkar Singh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Philippines SEC Cracks Down on Unregistered Crypto Exchanges as New Rules Kick In]]></title>
-        <id>8cacb03b-1e8e-4ce1-aa6f-2fe74de12cf8</id>
-        <link href="https://www.coindesk.com/policy/2025/08/06/philippines-sec-cracks-down-on-unregistered-crypto-exchanges-as-new-rules-kick-in"/>
-        <updated>2025-08-06T14:09:48.000Z</updated>
-        <summary type="html"><![CDATA[The agency warned the public against engaging with unregistered crypto firms.]]></summary>
-        <author>
-            <name>Camomile Shumba</name>
         </author>
     </entry>
     <entry>
@@ -1336,6 +1493,16 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[PastVu: Historical Photographs on Current Maps]]></title>
+        <id>https://pastvu.com/?_nojs=1</id>
+        <link href="https://pastvu.com/?_nojs=1"/>
+        <updated>2025-08-04T18:52:28.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Qwen-Image is a powerful, open source new AI image generator with support for embedded text in English & Chinese]]></title>
         <id>https://venturebeat.com/?p=3015096</id>
         <link href="https://venturebeat.com/ai/qwen-image-is-a-powerful-open-source-new-ai-image-generator-with-support-for-embedded-text-in-english-chinese/"/>
@@ -1396,16 +1563,6 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What is the average length of a queue of cars? (2023)]]></title>
-        <id>https://e-dorigatti.github.io/math/2023/11/01/queue-length.html</id>
-        <link href="https://e-dorigatti.github.io/math/2023/11/01/queue-length.html"/>
-        <updated>2025-08-04T04:55:11.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Children's movie leads art historian to long-lost Hungarian masterpiece (2014)]]></title>
         <id>https://www.theguardian.com/world/2014/nov/27/stuart-little-art-historian-long-lost-hungarian-masterpiece</id>
         <link href="https://www.theguardian.com/world/2014/nov/27/stuart-little-art-historian-long-lost-hungarian-masterpiece"/>
@@ -1443,16 +1600,6 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         <summary type="html"><![CDATA[Why fulfilling the promise of AI requires a step-change in capabilities far exceeding the advancements of the internet era.]]></summary>
         <author>
             <name>Amin Vahdat, Google</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Herbie detects inaccurate expressions and finds more accurate replacements]]></title>
-        <id>https://herbie.uwplse.org/</id>
-        <link href="https://herbie.uwplse.org/"/>
-        <updated>2025-08-03T15:54:30.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1533,16 +1680,6 @@ The post Humble Bundle Lets You Own WB Games’ Best Titles For US$12 appeared f
         <summary type="html"><![CDATA[The Gemini 2.5 Deep Think released to users is not that same competition model, rather, a lower performing but apparently faster version.]]></summary>
         <author>
             <name>Carl Franzen</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Download: how fertility tech is changing families, and Trump’s latest tariffs]]></title>
-        <id>https://www.technologyreview.com/?p=1120918</id>
-        <link href="https://www.technologyreview.com/2025/08/01/1120918/the-download-how-fertility-tech-is-changing-families-and-trumps-latest-tariffs/"/>
-        <updated>2025-08-01T12:10:00.000Z</updated>
-        <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. How decades-old frozen embryos are changing the shape of families This week we welcomed a record-breaking baby to the world. Thaddeus Daniel Pierce, who arrived over the weekend, developed from an embryo that…]]></summary>
-        <author>
-            <name>Rhiannon Williams</name>
         </author>
     </entry>
     <entry>
