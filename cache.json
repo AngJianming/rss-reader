@@ -18,6 +18,106 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/abhinawkr/refactoring-messy-code-high-cohesion-and-low-coupling-3p7e",
+          "author": "Abhinaw",
+          "description": "After 10+ years building enterprise applications, I've learned that two principles guide every successful refactoring: high cohesion and low coupling.\nCohesion = Does this class have a clear, single purpose?\n\nCoupling = How many parts break when I change this?\nHere's the mess I typically inherit:\nclass Student {\n    name: string;\n    grade: number;\n\n    constructor(name: string, grade: number) {\n        this.name = name;\n        this.grade = grade;\n    }\n\n    getGPA(): number {\n        return this.grade / 100;\n    }\n\n    // This shouldn't be here!\n    save(): void {\n        console.log(`Saving ${this.name} to database...`);\n    }\n\n    // Neither should this!\n    sendEmail(): void {\n        console.log(`Sending email to ${this.name}...`);\n    }\n}\n\nThis violates Single Responsibility Princip…",
+          "link": "https://dev.to/abhinawkr/refactoring-messy-code-high-cohesion-and-low-coupling-3p7e",
+          "publishedOn": "2025-08-14T06:38:39.000Z",
+          "wordCount": 1936,
+          "title": "Refactoring Messy Code: High Cohesion and Low Coupling",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Few820oo2jgn0hnneg2sc.png"
+        },
+        {
+          "id": "https://dev.to/memlenz/hibernate-like-a-boss-on-archendeavouros-with-dracut-swapfile-2anh",
+          "author": "ADEBI Châ-Fine Ayédoun",
+          "description": "💡 Because sometimes you just wanna close the lid, go make noodles, and come back like nothing happened.\nHibernation stores all your RAM into the swap.\nswap size ≥ RAM × 1.2 (just to be safe).\nMine:\nfree -h\n\nMem:  7.6G total\n\n👉 I’ll make a 9G swapfile.\nLet’s make it, lock it, and enable it:\nsudo fallocate -l 9G /swapfile\nsudo chmod 600 /swapfile\nsudo mkswap /swapfile\nsudo swapon /swapfile\n\n/etc/fstab\n\n\n\n\n\necho '/swapfile none swap defaults 0 0' | sudo tee -a /etc/fstab\n\nNo more \"oops my swap disappeared after reboot\".\nThe kernel needs to know where your swap lives:\n# UUID of the partition containing swapfile\nfindmnt -no UUID -T /swapfile\n\n# Offset of the swapfile\nfilefrag -v /swapfile | awk '{if($1==\"0:\"){print $4}}' | sed 's/\\.\\.//'\n\nWrite those down — we’ll need them in the GRUB step.\nEdit /etc/default/grub:\nsudo nano /etc/default/grub\n\nFind:\nGRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"\n\nChange to:\nGRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash resume=UUID=<your_uuid_here> resume_offset=<your_offset_here>\"\n\nUpdate GRUB:\nsudo grub-mkconfig -o /boot/grub/grub.cfg\n\nresume\n\n\nCreate /etc/dracut.conf.d/resume.conf:\necho 'add_dracutmodules+=\" resume \"' | sudo tee /etc/dracut.conf.d/resume.conf\n\nRebuild initramfs:\nsudo dracut --regenerate-all --force\n\nsudo systemctl hibernate\n\nIf your PC powers off and comes back with everything exactly where you left it,\nSuspend to RAM first, then hibernate after a delay (battery saver’s dream):\nsudo mkdir -p /etc/systemd/sleep.conf.d\nsudo nano /etc/systemd/sleep.conf.d/hibernate.conf\n\nPut:\n[Sleep]\nHibernateDelaySec=30min\n\nRun:\nsudo systemctl suspend-then-hibernate\n\nNow your Arch/EndeavourOS box can sleep like a cat 🐈 and wake up like it’s got super memory powers.",
+          "link": "https://dev.to/memlenz/hibernate-like-a-boss-on-archendeavouros-with-dracut-swapfile-2anh",
+          "publishedOn": "2025-08-14T06:38:02.000Z",
+          "wordCount": 1830,
+          "title": "🚀 Hibernate Like a Boss on Arch/EndeavourOS with Dracut + Swapfile",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fx72pcy9x1d1jkp7u50ws.png"
+        },
+        {
+          "id": "https://dev.to/observabilityguy/six-common-mistakes-in-log-collection-failures-practices-from-local-management-anti-patterns-to-5f1m",
+          "author": "ObservabilityGuy",
+          "description": "Background\n\n\nWhen monitoring the running status of the system and troubleshooting complex issues, logs have long served as an indispensable observability method. Scientific local log management strategies not only retain more complete historical records locally and minimize performance overhead but also facilitate log collection and subsequent analysis. However, in actual O&M, we often encounter counterexamples. The collection problems caused by such management defects cannot be perfectly solved by mainstream collection tools such as LoongCollector (formerly iLogtail), Filebeat, FluentBit, Vector, and OpenTelemetry Collector. The best practice is to solve the root cause. Here we summarize our experience, hoping to provide some inspiration and collectively enhance log utility for all.\nThe p…",
+          "link": "https://dev.to/observabilityguy/six-common-mistakes-in-log-collection-failures-practices-from-local-management-anti-patterns-to-5f1m",
+          "publishedOn": "2025-08-14T06:38:01.000Z",
+          "wordCount": 2702,
+          "title": "Six Common Mistakes in Log Collection Failures: Practices From Local Management Anti-patterns to LoongCollector Standard",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8ahm5gqpxd8yv42ylfeb.png"
+        },
+        {
+          "id": "https://dev.to/priyansh_shah_786ec03624e/8-scalable-dashboard-design-tactics-for-big-data-4124",
+          "author": "Priyansh Shah",
+          "description": "Big datasets = slow dashboards? Not if you build with scalability, efficiency, and security in mind. Inspired by Ace Infoway’s roundup of big data dashboard design practices, here’s your concise action list for performance-first dashboards.\nSplit processing and UI logic. Use ETL or streaming pipelines (Kafka/Kinesis) with modular services that scale independently.\nCache common queries with Redis or Memcached. Set smart TTLs. Cache static frontend assets in browsers. Speed is caching.\nUse pagination, filter parameters, and payload compression (e.g. Gzip). Make API calls asynchronous and use response caching to reduce redundant fetches.\nImplement async loading for main KPIs, lazy-load details. Support real-time updates via streaming (WebSockets or SSE).\nDo more in the backend. Use data warehouses, materialized views, Parquet/ORC files, partitioned/indexed tables to lighten frontend load.\nCombine memory caching, application-level caching, CDN or edge caching. Pre-aggregation plus caching = speed and consistency.\nRBAC, TLS, at-rest encryption (AES-256), logging, token rotation, and anonymization for GDPR/HIPAA compliance.\nUse infinite scroll, “Load More,” and skeleton screens. Cursor-based API paging and intersection observers make scrolling seamless.\nTL;DR: A fast, trustworthy dashboard is all about architecture, caching, processing, and UX—not magic.\nExplore more on these big data dashboard design practices to take your dashboards from sluggish to spectacular.",
+          "link": "https://dev.to/priyansh_shah_786ec03624e/8-scalable-dashboard-design-tactics-for-big-data-4124",
+          "publishedOn": "2025-08-14T06:37:09.000Z",
+          "wordCount": 1635,
+          "title": "8 Scalable Dashboard Design Tactics for Big Data",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fffsigym618nw6xzmmjom.jpg"
+        },
+        {
+          "id": "https://dev.to/emotionalbutok/india-the-suicide-capital-of-the-world-why-we-must-mandate-mental-health-education-in-schools-18nc",
+          "author": "Shraddha",
+          "description": "How I Came Across This Cause\n\n\nDuring my content writing internship at WeDidIt — an experience I still call the best content writing internship out there — I learned about powerful initiatives driven by the organization’s founder, Sree Krishna Seelam. One of these is Middlemen.asia, which works at the intersection of law, social reform, and advocacy.\n\nIt was here that I came across a petition that instantly struck a chord with me: “India: The Suicide Capital of the World — Mandate Mental Health Education in Schools.” This petition, filed by Sree Krishna Seelam himself, isn’t just about policy — it’s about saving lives, changing the future, and giving our youth the tools to cope with life’s challenges.\n\nEvery 3 minutes, India loses a life to suicide.\nBehind these numbers are real people: ch…",
+          "link": "https://dev.to/emotionalbutok/india-the-suicide-capital-of-the-world-why-we-must-mandate-mental-health-education-in-schools-18nc",
+          "publishedOn": "2025-08-14T06:21:50.000Z",
+          "wordCount": 2111,
+          "title": "India: The Suicide Capital of the World — Why We Must Mandate Mental Health Education in Schools",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftoll5s3u1q07obfamts0.png"
+        },
+        {
+          "id": "https://dev.to/ethan_parkx_09fc0c31cddf/if-you-could-call-your-childhood-self-42pp",
+          "author": "Ethan Park X",
+          "description": "Have you ever wished you could pick up a phone and speak to your younger self?\nWhat would you say?\nMy Story\nWhen I was a kid, I experienced extreme bullying.\nThose years shaped me in ways I’m still dealing with:\nI became afraid to speak up.\nMy confidence shrank.\nEven at work today, I often stay silent during meetings, fearing rejection.\nDepression and insomnia are still part of my life.\nThe truth is, the pain didn’t just fade with time—it carried over into adulthood.\nWhat I’d Say to My Younger Self\nIf I could call my childhood self, I’d say:\n“It’s okay. You matter. What happened to you was wrong, but it doesn’t define your worth. You will grow stronger, even if it feels impossible right now.”\nWhy Voice Matters\nWriting those words is one thing.\nThat’s what https://accentvoice.net/ is for.\nRecord messages to your past self.\nEncourage your present self.\nSend affirmations to your future self.\nIt’s a space for emotional connection and self-healing—powered by your own voice.\nHow to Use It\nRecord a message to your childhood self: “You’ll survive this. You’ll find people who care.”\nTalk to your present self: “Even with anxiety and insomnia, you are worth listening to.”\nCreate a voice diary for your future self to hear one day.\nBy using https://accentvoice.net/ regularly, you can turn reflection into a habit—and make peace with your past.\n💬 Question for you:\nIf you could call your younger self today, what would you say?",
+          "link": "https://dev.to/ethan_parkx_09fc0c31cddf/if-you-could-call-your-childhood-self-42pp",
+          "publishedOn": "2025-08-14T06:20:17.000Z",
+          "wordCount": 1689,
+          "title": "If You Could Call Your Childhood Self… 🎙️",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiia5jpwp6r574rkrbzdp.png"
+        },
+        {
+          "id": "https://dev.to/kristiyanvelkov/docker-ai-a-live-panel-with-docker-captains-4omg",
+          "author": "Kristiyan Velkov",
+          "description": "On August 14 at 5:00 PM CEST, I’ll be joining an incredible panel of Docker Captains for a live, community-led discussion on how Docker is evolving for the AI era.\n\nThis event, hosted by Francesco Ciulla, brings together experts from across the globe to explore one of the most exciting frontiers in tech — the intersection of containerization and artificial intelligence.\nThe session will cover:\nOpportunities & Challenges — How AI is transforming the way we think about containerized development, and the real-world obstacles we need to address.\nEmerging Tools & Best Practices — From lightweight local setups to large-scale AI pipelines, we’ll discuss the tools and workflows that are making a difference.\nLive Q&A — Your chance to ask questions directly to the Captains and join the conversation.…",
+          "link": "https://dev.to/kristiyanvelkov/docker-ai-a-live-panel-with-docker-captains-4omg",
+          "publishedOn": "2025-08-14T06:18:08.000Z",
+          "wordCount": 1769,
+          "title": "🚀 Docker & AI: A Live Panel with Docker Captains",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcjbiifamn5xzavkamugv.png"
+        },
+        {
+          "id": "https://dev.to/dashflow/building-a-data-career-the-skills-that-truly-matter-3bcm",
+          "author": "Dashflow",
+          "description": "The need for people to understand, prioritize, manage, and analyze data is not slowing down in any industry. From quick trend analyses to advanced predictive modeling, businesses rely on data to guide strategic decisions and uncover opportunities.\nData scientists and data analysts are on the front lines of this movement—gathering, cleaning, and interpreting information, then translating it into actionable insights for stakeholders.\nIn short:\nWhat they do: Identify trends, patterns, and insights.\nHow they do it: Apply statistical methods, advanced modeling, and clear communication.\nLet’s explore the skills that actually make a difference.\nSucceeding in a data career takes more than technical skills. The best data professionals combine analytical thinking with strong communication, attention…",
+          "link": "https://dev.to/dashflow/building-a-data-career-the-skills-that-truly-matter-3bcm",
+          "publishedOn": "2025-08-14T06:17:20.000Z",
+          "wordCount": 2617,
+          "title": "Building a Data Career: The Skills That Truly Matter",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbn85cj6z1rfz3g3xulmz.png"
+        },
+        {
+          "id": "https://dev.to/fannymu12-_-579/xerve-modern-lightweight-local-server-manager-built-with-rust-2d06",
+          "author": "FANNYMU",
+          "description": "Xerve — Modern, Lightweight Local Server Manager Built with Rust\nFANNYMU ・ Aug 13\n#rust\n        #xerve\n        #devtools\n        #localdevelopment",
+          "link": "https://dev.to/fannymu12-_-579/xerve-modern-lightweight-local-server-manager-built-with-rust-2d06",
+          "publishedOn": "2025-08-14T06:16:42.000Z",
+          "wordCount": 1376,
+          "title": "Xerve — Modern, Lightweight Local Server Manager Built with Rust",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffhykicy7u02sf962epel.png"
+        },
+        {
+          "id": "https://dev.to/mark_ruffle_a7168873bf385/the-management-role-of-a-consultant-guiding-businesses-towards-strategic-success-8fj",
+          "author": "Mark ruffle",
+          "description": "In today’s fast-paced and competitive business environment, organizations are constantly facing complex challenges — from operational inefficiencies to evolving market dynamics and regulatory pressures. To navigate these challenges successfully, many businesses turn to consultants who bring specialized expertise, strategic insights, and an objective perspective. Among the various consulting domains, management consulting stands out as a critical driver of organizational transformation.\nA management consultant acts as a trusted advisor to organizations, providing guidance on how to improve efficiency, enhance performance, and achieve strategic goals. Their role extends beyond simply identifying problems; they are instrumental in designing solutions, facilitating change, and ensuring long-te…",
+          "link": "https://dev.to/mark_ruffle_a7168873bf385/the-management-role-of-a-consultant-guiding-businesses-towards-strategic-success-8fj",
+          "publishedOn": "2025-08-14T06:15:29.000Z",
+          "wordCount": 2224,
+          "title": "The Management Role of a Consultant: Guiding Businesses Towards Strategic Success",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgneawzu4fm8upnpn052e.png"
+        },
+        {
           "id": "https://dev.to/emotionalbutok/the-best-content-writing-internship-out-there-my-journey-with-wedidit-49n",
           "author": "Shraddha",
           "description": "I discovered this incredible opportunity via Internshala.\n\nThe application process was straightforward: submit a writing assignment on a given topic, and happily I was shortlisted.\nDuration & Commitment: A 1-month, part-time (just one hour a day) unpaid internship — super easy to fit into any schedule.\nReading “5 Killer Habits” by Sree Krishna Seelam (founder of WeDidIt and middlemen.asia) was eye-opening. The book’s insights pushed me to reflect — and I ended up improving my own writing habits significantly. It was inspiring to write about concepts I genuinely connected with, and it helped my writing voice grow.\n\nHubSpot Academy’s Content Marketing Course was part of the internship curriculum. I learned practical techniques around SEO, writing for organic views, and content strategy.\n\nHan…",
@@ -28,114 +128,14 @@
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F74i6l7qfge3hcmoi041o.png"
         },
         {
-          "id": "https://dev.to/therealmrmumba/the-12-best-ai-tools-for-project-management-in-2025-20p9",
-          "author": "Emmanuel Mumba",
-          "description": "From automating status updates to predicting project risks before they even appear on your radar, these AI tools are quietly becoming the co-pilots every project manager dreams of. Imagine logging in and having your tasks organized, deadlines adjusted, and potential bottlenecks highlighted all before you even have your first coffee. And the best part? Many of them are so seamless and intuitive, you’ll find yourself wondering how you ever juggled projects, emails, and team updates without their support. It’s like having a smart assistant who knows your team’s workflow, anticipates challenges, and frees you to focus on the decisions that really matter.\nProject management in 2025 is no longer just about checklists and spreadsheets. With teams working remotely, across time zones, and handling …",
-          "link": "https://dev.to/therealmrmumba/the-12-best-ai-tools-for-project-management-in-2025-20p9",
-          "publishedOn": "2025-08-14T06:12:14.000Z",
-          "wordCount": 2708,
-          "title": "The 12 Best AI Tools for Project Management in 2025",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fk5rmpa2zydlrtx61gtqd.jpg"
-        },
-        {
-          "id": "https://dev.to/frank_1871bc3c55f35370df3/integrated-circuits-how-tiny-chips-power-modern-electronics-2ea8",
-          "author": "Frank",
-          "description": "Disclaimer: This article is provided for educational purposes only and is not sponsored or endorsed by any company.\nIntegrated circuits are the hidden heroes behind virtually every gadget we use. These sliver‑thin chips let your smartphone fit in your pocket, enable your car’s advanced driver‑assist features, and make high‑speed data centers possible.\n\nIntegrated Circuits\nAt their core, integrated circuits (ICs) are a miniature city of electronic components, transistors, resistors, capacitors, fabricated on a single piece of semiconductor (usually silicon). Before ICs, engineers wired discrete parts by hand, a labor‑intensive process prone to errors.\nThanks to ICs, we now have reliable, repeatable circuits that fit in our pockets. They emerged in the late 1950s: Jack Kilby of Texas Instrum…",
-          "link": "https://dev.to/frank_1871bc3c55f35370df3/integrated-circuits-how-tiny-chips-power-modern-electronics-2ea8",
-          "publishedOn": "2025-08-14T06:10:55.000Z",
-          "wordCount": 2195,
-          "title": "Integrated Circuits: How Tiny Chips Power Modern Electronics",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F69tikcc9xs1p2w1xthan.webp"
-        },
-        {
-          "id": "https://dev.to/vinay_kumar_a8b33d69593f4/what-is-a-hearing-aid-and-how-does-it-work-a-hearing-aid-is-a-small-electronic-device-designed-2fhl",
-          "author": "vinay kumar",
-          "description": "A post by vinay kumar",
-          "link": "https://dev.to/vinay_kumar_a8b33d69593f4/what-is-a-hearing-aid-and-how-does-it-work-a-hearing-aid-is-a-small-electronic-device-designed-2fhl",
-          "publishedOn": "2025-08-14T06:08:20.000Z",
-          "wordCount": 1494,
-          "title": "What is a hearing aid, and how does it work? A hearing aid is a small electronic device designed to help people with hearing loss by amplifying sounds. It consists of a microphone, amplifier, and speaker that work together to make sounds louder and clearer",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy1qbpgl0t8mfprf1upux.png"
-        },
-        {
-          "id": "https://dev.to/emotionalbutok/reflection-on-indian-law-for-a-common-man-by-sree-krishna-seelam-546",
-          "author": "Shraddha",
-          "description": "A Guide That Makes Law Anyone’s Ally\n\n\nI recently immersed myself in Indian Law for a Common Man by Sree Krishna Seelam — a book that elegantly breaks down the complexities of Indian law into clear, relatable terms. Unlike dense legal tomes, this one feels more like a conversation with a mentor than a textbook.\n\nIt covers everything from fundamental rights, civil and criminal law, family law, property, consumer rights, taxation, environmental law, cyber law, and more — yet distills core concepts in just a few hours of reading.\nAccessible empowerment\nThe book demystifies law in everyday language, transforming it from an intimidating barrier into a tool everyone can use.\nPractical structure, deep impact\nWith chapters organized around real-life scenarios — rights, judicial system, contracts, …",
-          "link": "https://dev.to/emotionalbutok/reflection-on-indian-law-for-a-common-man-by-sree-krishna-seelam-546",
-          "publishedOn": "2025-08-14T06:07:38.000Z",
-          "wordCount": 1753,
-          "title": "Reflection on Indian Law for a Common Man by Sree Krishna Seelam",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqumkb74gb93qg6otdk6l.png"
-        },
-        {
-          "id": "https://dev.to/mohammad1105/gos-data-structures-a-deep-dive-into-arrays-and-slices-4fn3",
-          "author": "Mohammad Aman",
-          "description": "In the world of Go, arrays and slices are fundamental data structures used for managing ordered collections of data. While they might seem similar at a glance, their underlying mechanics are profoundly different. An array is a simple, fixed-size container, while a slice is a powerful, flexible, and dynamic tool. Understanding the distinction, especially the internal workings of a slice, is crucial for any Go developer aiming to write efficient and bug-free code.\nThis article will break down these two types, explore the hidden machinery that powers slices, and demonstrate how to use them effectively to avoid common pitfalls.\nFirst, let's clarify what an array is. An array in Go is a numbered sequence of elements of a single, specific type with a fixed length. The size of the array is part o…",
-          "link": "https://dev.to/mohammad1105/gos-data-structures-a-deep-dive-into-arrays-and-slices-4fn3",
-          "publishedOn": "2025-08-14T06:04:56.000Z",
-          "wordCount": 2827,
-          "title": "Go's Data Structures: A Deep Dive into Arrays and Slices",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcvf403ykkj61duus16k0.jpg"
-        },
-        {
-          "id": "https://dev.to/vibe_youtube/krish-naik-ultimate-rag-bootcamp-using-langchainlanggraph-langsmith-course-2o21",
-          "author": "Vibe YouTube",
-          "description": "Ultimate RAG Bootcamp on Udemy\n\n\nHey folks! The “Ultimate RAG Bootcamp Using Langchain, LangGraph & Langsmith” is now live on Udemy. After 2.5 months of hands-on recording, you’ll get everything you need to master Retrieval-Augmented Generation. Bonus: three more modules are dropping in the next 2–3 weeks!\nPerks & Prereqs\n\n– Snag it for just ₹399 (or $9) with code BESTRAG (only 2 days left!)\n\n– You should know Python and have a basic grasp of Langchain\n\n– Plus, don’t miss the full AI roadmap over on GitHub: https://github.com/krishnaik06/Complete-Data-Science-And-GenAI-Course-In-Udemy\nWatch on YouTube",
-          "link": "https://dev.to/vibe_youtube/krish-naik-ultimate-rag-bootcamp-using-langchainlanggraph-langsmith-course-2o21",
-          "publishedOn": "2025-08-14T06:01:34.000Z",
-          "wordCount": 1546,
-          "title": "Krish Naik: Ultimate RAG Bootcamp Using Langchain,LangGraph & Langsmith Course",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi3.ytimg.com%2Fvi%2FRRWybP-m8uw%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/gg_news/ign-of-peaks-and-tides-official-announcement-trailer-reclaim-24en",
-          "author": "Gaming News",
-          "description": "Of Peaks and Tides just dropped its official trailer via IGN, teasing a hands-on demo at Gamescom 2025. This adventure game promises a dynamic world where every move matters, blending strategic exploration with environmental puzzles.\nGet ready to dive in—your choices will literally shape the peaks and tides of this epic journey. Don’t miss your chance to try it firsthand next year!\nWatch on YouTube",
-          "link": "https://dev.to/gg_news/ign-of-peaks-and-tides-official-announcement-trailer-reclaim-24en",
-          "publishedOn": "2025-08-14T06:00:36.000Z",
-          "wordCount": 1459,
-          "title": "IGN: Of Peaks and Tides - Official Announcement Trailer | Reclaim",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi4.ytimg.com%2Fvi%2F3EgF5n4-3tw%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/gg_news/ign-of-peaks-and-tides-official-animated-trailer-1ao5",
-          "author": "Gaming News",
-          "description": "Of Peaks and Tides drops you into a once-thriving realm of human tribes that was torn apart when a war of the gods unleashed devastating floods, raging sandstorms and deadly blizzards. With the deities vanished and civilization in ruins, the land has become a harsh, unpredictable wilderness.\nNow it’s up to you to brave the elements, rally scattered survivors, reclaim the fallen kingdoms and help rebuild society—while uncovering the secrets of what really happened to those war-worn gods.\nWatch on YouTube",
-          "link": "https://dev.to/gg_news/ign-of-peaks-and-tides-official-animated-trailer-1ao5",
-          "publishedOn": "2025-08-14T06:00:28.000Z",
-          "wordCount": 1471,
-          "title": "IGN: Of Peaks and Tides - Official Animated Trailer",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi3.ytimg.com%2Fvi%2FNkxeiw4I49g%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/vrdhn/css-selector-by-chatgpt-1fkn",
-          "author": "vrdhn",
-          "description": "This has been generated by ChatGPT, and here for my reference.\nOrganized by selector type with descriptions, examples, and performance tips.\n\n\n\nSelector\nDescription\nExample\nMatches\nPerformance\n\n\n\n\n*\nUniversal selector\n*\nAll elements\n🔴 Slow\n\n\nelement\nType selector\ndiv\nAll <div> elements\n🟢 Fast\n\n\n#id\nID selector\n#header\nElement with id=\"header\"\n\n🟢 Fastest\n\n\n.class\nClass selector\n.btn\nElements with class btn\n\n🟢 Fast\n\n\n[attr]\nAttribute present\n[disabled]\nElements with that attribute\n🔴 Slow\n\n\n[attr=value]\nAttribute equals\n[type=\"text\"]\nAttribute with exact value\n🟡 Moderate\n\n\n\n\n\n\nSelector\nDescription\nExample\nMatches\nPerformance\n\n\n\n\nA B\nDescendant\ndiv p\n\n<p> inside <div> (any depth)\n🟡 Moderate\n\n\nA > B\nChild\nul > li\nDirect child only\n🟢 Fast\n\n\nA + B\nAdjacent sibling\nh1 + p\nFirst <p> after <…",
-          "link": "https://dev.to/vrdhn/css-selector-by-chatgpt-1fkn",
-          "publishedOn": "2025-08-14T05:55:00.000Z",
-          "wordCount": 1882,
-          "title": "CSS Selector, by ChatGPT",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc11kwrmqsjfgnezba2wl.png"
-        },
-        {
-          "id": "https://dev.to/harigaran/how-does-react-simplify-frontend-development-react-in-the-ever-evolving-world-of-web-57a9",
-          "author": "Harigaran",
-          "description": "A post by Harigaran",
-          "link": "https://dev.to/harigaran/how-does-react-simplify-frontend-development-react-in-the-ever-evolving-world-of-web-57a9",
-          "publishedOn": "2025-08-14T05:54:54.000Z",
-          "wordCount": 1428,
-          "title": "How does React Works in Frontend Development ?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Feenrnna23sd1ytnqqt7k.png"
-        },
-        {
-          "id": "https://dev.to/sharique_siddiqui_8242dad/html-css-integration-inline-internal-and-external-styles-2f36",
-          "author": "Sharique Siddiqui",
-          "description": "Integrating CSS with HTML is a fundamental skill for web developers to control the appearance and layout of web pages. CSS (Cascading Style Sheets) can be applied to HTML documents in three primary ways: inline styles, internal stylesheets, and external stylesheets. Each method serves different purposes and has advantages and best use scenarios. This blog post explores these three CSS integration techniques to help you understand when and how to use each effectively.\nInline CSS is applied directly to an HTML element using the style attribute within the element's opening tag. It is useful for applying unique, one-off styles to individual elements without affecting the rest of the page.\nxml\n<h1 style=\"color: blue; font-size: 24px;\">This is a blue heading</h1>\n\nAffects only the specific eleme…",
-          "link": "https://dev.to/sharique_siddiqui_8242dad/html-css-integration-inline-internal-and-external-styles-2f36",
-          "publishedOn": "2025-08-14T05:49:51.000Z",
-          "wordCount": 2138,
-          "title": "HTML CSS Integration: Inline, Internal, and External Styles",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fe9j9fstbzncdp1na9h44.png"
+          "id": "https://dev.to/dct_technology/the-secret-to-managing-large-projects-think-in-epics-417f",
+          "author": "DCT Technology Pvt. Ltd.",
+          "description": "When projects start feeling like a tangled ball of deadlines, tasks, and “urgent” emails… chances are you’re thinking too small.\nstructure.\nAnd here’s the twist: the real secret to managing large projects isn’t more tools or longer meetings.\nThink in Epics.\n\nIn Agile project management, an Epic is not just a fancy name for a big task.\nstrategic container — a high-level collection of related work that pushes a major goal forward.\nWhen you plan in Epics, you:\nAvoid drowning in endless task lists\nKeep your team aligned on the bigger picture\nMake progress visible, measurable, and motivating\nTurn chaos into a clear roadmap\nIf you’ve ever had a project stall halfway, this guide to Agile Epics explains why breaking work into Epics keeps momentum going.\nThink of Epics as chapters in your project’s…",
+          "link": "https://dev.to/dct_technology/the-secret-to-managing-large-projects-think-in-epics-417f",
+          "publishedOn": "2025-08-14T06:12:40.000Z",
+          "wordCount": 1916,
+          "title": "The Secret to Managing Large Projects? Think in Epics",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F60iexvu0ef0jxaqd94jt.png"
         }
       ]
     },
@@ -279,7 +279,7 @@
           "publishedOn": "2025-08-14T03:34:11.000Z",
           "wordCount": 9505,
           "title": "Show HN: Yet another memory system for LLMs",
-          "imageUrl": "https://opengraph.githubassets.com/5a45b85eaad4a327865de709b135c67fbc93ee8301f1d5fcab5cc536e0718960/trvon/yams"
+          "imageUrl": "https://opengraph.githubassets.com/07846ff15e6420a48daa37446ecfd8e5889ed8db5829e4f65a0c677477deff35/trvon/yams"
         },
         {
           "id": "https://dri.es/funding-open-source-like-public-infrastructure",
@@ -382,16 +382,6 @@
           "imageUrl": null
         },
         {
-          "id": "https://readme.com/careers#product-manager-developer-experience",
-          "author": null,
-          "description": "Comments",
-          "link": "https://readme.com/careers#product-manager-developer-experience",
-          "publishedOn": "2025-08-13T17:00:37.000Z",
-          "wordCount": 7157,
-          "title": "ReadMe (YC W15) Is Hiring a Developer Experience PM",
-          "imageUrl": "https://readme.com/static/og_images/careers.png?8b537ebfef14781acb731fd1f3f0a3bc0828a108"
-        },
-        {
           "id": "https://blog.nginx.org/blog/native-support-for-acme-protocol",
           "author": null,
           "description": "Comments",
@@ -407,7 +397,7 @@
           "description": "Comments",
           "link": "https://arstechnica.com/science/2025/08/study-social-media-probably-cant-be-fixed/",
           "publishedOn": "2025-08-13T15:26:28.000Z",
-          "wordCount": 5017,
+          "wordCount": 5029,
           "title": "Study: Social media probably can't be fixed",
           "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2025/08/social-media-distortion-1152x648.jpg"
         },
@@ -457,7 +447,7 @@
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=44883634",
           "publishedOn": "2025-08-13T01:14:36.000Z",
-          "wordCount": 12472,
+          "wordCount": 12681,
           "title": "VC-backed company just killed my EU trademark for a small OSS project",
           "imageUrl": null
         },
@@ -482,6 +472,16 @@
           "imageUrl": null
         },
         {
+          "id": "https://github.com/humancomputerlab/LeLamp",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/humancomputerlab/LeLamp",
+          "publishedOn": "2025-08-12T12:01:56.000Z",
+          "wordCount": 3947,
+          "title": "Le Lamp – an open source expressive robot",
+          "imageUrl": "https://opengraph.githubassets.com/9f3c9efec26bc9090f34158f0b2a58f6614724e0e4cd5780995eb119724541fb/humancomputerlab/LeLamp"
+        },
+        {
           "id": "https://forgefed.org/",
           "author": null,
           "description": "Comments",
@@ -490,16 +490,6 @@
           "wordCount": 554,
           "title": "ForgeFed: ActivityPub-based forge federation protocol",
           "imageUrl": null
-        },
-        {
-          "id": "https://blog.voyageai.com/2025/08/11/rerank-2-5/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://blog.voyageai.com/2025/08/11/rerank-2-5/",
-          "publishedOn": "2025-08-12T06:12:32.000Z",
-          "wordCount": 4053,
-          "title": "Rerank-2.5 and rerank-2.5-lite: instruction-following rerankers",
-          "imageUrl": "https://i0.wp.com/blog.voyageai.com/wp-content/uploads/2025/08/rerank-2.5-featured-image.png?fit=1024%2C1024&quality=80&ssl=1"
         },
         {
           "id": "https://clearsky.dev/blog/xr2000/",
@@ -512,6 +502,16 @@
           "imageUrl": null
         },
         {
+          "id": "https://www.zdnet.com/article/debian-13-arrives-with-major-updates-for-linux-users-whats-new-in-trixie/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.zdnet.com/article/debian-13-arrives-with-major-updates-for-linux-users-whats-new-in-trixie/",
+          "publishedOn": "2025-08-11T20:37:07.000Z",
+          "wordCount": 16988,
+          "title": "Debian 13 arrives with major updates for Linux users – what's new in 'Trixie'",
+          "imageUrl": "https://www.zdnet.com/a/img/resize/b70fdb749e812fb16ac9be6e1c39323b220dd3d6/2025/08/11/0ce4acb6-336f-42b5-a73b-89c0de928aec/debian-13.jpg?auto=webp&fit=crop&height=675&width=1200"
+        },
+        {
           "id": "https://github.com/PrivacyIsAllYouNeed/protector",
           "author": null,
           "description": "Comments",
@@ -519,7 +519,7 @@
           "publishedOn": "2025-08-11T19:40:47.000Z",
           "wordCount": 1932,
           "title": "Show HN: Real-time privacy protection for smart glasses",
-          "imageUrl": "https://opengraph.githubassets.com/a74ba1fa82b6dc442d6d78a5b5c0afa951b78ac29f10103d1ecbde49c4618367/PrivacyIsAllYouNeed/protector"
+          "imageUrl": "https://opengraph.githubassets.com/20a29b91b755b0a740cee78c11d2dd51f8183ce3316e962ee8b487359fd04677/PrivacyIsAllYouNeed/protector"
         },
         {
           "id": "https://lwn.net/Articles/1001773/",
@@ -527,7 +527,7 @@
           "description": "Comments",
           "link": "https://lwn.net/Articles/1001773/",
           "publishedOn": "2025-08-11T01:46:22.000Z",
-          "wordCount": 3976,
+          "wordCount": 3990,
           "title": "Nyxt: The Emacs-like web browser",
           "imageUrl": null
         },
@@ -558,6 +558,16 @@
       "feedUrl": "https://www.lowyat.net/feed/",
       "siteUrl": "https://www.lowyat.net/",
       "articles": [
+        {
+          "id": "https://www.lowyat.net/?p=362609",
+          "author": "Kiran Ganesan",
+          "description": "Apple may be late to the AI party, but the company has taken significant strides to be a relevant contender in the space. One such example is from the recent news from Bloomberg’s Mark Gurman that suggests that the multinational tech company is changing gears in its AI plan, focusing more towards smart home products […]\nThe post Apple Reportedly Working On A Tabletop Robot With Upgraded Siri appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2025/362609/apple-smart-home-tabletop-robot/",
+          "publishedOn": "2025-08-14T06:34:54.000Z",
+          "wordCount": 10341,
+          "title": "Apple Reportedly Working On A Tabletop Robot With Upgraded Siri",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2024/06/apple-store-trx-interior_IMG_1795.jpg"
+        },
         {
           "id": "https://www.lowyat.net/?p=362606",
           "author": "Ian Chee",
@@ -647,16 +657,6 @@
           "wordCount": 9912,
           "title": "CelcomDigi Website Confirms Google Pixel 10 Series’ Local Arrival",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/08/celcomdigi-google-pixel-10-launch-date-2.jpg"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=362524",
-          "author": "Ian Chee",
-          "description": "Proton launched the new X50 late last month. Since then, the national carmaker says that over 2,000 units have been delivered to customers. Now, the company is making it just a bit more enticing than before. In partnership with Touch ‘n Go, every new X50 will be pre-fitted with an RFID tag at the production […]\nThe post New Proton X50 Get Integrated RFID With Touch ‘n Go Partnership appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2025/362524/proton-x50-integrated-rfid-touch-n-go-partnership/",
-          "publishedOn": "2025-08-13T10:03:50.000Z",
-          "wordCount": 9920,
-          "title": "New Proton X50 Get Integrated RFID With Touch ‘n Go Partnership",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/08/Proton-TNG-MoU-X50-RFID.jpg"
         }
       ]
     },
@@ -1080,12 +1080,32 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "014bd77f-96c3-48eb-951e-d7ceabe3d94f",
+          "author": "Shaurya Malwa",
+          "description": "Technical patterns suggest further upside toward $0.27, with $0.25 now acting as support.",
+          "link": "https://www.coindesk.com/markets/2025/08/14/doge-jumps-7-on-usd200m-whale-buys-as-futures-bets-top-usd3b",
+          "publishedOn": "2025-08-14T05:50:14.000Z",
+          "wordCount": 8575,
+          "title": "DOGE Jumps 7% on $200M Whale Buys as Futures Bets Top $3B",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/91d4c150df2539fc0d4c7de2613d9e27532ea610-746x453.png"
+        },
+        {
+          "id": "19971043-cb90-487d-b7db-2b996e4224b8",
+          "author": "Omkar Godbole",
+          "description": "BTC hit record highs above $124,000 early today, but the momentum has quickly faded consistent with the pattern seen since mid-July.",
+          "link": "https://www.coindesk.com/markets/2025/08/14/who-is-cashing-out-of-bitcoin-at-record-highs-above-usd120k",
+          "publishedOn": "2025-08-14T05:46:21.000Z",
+          "wordCount": 8946,
+          "title": "Who is Cashing Out of Bitcoin at Record Highs Above $120K?",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2778872d3eadbefed9fcd4ba66c2cf45b9ada8e6-1280x939.jpg"
+        },
+        {
           "id": "7e8c6e3d-ec09-4d33-99a2-e706b208973f",
           "author": "Shaurya Malwa",
           "description": "The bots simply waited for a high-value wallet — like Coinbase’s fee receiver — to mistakenly grant spending rights to an exposed contract, then executed the drain instantly.",
           "link": "https://www.coindesk.com/markets/2025/08/14/coinbase-loses-usd300k-in-mev-exploit-after-misstep-with-0x-swapper-contract",
           "publishedOn": "2025-08-14T05:34:46.000Z",
-          "wordCount": 8413,
+          "wordCount": 8414,
           "title": "Coinbase Loses $300K in MEV Exploit After Misstep With 0x Swapper Contract",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a03a2f5c6a3e8950f99bce5aec662aeaa6b3a06d-4807x3311.jpg"
         },
@@ -1095,7 +1115,7 @@
           "description": "The most aggressive move came at 13:00 when XRP pierced resistance at $3.27 on 217.4 million volume—nearly triple the 24-hour average—followed by sustained overnight accumulation with volumes above 117 million in consecutive hours.",
           "link": "https://www.coindesk.com/markets/2025/08/14/xrp-breaks-key-resistance-after-ripple-sec-win-is-usd8-next",
           "publishedOn": "2025-08-14T04:42:59.000Z",
-          "wordCount": 8775,
+          "wordCount": 8776,
           "title": "XRP Breaks Key Resistance After Ripple-SEC Win — Is $8 Next?",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d3869f5dc302215379b0e35925af2c07b68e73c4-743x451.png"
         },
@@ -1105,7 +1125,7 @@
           "description": "The milestone reflects a year-long build in bullish sentiment, fueled by a friendlier regulatory backdrop under President Donald Trump and the rapid adoption of corporate treasury strategies centered on Bitcoin accumulation.",
           "link": "https://www.coindesk.com/markets/2025/08/14/bitcoin-crosses-google-to-become-fifth-largest-asset-as-fed-rate-cut-bets-rise",
           "publishedOn": "2025-08-14T04:26:31.000Z",
-          "wordCount": 8281,
+          "wordCount": 8282,
           "title": "Bitcoin Crosses Google to Become Fifth-Largest Asset as Fed Rate Cut Bets Rise",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/97923967111fc17f0fde0f4fbc3b5ad6e63c4396-1920x1280.jpg"
         },
@@ -1115,7 +1135,7 @@
           "description": "Korea's Won is stuck onshore. That's going to put a damper on any demand for a Won-backed stablecoin.",
           "link": "https://www.coindesk.com/policy/2025/08/14/asia-morning-briefing-korea-s-onshore-won-policy-could-hinder-its-stablecoin-ambition",
           "publishedOn": "2025-08-14T01:24:57.000Z",
-          "wordCount": 8710,
+          "wordCount": 8738,
           "title": "Asia Morning Briefing: Korea’s 'Onshore' Won Policy Could Hinder Its Stablecoin Ambition",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b7d512ba660aea0dd60d8f3f58b1ae6ddd1786d8-1920x1282.jpg"
         },
@@ -1125,7 +1145,7 @@
           "description": "The current macro backdrop has rarely been more favorable for risk assets, and the market hasn't fully priced in what's coming, a report said.",
           "link": "https://www.coindesk.com/markets/2025/08/13/bitcoin-tops-usd122k-eyes-fresh-record-with-ether-just-3-from-2021-ath",
           "publishedOn": "2025-08-13T20:11:12.000Z",
-          "wordCount": 7817,
+          "wordCount": 7844,
           "title": "Bitcoin Tops $122K, Eyes Fresh Record, With Ether Just 3% From 2021 ATH",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a462f830740ca3a623936d775eadba5ff1ce8456-3000x2000.jpg"
         },
@@ -1135,7 +1155,7 @@
           "description": "Ray Dalio said he likely would have fired the BLS head as well.",
           "link": "https://www.coindesk.com/markets/2025/08/13/trump-removal-of-bls-commissioner-prompts-questions-about-accuracy-of-economic-stats",
           "publishedOn": "2025-08-13T18:40:30.000Z",
-          "wordCount": 8233,
+          "wordCount": 8234,
           "title": "Trump Removal of BLS Commissioner Prompts Questions About Accuracy of Economic Stats",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/13cd4f14be950fbfb70e6dc6ab16bf0fdc1d8647-4533x2550.jpg"
         },
@@ -1145,7 +1165,7 @@
           "description": "The MetaMask stablecoin (mUSD) was already reported to be in the works thanks to a prematurely posted governance proposal that was quickly deleted last week.",
           "link": "https://www.coindesk.com/business/2025/08/13/ethereum-wallet-metamask-said-to-unveil-its-own-musd-stablecoin-this-week",
           "publishedOn": "2025-08-13T18:07:50.000Z",
-          "wordCount": 8229,
+          "wordCount": 8230,
           "title": "Ethereum Wallet MetaMask Will Likely Unveil Its Own Stablecoin this Week",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a8d864bf5449c4ac5936a9013868e82e76f0e03e-4928x3280.jpg"
         },
@@ -1155,7 +1175,7 @@
           "description": "The advance occurred alongside a strong day for broader crypto markets.",
           "link": "https://www.coindesk.com/markets/2025/08/13/filecoin-gains-4-showing-strong-bullish-momentum",
           "publishedOn": "2025-08-13T17:47:47.000Z",
-          "wordCount": 8122,
+          "wordCount": 8123,
           "title": "Filecoin Gains 4%, Showing Strong Bullish Momentum",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/79178b6b51ea3f616296113a257cebcd57e08c9a-700x430.png"
         },
@@ -1165,7 +1185,7 @@
           "description": "Also: ETH Transaction Volume Climbs, Trading Bots Steal $1M From Users, and Babylon Trustless Bitcoin Vaults.",
           "link": "https://www.coindesk.com/tech/2025/08/13/the-protocol-okx-slashes-native-token-supply-in-half",
           "publishedOn": "2025-08-13T17:12:59.000Z",
-          "wordCount": 10256,
+          "wordCount": 10257,
           "title": "The Protocol: OKX Slashes Native Token Supply In Half",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/501a66c685bd7c595da6d6d001a3b6ee261a9cbe-7728x5152.jpg"
         },
@@ -1175,7 +1195,7 @@
           "description": "The company opened for trade on the New York Stock Exchange under the ticker \"BLSH\" on Wednesday.",
           "link": "https://www.coindesk.com/markets/2025/08/13/crypto-exchange-bullish-shoots-above-usd100-as-shares-debut-more-than-doubling-ipo-price",
           "publishedOn": "2025-08-13T17:08:50.000Z",
-          "wordCount": 7993,
+          "wordCount": 7994,
           "title": "Crypto Platform Bullish Shares Debut Above $100, More Than Doubling IPO Price",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6d8345ab102c51714055bd408fc49095d52d1019-4000x1868.jpg"
         },
@@ -1185,7 +1205,7 @@
           "description": "NEAR Protocol surged on strong institutional inflows and rising user growth, overcoming multiple resistance levels before short-term volatility set in.",
           "link": "https://www.coindesk.com/markets/2025/08/13/near-rallies-on-institutional-inflows-surges-past-resistance-before-volatile-pullback",
           "publishedOn": "2025-08-13T16:43:52.000Z",
-          "wordCount": 8710,
+          "wordCount": 8711,
           "title": "NEAR Rallies on Institutional Inflows, Surges Past Resistance Before Volatile Pullback",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a79d537091cc2b31fd9ba4b252c9bfb6472de00c-700x430.png"
         },
@@ -1195,7 +1215,7 @@
           "description": "RDC’s Ankit Mehta says that depository receipts were the original form of tokenization and should be applied to tokenized infrastructure today to offer a scalable and legally sound foundation for modern equities.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/08/13/tokenized-equities-need-an-adr-structure-to-protect-investors",
           "publishedOn": "2025-08-13T16:30:05.000Z",
-          "wordCount": 8824,
+          "wordCount": 8825,
           "title": "Tokenized Equities Need an ADR Structure to Protect Investors",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b8679f127a9172d2861c2ae152e9c17f15da8249-7237x4825.jpg"
         },
@@ -1205,7 +1225,7 @@
           "description": "The administration most supportive of crypto may have just highlighted the biggest barrier to crypto adoption: a retirement system where most participants never choose their investments at all, writes CoinDesk Indices’ Andy Baehr.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/08/13/401k-rypto",
           "publishedOn": "2025-08-13T16:07:34.000Z",
-          "wordCount": 9212,
+          "wordCount": 9209,
           "title": "401k(rypto)",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/143c4dc36b299f2d7a99a3bc39238e378bb729ce-6000x4000.jpg"
         },
@@ -1215,7 +1235,7 @@
           "description": "Ethereum-based decentralized exchanges have overtaken Solana in trading volume for the first time since April, buoyed by record spot ETF inflows and a surge in institutional demand.",
           "link": "https://www.coindesk.com/business/2025/08/13/institutional-frenzy-pushes-ethereum-dex-volumes-above-solana",
           "publishedOn": "2025-08-13T15:39:33.000Z",
-          "wordCount": 8143,
+          "wordCount": 8144,
           "title": "Institutional Frenzy Pushes Ethereum DEX Volumes Above Solana",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e4a538bdcd2b54c9742887c6769acae60e6147fb-1610x872.png"
         },
@@ -1225,7 +1245,7 @@
           "description": "BONK posts its strongest daily rally in weeks, hitting $0.000027 before selling pressure caps gains.",
           "link": "https://www.coindesk.com/markets/2025/08/13/bonk-jumps-10-to-usd0-000027-before-profit-taking-hits",
           "publishedOn": "2025-08-13T15:28:34.000Z",
-          "wordCount": 8228,
+          "wordCount": 8229,
           "title": "BONK Jumps 10% to $0.000027 Before Profit-Taking Hits",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/7e1c50ac8469847ec998e21d05c6c9396d69fafd-700x430.png"
         },
@@ -1235,7 +1255,7 @@
           "description": "Strong buying interest and heavy trading volume supported the rally, but selling pressure emerged near $855, suggesting potential short-term consolidation.",
           "link": "https://www.coindesk.com/markets/2025/08/13/bnb-nears-record-high-as-corporate-buyers-spur-4-rally",
           "publishedOn": "2025-08-13T15:19:56.000Z",
-          "wordCount": 8383,
+          "wordCount": 8384,
           "title": "BNB Nears Record High as Corporate Buyers Spur 4% Rally",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3993474b6facbdc549e72105750240e5c1363f51-700x430.png"
         },
@@ -1245,7 +1265,7 @@
           "description": "Post-settlement buying lifts token to $3.33 peak before profit-taking sends price lower into the close.",
           "link": "https://www.coindesk.com/markets/2025/08/13/xrp-peaks-at-usd3-33-on-double-average-volume-before-quick-reversal",
           "publishedOn": "2025-08-13T14:57:53.000Z",
-          "wordCount": 8634,
+          "wordCount": 8635,
           "title": "XRP Peaks at $3.33 on Double-Average Volume Before Quick Reversal",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c11622e0b09ec89588ed544b8254827343ee70c9-739x457.png"
         },
@@ -1255,7 +1275,7 @@
           "description": "The surge aligns with bullish technical setups on daily charts, including a bull flag breakout and an emerging golden cross, with pattern targets pointing toward the $0.30 zone.",
           "link": "https://www.coindesk.com/markets/2025/08/13/doge-jumps-7-as-bull-flag-breakout-signals-run-toward-30-cents",
           "publishedOn": "2025-08-13T14:49:25.000Z",
-          "wordCount": 8774,
+          "wordCount": 8775,
           "title": "DOGE Jumps 7% as Bull Flag Breakout Signals Run Toward 30-Cents",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/30327549bdc0275ef2b9827e20ca4e1b4ec56c16-742x466.png"
         },
@@ -1265,7 +1285,7 @@
           "description": "Solana (SOL) was also among the top performers, up 6.4% from Tuesday.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/08/13/coindesk-20-performance-update-uniswap-uni-gains-6-5-as-nearly-all-assets-rise",
           "publishedOn": "2025-08-13T13:19:06.000Z",
-          "wordCount": 6941,
+          "wordCount": 6942,
           "title": "CoinDesk 20 Performance Update: Uniswap (UNI) Gains 6.5% as Nearly All Assets Rise",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e10d9d2508768f31e18a9488f53dead0626b46bf-480x360.png"
         },
@@ -1275,7 +1295,7 @@
           "description": "The TGE will unlock 25% of the total 1 billion SAPIEN tokens.",
           "link": "https://www.coindesk.com/markets/2025/08/13/decentralized-data-foundry-sapien-announces-token-generation-event-on-base",
           "publishedOn": "2025-08-13T13:00:00.000Z",
-          "wordCount": 8423,
+          "wordCount": 8424,
           "title": "Decentralized Data Foundry Sapien Announces Token Generation Event on Base",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d72055d853e8d61df183696d4a47f8db22c4011d-1280x904.jpg"
         },
@@ -1285,7 +1305,7 @@
           "description": "Sentient is rolling out The GRID, an open-source AGI network designed to let developers build, share, and monetize AI agents.",
           "link": "https://www.coindesk.com/business/2025/08/13/openai-rival-sentient-unveils-open-source-agi-network-the-grid",
           "publishedOn": "2025-08-13T13:00:00.000Z",
-          "wordCount": 8047,
+          "wordCount": 8048,
           "title": "OpenAI Rival Sentient Unveils Open-Source AGI Network, The GRID",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/55d727b0c722c79ca397d6d20f6d75a3af31f21e-3000x2300.jpg"
         },
@@ -1295,7 +1315,7 @@
           "description": "Analyst Geoff Kendrick cited surging institutional demand, favorable regulation and network upgrades.",
           "link": "https://www.coindesk.com/markets/2025/08/13/ether-price-target-lifted-to-usd7-5k-at-year-end-and-usd25k-in-2028-at-standard-chartered",
           "publishedOn": "2025-08-13T12:46:28.000Z",
-          "wordCount": 8051,
+          "wordCount": 8052,
           "title": "Ether Price Target Lifted to $7.5K at Year-End and $25K in 2028 at Standard Chartered",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/91b18a91c79521bac023230bca9207c7c3b50165-1440x810.jpg"
         },
@@ -1305,29 +1325,9 @@
           "description": "Substantial volume expansion and technical resistance breach signal continued upward momentum towards $5.00 target zone.",
           "link": "https://www.coindesk.com/markets/2025/08/13/atom-surges-8-as-institutional-volume-confirms-breakout",
           "publishedOn": "2025-08-13T11:52:25.000Z",
-          "wordCount": 8689,
+          "wordCount": 8690,
           "title": "ATOM Surges 8% as Institutional Volume Confirms Breakout",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2eda91ea5df84607a50267dd8e1075bae812d43e-700x430.png"
-        },
-        {
-          "id": "5c4b96b5-f885-4139-8e8c-fc026cb760c3",
-          "author": "Francisco Rodrigues",
-          "description": "Tempo is described as a high-performance, payments-focused layer 1 blockchain compatible with Ethereum.",
-          "link": "https://www.coindesk.com/business/2025/08/13/stripe-taps-paradigm-s-matt-huang-to-lead-new-blockchain-tempo-fortune",
-          "publishedOn": "2025-08-13T11:31:25.000Z",
-          "wordCount": 7565,
-          "title": "Stripe Taps Paradigm’s Matt Huang to Lead New Blockchain Tempo: Fortune",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b1d6ea7b7aec491803836b0fa81e4742ba3b8285-1280x854.jpg"
-        },
-        {
-          "id": "314f67f3-9abe-4419-b012-bb3efa7940f5",
-          "author": "Omkar Godbole",
-          "description": "Your day-ahead look for Aug. 13, 2025",
-          "link": "https://www.coindesk.com/daybook-us/2025/08/13/risk-on-rules-as-cpi-fails-to-dent-rally-crypto-daybook-americas",
-          "publishedOn": "2025-08-13T11:15:00.000Z",
-          "wordCount": 12500,
-          "title": "Risk-On Rules as CPI Fails to Dent Rally: Crypto Daybook Americas",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6d3155fc7eded3643f5088513b1e53ad4a31fd12-1000x667.jpg"
         }
       ]
     },
@@ -1519,7 +1519,7 @@
         {
           "id": "https://cointelegraph.com/news/sol-traders-expect-250-but-solana-data-sends-mixed-signals",
           "author": "Cointelegraph by Marcel Pechman",
-          "description": "SOL price cracked the $200 barrier, but a rally to data suggests the factors needed for new highs are missing.",
+          "description": "Solana tops $200 on onchain growth, but flat funding rates and falling DEX share raise doubts over a near-term rally to $250.",
           "link": "https://cointelegraph.com/news/sol-traders-expect-250-but-solana-data-sends-mixed-signals?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
           "publishedOn": "2025-08-13T20:46:10.000Z",
           "wordCount": null,
@@ -1538,7 +1538,7 @@
           "link": "https://cointelegraph.com/news/altcoin-google-searches-highest-since-2021-etf-treasury?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
           "publishedOn": "2025-08-13T20:21:08.000Z",
           "wordCount": null,
-          "title": "Altcoin Google searches hit highest since 2021 amid ETF, treasury moves",
+          "title": "Altcoin, Ethereum Google searches hit multi-year highs on ETF momentum",
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDgvMDE5OGE0ODEtYzNjYi03NThhLThjMDctMWNhMWE4ODkyMzEw.jpg",
             "length": "528",
