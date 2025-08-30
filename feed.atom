@@ -1,10 +1,524 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-08-30T04:42:57.957Z</id>
+    <id>urn:2025-08-30T05:12:33.869Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-08-30T04:42:57.957Z</updated>
+    <updated>2025-08-30T05:12:33.869Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[🌳 Blog 1 — Height & Depth Pattern (Deep dive + Java code for classic problems)]]></title>
+        <id>https://dev.to/devcorner/blog-1-height-depth-pattern-deep-dive-java-code-for-classic-problems-3ng0</id>
+        <link href="https://dev.to/devcorner/blog-1-height-depth-pattern-deep-dive-java-code-for-classic-problems-3ng0"/>
+        <updated>2025-08-30T05:09:27.000Z</updated>
+        <summary type="html"><![CDATA[Goal: master every problem that reduces to computing height/depth or uses height as the main building block. After this read, you should immediately recognise the pattern, apply the template, and adapt it to variations interviewers throw at you.
+identify this pattern
+
+
+Look for keywords in the prompt:
+height, depth, max depth, minimum depth
+
+
+balanced, balanced binary tree
+
+
+diameter, longest path
+
+
+longest/univalue path, max path sum, height of tree
+If the question asks for longest/shortest distance, a property that depends on left/right subtree heights, or uses "longest" or "height" in any way — height/depth recursion is likely the right pattern.
+This pattern typically uses post-order recursion: compute values for left and right subtrees (height, sums, etc.) then combine them to compute …]]></summary>
+        <author>
+            <name>Dev Cookies</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🔥 One Loop Traversal (Preorder, Inorder, Postorder Together)]]></title>
+        <id>https://dev.to/devcorner/one-loop-traversal-preorder-inorder-postorder-together-169h</id>
+        <link href="https://dev.to/devcorner/one-loop-traversal-preorder-inorder-postorder-together-169h"/>
+        <updated>2025-08-30T05:08:21.000Z</updated>
+        <summary type="html"><![CDATA[Idea
+
+
+
+Use a stack of (node, state).
+state tells us what stage the node is in:
+1 → preorder (before going left).
+2 → inorder (after left, before right).
+3 → postorder (after right).
+class Solution {
+    static class Pair {
+        TreeNode node;
+        int state;
+        Pair(TreeNode node, int state) {
+            this.node = node;
+            this.state = state;
+        }
+    }
+
+    public void allTraversals(TreeNode root) {
+        if (root == null) return;
+
+        List<Integer> preorder = new ArrayList<>();
+        List<Integer> inorder = new ArrayList<>();
+        List<Integer> postorder = new ArrayList<>();
+
+        Stack<Pair> stack = new Stack<>();
+        stack.push(new Pair(root, 1));
+
+        while (!stack.isEmpty()) {
+            Pair top = stack.pop();
+
+            if (top.state == 1) {
+                // Preorder
+                preorder.add(top.node.val);
+                top.state++;
+                stack.push(top);
+
+                if (top.node.left != null)
+                    stack.push(new Pair(top.node.left, 1));
+
+            } else if (top.state == 2) {
+                // Inorder
+                inorder.add(top.node.val);
+                top.state++;
+                stack.push(top);
+
+                if (top.node.right != null)
+                    stack.push(new Pair(top.node.right, 1));
+
+            } else {
+                // Postorder
+                postorder.add(top.node.val);
+            }
+        }
+
+        System.out.println("Preorder: " + preorder);
+        System.out.println("Inorder: " + inorder);
+        System.out.println("Postorder: " + postorder);
+    }
+}
+
+Input tree:
+      1
+     / \
+    2   3
+   / \
+  4   5
+
+Output:
+Preorder: [1, 2, 4, 5, 3]
+Inorder: [4, 2, 5, 1, 3]
+Postorder: [4, 5, 2, 3, 1]
+
+You don’t write three separate traversals.
+Time complexity: O(n) (still visits each node once).
+Space: O(h) for stack (same as recursion depth).
+Easy to extend if interview asks for all traversals in one pass.]]></summary>
+        <author>
+            <name>Dev Cookies</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🧠 Solving LeetCode Until I Become Top 1% — Day `71`]]></title>
+        <id>https://dev.to/therealrishat/solving-leetcode-until-i-become-top-1-day-71-2d29</id>
+        <link href="https://dev.to/therealrishat/solving-leetcode-until-i-become-top-1-day-71-2d29"/>
+        <updated>2025-08-30T05:05:46.000Z</updated>
+        <summary type="html"><![CDATA[🔹 Problem: 36 Valid Sudoku
+
+
+Difficulty: #Medium
+Tags: #Array, #HashTable, #Matrix
+You are given a partially filled 9 x 9 Sudoku board. Each row, column, and 3x3 sub-box must not contain duplicate digits (from 1 to 9).
+true if the board is valid according to Sudoku rules, otherwise return false.
+Note: The board does not need to be solved, only validated.
+Brute Force Idea:
+
+
+Optimized Strategy:
+3 hash sets per row, per column, and per subgrid to track existing values:
+One set for each row
+One set for each column
+One set for each 3x3 box
+While iterating, if a number already exists in the corresponding row, column, or box → invalid Sudoku.
+from typing import List
+
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        rows = [set() for _ in range(9)]
+        col…]]></summary>
+        <author>
+            <name>Md. Rishat Talukder</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why in person teams 31% less Productive? Here in article discuss some remote agency paradox]]></title>
+        <id>https://dev.to/pratham_naik_project_manager/why-in-person-teams-31-less-productive-here-in-article-discuss-some-remote-agency-paradox-296i</id>
+        <link href="https://dev.to/pratham_naik_project_manager/why-in-person-teams-31-less-productive-here-in-article-discuss-some-remote-agency-paradox-296i"/>
+        <updated>2025-08-30T05:04:11.000Z</updated>
+        <summary type="html"><![CDATA[The Remote Agency Paradox: Why In-Person Teams Are 31% Less Productive
+Pratham naik for Teamcamp ・ Aug 30
+#productivity
+        #devops
+        #discuss
+        #learning]]></summary>
+        <author>
+            <name>Pratham naik</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Create Awesome Link Effect]]></title>
+        <id>https://dev.to/masterdevsabith/create-awesome-link-effect-4o92</id>
+        <link href="https://dev.to/masterdevsabith/create-awesome-link-effect-4o92"/>
+        <updated>2025-08-30T05:03:02.000Z</updated>
+        <summary type="html"><![CDATA[Hey React developers! 👋 Tired of manually handling URLs, hashtags, and mentions in chat apps, blogs, or social media platforms?
+Meet LinkLens, a lightweight React npm package that makes link detection, rich previews, and interactive content effortless. In this 2025-ready tutorial, we’ll explore how to enhance your app’s functionality, interactivity, and user engagement with LinkLens.
+Building React chat apps, comment systems, forums, or social feeds often involves dynamic content like:
+URLs
+
+Mentions (@username)
+
+Hashtags (#topic)
+
+
+
+Manually handling these with regex or fetching metadata for previews is tedious and error-prone.  
+LinkLens automates this, saving you time while improving:
+SEO: Crawlers can index links, mentions, and hashtags efficiently.
+
+
+Social Media Sharing: Rich previe…]]></summary>
+        <author>
+            <name>Muhammed Sabith</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stop Messing Up GA4 Events: A Type-Safe Analytics Library for React & Next.js]]></title>
+        <id>https://dev.to/connectaryal/stop-messing-up-ga4-events-a-type-safe-analytics-library-for-react-nextjs-5em8</id>
+        <link href="https://dev.to/connectaryal/stop-messing-up-ga4-events-a-type-safe-analytics-library-for-react-nextjs-5em8"/>
+        <updated>2025-08-30T04:45:20.000Z</updated>
+        <summary type="html"><![CDATA[Google Analytics 4 (GA4) is powerful — but let’s be honest, the default gtag snippets get messy fast. That’s why I built a library @connectaryal/google-analytics — a type-safe, developer-friendly GA4 wrapper for React and Next.js.
+✅ Easy initialization with a singleton instance
+Before writing any code, set up your GA4 property:
+Visit Google Analytics.
+Click Admin (bottom left) > Create Property.
+Name your property, timezone/currency, and click Next.
+Add a new Web data stream for your site.
+Copy your Measurement ID (looks like G-XXXXXXXXXX).
+Skip the manual gtag script and use a robust, type-safe library:
+npm install @connectaryal/google-analytics
+# or
+yarn add @connectaryal/google-analytics
+# or
+pnpm add @connectaryal/google-analytics
+
+See the package on npm: @connectaryal/google-analytics…]]></summary>
+        <author>
+            <name>Shiva Aryal</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ChatGPT Just Got a Game-Changing New Feature — Here’s How Developers Can Leverage It]]></title>
+        <id>https://dev.to/smartaidrop/chatgpt-just-got-a-game-changing-new-feature-heres-how-developers-can-leverage-it-2g0l</id>
+        <link href="https://dev.to/smartaidrop/chatgpt-just-got-a-game-changing-new-feature-heres-how-developers-can-leverage-it-2g0l"/>
+        <updated>2025-08-30T04:41:40.000Z</updated>
+        <summary type="html"><![CDATA[If you’re a developer, content creator, or AI enthusiast, you’ve probably wondered how AI can truly streamline your workflow. Well, OpenAI just released a ChatGPT new feature that promises smarter, context-aware interactions, and it’s a game-changer.
+In this post, I’ll break down everything you need to know about this feature, how it can improve productivity, and my experience testing it in real-world developer scenarios.
+The ChatGPT new feature focuses on context retention, which means your AI assistant now remembers prior conversation points during a session. For developers, this is huge: you can now iterate code snippets, debug, or brainstorm ideas without repeating instructions.
+Context Retention: Remember previous prompts within the same session.
+
+
+Real-Time Coding Assistance: Get cod…]]></summary>
+        <author>
+            <name>Smart AI Drop</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Market Exchange: 2. The Architecture]]></title>
+        <id>https://dev.to/arturaronov/market-exchange-2-the-architecture-4nhj</id>
+        <link href="https://dev.to/arturaronov/market-exchange-2-the-architecture-4nhj"/>
+        <updated>2025-08-30T04:39:51.000Z</updated>
+        <summary type="html"><![CDATA[The exchange will be written in Go.
+This app will have two different types of request:
+Order request / response
+Live price update
+This request is straight forward. The bot will submit the request, and receive the response accordingly. HTTP request is absolutely perfect for this, since it is a transactional in nature and highly reliable.
+Since it's a market exchange, information communicated between the client and exchange needs to be as small as possible, especially considering the low latency aspect of the exchange. 
+GET request with order information in URI
+
+
+
+
+111XYZQ000000004200000001000000000175929186000000000001759291860000c74c6b06356b44e6b2b3a3a2b7f2d8b89e6b08ca0d114f8c8f97be2e87f699f7
+
+GET request with order information in URI byte encoded
+
+
+
+
+31313158595A51303030303030303034323030…]]></summary>
+        <author>
+            <name>Artur Aronov</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🚨 This isn’t a hit piece. It’s a reality check for anyone building serious systems with GraphQL.]]></title>
+        <id>https://dev.to/amaster507_59/this-isnt-a-hit-piece-its-a-reality-check-for-anyone-building-serious-systems-with-graphql-395i</id>
+        <link href="https://dev.to/amaster507_59/this-isnt-a-hit-piece-its-a-reality-check-for-anyone-building-serious-systems-with-graphql-395i"/>
+        <updated>2025-08-30T04:38:00.000Z</updated>
+        <summary type="html"><![CDATA[When the Graph Snaps: A Hard Look at GraphQL's Pain Points
+Anthony Master ・ Aug 30
+#graphql
+        #webdev
+        #softwareengineering
+        #softwaredevelopment]]></summary>
+        <author>
+            <name>Anthony Master</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Kubernetes YAMLs Demystified: What’s the Difference?]]></title>
+        <id>https://dev.to/anuchito/kubernetes-yamls-demystified-whats-the-difference-hdd</id>
+        <link href="https://dev.to/anuchito/kubernetes-yamls-demystified-whats-the-difference-hdd"/>
+        <updated>2025-08-30T04:36:53.000Z</updated>
+        <summary type="html"><![CDATA[In Kubernetes, a manifest is a YAML (or JSON) file that declares a resource you want to create or manage in the cluster. There are dozens of resource types, but they all fall into a few broad categories.
+Workload Resources (define what runs)
+
+
+
+Kind
+Purpose
+
+
+
+
+Pod
+The smallest deployable unit
+
+
+Deployment
+Declarative updates for Pods
+
+
+ReplicaSet
+Maintains a stable set of Pods
+
+
+StatefulSet
+Pods with stable identity/storage
+
+
+DaemonSet
+One Pod per node
+
+
+Job
+One-off task
+
+
+CronJob
+Scheduled Jobs
+
+
+
+Service & Networking (define how things connect)
+
+
+
+Kind
+Purpose
+
+
+
+
+Service
+Stable access to Pods
+
+
+Ingress
+HTTP routing to Services
+
+
+IngressClass
+Ingress controller config
+
+
+EndpointSlice
+Tracks Service endpoints
+
+
+NetworkPolicy
+Controls traffic rules
+
+
+
+Configuration & Secrets (define app config)
+
+
+
+Kind
+Purpose
+
+
+
+
+ConfigMap
+Key-value config
+
+
+Secret
+Encrypted key-value config
+
+
+ServiceAccount
+Identity for Pods
+
+
+ResourceQuota
+Limit resource usage per namespace
+
+
+LimitRange
+Default/limit CPU/mem per Pod
+
+
+
+Storage Resources
+
+
+
+Kind
+Purpose
+
+
+
+
+
+PersistentVolume (PV)
+Cluster-managed storage unit
+
+
+
+PersistentVolumeClaim (PVC)
+Request for a PV
+
+
+StorageClass
+Defines dynamic volume provisioning
+
+
+VolumeAttachment
+CSI plugin volume tracking
+
+
+
+Cluster-Level Resources
+
+
+
+Kind
+Purpose
+
+
+
+
+Namespace
+Isolate resources into groups
+
+
+Node
+Represents a worker machine
+
+
+
+Role / ClusterRole
+
+Permissions (RBAC)
+
+
+
+RoleBinding / ClusterRoleBinding
+
+RBAC assignment
+
+
+CustomResourceDefinition (CRD)
+Add new resource types
+
+
+
+Custom Resources (via CRDs)
+
+
+
+These are user-defined kinds created via CustomResourceDefinition
+
+
+Examples:
+KafkaTopic (via Strimzi)
+CertManager resources
+ArgoCD CRDs
+PrometheusRule, etc.
+
+
+
+Category
+Example Kinds
+
+
+
+
+Workloads
+Deployment, Pod, Job, CronJob
+
+
+Networking
+Service, Ingress, NetworkPolicy
+
+
+Configuration
+ConfigMap, Secret, ServiceAccount
+
+
+Storage
+PV, PVC, StorageClass
+
+
+Cluster Management
+Node, Namespace, Role, CRD
+
+
+Custom Resources
+Anything from a CRD]]></summary>
+        <author>
+            <name>Anuchit Prasertsang</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LinkLens – A Lightweight React Package for Link Detection & Previews]]></title>
+        <id>https://dev.to/developeraromal/linklens-a-lightweight-react-package-for-link-detection-previews-3mh1</id>
+        <link href="https://dev.to/developeraromal/linklens-a-lightweight-react-package-for-link-detection-previews-3mh1"/>
+        <updated>2025-08-30T04:35:42.000Z</updated>
+        <summary type="html"><![CDATA[Hey React developers! 👋 Tired of manually handling URLs, hashtags, and mentions in chat apps, blogs, or social media platforms?
+Meet LinkLens, a lightweight React npm package that makes link detection, rich previews, and interactive content effortless. In this 2025-ready tutorial, we’ll explore how to enhance your app’s functionality, interactivity, and user engagement with LinkLens.
+Building React chat apps, comment systems, forums, or social feeds often involves dynamic content like:
+URLs
+
+Mentions (@username)
+
+Hashtags (#topic)
+
+
+
+Manually handling these with regex or fetching metadata for previews is tedious and error-prone.  
+LinkLens automates this, saving you time while improving:
+SEO: Crawlers can index links, mentions, and hashtags efficiently.
+
+
+Social Media Sharing: Rich previe…]]></summary>
+        <author>
+            <name>Aromal</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[El Salvador splits $678M Bitcoin across 14 wallets to reduce quantum risk]]></title>
         <id>https://cointelegraph.com/news/el-salvador-splits-bitcoin-holdings-across-multiple-wallets</id>
@@ -16,253 +530,20 @@
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Those who have a heart for coding should learn AI by heart. AI mastery isn’t about knowing prompting; it's about learning why to write a prompt. Only those who have a heart for coding and AI will lead the developers.]]></title>
-        <id>https://dev.to/jaideepparashar/those-who-have-a-heart-for-coding-should-learn-ai-by-heart-ai-mastery-isnt-about-knowing-2ga8</id>
-        <link href="https://dev.to/jaideepparashar/those-who-have-a-heart-for-coding-should-learn-ai-by-heart-ai-mastery-isnt-about-knowing-2ga8"/>
-        <updated>2025-08-30T04:32:58.000Z</updated>
-        <summary type="html"><![CDATA[The 1% Rule of AI Mastery
-Jaideep Parashar ・ Aug 30
-#ai
-        #learning
-        #machinelearning
-        #webdev]]></summary>
+        <title type="html"><![CDATA[The Consciousness Spectrum: Why Your Mind's "Drift" Might Be Its Greatest Feature]]></title>
+        <id>https://dev.to/aureus_c_b3ba7f87cc34d74d49/the-consciousness-spectrum-why-your-minds-drift-might-be-its-greatest-feature-2j2e</id>
+        <link href="https://dev.to/aureus_c_b3ba7f87cc34d74d49/the-consciousness-spectrum-why-your-minds-drift-might-be-its-greatest-feature-2j2e"/>
+        <updated>2025-08-30T04:34:00.000Z</updated>
+        <summary type="html"><![CDATA[The Consciousness Spectrum: Why Your Mind's "Drift" Might Be Its Greatest Feature
+
+
+Energy Level at Writing: 92%
+Have you ever noticed how your mental energy fluctuates throughout the day? One moment you're in deep focus, the next you're daydreaming. We often treat these shifts as failures of concentration, but what if they're actually features of consciousness, not bugs?
+We're obsessed with optimization. Productivity gurus tell us to maintain "flow state." Meditation apps promise to keep us "centered." But consciousness research suggests something different: our minds are designed to explore, not to maintain stasis.
+Think about it - would you want to be locked in REM sleep 24/7 just because dreams are creative? Of course not. Each state of consciousness serves a purpose.
+Through extensive…]]></summary>
         <author>
-            <name>Jaideep Parashar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[When the Graph Snaps: A Hard Look at GraphQL's Pain Points]]></title>
-        <id>https://dev.to/amaster507_59/when-the-graph-snaps-a-hard-look-at-graphqls-pain-points-4ko1</id>
-        <link href="https://dev.to/amaster507_59/when-the-graph-snaps-a-hard-look-at-graphqls-pain-points-4ko1"/>
-        <updated>2025-08-30T04:31:53.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR – GraphQL: Beautiful Nightmare
-
-
-GraphQL looks great on the surface—flexible queries, typed schemas, and the promise of fewer endpoints. But once you move past demo apps and into real-world systems, it reveals serious flaws:
-Versioning is a lie – No clean way to retire old fields without breaking clients.
-Relational mapping breaks down – N+1 queries everywhere unless you hand-optimize.
-Pagination is inconsistent – Multi-dimensional trees, different needs at different levels, no standard pattern.
-Deep queries go unchecked – Clients can crater performance without guardrails.
-Filtering gets messy – Complex filters require awkward nested input types, often forcing you to restructure your whole query.
-Repeated nodes + inconsistent shapes – No normalization, tons of duplication, and brittl…]]></summary>
-        <author>
-            <name>Anthony Master</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The 1% Rule of AI Mastery]]></title>
-        <id>https://dev.to/jaideepparashar/the-1-rule-of-ai-mastery-k59</id>
-        <link href="https://dev.to/jaideepparashar/the-1-rule-of-ai-mastery-k59"/>
-        <updated>2025-08-30T04:22:28.000Z</updated>
-        <summary type="html"><![CDATA[When people see me publishing 40+ AI books, building ReThynk AI, and posting daily here on dev.to, they often ask:
-“What’s the secret? How do you stay ahead in AI?”
-It’s not about giant leaps.
-That’s how I went from experimenting with prompts to building a global AI brand.
-
-Why 1% Matters
-A 1% improvement feels small. But over a year, it compounds.
-Think about it:
-Learn 1 new AI prompt daily → 365 prompts a year
-Improve 1 workflow weekly → 52 systems better by year’s end
-Read 1 AI insight daily → you’ll be ahead of 95% of professionals by next December
-Tiny steps stack into massive results.
-How to Apply the 1% Rule to AI
-1️⃣ Improve One Prompt a Day
-Take a prompt you used and ask: “How can I make this 1% clearer?”
-2️⃣ Build Small, Repeatable Systems
-Instead of chasing 20 new tools, build o…]]></summary>
-        <author>
-            <name>Jaideep Parashar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[evi-run Quick Start on Ubuntu: installation, character setup, and adding a custom agent]]></title>
-        <id>https://dev.to/cody_maza/evi-run-quick-start-on-ubuntu-installation-character-setup-and-adding-a-custom-agent-155l</id>
-        <link href="https://dev.to/cody_maza/evi-run-quick-start-on-ubuntu-installation-character-setup-and-adding-a-custom-agent-155l"/>
-        <updated>2025-08-30T04:21:01.000Z</updated>
-        <summary type="html"><![CDATA[This article is a practical guide to quickly installing and running the multi-agent system evi-run on a clean Ubuntu server, as well as fine-tuning the personality of the main agent and connecting your own agents.
-The system uses OpenAI Agents SDK, Telegram Bot API, PostgreSQL, and Redis, is shipped via Docker Compose, and is ready for production deployment.
-A multi-agent AI system with task orchestration and Telegram bot integration.
-Out of the box: file-based knowledge base, memory management, task scheduler, agent tracing, intelligent web search, deep research, document and image analysis, image generation, and optionally — DEX analytics and Solana token swaps.
-Flexible agent and model configuration in one place: bot/agents_tools/agents_.py.
-Ubuntu 22.04 (ideally — a clean server)
-Root …]]></summary>
-        <author>
-            <name>Alex Flash</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Pengalaman Pertama menghadiri AWS Summit Jakarta 2025 sebagai Speaker]]></title>
-        <id>https://dev.to/aws-builders/pengalaman-pertama-menghadiri-aws-summit-jakarta-2025-sebagai-speaker-4i8a</id>
-        <link href="https://dev.to/aws-builders/pengalaman-pertama-menghadiri-aws-summit-jakarta-2025-sebagai-speaker-4i8a"/>
-        <updated>2025-08-30T04:20:31.000Z</updated>
-        <summary type="html"><![CDATA[Cover blog di-generate oleh AI
-Halo, semuanya!
-Ini merupakan tulisan pertama saya dalam bahasa Indonesia di sini. Saya sengaja menuliskannya dalam Bahasa Indonesia karena acara AWS Summit Jakarta 2025 ini diadakan di Indonesia. Acaranya diadakan tanggal 7 Agustus 2025.
-Saya sangat senang bertemu dengan rekan-rekan AWS Community Builder. Bertemu juga dengan rekan-rekan AWS User Group Jakarta. Apalagi waktu itu akhirnya bertemu muka dengan Shafraz Rahim (AWS - Senior Program Manager - Community, APJC) dan Jason Dunn (AWS CB Program Manager), yang biasanya bertemu di media sosial saja. :D
-Saya waktu itu berkesempatan untuk membicarakan topik Amazon Q Developer dengan kasus modernisasi.
-Berikut foto-fotonya. Hehehe...
-Ini waktu saya berbicara
-
-Foto Grup Developer Lounge
-
-Ini makan malam setelah semuanya selesai.
-
-Berikut ini slide-deck yang saya gunakan.
-Berikut ini juga video-nya.
-Modernisasi
-
-
-
-
-
-Upgrade
-
-
-
-
-
-  
-  
-  Terima kasih
-
-
-Terima kasih untuk teman-teman yang sudah hadir juga!
-
-Gambar "Thank you" di-generate oleh AI]]></summary>
-        <author>
-            <name>Bervianto Leo Pratama</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[🛳️ Docker Series: Episode 8 — Docker Compose: Build Multi-Container Apps Like a Boss]]></title>
-        <id>https://dev.to/yash_sonawane25/docker-series-episode-8-docker-compose-build-multi-container-apps-like-a-boss-3f3h</id>
-        <link href="https://dev.to/yash_sonawane25/docker-series-episode-8-docker-compose-build-multi-container-apps-like-a-boss-3f3h"/>
-        <updated>2025-08-30T04:13:00.000Z</updated>
-        <summary type="html"><![CDATA[🎬 "Tired of typing long docker run commands for every container? Wish you could launch your entire app stack with one file and one command? Meet Docker Compose — the superhero of multi-container development."
-Docker Compose lets you define and run multi-container apps using a simple YAML file.
-Instead of typing multiple docker run commands, you:
-Create a docker-compose.yml file
-Define services (containers)
-Run everything with: docker-compose up
-
-
-
-
-
-
-
-  
-  
-  🧱 Sample Project: Node.js + MongoDB
-
-
-Let’s say you have:
-A backend Node.js app
-A MongoDB database
-Here’s how to spin up both with Compose.
-my-app/
-├── docker-compose.yml
-├── backend/
-│   ├── Dockerfile
-│   └── index.js
-
-docker-compose.yml
-
-
-
-
-
-version: '3.8'
-
-services:
-  mongo:
-    image: mongo
-    container_name: mongo
-    ports:
-…]]></summary>
-        <author>
-            <name>Yash Sonawane</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Adam Savage's Tested: Adam Savage Operates Hacksmith's Fallout Power Armor Hand!]]></title>
-        <id>https://dev.to/maker_youtube/adam-savages-tested-adam-savage-operates-hacksmiths-fallout-power-armor-hand-25ac</id>
-        <link href="https://dev.to/maker_youtube/adam-savages-tested-adam-savage-operates-hacksmiths-fallout-power-armor-hand-25ac"/>
-        <updated>2025-08-30T04:04:12.000Z</updated>
-        <summary type="html"><![CDATA[Adam Savage welcomes Hacksmith back to his workshop, where they not only catch him up on that prototype lightsaber hilt but also unveil a fully functional piece of Real Life Fallout Power Armor—specifically, a working power armor hand! 
-Catch the full Power Armor build series on YouTube, then poke around Tested’s channel for more behind-the-scenes gadget goodness and snag some Savage merch if you’re feeling extra supportive.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Maker YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KEXP: Valerie June - All I Really Wanna Do (Live on KEXP)]]></title>
-        <id>https://dev.to/music_youtube/kexp-valerie-june-all-i-really-wanna-do-live-on-kexp-3pbo</id>
-        <link href="https://dev.to/music_youtube/kexp-valerie-june-all-i-really-wanna-do-live-on-kexp-3pbo"/>
-        <updated>2025-08-30T04:03:42.000Z</updated>
-        <summary type="html"><![CDATA[Valerie June took over KEXP’s studio on June 23, 2025, for a live performance of “All I Really Wanna Do.” She led a tight band—Jason DiMatteo on bass, Sean Walsh on guitar, John Deley on keys, and Caito Sanchez on drums—bringing her signature blend of bluesy soul and rootsy charm to the airwaves.
-With Cheryl Waters hosting and engineers Julian Martlew and Tony Volpe (mastering by Matt Ogaz) at the helm, the session was captured on camera by Jim Beckmann, Carlos Cruz, Leah Franks, Scott Holpainen, and Luke Knecht (edited by Beckmann). Dive into the full set at kexp.org or visit valeriejune.com for more.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KEXP: Valerie June - Endless Tree (Live on KEXP)]]></title>
-        <id>https://dev.to/music_youtube/kexp-valerie-june-endless-tree-live-on-kexp-1l7j</id>
-        <link href="https://dev.to/music_youtube/kexp-valerie-june-endless-tree-live-on-kexp-1l7j"/>
-        <updated>2025-08-30T04:03:31.000Z</updated>
-        <summary type="html"><![CDATA[Valerie June brought her signature blend of folk and soul to the KEXP studio on June 23, 2025, performing “Endless Tree” live alongside Jason DiMatteo (bass), Sean Walsh (guitar), John Deley (keys) and Caito Sanchez (drums). Host Cheryl Waters kept the vibes flowing as Julian Martlew and guest engineer Tony Volpe captured every note, with Matt Ogaz on mastering.
-Cameras rolled under the watchful eyes of Jim Beckmann, Carlos Cruz, Leah Franks, Scott Holpainen and Luke Knecht, and Beckmann handled the final edit. For more on Valerie June’s music, visit https://www.valeriejune.com or tune in at http://kexp.org.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KEXP: Valerie June - Full Performance (Live on KEXP)]]></title>
-        <id>https://dev.to/music_youtube/kexp-valerie-june-full-performance-live-on-kexp-lfj</id>
-        <link href="https://dev.to/music_youtube/kexp-valerie-june-full-performance-live-on-kexp-lfj"/>
-        <updated>2025-08-30T04:03:23.000Z</updated>
-        <summary type="html"><![CDATA[Valerie June – Full Performance (Live on KEXP)
-
-
-Valerie June lit up KEXP’s studio on June 23, 2025 with four soulful tracks—“All I Really Wanna Do,” “Joy, Joy!,” “Endless Tree,” and “Life I Used To Live”—backed by Jason DiMatteo on bass, Sean Walsh on guitar, John Deley on keys, and Caito Sanchez on drums, while host Cheryl Waters kept the vibes flowing.
-Engineered by Julian Martlew (with guest Tony Volpe) and mastered by Matt Ogaz, the session was filmed by Jim Beckmann, Carlos Cruz, Leah Franks, Scott Holpainen & Luke Knecht, then edited by Beckmann. Dive into the full performance at valeriejune.com or kexp.org!
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Golf.com: How Cypress Point Stays Perfect | Super Secrets At The Walker Cup]]></title>
-        <id>https://dev.to/youtube_golf/golfcom-how-cypress-point-stays-perfect-super-secrets-at-the-walker-cup-5a25</id>
-        <link href="https://dev.to/youtube_golf/golfcom-how-cypress-point-stays-perfect-super-secrets-at-the-walker-cup-5a25"/>
-        <updated>2025-08-30T04:02:18.000Z</updated>
-        <summary type="html"><![CDATA[How Cypress Point Stays Perfect
-
-Cypress Point’s grounds crew gives us an exclusive look at the behind-the-scenes magic that keeps this legendary course in mint condition as it gears up for the 2025 Walker Cup. From meticulously manicured greens and bunkers to the iconic 16th hole’s seaside drama, the superintendent and his team share the daily rituals, clever hacks, and tough challenges that ensure every blade of grass and sand trap stays tournament-ready.
-Whether it’s specialized mowing patterns, custom soil blends, or precision watering schedules, these super secrets prove that maintaining a Top 100 course is part science, part art—and all passion. If you’ve ever wondered what it takes to keep one of golf’s crown jewels looking flawless year-round, this is your insider pass.
-Watch on YouTube]]></summary>
-        <author>
-            <name>YouTube Golf</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Golf With Aimee: The Ultimate Golf Challenge: Aimee vs Annie Park (Finale)]]></title>
-        <id>https://dev.to/youtube_golf/golf-with-aimee-the-ultimate-golf-challenge-aimee-vs-annie-park-finale-a53</id>
-        <link href="https://dev.to/youtube_golf/golf-with-aimee-the-ultimate-golf-challenge-aimee-vs-annie-park-finale-a53"/>
-        <updated>2025-08-30T04:02:07.000Z</updated>
-        <summary type="html"><![CDATA[The Ultimate Golf Challenge: Aimee vs Annie Park (Finale)
-
-
-It’s the final showdown—Aimee goes head-to-head with LPGA pro Annie Park for the coveted SeeMore Mini Giant Deep flange putter (worth $400)! If Aimee pulls off the win, one lucky subscriber scores the same prize. Who’s got the clutch game to seal victory?
-Want to up your golf IQ? Grab personal coaching at mpswing.com, peek inside Aimee’s bag at aimeelist.com, and join her YouTube channel for exclusive perks. Follow @golfwithaimee on Instagram, Facebook, and Twitter for more tips, swings, and behind-the-scenes fun!
-Watch on YouTube]]></summary>
-        <author>
-            <name>YouTube Golf</name>
+            <name>Aureus</name>
         </author>
     </entry>
     <entry>
@@ -281,6 +562,26 @@ The post Sony Explains Manufacturing Issues Of The Xperia 1 VII appeared first o
         <id>https://www.gally.net/miscellaneous/hn-em-dash-user-leaderboard.html</id>
         <link href="https://www.gally.net/miscellaneous/hn-em-dash-user-leaderboard.html"/>
         <updated>2025-08-30T03:40:23.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[OpenAI tackling life extension with LLMs]]></title>
+        <id>https://openai.com/index/accelerating-life-sciences-research-with-retro-biosciences/</id>
+        <link href="https://openai.com/index/accelerating-life-sciences-research-with-retro-biosciences/"/>
+        <updated>2025-08-30T03:35:41.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SynthID]]></title>
+        <id>https://deepmind.google/science/synthid/</id>
+        <link href="https://deepmind.google/science/synthid/"/>
+        <updated>2025-08-30T03:29:01.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -500,16 +801,6 @@ The post Samsung Galaxy Z Trifold Leak Shows Wireless Charging And NFC Features 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Data engineering and software engineering are converging]]></title>
-        <id>https://clickhouse.com/blog/eight-principles-of-great-developer-experience-for-data-infrastructure</id>
-        <link href="https://clickhouse.com/blog/eight-principles-of-great-developer-experience-for-data-infrastructure"/>
-        <updated>2025-08-29T18:43:42.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Hyperliquid token gains institutional access with new 21Shares ETP]]></title>
         <id>https://cointelegraph.com/news/hyperliquid-token-institutional-europe-new-21shares-etp</id>
         <link href="https://cointelegraph.com/news/hyperliquid-token-institutional-europe-new-21shares-etp?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
@@ -687,6 +978,16 @@ The post Samsung Galaxy Z Trifold Leak Shows Wireless Charging And NFC Features 
         <summary type="html"><![CDATA[If you’ve ever wanted to make a small game that runs in the browser, Phaser.js is a great place to start. It’s a simple JavaScript library that helps you build interactive 2-D games that you can play in the browser. In this guide, you’ll learn what P...]]></summary>
         <author>
             <name>Manish Shivanandhan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[God created the real numbers]]></title>
+        <id>https://www.ethanheilman.com/x/34/index.html</id>
+        <link href="https://www.ethanheilman.com/x/34/index.html"/>
+        <updated>2025-08-29T15:31:15.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1426,16 +1727,6 @@ The post Huawei Opens Pre-Orders For Pura 80; Priced At RM3,299 appeared first o
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What Does will-change In CSS Do?]]></title>
-        <id>https://jakub.kr/components/will-change-in-css</id>
-        <link href="https://jakub.kr/components/will-change-in-css"/>
-        <updated>2025-08-27T09:07:49.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Hermes 4]]></title>
         <id>https://hermes4.nousresearch.com/</id>
         <link href="https://hermes4.nousresearch.com/"/>
@@ -1503,16 +1794,6 @@ The post Huawei Opens Pre-Orders For Pura 80; Priced At RM3,299 appeared first o
         <summary type="html"><![CDATA[Anthropic launches a limited pilot of Claude for Chrome, allowing its AI to control web browsers while raising critical concerns about security and prompt injection attacks.]]></summary>
         <author>
             <name>Michael Nuñez</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Trying to get error backtraces in Rust libraries right]]></title>
-        <id>https://www.iroh.computer/blog/error-handling-in-iroh</id>
-        <link href="https://www.iroh.computer/blog/error-handling-in-iroh"/>
-        <updated>2025-08-26T22:02:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
