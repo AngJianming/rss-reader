@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-06 datetime="2025-09-06T06:04:37.000Z">2025-09-06</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-06 datetime="2025-09-06T06:04:37.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-06 datetime="2025-09-06T06:41:07.000Z">2025-09-06</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-06 datetime="2025-09-06T06:41:07.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -38,6 +38,306 @@
                   <a class="source-heading__link" href="https://dev.to">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/tech_2e11d899e5893ff/install-pgadmin-on-ubuntu-and-connect-rds-with-pgadmin-enj"
+                        open
+                      >
+                        <summary class="article-expander__title">Install pgAdmin on Ubuntu And connect RDS with pgAdmin</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/tech_2e11d899e5893ff/install-pgadmin-on-ubuntu-and-connect-rds-with-pgadmin-enj">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbkgeg69z1029h2wloeou.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Run these commands in terminal:
+# Update system
+sudo apt update &amp;&amp; sudo apt upgrade -y
+
+# Install curl, wget, gnupg (if missing)
+sudo apt install curl wget ca-certificates gnupg -y
+
+# Add pgAdmin repo key
+curl https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/pgadmin.gpg
+
+# Add repo to sources list
+sudo sh -c &#x27;echo &quot;deb https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main&quot; &gt; /etc/apt/sources.list.d/pgadmin4.list&#x27;
+
+# Update repos
+sudo apt update
+
+# Install desktop + web version (recommended)
+sudo apt install pgadmin4 -y
+
+
+For desktop mode:
+
+
+
+
+pgadmin4
+
+(It opens pgAdmin GUI)
+For web mode (browser):
+
+
+
+
+sudo /usr/pgadmin4/bin/setup-web.sh
+
+It will ask you for pgAdmin email + password (used only for login).
+After setup, pgAdmin web will run at:
+👉 http://127.0.0.1/pgadmin4
+
+
+
+
+  
+  
+  3. Connect AWS RDS to pgAdmin
+
+
+
+Open pgAdmin (desktop or web).
+Right-click Servers → Create → Server.
+Enter details:
+
+
+Name: AWS RDS
+Host name/address: your RDS endpoint
+(e.g. mydb.c9akciq3lqxy.us-east-1.rds.amazonaws.com)
+Port: 5432
+Username: (the master username you set, e.g. admin)
+Password: (your master password)
+Save.
+If connection fails:
+- Go to AWS Console → RDS → Databases → your DB → Connectivity &amp; security.
+- Check VPC security groups.
+- Edit inbound rules:
+Add rule: PostgreSQL (5432) → My IP (your Ubuntu machine’s public IP).(Find IP with curl ifconfig.me).
+Before pgAdmin, you can check with psql:
+sudo apt install postgresql-client -y
+
+psql -h your-rds-endpoint -U admin -d postgres
+
+It will ask for password → then connect.
+✅ Now your Ubuntu + pgAdmin is ready, and you can see AWS RDS database, run queries, manage tables, etc.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/isaacaddis/expo-maestro-ci-pipeline-overviews-eas-custom-builds-maestro-cloud-142n"
+                        open
+                      >
+                        <summary class="article-expander__title">Expo + Maestro CI Pipeline Overviews (EAS Custom Builds, Maestro Cloud)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/isaacaddis/expo-maestro-ci-pipeline-overviews-eas-custom-builds-maestro-cloud-142n">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F70k4m527xdc7apxrxdcf.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Pipeline overview
+
+
+
+Push to main triggers a GitHub Action workflow
+The workflow installs dependencies, installs EAS CLI, then runs an EAS build with a build-and-maestro-test profile
+Artifacts and logs are uploaded for debugging.
+Note: I led the creation of our mobile app CI pipeline.
+I implemented both EAS‑based and Maestro Cloud pipelines and validated they work
+We run on EAS Build because it&#x27;s significantly cheaper. As of Aug 24, 2025: EAS Starter Plan starts at $19/month; Maestro Cloud is about $212.50/month
+Here is our build-and-maestro-test configuration (eas.json):
+&quot;build-and-maestro-test&quot;: {
+    &quot;withoutCredentials&quot;: true,
+    &quot;config&quot;: &quot;build-and-maestro-test.yml&quot;,
+    &quot;android&quot;: {
+    &quot;buildType&quot;: &quot;apk&quot;,
+    &quot;image&quot;: &quot;latest&quot;
+    },
+    &quot;ios&quot;: {
+    &quot;simulator&quot;: true,
+    &quot;image&quot;…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/jaskarandeogan/self-hosted-analytics-with-rybbit-a-game-changer-for-privacy-conscious-developers-34ff"
+                        open
+                      >
+                        <summary class="article-expander__title">Self-Hosted Analytics with Rybbit: A Game-Changer for Privacy-Conscious Developers</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jaskarandeogan/self-hosted-analytics-with-rybbit-a-game-changer-for-privacy-conscious-developers-34ff">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft5iaqpiexpwbk381kqvv.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>You need insights into user experience, system performance, and potential errors. You need analytics that tell you everything about the traffic flowing through your website. But here&#x27;s the thing – can you really trust third-party services with your precious user data?
+Sure, Google Analytics exists. It&#x27;s free, feature-rich, and widely adopted. But as more developers embrace the &quot;vibecoding&quot; philosophy and rapid prototyping becomes the norm, trusting third parties with sensitive user data becomes increasingly questionable.
+Enter self-sovereign analytics – the idea that you should own and control your analytics data completely. This is where Rybbit absolutely shines, and honestly, I&#x27;m blown away by its open-source capabilities.
+
+
+Rybbit isn&#x27;t just another analytics tool – it&#x27;s a complete, sel…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/adrahi/mastering-javascript-numbers-589f"
+                        open
+                      >
+                        <summary class="article-expander__title">Mastering JavaScript Numbers</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/adrahi/mastering-javascript-numbers-589f">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F5vbsctql3hnalso5dqaz.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>JavaScript Numbers
+
+
+JavaScript numbers are a fundamental data type, playing a crucial role in various calculations and operations. In this article, we&#x27;ll delve into the key concepts related to JavaScript numbers.
+In JavaScript, numbers are defined as the number type. Unlike some other programming languages, JavaScript does not distinguish between integers and floating-point numbers; both are treated as number types.
+let integer &#x3D; 42;   // integer
+let float &#x3D; 3.14;    // floating-point
+
+There are four ways to represent numbers in JavaScript:
+Decimal: The default representation is decimal.
+Binary: Numbers starting with 0b or 0B are binary.
+Octal: Numbers starting with 0o or 0O are octal.
+Hexadecimal: Numbers starting with 0x or 0X are hexadecimal.
+
+
+
+
+let decimal &#x3D; 123;   // decimal
+let bin…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/zainulabdeenofficial/why-you-should-keep-multiple-backups-of-your-code-dont-rely-only-on-github-2j90"
+                        open
+                      >
+                        <summary class="article-expander__title">🚀 Why You Should Keep Multiple Backups of Your Code (Don’t Rely Only on GitHub)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/zainulabdeenofficial/why-you-should-keep-multiple-backups-of-your-code-dont-rely-only-on-github-2j90">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpu90y18911dv9pnadytt.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>🔒 Don’t Let a GitHub Suspension Kill Your Projects – Keep Multiple Backups of Your Code
+
+
+Recently, my GitHub account was suspended. My projects, all my repos, and every commit were gone in a second.
+That’s when it hit me: as developers, we trust GitHub (or any single platform) way too much. If your account gets suspended, hacked, or if the platform goes down, all your hard work could vanish.
+This is a practical guide on how to keep multiple copies of your code in different places—the way professionals do.
+Suspension risk – Platforms like GitHub, GitLab, and Bitbucket can suspend accounts.
+Outages happen – Even the biggest platforms can go down.
+Hacks and data loss – Security breaches or accidental deletions happen.
+Peace of mind – Having multiple copies means you’ll never lose your code.…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/cbms26/how-i-built-a-retro-terminal-panel-in-react-1gjp"
+                        open
+                      >
+                        <summary class="article-expander__title">How I Built a Retro Terminal Panel in React</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/cbms26/how-i-built-a-retro-terminal-panel-in-react-1gjp">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmppwa6htdmg2eyp9whb3.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>After sharing my portfolio project on DEV, a fellow community member commented asking how I built the retro terminal panel. So, I decided to break down the logic and share the details here!
+The goal was to show a series of commands and outputs, just like a real terminal, and animate them. I also wanted a blinking cursor and a “reset” effect after all lines are shown.
+The State
+const [terminalLines, setTerminalLines] &#x3D; useState([] as string[]);
+
+The Commands
+const terminalCommands &#x3D; [
+  &#x27;&gt; whoami&#x27;,
+  &#x27;ngawang_tenzin&#x27;,
+  &#x27;&gt; cat skills.txt&#x27;,
+  &#x27;React.js | Node.js | Python | TypeScript&#x27;,
+  &#x27;&gt; ls projects/&#x27;,
+  &#x27;barma-sorig-web-app/ | quiz-mobile-app/ | portfolio-website/&#x27;,
+  &#x27;&gt; status&#x27;,
+  &#x27;AVAILABLE FOR HIRE&#x27;,
+  &#x27;&gt; echo &quot;Let\&#x27;s build something amazing!&quot;&#x27;,
+  &quot;Let&#x27;s build something amazing!&quot;
+];
+
+…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/latchudevops/part-39-gce-vm-authentication-in-google-cloud-platform-3nhk"
+                        open
+                      >
+                        <summary class="article-expander__title">Part-39: 🔐 GCE VM Authentication in Google Cloud Platform</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/latchudevops/part-39-gce-vm-authentication-in-google-cloud-platform-3nhk">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fnnc1rudvw4qse4zjdl2x.webp" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>When working with Google Compute Engine (GCE), secure authentication is essential for accessing and managing your Virtual Machines (VMs). Depending on whether you’re running a Windows VM or a Linux VM, the authentication method differs.
+For Windows virtual machines:
+Authentication is done using username and password.
+You can either:
+Generate credentials using the Google Cloud Console.
+
+
+
+Once credentials are ready, you can connect using RDP (Remote Desktop Protocol).
+👉 Suitable for administrators who manage Windows workloads with a familiar RDP login experience.
+
+For Linux virtual machines:
+Authentication is done via SSH keys.
+You can:
+Generate an SSH key pair (ssh-keygen) and upload the public key to the VM’s metadata.
+
+
+
+This provides strong cryptographic authentication without relying …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -141,6 +441,62 @@ Think of it like refactoring your mental code: instead of running buggy, outdate
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/adrahi/mastering-null-and-undefined-in-javascript-10bb"
+                        open
+                      >
+                        <summary class="article-expander__title">Mastering Null and Undefined in JavaScript</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/adrahi/mastering-null-and-undefined-in-javascript-10bb">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb6bbqu99gqp77p7bzamg.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Understanding Null and Undefined in JavaScript
+
+
+JavaScript is a versatile and widely-used programming language, but it can be confusing for developers to understand the difference between null and undefined. In this article, we will delve into the key differences between these two concepts and explore how to use them effectively in your code.
+The following table summarizes the main differences between null and undefined:
+
+
+
+Feature
+null
+undefined
+
+
+
+
+Meaning
+&quot;No value&quot; or &quot;Empty&quot;
+&quot;Not defined&quot; or &quot;Not assigned&quot;
+
+
+Type
+Object type (although it&#x27;s actually null type)
+Undefined type
+
+
+Assignment
+Explicitly assigned (let x &#x3D; null;)
+Automatically assigned by JavaScript
+
+
+Use
+To intentionally indicate no value
+To indicate that a variable or property has no value by default
+
+
+
+null is a value tha…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="https://dev.to/shipitsoon/not-every-tech-business-is-a-startup-understanding-the-real-differences-29"
                         open
                       >
@@ -179,247 +535,6 @@ Think of it this way: if you can predict your revenue for next year based on cle
 As frontend developers in 2025, we’re spoiled for choice. React continues to dominate enterprise apps, Vue powers intuitive UIs, and Solid.js is carving out a niche for performance fanatics. But there’s a framework stealing the spotlight with its compiler-driven approach and feather-light bundles: Svelte 5. If you’ve ever groaned at bloated JavaScript payloads or wrestled with complex state management, Svelte’s latest iteration might just be the breath of fresh air your next project needs.
 Picture this: you’re building a sleek e-commerce dashboard. Your client demands a snappy UI, accessibility compliance, and a tiny bundle size for users on low-bandwidth networks. You fire up React,…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/pravesh_sudha_3c2b0c2b5e0/midnight-challenge-build-run-a-sample-dapp-with-react-flask-docker-340l"
-                        open
-                      >
-                        <summary class="article-expander__title">🚀 Midnight Challenge | Build &amp; Run a Sample dApp with React, Flask &amp; Docker</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/pravesh_sudha_3c2b0c2b5e0/midnight-challenge-build-run-a-sample-dapp-with-react-flask-docker-340l">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3hw74gv1gh0wnrsrjkax.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>This is a submission for the Midnight Network &quot;Privacy First&quot; Challenge - Enhance the Ecosystem prompt
-I built a beginner-friendly tutorial and sample dApp that demonstrates how developers can interact with a Midnight-like blockchain environment.
-The project simulates wallet balances and transactions using lightweight mock services, paired with a React frontend. This allows developers to understand the flow of building a dApp — from backend services to UI integration — without needing the full complexity of setting up a live Midnight node.
-The tutorial lowers the barrier to entry by providing:
-A step-by-step YouTube video walkthrough
-
-A Dockerized setup for easy spin-up
-Clean and well-documented React + API code
-A working demo of sending transactions and fetching balances
-This way, develop…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/nikhil_sachapara/2-minutes-rule-for-technical-debt-cleanup-4ba1"
-                        open
-                      >
-                        <summary class="article-expander__title">2 Minutes Rule for Technical Debt cleanup</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nikhil_sachapara/2-minutes-rule-for-technical-debt-cleanup-4ba1">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbr174jj2t3hci4webjz3.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The 2-Minute Rule for Technical Debt Cleanup: Why Small Daily Fixes Beat Monthly Sprints
-Pratham naik for Teamcamp ・ Sep 6
-#webdev
-        #productivity
-        #devops
-        #development</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/naik_sejal/2-minute-rule-for-technical-debt-cleanup-3bih"
-                        open
-                      >
-                        <summary class="article-expander__title">2 Minute Rule for Technical Debt Cleanup</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/naik_sejal/2-minute-rule-for-technical-debt-cleanup-3bih">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4bduimiqdx3k1d1058kn.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The 2-Minute Rule for Technical Debt Cleanup: Why Small Daily Fixes Beat Monthly Sprints
-Pratham naik for Teamcamp ・ Sep 6
-#webdev
-        #productivity
-        #devops
-        #development</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/teamcamp/the-2-minute-rule-for-technical-debt-cleanup-why-small-daily-fixes-beat-monthly-sprints-24ea"
-                        open
-                      >
-                        <summary class="article-expander__title">The 2-Minute Rule for Technical Debt Cleanup: Why Small Daily Fixes Beat Monthly Sprints</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/teamcamp/the-2-minute-rule-for-technical-debt-cleanup-why-small-daily-fixes-beat-monthly-sprints-24ea">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fq4prgcf63uupdsqu1zak.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Every developer has seen that technical debt meme showing a house of cards ready to collapse. You know the one. 
-It perfectly captures your codebase on Friday afternoon when you are staring at months of accumulated shortcuts and &quot;temporary&quot; fixes.
-But what if you could prevent that collapse with just 2 minutes a day?
-The answer lies in a simple productivity principle that most developers overlook. While your team plans another &quot;debt cleanup sprint&quot; for next month, small daily fixes are quietly transforming codebases across the industry.
-
-You have been there. It&#x27;s Monday morning, and you need to add a simple feature. What should take one day stretches into three.
-Why? Because you hit every pothole your team has been avoiding:
-The function with the confusing name that nobody wants to refacto…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/kamrul_arafin/run-llama-3-locally-and-build-ai-apps-pk0"
-                        open
-                      >
-                        <summary class="article-expander__title">Run LLaMA 3 Locally and Build AI Apps 🤖💻</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/kamrul_arafin/run-llama-3-locally-and-build-ai-apps-pk0">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frmq4mld5mu627116s8p9.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Introduction
-
-
-So you’ve seen everyone flexing their ChatGPT or Claude bots, but here’s the real kicker: you can now run LLaMA 3—Meta’s latest large language model—right on your laptop. No crazy cloud bills, no throttled APIs, just raw local AI power at your fingertips.
-Why does this matter? Because developers are no longer tied to vendor APIs. Local LLMs &#x3D; control, privacy, and cost savings. Plus, it’s just cool to say “Yeah, my laptop runs a 70B parameter model”.
-The smoothest route is using Ollama, a CLI tool for running and managing open-source LLMs.
-# Install Ollama (Mac/Linux)
-curl -fsSL https://ollama.com/install.sh | sh
-
-# Run LLaMA 3
-ollama run llama3
-
-Boom 💥—you’ve got LLaMA chatting locally.
-Once installed, you can open an interactive session:
-ollama run llama3
-&gt; What’s the dif…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/dirsebastian/dont-wait-for-an-accident-this-ai-tool-spots-hazards-before-your-baby-does-2le0"
-                        open
-                      >
-                        <summary class="article-expander__title">Don&#x27;t Wait for an Accident. This AI Tool Spots Hazards Before Your Baby Does.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dirsebastian/dont-wait-for-an-accident-this-ai-tool-spots-hazards-before-your-baby-does-2le0">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiqpye8g5tq7nebwiks8e.jpeg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>This is a submission for the Google AI Studio Multimodal Challenge
-BabySafe AI is a user-friendly web applet designed to give parents and caregivers peace of mind. It solves the often overwhelming problem of childproofing a home for a mobile baby (6-18 months) by acting as an AI-powered &quot;second set of eyes.&quot;
-
-
-
-Here&#x27;s a walkthrough of the BabySafe AI user experience:
-I used the gemini-2.5-flash model from the Google AI platform to power the core functionality of BabySafe AI. My implementation focused on two key multimodal capabilities:
-Structured JSON Output: I used Gemini to write up a detailed system prompt and provided a strict responseSchema. This instructs the AI to act as a &quot;Baby Safety Expert&quot; and forces it to return its findings in a predictable JSON format. This was crucial for reliably parsing the AI&#x27;s response and rendering the hazard list in the user interface. By defining the expected data structure, I turned a powerful, general-purpose vision model into a specialized and reliable analysis tool.
-The core multimodal feature of this applet is Image-to-Structured-Text Analysis. It takes a visual, unstructured input (a user&#x27;s photo) and transforms it into structured, actionable text data (a JSON object listing hazards).
-This enhances the user experience in several key ways:
-Contextual Hazard Identification: The AI doesn&#x27;t just list objects; it identifies them as hazards. It understands that an electrical outlet low on a wall is a risk to a crawling baby, or that a dangling cord is an entanglement threat. This contextual understanding is only possible through analyzing the visual data.
-Spatially-Aware Descriptions: The model generates a location_description for each hazard (e.g., &quot;On the floor in the bottom-left corner&quot;). This spatial awareness, derived directly from the image, makes the feedback immediately actionable. The user knows exactly where to look and what to fix, transforming a generic warning into a specific, helpful instruction.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/aiwithapex/step-audio-2-mini-open-source-voice-ai-outperforms-gpt-4o-audio-pb1"
-                        open
-                      >
-                        <summary class="article-expander__title">Step-Audio 2 Mini: Open-Source Voice AI Outperforms GPT-4o-Audio</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/aiwithapex/step-audio-2-mini-open-source-voice-ai-outperforms-gpt-4o-audio-pb1">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F24yp6r4szge5gi68n1ch.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Everyone&#x27;s talking about Step-Audio 2 Mini, the open-source voice AI that beats benchmarks, but the real opportunity is how you use it in your business.
-Voice AI is moving from demos to daily work.
-Open-source is lowering cost and risk.
-But most teams still ship dull, robotic experiences.
-Step-Audio 2 Mini is different.
-It detects emotion, shifts style mid-conversation, and grounds answers in live searches or real voices.
-That means empathetic calls, dynamic tone, and trusted outputs.
-And it&#x27;s open-source, so you can audit, fine-tune, and ship fast.
-Benchmarks even show wins over GPT-4o-Audio on quality and realism.
-A mid-market support team ran a 14-day pilot across 5,000 calls.
-⚡ Average handle time dropped 27%.
-Escalations fell 19%.
-⚡ CSAT rose from 4.2 to 4.6.
-After-call work shrank 22% with instant summaries.
-How to pilot in 10 days ↓.
-• Pick 3 high-volume use cases that matter to customers.
-↳ Think inbound support, appointment reminders, or sales follow-ups.
-• Define guardrails and sources to ground answers.
-↳ Link FAQs, docs, and approval rules so output stays accurate.
-• Choose two voice styles and two emotions to test.
-↳ Measure clarity, warmth, and trust on every call.
-• Launch to 50 users and A/B vs your current system.
-↳ Track AHT, CSAT, error rate, and call compliance.
-Do this and your AI will sound human, not eerie.
-You cut costs without locking yourself into a black box.
-You give your team superpowers they can trust.
-What&#x27;s stopping you from piloting an open-source voice agent this month?</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/therealmrmumba/how-to-set-up-a-jenkins-cicd-pipeline-step-by-step-guide-5eme"
-                        open
-                      >
-                        <summary class="article-expander__title">How to Set Up a Jenkins CI/CD Pipeline (Step-by-Step Guide)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/therealmrmumba/how-to-set-up-a-jenkins-cicd-pipeline-step-by-step-guide-5eme">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fnwzuz89gnqcy5r9lw4xz.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>When I first started experimenting with CI/CD, Jenkins was one of the names that kept popping up. At first, I thought it was “old school” and that maybe newer tools like GitHub Actions or GitLab CI/CD had fully replaced it. But after setting it up on a few projects, I realized why so many teams from scrappy startups to big enterprises still rely on Jenkins in 2025.
-It’s not the prettiest tool out there, but it’s insanely powerful and flexible. If you want to control exactly how your build, test, and deploy process runs, Jenkins is still one of the best.
-In this post, I’ll walk you through how to set up a Jenkins CI/CD pipeline from scratch, explain its core building blocks, and even share a real-world Node/React pipeline example you can adapt to your own projects.
-Jenkins is an open-source…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -651,7 +766,7 @@ The post Huawei Mate XTs Officially Launched In China appeared first on Lowyat.N
                         <summary class="article-expander__title">PlateShapez – Tool for generating adversarially perturbed license plate overlays</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/bennjordan/PlateShapez">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/ff4a83e320f0a04806b67d7f0055cdf384d4780b00ba004e18be7ce59fd77032/bennjordan/PlateShapez" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/eef578b8ebf804d459f0240ce89e1a5db3c687a211c0eef162a647b693c88e2a/bennjordan/PlateShapez" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;18
@@ -1296,30 +1411,10 @@ The post Huawei Mate XTs Officially Launched In China appeared first on Lowyat.N
                         <summary class="article-expander__title">Quantum Mechanics, Concise Book</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/basketballguy999/Quantum-Mechanics-Concise-Book">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/bac9014ca88e41d2e23bd9fa2cb8c749cf1205c239651d3352bc996669d3d228/basketballguy999/Quantum-Mechanics-Concise-Book" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/61f381473291d8ad7536fa82d5f297b9cae6973bbd32b24d55660fde3cb770bf/basketballguy999/Quantum-Mechanics-Concise-Book" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;2
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://community.hubitat.com/t/nest-1st-gen-and-2nd-gen-thermostats-no-longer-supported-by-google-from-10-25-2025/152952"
-                        open
-                      >
-                        <summary class="article-expander__title">Nest 1st gen and 2nd gen thermostats no longer supported from 10/25/2025</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://community.hubitat.com/t/nest-1st-gen-and-2nd-gen-thermostats-no-longer-supported-by-google-from-10-25-2025/152952">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://community.hubitat.com/uploads/default/original/2X/f/f470540e70054c36b1ccebfe9b1805026830d497.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1341,6 +1436,23 @@ The post Huawei Mate XTs Officially Launched In China appeared first on Lowyat.N
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;4
                                   min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://sustainableviews.substack.com/p/the-day-i-kissed-comment-culture"
+                        open
+                      >
+                        <summary class="article-expander__title">I kissed comment culture goodbye</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://sustainableviews.substack.com/p/the-day-i-kissed-comment-culture">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
                             </span>
                           </div>
                         </a>
@@ -1413,7 +1525,7 @@ The post Huawei Mate XTs Officially Launched In China appeared first on Lowyat.N
                         <summary class="article-expander__title">Show HN: Open-sourcing our text-to-CAD app</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/Adam-CAD/CADAM">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/599262bd33269f81db109dc87da052f850216f0155d38bc6801688233e39d123/Adam-CAD/CADAM" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/b4c6599187f162c19b883e14d73075435abc0389d78e772dc799dde57f964ac4/Adam-CAD/CADAM" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;12
@@ -1453,7 +1565,7 @@ The post Huawei Mate XTs Officially Launched In China appeared first on Lowyat.N
                         <summary class="article-expander__title">MentraOS – open-source Smart glasses OS</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/Mentra-Community/MentraOS">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/403e4be44262d943904998b60fb5592e6b527fc98d05ac88e43811fb6cd37478/Mentra-Community/MentraOS" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/be732e8a7c853cff3aad31870acf7a8ca1e95797cfad55f8a1c947d547c408bc/Mentra-Community/MentraOS" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
@@ -1766,7 +1878,7 @@ The post Huawei Mate XTs Officially Launched In China appeared first on Lowyat.N
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/8ff59ca9bac76e181a3ea9d85a2019ccc7471a32-700x430.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Chainlink&#x27;s native token encountered persistent bearish pressure as BTC, ETH and the broader crypto market consolidated, CoinDesk Research&#x27;s model shows.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;26
+                                &ensp;<span class="article-reading-time">(&hairsp;27
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2726,7 +2838,7 @@ The post Volvo Confirms EX60 Unveiling Date appeared first on Lowyat.NET.</span>
                         data-accordion-key="https://larstofus.com/2025/09/02/speeding-up-the-unreal-editor-launch-by-not-spawning-38000-tooltips/"
                         open
                       >
-                        <summary class="article-expander__title">Speeding up Unreal Editor launch by not spawning tooltips</summary>
+                        <summary class="article-expander__title">Speeding up Unreal Editor launch by not spawning unused tooltips</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://larstofus.com/2025/09/02/speeding-up-the-unreal-editor-launch-by-not-spawning-38000-tooltips/">
                           <div class="article-summary-box-inner media-object">
                               <img src="https://larstofus.com/wp-content/uploads/2025/08/unrealsplash.png" loading="lazy" class="media-object__media article-image" />
@@ -2879,8 +2991,8 @@ The post Volvo Confirms EX60 Unveiling Date appeared first on Lowyat.NET.</span>
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-02 datetime="2025-09-02T20:14:51.000Z">2025-09-02</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-02 datetime="2025-09-02T20:14:51.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-02 datetime="2025-09-02T19:05:27.000Z">2025-09-02</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-02 datetime="2025-09-02T19:05:27.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -2895,26 +3007,6 @@ The post Volvo Confirms EX60 Unveiling Date appeared first on Lowyat.NET.</span>
                   <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://huggingface.co/swiss-ai/Apertus-70B-2509"
-                        open
-                      >
-                        <summary class="article-expander__title">Apertus 70B: Truly Open - Swiss LLM by ETH, EPFL and CSCS</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://huggingface.co/swiss-ai/Apertus-70B-2509">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn-thumbnails.huggingface.co/social-thumbnails/models/swiss-ai/Apertus-70B-2509.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;4
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -2949,6 +3041,25 @@ The post Volvo Confirms EX60 Unveiling Date appeared first on Lowyat.NET.</span>
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;19
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.nablag.com/rust_cpp_missing_ampersand"
+                        open
+                      >
+                        <summary class="article-expander__title">The repercussions of a typo in C++ &amp; Rust</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.nablag.com/rust_cpp_missing_ampersand">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -3208,8 +3319,8 @@ The post Volvo Confirms EX60 Unveiling Date appeared first on Lowyat.NET.</span>
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/17511021505">
-        <time id="build-timestamp" datetime="2025-09-06T06:17:48.105Z">2025-09-06T06:17:48.105Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/17511297367">
+        <time id="build-timestamp" datetime="2025-09-06T06:45:14.681Z">2025-09-06T06:45:14.681Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
