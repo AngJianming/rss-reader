@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-17 datetime="2025-09-17T06:40:49.000Z">2025-09-17</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-17 datetime="2025-09-17T06:40:49.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-17 datetime="2025-09-17T06:55:27.000Z">2025-09-17</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-17 datetime="2025-09-17T06:55:27.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -38,6 +38,257 @@
                   <a class="source-heading__link" href="https://dev.to">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/seno21/resize-disk-on-vm-proxmox-non-lvm-24oo"
+                        open
+                      >
+                        <summary class="article-expander__title">Resize Disk on VM Proxmox Non-LVM</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/seno21/resize-disk-on-vm-proxmox-non-lvm-24oo">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9s2lzem4h21huw8m9osg.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Hallo world!
+Pada postingan ini kita akan membahas gimana cara membedakan partisi LVM atau bukan. Pertama kita bisa menggunakan lsblk tools. Jalankan perintah berikut
+lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT
+
+Jika outputnya ada LVM2_member, berarti partisi itu dipakai LVM. tapi kalau langsung ext4, xfs, btrfs, berarti bukan LVM.
+Atau berikutnya bisa menggunakan pvdisplay, jalankan perintah berikut
+pvdisplay
+
+Jika ada output (nama PV, VG, LV), berarti ada LVM, tapi jika kosong maka sistem tidak pakai LVM.
+Oke selanjutnya kita akan bahas gimana cara resizenya. Kita samakan asumsi, disini saya ingin memperbesar partisi root dari 300GB ke 600GB. Sebelumnya saya sudah memperbesar size disknya via proxmox management web ui. Jadi seharusnya jika di cek dengan fdisk akan ada perubahan size. Meskipun sizenya telah berubah tapi ini belum bisa di pakai. Karena jika di cek dengan df -h size / masih sama belum ada penambahan kapasitas. Ok, dari studi kasus di atas kita akan coba memperbesar kapasitasnya dan meminimalisir downtime. langsung saja ke caranya
+Pastikan partisi root, cek dengan:
+lsblk
+
+Lihat mana yang dipakai untuk / (root), pada kasus ini root berada di /dev/sda1.
+Lanjut resize partisi /dev/sda1, gunakan tool growpart, jika belum ada toolsnya install dulu:
+apt install cloud-guest-utils -y
+
+lalu jalankan
+growpart /dev/sda 1
+
+Itu akan memperbesar partisi /dev/sda1 supaya sesuai dengan ukuran disk baru (600GB)
+Setelah resize partisi baru kita resize filesystem, jika filesystem kita ext4, maka jalankan
+resize2fs /dev/sda1
+
+Tapi jika filesystem kita xfs, maka jalankan:
+xfs_growfs /
+
+Setelah sudah, selanjutnya cek hasil
+df -h
+
+Sekarang harusnya kapasitas root berubah jadi 600GB.
+Ringkasnya:
+Proxmox GUI berhasil resize disk (600GB sudah terbaca).
+Ubuntu VM partisi root masih 300GB, harus di-extend manual dengan growpart + resize2fs.
+Semoga bermanfaat dan selamat mencoba.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/0xle0ne/deploy-vaultwarden-on-nanocl-gg1"
+                        open
+                      >
+                        <summary class="article-expander__title">Deploy Vaultwarden on Nanocl</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/0xle0ne/deploy-vaultwarden-on-nanocl-gg1">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ff7a4xj3aiic4kn7dkmvr.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Today we are going to see how to deploy Vaultwarden on Nanocl to take back the control of your passwords.
+Vaultwarden is an open-source password management solution that is a lightweight alternative to Bitwarden. It is designed to be self-hosted and provides a secure way to store and manage passwords, notes, and other sensitive information. It is built using Rust and offers a web interface, and is compatible with Bitwarden
+Nanocl is a container orchestration platform that allows you to manage and deploy containerized applications easily. It provides a simple and efficient way to run containers on your infrastructure, making it easier to manage and scale your applications.
+Before we begin, make sure you have the following prerequisites.
+Follow the official Docker installation guide for your…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/karthik_n/is-that-painting-real-unveiling-the-magic-of-generative-ai-for-beginners-1cah"
+                        open
+                      >
+                        <summary class="article-expander__title">Is That Painting Real? Unveiling the Magic of Generative AI for Beginners</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/karthik_n/is-that-painting-real-unveiling-the-magic-of-generative-ai-for-beginners-1cah">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9x490fgygddci36tjqb7.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Is That Painting Real? Unveiling the Magic of Generative AI for Beginners
+
+
+Ever scrolled through social media and wondered how someone created that mind-blowing image or that ridiculously catchy song? Chances are, a new kind of wizardry is at play: Generative AI. It sounds futuristic and intimidating, but trust me, it’s more accessible than you think. Imagine a computer that can generate new things – art, music, text, even code – based on patterns it&#x27;s learned from existing data. Pretty cool, right?
+For years, AI has been good at recognizing things: classifying images, translating languages, and predicting customer behavior. But creating? That&#x27;s a whole new level.
+Generative AI isn&#x27;t just a cool party trick. It’s rapidly changing how we create, work, and even think. Here’s why it matters …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/sip_mjb/top-servicenow-trends-for-2025-whats-worth-your-time-and-whats-just-hype-1lfe"
+                        open
+                      >
+                        <summary class="article-expander__title">Top ServiceNow Trends for 2025: What’s Worth Your Time (and What’s Just Hype)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sip_mjb/top-servicenow-trends-for-2025-whats-worth-your-time-and-whats-just-hype-1lfe">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy1p76n1qd06i2s8e46uj.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Introduction
+According to Gartner’s Future of ITSM report, nearly 78% of CIOs plan to increase their ServiceNow budgets in 2025, but over half admit they struggle to prioritize which innovations will deliver real business value. Forrester highlights a similar challenge: “enterprises waste millions chasing trends that look attractive in the analyst deck but collapse in production.”
+The message is clear: clarity is key. Chasing every shiny object in ServiceNow doesn’t just dilute budgets — it increases risk, breaks workflows, and undermines IT’s credibility. This blog cuts through the noise and evaluates six ServiceNow trends that are truly shaping enterprise IT in 2025, and the ones you can safely ignore.
+Generative &amp; Agentic AI in ServiceNow
+The promise: AI will run IT operations end-to-en…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/okoye_ndidiamaka_5e3b7d30/beyond-translation-mastering-localization-strategies-to-win-in-global-markets-3imh"
+                        open
+                      >
+                        <summary class="article-expander__title">Beyond Translation: Mastering Localization Strategies to Win in Global Markets</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/okoye_ndidiamaka_5e3b7d30/beyond-translation-mastering-localization-strategies-to-win-in-global-markets-3imh">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4gqjpyy8jwif4bw7amph.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>“We thought we nailed it. The product was live, translated, and polished… but users still weren’t connecting.”
+That’s the story a fellow founder shared with me after launching her app abroad. The team had invested thousands into professional translation, but adoption was underwhelming. The reason? They forgot one critical truth: translation ≠ localization.
+If you’ve ever considered expanding your business, product, or content into new markets, this story should hit home. Success in global markets isn’t about simply converting words—it’s about reshaping your entire user experience to feel native to the culture.
+Let’s dive into what localization strategies really mean, why they matter, and how you can apply them effectively.
+🌍 Why Localization Matters
+Think of localization as more than just…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/karthik_n/is-your-fridge-about-to-order-pizza-get-ready-for-the-iot-4j2o"
+                        open
+                      >
+                        <summary class="article-expander__title">Is Your Fridge About to Order Pizza? Get Ready for the IoT!</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/karthik_n/is-your-fridge-about-to-order-pizza-get-ready-for-the-iot-4j2o">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fg9a7bybd04mnv52itqdj.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Is Your Fridge About to Order Pizza? Get Ready for the IoT!
+
+
+Ever walked into your kitchen, stared blankly into the fridge, and realized you&#x27;re completely out of milk… again? Or maybe you&#x27;ve left the house and wondered, &quot;Did I leave the oven on?&quot; We&#x27;ve all been there. But what if your fridge automatically ordered milk when it was running low, and your oven texted you a gentle reminder? This isn&#x27;t science fiction anymore; it&#x27;s the Internet of Things (IoT), and it&#x27;s changing everything.
+You might have heard the term thrown around, but what exactly is this &quot;Internet of Things&quot; thing? Simply put, it&#x27;s about connecting everyday objects to the internet, allowing them to communicate with us, with each other, and with other systems. Think of it as giving all your stuff a voice (a digital one, of …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/bowmandown/programming-languages-worth-learning-in-2025-1i57"
+                        open
+                      >
+                        <summary class="article-expander__title">Programming Languages Worth Learning in 2025</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/bowmandown/programming-languages-worth-learning-in-2025-1i57">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fp5tt75a7ur38i9c9rmsz.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Technology evolves rapidly, and with it, the demand for skilled programmers continues to rise. Whether you are a beginner just starting your coding journey or an experienced developer looking to upskill, choosing the right programming language can be overwhelming.
+With hundreds of languages available, the question remains: which programming languages are worth learning today?
+In this guide, we’ll explore the top programming languages that are practical, in demand, and versatile for 2025 and beyond. We’ll also highlight why languages like Python, Java, and others continue to dominate the tech landscape.
+Programming is the foundation of the digital world. Everything from mobile apps, artificial intelligence (AI), and websites to operating systems, cloud services, and even your car’s software…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/jhk_info/what-is-a-web-application-firewall-waf-4k74"
+                        open
+                      >
+                        <summary class="article-expander__title">What is a Web Application Firewall (WAF)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jhk_info/what-is-a-web-application-firewall-waf-4k74">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fh9byv883p802spbjgnqg.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>In today’s digital-first world, securing online applications is no longer optional—it’s a necessity. A Web Application Firewall (WAF) plays a crucial role in protecting websites and APIs from malicious traffic and cyber threats. Many business owners still ask, “What does WAF mean?” or “What is WAF in security?” In simple terms, WAF is your application’s shield against hackers.
+This article explores the meaning of WAF, how it works, and provides a detailed look into AWS Web Application Firewall (AWS WAF), including its pricing, use cases, and security benefits.
+What is a Web Application Firewall (WAF)?
+
+
+A Web Application Firewall (WAF) is a specialized security system designed to protect web applications by filtering and monitoring HTTP/HTTPS traffic between a web application and the inter…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/charles_koffler_bcabc582b/clprolf-docs-3-learning-class-roles-through-java-wrappers-13o0"
+                        open
+                      >
+                        <summary class="article-expander__title">Clprolf Docs #3 — Learning Class Roles Through Java Wrappers</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/charles_koffler_bcabc582b/clprolf-docs-3-learning-class-roles-through-java-wrappers-13o0">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9x3o5gxq0pa3yijvwjwk.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>📝 This article is part of the official Clprolf documentation series (3/6).
+One of the easiest ways to understand Clprolf class roles is to look at wrappers of well-known Java classes.
+Socket, Scanner, or System, we can immediately see how Clprolf’s declensions clarify their nature and responsibility.
+practical (they can replace Java classes through polymorphism) and educational (they illustrate how to apply Clprolf roles consistently).
+A project exists in the Clprolf sources, under the package clprolf.wrappers.java.
+examples of class roles, by writing wrappers for the Java Standard Library.
+Thanks to polymorphism, these wrappers can directly replace the equivalent Java classes or interfaces. They also serve as educational examples of how to apply Clprolf declensions.
+Here, ClpSocket is de…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -66,484 +317,44 @@ OSE enforces a strict rule: each source file can only declare one package, and t
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/wisdomudo/javascript-dom-a-beginners-guide-to-selecting-html-elements-5h22"
+                        data-accordion-key="https://dev.to/satyam_gupta_0d1ff2152dcc/master-the-javascript-switch-statement-a-complete-guide-with-examples-best-practices-2jnp"
                         open
                       >
-                        <summary class="article-expander__title">JavaScript DOM: A Beginner’s Guide to Selecting HTML Elements</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/wisdomudo/javascript-dom-a-beginners-guide-to-selecting-html-elements-5h22">
+                        <summary class="article-expander__title">Master the JavaScript Switch Statement: A Complete Guide with Examples &amp; Best Practices</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/satyam_gupta_0d1ff2152dcc/master-the-javascript-switch-statement-a-complete-guide-with-examples-best-practices-2jnp">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiug28ovn0hn456q3yndk.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqg7xqh7t2hzbmq0m7p6a.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>When you build web pages, the content you see in the browser is represented as the Document Object Model (DOM). Think of the DOM as a tree-like structure where every tag in your HTML, like headings, paragraphs, buttons, and lists, becomes an object that JavaScript can interact with.
-But before you can change anything on the page, you first need to select the element you want to work with. That’s what this guide is all about.
-By the end of this article, you’ll understand:
-What the DOM is and why it matters.
-The main ways to select single or multiple elements.
-The difference between live collections and static lists.
-How to use these selections in real-world examples.
-Common mistakes to avoid as a beginner.
-The DOM acts as a connection between your HTML structure and the JavaScript code that…</span>
+                              <span>Taming Conditional Chaos: Your Ultimate Guide to the JavaScript Switch Statement
+
+
+You’re writing a function. It starts simply enough with an if. Then a scenario pops up, so you add an else if. Then another. And another. Suddenly, you’re staring at a tangled mess of 15 if...else if statements, and your code is starting to look like a precarious Jenga tower. It works, but it’s hard to read, harder to debug, and feels… clunky.
+Sound familiar? This is where the unsung hero of JavaScript control flow, the switch statement, comes to the rescue.
+While if statements are the versatile multi-tool every developer leans on, the switch statement is a specialized scalpel, perfectly designed for one specific but common job: comparing a single value against a list of multiple possible outcomes.
+In this c…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;13
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/bob_packer_7c9018a4d1a1f1/building-scalable-architectures-for-online-casino-platforms-1fpi"
+                        open
+                      >
+                        <summary class="article-expander__title">Building Scalable Architectures for Online Casino Platforms</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/bob_packer_7c9018a4d1a1f1/building-scalable-architectures-for-online-casino-platforms-1fpi">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ff4b04y05k1x9zbfuigvy.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>What makes a casino platform far more unforgiving than a generic SaaS product? The answer lies in the concept of “money in flight.” When wagers are live, the platform can’t simply roll back a failed transaction as you would with a standard e-commerce cart. Each bet represents real, regulated value, which forces architects to design systems where every state transition is irreversible yet must remain lightning fast. This pressure creates a class of engineering challenges that rarely surface in other industries.  
+Where do most platforms crack when user numbers suddenly surge? Few people talk about jackpot concurrency or bonus round triggers, yet these events can multiply server demand tenfold in less than a second. Outages here don’t just mean lost revenue—they trigger regulatory scrutiny. …</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;8
                                   min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/aws-builders/when-not-if-containers-misbehave-1kao"
-                        open
-                      >
-                        <summary class="article-expander__title">When (Not If) Containers Misbehave</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/aws-builders/when-not-if-containers-misbehave-1kao">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjj70eubv64als9pechhq.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>In my previous article, Fargate + Lambda are better together, I introduced the concept of a hybrid architecture where I can route traffic between ECS Fargate and Lambda based on real-time conditions. 
-The most common argument I know about  is: 
-Why not just use containers for everything?
-In this article, I try to explain why the &quot;containers are cheaper&quot; is an oversimplification.
-Before I go into details, let&#x27;s address the costs (hopefully I did the calculation correctly):
-AWS Lambda Pricing
-AWS Fargate Pricing
-Assuming typical production capacity:
-Daily capacity: ~2M requests/day per task
-
-Monthly capacity: ~60M requests/month per task
-
-
-
-Monthly Cost Comparison:
-
-
-
-Monthly Requests
-Tasks Needed
-Lambda Cost
-Fargate Cost
-Winner
-
-
-
-
-1M
-1
-$2,17
-$56,92
-Lambda 96% cheaper
-
-
-10M
-1
-$21,67
-$56,92
-…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;12
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/lfariaus/build-a-full-stack-qr-code-generator-in-mern-with-graphql-mongodb-no-external-api-needed-1fbg"
-                        open
-                      >
-                        <summary class="article-expander__title">Build a Full-Stack QR Code Generator in MERN with GraphQL &amp; MongoDB (No External API Needed!)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/lfariaus/build-a-full-stack-qr-code-generator-in-mern-with-graphql-mongodb-no-external-api-needed-1fbg">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2z2g0mfim7p16ffpn1nl.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Have you ever found yourself in a situation where you needed to generate a QR code for a URL but didn&#x27;t want to rely on external APIs? 
-So, as the wedding date approaches, I decided to build the possibility for guests to take pictures and upload them to the website. How do I advertise that? Write it down? Ask them to type it? 
-Well... on this article I&#x27;ll show you how I built a QR code service using my current&#x27;s wedding website stack: Node.js, MongoDB, Apollo GraphQL, and Next.js.
-You&#x27;ll be able to see how easy it was to integrate the service on my existing architecture and if you wish to, you can also generate and store shareable QR codes without relying on external APIs. I won&#x27;t be charging - for now!!! :-D Hahaha
-Before we dive in, a few remarks:
-This project is 100% open source and ava…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/rinonten/when-js-blocks-parsing-your-html-29jm"
-                        open
-                      >
-                        <summary class="article-expander__title">When JS blocks parsing your HTML</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/rinonten/when-js-blocks-parsing-your-html-29jm">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpz03sx0a86szaio0ipqe.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>A browser builds a webpage step by step:
-
-
-
-Reads the HTML file top to bottom.
-It converts the text into tokens, then into the DOM tree.
-If the browser encounters a tag without async or defer:
-It pauses HTML parsing immediately. 
-Downloads the JavaScript file (if external).
-Executes that JavaScript. Only after execution finishes does it resume building the DOM.
-Because JavaScript can modify the DOM or CSSOM while the page is loading.
-For example:
-Hello
- 
-  
-Hello
-.
-
-
-Hits  → stops everything.
-
-
-Downloads + runs big-script.js.
-
-
-
-4 After execution → continues parsing .
- appears later, delaying rendering.
-Case 2: Script with defer
-
-  
-
-  
-Hello
- tag until that script is fully executed.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/vincenttommi/mastering-microservices-lessons-from-netflixs-journey-on-aws-3b7n"
-                        open
-                      >
-                        <summary class="article-expander__title">Mastering Microservices: Lessons from Netflix’s Journey on AWS</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vincenttommi/mastering-microservices-lessons-from-netflixs-journey-on-aws-3b7n">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Femm4oyqi56t1bdw5kc6l.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Netflix, a global streaming giant, runs its infrastructure on AWS, transitioning from a monolithic architecture to a microservices architecture to address scalability and reliability challenges. This article explores why Netflix adopted microservices, the benefits and challenges of this approach, and practical solutions drawn from their experience. We&#x27;ll also cover best practices to help you navigate the complexities of microservices architecture.
-Why Netflix Moved to Microservices
-Netflix initially relied on a monolithic architecture, but as their platform grew, they faced significant challenges:
-Debugging Difficulties: Frequent changes to a single codebase made it hard to pinpoint bugs.
-
-
-Vertical Scaling Limits: Scaling the monolith vertically (adding more resources to a single server) …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/code_2/day-5365-full-stack-challenge-build-a-simple-html-form-with-inputs-25ch"
-                        open
-                      >
-                        <summary class="article-expander__title">Day 5/365 Full Stack Challenge: Build a simple HTML form with inputs</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/code_2/day-5365-full-stack-challenge-build-a-simple-html-form-with-inputs-25ch">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9bmdos2inmaq3b8sqovr.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Day 5: Creating Conversation - Building Your First HTML Form
-
-
-Welcome to Day 5,
-I&#x27;m Dhanian. So far, your web pages have been a one-way street: you provide information, and the user reads it. But the most powerful parts of the web are interactive. They allow users to talk back—to search, to login, to comment, to purchase.
-Today, you learn how to start that conversation. We&#x27;re building HTML forms. Forms are the bridge between your user and your website&#x27;s functionality. They are built using a collection of tags, each designed for a specific type of input.
-Let&#x27;s build our first bridge.
-The Foundation: The  Element
-
-
-What it is: The  element is a container for all the input elements you want to collect data from. It defines where the user&#x27;s data should be sent and how it should be…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/manonaga2188/15-system-design-concepts-you-should-know-without-losing-your-sanity-598o"
-                        open
-                      >
-                        <summary class="article-expander__title">15 System Design Concepts You Should Know (Without Losing Your Sanity)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/manonaga2188/15-system-design-concepts-you-should-know-without-losing-your-sanity-598o">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdfai3qmsfkfrfk3uj6z9.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>System design sounds scary, right? Like some secret sauce only big tech engineers whisper about in dark server rooms.
-
-But guess what? It’s not rocket science (though sometimes it feels like it). Let’s break down the big scary concepts in a fun way — so you can laugh and learn.
-Imagine you own a tea shop. At first, you serve 10 cups a day. Suddenly, 1,000 people show up. What do you do?  
-Vertical Scaling (Scale Up): Buy a fancier tea machine.
-
-
-Horizontal Scaling (Scale Out): Hire 10 more tea shops with friends brewing chai.
-
-
-
-👉 Spoiler: Big tech loves hiring more “friends.”
-Throughput &#x3D; how many cups of tea you serve per second.
-
-
-Bandwidth &#x3D; the size of your kettle.
-
-
-
-👉 Small kettle + too many people &#x3D; angry customers.  
-Concurrency: One chef flipping between cooking biryani and fry…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/eva_clari_289d85ecc68da48/from-rust-to-go-why-2025-is-the-year-to-learn-these-modern-programming-languages-1hcl"
-                        open
-                      >
-                        <summary class="article-expander__title">From Rust to Go: Why 2025 Is the Year to Learn These Modern Programming Languages</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/eva_clari_289d85ecc68da48/from-rust-to-go-why-2025-is-the-year-to-learn-these-modern-programming-languages-1hcl">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftccg4ie8ni217fmuqwf6.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Have you ever felt like the programming world is moving faster than you can keep up? Just when you&#x27;ve mastered one language, three new &quot;revolutionary&quot; ones emerge, each claiming to be the next big thing. I remember feeling this exact overwhelm two years ago when my team&#x27;s legacy Java application started buckling under increased load, and management was breathing down our necks about performance issues.
-That&#x27;s when I discovered what many developers are realizing in 2025: the future belongs to languages that don&#x27;t make you choose between speed and safety, between performance and productivity. Enter Rust and Go - two languages that are reshaping how we think about modern software development.
-Let&#x27;s talk numbers. According to Stack Overflow&#x27;s 2024 Developer Survey, Rust claimed the top spot as…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;12
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/grexe/-4e46"
-                        open
-                      >
-                        <summary class="article-expander__title">[Boost]</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/grexe/-4e46">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdxzc99hwb4gm3yuz0m2o.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>In Defense of C++
-Dayvster 🌊 ・ Sep 10
-#cpp
-        #programming
-        #c
-        #discuss</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/web5lab_938e9096be8dc3e78/how-to-redesign-your-website-without-losing-seo-with-a-little-ai-help-2lb2"
-                        open
-                      >
-                        <summary class="article-expander__title">🚀 How to Redesign Your Website Without Losing SEO (With a Little AI Help)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/web5lab_938e9096be8dc3e78/how-to-redesign-your-website-without-losing-seo-with-a-little-ai-help-2lb2">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbhagd5q6q013q1bmbar5.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Redesigning your website is exciting — new UI, faster performance, modern branding.
-I’ve seen sites lose 50%+ of organic traffic just because they skipped SEO in the redesign phase.
-That’s why I built Redesignr.ai
-In this post, I’ll share the exact SEO checklist you need when redesigning — and show you how AI can make it easier.
-🔑 Why Redesigns Break SEO
-When teams redesign, they often:
-Change the URL structure
-Remove old but high-ranking pages
-Rewrite headings without checking keywords
-Forget 301 redirects
-The result? Google thinks it’s a brand-new site, and you lose authority.
-✅ Website Redesign SEO Checklist
-Crawl &amp; Backup the Current Site
-Export all indexed URLs using Screaming Frog or Google Search Console.
-Keep a record of titles, meta, and top-ranking keywords.
-Redirect Old URLs to…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/gg_news/ign-hollow-knight-silksong-review-1efg"
-                        open
-                      >
-                        <summary class="article-expander__title">IGN: Hollow Knight: Silksong Review</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gg_news/ign-hollow-knight-silksong-review-1efg">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2FABrZO-9_snQ%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hollow Knight: Silksong takes everything great about the original and cranks it up to eleven, delivering a bigger, more vibrant world full of clever tweaks to its platforming, exploration, and combat. While a few side quests and the finale stumble in their structure, Team Cherry nails that sweet spot between satisfying 2D challenges, nail-biting boss fights, and rewarding exploration.
-It’s unapologetically tough—think punishing but never unfair—pushing you to overcome impossible odds with a growing arsenal of tools. Through its challenges, it weaves a subtle message of resilience and compassion, urging you to leave the world better than you found it.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Cointelegraph.com News</button>
-                  <a class="source-heading__link" href="https://cointelegraph.com">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/ark-invest-bullish-holdings-near-130m-latest-8m-scoop"
-                        open
-                      >
-                        <summary class="article-expander__title">ARK Invest’s Bullish holdings near $130M with latest $8.2M scoop</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/ark-invest-bullish-holdings-near-130m-latest-8m-scoop?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU1ZTMtZWI0Yy03MWQ3LWIyZTktNzhhZjc5ZjBlNzQx.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Cathie Wood’s ARK Invest now holds nearly $130 million worth of Bullish shares across its ETFs after its latest multimillion-dollar acquisition on Tuesday.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/fed-third-mandate-could-devalue-dollar-and-drive-bitcoin-higher"
-                        open
-                      >
-                        <summary class="article-expander__title">Fed ‘third mandate’ may devalue dollar, drive Bitcoin higher</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/fed-third-mandate-could-devalue-dollar-and-drive-bitcoin-higher?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU2NDMtYTAxMy03OWVhLTgxMTAtOGY1Nzk3YWJhZWRm.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Donald Trump’s latest Fed pick cited a “third mandate” for the bank to moderate long-term rates, potentially justifying yield curve control policies, which could boost Bitcoin.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/bitcoin-resistance-level-116k-bullish-catalysts-bitfinex-analysts"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin stuck at $116K resistance until ‘decisively reclaimed,’ says Bitfinex</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-resistance-level-116k-bullish-catalysts-bitfinex-analysts?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDUvMDE5NmQ5NzItOTE3Yi03ZjVmLWEwMjktMzdjMTlkZDgwY2Zi.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>There’s division among crypto analysts over how Bitcoin will react to the Fed’s decision on Wednesday, whether or not a rate cut is announced.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/gd-culture-falls-28-percent-7500-bitcoin-acquisition-deal"
-                        open
-                      >
-                        <summary class="article-expander__title">Nasdaq-listed GD Culture plunges on $875M Bitcoin acquisition deal</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/gd-culture-falls-28-percent-7500-bitcoin-acquisition-deal?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU1MjYtMzM4Yy03MTJhLWJjZGItNjVmNzZhNzFjMTQ2.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Shares in GD Culture fell 28% after the livestreaming company made a deal to swap tens of millions of its shares to acquire 7,500 Bitcoin from Pallas Capital.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/crypto-etfs-launching-inflows-skeptical-altcoin-season-bitwise"
-                        open
-                      >
-                        <summary class="article-expander__title">SEC listing rules to boost crypto ETFs, but no guarantee of inflows: Bitwise</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/crypto-etfs-launching-inflows-skeptical-altcoin-season-bitwise?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDgvMDE5OGYyZGMtMjhhMC03MmEwLTk5NmItMjA0YzVjOWIyNmY2.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Bitwise’s Matt Hougan says a more straightforward SEC listing process could lead to more crypto ETFs, but that doesn’t mean they’ll all attract money.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://cointelegraph.com/news/uk-strengthen-ties-us-crypto-matters-financial-times"
-                        open
-                      >
-                        <summary class="article-expander__title">UK to strengthen ties with US on crypto matters: Report</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/uk-strengthen-ties-us-crypto-matters-financial-times?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU0OWQtNjU0NC03MTBjLTg4NmQtMzVlOTQ0ZTU2YjQ4.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The UK has discussed adopting a more crypto-friendly approach with the US in a bid to boost industry innovation and attract more investment to Britain.</span>
                             </span>
                           </div>
                         </a>
@@ -563,6 +374,23 @@ Watch on YouTube</span>
                   <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://openai.com/index/introducing-stargate-uk/"
+                        open
+                      >
+                        <summary class="article-expander__title">Introducing Stargate UK</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://openai.com/index/introducing-stargate-uk/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -613,7 +441,7 @@ Watch on YouTube</span>
                         <summary class="article-expander__title">Notion API importer, with Databases to Bases conversion bounty</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/obsidianmd/obsidian-importer/issues/421">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/640b32e622f6140705813b8c2f22d49cdb572562e9050422216a5690550955d6/obsidianmd/obsidian-importer/issues/421" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/23fd6c301f712a038f4656ff3c84d9d75e1664cc9d651fb1b40844efe9099137/obsidianmd/obsidian-importer/issues/421" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;13
@@ -650,7 +478,7 @@ Watch on YouTube</span>
                         <summary class="article-expander__title">The Asus Gaming Laptop ACPI Firmware Bug: A Deep Technical Investigation</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/Zephkek/Asus-ROG-Aml-Deep-Dive">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/b17b23e3d160551fca193d3d1abfeb4a9d922392ba08e993c58478a0eb9a8a4b/Zephkek/Asus-ROG-Aml-Deep-Dive" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/142d7bbda7a7565f4564025d8b889af60e4baf4c959af1105dee174b9702d0cc/Zephkek/Asus-ROG-Aml-Deep-Dive" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;50
@@ -693,26 +521,6 @@ Watch on YouTube</span>
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;2
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.visionofhumanity.org/maps/"
-                        open
-                      >
-                        <summary class="article-expander__title">Global Peace Index 2025</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.visionofhumanity.org/maps/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://www.visionofhumanity.org/wp-content/uploads/2025/06/resource-thumbnail-820-550-gpi-2025.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -804,11 +612,133 @@ Watch on YouTube</span>
                         <summary class="article-expander__title">AMD Open Source Driver for Vulkan project is discontinued</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/728950f989941369e8a14e17ef9485221f510fe9f6c90c8f33b40fe1f06a46f5/GPUOpen-Drivers/AMDVLK/discussions/416" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/000b0c26cae9c4962f67737bea9854b5744436437284de8ceb8a43c21aaa3765/GPUOpen-Drivers/AMDVLK/discussions/416" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
                                   min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Cointelegraph.com News</button>
+                  <a class="source-heading__link" href="https://cointelegraph.com">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/ark-invest-bullish-holdings-near-130m-latest-8m-scoop"
+                        open
+                      >
+                        <summary class="article-expander__title">ARK Invest’s Bullish holdings near $130M with latest $8.2M scoop</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/ark-invest-bullish-holdings-near-130m-latest-8m-scoop?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU1ZTMtZWI0Yy03MWQ3LWIyZTktNzhhZjc5ZjBlNzQx.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Cathie Wood’s ARK Invest now holds nearly $130 million worth of Bullish shares across its ETFs after its latest multimillion-dollar acquisition on Tuesday.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/fed-third-mandate-could-devalue-dollar-and-drive-bitcoin-higher"
+                        open
+                      >
+                        <summary class="article-expander__title">Fed’s ‘third mandate’ may devalue dollar, send crypto soaring</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/fed-third-mandate-could-devalue-dollar-and-drive-bitcoin-higher?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU2NDMtYTAxMy03OWVhLTgxMTAtOGY1Nzk3YWJhZWRm.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Donald Trump’s latest Fed pick cited a “third mandate” for the bank to moderate long-term rates, potentially justifying yield curve control policies, which could boost Bitcoin.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/bitcoin-resistance-level-116k-bullish-catalysts-bitfinex-analysts"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin stuck at $116K resistance until ‘decisively reclaimed,’ says Bitfinex</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/bitcoin-resistance-level-116k-bullish-catalysts-bitfinex-analysts?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDUvMDE5NmQ5NzItOTE3Yi03ZjVmLWEwMjktMzdjMTlkZDgwY2Zi.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>There’s division among crypto analysts over how Bitcoin will react to the Fed’s decision on Wednesday, whether or not a rate cut is announced.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/gd-culture-falls-28-percent-7500-bitcoin-acquisition-deal"
+                        open
+                      >
+                        <summary class="article-expander__title">Nasdaq-listed GD Culture plunges on $875M Bitcoin acquisition deal</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/gd-culture-falls-28-percent-7500-bitcoin-acquisition-deal?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU1MjYtMzM4Yy03MTJhLWJjZGItNjVmNzZhNzFjMTQ2.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Shares in GD Culture fell 28% after the livestreaming company made a deal to swap tens of millions of its shares to acquire 7,500 Bitcoin from Pallas Capital.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/crypto-etfs-launching-inflows-skeptical-altcoin-season-bitwise"
+                        open
+                      >
+                        <summary class="article-expander__title">SEC listing rules to boost crypto ETFs, but no guarantee of inflows: Bitwise</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/crypto-etfs-launching-inflows-skeptical-altcoin-season-bitwise?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDgvMDE5OGYyZGMtMjhhMC03MmEwLTk5NmItMjA0YzVjOWIyNmY2.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Bitwise’s Matt Hougan says a more straightforward SEC listing process could lead to more crypto ETFs, but that doesn’t mean they’ll all attract money.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://cointelegraph.com/news/uk-strengthen-ties-us-crypto-matters-financial-times"
+                        open
+                      >
+                        <summary class="article-expander__title">UK to strengthen ties with US on crypto matters: Report</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://cointelegraph.com/news/uk-strengthen-ties-us-crypto-matters-financial-times?utm_source&#x3D;rss_feed&amp;utm_medium&#x3D;rss&amp;utm_campaign&#x3D;rss_partner_inbound">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTU0OWQtNjU0NC03MTBjLTg4NmQtMzVlOTQ0ZTU2YjQ4.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The UK has discussed adopting a more crypto-friendly approach with the US in a bid to boost industry innovation and attract more investment to Britain.</span>
                             </span>
                           </div>
                         </a>
@@ -1643,7 +1573,7 @@ The post Infinix XPAD 20 Pro Now Available In Malaysia For RM999 appeared first 
                         <summary class="article-expander__title">Launch HN: Rowboat (YC S24) – Open-source IDE for multi-agent systems</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/rowboatlabs/rowboat">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/7b100957d1d205893c3910365a34e347206041842d998f2fcda02e188ae3fa28/rowboatlabs/rowboat" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/9af723ede00380facf6179c07675b21946381cae2729380fc22cb2d0f7520a13/rowboatlabs/rowboat" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;7
@@ -2477,8 +2407,8 @@ The post TM Revamps Unifi TV Service; Now Available To Non-Unifi Customers appea
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-13 datetime="2025-09-13T20:45:58.000Z">2025-09-13</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-13 datetime="2025-09-13T20:45:58.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-13 datetime="2025-09-13T21:41:15.000Z">2025-09-13</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-13 datetime="2025-09-13T21:41:15.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -2497,16 +2427,15 @@ The post TM Revamps Unifi TV Service; Now Available To Non-Unifi Customers appea
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/wait4x/wait4x"
+                        data-accordion-key="https://okmij.org/ftp/Scheme/callcc-calc-page.html"
                         open
                       >
-                        <summary class="article-expander__title">Wait4X allows you to wait for a port or a service to enter the requested state</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/wait4x/wait4x">
+                        <summary class="article-expander__title">Normal-order syntax-rules and proving the fix-point of call/cc</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://okmij.org/ftp/Scheme/callcc-calc-page.html">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/2da7b590f968c2485779bc4b89f1e270a1a70ae713bc26938d1d3e39031dcb1b/wait4x/wait4x" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;34
+                                &ensp;<span class="article-reading-time">(&hairsp;12
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2971,8 +2900,8 @@ The post TM Revamps Unifi TV Service; Now Available To Non-Unifi Customers appea
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/17789222698">
-        <time id="build-timestamp" datetime="2025-09-17T06:49:22.824Z">2025-09-17T06:49:22.824Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/17789743513">
+        <time id="build-timestamp" datetime="2025-09-17T07:12:48.950Z">2025-09-17T07:12:48.950Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
