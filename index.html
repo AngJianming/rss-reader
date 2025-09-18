@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-18 datetime="2025-09-18T04:32:46.000Z">2025-09-18</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-18 datetime="2025-09-18T04:32:46.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-18 datetime="2025-09-18T05:04:19.000Z">2025-09-18</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-18 datetime="2025-09-18T05:04:19.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -42,66 +42,47 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/carlos_andreslopez_0a4ef/go-struct-recorrer-elementos-de-una-estructura-para-validarlos-28ao"
+                        data-accordion-key="https://dev.to/jay_sarvaiya_f85e7148bb57/7-react-tips-that-will-make-you-a-better-developer-1a64"
                         open
                       >
-                        <summary class="article-expander__title">Go struct: Recorrer elementos de una estructura para validarlos</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/carlos_andreslopez_0a4ef/go-struct-recorrer-elementos-de-una-estructura-para-validarlos-28ao">
+                        <summary class="article-expander__title">7 React Tips That Will Make You a Better Developer</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jay_sarvaiya_f85e7148bb57/7-react-tips-that-will-make-you-a-better-developer-1a64">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb0zgw2xwv589ikw5c6cd.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F259opna4c53rl0rs3cfy.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Planteamiento del problema: se tiene una estructura definida y se requiere extraer los datos y el tipo de dato registrado ella usando el lenguaje Go.
-Creamos el siguiente árbol de programa:
+                              <span>1. Keep Components Small &amp; Focused
 
-Definamos la siguiente estructura alamcenada en el archivo models.go en la carp
-package model
 
-import &quot;time&quot;
+A React component should ideally do one thing well. If your file is 300+ lines, that’s a sign it needs to be broken down into smaller components. This improves readability and reusability.
+Instead of:
+const [val, setVal] &#x3D; useState(false);
 
-type Usuario struct{
-  Alias string
-  Correo string
-  Puntaje int
-  Creado time.Time
-  Activo bool
-}
+Use:
+const [isOpen, setIsOpen] &#x3D; useState(false);
 
-En el código principal llamamos el paquete model que contiene la estructura y le agregamos valores.
-package main
+Your future self (and your teammates) will thank you.
+If you’re doing heavy computations in a component, wrap them in useMemo.
+const sortedData &#x3D; useMemo(() &#x3D;&gt; {
+  return data.sort((a, b) &#x3D;&gt; a.value - b.value);
+}, [data]);
 
-import(
- &quot;fmt&quot;
- &quot;reflect&quot;
- md &quot;strtest/model&quot;
-)
+Not everything needs to live inside a useEffect.
+❌ Bad:
+useEffect(() &#x3D;&gt; {
+  setFiltered(items.filter(i &#x3D;&gt; i.active));
+}, [items]);
 
-func main(){
-  //forma rapida de inicializacion
-  //requiere importar libreria time
-  //u :&#x3D; md.Usuario{&quot;Red&quot;, &quot;red@test.com&quot;, 90, time.Now(),false}
+✅ Better:
+const filtered &#x3D; items.filter(i &#x3D;&gt; i.active);
 
-  //forma extensa
-  var u md.Usuario
-
-  u.Alias &#x3D; &quot;Red&quot;
-  u.Correo &#x3D; &quot;red@test.com&quot;
-  u.Puntaje &#x3D; 90
-
-  v :&#x3D; reflect.ValueOf(u)
-  typeOf :&#x3D; v.Type()
-  for i :&#x3D; 0; i &lt; v.NumField(); i++ {
-    fmt.Print(&quot;Campo: &quot;,typeOf.Field(i).Name)
-    fmt.Print(&quot; Valor: &quot;, v.Field(i).Interface())
-    fmt.Println(&quot; Tipo: &quot;, typeOf.Field(i).Type)
-  }
-}
-
-Empleamos la librería reflect que permite manipular objetos con tipos arbitrarios (definidos por el usuario).
-Empleamos el ciclo for para recorrer todos los elmentos de la estructura usando la función  NumField() también perteneciente al la librería relfect, la cual retorna la cantidad de campos en una estructura.
-
-Obtenemos como resultado el nombre del campo, el dato almacenado en el campo y el tipo de campo de cada uno de los elementos de la estructura.
-Este código puede ser útil para validar o gestionar campos de estructuras en diferentes contextos.
-Hasta la proxima!</span>
+Don’t wait until your app gets big. React DevTools can help spot wasted re-renders and performance bottlenecks even in early development.
+TypeScript catches bugs before runtime and makes your components more predictable. Even if you just start with props typing, it’s worth it.
+If you find yourself copy-pasting logic across components, extract it into a custom hook.
+function useToggle(initial &#x3D; false) {
+  const [state, setState] &#x3D; useState(initial);
+  const toggle &#x3D; () &#x3D;&gt; setState(prev &#x3D;&gt; !prev);
+  return [state, toggle];
+}</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
@@ -113,43 +94,42 @@ Hasta la proxima!</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/pedropaulobusinessconsultant/can-i-deduct-education-expenses-for-my-business-3cmh"
+                        data-accordion-key="https://dev.to/yasir_umayyah_shamon/can-simple-calculator-projects-be-turned-into-real-world-tools-49l8"
                         open
                       >
-                        <summary class="article-expander__title">Can I Deduct Education Expenses for My Business?</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/pedropaulobusinessconsultant/can-i-deduct-education-expenses-for-my-business-3cmh">
+                        <summary class="article-expander__title">Can Simple Calculator Projects Be Turned Into Real-World Tools?</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/yasir_umayyah_shamon/can-simple-calculator-projects-be-turned-into-real-world-tools-49l8">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiyuch3u6hpi03da26g2t.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgxcves7e54yzck5ros86.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Yes—if the education maintains or improves skills used in your current trade or is required by law or your employer. It’s not deductible if it qualifies you for a new trade or meets minimum education requirements. Always document the business purpose and talk with a tax pro.
-The IRS generally allows deductions for ordinary and necessary expenses. Training that sharpens skills you already use—like advanced software courses, industry certifications, or required continuing education—usually fits. But tuition that pivots you into a different field, or coursework needed to meet baseline qualifications (e.g., becoming a CPA when you’re not one yet), is typically not deductible as a business expense.
-For most owners, eligible costs may include registration fees, course licenses, textbooks, trade …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/codemintah/low-code-no-code-platforms-2ad4"
-                        open
-                      >
-                        <summary class="article-expander__title">Low Code No Code Platforms</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/codemintah/low-code-no-code-platforms-2ad4">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frjsnrxqgwmhpj9jplnek.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Looking for the best #LowCode and #NoCode platforms for developers and teams?
-🔗 https://github.com/Mintahandrews/Low-Code-No-Code-Platforms
+                              <span>Most beginners build a basic calculator in JavaScript when learning HTML, CSS, and JS. It’s a great way to practice logic and functions — but here’s my question:
+Can we take this simple project and make it solve real-world problems?
+My Example: UAE Gratuity Calculator
 
 
-  
-  
-  DevTools #OpenSource #NoCode #LowCode #Automation #AppBuilder #InternalTools #MVP #Backend #Frontend #Database #Workflow #TechStack #GitHub #Programming #vide #videcode</span>
+In the UAE, employees are entitled to gratuity (end-of-service benefits) when they resign or their contract ends.
+The problem? The calculation depends on:
+Basic salary
+Years of service
+Contract type (limited or unlimited)
+It’s not easy to calculate by hand, so I decided to turn a basic calculator project into a practical tool.
+A Small JavaScript Snippet
+
+
+Here’s a simplified version of the formula:
+function calculateGratuity(salary, years) {
+if (years &lt;&#x3D; 5) {
+The Full Tool
+
+
+I built a live version here:
+https://calculategratuity.ae/
+My Question to You
+
+
+Have you ever taken a beginner project (like a calculator, to-do app, etc.) and turned it into something that people actually use in real life?
+Do you think these kinds of projects are worth building, or should beginners move on quickly to “bigger” projects?
+I’d love to hear your thoughts!</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
@@ -161,166 +141,23 @@ For most owners, eligible costs may include registration fees, course licenses, 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/manonaga2188/async-vs-sync-apis-a-developers-complete-guide-11io"
+                        data-accordion-key="https://dev.to/wisdomudo/javascript-dom-manipulation-how-to-change-website-content-dynamically-1d5d"
                         open
                       >
-                        <summary class="article-expander__title">Async vs Sync APIs: A Developer&#x27;s Complete Guide</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/manonaga2188/async-vs-sync-apis-a-developers-complete-guide-11io">
+                        <summary class="article-expander__title">JavaScript DOM Manipulation: How to Change Website Content Dynamically</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/wisdomudo/javascript-dom-manipulation-how-to-change-website-content-dynamically-1d5d">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1k07g4qczfr3sqmtvu46.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fh2vg16b4c7csx8mj01ae.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>When building or consuming APIs, understanding synchronous (sync) and asynchronous (async) approaches is crucial for building efficient applications. Let&#x27;s dive into both concepts with practical examples and best practices.
-A synchronous API works like a traditional conversation: you ask a question, wait for the complete answer, and only then proceed. The client sends a request and blocks until it receives a response.
-Key Characteristics:
-Request → Wait → Response → Continue
-Client thread is blocked during operation
-Simple to understand and implement
-Response is immediate and direct
-Think of ordering food at a street stall—you wait while the cook prepares your dish.
-// Synchronous API call
-async function getUserData(userId) {
-    console.log(&quot;Requesting user data...&quot;);
-
-    const response …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/isanjayjoshi/top-nextjs-shadcn-ui-templates-for-websites-and-admin-dashboards-6m6"
-                        open
-                      >
-                        <summary class="article-expander__title">Top Next.js Shadcn UI Templates for Websites and Admin Dashboards</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/isanjayjoshi/top-nextjs-shadcn-ui-templates-for-websites-and-admin-dashboards-6m6">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6u2vteo03u3ijgb1yfil.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Shadcn is everywhere these days. Since it came out in 2023, the Shadcn UI library has become super popular, with over 100k+ NPM downloads every week. It&#x27;s one of the most talked-about libraries for building dashboards &amp; websites.
-Because Shadcn is so in demand, people are also looking for great web templates that use it. I’ve been looking for some of the best ones and found 11 amazing Next.js Shadcn templates. These templates can help you build anything from a simple website to a full-blown admin dashboard.
-Homely is a Next.js website template built with Tailwind, Shadcn, and React. It&#x27;s an ideal choice for building modern real estate and property-related websites. The template is designed to provide a clean and professional look, offering a fast and highly customizable experience that wor…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/irender_gpu_cloud/how-to-use-an-background-or-reference-image-in-blender-p65"
-                        open
-                      >
-                        <summary class="article-expander__title">How to use an background or reference image in Blender</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/irender_gpu_cloud/how-to-use-an-background-or-reference-image-in-blender-p65">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9tg8070j2jp1u0h9ke8y.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Introduction
-
-
-When modeling in Blender, adding a background or reference image is one of the fastest ways to keep your proportions accurate and speed up the workflow. Whether you’re modeling a character from a sketch or aligning architecture plans, Blender 4.x makes it easy to set up images directly in the viewport.
-This guide explains the current methods (2025) to add and manage reference images in Blender, and highlights the most effective workflows for artists.
-The simplest way to insert an image in Blender is by creating an Empty Image object.
-Steps:
-Go to the 3D Viewport.
-
-
-Press Shift + A → Image → Reference (or Background).
-
-
-
-Reference Image: Oriented to the current view.
-Background Image: Positioned in world space behind objects.
-Choose your image file.
-Once added, the image will…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/gg_news/ign-town-to-city-official-early-access-launch-trailer-5al2"
-                        open
-                      >
-                        <summary class="article-expander__title">IGN: Town to City - Official Early Access Launch Trailer</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gg_news/ign-town-to-city-official-early-access-launch-trailer-5al2">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FXxSOYkfGC-0%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Town to City Early Access Launch Trailer
-
-
-Town to City has just rolled out an Early Access trailer, showcasing how you can start your very own cozy city on Steam PC. From kicking off your first settlement and juggling citizen needs to planning growth and expansion, this creative city-builder from the makers of Station to Station has all the behind-the-scenes gameplay goodies.
-Ditch the rigid grid and design freely—place houses, shops, parks or even a winding river to keep your residents smiling. Grow a single town or link multiple communities into a thriving region, whether you’re taking it easy in campaign mode or going all-in on a sandbox economy. Pixel-perfect flower beds or big-picture city planning? The choice is yours.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/gg_news/ign-tank-havoc-official-announcement-trailer-286b"
-                        open
-                      >
-                        <summary class="article-expander__title">IGN: Tank Havoc - Official Announcement Trailer</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gg_news/ign-tank-havoc-official-announcement-trailer-286b">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2FEhAEwIvEqn0%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Tank Havoc – Official Announcement Trailer
-
-
-Get ready to roll into explosive, team-based tank battles where speed and strategy collide. Tank Havoc throws you into dynamic arenas with multiple game modes, encouraging flanking maneuvers, coordinated pushes, and on-the-fly tactical shifts.
-Customize your ride, mix and match unique skills, and adapt your loadout to dominate every match. Rally your squad, unleash chaos, and don’t forget to head over to Steam to wishlist Tank Havoc!
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/devrabiul/translate-10000-messages-in-under-100-seconds-easy-fast-lightweight-with-laravel-geogenius-336a"
-                        open
-                      >
-                        <summary class="article-expander__title">🚀 Translate 10,000 messages in under 100 seconds — easy, fast, lightweight with Laravel GeoGenius</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/devrabiul/translate-10000-messages-in-under-100-seconds-easy-fast-lightweight-with-laravel-geogenius-336a">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frqhhh8oj0qs1apvz3s9l.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>🌍 Laravel GeoGenius — Supercharge Your Laravel App with Geo-Location, Multilingual Translations, and Smarter Automation
-
-
-Building modern applications means going beyond CRUD. Today’s users expect personalized experiences — whether that’s content in their own language, the right currency for their country, or smart defaults based on location.
-That’s where Laravel GeoGenius comes in.
-geo-location, translations, multilingual workflows, and global user experience — all in one place.
-Laravel GeoGenius was built with one goal:
-Make Laravel apps truly global, without complexity.
-Instead of piecing together multiple libraries and writing endless boilerplate, GeoGenius offers an integrated solution for:
-🌐 Geo-IP detection (location, timezone, country, currency)
-📝 Automatic translation workflows…</span>
+                              <span>Modern websites are rarely static. They respond to clicks, update content instantly, and let users interact without refreshing the page. All of this is made possible through DOM manipulation, which is how JavaScript changes and controls a web page after it has loaded.
+Before you can build interactive features, you need to understand how to select elements, update their content, and respond to user actions. This guide walks you through the process step by step, using simple, beginner-friendly examples.
+By the end of this article, you will:
+Understand how to select elements in the DOM.
+Learn to update text, attributes, and styles dynamically.
+Know how to create, insert, and remove elements.
+Add interactivity with event listeners.
+Follow best practices to keep your code clean and accessible.
+…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;8
                                   min&hairsp;)</span>
                             </span>
@@ -332,23 +169,38 @@ Instead of piecing together multiple libraries and writing endless boilerplate, 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/engineeredai/how-search-engines-discriminate-against-ai-content-with-data-549j"
+                        data-accordion-key="https://dev.to/secesther/set-up-aws-alerts-to-catch-cost-spikes-and-security-risks-54o3"
                         open
                       >
-                        <summary class="article-expander__title">How Search Engines Discriminate Against AI Content (With Data)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/engineeredai/how-search-engines-discriminate-against-ai-content-with-data-549j">
+                        <summary class="article-expander__title">Set Up AWS Alerts to catch Cost Spikes and Security Risks</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/secesther/set-up-aws-alerts-to-catch-cost-spikes-and-security-risks-54o3">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fccdg7arj5db4w0ye22jm.webp" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F488doxq2lo48d3xuyoug.webp" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Originally published at EngineeredAI.net
-As developers, we understand controlled experiments. What I accidentally created with my 5-blog setup exposed systematic bias in search algorithms that affects all of us building AI-related projects.
-I documented 9 months of search engine bias against AI content with real GSC data, server logs, and analytics. The findings reveal why your AI projects might be getting buried regardless of quality.
-I didn&#x27;t set out to run a controlled experiment on search engine bias. But I accidentally created the perfect test case:
-Five blogs. Same owner. Same infrastructure. Same editorial process.
-QAJourney.net - Quality assurance methodologies
-RemoteWorkHaven.net - Remote work strategies
-HealthyForge.com - Health and wellness
-MomentumPath.net - Productivity and mi…</span>
+                              <span>Surprise bills are no fun. 
+- Unexpected charges
+- Root account usage
+Step 1 : Enable Billing metrics
+In the management console, navigate to &quot;Billing Preferences&quot; **under &quot;Billing and Cost Management**&quot;.
+
+
+
+
+Under &quot;Alert Preferences&quot;, check the option to &quot;Receive CloudWatch billing alerts&quot;. 
+
+
+Click *Update * to confirm your changes.
+
+
+
+
+Step 2: Create CloudWatch Alarm
+
+In the console, navigate to CloudWatch and choose New Alarm.
+Under &quot;Specify metric and conditions&quot;, select the** &quot;Total Estimated Charge&quot;** metric  under &quot;Billings&quot;.
+
+
+Under Conditions is where you define the criteria that will trigger your alarm. In the example below, I set the threshold value to $10. As soon as the estimated charge on my account reaches or exceeds $10, the alarm will be triggered. Adjust this threshold to…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
                                   min&hairsp;)</span>
                             </span>
@@ -360,21 +212,31 @@ MomentumPath.net - Productivity and mi…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/gabrielmrojas/spanish-version-building-mcp-tools-a-pdf-processing-server-efk"
+                        data-accordion-key="https://dev.to/aricpandya_security/when-a-community-event-turns-into-a-festival-of-learning-aws-community-day-vadodara-2025-4k8a"
                         open
                       >
-                        <summary class="article-expander__title">(Spanish Version) Building MCP Tools: A PDF Processing Server</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gabrielmrojas/spanish-version-building-mcp-tools-a-pdf-processing-server-efk">
+                        <summary class="article-expander__title">✨ When a Community Event Turns Into a Festival of Learning – AWS Community Day Vadodara 2025</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/aricpandya_security/when-a-community-event-turns-into-a-festival-of-learning-aws-community-day-vadodara-2025-4k8a">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fprork42nen4btkgox2co.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9ew0gm7hzsmu8dgnd8pr.jpeg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Version Original: Building MCP Tools: A PDF Processing Server
-Model Context Protocol (MCP) ha emergido como un estándar revolucionario para conectar modelos de IA con herramientas y servicios externos para mejorar sus capacidades. Te guiaré a través de una descripción general de alto nivel del proceso de desarrollo para construir un servidor integral de procesamiento de PDF usando FastMCP, con arquitectura adecuada, manejo de errores y características de grado de producción.
-server_info(): Obtener la configuración y estado del servidor.
-list_temp_resources(): Listar archivos actualmente en el directorio temporal del servidor.
-upload_file(), upload_file_base64(), upload_file_url(): Subir archivos al servidor desde tu máquina local o una URL.
-get_resource_base64(): Descargar un archivo del d…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
+                              <span>Community events aren’t just about talks. They’re about the energy, the connections, and the moments you carry forward long after the sessions are over.
+For the 2nd year in a row, I had the privilege of attending the most awaited AWS Community Day Vadodara 2025, organized by AWS User Groups Vadodara at Suncity Club &amp; Resort. And this time—it truly felt like a festival of learning. 🚀
+
+🌍 More than an Event, a 360° Experience
+🏢 Interactive Booths &amp; Zones – where learning happened hands-on.
+
+I wasn’t just attending sessions—I was living the community spirit.
+🙌 Behind the Scenes: The Organizers
+A massive shoutout to the incredible organizers:
+
+
+
+
+
+You all curated something unique where knowledge met experience, and that’s what made the event #extraordinary.
+🎤 The Speakers Who Lit Up the St…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -385,21 +247,190 @@ get_resource_base64(): Descargar un archivo del d…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/bhavy_k_5a3b6c88887b58c92/best-wrike-alternatives-list-5h03"
+                        data-accordion-key="https://dev.to/shiva_shanker_k/groq-secures-750m-the-ai-chip-startup-taking-on-nvidia-j5p"
                         open
                       >
-                        <summary class="article-expander__title">Best Wrike Alternatives List</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/bhavy_k_5a3b6c88887b58c92/best-wrike-alternatives-list-5h03">
+                        <summary class="article-expander__title">Groq Secures $750M: The AI Chip Startup Taking on Nvidia</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/shiva_shanker_k/groq-secures-750m-the-ai-chip-startup-taking-on-nvidia-j5p">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Firuk5mnx9es9xder94hu.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Foxbntbr2igudxcv8m4x2.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Tested 15 Wrike Alternatives: Only These 6 Are Worth Your Time
-Pratham naik for Teamcamp ・ Sep 17
-#productivity
+                              <span>How a former Google engineer&#x27;s vision for faster AI inference is reshaping the semiconductor landscape
+Hey dev community👋 
+Big news in the AI infrastructure world that I think you&#x27;ll find fascinating. Groq, the Silicon Valley startup founded by former Google engineer Jonathan Ross, just closed a massive $750 million Series D funding round, more than doubling their valuation to $6.9 billion. 
+This isn&#x27;t just another big funding announcement - it&#x27;s a potential game-changer for how we think about AI infrastructure. Let me break down why this matters for developers and the broader tech ecosystem.
+Founded in 2016, Groq has been quietly building what many consider the most promising alternative to Nvidia&#x27;s AI chip dominance. While Nvidia has captured over 80% of the AI chip market with their tr…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/sathish26062004/gsapphysics2d-8-bit-snake-game-challenge-4-36eb"
+                        open
+                      >
+                        <summary class="article-expander__title">[gsap/physics2D] 8-Bit Snake Game - Challenge #4</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sathish26062004/gsapphysics2d-8-bit-snake-game-challenge-4-36eb">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1749nlym7w544smhryj8.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Check out this Pen I made!</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/manthanank/deploying-a-nodejs-product-api-on-kubernetes-with-mongodb-hfo"
+                        open
+                      >
+                        <summary class="article-expander__title">🚀 Deploying a Node.js Product API on Kubernetes with MongoDB</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/manthanank/deploying-a-nodejs-product-api-on-kubernetes-with-mongodb-hfo">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fq2x00r6gmba7oh2q554d.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Modern apps need to scale effortlessly while staying resilient. Kubernetes (K8s) has become the go-to platform for orchestrating containerized apps, ensuring scalability, self-healing, and portability.
+In this guide, we’ll build and deploy a Node.js Product API with MongoDB on Kubernetes. You’ll learn how to containerize the app, define Kubernetes manifests, and enable auto-scaling.
+A Node.js + Express REST API with CRUD for products
+MongoDB database with Mongoose ODM
+Dockerized application
+Kubernetes resources: Deployment, Service, Ingress, Secrets
+Horizontal Pod Autoscaler (HPA) for auto-scaling
+Ingress Controller for external access
+Here’s the flow:
+Client → Ingress → Service → Pod(s) running Node.js API → MongoDB
+                   ↑
+                HPA scales pods dynamically
+
+nodejs-…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/navin_kumar_r/drop-your-craziest-simplest-web-app-idea-3651"
+                        open
+                      >
+                        <summary class="article-expander__title">💡 Drop your craziest, simplest web app idea</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/navin_kumar_r/drop-your-craziest-simplest-web-app-idea-3651">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fj39qelsr11cjt6hcttgz.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Hey folks 👋  
+I want to make a tiny, playful webapp — something super simple, funny, or surprising that people would instantly want to try and share.  
+Here’s the twist: instead of me coming up with the idea, I want to hear your wild suggestions.  
+👉 Drop your craziest, simplest web app idea in the comments.
+
+👉 I’ll pick one (or more) and actually try to build it. 
+Think of it as a fun mini hackathon powered by your creativity. Let’s see how weird we can get 🚀</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/aiwithapex/5-cutting-edge-generative-ai-breakthroughs-about-to-disrupt-2026-2f9f"
+                        open
+                      >
+                        <summary class="article-expander__title">5 Cutting-Edge Generative AI Breakthroughs About to Disrupt 2026</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/aiwithapex/5-cutting-edge-generative-ai-breakthroughs-about-to-disrupt-2026-2f9f">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fk4pqofwm34f81syc9gpz.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Everyone’s talking about 2026 AI, but the real opportunity is how it will reshape jobs, products, and privacy faster than most teams expect.
+AI is moving from content to capability.
+The leap isn’t bigger models.
+It is new ways to build, simulate, and protect data.
+Code generation is maturing into full-stack builders with tests and data contracts.
+Synthetic datasets will unlock learning while keeping real user data safe.
+Multimodal AI will turn ideas into music, video, and 3D scenes on demand.
+Scientists will run complex simulations with AI copilots and get answers faster.
+Teams will prototype lifelike product videos and 3D spaces without massive crews.
+A mid-market fintech tested AI code generation on a reporting service.
+Time to ship fell from five weeks to three.
+Bugs per release dropped 28% after they added unit test prompts and evals.
+They kept PII safe by training on a synthetic ledger with privacy checks.
+Here is how to get ready in the next 90 days ↓
+• Map your highest-friction workflows across code, data, and media.
+↳ Pick one quick win per area and run a 30-day pilot.
+• Stand up a synthetic data sandbox with clear privacy tests and owners.
+• Build a simulation backlog with three must-answer questions per team.
+• Set guardrails early: evals, versioning, red-teaming, and an AI product owner.
+⚡ Expect faster cycles, safer data, and sharper demos your buyers remember.
+✓ Teams that do this see 25–40% cycle time gains within two quarters.
+What would you add to this, and which pilot will you run first?</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/bhavy_k_5a3b6c88887b58c92/-no2"
+                        open
+                      >
+                        <summary class="article-expander__title">[Boost]</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/bhavy_k_5a3b6c88887b58c92/-no2">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6cjbebmgj1zk0ysftp52.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I Tested 10 AI Coding Tools So You Don&#x27;t Have To - Here&#x27;s What Actually Works
+Pratham naik for Teamcamp ・ Sep 18
+#coding
+        #ai
         #devops
-        #opensource
         #webdev</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/pratham_naik_project_manager/10-tested-ai-coding-tools-you-dont-have-to-use-yet-21a6"
+                        open
+                      >
+                        <summary class="article-expander__title">10 tested AI coding tools you dont have to use Yet</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/pratham_naik_project_manager/10-tested-ai-coding-tools-you-dont-have-to-use-yet-21a6">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmgqotmvetwam7jj2q5jm.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I Tested 10 AI Coding Tools So You Don&#x27;t Have To - Here&#x27;s What Actually Works
+Pratham naik for Teamcamp ・ Sep 18
+#coding
+        #ai
+        #devops
+        #webdev</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -594,6 +625,26 @@ Pratham naik for Teamcamp ・ Sep 17
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://skyfall.dev/posts/slack"
+                        open
+                      >
+                        <summary class="article-expander__title">Slack has raised our charges by $195k per year</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://skyfall.dev/posts/slack">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://skyfall.dev//posts/slack/og.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;2
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1380,7 +1431,7 @@ The post Infinix XPAD 20 Pro Hands On: Straightforward And Simple appeared first
                         <summary class="article-expander__title">Gluon: a GPU programming language based on the same compiler stack as Triton</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/triton-lang/triton/blob/main/python/tutorials/gluon/01-intro.py">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/c0e12b7dac6c01c358f7ad0442eba499a8108128bb08cc5dc85221c2b22c16ab/triton-lang/triton" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/12f131a42f887385c1277829a08b37dd04db832cef2ee954ed408ea29d3d4aec/triton-lang/triton" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;4
@@ -1596,26 +1647,6 @@ The post Infinix XPAD 20 Pro Hands On: Straightforward And Simple appeared first
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;4
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://arxiv.org/abs/2509.12337"
-                        open
-                      >
-                        <summary class="article-expander__title">Determination of the fifth Busy Beaver value</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://arxiv.org/abs/2509.12337">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="/static/browse/0.3.4/images/arxiv-logo-fb.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;2
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2608,7 +2639,7 @@ The post TikTok To Remain In The US As Trump Administration Closes Deal With Chi
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;59
+                                &ensp;<span class="article-reading-time">(&hairsp;61
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -3052,8 +3083,8 @@ The post TikTok To Remain In The US As Trump Administration Closes Deal With Chi
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/17818246483">
-        <time id="build-timestamp" datetime="2025-09-18T04:43:02.310Z">2025-09-18T04:43:02.310Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/17818717397">
+        <time id="build-timestamp" datetime="2025-09-18T05:13:18.029Z">2025-09-18T05:13:18.029Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
