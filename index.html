@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-27 datetime="2025-09-27T08:27:12.000Z">2025-09-27</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-27 datetime="2025-09-27T08:27:12.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-09-27 datetime="2025-09-27T09:04:51.000Z">2025-09-27</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-09-27 datetime="2025-09-27T09:04:51.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -38,6 +38,332 @@
                   <a class="source-heading__link" href="https://dev.to">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/latchudevops/part-91-google-kubernetes-engine-gke-node-pools-node-selectors-50k3"
+                        open
+                      >
+                        <summary class="article-expander__title">Part-91: 🚀 Google Kubernetes Engine (GKE) - Node Pools &amp; Node Selectors</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/latchudevops/part-91-google-kubernetes-engine-gke-node-pools-node-selectors-50k3">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2m4irwl073hi3mrglng8.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>When working with Google Kubernetes Engine (GKE), you’ll come across two powerful concepts:
+👉 Node Pools
+👉 Node Selectors
+These help you control how your workloads run on nodes inside your Kubernetes cluster. Let’s break them down step by step.
+A Node Pool is basically a group of nodes in a GKE cluster with the same configuration.
+
+When you create a cluster, GKE automatically creates a default node pool.
+You can add more node pools with different configurations depending on your workload needs.
+🔑 Each node in a pool has a label like this:
+cloud.google.com/gke-nodepool: default-pool
+cloud.google.com/gke-nodepool: linuxapps-pool
+
+So, GKE automatically labels nodes by their pool name.
+You can categorize workloads by creating node pools with specific configurations. For example:
+🖴 Node pool with local SSDs for high I/O apps
+⚡ Node pool with minimum CPU platform for performance tuning
+💰 Node pool with Spot VMs for cost savings
+🖥️ Node pool with a specific machine type (e.g., e2-standard-4)
+🖼️ Node pool with a specific node image (e.g., Container-Optimized OS vs Ubuntu)
+👉 You can resize node pools by adding/removing nodes.
+⚠️ Important: You cannot change a single node’s config inside a node pool. Any change applies to the entire pool.
+
+A Node Selector is a simple way to tell Kubernetes where your Pod should run.
+It’s part of the Pod spec and works with key-value labels.
+Example: If you want a Pod to run only in the linuxapps-pool node pool 👇
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-linux-app
+spec:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: linuxapps-pool
+  containers:
+    - name: my-container
+      image: nginx
+
+Here’s what happens:
+Kubernetes looks at your cluster nodes.
+It finds nodes with the label cloud.google.com/gke-nodepool&#x3D;linuxapps-pool.
+It schedules your Pod there. ✅
+Node Pools &#x3D; groups of nodes with the same configuration.
+Node Selectors &#x3D; simple rules to make sure Pods land on the right nodes.
+Together, these give you fine-grained control over workload placement in GKE.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/codebrainr/s-slice-to-essentials-build-the-thin-slice-4b18"
+                        open
+                      >
+                        <summary class="article-expander__title">S — Slice to Essentials (build the thin slice)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/codebrainr/s-slice-to-essentials-build-the-thin-slice-4b18">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkytidy0tylpbcidukcve.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Definition of the slice
+1 screen (+ success state)
+2 endpoints (POST /action, GET /status)
+3 tests (happy, bad input, mocked failure)
+1 metric instrumented (per attempt)
+Minimal folder skeleton
+/app
+  /api        # endpoints
+  /ui         # one screen + success
+  /tests      # 3 tests
+  /metrics    # logger/tracker
+
+Fastify stubs (copy‑paste)
+app.post(&#x27;/action&#x27;, async (req, reply) &#x3D;&gt; {
+  const { input } &#x3D; req.body || {};
+  if (!input) {
+      reply.statusCode &#x3D; 400:
+      return { error: &#x27;missing input&#x27; };
+  }
+  const id &#x3D; Date.now().toString();
+  // TODO: enqueue or mock work
+  return { id };
+});
+
+app.get(&#x27;/status&#x27;, async (req, reply) &#x3D;&gt; {
+  const { id } &#x3D; req.query || {};
+  // TODO: return mocked result for demo
+  return { id, state: &#x27;done&#x27;, result: { ok: true } };
+});
+
+Tests (Given/When/Then)
+Given valid input → When POST /action → Then receive id
+Given missing input → When POST /action → Then 400
+Given id → When GET /status → Then state in {&#x27;queued&#x27;,&#x27;done&#x27;} and result?
+
+Instrumentation (pseudo)
+log(&#x27;attempt&#x27;, { id, ts });
+log(&#x27;success&#x27;, { id, ts, useful: rating });
+
+Ship boring. Learn fast. The goal isn’t elegance; it’s evidence.
+Full checklist + copy blocks → https://shipwithai.substack.com/p/pasta-al-dente-ship-a-one-feature?utm_source&#x3D;devto&amp;utm_medium&#x3D;social&amp;utm_campaign&#x3D;issue_pasta_al_dente_week</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/envitab/why-technical-writing-is-a-superpower-in-2025-3ep1"
+                        open
+                      >
+                        <summary class="article-expander__title">Why Technical Writing is a Superpower in 2025</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/envitab/why-technical-writing-is-a-superpower-in-2025-3ep1">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwce8toe646lusdlogarr.jpeg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The rise of AI, blockchain, and decentralized technologies has made clear communication more important than ever. It’s not enough to build great tools, someone has to explain them in a way that’s accessible, accurate, and compelling.
+That’s where technical writing comes in.
+Whether you’re a developer, designer, or someone transitioning into tech, learning how to write tutorials, documentation, and explainers is a skill that can open doors to:
+Better job opportunities in tech
+Freelance and consulting work
+Building your personal brand as a thought leader
+Contributing to open-source projects more effectively
+And here’s the truth: you don’t need to be a programmer to succeed in technical writing. You just need a technical skill, curiosity, and the ability to break down complex ideas for others.
+https://bit.ly/learntechnicalwriting
+It’s a 4-week guided program where I’ll help you:
+Learn the foundations of technical writing
+
+
+Create content that resonates with both developers and non-developers
+
+
+Build a portfolio you can use to land jobs or freelance gigs
+
+
+Develop the confidence to write clearly about fast-growing fields like AI and blockchain
+
+
+
+Clear communication is a career superpower. The best time to start learning it is now.
+👉 Apply here to join the mentorship program.
+Learn and start writing, one day at a time</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/fazal_mansuri_/understanding-cors-cross-origin-resource-sharing-a-complete-guide-5gbg"
+                        open
+                      >
+                        <summary class="article-expander__title">🌐 Understanding CORS (Cross-Origin Resource Sharing): A Complete Guide</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/fazal_mansuri_/understanding-cors-cross-origin-resource-sharing-a-complete-guide-5gbg">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb7v6cj5kie4hjdpwav26.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>🔎 What is CORS?
+
+
+Cross-Origin Resource Sharing (CORS) is a browser security feature that controls how web applications request resources (APIs, images, fonts, etc.) from a different origin (domain, protocol or port).
+👉 Example:
+Your React frontend runs at http://localhost:3000.
+Your Go API runs at http://localhost:8080.
+When React fetches data from Go API → this is a cross-origin request.
+Without proper CORS setup, the browser blocks the request for security reasons.
+CORS works via HTTP headers exchanged between the browser and server.
+Simple Requests
+
+
+Happen when:
+Method is GET, POST or HEAD
+
+Headers are only &quot;safe&quot; ones (Accept, Content-Type as application/x-www-form-urlencoded, multipart/form-data, text/plain)
+👉 Example:
+GET /api/products HTTP/1.1
+Origin: http://example-frontend.co…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/abhishek_hadpad_6b54a621f/check-out-my-app-called-pdf-snippets-861"
+                        open
+                      >
+                        <summary class="article-expander__title">Check out my app called pdf snippets</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/abhishek_hadpad_6b54a621f/check-out-my-app-called-pdf-snippets-861">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpf0atmuauqi04xpuima5.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>It lets you copy any text directly from a PDF, and it automatically saves every snippet neatly inside a folder—organized and ready whenever you need it.
+No more juggling between apps. No more lost notes. Just simple, effortless text saving. Would love to hear your thoughts, feedback, or even feature ideas! 🙌
+https://sites.google.com/view/pdfsnippetsofficialsite/home</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/kazutora_hattori_66972c88/how-to-use-usenavigate-to-transition-from-a-button-in-react-4026"
+                        open
+                      >
+                        <summary class="article-expander__title">How to use useNavigate to transition from a button in React</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/kazutora_hattori_66972c88/how-to-use-usenavigate-to-transition-from-a-button-in-react-4026">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4aznzaiqkexq7cz5kf75.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Introduction
+
+
+react-router-dom&#x27;s useNavigate is a useful tool for implementing page transitions in React.
+It&#x27;s often used in cases like &quot;navigating to another page when a button is pressed&quot; or &quot;dynamically switching pages using an input ID.&quot;
+This article clearly explains the basic usage of navigate and how to combine it with forms and input values.
+1.First, obtain the function with useNavigate.
+import { useNavigate } from &quot;react-router-dom&quot;;
+
+const navigate &#x3D; useNavigate();
+
+2.Navigate to a fixed page
+To navigate to a specific route, simply pass a string.
+navigate(&quot;/cards/register&quot;); // Navigate to the new registration page
+
+3.Passing values ​​dynamically
+Using template literals, you can embed input values ​​in the URL.
+const onSubmit &#x3D; (data: any) &#x3D;&gt; {
+navigate(&#x60;/cards/${data.userId}&#x60;);
+// Example: If userId is &quot;hello&quot;, navigate to /cards/hello
+};
+
+Summary
+useNavigate → Get the function
+
+
+navigate(&quot;/path&quot;) → Navigate to the page
+
+
+navigate(/cards/${data.userId}) → Dynamically navigate using the input value</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/cangulmez/binary-analysis-fundamentals-4a4"
+                        open
+                      >
+                        <summary class="article-expander__title">Binary Analysis Fundamentals</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/cangulmez/binary-analysis-fundamentals-4a4">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdym44knkty0ft7soy6fz.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>In this post, I&#x27;ll explain and investigate the Executable and Linkable Format (ELF), which is the default binary format on Linux-based systems.
+To make practices, I&#x27;ve written a simple copy.c source file and we will investigate this:
+/**
+ * Copying a file content to another one.
+ */
+
+#include &quot;../linux.h&quot;
+
+#ifndef BUF_SIZE
+#define BUF_SIZE  1024
+#endif
+
+void main(int argc, char *argv[])
+{
+   int inputFd, outputFd, openFlags;
+   mode_t filePerms;
+   ssize_t numRead;
+   char buf[BUF_SIZE];
+
+   if (argc !&#x3D; 3 || strcmp(argv[1], &quot;--help&quot;) &#x3D;&#x3D; 0)
+      usage_error(&quot;Wrong command-line usage&quot;);
+
+   /* Open input and output files */
+
+   inputFd &#x3D; open(argv[1], O_RDONLY);
+   if (inputFd)
+      syscall_error(); 
+
+   openFlags &#x3D; O_CREAT | O_WRONLY | O_TRUNC;
+   filePerms &#x3D; S_IRUSR | S_IWUSR | S_IRGRP |…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -147,31 +473,6 @@ Enhanced Colla…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/satyam_gupta_0d1ff2152dcc/angular-modules-explained-a-deep-dive-into-ngmodule-for-scalable-apps-3f7"
-                        open
-                      >
-                        <summary class="article-expander__title">Angular Modules Explained: A Deep Dive into NgModule for Scalable Apps</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/satyam_gupta_0d1ff2152dcc/angular-modules-explained-a-deep-dive-into-ngmodule-for-scalable-apps-3f7">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F72friqe8s3a14cpo9p2y.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Angular Modules Explained: Your Blueprint for Organized and Scalable Apps
-
-
-If you&#x27;ve just started your journey with Angular, you&#x27;ve probably encountered a file called app.module.ts. You might have glanced at the @NgModule decorator, seen arrays like declarations, imports, and providers, and thought, &quot;What&#x27;s all this for? Can&#x27;t I just start building components?&quot;
-You&#x27;re not alone. Angular Modules, or NgModules, are one of the most fundamental yet initially confusing concepts in the framework. But here&#x27;s the secret: once you understand them, they become your most powerful tool for creating clean, well-structured, and scalable applications.
-Think of an Angular Module as a logical grouping of related code. It&#x27;s like a toolbox dedicated to a specific job. You wouldn&#x27;t keep your kitchen knives i…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://dev.to/satyam_gupta_0d1ff2152dcc/master-angular-cli-a-pro-developers-guide-to-boosting-your-workflow-4nki"
                         open
                       >
@@ -186,149 +487,6 @@ Think of an Angular Module as a logical grouping of related code. It&#x27;s like
 If you&#x27;ve ever dabbled in Angular, you&#x27;ve met the Angular CLI. It&#x27;s that faithful command-line tool that gets your project off the ground with a simple ng new my-app. But what if I told you that you&#x27;re probably only using 10% of its power? For many developers, the CLI is just a project starter. For pros, it&#x27;s an entire development toolkit capable of dramatically accelerating workflow, enforcing best practices, and reducing human error.
 In this guide, we’re going to move beyond the basics. We&#x27;ll dive deep into the advanced features, commands, and configurations that transform the Angular CLI from a helpful utility into an indispensable part of your professional toolkit. Whether you&#x27;re a beginner looking to up your game …</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/gg_news/ign-hollow-knight-silksong-how-to-beat-the-last-judge-or-skip-him-entirely-20jn"
-                        open
-                      >
-                        <summary class="article-expander__title">IGN: Hollow Knight Silksong - How to Beat the Last Judge (Or Skip Him Entirely!)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gg_news/ign-hollow-knight-silksong-how-to-beat-the-last-judge-or-skip-him-entirely-20jn">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2F8y4noyeoiz0%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hollow Knight Silksong pits you against The Last Judge, a fierce boss guarding the Citadel at the end of Act 1. This guide lays out clear combat tips—timing your dodges, exploiting her openings, and equipping the right charms and upgrades—to help you topple her thronemaid. If you’d rather skip the headache, there’s a sneaky path through the Mist that bypasses her entirely.
-On top of fight tactics, you’ll find recommendations for the best gear to boost your offense and defense. And if visuals are more your thing, there’s a handy IGN video link showing exactly how to navigate the Mist and leave The Last Judge in your dust.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-dumb-and-dumber-in-18-minutes-or-less-1be6"
-                        open
-                      >
-                        <summary class="article-expander__title">CinemaSins: Everything Wrong With Dumb and Dumber In 18 Minutes Or Less</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-dumb-and-dumber-in-18-minutes-or-less-1be6">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FDPaBJxTh3Aw%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Everything Wrong With Dumb and Dumber In 18 Minutes Or Less
-
-
-CinemaSins takes a hilarious, nitpicky dive into the classic comedy Dumb and Dumber, counting every outrageous blunder, plot hole, and “did they really just do that?” moment—wrapped up in under 18 minutes of gleeful ribbing. Along the way they pitch their sponsor Trade (with a sweet 50% off), plug their main site and social channels, and remind you to join the sinning party on Discord, Reddit, TikTok, and beyond.
-Behind the scenes you’ll find a team of writers (Jeremy, Chris, Aaron, Jonathan, Deneé, Ian, Daniel) and opportunities to share your own takes via a poll or support the squad on Patreon. Whether you’re here for the laughs or the top-tier movie critique, CinemaSins has you covered with more channels, merch, and mayhem than you knew you needed.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/music_youtube/mix-with-the-masters-mixing-night-with-ken-lewis-back-to-school-night-1012025-5fo4"
-                        open
-                      >
-                        <summary class="article-expander__title">Mix with the Masters: Mixing Night with Ken Lewis - BACK TO SCHOOL NIGHT - 10/1/2025</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/music_youtube/mix-with-the-masters-mixing-night-with-ken-lewis-back-to-school-night-1012025-5fo4">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FhvzflBZF8-4%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Mixing Night – Back to School Night (10/1/2025)
-
-Join 2X Grammy-winner Ken Lewis for a free live Mixing Night Q&amp;A where he breaks down pro mixing techniques, shares insider tips from 30+ years in the major label world, and answers your burning questions on the mix bus, production, recording and career growth.
-Stick around for giveaways from Session Studio, Sound Radix and Bettermaker, and don’t miss links to subscribe, grab merch, unlock ALLCOMP and GreenHAAS deals, book Ken’s mix critiques, and explore all the extra resources on his sites and socials.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/music_youtube/colors-penyair-bambu-a-colors-show-26d3"
-                        open
-                      >
-                        <summary class="article-expander__title">COLORS: Penyair - Bambú | A COLORS SHOW</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/music_youtube/colors-penyair-bambu-a-colors-show-26d3">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2F-LtINl7lFss%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Penyair’s COLORS Debut: “Bambú”
-
-
-Colombian wordsmith Penyair (hailing from Suba, Bogotá) delivers a hypnotic, stripped-down performance of his brand-new single “Bambú,” marking his next move after the album Filantropía. His laid-back flow and introspective vibes take center stage, weaving poetic bars over minimal production.
-Staying true to COLORS’ signature aesthetic, the setup is ultra-clean and distraction-free, spotlighting the artist’s raw talent. If you’re into fresh sounds and soulful lyricism, this one’s a must-watch.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/music_youtube/kexp-thee-marloes-over-live-on-kexp-123h"
-                        open
-                      >
-                        <summary class="article-expander__title">KEXP: Thee Marloes - Over (Live on KEXP)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/music_youtube/kexp-thee-marloes-over-live-on-kexp-123h">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FpfW1pChVt6k%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Thee Marloes Tear Up the KEXP Studio with “Over”
-
-
-Indonesian indie outfit Thee Marloes delivers a hypnotic live rendition of “Over” at KEXP, recorded August 1, 2025. Led by Natassya Sianturi’s soaring vocals and keys, the quintet—Sinatrya Dharaka on guitar/vox, Tommy Satrio on drums, Rhesa Filbert on bass/vox and Sandy Kusuma on percussion/vox—blends dreamy atmospheres with tight, math-rock rhythms.
-Hosted by Larry Mizell Jr., the session’s crisp sound is engineered by Kevin Suggs and mastered by Matt Ogaz, while a crew of five camera operators and editor Luke Knecht capture every moment. Check out more from Thee Marloes on Bandcamp or dive into other KEXP sessions at kexp.org.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/music_youtube/kexp-nation-of-language-im-not-ready-for-the-change-live-on-kexp-3662"
-                        open
-                      >
-                        <summary class="article-expander__title">KEXP: Nation of Language - I&#x27;m Not Ready For The Change (Live on KEXP)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/music_youtube/kexp-nation-of-language-im-not-ready-for-the-change-live-on-kexp-3662">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FtZTUNEme5AI%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Nation of Language lit up KEXP on August 4, 2025 with a sizzling live take on I’m Not Ready For The Change. The trio—Ian Devaney (guitar/vocals), Aidan Noell (keys/vocals) and Alex MacKay (bass)—laid down their dreamy synth-pop in the Seattle studio under Cheryl Waters’ watchful ear.
-Behind the scenes, Julian Martlew manned the audio board, joined by guest mixer Skinny Salazar and mastering ace Matt Ogaz, while Jim Beckmann, Carlos Cruz, Scott Holpainen and Luke Knecht captured every angle on camera.
-Watch on YouTube</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -483,7 +641,26 @@ Watch on YouTube</span>
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;29
+                                &ensp;<span class="article-reading-time">(&hairsp;30
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://janmidtgaard.dk/papers/Midtgaard%3AOLIVIERFEST25.pdf"
+                        open
+                      >
+                        <summary class="article-expander__title">Property-Based Testing of OCaml 5&#x27;s Runtime System [pdf]</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://janmidtgaard.dk/papers/Midtgaard%3AOLIVIERFEST25.pdf">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;127
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -767,7 +944,7 @@ The post Narwal Unveils Freo Flow, Freo X10 Pro, And S30; Priced From RM1,699 ap
                               <img src="https://substackcdn.com/image/fetch/$s_!5rzr!,w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4f882018-1b26-4247-9b63-352fcec1d49a_2912x1632.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
+                                &ensp;<span class="article-reading-time">(&hairsp;40
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -882,7 +1059,7 @@ The post Narwal Unveils Freo Flow, Freo X10 Pro, And S30; Priced From RM1,699 ap
                         <summary class="article-expander__title">SimpleFold: Folding proteins is simpler than you think</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/apple/ml-simplefold">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/d5d1391779cab4f83e8e74646a3b3c69777e1bac3d2c46df122894f0db68f690/apple/ml-simplefold" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/8faec9601b34a770c22407b77048ceb9ade2f2e316cbd9beadcea1c5a9e9e80e/apple/ml-simplefold" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;13
@@ -956,32 +1133,17 @@ The post Narwal Unveils Freo Flow, Freo X10 Pro, And S30; Priced From RM1,699 ap
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.spacex.com/updates#multiuser-spaceport"
-                        open
-                      >
-                        <summary class="article-expander__title">Evolving the Multi-User Spaceport</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.spacex.com/updates#multiuser-spaceport">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://www.spacex.com/static/images/share.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.bloomberg.com/news/articles/2025-09-26/us-cities-are-paying-too-much-for-new-transit-buses"
                         open
                       >
                         <summary class="article-expander__title">US cities pay too much for buses</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://www.bloomberg.com/news/articles/2025-09-26/us-cities-are-paying-too-much-for-new-transit-buses">
                           <div class="article-summary-box-inner media-object">
+                              <img src="https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i2X_uuAhVwOc/v1/1200x800.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;24
+                                  min&hairsp;)</span>
                             </span>
                           </div>
                         </a>
@@ -2472,7 +2634,7 @@ The post Dell Launches Pro Plus Earbuds In Malaysia For RM698 appeared first on 
                         <summary class="article-expander__title">Litex: The First Formal Language Learnable in 1-2 Hours</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/litexlang/golitex">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/c7eae2069f76fff1db78c8c6c995ad5a8012d043538a50e9cd8b2314d3585641/litexlang/golitex" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/a98105addcee8c15cf1e2ef917c935c9003d0e2be04f5fa3c5cf1d835d7905c6/litexlang/golitex" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;10
@@ -2993,8 +3155,8 @@ The post Dell Launches Pro Plus Earbuds In Malaysia For RM698 appeared first on 
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/18057589731">
-        <time id="build-timestamp" datetime="2025-09-27T08:42:39.215Z">2025-09-27T08:42:39.215Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/18057876063">
+        <time id="build-timestamp" datetime="2025-09-27T09:12:01.148Z">2025-09-27T09:12:01.148Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>

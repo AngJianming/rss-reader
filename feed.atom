@@ -1,10 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-09-27T08:42:39.237Z</id>
+    <id>urn:2025-09-27T09:12:01.169Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-09-27T08:42:39.237Z</updated>
+    <updated>2025-09-27T09:12:01.169Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[Part-91: 🚀 Google Kubernetes Engine (GKE) - Node Pools & Node Selectors]]></title>
+        <id>https://dev.to/latchudevops/part-91-google-kubernetes-engine-gke-node-pools-node-selectors-50k3</id>
+        <link href="https://dev.to/latchudevops/part-91-google-kubernetes-engine-gke-node-pools-node-selectors-50k3"/>
+        <updated>2025-09-27T09:04:51.000Z</updated>
+        <summary type="html"><![CDATA[When working with Google Kubernetes Engine (GKE), you’ll come across two powerful concepts:
+👉 Node Pools
+👉 Node Selectors
+These help you control how your workloads run on nodes inside your Kubernetes cluster. Let’s break them down step by step.
+A Node Pool is basically a group of nodes in a GKE cluster with the same configuration.
+
+When you create a cluster, GKE automatically creates a default node pool.
+You can add more node pools with different configurations depending on your workload needs.
+🔑 Each node in a pool has a label like this:
+cloud.google.com/gke-nodepool: default-pool
+cloud.google.com/gke-nodepool: linuxapps-pool
+
+So, GKE automatically labels nodes by their pool name.
+You can categorize workloads by creating node pools with specific configurations. For example:
+🖴 Node pool with local SSDs for high I/O apps
+⚡ Node pool with minimum CPU platform for performance tuning
+💰 Node pool with Spot VMs for cost savings
+🖥️ Node pool with a specific machine type (e.g., e2-standard-4)
+🖼️ Node pool with a specific node image (e.g., Container-Optimized OS vs Ubuntu)
+👉 You can resize node pools by adding/removing nodes.
+⚠️ Important: You cannot change a single node’s config inside a node pool. Any change applies to the entire pool.
+
+A Node Selector is a simple way to tell Kubernetes where your Pod should run.
+It’s part of the Pod spec and works with key-value labels.
+Example: If you want a Pod to run only in the linuxapps-pool node pool 👇
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-linux-app
+spec:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: linuxapps-pool
+  containers:
+    - name: my-container
+      image: nginx
+
+Here’s what happens:
+Kubernetes looks at your cluster nodes.
+It finds nodes with the label cloud.google.com/gke-nodepool=linuxapps-pool.
+It schedules your Pod there. ✅
+Node Pools = groups of nodes with the same configuration.
+Node Selectors = simple rules to make sure Pods land on the right nodes.
+Together, these give you fine-grained control over workload placement in GKE.]]></summary>
+        <author>
+            <name>Latchu@DevOps</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[S — Slice to Essentials (build the thin slice)]]></title>
+        <id>https://dev.to/codebrainr/s-slice-to-essentials-build-the-thin-slice-4b18</id>
+        <link href="https://dev.to/codebrainr/s-slice-to-essentials-build-the-thin-slice-4b18"/>
+        <updated>2025-09-27T08:53:15.000Z</updated>
+        <summary type="html"><![CDATA[Definition of the slice
+1 screen (+ success state)
+2 endpoints (POST /action, GET /status)
+3 tests (happy, bad input, mocked failure)
+1 metric instrumented (per attempt)
+Minimal folder skeleton
+/app
+  /api        # endpoints
+  /ui         # one screen + success
+  /tests      # 3 tests
+  /metrics    # logger/tracker
+
+Fastify stubs (copy‑paste)
+app.post('/action', async (req, reply) => {
+  const { input } = req.body || {};
+  if (!input) {
+      reply.statusCode = 400:
+      return { error: 'missing input' };
+  }
+  const id = Date.now().toString();
+  // TODO: enqueue or mock work
+  return { id };
+});
+
+app.get('/status', async (req, reply) => {
+  const { id } = req.query || {};
+  // TODO: return mocked result for demo
+  return { id, state: 'done', result: { ok: true } };
+});
+
+Tests (Given/When/Then)
+Given valid input → When POST /action → Then receive id
+Given missing input → When POST /action → Then 400
+Given id → When GET /status → Then state in {'queued','done'} and result?
+
+Instrumentation (pseudo)
+log('attempt', { id, ts });
+log('success', { id, ts, useful: rating });
+
+Ship boring. Learn fast. The goal isn’t elegance; it’s evidence.
+Full checklist + copy blocks → https://shipwithai.substack.com/p/pasta-al-dente-ship-a-one-feature?utm_source=devto&utm_medium=social&utm_campaign=issue_pasta_al_dente_week]]></summary>
+        <author>
+            <name>Manuel S. Martone</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Technical Writing is a Superpower in 2025]]></title>
+        <id>https://dev.to/envitab/why-technical-writing-is-a-superpower-in-2025-3ep1</id>
+        <link href="https://dev.to/envitab/why-technical-writing-is-a-superpower-in-2025-3ep1"/>
+        <updated>2025-09-27T08:52:24.000Z</updated>
+        <summary type="html"><![CDATA[The rise of AI, blockchain, and decentralized technologies has made clear communication more important than ever. It’s not enough to build great tools, someone has to explain them in a way that’s accessible, accurate, and compelling.
+That’s where technical writing comes in.
+Whether you’re a developer, designer, or someone transitioning into tech, learning how to write tutorials, documentation, and explainers is a skill that can open doors to:
+Better job opportunities in tech
+Freelance and consulting work
+Building your personal brand as a thought leader
+Contributing to open-source projects more effectively
+And here’s the truth: you don’t need to be a programmer to succeed in technical writing. You just need a technical skill, curiosity, and the ability to break down complex ideas for others.
+https://bit.ly/learntechnicalwriting
+It’s a 4-week guided program where I’ll help you:
+Learn the foundations of technical writing
+
+
+Create content that resonates with both developers and non-developers
+
+
+Build a portfolio you can use to land jobs or freelance gigs
+
+
+Develop the confidence to write clearly about fast-growing fields like AI and blockchain
+
+
+
+Clear communication is a career superpower. The best time to start learning it is now.
+👉 Apply here to join the mentorship program.
+Learn and start writing, one day at a time]]></summary>
+        <author>
+            <name>Ekemini Samuel</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🌐 Understanding CORS (Cross-Origin Resource Sharing): A Complete Guide]]></title>
+        <id>https://dev.to/fazal_mansuri_/understanding-cors-cross-origin-resource-sharing-a-complete-guide-5gbg</id>
+        <link href="https://dev.to/fazal_mansuri_/understanding-cors-cross-origin-resource-sharing-a-complete-guide-5gbg"/>
+        <updated>2025-09-27T08:49:19.000Z</updated>
+        <summary type="html"><![CDATA[🔎 What is CORS?
+
+
+Cross-Origin Resource Sharing (CORS) is a browser security feature that controls how web applications request resources (APIs, images, fonts, etc.) from a different origin (domain, protocol or port).
+👉 Example:
+Your React frontend runs at http://localhost:3000.
+Your Go API runs at http://localhost:8080.
+When React fetches data from Go API → this is a cross-origin request.
+Without proper CORS setup, the browser blocks the request for security reasons.
+CORS works via HTTP headers exchanged between the browser and server.
+Simple Requests
+
+
+Happen when:
+Method is GET, POST or HEAD
+
+Headers are only "safe" ones (Accept, Content-Type as application/x-www-form-urlencoded, multipart/form-data, text/plain)
+👉 Example:
+GET /api/products HTTP/1.1
+Origin: http://example-frontend.co…]]></summary>
+        <author>
+            <name>Fazal Mansuri</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Check out my app called pdf snippets]]></title>
+        <id>https://dev.to/abhishek_hadpad_6b54a621f/check-out-my-app-called-pdf-snippets-861</id>
+        <link href="https://dev.to/abhishek_hadpad_6b54a621f/check-out-my-app-called-pdf-snippets-861"/>
+        <updated>2025-09-27T08:43:13.000Z</updated>
+        <summary type="html"><![CDATA[It lets you copy any text directly from a PDF, and it automatically saves every snippet neatly inside a folder—organized and ready whenever you need it.
+No more juggling between apps. No more lost notes. Just simple, effortless text saving. Would love to hear your thoughts, feedback, or even feature ideas! 🙌
+https://sites.google.com/view/pdfsnippetsofficialsite/home]]></summary>
+        <author>
+            <name>Abhishek hadpad</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to use useNavigate to transition from a button in React]]></title>
+        <id>https://dev.to/kazutora_hattori_66972c88/how-to-use-usenavigate-to-transition-from-a-button-in-react-4026</id>
+        <link href="https://dev.to/kazutora_hattori_66972c88/how-to-use-usenavigate-to-transition-from-a-button-in-react-4026"/>
+        <updated>2025-09-27T08:39:45.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+
+
+react-router-dom's useNavigate is a useful tool for implementing page transitions in React.
+It's often used in cases like "navigating to another page when a button is pressed" or "dynamically switching pages using an input ID."
+This article clearly explains the basic usage of navigate and how to combine it with forms and input values.
+1.First, obtain the function with useNavigate.
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
+
+2.Navigate to a fixed page
+To navigate to a specific route, simply pass a string.
+navigate("/cards/register"); // Navigate to the new registration page
+
+3.Passing values ​​dynamically
+Using template literals, you can embed input values ​​in the URL.
+const onSubmit = (data: any) => {
+navigate(`/cards/${data.userId}`);
+// Example: If userId is "hello", navigate to /cards/hello
+};
+
+Summary
+useNavigate → Get the function
+
+
+navigate("/path") → Navigate to the page
+
+
+navigate(/cards/${data.userId}) → Dynamically navigate using the input value]]></summary>
+        <author>
+            <name>Kazutora Hattori</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Binary Analysis Fundamentals]]></title>
+        <id>https://dev.to/cangulmez/binary-analysis-fundamentals-4a4</id>
+        <link href="https://dev.to/cangulmez/binary-analysis-fundamentals-4a4"/>
+        <updated>2025-09-27T08:29:09.000Z</updated>
+        <summary type="html"><![CDATA[In this post, I'll explain and investigate the Executable and Linkable Format (ELF), which is the default binary format on Linux-based systems.
+To make practices, I've written a simple copy.c source file and we will investigate this:
+/**
+ * Copying a file content to another one.
+ */
+
+#include "../linux.h"
+
+#ifndef BUF_SIZE
+#define BUF_SIZE  1024
+#endif
+
+void main(int argc, char *argv[])
+{
+   int inputFd, outputFd, openFlags;
+   mode_t filePerms;
+   ssize_t numRead;
+   char buf[BUF_SIZE];
+
+   if (argc != 3 || strcmp(argv[1], "--help") == 0)
+      usage_error("Wrong command-line usage");
+
+   /* Open input and output files */
+
+   inputFd = open(argv[1], O_RDONLY);
+   if (inputFd)
+      syscall_error(); 
+
+   openFlags = O_CREAT | O_WRONLY | O_TRUNC;
+   filePerms = S_IRUSR | S_IWUSR | S_IRGRP |…]]></summary>
+        <author>
+            <name>Ahmet Can Gulmez</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Day 24 - Alert Component Part 3 - Add an Alert Bar to change styles]]></title>
         <id>https://dev.to/railsstudent/day-24-alert-component-part-3-add-an-alert-bar-to-change-styles-1c4k</id>
@@ -71,21 +327,6 @@ Enhanced Colla…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Angular Modules Explained: A Deep Dive into NgModule for Scalable Apps]]></title>
-        <id>https://dev.to/satyam_gupta_0d1ff2152dcc/angular-modules-explained-a-deep-dive-into-ngmodule-for-scalable-apps-3f7</id>
-        <link href="https://dev.to/satyam_gupta_0d1ff2152dcc/angular-modules-explained-a-deep-dive-into-ngmodule-for-scalable-apps-3f7"/>
-        <updated>2025-09-27T08:19:33.000Z</updated>
-        <summary type="html"><![CDATA[Angular Modules Explained: Your Blueprint for Organized and Scalable Apps
-
-
-If you've just started your journey with Angular, you've probably encountered a file called app.module.ts. You might have glanced at the @NgModule decorator, seen arrays like declarations, imports, and providers, and thought, "What's all this for? Can't I just start building components?"
-You're not alone. Angular Modules, or NgModules, are one of the most fundamental yet initially confusing concepts in the framework. But here's the secret: once you understand them, they become your most powerful tool for creating clean, well-structured, and scalable applications.
-Think of an Angular Module as a logical grouping of related code. It's like a toolbox dedicated to a specific job. You wouldn't keep your kitchen knives i…]]></summary>
-        <author>
-            <name>Satyam Gupta</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Master Angular CLI: A Pro Developer's Guide to Boosting Your Workflow]]></title>
         <id>https://dev.to/satyam_gupta_0d1ff2152dcc/master-angular-cli-a-pro-developers-guide-to-boosting-your-workflow-4nki</id>
         <link href="https://dev.to/satyam_gupta_0d1ff2152dcc/master-angular-cli-a-pro-developers-guide-to-boosting-your-workflow-4nki"/>
@@ -97,89 +338,6 @@ If you've ever dabbled in Angular, you've met the Angular CLI. It's that faithfu
 In this guide, we’re going to move beyond the basics. We'll dive deep into the advanced features, commands, and configurations that transform the Angular CLI from a helpful utility into an indispensable part of your professional toolkit. Whether you're a beginner looking to up your game …]]></summary>
         <author>
             <name>Satyam Gupta</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[IGN: Hollow Knight Silksong - How to Beat the Last Judge (Or Skip Him Entirely!)]]></title>
-        <id>https://dev.to/gg_news/ign-hollow-knight-silksong-how-to-beat-the-last-judge-or-skip-him-entirely-20jn</id>
-        <link href="https://dev.to/gg_news/ign-hollow-knight-silksong-how-to-beat-the-last-judge-or-skip-him-entirely-20jn"/>
-        <updated>2025-09-27T08:12:12.000Z</updated>
-        <summary type="html"><![CDATA[Hollow Knight Silksong pits you against The Last Judge, a fierce boss guarding the Citadel at the end of Act 1. This guide lays out clear combat tips—timing your dodges, exploiting her openings, and equipping the right charms and upgrades—to help you topple her thronemaid. If you’d rather skip the headache, there’s a sneaky path through the Mist that bypasses her entirely.
-On top of fight tactics, you’ll find recommendations for the best gear to boost your offense and defense. And if visuals are more your thing, there’s a handy IGN video link showing exactly how to navigate the Mist and leave The Last Judge in your dust.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Gaming News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CinemaSins: Everything Wrong With Dumb and Dumber In 18 Minutes Or Less]]></title>
-        <id>https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-dumb-and-dumber-in-18-minutes-or-less-1be6</id>
-        <link href="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-dumb-and-dumber-in-18-minutes-or-less-1be6"/>
-        <updated>2025-09-27T08:11:42.000Z</updated>
-        <summary type="html"><![CDATA[Everything Wrong With Dumb and Dumber In 18 Minutes Or Less
-
-
-CinemaSins takes a hilarious, nitpicky dive into the classic comedy Dumb and Dumber, counting every outrageous blunder, plot hole, and “did they really just do that?” moment—wrapped up in under 18 minutes of gleeful ribbing. Along the way they pitch their sponsor Trade (with a sweet 50% off), plug their main site and social channels, and remind you to join the sinning party on Discord, Reddit, TikTok, and beyond.
-Behind the scenes you’ll find a team of writers (Jeremy, Chris, Aaron, Jonathan, Deneé, Ian, Daniel) and opportunities to share your own takes via a poll or support the squad on Patreon. Whether you’re here for the laughs or the top-tier movie critique, CinemaSins has you covered with more channels, merch, and mayhem than you knew you needed.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Movie News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Mix with the Masters: Mixing Night with Ken Lewis - BACK TO SCHOOL NIGHT - 10/1/2025]]></title>
-        <id>https://dev.to/music_youtube/mix-with-the-masters-mixing-night-with-ken-lewis-back-to-school-night-1012025-5fo4</id>
-        <link href="https://dev.to/music_youtube/mix-with-the-masters-mixing-night-with-ken-lewis-back-to-school-night-1012025-5fo4"/>
-        <updated>2025-09-27T08:08:53.000Z</updated>
-        <summary type="html"><![CDATA[Mixing Night – Back to School Night (10/1/2025)
-
-Join 2X Grammy-winner Ken Lewis for a free live Mixing Night Q&A where he breaks down pro mixing techniques, shares insider tips from 30+ years in the major label world, and answers your burning questions on the mix bus, production, recording and career growth.
-Stick around for giveaways from Session Studio, Sound Radix and Bettermaker, and don’t miss links to subscribe, grab merch, unlock ALLCOMP and GreenHAAS deals, book Ken’s mix critiques, and explore all the extra resources on his sites and socials.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[COLORS: Penyair - Bambú | A COLORS SHOW]]></title>
-        <id>https://dev.to/music_youtube/colors-penyair-bambu-a-colors-show-26d3</id>
-        <link href="https://dev.to/music_youtube/colors-penyair-bambu-a-colors-show-26d3"/>
-        <updated>2025-09-27T08:08:33.000Z</updated>
-        <summary type="html"><![CDATA[Penyair’s COLORS Debut: “Bambú”
-
-
-Colombian wordsmith Penyair (hailing from Suba, Bogotá) delivers a hypnotic, stripped-down performance of his brand-new single “Bambú,” marking his next move after the album Filantropía. His laid-back flow and introspective vibes take center stage, weaving poetic bars over minimal production.
-Staying true to COLORS’ signature aesthetic, the setup is ultra-clean and distraction-free, spotlighting the artist’s raw talent. If you’re into fresh sounds and soulful lyricism, this one’s a must-watch.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KEXP: Thee Marloes - Over (Live on KEXP)]]></title>
-        <id>https://dev.to/music_youtube/kexp-thee-marloes-over-live-on-kexp-123h</id>
-        <link href="https://dev.to/music_youtube/kexp-thee-marloes-over-live-on-kexp-123h"/>
-        <updated>2025-09-27T08:08:22.000Z</updated>
-        <summary type="html"><![CDATA[Thee Marloes Tear Up the KEXP Studio with “Over”
-
-
-Indonesian indie outfit Thee Marloes delivers a hypnotic live rendition of “Over” at KEXP, recorded August 1, 2025. Led by Natassya Sianturi’s soaring vocals and keys, the quintet—Sinatrya Dharaka on guitar/vox, Tommy Satrio on drums, Rhesa Filbert on bass/vox and Sandy Kusuma on percussion/vox—blends dreamy atmospheres with tight, math-rock rhythms.
-Hosted by Larry Mizell Jr., the session’s crisp sound is engineered by Kevin Suggs and mastered by Matt Ogaz, while a crew of five camera operators and editor Luke Knecht capture every moment. Check out more from Thee Marloes on Bandcamp or dive into other KEXP sessions at kexp.org.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KEXP: Nation of Language - I'm Not Ready For The Change (Live on KEXP)]]></title>
-        <id>https://dev.to/music_youtube/kexp-nation-of-language-im-not-ready-for-the-change-live-on-kexp-3662</id>
-        <link href="https://dev.to/music_youtube/kexp-nation-of-language-im-not-ready-for-the-change-live-on-kexp-3662"/>
-        <updated>2025-09-27T08:08:10.000Z</updated>
-        <summary type="html"><![CDATA[Nation of Language lit up KEXP on August 4, 2025 with a sizzling live take on I’m Not Ready For The Change. The trio—Ian Devaney (guitar/vocals), Aidan Noell (keys/vocals) and Alex MacKay (bass)—laid down their dreamy synth-pop in the Seattle studio under Cheryl Waters’ watchful ear.
-Behind the scenes, Julian Martlew manned the audio board, joined by guest mixer Skinny Salazar and mastering ace Matt Ogaz, while Jim Beckmann, Carlos Cruz, Scott Holpainen and Luke Knecht captured every angle on camera.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
         </author>
     </entry>
     <entry>
@@ -221,6 +379,16 @@ The post How to Redeem BUDI95 Subsidy At Caltex, Petronas, Shell, Petron, And BH
         <summary type="html"><![CDATA[Vitalik Buterin has opposed the EU’s proposed Chat Control law, warning it undermines digital privacy and creates surveillance backdoors.]]></summary>
         <author>
             <name>Cointelegraph by Amin Haqshanas</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Property-Based Testing of OCaml 5's Runtime System [pdf]]]></title>
+        <id>https://janmidtgaard.dk/papers/Midtgaard%3AOLIVIERFEST25.pdf</id>
+        <link href="https://janmidtgaard.dk/papers/Midtgaard%3AOLIVIERFEST25.pdf"/>
+        <updated>2025-09-27T06:45:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -684,16 +852,6 @@ The post Narwal Unveils Freo Flow, Freo X10 Pro, And S30; Priced From RM1,699 ap
         <summary type="html"><![CDATA[The reported funding round comes amid earlier indications that the crypto exchange is preparing for a potential public offering.]]></summary>
         <author>
             <name>Cointelegraph by Sam Bourgi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Evolving the Multi-User Spaceport]]></title>
-        <id>https://www.spacex.com/updates#multiuser-spaceport</id>
-        <link href="https://www.spacex.com/updates#multiuser-spaceport"/>
-        <updated>2025-09-26T15:17:31.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
