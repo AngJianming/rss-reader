@@ -1,239 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-10-04T16:44:25.937Z</id>
+    <id>urn:2025-10-04T17:12:38.073Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-10-04T16:44:25.938Z</updated>
+    <updated>2025-10-04T17:12:38.073Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Dinner Plans & Distributed Systems : A Fun Guide to Consensus]]></title>
-        <id>https://dev.to/sumana10/dinner-plans-distributed-systems-a-fun-guide-to-consensus-3694</id>
-        <link href="https://dev.to/sumana10/dinner-plans-distributed-systems-a-fun-guide-to-consensus-3694"/>
-        <updated>2025-10-04T16:25:00.000Z</updated>
-        <summary type="html"><![CDATA[Picture this: a group of friends is starving and trying to decide where to eat. What seems like a simple dinner plan is actually a perfect way to explain how computers in a distributed system agree on things. Let’s turn these friends into servers and see how three big consensus algorithms—Paxos, Raft, and BFT—play out in real life.
-Friend A says, “Let’s get pizza!” They’re the proposer. The rest of the group listens and becomes acceptors—they raise hands if they like the idea. If most agree, boom—pizza it is! The learners are the ones who didn’t vote but need to know the final plan so they don’t show up at the wrong place. Paxos works even if some friends leave the chat, but if too many people propose at once (“No, tacos!” … “Burgers!”), chaos happens. That’s why sometimes one friend is chosen to always suggest options—smoother but still a bit complicated.
-This time, the group elects a leader—let’s say Friend B. Friend B declares, “We’re having sushi tonight.” Everyone nods and follows along. If Friend B suddenly drops out (maybe their phone dies), the group quickly votes for a new leader and continues. Raft makes the process simple: one person decides, everyone else follows. No endless debates, just clear direction.
-Now imagine Friend C is a prankster. They whisper to some, “We’re going for burgers”, while telling others, “It’s definitely pizza.” Uh oh—chaos! To deal with this, the group double-checks plans with multiple friends before trusting anything. It takes more talking and time, but ensures that no one gets fooled. That’s BFT: built for situations where not everyone is trustworthy—perfect for blockchains, where some participants might try to cheat.
-Paxos = messy democracy, but reliable.
-Raft = one clear leader, simple and practical.
-BFT = built for tricksters, slower but super secure.
-So next time your friends argue about dinner, just smile—you’re all secretly running consensus algorithms!]]></summary>
+        <title type="html"><![CDATA[Cursor + Trigger in MySQL]]></title>
+        <id>https://dev.to/atheeba_parveenja24cb0/cursor-trigger-in-mysql-1epg</id>
+        <link href="https://dev.to/atheeba_parveenja24cb0/cursor-trigger-in-mysql-1epg"/>
+        <updated>2025-10-04T17:00:24.000Z</updated>
+        <summary type="html"><![CDATA[In this tutorial, we will demonstrate:
+Cursor: Processing rows with a condition.
+Trigger: Automatically inserting audit logs after an insert operation.
+We’ll use simple examples with screenshots from an online MySQL editor.
+Step 1: Create Employee table & Insert sample data
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    salary INT
+);
+
+INSERT INTO Employee VALUES
+(1, 'Alice', 40000),
+(2, 'Bob', 55000),
+(3, 'Charlie', 70000),
+(4, 'David', 45000);
+
+Step 2: Use a Cursor with Condition
+DELIMITER //
+
+CREATE PROCEDURE GetHighSalaryEmployees()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE empName VARCHAR(50);
+    DECLARE cur CURSOR FOR SELECT emp_name FROM Employee WHERE salary > 50000;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO empName;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        SELECT empName AS High_Salary_Employee;
+    END LOOP;
+
+    CLOSE cur;
+END//
+DELIMITER ;
+
+Step 3: Call the Procedure
+CALL GetHighSalaryEmployees();
+
+
+Step 1: Create Student & Audit tables
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TABLE Student_Audit (
+    audit_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    name VARCHAR(50),
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Step 2: Create AFTER INSERT Trigger
+DELIMITER //
+
+CREATE TRIGGER after_student_insert
+AFTER INSERT ON Students
+FOR EACH ROW
+BEGIN
+    INSERT INTO Student_Audit (student_id, name)
+    VALUES (NEW.student_id, NEW.name);
+END //
+
+DELIMITER ;
+
+Step 3: Insert Data into Students
+INSERT INTO Students VALUES (1, 'John Doe');
+INSERT INTO Students VALUES (2, 'Jane Smith');
+
+Step 4: Check Audit Table
+SELECT * FROM Student_Audit;
+
+
+Cursor helps process row-by-row results under certain conditions.
+Trigger automates actions (like auditing) whenever an event occurs in a table.
+Both are powerful features in SQL for automation and data integrity.]]></summary>
         <author>
-            <name>Sumana</name>
+            <name>ATHEEBA PARVEEN J A 24CB002</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Day 4 of 30 Days of Solidity Challenge: Build a Basic Auction Smart Contract]]></title>
-        <id>https://dev.to/sauravkumar8178/day-4-of-30-days-of-solidity-challenge-build-a-basic-auction-smart-contract-1kdp</id>
-        <link href="https://dev.to/sauravkumar8178/day-4-of-30-days-of-solidity-challenge-build-a-basic-auction-smart-contract-1kdp"/>
-        <updated>2025-10-04T16:20:53.000Z</updated>
-        <summary type="html"><![CDATA[Hello developers 👋
-Welcome to Day 4 of my 30 Days of Solidity Challenge!
-simple auction contract — something similar to eBay, but fully decentralized on the blockchain!
-Let’s dive in 👇
-Create a basic auction where users can bid on an item, and the highest bidder wins when the auction time ends.
-We’ll use:
-if/else statements to decide the winner based on the highest bid
-block.timestamp to track time
-This project helps you understand conditional logic and time-based control in smart contracts — essential concepts for blockchain applications like auctions, lotteries, and time-locked contracts.
-By the end of this task, you’ll learn how to:
-Work with block timestamps for time tracking
-Compare bids and manage user balances
-Use conditional logic (if/else) in Solidity
-Handle Ether safely with re…]]></summary>
+        <title type="html"><![CDATA[🧾 Transactions, Deadlocks & Log-Based Recovery in DBMS – A Practical Guide]]></title>
+        <id>https://dev.to/deepana_ee9087276132ad19f/transactions-deadlocks-log-based-recovery-in-dbms-a-practical-guide-22j1</id>
+        <link href="https://dev.to/deepana_ee9087276132ad19f/transactions-deadlocks-log-based-recovery-in-dbms-a-practical-guide-22j1"/>
+        <updated>2025-10-04T16:47:58.000Z</updated>
+        <summary type="html"><![CDATA[🧩 Schema Setup
+
+
+We’ll use a single table called Accounts.
+CREATE TABLE Student_Fees (
+INSERT INTO Student_Fees VALUES (1, 'Alice', 1000);
+Check your table:
+
+Concept:
+Steps:
+SAVEPOINT start_point;
+
+✅ Result:
+Concept:
+Even though Oracle LiveSQL doesn’t support two sessions, we can understand the concept using example code:
+💻 Session 1:
+💻 Session 2:
+
+Result: Both transactions wait on each other → deadlock detected → DBMS automatically rolls back one transaction.
+Note: In LiveSQL, updates are sequential, so no deadlock error appears.
+conceptual understanding.
+Oracle automatically maintains undo/redo logs. Rollback uses undo logs to restore old data.
+SAVEPOINT log_demo;
+
+Explanation: Undo logs restored the previous state → log-based recovery works.
+✅ How atomicity prevents partial updates
+⚡ How deadlocks can occur in multi-session environments
+🔄 How log-based recovery restores data safely
+🙏 Special Thanks
+A heartfelt thank you to Santhosh NC Sir for his guidance and continuous support throughout this DBMS assignment.
+🏷️ Tags
+
+
+  
+  
+  dbms #oracle #sql #transactions #database #students #learning]]></summary>
         <author>
-            <name>Saurav Kumar</name>
+            <name>Deepana</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Database Fundamentals]]></title>
-        <id>https://dev.to/gilbert_korir/database-fundamentals-4m0j</id>
-        <link href="https://dev.to/gilbert_korir/database-fundamentals-4m0j"/>
-        <updated>2025-10-04T16:18:09.000Z</updated>
-        <summary type="html"><![CDATA[Introduction to database
-
-
-
-  
-  
-  What is a database?
-
-
-A database is a tool for collecting and organizing information. Databases can store information about people, products, orders, or anything else.
-A computerized database is a container of objects. One database can contain more than one table. For example, an inventory tracking system that uses three tables is not three databases, but one database that contains three tables. 
-Types of databases
-
-NoSQL is then further divided into four types: Document-oriented, Key-Value, Wide-Column, and Graph databases.
-
-1. Relational Databases (RDBMS)
-Strict schema-based structure.
-Primary Keys (unique IDs) and Foreign Keys (relationships between tables).
-Strong ACID compliance (Atomicity, Consistency, Isolation, Durability).
-Ideal for structured d…]]></summary>
+        <title type="html"><![CDATA[‘Solana Is the New Wall Street,’ Bitwise CIO Matt Hougan Explains]]></title>
+        <id>7220f7e3-3570-45a2-a847-3263e2c24267</id>
+        <link href="https://www.coindesk.com/markets/2025/10/04/solana-is-the-new-wall-street-bitwise-cio-matt-hougan-explains"/>
+        <updated>2025-10-04T16:47:51.000Z</updated>
+        <summary type="html"><![CDATA[Hougan said Solana’s speed, throughput and finality make it “extraordinarily attractive” for those choosing which blockchain to invest in.]]></summary>
         <author>
-            <name>Gilbert korir</name>
+            <name>Siamak Masnavi</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Tested Claude 4.5 Against GPT-4 for 48 Hours. Here's What Nobody's Telling You.]]></title>
-        <id>https://dev.to/klement_gunndu_e16216829c/i-tested-claude-45-against-gpt-4-for-48-hours-heres-what-nobodys-telling-you-ldm</id>
-        <link href="https://dev.to/klement_gunndu_e16216829c/i-tested-claude-45-against-gpt-4-for-48-hours-heres-what-nobodys-telling-you-ldm"/>
-        <updated>2025-10-04T16:14:17.000Z</updated>
-        <summary type="html"><![CDATA[This is how good Claude 4.5 is
+        <title type="html"><![CDATA[AI in Retail: How to Forecast Demand and Reduce Dead Stock]]></title>
+        <id>https://dev.to/alepilot/ai-in-retail-how-to-forecast-demand-and-reduce-dead-stock-6nl</id>
+        <link href="https://dev.to/alepilot/ai-in-retail-how-to-forecast-demand-and-reduce-dead-stock-6nl"/>
+        <updated>2025-10-04T16:47:32.000Z</updated>
+        <summary type="html"><![CDATA[AI in Retail: How to Forecast Demand and Reduce Dead Stock
 
 
-
-  
-  
-  Why Claude 4.5 is Breaking the Internet Right Now
-
-
-
-  
-  
-  The Buzz Around Claude's Latest Release
-
-
-
-
-Claude 4.5 just dropped and developers are losing their minds. Within 48 hours of release, it topped Hacker News three times and Reddit's r/MachineLearning couldn't stop talking about it. The hype isn't just noiseearly benchmarks show it beating GPT-4 on coding tasks by margins nobody expected.
-Here's what caught everyone off guard: Claude 4.5 can now maintain context over 200,000 tokens. That's an entire codebase. We're talking about feeding it your complete documentation, then asking nuanced questions about edge cases buried on page 147.
-The real kicker? It actually remembers everything.
-Most LLMs hallucinate when pushed hard. Claude 4.5 says …]]></summary>
+The logistics manager walks through the distribution center on a hot November day. Entire aisles are occupied by boxes of wool coats and winter boots from last year’s collection. This is the cemetery of tied-up capital. Each item represents money not circulating, storage space being paid for, and purchasing decisions gone wrong.
+Across town, in one of the chain’s stores, the shelf for a sandal model that unexpectedly went viral on TikTok is empty. Customers are frustrated. Sales are lost.
+Welcome to the chronic pain of traditional retail: too much of what doesn’t sell, too little of what does.
+The Spreadsheet Era Is Over
+For decades, demand forecasting has been a combination of spreadsheets, averages, and intuition. But in a vola…]]></summary>
         <author>
-            <name>klement gunndu</name>
+            <name>Alexandre Almeida</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[wyr: Typesafe Dependency Injection for TypeScript (and why I built it)]]></title>
-        <id>https://dev.to/caeus/wyr-typesafe-dependency-injection-for-typescript-and-why-i-built-it-45kh</id>
-        <link href="https://dev.to/caeus/wyr-typesafe-dependency-injection-for-typescript-and-why-i-built-it-45kh"/>
-        <updated>2025-10-04T16:13:04.000Z</updated>
-        <summary type="html"><![CDATA[I’ve wired up enough services in TypeScript to know the pain of the usual contenders: sprawling globals, decorator-heavy DI containers, and hand-rolled factories that grow brittle with every new dependency. Wyr is the tool I always wished existed: a stateless, typesafe registry that treats dependency wiring as data. Here’s the philosophy, how it compares, and why it’s now my default.
-Global scope “service registries” – Toss everything onto globalThis, hope the import order is kind, and pray Next.js doesn’t optimize something away. It’s fast to throw together but impossible to reason about. You can’t diff it, you can’t snapshot it, and tests become a tightrope walk over ambient state.
-
-
-NestJS-style containers – Great if you love classes and decorators. Not so great when you need value-base…]]></summary>
+        <title type="html"><![CDATA[Observer Design Pattern]]></title>
+        <id>https://dev.to/alamfatima1999/observer-design-pattern-2kak</id>
+        <link href="https://dev.to/alamfatima1999/observer-design-pattern-2kak"/>
+        <updated>2025-10-04T16:47:13.000Z</updated>
+        <summary type="html"><![CDATA[How does your favorite websites like Amazon and Flipkart instantly reflect changes like when a product’s price drops and your shopping app flashes a notification, or when someone likes your post and it appears in real time on your feed? 
+That’s not magic — it’s the Observer Design Pattern in action.
+At its core, the Observer Pattern is all about communication and synchronization. It creates a seamless link between objects — so when one object changes, all others that depend on it are automatically updated. Think of it as a digital chain reaction: one event triggers a cascade of updates, all without tightly coupling the system together.
+This pattern powers everything from UI frameworks and live dashboards **to **stock market apps, chat systems, and real-time notifications. It’s the silent b…]]></summary>
         <author>
-            <name>Alejandro Navas</name>
+            <name>Fatima Alam</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ACID Properties in DBMS]]></title>
-        <id>https://dev.to/deepak_kumarb24cb007_7e/acid-properties-in-dbms-4hnc</id>
-        <link href="https://dev.to/deepak_kumarb24cb007_7e/acid-properties-in-dbms-4hnc"/>
-        <updated>2025-10-04T16:12:08.000Z</updated>
-        <summary type="html"><![CDATA[Databases power almost every application we use daily—from banking systems to e-commerce platforms. To ensure data remains reliable, databases follow the ACID principles: Atomicity, Consistency, Isolation, and Durability.
-Setup the Schema
+        <title type="html"><![CDATA[Strategy Design Pattern]]></title>
+        <id>https://dev.to/alamfatima1999/strategy-design-pattern-29jo</id>
+        <link href="https://dev.to/alamfatima1999/strategy-design-pattern-29jo"/>
+        <updated>2025-10-04T16:47:04.000Z</updated>
+        <summary type="html"><![CDATA[Imagine something that can be changed at runtime and is already been used and has to be replicated again.
+Think of an e-comm app like Amazon where you can choose from different Payment methods -> Cash, Card (Credit Card, Debit Card), UPI, etc... Now if you want to buy a Prime membership wouldn't you expect all these Payment methods there too??
+Let's look at how such a thing is actually carried and scaled out.
+This is your ShoppingCart
+class ShoppingCart {
+    public void checkout(String paymentType, int amount) {
+        if (paymentType.equals("CREDIT")) {
+            System.out.println("Paid " + amount + " with Credit Card");
+        } else if (paymentType.equals("PAYPAL")) {
+            System.out.println("Paid " + amount + " with PayPal");
+        } else if (paymentType.equals("UPI")) {…]]></summary>
+        <author>
+            <name>Fatima Alam</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[You-Might-Not-Need-WebSockets-The-Simple-Power-of-Server-Sent-Events]]></title>
+        <id>https://dev.to/member_f8c307c5/you-might-not-need-websockets-the-simple-power-of-server-sent-events-3mc8</id>
+        <link href="https://dev.to/member_f8c307c5/you-might-not-need-websockets-the-simple-power-of-server-sent-events-3mc8"/>
+        <updated>2025-10-04T16:46:55.000Z</updated>
+        <summary type="html"><![CDATA[GitHub Home
+In our toolbox, there are always a few "star" tools. 🛠️ In the realm of real-time web communication, WebSocket is undoubtedly the brightest star. It's powerful, supports bidirectional communication, and has become the "default answer" for almost all real-time needs. So, when a product manager comes to you and says, "Hey, we need a dashboard that updates in real-time!" the first thing that pops into many programmers' minds is: "Okay, let's use WebSockets!"
+But, wait a minute. ✋ As an old-timer who has been navigating this world for decades, I want to ask: do we always need a "Swiss Army knife" to peel an apple? 🍎
+I've seen too many scenarios where a simple feature that only requires unidirectional data push from the server to the client—like site notifications, stock price upd…]]></summary>
+        <author>
+            <name>member_f8c307c5</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Liskov Substitution Principle]]></title>
+        <id>https://dev.to/alamfatima1999/liskov-substitution-principle-2nhc</id>
+        <link href="https://dev.to/alamfatima1999/liskov-substitution-principle-2nhc"/>
+        <updated>2025-10-04T16:46:48.000Z</updated>
+        <summary type="html"><![CDATA[If the Parent class has a method which is not required in a new Child class in this case our design becomes unscalable.
+Here, Vehicle has hasEngine(). But Bicycle doesn’t really have an engine, so overriding it with null breaks LSP.
+// Base class
+class Vehicle {
+    public int numberOfWheels() {
+        return 0;
+    }
 
-Enter the values
+    public Boolean hasEngine() {
+        return true;
+    }
+}
 
-Result
+// Car inherits Vehicle
+class Car extends Vehicle {
+    @Override
+    public int numberOfWheels() {
+        return 4;
+    }
 
-ATOMICITY
-Update and roll back
+    @Override
+    public Boolean hasEngine() {
+        return true;
+    }
+}
+
+// Motorcycle inherits Vehicle
+class Motorcycle extends Vehicle {
+    @Override
+    public int numberOfWheels() {
+        return 2;
+    }
+
+    @Override
+    public Boolean hasEngine() {
+        return true;
+    }
+…]]></summary>
+        <author>
+            <name>Fatima Alam</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Design Patterns]]></title>
+        <id>https://dev.to/alamfatima1999/design-patterns-bo4</id>
+        <link href="https://dev.to/alamfatima1999/design-patterns-bo4"/>
+        <updated>2025-10-04T16:46:41.000Z</updated>
+        <summary type="html"><![CDATA[Index
+Liskov Substitution Principle
+Strategy Design Pattern.
+Observer Design Pattern]]></summary>
+        <author>
+            <name>Fatima Alam</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Database Normalization: From 1NF to 3NF]]></title>
+        <id>https://dev.to/deepak_kumarb24cb007_7e/database-normalization-from-1nf-to-3nf-5g9a</id>
+        <link href="https://dev.to/deepak_kumarb24cb007_7e/database-normalization-from-1nf-to-3nf-5g9a"/>
+        <updated>2025-10-04T16:42:49.000Z</updated>
+        <summary type="html"><![CDATA[n this blog, we’ll understand how to normalize a database table step-by-step from 1NF → 2NF → 3NF using clear SQL examples and outputs.
+We’ll start from a single unnormalized table containing student, course, and instructor data, and then progressively decompose it to remove redundancy and anomalies.
+Identify Anomalies
+First Normal Form (1NF)
+Create a table
+
+Insert data
+
+Output
+
+Second Normal Form (2NF)
+Remove partial dependencies.
 
 
 
-Consistency
-Transactions must bring the database from one valid state to another. Invalid data should not enter the system.
-Alter
+
+Insert values into the respected table
+
+output
+
+next
 
 
-Isolation
-Concurrent transactions should not affect each other’s intermediate results.
-
-Isolation prevents dirty reads between transactions.
-Durability
+next
 
 
-Atomicity → All or nothing.
-Consistency→ Data always valid.
-Isolation → Transactions don’t interfere.
-Durability→ Data persists after commit.
-By applying ACID principles, databases remain reliable, fault-tolerant, and consistent even in high-concurrency environments like banking systems.]]></summary>
+next
+
+output
+
+Third Normal Form (3NF)
+Remove transitive dependencies — InstructorPhone depends on Instructor, not directly on Course.
+In this case, the InstructorPhone depends on Instructor, not directly on Course.
+Tables in 3NF:
+1.Students(StudentID, StudentName)
+Query Using JOINs
+
+This structure ensures:
+We achieved a clean, normalized schema that eliminates anomalies and improves consistency.]]></summary>
         <author>
             <name>DEEPAK KUMAR B 24CB007</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[🔥 From Zero to Serverless: Building a Real-Time Chat App with Deno, WebSockets, and No Backend]]></title>
-        <id>https://dev.to/ekwoster/from-zero-to-serverless-building-a-real-time-chat-app-with-deno-websockets-and-no-backend-3252</id>
-        <link href="https://dev.to/ekwoster/from-zero-to-serverless-building-a-real-time-chat-app-with-deno-websockets-and-no-backend-3252"/>
-        <updated>2025-10-04T16:11:40.000Z</updated>
-        <summary type="html"><![CDATA[🔥 From Zero to Serverless: Building a Real-Time Chat App with Deno, WebSockets, and No Backend
+        <title type="html"><![CDATA[Prompt Magic: How I Created My Dream Website Using Only AI Prompts (No Stress, All Vibes!)]]></title>
+        <id>https://dev.to/mourya_modugula/prompt-magic-how-i-created-my-dream-website-using-only-ai-prompts-no-stress-all-vibes-kj</id>
+        <link href="https://dev.to/mourya_modugula/prompt-magic-how-i-created-my-dream-website-using-only-ai-prompts-no-stress-all-vibes-kj"/>
+        <updated>2025-10-04T16:42:10.000Z</updated>
+        <summary type="html"><![CDATA[Building a website from scratch sounds scary… but what if you had a friendly genie (or three!) who gave you all the code, advice, and bug fixes you need—just by chatting?
+
+Welcome to prompt-driven development: coding with your new BFFs, AI and curiosity.
+Instead of feeling alone or lost in tutorials, I just typed what I wanted ("like, can you make me a cute React homepage with a pastel color scheme and a dancing cat gif?"), and AI showed me the way.
+Each prompt was like a magic spell:  
+“How do I make a squishy, animated button?”
 
 
-Imagine building a real-time chat application where there's no traditional backend—no Express, no database, not even a VM running 24/7. Sounds crazy? Welcome to the world of Deno and serverless WebSockets.
-In this article, we’re diving deep into a lesser-known yet powerful use case: spinning up a real-time chat system using Deno Deploy, native WebSockets, and entirely stateless architecture. This is not your normal CRUD + PostgreSQL tutorial—this is an architectural eye-opener for modern developers.
-Most chat apps are built on socket.io with Express or Nest.js, tethered to a server and a database with sessions, user tokens, etc. But what if:
-You didn’t need an always-on server?
-Your app scaled…]]></summary>
-        <author>
-            <name>Yevhen Kozachenko 🇺🇦</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KEXP: strongboi - magic (Live on KEXP)]]></title>
-        <id>https://dev.to/music_youtube/kexp-strongboi-magic-live-on-kexp-3f5n</id>
-        <link href="https://dev.to/music_youtube/kexp-strongboi-magic-live-on-kexp-3f5n"/>
-        <updated>2025-10-04T16:10:41.000Z</updated>
-        <summary type="html"><![CDATA[strongboi rolled into the KEXP studio on August 14, 2025, to deliver a laid-back yet powerful live take on “magic.” Alice Matthew leads the charge on vocals, with Ziv Yamin (keys), Dekel Adin (bass), Matthew Roth (drums), Eden Mechulam (guitar/vox) and Paolo Guolo (sax/flute/vox) weaving in lush grooves.
-Hosted by Kennady Quille and engineered by Kevin Suggs (mixed by David Parry, mastered by Matt Ogaz), the performance was captured by cameras from Carlos Cruz, Leah Franks, Scott Holpainen, Luke Knecht & Ettie Wahl and edited by Carlos Cruz. Catch the full session on KEXP or swing by strongboi.com—and don’t forget to join their YouTube channel for exclusive perks!
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KEXP: Waxahatchee - Evil Spawn (Live on KEXP)]]></title>
-        <id>https://dev.to/music_youtube/kexp-waxahatchee-evil-spawn-live-on-kexp-4f64</id>
-        <link href="https://dev.to/music_youtube/kexp-waxahatchee-evil-spawn-live-on-kexp-4f64"/>
-        <updated>2025-10-04T16:10:27.000Z</updated>
-        <summary type="html"><![CDATA[Waxahatchee dropped by KEXP on August 11, 2025 for a fierce live session of “Evil Spawn,” fronted by Katie Crutchfield with Eliana Athayde (bass), Liam Kazar (guitar), Colin Croom (pedal steel/dobro), Spencer Tweedy (drums) and Cole Berggren (keys/banjo). Cheryl Waters hosted, Julian Martlew and Charles Glanders captured the audio, and Matt Ogaz took care of mastering.
-A five-camera team (Jim Beckmann, Carlos Cruz, Scott Holpainen, Luke Knecht & Kendall Rock) filmed the magic, with Luke Knecht stitching it all together in post. Stream it on KEXP or pick up the track via Waxahatchee’s Bandcamp for a fresh dose of indie rock goodness.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Music YouTube</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Polyphonic: The War Songs of Greenwich Village]]></title>
-        <id>https://dev.to/music_youtube/polyphonic-the-war-songs-of-greenwich-village-239i</id>
-        <link href="https://dev.to/music_youtube/polyphonic-the-war-songs-of-greenwich-village-239i"/>
-        <updated>2025-10-04T16:10:03.000Z</updated>
-        <summary type="html"><![CDATA[Summary
+“Can you help me add a sparkly footer?”
 
 
-The War Songs of Greenwich Village kicks off with a big plug for Noah Lefevre’s new book, Century of Song: The Most Important Music of the Last 100 Years, and serves up direct links to snag it at Barnes & Noble, Blackwells, Amazon, and Indigo.
-It also drops a bonus track—an audio link to Dancing Willow’s haunting demo of “The Foggy Dew.”
-Watch on YouTube]]></summary>
+“Oh no, error! Help me debug this rainbow bug!”
+
+
+
+AI responds >> I copy-paste >> The cuteness multiplies.
+Prompt: “Create a landing page with my favorite pastel colors 🩵💜”
+Copy: Use VS Code, hit paste, and add music f…]]></summary>
         <author>
-            <name>Music YouTube</name>
+            <name>Mourya Vamsi Modugula</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[GameSpot: Super Mario Galaxy And Galaxy 2 Are Still Peak 3D Platforming]]></title>
-        <id>https://dev.to/gg_news/gamespot-super-mario-galaxy-and-galaxy-2-are-still-peak-3d-platforming-4el2</id>
-        <link href="https://dev.to/gg_news/gamespot-super-mario-galaxy-and-galaxy-2-are-still-peak-3d-platforming-4el2"/>
-        <updated>2025-10-04T16:05:03.000Z</updated>
-        <summary type="html"><![CDATA[Super Mario Galaxy and Galaxy 2 feel as fresh as ever in their remastered forms, proving that Nintendo’s gravity-bending adventures still set the bar for 3D platformers. The vibrant worlds, inventive level designs and seamless controls shine on modern hardware, making every spin and launch a joy.
-Packed with whimsical power-ups, creative gravity mechanics and surprise comet missions, these games overflow with imaginative platforming ideas that captivate both newcomers and longtime fans.
-Watch on YouTube]]></summary>
+        <title type="html"><![CDATA[💬 The Art of Writing Comments: How to Talk to the Future You (and Everyone Else)]]></title>
+        <id>https://dev.to/charan_gutti_cf60c6185074/the-art-of-writing-comments-how-to-talk-to-the-future-you-and-everyone-else-2hi</id>
+        <link href="https://dev.to/charan_gutti_cf60c6185074/the-art-of-writing-comments-how-to-talk-to-the-future-you-and-everyone-else-2hi"/>
+        <updated>2025-10-04T16:40:32.000Z</updated>
+        <summary type="html"><![CDATA[Ever looked at your own code after six months and thought…
+“Who wrote this spaghetti? Oh wait — it was me.” 😅
+That’s the moment you realize:
+Comments aren’t optional — they’re essential.
+Whether you’re building a billion-dollar product or your first hobby app, good comments are the difference between code that ages like fine wine and code that rots like milk.
+This guide isn’t about how to add slashes. It’s about learning the language of clarity — the craft of writing comments that future you (and your teammates) will thank you for.
+Computers understand code.
+stories.
+Comments exist because our brains are not compilers — they’re storytellers.
+A great comment answers three questions:
+What does this do?
+Why was it done this way?
+What should someone be careful about if they change it?
+That’s …]]></summary>
         <author>
-            <name>Gaming News</name>
+            <name>Charan Gutti</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[GameSpot: Ghost of Yotei - Creative High Level Combat]]></title>
-        <id>https://dev.to/gg_news/gamespot-ghost-of-yotei-creative-high-level-combat-35kj</id>
-        <link href="https://dev.to/gg_news/gamespot-ghost-of-yotei-creative-high-level-combat-35kj"/>
-        <updated>2025-10-04T16:04:47.000Z</updated>
-        <summary type="html"><![CDATA[Ghost of Yotei kicks combat into overdrive with Atsu’s insane arsenal—think bullet-time midair, custom airstrikes, special tools and equipment, and even horse-powered takedowns. It’s all about giving you the freedom to get creative with every encounter.
-On hard mode, enemies hang tougher in combos than on lethal, so mastering your moves and gadgets becomes essential if you want to stay alive and rack up those stylish finishes.
-Watch on YouTube]]></summary>
+        <title type="html"><![CDATA[🚀 Build a Sleek, Real-Time Dashboard in WPF using Data Binding and ItemsControl (C# .NET)]]></title>
+        <id>https://dev.to/vectoart_a497c516fac199bd/build-a-sleek-real-time-dashboard-in-wpf-using-data-binding-and-itemscontrol-c-net-3ddm</id>
+        <link href="https://dev.to/vectoart_a497c516fac199bd/build-a-sleek-real-time-dashboard-in-wpf-using-data-binding-and-itemscontrol-c-net-3ddm"/>
+        <updated>2025-10-04T16:40:14.000Z</updated>
+        <summary type="html"><![CDATA[There are several new NuGet packages that can help you design modern desktop applications in WinForms. Here are some popular ones, along with examples of how to use them:
+Description: MaterialSkin is a library for bringing Google’s Material Design principles to Windows Forms applications. It provides a modern look and feel, making your application visually appealing and consistent with contemporary UI standards.
+Key Features:
+Material Design Components: Buttons, text fields, switches, sliders, and more.
+Install-Package MaterialSkin
+
+using MaterialSkin;
+using MaterialSkin.Controls;
+
+public partial class MainForm : MaterialForm
+{
+    private MaterialSkinManager materialSkinManager;
+
+    public MainForm()
+    {
+        InitializeComponent();
+        materialSkinManager = MaterialSkinManager.I…]]></summary>
         <author>
-            <name>Gaming News</name>
+            <name>VectoArt</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ask HN: Why is software quality collapsing? (Apple Calculator leaks 32GB RAM)]]></title>
+        <id>https://news.ycombinator.com/item?id=45474346</id>
+        <link href="https://news.ycombinator.com/item?id=45474346"/>
+        <updated>2025-10-04T16:09:08.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -294,16 +466,6 @@ Watch on YouTube]]></summary>
         <summary type="html"><![CDATA[The service will be powered by Zerohash, and will put OnePay in line with competitors like Venmo, Cash App, and PayPal.]]></summary>
         <author>
             <name>Francisco Rodrigues</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A Mac-like experience on Linux]]></title>
-        <id>https://pointieststick.com/2025/10/04/a-mac-like-experience-on-linux/</id>
-        <link href="https://pointieststick.com/2025/10/04/a-mac-like-experience-on-linux/"/>
-        <updated>2025-10-04T14:31:58.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -519,16 +681,6 @@ The post Maxis Secures 4G Spectrum Deal From MCMC appeared first on Lowyat.NET.]
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Cloudflare Introduces NET Dollar stable coin]]></title>
-        <id>https://www.cloudflare.com/en-au/press/press-releases/2025/cloudflare-introduces-net-dollar-to-support-a-new-business-model-for-the-ai-driven-internet/</id>
-        <link href="https://www.cloudflare.com/en-au/press/press-releases/2025/cloudflare-introduces-net-dollar-to-support-a-new-business-model-for-the-ai-driven-internet/"/>
-        <updated>2025-10-04T08:02:48.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Crypto VCs are ‘a lot more careful’ and not chasing narratives: Exec]]></title>
         <id>https://cointelegraph.com/news/crypto-venture-capital-bullish-capital-investment-slowing</id>
         <link href="https://cointelegraph.com/news/crypto-venture-capital-bullish-capital-investment-slowing?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
@@ -622,7 +774,7 @@ The post Modded iPhone 17 Pro Max Achieves Unparalleled 3DMark Scores appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Ripple Engineer Says XRP Ledger Aims to Be Institutions’ First Choice for Innovation and Trust]]></title>
+        <title type="html"><![CDATA[Ripple Engineer Says XRP Ledger Aims to be Institutions’ First Choice for Innovation and Trust]]></title>
         <id>bd836fac-4020-45e5-905e-0ea3719f606e</id>
         <link href="https://www.coindesk.com/tech/2025/10/03/ripple-engineer-says-xrp-ledger-aims-to-be-institutions-first-choice-for-innovation-and-trust"/>
         <updated>2025-10-04T00:10:12.000Z</updated>
@@ -726,6 +878,16 @@ The post Modded iPhone 17 Pro Max Achieves Unparalleled 3DMark Scores appeared f
         <id>https://www.riksbank.se/en-gb/press-and-published/notices-and-press-releases/press-releases/2025/offline-card-payments-should-be-possible-no-later-than-1-july-2026/</id>
         <link href="https://www.riksbank.se/en-gb/press-and-published/notices-and-press-releases/press-releases/2025/offline-card-payments-should-be-possible-no-later-than-1-july-2026/"/>
         <updated>2025-10-03T20:36:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AMD's EPYC 9355P: Inside a 32 Core Zen 5 Server Chip]]></title>
+        <id>https://chipsandcheese.com/p/amds-epyc-9355p-inside-a-32-core</id>
+        <link href="https://chipsandcheese.com/p/amds-epyc-9355p-inside-a-32-core"/>
+        <updated>2025-10-03T20:01:36.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1063,16 +1225,6 @@ The post ASUS ROG Xbox Ally Series Now Available For Preorder; Starts From RM2,6
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Crypto Markets Today: BTC Pressures $120K as Traders Brace for Potential Short Squeeze]]></title>
-        <id>cdb189a7-b6fe-469e-82f7-aa56bfcfa393</id>
-        <link href="https://www.coindesk.com/markets/2025/10/03/crypto-markets-today-btc-pressures-usd120k-as-traders-brace-for-potential-short-squeeze"/>
-        <updated>2025-10-03T12:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Bitcoin’s battle with $120,000 could set the stage for fresh record highs, as derivatives data shows signs of both bullish conviction and concentrated risk, while altcoins outperform.]]></summary>
-        <author>
-            <name>Oliver Knight</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Govt To Announce Revised Petrol Automatic Pricing Mechanism Soon]]></title>
         <id>https://www.lowyat.net/?p=368439</id>
         <link href="https://www.lowyat.net/2025/368439/govt-announce-revised-ron95-subsidy-automatic-pricing-mechanism-soon/"/>
@@ -1184,16 +1336,6 @@ The post Google To Offer Pixel 10 Pro Fold With 512GB In Malaysia For RM8,599 ap
         <summary type="html"><![CDATA[On Wednesday, federal EV tax credits in the US officially came to an end. Those credits, expanded and extended in the 2022 Inflation Reduction Act, gave drivers up to $7,500 in credits toward the purchase of a new electric vehicle. They’ve been a major force in cutting the up-front costs of EVs, pushing more people…]]></summary>
         <author>
             <name>Casey Crownhart</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Asked to do something illegal at work? Here's what these software engineers did]]></title>
-        <id>https://blog.pragmaticengineer.com/asked-to-do-something-illegal-at-work/</id>
-        <link href="https://blog.pragmaticengineer.com/asked-to-do-something-illegal-at-work/"/>
-        <updated>2025-10-02T08:51:49.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1401,6 +1543,16 @@ The post Google To Offer Pixel 10 Pro Fold With 512GB In Malaysia For RM8,599 ap
         <id>https://chiuhans111.github.io/fluidglass/</id>
         <link href="https://chiuhans111.github.io/fluidglass/"/>
         <updated>2025-09-30T05:15:40.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LoRA Without Regret]]></title>
+        <id>https://thinkingmachines.ai/blog/lora/</id>
+        <link href="https://thinkingmachines.ai/blog/lora/"/>
+        <updated>2025-09-29T17:52:17.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
