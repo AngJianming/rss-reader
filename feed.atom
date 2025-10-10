@@ -1,10 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-10-10T22:40:45.417Z</id>
+    <id>urn:2025-10-10T23:11:54.625Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-10-10T22:40:45.417Z</updated>
+    <updated>2025-10-10T23:11:54.625Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[[Fix] Burp Suite crashing on Kali ARM64 (Apple Silicon / QEMU)]]></title>
+        <id>https://dev.to/yarkhan02/fix-burp-suite-crashing-on-kali-arm64-apple-silicon-qemu-3d99</id>
+        <link href="https://dev.to/yarkhan02/fix-burp-suite-crashing-on-kali-arm64-apple-silicon-qemu-3d99"/>
+        <updated>2025-10-10T23:00:21.000Z</updated>
+        <summary type="html"><![CDATA[If Burp Suite instantly crashes on your Kali ARM64 VM with a SIGILL (illegal instruction) error, here’s the fix:
+The default OpenJDK 21 from Kali uses newer ARM instructions your emulated CPU doesn’t support under QEMU.
+Just switch to a portable Temurin 21 JRE:
+From thie official temurin GitHub repository download the version according to your suitable architecture. Like in my case the my kali architecture is ARM64.
+OpenJDK21U-jre_aarch64_linux_hotspot_21.0.7_6.tar.gz
+Move the file to /tmp folder. Then these commands:
+sudo mkdir -p /opt/temurin21
+
+sudo tar -xzf OpenJDK21U-jre_aarch64_linux_hotspot_21.0.7_6.tar.gz -C /opt/temurin21 --strip-components=1
+
+Test it:
+/opt/temurin21/bin/java -version
+
+JAVA\_CMD=/opt/temurin21/bin/java /usr/bin/burpsuite
+
+Make Temurin the default java (affects all apps)
+sudo update-alternatives --install /usr/bin/java java /opt/temurin21/bin/java 1100 sudo update-alternatives --set java /opt/temurin21/bin/java
+
+java -version
+
+Tested on Apple Silicon (UTM + QEMU)
+It was bothering me so much when I switched to Mac. At first, I tried to fix the problem for days but eventually got exhausted, so I started using an alternative, Caido. After many months, I decided to try Burp Suite again to learn its features — and this time, I finally succeeded in installing it correctly.]]></summary>
+        <author>
+            <name>Yar Khan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Splitting a Number into Digits]]></title>
+        <id>https://dev.to/ayush_mishra_be0655d6b0d6/splitting-a-number-into-digits-3a4m</id>
+        <link href="https://dev.to/ayush_mishra_be0655d6b0d6/splitting-a-number-into-digits-3a4m"/>
+        <updated>2025-10-10T22:52:08.000Z</updated>
+        <summary type="html"><![CDATA[Understanding how to split a number into its individual digits is a fundamental skill in programming. This technique is particularly useful for solving problems like:
+LeetCode 258: Add Digits
+LeetCode 2520. Count the Digits That Divide a Number
+LeetCode 3701: Compute Alternating Sum
+LeetCode 2544: Alternating Digit Sum
+LeetCode 2553: Separate the Digits in an Array
+LeetCode 2535: Difference Between Element Sum and Digit Sum of an Array
+By mastering the methods described below, you'll be good to tackle these and similar problems.
+To extract digits from left to right, we need to isolate the first digit and then work our way down. This is where log10 and powers of 10 come in.
+d = pow(10, floor(log10(n)))
+first_digit = floor(n / d)
+
+So, log10(n) tells you the power to which 10 must be raised to get n.
+Example: n = 512 → log10(512) ≈ 2.7
+
+This means 10^2.7 ≈ 512.
+floor(log10(n)) removes the decimal, leaving just the exponent of the largest power of 10 smaller than n.
+floor(2.7) = 2 → the largest power of 10 smaller than 512 is 10^2 = 100.
+pow(10, k) gives the divisor to scale the number down to a value between 1 and 10.
+512 / 100 = 5.12 → take the floor → 5, the first digit.
+After getting the first digit, reduce n using modulo: n % d = 512 % 100 = 12 → then repeat with the remaining number.
+n = 512
+d = 10^2 = 100
+First digit: floor(512 / 100) = 5
+Remaining: 512 % 100 = 12
+
+Next digit: floor(12 / 10) = 1
+Remaining: 12 % 10 = 2
+
+Last digit: 2
+
+// 5,1,2
+
+Simpler because modulo handles it directly:
+n = 512
+512 % 10 = 2
+512 // 10 = 51
+
+51 % 10 = 1
+51 // 10 = 5
+
+5 % 10 = 5
+5 // 10 = 0 → done
+
+/*
+Result : 2,1,5
+*/ 
+
+the same order. This involves splitting each number into its digits and combining them.]]></summary>
+        <author>
+            <name>Ayush Mishra</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[50 Most Useful SASS Snippets]]></title>
+        <id>https://dev.to/softwaredeveloper01/50-most-useful-sass-snippets-3m8o</id>
+        <link href="https://dev.to/softwaredeveloper01/50-most-useful-sass-snippets-3m8o"/>
+        <updated>2025-10-10T22:44:00.000Z</updated>
+        <summary type="html"><![CDATA[Variables & Basic Syntax
+
+
+
+  
+  
+  1. Defining Variables
+
+
+
+
+
+$primary-color: #3498db;
+$padding-base: 16px;
+
+.button {
+  background-color: $primary-color;
+  padding: $padding-base;
+}
+
+nav {
+  ul {
+    margin: 0;
+    li {
+      display: inline-block;
+    }
+  }
+}
+
+.button {
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+@import 'variables';
+@import 'mixins';
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin box-shadow($x, $y, $blur, $color) {
+  box-shadow: $x $y $blur $color;
+}
+
+.card {
+  @include box-shadow(0, 4px, 5px, rgba(0, 0, 0, 0.3));
+}
+
+@mixin transition($property: all, $duration: 0.3s) {
+  transition: $property $duration ease;
+}
+
+@mixin respond-to($media) {
+  @if $media == phone {
+    @media (max-width: 600px) …]]></summary>
+        <author>
+            <name>Software Developer</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Getting Started with Docker Compose: A Hands-On Guide to Multi-Container Applications]]></title>
+        <id>https://dev.to/theodora_e6f61d02577a5f06/getting-started-with-docker-compose-a-hands-on-guide-to-multi-container-applications-4lom</id>
+        <link href="https://dev.to/theodora_e6f61d02577a5f06/getting-started-with-docker-compose-a-hands-on-guide-to-multi-container-applications-4lom"/>
+        <updated>2025-10-10T22:39:23.000Z</updated>
+        <summary type="html"><![CDATA[If you’ve been working with Docker, you’ve probably been dealing with single-container applications. However, when your applications become more complex, you may need to run multiple services, such as databases, message queues, or caches. The question is: Do you install everything in a single container, or do you run multiple containers? And if you run multiple containers, how do you connect them together?
+In this blog post, we’ll explore how Docker Compose makes managing multi-container applications easy. We’ll work with a simple to-do list app built with Node.js and MySQL to demonstrate how Docker Compose can manage your containers, network, and persistent data, all in a single YAML file.
+Table of Contents
+
+
+
+Why Use Docker Compose?
+Prerequisites
+Lab 1: Setting Up the Application
+Lab 2: …]]></summary>
+        <author>
+            <name>Theodora</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Verge Genomics (YC S15) Is Hiring for Multiple Engineering and Product Roles]]></title>
         <id>https://news.ycombinator.com/item?id=45544636</id>
@@ -59,6 +235,18 @@ L’automatisation du rebalancement n’est pas seulement une question de fréqu
 ici]]></summary>
         <author>
             <name>Joachim DINGOME</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rewriting the Codebase: repo-contextr’s Week 6 Refactor Journey]]></title>
+        <id>https://dev.to/dharam_ghevariya_0d946c37/rewriting-the-codebase-repo-contextrs-week-6-refactor-journey-mce</id>
+        <link href="https://dev.to/dharam_ghevariya_0d946c37/rewriting-the-codebase-repo-contextrs-week-6-refactor-journey-mce"/>
+        <updated>2025-10-10T22:24:27.000Z</updated>
+        <summary type="html"><![CDATA[This week was the cleanup week for repo-contextr!
+After devoting the first five weeks solely to feature development, I realized we had reached the point where code quality and maintainability needed attention. Week 6 was therefore dedicated entirely to refactoring and restructuring the project.
+At the beginning of the project, I followed a straightforward design pattern, separating the functionality into two main modules: commands and utils. The commands module was meant to contain the main features and logic of the tool, while the utils module would host supporting functions to help those features run efficiently. However, as development progressed, utils started to grow beyond its intended purpose. It became a large collection of loosely related functions — many of which were actually pa…]]></summary>
+        <author>
+            <name>Dharam Ghevariya</name>
         </author>
     </entry>
     <entry>
@@ -158,75 +346,13 @@ It's one thing to run a campaign without getting caught. However, it all changes
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Golf With Aimee: Spin vs Distance? Best Ball for Your Game? | Breast Cancer Awareness Month 🎀]]></title>
-        <id>https://dev.to/youtube_golf/golf-with-aimee-spin-vs-distance-best-ball-for-your-game-breast-cancer-awareness-month-5edp</id>
-        <link href="https://dev.to/youtube_golf/golf-with-aimee-spin-vs-distance-best-ball-for-your-game-breast-cancer-awareness-month-5edp"/>
-        <updated>2025-10-10T22:06:26.000Z</updated>
-        <summary type="html"><![CDATA[This Breast Cancer Awareness Month, Aimee’s teamed up with Volvik and the Breast Cancer Research Foundation to test four pink three-piece golf balls in a spin-vs-distance showdown—every purchase helps fund vital research. You can snag your own with 15% off using code PLAYVOLVIK at volvik.com/collections/bcrf and score a stylish golf aid for a great cause.
-On top of the ball test, Aimee offers remote coaching through MPSwing, an exclusive YouTube channel membership with behind-the-scenes perks, and her full gear lineup on AimeeList. Follow her on socials for more tips, gear reveals, and golf fun!
-Watch on YouTube]]></summary>
+        <title type="html"><![CDATA[Bitcoin Crashes Below $110K, $7B in Bets Liquidated on Further Trump Tariff on China]]></title>
+        <id>8531201b-5af9-413f-96cb-4f3060cd0d08</id>
+        <link href="https://www.coindesk.com/markets/2025/10/10/bitcoin-crashes-below-usd110k-cryptos-in-freefall-on-further-trump-tariff-on-china"/>
+        <updated>2025-10-10T21:51:30.000Z</updated>
+        <summary type="html"><![CDATA[BTC tumbled 10% on Friday, while ETH, SOL and XRP crashed 15%-30% in a crypto flash crash as trade tensions escalate between the U.S. and China.]]></summary>
         <author>
-            <name>YouTube Golf</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Game Theorists: Game Theory: Was I WRONG About Secret of the Mimic?]]></title>
-        <id>https://dev.to/gg_news/the-game-theorists-game-theory-was-i-wrong-about-secret-of-the-mimic-lkk</id>
-        <link href="https://dev.to/gg_news/the-game-theorists-game-theory-was-i-wrong-about-secret-of-the-mimic-lkk"/>
-        <updated>2025-10-10T22:03:59.000Z</updated>
-        <summary type="html"><![CDATA[Was I Wrong About Secret of the Mimic? MatPat dives back into Five Nights at Freddy’s: Secret of the Mimic after obsessively dissecting every frame, only to discover two other theorists have their own takes. He revisits all the little details—can he defend his original theory or did he miss the real twist?
-In this episode, he pits each theory against the evidence, weighing screenshots, sound cues, and hidden hints to see which explanation holds up. Will MatPat’s months of sleuthing still stand, or have the other investigators cracked the case first? Tune in to find out!
-Watch on YouTube]]></summary>
-        <author>
-            <name>Gaming News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[GameSpot: ROG Xbox Ally and Ally X: Everything To Know]]></title>
-        <id>https://dev.to/gg_news/gamespot-rog-xbox-ally-and-ally-x-everything-to-know-4g8e</id>
-        <link href="https://dev.to/gg_news/gamespot-rog-xbox-ally-and-ally-x-everything-to-know-4g8e"/>
-        <updated>2025-10-10T22:03:47.000Z</updated>
-        <summary type="html"><![CDATA[ROG Xbox Ally and Ally X: TL;DR
-
-
-Xbox is diving into the handheld world by partnering with ASUS to launch two new portable consoles—the ROG Xbox Ally and the souped-up Ally X. Both devices are set to hit the market very soon, promising a blend of Xbox’s gaming ecosystem with ASUS’s hardware prowess.
-Watch on YouTube]]></summary>
-        <author>
-            <name>Gaming News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Mount Namespace Practice Guide]]></title>
-        <id>https://dev.to/ajinkya_singh_2c02bd40423/mount-namespace-practice-guide-4c84</id>
-        <link href="https://dev.to/ajinkya_singh_2c02bd40423/mount-namespace-practice-guide-4c84"/>
-        <updated>2025-10-10T22:03:39.000Z</updated>
-        <summary type="html"><![CDATA[🚀 I'm Building My Own Container Runtime!
-This is part of a complete series where I'm building Conti - a container runtime from scratch. Check it out on GitHub!
-About This Series:
-I'm sharing everything I learn while building my own container runtime
-Most concepts come from videos, documentation, and LLM-assisted learning (for educational purposes)
-Focus: Understanding through practice - raw Linux commands and practical implementation
-Important: When building your own container, DON'T copy code from sources - it kills the fun! Write it yourself, break things, debug, and learn.
-Why Build Your Own?
-Deep understanding of how containers really work
-Master low-level Linux concepts
-Learn by doing, not just reading
-It's incredibly fun when things finally click!
-Practice creating isolated filesyst…]]></summary>
-        <author>
-            <name>Ajinkya Singh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[GameSpot: Invincible VS. - Cecil Stedman Character Gameplay Reveal Trailer]]></title>
-        <id>https://dev.to/gg_news/gamespot-invincible-vs-cecil-stedman-character-gameplay-reveal-trailer-ngc</id>
-        <link href="https://dev.to/gg_news/gamespot-invincible-vs-cecil-stedman-character-gameplay-reveal-trailer-ngc"/>
-        <updated>2025-10-10T22:03:21.000Z</updated>
-        <summary type="html"><![CDATA[This gameplay reveal trailer finally shows off Battle Beast’s epic moves in Invincible VS. Watch as this hulking powerhouse lays waste to opponents with brutal combos and signature attacks.
-Invincible VS is a ruthless 3v3 tag-team fighter set in the Invincible universe, letting you pick squads of fan-favorite heroes (and villains) to duke it out in iconic locations. It’s superhero smackdown heaven—may the strongest team win!
-Watch on YouTube]]></summary>
-        <author>
-            <name>Gaming News</name>
+            <name>Krisztian Sandor</name>
         </author>
     </entry>
     <entry>
@@ -397,16 +523,6 @@ Watch on YouTube]]></summary>
         <summary type="html"><![CDATA[ETH declined the most among the CoinDesk 20 Index, falling twice as far as bitcoin.]]></summary>
         <author>
             <name>Krisztian Sandor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Google, Meta and Microsoft to stop showing political ads in the EU]]></title>
-        <id>https://www.politico.eu/article/eu-political-ad-rules-google-meta-microsoft-big-tech-kick-in/</id>
-        <link href="https://www.politico.eu/article/eu-political-ad-rules-google-meta-microsoft-big-tech-kick-in/"/>
-        <updated>2025-10-10T18:25:08.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -591,7 +707,7 @@ The post South Korean Government Facility Loses 858TB Of Data In Fire With No Ba
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AI bubble? Bitcoin's high correlation to Nvidia sparks 80% crash warning]]></title>
+        <title type="html"><![CDATA[AI bubble? Bitcoin&#039;s high correlation to Nvidia sparks 80% crash warning]]></title>
         <id>https://cointelegraph.com/news/ai-bubble-bitcoin-high-correlation-nvidia-80-percent-btc-crash-warning</id>
         <link href="https://cointelegraph.com/news/ai-bubble-bitcoin-high-correlation-nvidia-80-percent-btc-crash-warning?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
         <updated>2025-10-10T14:37:32.000Z</updated>
@@ -1143,16 +1259,6 @@ The post Intel Fab 52 Fully Operational; Capable Of Making 18A Chips On US Soil 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Privacy Tokens Zcash, Dash, Railgun Rip Higher as Market Rotates Back to 2018 Narratives]]></title>
-        <id>f0e04402-4558-4331-aea9-0eea4e079ff5</id>
-        <link href="https://www.coindesk.com/markets/2025/10/10/privacy-tokens-zcash-dash-railgun-rip-higher-as-market-rotates-back-to-2018-narratives"/>
-        <updated>2025-10-10T06:45:33.000Z</updated>
-        <summary type="html"><![CDATA[What stands out is how capital is rotating into the once-forgotten privacy sector at the exact moment broader liquidity is still searching for a narrative.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[My approach to building large technical projects (2023)]]></title>
         <id>https://mitchellh.com/writing/building-large-technical-projects</id>
         <link href="https://mitchellh.com/writing/building-large-technical-projects"/>
@@ -1621,6 +1727,16 @@ This feature allows the user to log-into their accounts on those external apps a
         <id>https://ohnotype.co/blog/ohno-type-school-a</id>
         <link href="https://ohnotype.co/blog/ohno-type-school-a"/>
         <updated>2025-10-06T10:18:20.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Wi-Fi Signal Tracks Heartbeat Without Wearables]]></title>
+        <id>https://spectrum.ieee.org/wi-fi-signal-heartbeat-detection</id>
+        <link href="https://spectrum.ieee.org/wi-fi-signal-heartbeat-detection"/>
+        <updated>2025-10-06T08:16:30.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>

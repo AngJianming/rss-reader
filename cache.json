@@ -18,6 +18,46 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/yarkhan02/fix-burp-suite-crashing-on-kali-arm64-apple-silicon-qemu-3d99",
+          "author": "Yar Khan",
+          "description": "If Burp Suite instantly crashes on your Kali ARM64 VM with a SIGILL (illegal instruction) error, here’s the fix:\nThe default OpenJDK 21 from Kali uses newer ARM instructions your emulated CPU doesn’t support under QEMU.\nJust switch to a portable Temurin 21 JRE:\nFrom thie official temurin GitHub repository download the version according to your suitable architecture. Like in my case the my kali architecture is ARM64.\nOpenJDK21U-jre_aarch64_linux_hotspot_21.0.7_6.tar.gz\nMove the file to /tmp folder. Then these commands:\nsudo mkdir -p /opt/temurin21\n\nsudo tar -xzf OpenJDK21U-jre_aarch64_linux_hotspot_21.0.7_6.tar.gz -C /opt/temurin21 --strip-components=1\n\nTest it:\n/opt/temurin21/bin/java -version\n\nJAVA\\_CMD=/opt/temurin21/bin/java /usr/bin/burpsuite\n\nMake Temurin the default java (affects all apps)\nsudo update-alternatives --install /usr/bin/java java /opt/temurin21/bin/java 1100 sudo update-alternatives --set java /opt/temurin21/bin/java\n\njava -version\n\nTested on Apple Silicon (UTM + QEMU)\nIt was bothering me so much when I switched to Mac. At first, I tried to fix the problem for days but eventually got exhausted, so I started using an alternative, Caido. After many months, I decided to try Burp Suite again to learn its features — and this time, I finally succeeded in installing it correctly.",
+          "link": "https://dev.to/yarkhan02/fix-burp-suite-crashing-on-kali-arm64-apple-silicon-qemu-3d99",
+          "publishedOn": "2025-10-10T23:00:21.000Z",
+          "wordCount": 1814,
+          "title": "[Fix] Burp Suite crashing on Kali ARM64 (Apple Silicon / QEMU)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fm9soqgvz2os587up8wbz.png"
+        },
+        {
+          "id": "https://dev.to/ayush_mishra_be0655d6b0d6/splitting-a-number-into-digits-3a4m",
+          "author": "Ayush Mishra",
+          "description": "Understanding how to split a number into its individual digits is a fundamental skill in programming. This technique is particularly useful for solving problems like:\nLeetCode 258: Add Digits\nLeetCode 2520. Count the Digits That Divide a Number\nLeetCode 3701: Compute Alternating Sum\nLeetCode 2544: Alternating Digit Sum\nLeetCode 2553: Separate the Digits in an Array\nLeetCode 2535: Difference Between Element Sum and Digit Sum of an Array\nBy mastering the methods described below, you'll be good to tackle these and similar problems.\nTo extract digits from left to right, we need to isolate the first digit and then work our way down. This is where log10 and powers of 10 come in.\nd = pow(10, floor(log10(n)))\nfirst_digit = floor(n / d)\n\nSo, log10(n) tells you the power to which 10 must be raised to get n.\nExample: n = 512 → log10(512) ≈ 2.7\n\nThis means 10^2.7 ≈ 512.\nfloor(log10(n)) removes the decimal, leaving just the exponent of the largest power of 10 smaller than n.\nfloor(2.7) = 2 → the largest power of 10 smaller than 512 is 10^2 = 100.\npow(10, k) gives the divisor to scale the number down to a value between 1 and 10.\n512 / 100 = 5.12 → take the floor → 5, the first digit.\nAfter getting the first digit, reduce n using modulo: n % d = 512 % 100 = 12 → then repeat with the remaining number.\nn = 512\nd = 10^2 = 100\nFirst digit: floor(512 / 100) = 5\nRemaining: 512 % 100 = 12\n\nNext digit: floor(12 / 10) = 1\nRemaining: 12 % 10 = 2\n\nLast digit: 2\n\n// 5,1,2\n\nSimpler because modulo handles it directly:\nn = 512\n512 % 10 = 2\n512 // 10 = 51\n\n51 % 10 = 1\n51 // 10 = 5\n\n5 % 10 = 5\n5 // 10 = 0 → done\n\n/*\nResult : 2,1,5\n*/ \n\nthe same order. This involves splitting each number into its digits and combining them.",
+          "link": "https://dev.to/ayush_mishra_be0655d6b0d6/splitting-a-number-into-digits-3a4m",
+          "publishedOn": "2025-10-10T22:52:08.000Z",
+          "wordCount": 1985,
+          "title": "Splitting a Number into Digits",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiu0q94ma22i1ij2l7rd1.png"
+        },
+        {
+          "id": "https://dev.to/softwaredeveloper01/50-most-useful-sass-snippets-3m8o",
+          "author": "Software Developer",
+          "description": "Variables & Basic Syntax\n\n\n\n  \n  \n  1. Defining Variables\n\n\n\n\n\n$primary-color: #3498db;\n$padding-base: 16px;\n\n.button {\n  background-color: $primary-color;\n  padding: $padding-base;\n}\n\nnav {\n  ul {\n    margin: 0;\n    li {\n      display: inline-block;\n    }\n  }\n}\n\n.button {\n  &:hover {\n    background-color: darken($primary-color, 10%);\n  }\n}\n\n@import 'variables';\n@import 'mixins';\n\n@mixin flex-center {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n@mixin box-shadow($x, $y, $blur, $color) {\n  box-shadow: $x $y $blur $color;\n}\n\n.card {\n  @include box-shadow(0, 4px, 5px, rgba(0, 0, 0, 0.3));\n}\n\n@mixin transition($property: all, $duration: 0.3s) {\n  transition: $property $duration ease;\n}\n\n@mixin respond-to($media) {\n  @if $media == phone {\n    @media (max-width: 600px) …",
+          "link": "https://dev.to/softwaredeveloper01/50-most-useful-sass-snippets-3m8o",
+          "publishedOn": "2025-10-10T22:44:00.000Z",
+          "wordCount": 2636,
+          "title": "50 Most Useful SASS Snippets",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frkp1yhy5zd1oqe2735n9.png"
+        },
+        {
+          "id": "https://dev.to/theodora_e6f61d02577a5f06/getting-started-with-docker-compose-a-hands-on-guide-to-multi-container-applications-4lom",
+          "author": "Theodora",
+          "description": "If you’ve been working with Docker, you’ve probably been dealing with single-container applications. However, when your applications become more complex, you may need to run multiple services, such as databases, message queues, or caches. The question is: Do you install everything in a single container, or do you run multiple containers? And if you run multiple containers, how do you connect them together?\nIn this blog post, we’ll explore how Docker Compose makes managing multi-container applications easy. We’ll work with a simple to-do list app built with Node.js and MySQL to demonstrate how Docker Compose can manage your containers, network, and persistent data, all in a single YAML file.\nTable of Contents\n\n\n\nWhy Use Docker Compose?\nPrerequisites\nLab 1: Setting Up the Application\nLab 2: …",
+          "link": "https://dev.to/theodora_e6f61d02577a5f06/getting-started-with-docker-compose-a-hands-on-guide-to-multi-container-applications-4lom",
+          "publishedOn": "2025-10-10T22:39:23.000Z",
+          "wordCount": 2367,
+          "title": "Getting Started with Docker Compose: A Hands-On Guide to Multi-Container Applications",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fnn2d83tkcva45zhrb6wd.png"
+        },
+        {
           "id": "https://dev.to/joachimdi/automatiser-le-rebalancement-de-portefeuille-avec-une-api-exemple-pratique-56ji",
           "author": "Joachim DINGOME",
           "description": "Le rebalancement est une étape clé en gestion de portefeuille : il s’agit d’ajuster périodiquement la répartition entre actions,\nles jours fériés boursiers. \nPortosync, une API\nLe problème du rebalancement classique\n\n\n\nExemple : vous décidez de rebalancer le 1er janvier, le 1er avril, le 1er juillet et le 1er octobre.\nEn 2025, le 1er janvier tombe un jour férié (NYSE fermé).\nRésultat : votre algo tente d’exécuter une opération impossible.\nLa solution avec Portosync\n\n\nL’API ajuste automatiquement votre calendrier de rebalancement pour tomber sur le prochain jour valide.\nimport requests\nr = requests.get(\"https://portosync.ovh/api/rebalancing-dates/NYSE/calendar\",\n params={\n \"startRebalancingDate\": \"2025-01-01\",\n \"frequency\": \"TRIMESTRIEL\"\n })\nprint(r.json())\n{\n \"rebalancingDates\": [\n  \"2025-01-02\",\n  \"2025-04-01\",\n  \"2025-07-01\",\n  \"2025-10-01\"\n ]\n}\n\n\nIci, le 1er janvier étant férié, l’API renvoie automatiquement le 2 janvier.\nPlus besoin de maintenir vos propres règles de jours fériés.\nÉvite les plantages de robots de trading.\nCompatible avec plusieurs marchés (NYSE, Euronext, etc...)\nL’automatisation du rebalancement n’est pas seulement une question de fréquence, mais aussi de fiabilité face au\nici",
@@ -26,6 +66,16 @@
           "wordCount": 1870,
           "title": "Automatiser le rebalancement de portefeuille avec une API (exemple pratique)",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc7mwt87hy09a49dt5a0a.png"
+        },
+        {
+          "id": "https://dev.to/dharam_ghevariya_0d946c37/rewriting-the-codebase-repo-contextrs-week-6-refactor-journey-mce",
+          "author": "Dharam Ghevariya",
+          "description": "This week was the cleanup week for repo-contextr!\nAfter devoting the first five weeks solely to feature development, I realized we had reached the point where code quality and maintainability needed attention. Week 6 was therefore dedicated entirely to refactoring and restructuring the project.\nAt the beginning of the project, I followed a straightforward design pattern, separating the functionality into two main modules: commands and utils. The commands module was meant to contain the main features and logic of the tool, while the utils module would host supporting functions to help those features run efficiently. However, as development progressed, utils started to grow beyond its intended purpose. It became a large collection of loosely related functions — many of which were actually pa…",
+          "link": "https://dev.to/dharam_ghevariya_0d946c37/rewriting-the-codebase-repo-contextrs-week-6-refactor-journey-mce",
+          "publishedOn": "2025-10-10T22:24:27.000Z",
+          "wordCount": 2451,
+          "title": "Rewriting the Codebase: repo-contextr’s Week 6 Refactor Journey",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpm8spomr6o4oyc2ci20c.png"
         },
         {
           "id": "https://dev.to/kkrishnan10/refactoring-contextweaver-01-for-better-structure-and-maintainability-1edf",
@@ -86,56 +136,6 @@
           "wordCount": 5634,
           "title": "Security news weekly round-up - 10th October 2025",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fi%2F0jupjut8w3h9mjwm8m57.jpg"
-        },
-        {
-          "id": "https://dev.to/youtube_golf/golf-with-aimee-spin-vs-distance-best-ball-for-your-game-breast-cancer-awareness-month-5edp",
-          "author": "YouTube Golf",
-          "description": "This Breast Cancer Awareness Month, Aimee’s teamed up with Volvik and the Breast Cancer Research Foundation to test four pink three-piece golf balls in a spin-vs-distance showdown—every purchase helps fund vital research. You can snag your own with 15% off using code PLAYVOLVIK at volvik.com/collections/bcrf and score a stylish golf aid for a great cause.\nOn top of the ball test, Aimee offers remote coaching through MPSwing, an exclusive YouTube channel membership with behind-the-scenes perks, and her full gear lineup on AimeeList. Follow her on socials for more tips, gear reveals, and golf fun!\nWatch on YouTube",
-          "link": "https://dev.to/youtube_golf/golf-with-aimee-spin-vs-distance-best-ball-for-your-game-breast-cancer-awareness-month-5edp",
-          "publishedOn": "2025-10-10T22:06:26.000Z",
-          "wordCount": 1778,
-          "title": "Golf With Aimee: Spin vs Distance? Best Ball for Your Game? | Breast Cancer Awareness Month 🎀",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2FeWTU-KBpP74%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/gg_news/the-game-theorists-game-theory-was-i-wrong-about-secret-of-the-mimic-lkk",
-          "author": "Gaming News",
-          "description": "Was I Wrong About Secret of the Mimic? MatPat dives back into Five Nights at Freddy’s: Secret of the Mimic after obsessively dissecting every frame, only to discover two other theorists have their own takes. He revisits all the little details—can he defend his original theory or did he miss the real twist?\nIn this episode, he pits each theory against the evidence, weighing screenshots, sound cues, and hidden hints to see which explanation holds up. Will MatPat’s months of sleuthing still stand, or have the other investigators cracked the case first? Tune in to find out!\nWatch on YouTube",
-          "link": "https://dev.to/gg_news/the-game-theorists-game-theory-was-i-wrong-about-secret-of-the-mimic-lkk",
-          "publishedOn": "2025-10-10T22:03:59.000Z",
-          "wordCount": 1704,
-          "title": "The Game Theorists: Game Theory: Was I WRONG About Secret of the Mimic?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2FIzCoygNlibc%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/gg_news/gamespot-rog-xbox-ally-and-ally-x-everything-to-know-4g8e",
-          "author": "Gaming News",
-          "description": "ROG Xbox Ally and Ally X: TL;DR\n\n\nXbox is diving into the handheld world by partnering with ASUS to launch two new portable consoles—the ROG Xbox Ally and the souped-up Ally X. Both devices are set to hit the market very soon, promising a blend of Xbox’s gaming ecosystem with ASUS’s hardware prowess.\nWatch on YouTube",
-          "link": "https://dev.to/gg_news/gamespot-rog-xbox-ally-and-ally-x-everything-to-know-4g8e",
-          "publishedOn": "2025-10-10T22:03:47.000Z",
-          "wordCount": 1654,
-          "title": "GameSpot: ROG Xbox Ally and Ally X: Everything To Know",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2FEv2UNTjnysg%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/ajinkya_singh_2c02bd40423/mount-namespace-practice-guide-4c84",
-          "author": "Ajinkya Singh",
-          "description": "🚀 I'm Building My Own Container Runtime!\nThis is part of a complete series where I'm building Conti - a container runtime from scratch. Check it out on GitHub!\nAbout This Series:\nI'm sharing everything I learn while building my own container runtime\nMost concepts come from videos, documentation, and LLM-assisted learning (for educational purposes)\nFocus: Understanding through practice - raw Linux commands and practical implementation\nImportant: When building your own container, DON'T copy code from sources - it kills the fun! Write it yourself, break things, debug, and learn.\nWhy Build Your Own?\nDeep understanding of how containers really work\nMaster low-level Linux concepts\nLearn by doing, not just reading\nIt's incredibly fun when things finally click!\nPractice creating isolated filesyst…",
-          "link": "https://dev.to/ajinkya_singh_2c02bd40423/mount-namespace-practice-guide-4c84",
-          "publishedOn": "2025-10-10T22:03:39.000Z",
-          "wordCount": 2231,
-          "title": "Mount Namespace Practice Guide",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxv1p72vg8xyoz4hnf5mu.png"
-        },
-        {
-          "id": "https://dev.to/gg_news/gamespot-invincible-vs-cecil-stedman-character-gameplay-reveal-trailer-ngc",
-          "author": "Gaming News",
-          "description": "This gameplay reveal trailer finally shows off Battle Beast’s epic moves in Invincible VS. Watch as this hulking powerhouse lays waste to opponents with brutal combos and signature attacks.\nInvincible VS is a ruthless 3v3 tag-team fighter set in the Invincible universe, letting you pick squads of fan-favorite heroes (and villains) to duke it out in iconic locations. It’s superhero smackdown heaven—may the strongest team win!\nWatch on YouTube",
-          "link": "https://dev.to/gg_news/gamespot-invincible-vs-cecil-stedman-character-gameplay-reveal-trailer-ngc",
-          "publishedOn": "2025-10-10T22:03:21.000Z",
-          "wordCount": 1667,
-          "title": "GameSpot: Invincible VS. - Cecil Stedman Character Gameplay Reveal Trailer",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi3.ytimg.com%2Fvi%2FfUZaJDhIEPk%2Fhqdefault.jpg"
         }
       ]
     },
@@ -322,16 +322,6 @@
           "imageUrl": "https://i0.wp.com/electrek.co/wp-content/uploads/sites/3/2025/10/Toyota-first-all-solid-state-EV-2.jpeg?resize=1200%2C628&quality=82&strip=all&ssl=1"
         },
         {
-          "id": "https://www.politico.eu/article/eu-political-ad-rules-google-meta-microsoft-big-tech-kick-in/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.politico.eu/article/eu-political-ad-rules-google-meta-microsoft-big-tech-kick-in/",
-          "publishedOn": "2025-10-10T18:25:08.000Z",
-          "wordCount": 4764,
-          "title": "Google, Meta and Microsoft to stop showing political ads in the EU",
-          "imageUrl": "https://www.politico.eu/cdn-cgi/image/width=1200,height=630,fit=crop,quality=80,onerror=redirect/wp-content/uploads/2025/10/10/GettyImages-2230083806-scaled.jpg"
-        },
-        {
           "id": "https://surfingcomplexity.blog/2025/10/08/the-illegible-nature-of-software-development-talent/",
           "author": null,
           "description": "Comments",
@@ -357,9 +347,9 @@
           "description": "Comments",
           "link": "https://github.com/diffplug/gitcasso",
           "publishedOn": "2025-10-10T15:37:27.000Z",
-          "wordCount": 1298,
+          "wordCount": 1305,
           "title": "Show HN: Gitcasso – Syntax Highlighting and Draft Recovery for GitHub Comments",
-          "imageUrl": "https://opengraph.githubassets.com/92fbfe3045d567489d2f73dbc9f78eff32e99f7dc415441e69659531e0e76dcb/diffplug/gitcasso"
+          "imageUrl": "https://opengraph.githubassets.com/ae383763b429d8a6733da44a320248ce55a6bf040f09f2383217494b726390f1/diffplug/gitcasso"
         },
         {
           "id": "https://www.theguardian.com/business/2025/oct/10/ryanair-flight-landed-at-manchester-airport-with-six-minutes-of-fuel-left-flight-log-suggests",
@@ -489,7 +479,7 @@
           "publishedOn": "2025-10-08T05:24:51.000Z",
           "wordCount": 1745,
           "title": "NanoMi: Source-available transmission electron microscope",
-          "imageUrl": "https://lh3.googleusercontent.com/sitesv/AICyYdZVZol6y19HwmPdWYjshqAihVVTReCK16H4h5mgXx6OminIOos_vmM2ln2eomPf4bgyIoCKN_AOBBWgIuPLK5NKsdR6DNOvqTsWgT4O8MNCCHWXi1kjlnm_0b_6Qg7SpmpOezljF8c0qlzT5vRXpVNRpgAGxVOIvViYoNL_xuVTM24lm6YyC1hV=w1280"
+          "imageUrl": "https://lh3.googleusercontent.com/sitesv/AICyYdbENU5S_lqqwaq_tRnz_CNsNDemPvNHwW4XHxyxf_cKcJoi4ABOAh80VTt7COSh9VXJSl5thqTxEYyb0C8s-VAnU6VujIw5LL_nBr2AKbJjcA_cAiZVPmtAIHTrx39MOVp_sNmEepSNWl8CQqNIKo10F2cGMmpFja4lPNJSCLW033bN7zA4HjEt=w1280"
         },
         {
           "id": "https://autoroaster.com/",
@@ -507,7 +497,7 @@
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=45490740",
           "publishedOn": "2025-10-06T12:42:19.000Z",
-          "wordCount": 8193,
+          "wordCount": 8304,
           "title": "Ask HN: What's the best hackable smart TV?",
           "imageUrl": null
         },
@@ -520,6 +510,16 @@
           "wordCount": 504,
           "title": "Ohno Type School: A (2020)",
           "imageUrl": "https://ohno.sfo3.cdn.digitaloceanspaces.com/images/Site/_thumbnail/foundry_banner.jpg"
+        },
+        {
+          "id": "https://spectrum.ieee.org/wi-fi-signal-heartbeat-detection",
+          "author": null,
+          "description": "Comments",
+          "link": "https://spectrum.ieee.org/wi-fi-signal-heartbeat-detection",
+          "publishedOn": "2025-10-06T08:16:30.000Z",
+          "wordCount": 10203,
+          "title": "Wi-Fi Signal Tracks Heartbeat Without Wearables",
+          "imageUrl": "https://spectrum.ieee.org/media-library/image.jpg?id=61696185&width=1200&height=600&coordinates=0%2C6%2C0%2C24"
         },
         {
           "id": "https://www.dimensions.com/",
@@ -1080,12 +1080,22 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "8531201b-5af9-413f-96cb-4f3060cd0d08",
+          "author": "Krisztian Sandor",
+          "description": "BTC tumbled 10% on Friday, while ETH, SOL and XRP crashed 15%-30% in a crypto flash crash as trade tensions escalate between the U.S. and China.",
+          "link": "https://www.coindesk.com/markets/2025/10/10/bitcoin-crashes-below-usd110k-cryptos-in-freefall-on-further-trump-tariff-on-china",
+          "publishedOn": "2025-10-10T21:51:30.000Z",
+          "wordCount": 8946,
+          "title": "Bitcoin Crashes Below $110K, $7B in Bets Liquidated on Further Trump Tariff on China",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/81f67b26f44d21f81900850ca939f53c89be60c6-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
           "id": "0f0b30bd-e626-493e-ae05-8672b30763f3",
           "author": "Krisztian Sandor",
           "description": "The unnamed investor bought nearly 13 million shares from the company and some executives. The firm intends to use the proceeds to boost its Helios data center project.",
           "link": "https://www.coindesk.com/business/2025/10/10/galaxy-gets-usd460m-investment-by-large-asset-manager-for-its-hpc-push",
           "publishedOn": "2025-10-10T21:08:35.000Z",
-          "wordCount": 8874,
+          "wordCount": 8951,
           "title": "Galaxy Gets $460M Investment by 'Large Asset Manager' for Its HPC Push",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f58cbddcbf685514c2ffe68e48de9a9ddc3338db-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1095,7 +1105,7 @@
           "description": "ETH declined the most among the CoinDesk 20 Index, falling twice as far as bitcoin.",
           "link": "https://www.coindesk.com/markets/2025/10/10/ether-s-7-plunge-leads-crypto-liquidations-in-usd600m-carnage",
           "publishedOn": "2025-10-10T18:51:35.000Z",
-          "wordCount": 8685,
+          "wordCount": 8736,
           "title": "Ether's 7% Plunge Leads Crypto Liquidations in $600M Carnage",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/40c3f11b0da03417a379f49f49cb269031b68998-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1105,7 +1115,7 @@
           "description": "Traders exit positions as cryptocurrency breaks key technical levels amid broader market uncertainty.",
           "link": "https://www.coindesk.com/markets/2025/10/10/hbar-tumbles-6-amid-volume-surge-as-wider-market-capitulates",
           "publishedOn": "2025-10-10T16:54:53.000Z",
-          "wordCount": 9021,
+          "wordCount": 9085,
           "title": "HBAR Tumbles 6% Amid Volume Surge as Wider Market Capitulates",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/812f1eb70cea3f80abb87952e710a4abccaf1e8d-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1115,7 +1125,7 @@
           "description": "Some on-chain investment funds may arrive packaged as “innovation” but conceal higher costs, weaker protections, or unnecessary complexity, Prometheum’s co-CEO Aaron Kaplan argues.",
           "link": "https://www.coindesk.com/opinion/2025/10/10/on-chain-investment-funds-beware-of-greeks-bearing-gifts",
           "publishedOn": "2025-10-10T16:35:28.000Z",
-          "wordCount": 9058,
+          "wordCount": 9122,
           "title": "On-Chain Investment Funds: Beware of Greeks Bearing Gifts",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/cf4dc8c4c0ec173076854ab9e6e283a630920a8d-1920x1080.jpg?auto=format"
         },
@@ -1125,7 +1135,7 @@
           "description": "Cryptos came under pressure as a potential U.S.-China trade war once again on the table.",
           "link": "https://www.coindesk.com/markets/2025/10/10/trump-tariff-threat-on-china-sends-bitcoin-tumbling-below-usd119k",
           "publishedOn": "2025-10-10T15:37:58.000Z",
-          "wordCount": 8618,
+          "wordCount": 8669,
           "title": "Trump Tariff Threat on China Sends Bitcoin Tumbling Below $119K",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e454babd90e4f7d1d5963e49471105fe994f5e3b-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1135,7 +1145,7 @@
           "description": "American Ventures LLC, of which Dominari is a member, made an undisclosed investment in the Hemispheres Foundation, the principal stewards of the Hemi project.",
           "link": "https://www.coindesk.com/business/2025/10/10/trump-linked-firm-looks-to-bitcoin-programmability-to-build-btc-treasury-etf-platform",
           "publishedOn": "2025-10-10T15:13:50.000Z",
-          "wordCount": 8452,
+          "wordCount": 8503,
           "title": "Trump-Linked Firm Looks to Bitcoin Programmability to Build BTC Treasury, ETF Platform",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d256c78e171d7b06816ed1319a0cc43c77cfb7bb-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1145,7 +1155,7 @@
           "description": "Once a guaranteed pop, new token generation events are now struggling to hold value — with CAMP, XAN and XPL plunging as investor enthusiasm fades and tokenomics weigh heavy.",
           "link": "https://www.coindesk.com/business/2025/10/10/hyped-token-launches-fall-flat-as-tge-loses-its-mojo-ahead-of-airdrop-season",
           "publishedOn": "2025-10-10T15:10:28.000Z",
-          "wordCount": 8662,
+          "wordCount": 8710,
           "title": "Hyped Token Launches Fall Flat as TGE Loses Mojo Ahead of Airdrop Season",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e39b062cb65ae64267bcc7f3a97eb2c409068c58-1920x1080.jpg?auto=format"
         },
@@ -1155,7 +1165,7 @@
           "description": "The Finance Ministry noted growing crypto adoption, while the central bank laid out plans to let banks participate under strict capital and reserve requirements.",
           "link": "https://www.coindesk.com/policy/2025/10/10/russia-acknowledges-crypto-s-popularity-with-its-citizens-as-central-bank-weighs-bank-involvement",
           "publishedOn": "2025-10-10T14:46:15.000Z",
-          "wordCount": 8927,
+          "wordCount": 8991,
           "title": "Russia Acknowledges Crypto’s Popularity With Its Citizens as Central Bank Weighs Bank Involvement",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/714e6b6e61e6cdd0ec28b70c2c2ac892aa2d3ef4-1920x1080.jpg?auto=format"
         },
@@ -1165,7 +1175,7 @@
           "description": "The decision marks a major expansion for the bank’s $8.2 trillion wealth and investment management business and suggests a growing acceptance of crypto as an asset class for mainstream investors.",
           "link": "https://www.coindesk.com/markets/2025/10/10/morgan-stanley-opens-crypto-access-to-all-clients-amid-wall-street-shift-toward-digital-assets-cnbc",
           "publishedOn": "2025-10-10T14:32:29.000Z",
-          "wordCount": 8637,
+          "wordCount": 8702,
           "title": "Morgan Stanley Opens Crypto Access to All Clients Amid Wall Street Shift Toward Digital Assets: CNBC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b639632f8f6b5b22d1831593c830bec9dd498367-3480x2320.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1175,7 +1185,7 @@
           "description": "Most of the capital will be used to acquire tokenized gold reserves, aiming to build a publicly verifiable, blockchain-native treasury",
           "link": "https://www.coindesk.com/business/2025/10/10/prestige-wealth-raises-usd150m-to-become-tether-gold-treasury-vehicle",
           "publishedOn": "2025-10-10T14:14:48.000Z",
-          "wordCount": 8593,
+          "wordCount": 8657,
           "title": "Prestige Wealth Raises $150M to Become Tether Gold Treasury Vehicle",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2eb0857f0b0966cab98f03b11f710f1db49fa56f-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1185,7 +1195,7 @@
           "description": "According to PeckShield, the theft stemmed from a private key compromise, allowing an attacker to drain the victim’s funds in a single swift move.",
           "link": "https://www.coindesk.com/business/2025/10/10/usd21m-crypto-theft-on-hyperliquid-tied-to-private-key-leak-peckshield",
           "publishedOn": "2025-10-10T13:38:41.000Z",
-          "wordCount": 8563,
+          "wordCount": 8614,
           "title": "$21M Crypto Theft on Hyperliquid Tied to Private Key Leak: PeckShield",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/56a4c15b5193f534a64f932d3e14fdd33fafac55-1919x1080.jpg?auto=format"
         },
@@ -1195,7 +1205,7 @@
           "description": "Miners’ secured grid capacity and high-density sites offer hyperscalers a faster, cheaper path to expand AI data centers as interconnection delays mount.",
           "link": "https://www.coindesk.com/markets/2025/10/10/bitcoin-miners-emerge-as-key-ai-infrastructure-partners-amid-power-crunch-bernstein",
           "publishedOn": "2025-10-10T13:37:32.000Z",
-          "wordCount": 8800,
+          "wordCount": 8851,
           "title": "Bitcoin Miners Emerge as Key AI Infrastructure Partners Amid Power Crunch: Bernstein",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a944f5c40b9f1fece6ecb4c387377f37ae7134cc-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1205,7 +1215,7 @@
           "description": "The funding round was led by major investors including Sequoia Capital, Andreessen Horowitz, Paradigm, CapitalG and Coinbase Ventures.",
           "link": "https://www.coindesk.com/business/2025/10/10/kalshi-raises-usd300m-at-usd5b-valuation-expands-prediction-markets-to-140-countries-nyt",
           "publishedOn": "2025-10-10T13:26:24.000Z",
-          "wordCount": 8383,
+          "wordCount": 8421,
           "title": "Kalshi Raises $300M at $5B Valuation, Expands Prediction Markets to 140 Countries: NYT",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/29000e405d57d43108646bb4bd4a5d6935d814c1-1919x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1215,7 +1225,7 @@
           "description": "Junk bond and banking ETFs hint risk aversion.",
           "link": "https://www.coindesk.com/markets/2025/10/10/bitcoin-bounce-meets-bearish-ma-signals-risk-off-hints-from-key-etfs",
           "publishedOn": "2025-10-10T13:19:49.000Z",
-          "wordCount": 8619,
+          "wordCount": 8696,
           "title": "Bitcoin Price Bounce Meets Bearish MA Configuration, Risk-Off Hints From Key ETFs",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/30b8d355ae6b7383808e60d077d83132897f9b07-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1225,7 +1235,7 @@
           "description": "NEAR Protocol (NEAR) was also a top performer, gaining 10.9% from Thursday.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/10/10/coindesk-20-performance-update-litecoin-ltc-surges-11-9-as-all-constituents-rise",
           "publishedOn": "2025-10-10T13:10:32.000Z",
-          "wordCount": 7567,
+          "wordCount": 7618,
           "title": "CoinDesk 20 Performance Update: Litecoin (LTC) Surges 11.9% as All Constituents Rise",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3c4fd086b06de80d92047b6680df6d0e6739fab8-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1235,7 +1245,7 @@
           "description": "The Bitcoin-focused firm paused stock acquisition rights for 20 trading days as its stock's multiple to net asset value hit a cycle low.",
           "link": "https://www.coindesk.com/markets/2025/10/10/metaplanet-halts-warrant-exercises-amid-share-price-pressure",
           "publishedOn": "2025-10-10T12:54:12.000Z",
-          "wordCount": 8923,
+          "wordCount": 9000,
           "title": "Metaplanet Pauses Share Sales to Fund Bitcoin Purchases",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0ee52bf0a112ffb63c4f9066724c312abfe355c7-2650x1602.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1245,7 +1255,7 @@
           "description": "Bitcoin’s rebound from overnight lows has reignited bullish sentiment across crypto markets, with institutional inflows and leveraged positioning pointing to potential upside.",
           "link": "https://www.coindesk.com/markets/2025/10/10/crypto-markets-today",
           "publishedOn": "2025-10-10T12:00:40.000Z",
-          "wordCount": 9450,
+          "wordCount": 9501,
           "title": "Bitcoin Traders Tilt Bullish as Short Squeeze Looms While Chinese Memecoins Crash",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3c7fcae2ade12de700488a2fd235247322462610-1920x1080.jpg?auto=format"
         },
@@ -1255,7 +1265,7 @@
           "description": "The recent surge in BNB's price appears to be driven by Binance's scale and user reach, with $14.8 billion in inflows last quarter.",
           "link": "https://www.coindesk.com/markets/2025/10/10/distribution-is-the-key-bnb-s-129-rally-mirrors-solana-s-2024-surge",
           "publishedOn": "2025-10-10T11:42:30.000Z",
-          "wordCount": 9140,
+          "wordCount": 9191,
           "title": "‘Distribution Is the Key’: BNB’s 129% Rally Mirrors Solana’s 2024 Surge",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/af00c53df087995bc48b71693e0318a45c6fd44a-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1265,7 +1275,7 @@
           "description": "Your day-ahead look for Oct. 10, 2025",
           "link": "https://www.coindesk.com/daybook-us/2025/10/10/bitcoin-ready-for-big-moves-on-91-chance-of-fed-rate-cut-crypto-daybook-americas",
           "publishedOn": "2025-10-10T11:15:23.000Z",
-          "wordCount": 11134,
+          "wordCount": 11185,
           "title": "Bitcoin Ready for 'Big Moves' on 91% Chance of Fed Rate Cut: Crypto Daybook Americas",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2353b984ad74666797fb72d4f328b6055d850fbf-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1275,7 +1285,7 @@
           "description": "With the SEC running on skeleton staff during the prolonged U.S. government shutdown, crypto ETF reviews are effectively frozen. A weeks-long pause could push Cardano’s long-awaited ETF decision past its 2025 deadline and into the new year.",
           "link": "https://www.coindesk.com/markets/2025/10/10/analysis-market-is-undervaluing-the-possibility-cardano-ada-etf-is-delayed-until-2026",
           "publishedOn": "2025-10-10T10:03:51.000Z",
-          "wordCount": 9194,
+          "wordCount": 9245,
           "title": "Will Cardano ETF be Approved by This Year Amid Government Shutdown?",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0b861ac081b4b97c5f928bbd10d186ce2e4e4dc0-2981x1677.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1285,7 +1295,7 @@
           "description": "AI and high-performance computing demand fuel fresh gains, with miners eyeing a potential $100 billion market cap by year-end",
           "link": "https://www.coindesk.com/markets/2025/10/10/bitcoin-miners-rally-in-pre-market-as-sector-nears-usd90b-market-cap",
           "publishedOn": "2025-10-10T09:24:08.000Z",
-          "wordCount": 8730,
+          "wordCount": 8777,
           "title": "Bitcoin Miners Rally in Pre-Market as Sector Nears $90B Market Cap",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e5f4554131f5690a26d200e65242830368ecaac3-1686x971.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1295,7 +1305,7 @@
           "description": "This move could disrupt global supply chains, drive up prices, and have ripple effects across financial markets.",
           "link": "https://www.coindesk.com/markets/2025/10/10/china-expands-rare-earth-export-controls-ahead-of-trump-xi-meeting",
           "publishedOn": "2025-10-10T09:00:58.000Z",
-          "wordCount": 8710,
+          "wordCount": 8774,
           "title": "China Expands Rare Earth Export Controls Ahead of Trump-Xi Meeting",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f74868c7e6f724aa0448fe4404a79eb47c87fe21-1000x667.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1305,7 +1315,7 @@
           "description": "The livestreaming feature lets creators broadcast trades, accept token donations, and reward viewers via its Hypercore protocol",
           "link": "https://www.coindesk.com/business/2025/10/10/hyperliquid-introduces-based-streams-a-dex-powered-live-streaming-platform",
           "publishedOn": "2025-10-10T08:51:20.000Z",
-          "wordCount": 8201,
+          "wordCount": 8252,
           "title": "Hyperliquid Introduces 'Based Streams,' a DEX-Powered Live Streaming Platform",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1d778ce93385c600dff1cfc5a83575becf97e6dc-1920x1080.jpg?auto=format"
         },
@@ -1315,19 +1325,9 @@
           "description": "Implied volatility hits a 2.5-month high as price momentum and historical patterns point to a strong Q4",
           "link": "https://www.coindesk.com/markets/2025/10/10/bitcoin-implied-volatility-reaches-2-5-month-high-as-seasonal-strength-kicks-in",
           "publishedOn": "2025-10-10T07:49:33.000Z",
-          "wordCount": 8853,
+          "wordCount": 8904,
           "title": "Bitcoin Implied Volatility Reaches 2.5-Month High as Seasonal Strength Kicks In",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5542f690789081dc5564584f29d003b0088e1957-1546x637.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "f0e04402-4558-4331-aea9-0eea4e079ff5",
-          "author": "Shaurya Malwa",
-          "description": "What stands out is how capital is rotating into the once-forgotten privacy sector at the exact moment broader liquidity is still searching for a narrative.",
-          "link": "https://www.coindesk.com/markets/2025/10/10/privacy-tokens-zcash-dash-railgun-rip-higher-as-market-rotates-back-to-2018-narratives",
-          "publishedOn": "2025-10-10T06:45:33.000Z",
-          "wordCount": 8986,
-          "title": "Privacy Tokens Zcash, Dash, Railgun Rip Higher as Market Rotates Back to 2018 Narratives",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bb3ae6475d89f941420929628ac9bf81fe02d033-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
       ]
     },
@@ -1347,8 +1347,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5Nzk0MjMtZWY4ZS03YzYwLWI5MzctYjlkZGY3NWZlOGFk.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Here’s what happened in crypto today"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5Nzk0MjMtZWY4ZS03YzYwLWI5MzctYjlkZGY3NWZlOGFk.jpg"
         },
@@ -1363,8 +1362,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWQwMmYtNmM2YS03ZjA3LTg0ZTMtYzVhOTQ2NTI5NjRi.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Bitcoin plummets to $102K on Binance as Trump announces 100% tariffs on China"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWQwMmYtNmM2YS03ZjA3LTg0ZTMtYzVhOTQ2NTI5NjRi.jpg"
         },
@@ -1379,8 +1377,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDIvMDE5NTRhYjMtMjMyYy03ZTdkLThhYjctZTBkMzYyNDVlZTVk.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Institutions set to boost digital asset allocations to 16% by 2028: State Street"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDIvMDE5NTRhYjMtMjMyYy03ZTdkLThhYjctZTBkMzYyNDVlZTVk.jpg"
         },
@@ -1395,8 +1392,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNmYzgtN2MzMi03MWE0LWI1ODUtMmM5ZGViYTQ1NWZi.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Bitcoin derivatives scream ‘caution’ despite a week of strong BTC ETF inflows"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNmYzgtN2MzMi03MWE0LWI1ODUtMmM5ZGViYTQ1NWZi.jpg"
         },
@@ -1411,8 +1407,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5NWZiZmYtZDExMy03ODA5LTgwMDMtZTQ0YmRhMTYxZDNl.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "SEC’s ‘future-proofing’ push to shape how much freedom crypto enjoys after Trump"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5NWZiZmYtZDExMy03ODA5LTgwMDMtZTQ0YmRhMTYxZDNl.jpg"
         },
@@ -1427,8 +1422,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MzJmODYtNWU4Mi03YWU5LThkM2YtNzM2MzhjZTVjODVh.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Crypto Biz: Bitcoin’s corporate moment, ICE’s bold bet, Tether’s expanding footprint"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MzJmODYtNWU4Mi03YWU5LThkM2YtNzM2MzhjZTVjODVh.jpg"
         },
@@ -1443,8 +1437,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTI4NjktMDI5NS03ZmExLTg2MGYtNmFmMzAxZmY2Mjc3.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Texas lawmaker behind state’s crypto reserve bill: Ether may be next"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDkvMDE5OTI4NjktMDI5NS03ZmExLTg2MGYtNmFmMzAxZmY2Mjc3.jpg"
         },
@@ -1459,8 +1452,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNmMjctMTI0Ny03YTc4LTgzN2ItMjliYzUxYzlmMWNj.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Price predictions 10/10: BTC, ETH, BNB, XRP, SOL, DOGE, ADA, HYPE, LINK, SUI"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNmMjctMTI0Ny03YTc4LTgzN2ItMjliYzUxYzlmMWNj.jpg"
         },
@@ -1475,8 +1467,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MzIxODAtMWJhOC03N2Q2LWJjMGItNjViMTRlNmQ1ZjA2.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Securitize in talks to go public via Cantor’s blank-check firm: Report"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MzIxODAtMWJhOC03N2Q2LWJjMGItNjViMTRlNmQ1ZjA2.jpg"
         },
@@ -1491,8 +1482,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDUvMDE5NjhiNjUtY2IzNS03MGEyLThjM2MtNzRkZWIwOGVjMGZk.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Morgan Stanley opens crypto funds to all clients"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDUvMDE5NjhiNjUtY2IzNS03MGEyLThjM2MtNzRkZWIwOGVjMGZk.jpg"
         },
@@ -1507,8 +1497,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5Mzc1OGYtNzAxMC03YzBlLWI1NzYtMGI0ZWVjMGY1YTdl.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "DeFi booming as $11B Bitcoin whale stirs ‘Uptober’ hopes: Finance Redefined"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5Mzc1OGYtNzAxMC03YzBlLWI1NzYtMGI0ZWVjMGY1YTdl.jpg"
         },
@@ -1523,8 +1512,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNlZmYtZTU1NC03OTFjLThlY2YtZGFhMTRhOTY0ZDMx.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Bitcoin advocate, human rights activist María Machado wins Nobel Peace Prize"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNlZmYtZTU1NC03OTFjLThlY2YtZGFhMTRhOTY0ZDMx.jpg"
         },
@@ -1539,8 +1527,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNlZGItZTM4Ny03ODQ2LWE0MGEtYjkwMTQ2ZTYwNTFi.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Trader loses $21M on Hyperliquid after private key leak: How to stay protected"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNlZGItZTM4Ny03ODQ2LWE0MGEtYjkwMTQ2ZTYwNTFi.jpg"
         },
@@ -1555,8 +1542,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5N2FkMTYtMzU5NC03OTk4LWIxZGUtNWI2ODcwOTUzM2My.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Banks explore launching a stablecoin linked to G7 currencies"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5N2FkMTYtMzU5NC03OTk4LWIxZGUtNWI2ODcwOTUzM2My.jpg"
         },
@@ -1571,8 +1557,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkZDUtMDA4OS03YTcwLWE4N2YtZmEwNmQyMjZiNjc3.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Crypto safety 2025: 7 easy ways to avoid hacks and scams"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkZDUtMDA4OS03YTcwLWE4N2YtZmEwNmQyMjZiNjc3.jpg"
         },
@@ -1583,12 +1568,11 @@
           "link": "https://cointelegraph.com/news/ai-bubble-bitcoin-high-correlation-nvidia-80-percent-btc-crash-warning?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
           "publishedOn": "2025-10-10T14:37:32.000Z",
           "wordCount": null,
-          "title": "AI bubble? Bitcoin's high correlation to Nvidia sparks 80% crash warning",
+          "title": "AI bubble? Bitcoin&#039;s high correlation to Nvidia sparks 80% crash warning",
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MmZlODUtYTFkZi03YzQ4LWE4ZWItODEwNTg5MGVkNmFk.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "AI bubble? Bitcoin's high correlation to Nvidia sparks 80% crash warning"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MmZlODUtYTFkZi03YzQ4LWE4ZWItODEwNTg5MGVkNmFk.jpg"
         },
@@ -1603,8 +1587,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNlNWYtNWJjOS03NTJjLWJkOWUtZjVlZTQ3NDQxNmQw.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Aurelion Treasury launches Nasdaq’s first Tether Gold-backed reserve"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNlNWYtNWJjOS03NTJjLWJkOWUtZjVlZTQ3NDQxNmQw.jpg"
         },
@@ -1619,8 +1602,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5NDFiYmQtM2E0Zi03ZjAxLThiMmEtMzI3ZWI1N2YxMDY3.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Major crypto betting platform Shuffle announces user data breach"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5NDFiYmQtM2E0Zi03ZjAxLThiMmEtMzI3ZWI1N2YxMDY3.jpg"
         },
@@ -1635,8 +1617,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MzA3ZDYtYmZmOC03YjFkLTlmNDQtMDY3YTcyNTVmNmZj.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "It’s Solana’s turn to fill the corporate crypto war chest"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTEvMDE5MzA3ZDYtYmZmOC03YjFkLTlmNDQtMDY3YTcyNTVmNmZj.jpg"
         },
@@ -1651,8 +1632,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDMvMDE5NWNjZjMtOTdkMC03N2E3LTljZjUtNWU5YThlYzQ5YjQ2.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Kalshi raises $300M to expand prediction markets to 140 countries"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDMvMDE5NWNjZjMtOTdkMC03N2E3LTljZjUtNWU5YThlYzQ5YjQ2.jpg"
         },
@@ -1667,8 +1647,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5N2FhNjQtNzhkYi03YzhmLTgzYTctYTc3MWQ5MzZjNTA5.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Tokenization needs guardrails, not just innovation"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDYvMDE5N2FhNjQtNzhkYi03YzhmLTgzYTctYTc3MWQ5MzZjNTA5.jpg"
         },
@@ -1683,8 +1662,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkY2MtNzUxZi03ZWQzLWIzNTQtZjJhNmI3NGRlYWQw.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "How SWIFT’s blockchain could challenge Ripple’s grip on payments"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkY2MtNzUxZi03ZWQzLWIzNTQtZjJhNmI3NGRlYWQw.jpg"
         },
@@ -1699,8 +1677,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5Njg4OGEtMTU2Yi03NWE2LTg0MWEtM2E4NzhhMjc2OWZh.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "CZ’s Google account targeted by ‘government-backed’ hackers"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5Njg4OGEtMTU2Yi03NWE2LTg0MWEtM2E4NzhhMjc2OWZh.jpg"
         },
@@ -1715,8 +1692,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5NjgwYTUtYjY1Mi03YTYwLWIxYzItNGE5Y2MwMzJjNzZh.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Bitcoin drop to $118K likely, but futures reset means dip won’t last long"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDQvMDE5NjgwYTUtYjY1Mi03YTYwLWIxYzItNGE5Y2MwMzJjNzZh.jpg"
         },
@@ -1731,8 +1707,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDcvMDE5ODI0YjQtMmU5Ny03OTA0LWI0MWMtYTRjZWVmNmRmMmU1.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Gold buying boom mirrors Bitcoin’s momentum: Deutsche Bank"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDcvMDE5ODI0YjQtMmU5Ny03OTA0LWI0MWMtYTRjZWVmNmRmMmU1.jpg"
         },
@@ -1747,8 +1722,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkYTMtNzZmNS03MmQ4LWJjMjgtNTRlMTVmZTM3MmY1.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "South Africans can now pay with crypto at 650K stores via Scan to Pay"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkYTMtNzZmNS03MmQ4LWJjMjgtNTRlMTVmZTM3MmY1.jpg"
         },
@@ -1763,8 +1737,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkYmEtMDYzZi03MTZjLWI4ZTQtNWY3MTFjYzkzNTU2.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "$11B Bitcoin whale bets on BTC, ETH correction with $900M shorts"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkYmEtMDYzZi03MTZjLWI4ZTQtNWY3MTFjYzkzNTU2.jpg"
         },
@@ -1779,8 +1752,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkYmQtNmNjMy03YTEwLTkxNGYtNzFhMDhkNTZlYjhk.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Bitcoin mining in 2025, explained: From hashrate to rewards"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWNkYmQtNmNjMy03YTEwLTkxNGYtNzFhMDhkNTZlYjhk.jpg"
         },
@@ -1795,8 +1767,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWJhMzItOGJjZC03YTE2LTkzMjktYTcyOWVjNDllMWMx.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "Can Solana outperform Ether if ETFs get approved?"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWJhMzItOGJjZC03YTE2LTkzMjktYTcyOWVjNDllMWMx.jpg"
         },
@@ -1811,8 +1782,7 @@
           "enclosure": {
             "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5M2RhYzItMmU0Yy03YmI5LTlhMzctNmM3NmFkNTAzYzNh.jpg",
             "length": "528",
-            "type": "image/jpg",
-            "caption": "HashKey crypto exchange eyes Hong Kong listing this year: Bloomberg"
+            "type": "image/jpg"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMTIvMDE5M2RhYzItMmU0Yy03YmI5LTlhMzctNmM3NmFkNTAzYzNh.jpg"
         }
