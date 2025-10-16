@@ -18,6 +18,56 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/joybtw/a-docker-trick-i-wish-i-knew-sooner-23of",
+          "author": "Joy Biswas",
+          "description": "While building a Docker image recently, I needed to download a file using curl. My first instinct was to install curl in the container, make the request, and move on. But then I discovered Docker has a built-in way to handle this, and it's cleaner.\nHere's what I was doing initially:\nFROM alpine:latest\nWORKDIR /app\nRUN apk add --no-cache curl\nRUN curl -sS https://example.com/somefile.txt -o /app/somefile.txt\n\nEXPOSE 8080\n\nThis works, but it adds unnecessary bloat. You're installing curl just to download a file, increasing your image size and adding an extra dependency you don't really need at runtime.\nDocker's ADD instruction can fetch remote files directly without requiring curl or wget:\nFROM alpine:latest\nWORKDIR /app\nADD https://example.com/anotherfile.json /app/anotherfile.json\n\nEXPOSE 8080\n\nMuch simpler. No extra packages, no additional layers, and the intent is clearer. ADD pulls the file at build time and places it exactly where you need it.\nEvery package you install adds megabytes to your final image. Skipping curl keeps things lean, especially important when you're optimizing for production or working with constrained environments.\nLess tooling means fewer potential security vulnerabilities and a simpler dependency tree. Your container only contains what it actually needs.\nUsing built-in instructions makes your Dockerfile more readable and idiomatic. Other developers (or future you) will immediately understand what's happening.\nUse ADD when:\nYou're downloading a single file from a URL\nThe file doesn't require authentication\nYou want to keep your image minimal\nStick with curl or wget when:\nYou need more control over the download (headers, authentication, retries)\nYou're fetching multiple files in a complex workflow\nYou need to process or validate the downloaded content before using it\nHave you used ADD for remote files before, or do you have other Docker tricks worth sharing? Let me know in the comments! 😊",
+          "link": "https://dev.to/joybtw/a-docker-trick-i-wish-i-knew-sooner-23of",
+          "publishedOn": "2025-10-16T05:04:06.000Z",
+          "wordCount": 1986,
+          "title": "A Docker Trick I Wish I Knew Sooner",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7zj5ssynf2ldb9f3hbwr.png"
+        },
+        {
+          "id": "https://dev.to/tmorin/myth-16-technical-constraints-are-decided-later-28ha",
+          "author": "Thibault Morin",
+          "description": "Constraints aren’t the enemy.\n“Technical constraints are decided later.”\n\n\nThis belief is a recipe for disaster.\nWhen constraints are ignored early, they always come back — at the worst possible time.\nI’ve seen it first-hand:\nThe Quick Technical Architecture Method (QTAM) makes technical constraints visible from the start.\nIdentify performance and scalability limits\nFlag integration dependencies\nSurface security and compliance requirements\nExpose legacy issues early\nBy treating constraints as design inputs — not afterthoughts — QTAM helps you avoid late-stage surprises.\nWhen constraints are discovered early:\nTeams design realistic solutions\nRisks are managed, not hidden\nSchedules and budgets stay safe\nWhen discovered late, they derail everything.\nDon’t let hidden constraints kill your project.\nqtam.morin.io",
+          "link": "https://dev.to/tmorin/myth-16-technical-constraints-are-decided-later-28ha",
+          "publishedOn": "2025-10-16T05:00:00.000Z",
+          "wordCount": 1874,
+          "title": "💥 Myth #16: Technical constraints are decided later",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fz22vi93mlclqafkv7ag2.png"
+        },
+        {
+          "id": "https://dev.to/manasi_patil_/day-15-of-100-days-dsa-coding-challenge-36aj",
+          "author": "Manasi Patil",
+          "description": "Taking on a new challenge: solving GeeksforGeeks POTD daily and sharing my solutions! 💻🔥\nProblem:\n\nhttps://www.geeksforgeeks.org/problems/remove-bst-keys-outside-given-range/1\nRemove BST keys outside given range\nDifficulty: Medium   Accuracy: 59.92%\nGiven the root of a Binary Search Tree (BST) and two integers l and r, remove all the nodes whose values lie outside the range [l, r].\nExamples:\n\nOutput: [6, -8, 13, N, N, 7]\n\nInput: root = [14, 4, 16, 2, 8, 15, N, -8, 3, 7, 10], l = 2, r = 6\n\n\nConstraints:\nSolution:\nclass Solution:\n    def removekeys(self, root, l, r):\n        if not root:\n            return None\n        root.left = self.removekeys(root.left, l, r)\n        root.right = self.removekeys(root.right, l, r)\n        if root.data < l:\n            return root.right\n        if root.data > r:\n            return root.left\n        return root",
+          "link": "https://dev.to/manasi_patil_/day-15-of-100-days-dsa-coding-challenge-36aj",
+          "publishedOn": "2025-10-16T04:57:20.000Z",
+          "wordCount": 1865,
+          "title": "Day 15 of 100 days dsa coding challenge",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffv8alnldcbmhus6o4niw.png"
+        },
+        {
+          "id": "https://dev.to/nitinbhatt46/day-10-of-my-ai-data-mastery-journey-from-python-to-generative-ai-287",
+          "author": "Nitin-bhatt46",
+          "description": "CAPSTONE PROJECT - 1\nBlackjack Game\nInitialize deck of cards:\nDefine list cards = [11][2][3][4][5][6][7][8][9][10][10][10][10]\nDefine a function lost(i):\nDisplay user’s cards up to index i+3, their current total\nDisplay computer’s first card and score\nAnnounce that the player lost\nEnd program\nCreate two empty lists for hands:\nyour_card = []\ncomputer_card = []\nDeal initial cards:\nRandomly add 4 cards to the player’s list\nRandomly add 4 cards to the computer’s list\nStart the main game loop:\nAsk the user if they want to play Blackjack (type ‘y’ or ‘n’)\nIf user chooses ‘y’:\nDisplay player’s first two cards and current score\nShow computer’s first card\nStart a nested loop for taking hits:\nAsk user: “Type ‘y’ to get another card, or ‘n’ to pass”\nIf input is ‘y’:\nAdd a new card and display current cards and total\nIf total of player’s cards > 21, call the lost() function\nIf computer’s total > 21 and player < 21, player wins\nIf both totals are equal, it’s a draw\nIf player’s total > 21 and computer < 21, player loses\nIf input is ‘n’:\nDisplay final hands and scores for both player and computer\nIf computer’s total > 21 and player < 21, or player’s total < computer’s total → player wins\nIf computer’s total < 21 but player’s total > 21 or player’s total < computer’s → player loses\nIf scores are equal → draw\nEnd program\nIf user chooses ‘n’ initially, exit the game.\nEnd of program\nBlackjack Game Rules (as applied)\nNo jokers are used.\nJack, Queen, King = 10 points.\nAce counts as 11 or 1 (simplified here as 11).\nCards have equal draw probability.\nComputer acts as the dealer.",
+          "link": "https://dev.to/nitinbhatt46/day-10-of-my-ai-data-mastery-journey-from-python-to-generative-ai-287",
+          "publishedOn": "2025-10-16T04:50:09.000Z",
+          "wordCount": 1997,
+          "title": "Day 10 of My AI & Data Mastery Journey: From Python to Generative AI",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ff2s6gfzaxp1rv2jf7p9t.png"
+        },
+        {
+          "id": "https://dev.to/joybtw/my-personal-blog-built-with-go-and-react-1pg7",
+          "author": "Joy Biswas",
+          "description": "For quite some time I wanted to change the look of my blog a bit.\n\nTechstack:\nFor Markdown rendering used: react-markdown and for syntax highlighting used: highlight.js.\nHere's the source code",
+          "link": "https://dev.to/joybtw/my-personal-blog-built-with-go-and-react-1pg7",
+          "publishedOn": "2025-10-16T04:44:47.000Z",
+          "wordCount": 1731,
+          "title": "My personal blog built with Go and React",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkr3asexdum0rcvvi4k53.png"
+        },
+        {
           "id": "https://dev.to/joseph0926/building-firsttx-a-different-approach-to-csr-performance-1eel",
           "author": "joseph0926",
           "description": "Status: Beta - Core features complete, seeking real-world feedback\n\nDemo: firsttx-playground.vercel.app\n\nSource: github.com/joseph0926/firsttx\nI am not a native English speaker, so I used a translation tool.\nSSR and RSC dominate the conversation right now. Next.js, Remix, Astro—the narrative is clear.\nBut I kept running into contexts where SSR wasn't an option, internal tools where SEO is irrelevant, apps requiring rich offline capability, teams with large CSR codebases, architectures where server complexity is a deal-breaker.\nIn these contexts, CSR is often the right choice. But you still pay the cost: blank screens on every revisit.\nThe question became, could we address this specific weakness while keeping CSR's strengths intact?\nWhen you revisit a CSR app,\nUser clicks link\n-> Blank scre…",
@@ -63,7 +113,7 @@
           "description": "If you've integrated an LLM by parsing its output with regex, you've likely experienced the moment when everything breaks.\n\n\nThe model updates, changes a single phrase, and suddenly your carefully crafted parser fails, routing urgent customer issues to the wrong department or missing critical data entirely.\nThis is not a theoretical problem. Consider this real scenario:\nDay 1: Your customer support classifier works perfectly. A message like \"You charged me twice! I want a refund NOW\" produces: \"The user is very upset about a duplicate charge. This is a billing issue. Sentiment is negative, and it seems urgent.\" Your regex const department = output.match(/billing issue/i) ? 'billing' : 'general'; routes it correctly.\nDay 8: The same input now returns: \"This is a payment problem. The custome…",
           "link": "https://dev.to/dthompsondev/llm-structured-json-building-production-ready-ai-features-with-schema-enforced-outputs-4j2j",
           "publishedOn": "2025-10-16T04:26:17.000Z",
-          "wordCount": 3676,
+          "wordCount": 3678,
           "title": "LLM Structured JSON: Building Production-Ready AI Features with Schema-Enforced Outputs",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxyqxwn3xiat69revhmw8.png"
         },
@@ -86,56 +136,6 @@
           "wordCount": 1732,
           "title": "Andrew Huang: Beautiful new music making environment! (GRM Atelier)",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FDTjQUqipotA%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/music_youtube/colors-nono-la-grinta-love-you-a-colors-show-4he7",
-          "author": "Music YouTube",
-          "description": "Paris-based rapper Nono La Grinta brings raw energy to A COLORS SHOW with his track “LOVE YOU,” nailing every line with precision and grit. The performance previews his upcoming debut project and proves he’s one to watch.\nCOLORSxSTUDIOS keeps it clean and minimal, giving Nono La Grinta the perfect spotlight to shine, while the platform continues its mission of unearthing the coolest new talent and freshest sounds from around the globe.\nWatch on YouTube",
-          "link": "https://dev.to/music_youtube/colors-nono-la-grinta-love-you-a-colors-show-4he7",
-          "publishedOn": "2025-10-16T04:09:00.000Z",
-          "wordCount": 1718,
-          "title": "COLORS: Nono La Grinta - LOVE YOU | A COLORS SHOW",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi3.ytimg.com%2Fvi%2FbD_mKJP4PKU%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/music_youtube/rick-beato-finallybreaking-down-kansas-live-1io5",
-          "author": "Music YouTube",
-          "description": "Finally…Breaking Down Kansas LIVE\n\n\nIn today’s video, we take a deep dive into a classic Kansas track—peeling back the stems to explore its structure, arrangement tricks, and all the musical decisions that make it tick.\nPlus, there’s a limited-time deal on The Professional Guitar Collection: Quick Lessons Pro, The Arpeggio Masterclass, The Beato Book Interactive, and The Beato Ear Training Program (a combined $427 value) for just $89. Offer ends October 10th at midnight EST.\nWatch on YouTube",
-          "link": "https://dev.to/music_youtube/rick-beato-finallybreaking-down-kansas-live-1io5",
-          "publishedOn": "2025-10-16T04:08:07.000Z",
-          "wordCount": 1711,
-          "title": "Rick Beato: Finally…Breaking Down Kansas LIVE",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi4.ytimg.com%2Fvi%2FoEqHKdGjDUU%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/irender_gpu_cloud/what-does-ti-mean-in-nvidia-graphics-cards-4jhj",
-          "author": "iRender GPU Cloud Rendering",
-          "description": "When searching NVIDIA’s lineup of graphics cards, you will often encounter models labeled with a “Ti” suffix—such as the RTX 3060 Ti, RTX 4070 Ti, or older versions like the GTX 1080 Ti. While this small addition may appear insignificant, it carries considerable weight in the world of graphics processing. In this blog, iRender will explore the meaning of “Ti,” its technical and marketing implications, and how it affects consumer choice and GPU performance.\nLet’s get started with iRender!\nIn NVIDIA graphics cards, “Ti” stands for “Titanium.” It designates a higher-performance variant of a particular GPU model. Ti versions typically offer enhanced specifications, such as more CUDA cores, better clock speeds, or additional memory, leading to improved performance over the non-Ti models. The de…",
-          "link": "https://dev.to/irender_gpu_cloud/what-does-ti-mean-in-nvidia-graphics-cards-4jhj",
-          "publishedOn": "2025-10-16T04:08:03.000Z",
-          "wordCount": 2936,
-          "title": "What does “Ti” mean in NVIDIA graphics cards?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgir5eceniyotbksjihh8.jpg"
-        },
-        {
-          "id": "https://dev.to/music_youtube/rick-beato-the-concepts-that-actually-changed-my-playing-194e",
-          "author": "Music YouTube",
-          "description": "Summary\n\n\nIn this livestream, the host breaks down the key concepts that transformed music theory from abstract ideas into sounds you can hear and use on the spot. By walking through each idea in real time, they show how to internalize scales, intervals, and patterns so they become second nature when you play.\nPlus, there’s a limited-time offer: grab The Scale Matrix (all 25+ scales) at half price for the next two days.\nWatch on YouTube",
-          "link": "https://dev.to/music_youtube/rick-beato-the-concepts-that-actually-changed-my-playing-194e",
-          "publishedOn": "2025-10-16T04:07:46.000Z",
-          "wordCount": 1717,
-          "title": "Rick Beato: The Concepts That Actually Changed My Playing",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2FIYfYcYzYhnk%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/mufeng/playbook-how-to-use-gameapps-to-spot-trends-get-coverage-and-drive-installs-1c1c",
-          "author": "mufeng",
-          "description": "GameApps is a compact, actionable hub for mobile-game discovery: it combines a Game Library, Hot Games lists, editorial picks, rankings, and timely game news — everything you need to sense what’s working in mobile right now. Use it as a signal layer on top of your analytics to reduce guesswork and accelerate decisions. ([gameapps.cc][1])\nBelow is a Medium-ready article structured to be independently useful: background, practical tactics, a short Python scraper you can run to extract trends, and a conversion tip that turns visits into installs. All recommendations assume you’ll pair GameApps signals with your own telemetry.\nSignal variety: Hot lists, rankings, editorials and news — multiple signal types let you triangulate what’s genuinely catching player attention (rather than one-off nois…",
-          "link": "https://dev.to/mufeng/playbook-how-to-use-gameapps-to-spot-trends-get-coverage-and-drive-installs-1c1c",
-          "publishedOn": "2025-10-16T04:05:38.000Z",
-          "wordCount": 2464,
-          "title": "Playbook: How to Use GameApps to Spot Trends, Get Coverage, and Drive Installs",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fa7x858c7jecnwqtil7ms.png"
         }
       ]
     },
@@ -252,6 +252,16 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://www.smithsonianmag.com/history/what-does-george-orwells-1984-mean-in-2024-180984468/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.smithsonianmag.com/history/what-does-george-orwells-1984-mean-in-2024-180984468/",
+          "publishedOn": "2025-10-16T04:45:02.000Z",
+          "wordCount": 3534,
+          "title": "What Does George Orwell's '1984' Mean in 2024?",
+          "imageUrl": "https://th-thumbnailer.cdn-si-edu.com/l8DkCr5bJ2aLY74gif_kWFWMkro=/fit-in/1600x0/filters:focal(1669x1319:1670x1320)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/e4/0b/e40bf77b-290e-4d1c-91db-17c1bef0d6dd/gettyimages-3396793.jpg"
+        },
+        {
           "id": "https://arxiv.org/abs/2507.16126",
           "author": null,
           "description": "Comments",
@@ -298,7 +308,7 @@
           "link": "https://www.scottrlarson.com/publications/publication-windows-move-towards-surveillance/",
           "publishedOn": "2025-10-16T01:00:17.000Z",
           "wordCount": 912,
-          "title": "I'm recomming my customers switch to Linux rather that Upgrade to Windows 11",
+          "title": "Retiring Windows 10 and Microsoft's move towards a surveillance state",
           "imageUrl": "http://scottrlarson.com/img/publications/Retired%20Windows%2010/Windows-10-EOS.jpg"
         },
         {
@@ -327,9 +337,9 @@
           "description": "Comments",
           "link": "https://github.com/IRS-Public/fact-graph",
           "publishedOn": "2025-10-15T23:24:47.000Z",
-          "wordCount": 1866,
+          "wordCount": 1878,
           "title": "IRS open sources its fact graph",
-          "imageUrl": "https://opengraph.githubassets.com/276b9f997792428c66b7dcbd913a836c6dbdef24f7463221a799376ca260024f/IRS-Public/fact-graph"
+          "imageUrl": "https://opengraph.githubassets.com/0fd282016672e4b9115d2fd95a4effa74baf3542e7c3fa2e922e697b7fc2c151/IRS-Public/fact-graph"
         },
         {
           "id": "https://whynothugo.nl/journal/2025/10/15/introducing-imapgoose/",
@@ -449,7 +459,7 @@
           "publishedOn": "2025-10-15T13:02:53.000Z",
           "wordCount": 5321,
           "title": "Apple M5 chip",
-          "imageUrl": "https://www.apple.com/newsroom/images/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/tile/Apple-M5-hero-251015-lp.jpg.og.jpg?202510160021"
+          "imageUrl": "https://www.apple.com/newsroom/images/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/tile/Apple-M5-hero-251015-lp.jpg.og.jpg?202510160022"
         },
         {
           "id": "https://blog.daviddodda.com/how-i-almost-got-hacked-by-a-job-interview",
@@ -462,16 +472,6 @@
           "imageUrl": null
         },
         {
-          "id": "https://soft-dev.org/pubs/html/hughes_tratt__garbage_collection_for_rust_the_finalizer_frontier/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://soft-dev.org/pubs/html/hughes_tratt__garbage_collection_for_rust_the_finalizer_frontier/",
-          "publishedOn": "2025-10-15T12:08:04.000Z",
-          "wordCount": 18417,
-          "title": "Garbage collection for Rust: The finalizer frontier",
-          "imageUrl": null
-        },
-        {
           "id": "https://github.com/squidowl/halloy",
           "author": null,
           "description": "Comments",
@@ -479,7 +479,7 @@
           "publishedOn": "2025-10-15T11:45:47.000Z",
           "wordCount": 1641,
           "title": "Show HN: Halloy – Modern IRC client",
-          "imageUrl": "https://opengraph.githubassets.com/2b0972e8e19bf622d8a6284eb97b1ff546c4ed2debd12c3f22b513ec6c856956/squidowl/halloy"
+          "imageUrl": "https://opengraph.githubassets.com/70a0b1c6e7cb89b6694e091205c4c4915df38b0f227bf73892f7485cfa3f0f52/squidowl/halloy"
         },
         {
           "id": "https://www.unkey.com/blog/serverless-exit",
@@ -502,6 +502,16 @@
           "imageUrl": null
         },
         {
+          "id": "https://www.elbeno.com/blog/?p=1804",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.elbeno.com/blog/?p=1804",
+          "publishedOn": "2025-10-12T07:41:35.000Z",
+          "wordCount": 1873,
+          "title": "Functions Are Asymmetric",
+          "imageUrl": null
+        },
+        {
           "id": "https://www.youtube.com/watch?v=bwjMLyBU4RU&list=PLyR4neQXqQo5nPdEiMbaEJxWiy_UuyNN4&index=1",
           "author": null,
           "description": "Comments",
@@ -512,22 +522,12 @@
           "imageUrl": null
         },
         {
-          "id": "https://medicine.yale.edu/news-article/brain-navigates-new-spaces-by-flickering-between-reality-and-old-mental-maps/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://medicine.yale.edu/news-article/brain-navigates-new-spaces-by-flickering-between-reality-and-old-mental-maps/",
-          "publishedOn": "2025-10-08T05:51:37.000Z",
-          "wordCount": null,
-          "title": "The brain navigates new spaces by 'darting' between reality and mental maps",
-          "imageUrl": null
-        },
-        {
           "id": "https://marimo.io/blog/marimo-check",
           "author": null,
           "description": "Comments",
           "link": "https://marimo.io/blog/marimo-check",
           "publishedOn": "2025-10-07T21:44:18.000Z",
-          "wordCount": 6900,
+          "wordCount": 6963,
           "title": "Closer to production quality Python notebooks with `marimo check`",
           "imageUrl": "https://marimo.io/images/blog/34/thumbnail.webp"
         },
@@ -558,6 +558,16 @@
       "feedUrl": "https://www.lowyat.net/feed/",
       "siteUrl": "https://www.lowyat.net/",
       "articles": [
+        {
+          "id": "https://www.lowyat.net/?p=369978",
+          "author": "Keran",
+          "description": "Spy images of the facelifted 2026 Zeekr 7X have surfaced on Weibo. The images reveal several exterior updates while maintaining the car’s signature futuristic styling. The updates start at the front, where a reshaped lower bumper sports a more dynamic and aggressive appearance. At the rear, the licence plate section has been repositioned higher, while […]\nThe post 2026 Zeekr 7X Spotted In China; Facelifted Model Reveals Design Tweaks appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2025/369978/2026-zeekr-7x-spotted-china/",
+          "publishedOn": "2025-10-16T05:08:03.000Z",
+          "wordCount": 10516,
+          "title": "2026 Zeekr 7X Spotted In China; Facelifted Model Reveals Design Tweaks",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/10/Facelifted-Zeekr-7X.jpg"
+        },
         {
           "id": "https://www.lowyat.net/?p=369968",
           "author": "Kiran Ganesan",
@@ -647,16 +657,6 @@
           "wordCount": 10048,
           "title": "Apple Announces M5 Chip With Upgrades To AI Performance",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/10/apple-m5-2.jpg"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=369889",
-          "author": "Ian Chee",
-          "description": "For almost five years now, vivo has replaced the FunTouch OS for OriginOS in its home market of China. Now, the company is finally rolling it out to the rest of the world. Though by this time, the mobile operating system is already in its sixth version. All that being said though, it looks like […]\nThe post vivo Announces OriginOS 6 Release Worldwide; Replacing FunTouch OS appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2025/369889/vivo-announces-originos-6-release-worldwide-replacing-funtouch-os/",
-          "publishedOn": "2025-10-15T15:33:38.000Z",
-          "wordCount": 10460,
-          "title": "vivo Announces OriginOS 6 Release Worldwide; Replacing FunTouch OS",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/10/vivo-OriginOS-6.jpg"
         }
       ]
     },
@@ -1080,12 +1080,52 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "057d6fd7-cdde-4cb6-abda-3141f06f7025",
+          "author": "Shaurya Malwa",
+          "description": "Researchers will focus on vulnerabilities that could threaten fund safety or protocol solvency.",
+          "link": "https://www.coindesk.com/markets/2025/10/16/ripple-immunefi-launch-usd200k-bug-hunt-for-xrpl-s-new-institutional-lending-protocol",
+          "publishedOn": "2025-10-16T04:50:07.000Z",
+          "wordCount": 9462,
+          "title": "Ripple, Immunefi Launch $200K Bug Hunt for XRPL’s New Institutional Lending Protocol",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/70f5103010df85882441640f97a168c054fb0ec1-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "534de6e8-2f75-4e3b-b9f6-ca26f1468793",
+          "author": "Shaurya Malwa",
+          "description": "DOGE followed the broader market liquidation triggered by renewed U.S.–China tariff rhetoric, sliding 5% from $0.21 highs to settle at $0.20. President Trump’s proposed 100% tariff plan erased roughly $19B in crypto market value, sparking forced liquidations across majors.",
+          "link": "https://www.coindesk.com/markets/2025/10/16/doge-trading-desk-flows-hint-bottoming-watch-usd0-214-flip-for-momentum-trigger",
+          "publishedOn": "2025-10-16T04:35:51.000Z",
+          "wordCount": 9751,
+          "title": "DOGE Trading Desk Flows Hint Bottoming. Watch $0.214 Flip for Momentum Trigger",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3dd060f9beb8dc0ecc8c7d0cbfb8f4e756ac1f86-1190x726.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "ff1cff2c-b42f-45f8-b36c-07c157fe8436",
+          "author": "Omkar Godbole",
+          "description": "The supply deluge was quickly reversed with burn mechanism.",
+          "link": "https://www.coindesk.com/markets/2025/10/16/paxos-fat-fingers-usd300t-of-paypal-stablecoin-outpacing-usd-s-usd2-4t-supply",
+          "publishedOn": "2025-10-16T04:33:29.000Z",
+          "wordCount": 9123,
+          "title": "Paxos Fat-Fingers $300T of PayPal Stablecoin, Outpacing USD's $2.4T Supply",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d78b7691e8cb2ef7d392ecc939359b154533fa18-1280x853.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "40816949-b453-41f0-9ebc-79bbae4fb25d",
+          "author": "Shaurya Malwa",
+          "description": "Futures open interest collapsed 50% to $4.22B, signaling forced deleveraging as market makers cut risk exposure amid ongoing macro and regulatory uncertainty.",
+          "link": "https://www.coindesk.com/markets/2025/10/16/xrp-buildout-near-usd2-40-could-precede-sharp-relief-rally-if-whales-ease-pressure",
+          "publishedOn": "2025-10-16T04:01:30.000Z",
+          "wordCount": 9285,
+          "title": "XRP Buildout Near $2.40 Could Precede Sharp Relief Rally if Whales Ease Pressure",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bd49ff84995b779cdecf3f90d4df5fac44ee27bc-1192x726.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
           "id": "4f725360-2d86-4e56-86dd-f9e0a490f1cf",
           "author": "Sam Reynolds",
           "description": "QCP Capital’s latest note says global markets are pivoting from rate sensitivity to liquidity dependence.",
           "link": "https://www.coindesk.com/markets/2025/10/16/asia-morning-briefing-qcp-says-global-liquidity-not-fed-cuts-is-powering-the-market",
           "publishedOn": "2025-10-16T01:49:15.000Z",
-          "wordCount": 9719,
+          "wordCount": 9625,
           "title": "Asia Morning Briefing: QCP Says Global Liquidity, Not Fed Cuts, Is Powering the Market",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5d611ccc5267c2a52bcac4206384b93581ebc756-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1095,7 +1135,7 @@
           "description": "Despite a comparably muted October, bitcoin’s steady performance near $110,000 and signs of Fed easing have analysts calling for a breakout.",
           "link": "https://www.coindesk.com/markets/2025/10/15/bitcoin-s-october-slowdown-masks-strength-analysts-predict-catch-up-with-gold",
           "publishedOn": "2025-10-15T20:29:25.000Z",
-          "wordCount": 9411,
+          "wordCount": 9330,
           "title": "Bitcoin’s October Slowdown Masks Strength, Analysts Predict Catch-Up With Gold",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/88955209292cb71ca42b89caffec39603756f08c-1280x836.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1105,7 +1145,7 @@
           "description": "The World Liberty Financial co-founder said in a CoinDesk TV interview he is currently working on tokenizing a real estate project tied to a building under development.",
           "link": "https://www.coindesk.com/business/2025/10/10/eric-trump-confirms-plans-to-tokenize-real-estate-with-world-liberty-financial",
           "publishedOn": "2025-10-15T19:29:34.000Z",
-          "wordCount": 9619,
+          "wordCount": 9587,
           "title": "Eric Trump Confirms Plans to Tokenize Real Estate With World Liberty Financial",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d256c78e171d7b06816ed1319a0cc43c77cfb7bb-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1115,7 +1155,7 @@
           "description": "Coinbase launched The Blue Carpet, then added BNB to its roadmap — an intent signal, not a guarantee — pending market-making support and technical readiness.",
           "link": "https://www.coindesk.com/markets/2025/10/15/coinbase-rolls-out-the-blue-carpet-for-binance-s-bnb-token",
           "publishedOn": "2025-10-15T17:38:20.000Z",
-          "wordCount": 9997,
+          "wordCount": 9910,
           "title": "Coinbase Rolls Out the 'Blue Carpet' for Binance’s BNB Token",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/20fb48dd59a2610af919fdf7148c16d22d5ba193-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1125,7 +1165,7 @@
           "description": "If you manage a Bitcoin treasury, now is the moment to shift from passive reserve to active participant in the Bitcoin economy, argues Voltage’s Bobby Shell.",
           "link": "https://www.coindesk.com/opinion/2025/10/15/bitcoin-treasury-companies-should-lean-into-the-lightning-network",
           "publishedOn": "2025-10-15T17:29:23.000Z",
-          "wordCount": 10768,
+          "wordCount": 10756,
           "title": "Bitcoin Treasury Companies Should Lean Into the Lightning Network",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b23758958b02638e22fb0249808e838ad9266ec2-1920x1080.jpg?auto=format"
         },
@@ -1135,7 +1175,7 @@
           "description": "In the 20th century, investors who understood energy shaped industries and built massive fortunes. This century, the commodity that matters most is compute, whether you’re mining bitcoin or training AI models, writes HIVE Blockchain Technologies’ Frank Holmes.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/10/15/the-fortunes-of-tomorrow-will-be-built-on-compute-power",
           "publishedOn": "2025-10-15T16:29:28.000Z",
-          "wordCount": 9919,
+          "wordCount": 9907,
           "title": "The Fortunes of Tomorrow Will Be Built on Compute Power",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/eafae403cf2a13234338853c78ed5a5091d89a9e-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1145,7 +1185,7 @@
           "description": "What began as a macro-driven unwind on crypto Black Friday rapidly evolved into a market-wide stress event — underscoring how tightly coupled liquidity, collateral and oracle systems have become, writes CoinDesk Data’s Joshua de Vos.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/10/15/crypto-s-black-friday",
           "publishedOn": "2025-10-15T16:25:00.000Z",
-          "wordCount": 9898,
+          "wordCount": 9899,
           "title": "Crypto’s Black Friday",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2f003174ba8d13d973da3f46587597038c88cbc7-7008x4672.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1155,7 +1195,7 @@
           "description": "CEO Brad Garlinghouse, whose company is seeking a federal bank license and Federal Reserve \"master account,\" called banker pushback \"hypocritical.\"",
           "link": "https://www.coindesk.com/policy/2025/10/15/ripple-ceo-bashes-wall-street-bank-opposition-of-fed-master-accounts-for-crypto",
           "publishedOn": "2025-10-15T16:05:50.000Z",
-          "wordCount": 9663,
+          "wordCount": 9651,
           "title": "Ripple CEO Bashes Wall Street Bank Opposition of Fed Master Accounts for Crypto",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d716bf7c010e4f801cf2ded84bc6f8234abd8991-1920x1080.jpg?auto=format"
         },
@@ -1165,7 +1205,7 @@
           "description": "The partnership will utilize Aptos' layer-1 blockchain to distribute digital rewards, with a focus on real-world utility rather than speculation.",
           "link": "https://www.coindesk.com/business/2025/10/15/indian-telecom-giant-reliance-jio-taps-aptos-to-deliver-blockchain-rewards-to-500m-users",
           "publishedOn": "2025-10-15T15:50:31.000Z",
-          "wordCount": 9262,
+          "wordCount": 9237,
           "title": "Indian Telecom Giant Reliance Jio Taps Aptos to Deliver Blockchain Rewards to 500M Users",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d28f87144b21afeb95a58c86d6eeaecfdd07ed66-1920x1280.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1175,7 +1215,7 @@
           "description": "Erebor can operate as a national bank in the U.S., according to a charter approval from the Office of the Comptroller of the Currency.",
           "link": "https://www.coindesk.com/policy/2025/10/15/crypto-bank-erebor-approved-for-conditional-federal-bank-charter-by-occ",
           "publishedOn": "2025-10-15T15:45:36.000Z",
-          "wordCount": 9516,
+          "wordCount": 9504,
           "title": "Crypto Bank Erebor Approved for Conditional Federal Bank Charter by OCC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4c09fd387e07e818d3495ad2fd02c4cd3d460094-6000x3376.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1185,7 +1225,7 @@
           "description": "Roughly $12 billion in futures positions were wiped out on Friday, marking a major shift in market structure and potentially signaling a bottom.",
           "link": "https://www.coindesk.com/markets/2025/10/15/crypto-native-traders-not-tradfi-drove-bitcoin-s-largest-deleveraging-event",
           "publishedOn": "2025-10-15T15:36:57.000Z",
-          "wordCount": 9485,
+          "wordCount": 9424,
           "title": "Crypto-Native Traders, Not TradFi, Drove Bitcoin’s Largest Deleveraging Event",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8b070539bee72b856b2fc3a67a8e2ee28fd75a7f-3200x1800.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1195,7 +1235,7 @@
           "description": "Stellar’s native token weathered sharp intraday swings, buoyed by strong institutional demand and surging volumes tied to WisdomTree’s new crypto ETP",
           "link": "https://www.coindesk.com/markets/2025/10/15/stellar-s-xlm-holds-firm-as-institutional-interest-grows-amid-volatile-session",
           "publishedOn": "2025-10-15T15:29:19.000Z",
-          "wordCount": 10021,
+          "wordCount": 9960,
           "title": "Stellar’s XLM Holds Firm as Institutional Interest Grows Amid Volatile Session",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/43292fb90c3aceff4d328b4fcc6030c3efec3b4c-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1205,7 +1245,7 @@
           "description": "The Hedera token trades in a tight but volatile range as the crypto market continues to recover from the weekend's crash.",
           "link": "https://www.coindesk.com/markets/2025/10/15/hbar-holds-ground-at-usd0-19-as-global-headwinds-test-crypto-market-resilience",
           "publishedOn": "2025-10-15T15:21:34.000Z",
-          "wordCount": 9584,
+          "wordCount": 9536,
           "title": "HBAR Holds Ground at $0.19 as Global Headwinds Test Crypto Market Resilience",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/05863c520c87bf5631f80902ebc176d5e44584ea-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1215,7 +1255,7 @@
           "description": "Also: ETH’s Sepolia Gets Fusaka Upgrade, Monero Releases Privacy Boost For Nodes and EF Expands Its Push Into Privacy.",
           "link": "https://www.coindesk.com/tech/2025/10/15/the-protocol-monad-airdrop-portal-opens-as-token-launch-nears",
           "publishedOn": "2025-10-15T15:19:28.000Z",
-          "wordCount": 11738,
+          "wordCount": 11726,
           "title": "The Protocol: Monad Airdrop Portal Opens as Token Launch Nears",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9dac2f692daf3d7bae5b5c3721577b619a452a73-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1225,7 +1265,7 @@
           "description": "Strategy is the world's largest publicly-listed BTC holder.",
           "link": "https://www.coindesk.com/markets/2025/10/15/strategy-bears-outperform-bitcoin-bears-breach-pivotal-bull-market-support",
           "publishedOn": "2025-10-15T14:47:06.000Z",
-          "wordCount": 9427,
+          "wordCount": 9366,
           "title": "Strategy Bears Outperform Bitcoin Bears, Breach Pivotal Bull Market Support",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/36208d695b46c4d91ae8c024d2520cee8124a5d3-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1235,7 +1275,7 @@
           "description": "Supply has surged 72% year-over-year, led by Ethereum, Solana, and Plasma’s record debut, as stablecoins begin to mirror core banking functions",
           "link": "https://www.coindesk.com/markets/2025/10/15/stablecoin-boom-nears-usd300b-as-new-platforms-push-market-beyond-trading-artemis",
           "publishedOn": "2025-10-15T14:15:52.000Z",
-          "wordCount": 9727,
+          "wordCount": 9666,
           "title": "Stablecoin Boom Nears $300B as New Platforms Push Market Beyond Trading: Artemis",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8917180f34ea9b0c2901371bca93bb3421ba3f36-1920x1080.jpg?auto=format"
         },
@@ -1245,7 +1285,7 @@
           "description": "The crypto exchange is integrating Superstate’s Opening Bell platform to offer natively tokenized public equities for investors outside the U.S.",
           "link": "https://www.coindesk.com/business/2025/10/15/backpack-expands-to-sec-registered-tokenized-stocks-with-superstate-partnership",
           "publishedOn": "2025-10-15T14:00:00.000Z",
-          "wordCount": 9540,
+          "wordCount": 9528,
           "title": "Backpack Expands to SEC-Registered Tokenized Stocks With Superstate Partnership",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/53bd14bfc09943f677ac5ca330ba2486d00762e3-1920x1080.jpg?auto=format"
         },
@@ -1255,7 +1295,7 @@
           "description": "The firm said it sees a \"sustained imbalance\" between demand and supply of AI computing power, and projected to generate up to $2 billion annually from AI operations.",
           "link": "https://www.coindesk.com/markets/2025/10/15/crypto-miner-bitdeer-surges-30-as-company-pushes-deeper-into-ai-and-data-center-expansion",
           "publishedOn": "2025-10-15T13:59:55.000Z",
-          "wordCount": 9540,
+          "wordCount": 9479,
           "title": "Crypto Miner Bitdeer Surges 30% as Company Pushes Deeper Into AI and Data Center Expansion",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5f6e2970f6b1a5a421b274255de56909a9064f62-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1265,7 +1305,7 @@
           "description": "The broker sees CMPO shares gaining from operational momentum and Arculus’s new trading features, with M&A potential still offering upside.",
           "link": "https://www.coindesk.com/markets/2025/10/15/benchmark-hikes-composecure-price-target-to-usd24-on-arculus-crypto-upgrade",
           "publishedOn": "2025-10-15T13:33:53.000Z",
-          "wordCount": 9443,
+          "wordCount": 9382,
           "title": "Benchmark Hikes CompoSecure Price Target to $24 on Arculus Crypto Upgrade",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c7a9ef8ff61b63728b9de080d246e14231fc681e-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1275,7 +1315,7 @@
           "description": "Built by Texture Capital and Sologenic, the platform aims to bring real onchain stock ownership for U.S. retail users, executives said in an interview.",
           "link": "https://www.coindesk.com/business/2025/10/14/solotex-set-to-bring-tokenized-stocks-to-u-s-retail-traders-with-finra-green-light",
           "publishedOn": "2025-10-15T13:31:15.000Z",
-          "wordCount": 9711,
+          "wordCount": 9699,
           "title": "SoloTex Set to Bring Tokenized Stocks to U.S. Retail Traders With FINRA Green Light",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8eb9a92fbca3ad0fb79d7f35cf6f586de2c42383-1917x1080.jpg?auto=format"
         },
@@ -1285,49 +1325,9 @@
           "description": "If approved, these would become some of the most extreme crypto-linked instruments available to U.S. investors.",
           "link": "https://www.coindesk.com/markets/2025/10/15/volatility-shares-files-for-5-bitcoin-ether-and-xrp-etfs",
           "publishedOn": "2025-10-15T13:23:29.000Z",
-          "wordCount": 9624,
+          "wordCount": 9550,
           "title": "Volatility Shares Files for 5x Leveraged Bitcoin, Ether, and XRP ETFs",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ef3f1b5757eaff0bb87a7c3a934d0e9398cfa82b-1920x1080.jpg?auto=format"
-        },
-        {
-          "id": "eba1daa3-5585-4d58-81f5-9d6d4007a5b1",
-          "author": "CoinDesk Indices",
-          "description": "NEAR Protocol (NEAR) was also an underperformer, falling 2.8% from Tuesday.",
-          "link": "https://www.coindesk.com/coindesk-indices/2025/10/15/coindesk-20-performance-update-internet-computer-icp-drops-3-5-as-index-declines",
-          "publishedOn": "2025-10-15T13:19:25.000Z",
-          "wordCount": 8185,
-          "title": "CoinDesk 20 Performance Update: Internet Computer (ICP) Drops 3.5% as Index Declines",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e1fa4e0e0952bc8959fb68847a9624361ae337b6-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "b81c845f-0b9c-43e8-ac7d-3bbbe3e784ef",
-          "author": "Helene Braun",
-          "description": "The acquisition marks the first move by the Artificial Intelligence Infrastructure Partnership, which plans to deploy up to $100 billion.",
-          "link": "https://www.coindesk.com/markets/2025/10/15/bitcoin-miner-stocks-continue-surge-with-blackrock-nvidia-microsoft-joining-in-usd40b-ai-data-center-bet",
-          "publishedOn": "2025-10-15T13:13:03.000Z",
-          "wordCount": 9463,
-          "title": "Bitcoin Miner Stocks Continue Surge, With BlackRock, Nvidia, Microsoft Joining in $40B AI Data Center Bet",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a944f5c40b9f1fece6ecb4c387377f37ae7134cc-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "da605d59-81e7-4269-9d8c-8cc57cc61f50",
-          "author": "Oliver Knight",
-          "description": "Bitcoin traded near the bottom of its range at $112,000 while altcoins tumbled, led by FET’s steep drop.",
-          "link": "https://www.coindesk.com/markets/2025/10/15/crypto-markets-today",
-          "publishedOn": "2025-10-15T12:33:25.000Z",
-          "wordCount": 9917,
-          "title": "Crypto Markets Today: Crypto Lags Behind Stocks and Gold as Traders Turn Defensive",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/36837bfa5d0750063020dd7906112fa22b8272c9-1920x1080.jpg?auto=format"
-        },
-        {
-          "id": "884bcfe9-037e-45cf-b853-8a9d7431a866",
-          "author": "Omkar Godbole",
-          "description": "Initial trades were conducted by major market participants, including Wintermute, Galaxy, Cumberland DRW, and SuperState.",
-          "link": "https://www.coindesk.com/markets/2025/10/15/cme-announces-inaugural-xrp-and-sol-option-trades-involving-wintermute-superstate-galaxy-and-cumberland",
-          "publishedOn": "2025-10-15T12:17:04.000Z",
-          "wordCount": 9645,
-          "title": "CME Announces First XRP and SOL Option Trades",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9184c6563d335af66285429829f140ad07dcc003-1024x681.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
       ]
     },
@@ -1336,6 +1336,22 @@
       "feedUrl": "https://cointelegraph.com/rss",
       "siteUrl": "https://cointelegraph.com",
       "articles": [
+        {
+          "id": "https://cointelegraph.com/news/banks-can-hide-mistakes-but-paxos-showed-crypto-was-transparent",
+          "author": "Cointelegraph by Brayden Lindrea",
+          "description": "Fat finger errors happen all the time, especially in traditional banking. The difference is that blockchain makes it transparent and immediately identifiable.",
+          "link": "https://cointelegraph.com/news/banks-can-hide-mistakes-but-paxos-showed-crypto-was-transparent?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+          "publishedOn": "2025-10-16T04:47:38.000Z",
+          "wordCount": null,
+          "title": "Banks fumble TXs too; at least Paxos’ $300T error was transparent",
+          "enclosure": {
+            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWVhNjAtNjk5Ny03OWU5LTliMTEtYzRjODlkZjdlYmU2.jpg",
+            "length": "528",
+            "type": "image/jpg",
+            "caption": "Banks fumble TXs too; at least Paxos’ $300T error was transparent"
+          },
+          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWVhNjAtNjk5Ny03OWU5LTliMTEtYzRjODlkZjdlYmU2.jpg"
+        },
         {
           "id": "https://cointelegraph.com/news/pico-prism-proves-99-eth-blocks-real-time-10k-tps-on-l1-comes-closer",
           "author": "Cointelegraph by Martin Young",
@@ -1799,22 +1815,6 @@
             "caption": "Quantum computers could bring lost Bitcoin back to life: Here’s how"
           },
           "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMTAvMDE5OWE5NjAtNDVjMy03M2M4LThiNWYtMGFlZmNjOTE5OGY5.jpg"
-        },
-        {
-          "id": "https://cointelegraph.com/news/china-merchants-bank-3-8-billion-fund-bnb-chain-hong-kong",
-          "author": "Cointelegraph by Helen Partz",
-          "description": "CMBI’s tokenization initiative with BNB Chain builds on its previous work with Singapore-based DigiFT, which tokenized its fund on Solana in August.",
-          "link": "https://cointelegraph.com/news/china-merchants-bank-3-8-billion-fund-bnb-chain-hong-kong?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-          "publishedOn": "2025-10-15T10:48:29.000Z",
-          "wordCount": null,
-          "title": "China Merchants Bank tokenizes $3.8B fund on BNB Chain in Hong Kong",
-          "enclosure": {
-            "url": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDcvMDE5ODVhOWQtNWMwZS03MmNjLWEzMjgtMjNiMTNiZGZhNWI1.jpg",
-            "length": "528",
-            "type": "image/jpg",
-            "caption": "China Merchants Bank tokenizes $3.8B fund on BNB Chain in Hong Kong"
-          },
-          "imageUrl": "https://images.cointelegraph.com/images/528_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjUtMDcvMDE5ODVhOWQtNWMwZS03MmNjLWEzMjgtMjNiMTNiZGZhNWI1.jpg"
         }
       ]
     },
