@@ -29,12 +29,92 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/query_filter_591122b53770/print-tree3-3795",
+          "author": "Query Filter",
+          "description": "!/usr/bin/env bash\n\n\n\n  \n  \n  Unicode tree for Linux, directories first, files second, human-readable sizes\n\n\nprint_tree() {\n[[ ! -d \"$dir\" ]] && return\n[[ $maxdepth -ne 0 && $depth -gt $maxdepth ]] && return\n\necho \"${prefix}${dir##*/}/\"\n\n# Directories first\nlocal d\nlocal dirs=()\nshopt -s nullglob\nfor d in \"$dir\"/*; do\n    [[ -d \"$d\" ]] && dirs+=(\"$d\")\ndone\nIFS=$'\\n' dirs=($(printf \"%s\\n\" \"${dirs[@]}\" | sort))\nfor i in \"${!dirs[@]}\"; do\n    d=\"${dirs[i]}\"\n    local branch=\"├──\"\n    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && branch=\"└──\"\n    local new_prefix=\"$prefix\"\n    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && new_prefix+=\"    \" || new_prefix+=\"│   \"\n    echo \"${prefix}${branch} ${d##*/}/\"\n    print_tree \"$d\" \"$new_prefix\" \"$maxdepth\" $((depth+1))\ndone\n\n# Files\nlocal f\nlocal files=()\nfor f in \"$dir\"/*; do\n    [[ -f \"$f\" ]] && files+=(\"$f\")\ndone\nIFS=$'\\n' files=($(printf \"%s\\n\" \"${files[@]}\" | sort))\nlocal file_count=0\nfor i in \"${!files[@]}\"; do\n    f=\"${files[i]}\"\n    local branch=\"├──\"\n    [[ $i -eq $(( ${#files[@]} - 1 )) ]] && branch=\"└──\"\n    local size=$(stat -c \"%s\" \"$f\" 2>/dev/null || echo 0)\n    local hr_size\n    if [[ \"$size\" -lt 1024 ]]; then hr_size=\"${size}B\"\n    elif [[ \"$size\" -lt 1048576 ]]; then hr_size=\"$((size/1024))K\"\n    elif [[ \"$size\" -lt 1073741824 ]]; then hr_size=\"$((size/1024/1024))M\"\n    else hr_size=\"$((size/1024/1024/1024))G\"; fi\n    echo \"${prefix}${branch} ${f##*/} [${hr_size}]\"\n    ((file_count++))\ndone\n\n# Total files per directory\n[[ $file_count -gt 0 ]] && echo \"${prefix}└── Total files: $file_count\"\n\nshopt -u nullglob\n\n}\n\n\n  \n  \n  Usage: print_tree   \n\n\nprint_tree . \"\" 0",
+          "link": "https://dev.to/query_filter_591122b53770/print-tree3-3795",
+          "publishedOn": "2025-10-23T20:54:11.000Z",
+          "wordCount": 1811,
+          "title": "print tree3",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F71hlriua42sjxgdcp78v.png"
+        },
+        {
+          "id": "https://dev.to/query_filter_591122b53770/print-tree2-2pjc",
+          "author": "Query Filter",
+          "description": "!/usr/bin/env bash\n\n\n\n  \n  \n  Unicode-style tree with file sizes and total files per directory\n\n\nprint_tree() {\n# Exit if maxdepth reached\nif [[ $maxdepth -ne 0 && $depth -gt $maxdepth ]]; then\n    return\nfi\n\n# Ensure directory exists\n[[ ! -d \"$dir\" ]] && return\n\necho \"${prefix}${dir##*/}/\"\n\n# Enable nullglob so empty dirs don't break loops\nshopt -s nullglob\n\n# Get directories first\nlocal dirs=(\"$dir\"/*/)\nIFS=$'\\n' dirs=($(sort <<<\"${dirs[*]}\"))\n\nfor i in \"${!dirs[@]}\"; do\n    local d=\"${dirs[i]%/}\"\n    local branch=\"├──\"\n    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && branch=\"└──\"\n    local new_prefix=\"$prefix\"\n    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && new_prefix+=\"    \" || new_prefix+=\"│   \"\n    echo \"${prefix}${branch} ${d##*/}/\"\n    print_tree \"$d\" \"$new_prefix\" \"$maxdepth\" $((depth+1))\ndone\n\n# Then files\nlocal files=(\"$dir\"/*)\nIFS=$'\\n' files=($(sort <<<\"${files[*]}\"))\nlocal file_count=0\nfor f in \"${files[@]}\"; do\n    [[ -f \"$f\" ]] || continue\n    local branch=\"├──\"\n    [[ $file_count -eq $(( ${#files[@]} - 1 )) ]] && branch=\"└──\"\n    # Human-readable size\n    local size=$(stat -c \"%s\" \"$f\" 2>/dev/null || stat -f \"%z\" \"$f\")\n    local hr_size\n    if [[ \"$size\" =~ ^[0-9]+$ ]]; then\n        if [ \"$size\" -lt 1024 ]; then\n            hr_size=\"${size}B\"\n        elif [ \"$size\" -lt $((1024*1024)) ]; then\n            hr_size=\"$((size/1024))K\"\n        elif [ \"$size\" -lt $((1024*1024*1024)) ]; then\n            hr_size=\"$((size/1024/1024))M\"\n        else\n            hr_size=\"$((size/1024/1024/1024))G\"\n        fi\n    else\n        hr_size=\"?\"\n    fi\n    echo \"${prefix}${branch} ${f##*/} [${hr_size}]\"\n    ((file_count++))\ndone\n\n# Total files in directory\nif [ $file_count -gt 0 ]; then\n    echo \"${prefix}└── Total files: $file_count\"\nfi\n\nshopt -u nullglob\n\n}\n\n\n  \n  \n  Usage: print_tree   \n\n\n\n  \n  \n  Example: print_tree . \"\" 0   # unlimited depth\n\n\nprint_tree . \"\" 0",
+          "link": "https://dev.to/query_filter_591122b53770/print-tree2-2pjc",
+          "publishedOn": "2025-10-23T20:51:32.000Z",
+          "wordCount": 1834,
+          "title": "print tree2",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Faeorufh6hr58uouqyabi.png"
+        },
+        {
+          "id": "https://dev.to/thenishantmodi/5-resume-mistakes-you-must-avoid-18a0",
+          "author": "Nishant Modi",
+          "description": "According to a Software Engineer Who Landed 5 Tech Offers from FAANG and Unicorn Startups.\nWhen applying for my first software engineering role, I sent out 367 cold emails and LinkedIn messages. This resulted in 21 technical phone screens and ultimately five full-time offers from companies like Meta, Stripe, and three high-growth startups.\nHowever, most of those interviews only materialized after I started doing two crucial things: first, extensive networking with engineering managers, tech recruiters, and developers already working at my target companies; and second, completely revamping my resume based on their insider feedback.\nHere are the five biggest resume mistakes I identified, along with the changes needed to maximize your chances of landing that first technical interview.\nWhile y…",
+          "link": "https://dev.to/thenishantmodi/5-resume-mistakes-you-must-avoid-18a0",
+          "publishedOn": "2025-10-23T20:49:01.000Z",
+          "wordCount": 2385,
+          "title": "5 Resume Mistakes You MUST Avoid",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fftkrkzw8jom0xad0kdwe.png"
+        },
+        {
+          "id": "https://dev.to/sergio_snchezfuentes_6a/supercomputers-the-giants-of-computation-driving-our-future-m43",
+          "author": "Sergio Sánchez Fuentes",
+          "description": "upercomputers: The Giants of Computation Driving Our Future\nSupercomputers are systems built to perform calculations at speeds and scales that defy imagination. They’re not defined by a single technology, but by always being at the cutting edge of computational performance.\n🚀 What Makes Them Special?\nExtreme optimization: from architecture to software, everything is tuned for efficiency.\nCritical applications: from hurricane prediction to nuclear reaction simulations.\n🧪 Real-World Applications\nPersonalized medicine: simulating molecular interactions for drug discovery.\nAstrophysics: analyzing telescope data and running cosmological simulations.\n🤖 Why Should Developers Care?\nOptimize algorithms for parallel environments.\nDesign scalable software.\nGet inspired by their architecture to solve complex problems.\n📎 This post is based on my full article (in Spanish): 👉 Supercomputadoras: Gigantes del Cálculo\nIf you're into software development, AI, or high-performance computing, feel free to follow me and share your thoughts!",
+          "link": "https://dev.to/sergio_snchezfuentes_6a/supercomputers-the-giants-of-computation-driving-our-future-m43",
+          "publishedOn": "2025-10-23T20:48:57.000Z",
+          "wordCount": 1884,
+          "title": "Supercomputers: The Giants of Computation Driving Our Future",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvok1ynl4bbsssjxfbr6w.png"
+        },
+        {
+          "id": "https://dev.to/cristiansifuentes/git-branch-comparison-a-senior-devs-playbook-concise-expert-2bbj",
+          "author": "Cristian Sifuentes",
+          "description": "TL;DR — Use A...B for “what actually differs since the common ancestor”, A..B for “what’s in B that isn’t in A”. Start with ahead/behind counts and a stat diff, then drill into commit graphs, rename‑aware diffs, and range‑diff for rebases.\nQuick Answers (copy/paste)\nDouble vs Triple Dots (mental model)\nFile & Content Diffs That Read Well\nCommit‑Level Analysis (surgical view)\nWhat Will Actually Merge? (merge‑base)\nTriage & Impact (where the churn lives)\nReview‑Ready Workflows (pre‑PR / dry‑run)\nWindows / PowerShell Equivalents\nPro Aliases (drop‑in)\nDecision Cheatsheet\nReplace A / B with your branches (e.g., origin/main and feature/payments).\n# How far apart are they?\ngit rev-list --left-right --count A...B    # → <A-only> <B-only>\n\n# High-level file summary\ngit diff --stat A...B\n\n# Full con…",
+          "link": "https://dev.to/cristiansifuentes/git-branch-comparison-a-senior-devs-playbook-concise-expert-2bbj",
+          "publishedOn": "2025-10-23T20:45:13.000Z",
+          "wordCount": 2586,
+          "title": "Git Branch Comparison — A Senior Dev’s Playbook (Concise Expert)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvfi66ttl04n23no443wm.png"
+        },
+        {
+          "id": "https://dev.to/query_filter_591122b53770/print-tree-30k9",
+          "author": "Query Filter",
+          "description": "!/usr/bin/env bash\n\n\n\n  \n  \n  Recursive tree with Unicode branches, directories first, then files\n\n\n\n  \n  \n  Shows file sizes and total files per directory\n\n\nprint_tree() {\n# Check maxdepth\nif [[ $maxdepth -ne 0 && $depth -gt $maxdepth ]]; then\n    return\nfi\n\n# Get sorted directories and files\nlocal entries=(\"$dir\"/*)\nlocal dirs=()\nlocal files=()\n\nfor e in \"${entries[@]}\"; do\n    [[ -d \"$e\" ]] && dirs+=(\"$e\")\n    [[ -f \"$e\" ]] && files+=(\"$e\")\ndone\n\n# Process directories first\nlocal count=${#dirs[@]}\nfor i in \"${!dirs[@]}\"; do\n    local d=\"${dirs[i]}\"\n    local branch=\"├──\"\n    [[ $i -eq $((count-1)) ]] && branch=\"└──\"\n    echo \"${prefix}${branch} ${d##*/}\"\n    # Recurse into subdirectory\n    local new_prefix=\"$prefix\"\n    [[ $i -eq $((count-1)) ]] && new_prefix+=\"    \" || new_prefix+=\"│  …",
+          "link": "https://dev.to/query_filter_591122b53770/print-tree-30k9",
+          "publishedOn": "2025-10-23T20:44:01.000Z",
+          "wordCount": 1845,
+          "title": "print tree",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsfs3vmil5e0wiuxg3d7g.png"
+        },
+        {
+          "id": "https://dev.to/kapusto/bgp-peer-monitoring-ensuring-stability-security-and-optimal-routing-performance-d7i",
+          "author": "Mikuz",
+          "description": "The Border Gateway Protocol serves as the Internet's primary routing mechanism, operating through interconnected relationships between network devices. At the core of BGP functionality lies the concept of peering relationships, where routers establish connections to share routing data across different networks. These BGP peer connections determine how internet traffic flows globally, affecting everything from connection speed to network costs. Effective monitoring of these peer relationships requires understanding session stability, route exchanges, and potential security vulnerabilities. Network operators must implement comprehensive monitoring strategies that go beyond basic connectivity checks to ensure optimal performance and detect issues before they impact users.\nBGP operates through…",
+          "link": "https://dev.to/kapusto/bgp-peer-monitoring-ensuring-stability-security-and-optimal-routing-performance-d7i",
+          "publishedOn": "2025-10-23T20:38:36.000Z",
+          "wordCount": 3091,
+          "title": "BGP Peer Monitoring: Ensuring Stability, Security, and Optimal Routing Performance",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbmk4lpzjgkz8a4462du6.png"
+        },
+        {
+          "id": "https://dev.to/james_kabuga/day-13-of-documentating-my-learning-journey-180n",
+          "author": "James Kabuga",
+          "description": "What I did today\nOn what I did today\nConcept behind this is to make sure i understood how to use the decision statement(if-else)\nResources I used\nWhat I'll do tomorrow\nAfter finishing week-one forgot to open a pull request and merge my week-one branch to main.\nI'll try and impliment this and also learn how I will make sure my local repo is upto date with main.\nThe sequence of doing this.",
+          "link": "https://dev.to/james_kabuga/day-13-of-documentating-my-learning-journey-180n",
+          "publishedOn": "2025-10-23T20:37:34.000Z",
+          "wordCount": 1796,
+          "title": "Day 13 of documentating my learning journey",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fx9dvc0e4n3uej3nq34ro.webp"
+        },
+        {
           "id": "https://dev.to/shahrouzlogs/building-tiny-hero-a-text-based-rpg-adventure-with-python-for-beginners-and-intermediates-36kn",
           "author": "Shahrouz Nikseresht",
           "description": "Hey there, fellow coders and game dev enthusiasts! In this article, I’m taking you on a deep dive into the creation of Tiny Hero, a simple yet exciting text-based role-playing game (RPG) I built using Python and the Rich library. This project is perfect for beginners or intermediate coders looking to level up their skills with a fun, manageable challenge. I’ll walk you through my learning journey, the design and development process, the hurdles I faced, and the lessons I learned, all with plenty of details to give you a real sense of building something from scratch. My goal is to inspire you to create your own game, even if you’re just starting out. Let’s grab our swords and dive in! ⚔️\nTiny Hero is a text-based RPG where you play as a brave hero battling foes like goblins, orcs, and arche…",
           "link": "https://dev.to/shahrouzlogs/building-tiny-hero-a-text-based-rpg-adventure-with-python-for-beginners-and-intermediates-36kn",
           "publishedOn": "2025-10-23T20:37:04.000Z",
-          "wordCount": 3397,
+          "wordCount": 3414,
           "title": "Building Tiny Hero: A Text-Based RPG Adventure with Python for Beginners and Intermediates",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpszh2li251hsexnw0eyu.png"
         },
@@ -67,86 +147,6 @@
           "wordCount": 3536,
           "title": "Your AI Can’t Save a File. Here’s How to Give It Superpowers.",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8in6x1u46j1dr7op2n8e.jpg"
-        },
-        {
-          "id": "https://dev.to/kapusto/non-human-identity-management-the-new-frontier-of-enterprise-security-42a",
-          "author": "Mikuz",
-          "description": "Modern enterprise environments depend heavily on automated systems and digital processes that require their own forms of authentication and access credentials. These non-human identities—including service accounts, API keys, and automated scripts—vastly outnumber human users in most organizations, often by ratios exceeding 100 to 1. While these digital entities are essential for running cloud infrastructure, CI/CD pipelines, and AI workflows, they present significant security challenges. Unlike human accounts, these identities proliferate rapidly without proper oversight, frequently receive excessive permissions, and remain poorly tracked throughout their operational lifecycle. This combination makes them attractive targets for cybercriminals and creates substantial security vulnerabilitie…",
-          "link": "https://dev.to/kapusto/non-human-identity-management-the-new-frontier-of-enterprise-security-42a",
-          "publishedOn": "2025-10-23T20:23:12.000Z",
-          "wordCount": 3173,
-          "title": "Non Human Identity Management: The New Frontier of Enterprise Security",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fp8q1tb52bkvamhr5d74j.png"
-        },
-        {
-          "id": "https://dev.to/excelsior2021/lessons-from-building-a-full-stack-web-application-9eh",
-          "author": "Jonathan",
-          "description": "SmashIt! Github Repo\nI built a full-stack web application.\nA full-stack application is a complete software application that includes both the front-end (what the user sees and interacts with) and the back-end (the server, database, and application logic).\nSmash It! is a performance tracking app for Table Tennis. Users can record and track their performance and compare it to other users within distinct groups.\nComing up with an innovative idea is challenging. What can help with the process is identifying a problem. The inspiration for Smash It! came about to solve a problem my coursemates and I faced during our web development bootcamp. \nWe would play table tennis every chance we got and we were quite competitive.\nMy capstone project was a proof-of-concept built in a couple of weeks. Howeve…",
-          "link": "https://dev.to/excelsior2021/lessons-from-building-a-full-stack-web-application-9eh",
-          "publishedOn": "2025-10-23T20:22:53.000Z",
-          "wordCount": 2061,
-          "title": "Lessons from building a full-stack web application",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqlvyim5vf0aam9wnnfah.png"
-        },
-        {
-          "id": "https://dev.to/aws-builders/from-frustration-to-automation-building-a-squash-court-availability-app-54f6",
-          "author": "Piotr Popiolek",
-          "description": "Introduction\n\n\nA few months back, I wanted to reserve a squash court, as usual, on a Wednesday evening. Unfortunately, everything was booked in my favorite club, so I started looking for other places. I was on my phone, which wasn’t very convenient, and every website was different — so I quickly got frustrated.\nThis situation happened a few times, and then I realized I could make this task easier by creating a small app to check court availability for me. It seemed like a good small project. I have two small kids, so I don’t have much free time, but I decided to spend 15–30 minutes on it whenever I could — and here we are!\nWhat started as a quick idea to save a few clicks, turned into a mini project — a Python + FastAPI app hosted on AWS Lightsail, with full GitHub Actions automation.\nDuri…",
-          "link": "https://dev.to/aws-builders/from-frustration-to-automation-building-a-squash-court-availability-app-54f6",
-          "publishedOn": "2025-10-23T20:14:28.000Z",
-          "wordCount": 3289,
-          "title": "From Frustration to Automation: Building a Squash Court Availability App",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fguvwhtsf7bhjijcxdjz6.png"
-        },
-        {
-          "id": "https://dev.to/ben/we-need-to-adjust-quickie-posts-to-properly-not-count-full-urls-for-characters-i-know-twitter-j76",
-          "author": "Ben Halpern",
-          "description": "A post by Ben Halpern",
-          "link": "https://dev.to/ben/we-need-to-adjust-quickie-posts-to-properly-not-count-full-urls-for-characters-i-know-twitter-j76",
-          "publishedOn": "2025-10-23T20:04:11.000Z",
-          "wordCount": 1787,
-          "title": "We need to adjust quickie posts to properly not count full URLs for characters. I know Twitter traditionally capped these at 17 chars regardless of length — we'll want to do something similar along those lines.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Farctjmkbk1k1tro9dlx2.png"
-        },
-        {
-          "id": "https://dev.to/arvind_sundararajan/the-rosetta-stone-of-ai-bridging-math-logic-and-uncertainty-398a",
-          "author": "Arvind SundaraRajan",
-          "description": "The Rosetta Stone of AI: Bridging Math, Logic, and Uncertainty\n\n\nTired of AI systems that seem like black boxes, spitting out answers with no rhyme or reason? Ever wish you could prove your AI is making decisions that are within acceptable error margins? What if there was a unified framework to mathematically describe and reason about the behavior of probabilistic AI systems?\nThis isn't science fiction. Imagine a mathematical structure that allows us to systematically simplify complex probabilistic systems while still guaranteeing bounds on information loss. This framework hinges on a new approach to quantitative abstraction, revealing a deep connection between metric spaces (distances between states) and logical semantics (how we interpret system behavior).\nThink of it like creating a sim…",
-          "link": "https://dev.to/arvind_sundararajan/the-rosetta-stone-of-ai-bridging-math-logic-and-uncertainty-398a",
-          "publishedOn": "2025-10-23T20:02:07.000Z",
-          "wordCount": 2113,
-          "title": "The Rosetta Stone of AI: Bridging Math, Logic, and Uncertainty",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fuhq9ajwud9j2gje104tw.png"
-        },
-        {
-          "id": "https://dev.to/datarockets/silent-authentication-in-nextjs-55kp",
-          "author": "Elvin",
-          "description": "Authentication is an essential part of almost any application and getting it right ensures the security, and improved user experience (UX). In Single Page Applications (SPA), the most common strategy is the JWT-based authentication. It is based on tokens that are used to either authorize actions (access tokens), or allow reissuing new set of tokens (refresh tokens).  How we store and use refresh tokens provides fertile ground for security- or UX-related issues. In this article, we discuss a strategy for storing and using refresh tokens in Next.js applications that minimizes security risks while providing the best user experience - Silent Authentication. First, we briefly describe a basic form of JWT authentication and an existing SPA built with Next.js and Ruby on Rails. Then, we introduce…",
-          "link": "https://dev.to/datarockets/silent-authentication-in-nextjs-55kp",
-          "publishedOn": "2025-10-23T20:00:42.000Z",
-          "wordCount": 3355,
-          "title": "Silent Authentication in Next.js",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffun131njxugxgju87iw7.jpg"
-        },
-        {
-          "id": "https://dev.to/dineshstack/how-to-set-up-mysql-with-dbngin-for-laravel-12-development-21lb",
-          "author": "Dinesh Wijethunga",
-          "description": "Setting Up MySQL with DBngin for Laravel 12 Development\n\n\nWelcome back to our Laravel 12 setup series! In the previous post, we got our PHP environment set up using Herd (or MAMP) and successfully installed a fresh Laravel 12 project. In this lesson, we're going to create a dedicated home for our application data.\nWhile tools like MAMP include MySQL, they can present some workflow challenges. In this guide, we'll configure DBngin—a streamlined and user-friendly database server manager for macOS and Windows. It enables you to run multiple versions of MySQL, PostgreSQL, and Redis simultaneously, without version conflicts.\nBy the end of this tutorial, you'll have a clean, isolated database server configured for your Laravel 12 application. This setup will work seamlessly with any application …",
-          "link": "https://dev.to/dineshstack/how-to-set-up-mysql-with-dbngin-for-laravel-12-development-21lb",
-          "publishedOn": "2025-10-23T19:59:03.000Z",
-          "wordCount": 2483,
-          "title": "How to Set-Up MySQL with DBngin for Laravel 12 Development",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6iv1fcrgairu5jiyhz93.jpg"
-        },
-        {
-          "id": "https://dev.to/kapusto/vmware-to-canonical-openstack-migration-a-complete-guide-4l0h",
-          "author": "Mikuz",
-          "description": "Moving from VMware to Canonical OpenStack offers organizations greater control over cloud infrastructure while reducing costs. This migration requires strategic planning, but the benefits include improved scalability, freedom from vendor lock-in, and access to robust open-source tools. Organizations can take advantage of OpenStack's flexible architecture to build custom cloud solutions that match their specific needs.\nData protection remains a core focus during the migration process. A well-planned transition ensures that business operations continue smoothly while maintaining security standards. This guide provides step-by-step instructions for migrating workloads, implementing effective backup strategies, and establishing reliable recovery procedures. With the right approach and tools, y…",
-          "link": "https://dev.to/kapusto/vmware-to-canonical-openstack-migration-a-complete-guide-4l0h",
-          "publishedOn": "2025-10-23T19:57:33.000Z",
-          "wordCount": 3147,
-          "title": "VMware to Canonical OpenStack Migration: A Complete Guide",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzbfloziopmqhdymeox43.png"
         }
       ]
     },
@@ -263,6 +263,16 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://www.anthropic.com/news/expanding-our-use-of-google-cloud-tpus-and-services",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.anthropic.com/news/expanding-our-use-of-google-cloud-tpus-and-services",
+          "publishedOn": "2025-10-23T20:39:41.000Z",
+          "wordCount": 1294,
+          "title": "Expanding Our Use of Google Cloud TPUs and Services",
+          "imageUrl": "https://www.anthropic.com/api/opengraph-illustration?name=Object%20Stairs&backgroundColor=fig"
+        },
+        {
           "id": "https://www.newyorker.com/books/page-turner/the-muscular-compassion-of-paper-girl",
           "author": null,
           "description": "Comments",
@@ -320,7 +330,7 @@
           "publishedOn": "2025-10-23T17:52:18.000Z",
           "wordCount": 4279,
           "title": "OpenMaxIO: Forked UI for MinIO Object Storage",
-          "imageUrl": "https://opengraph.githubassets.com/0c5ff6b4f22ad5e280a264ba0cae92da53997d031a8fa0b1a63a951163da6862/OpenMaxIO/openmaxio-object-browser"
+          "imageUrl": "https://opengraph.githubassets.com/58491bd1581dd0f308c3757bae514eebd10f61603a097e928d4b37f10ff3640f/OpenMaxIO/openmaxio-object-browser"
         },
         {
           "id": "https://deadstack.net/recent",
@@ -328,7 +338,7 @@
           "description": "Comments",
           "link": "https://deadstack.net/recent",
           "publishedOn": "2025-10-23T17:48:13.000Z",
-          "wordCount": 5967,
+          "wordCount": 6083,
           "title": "Show HN: I built a tech news aggregator that works the way my brain does",
           "imageUrl": null
         },
@@ -341,16 +351,6 @@
           "wordCount": null,
           "title": "OpenAI acquires Sky.app",
           "imageUrl": null
-        },
-        {
-          "id": "https://www.tommysense.com/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.tommysense.com/",
-          "publishedOn": "2025-10-23T17:04:07.000Z",
-          "wordCount": 938,
-          "title": "Show HN: Tommy – Turn ESP32 devices into through-wall motion sensors",
-          "imageUrl": "https://www.tommysense.com/og.png"
         },
         {
           "id": "https://useworkflow.dev/",
@@ -413,16 +413,6 @@
           "imageUrl": null
         },
         {
-          "id": "https://manidoraisamy.com/reasoning-not-ai.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://manidoraisamy.com/reasoning-not-ai.html",
-          "publishedOn": "2025-10-23T15:39:10.000Z",
-          "wordCount": 3842,
-          "title": "Reasoning Is Not Model Improvement",
-          "imageUrl": "https://near.tl/utils/resize/image?cdn=https://cdn.neartail.com/1FAIpQLScjbts-yMOruG0IK47bi0s9ciOCA6pyW7RlmwKwcFIRnw9HUQ/1761239560209/markdown/thumbnail.png&w=1200&h=630"
-        },
-        {
           "id": "https://twigg.ai/",
           "author": null,
           "description": "Comments",
@@ -451,6 +441,16 @@
           "wordCount": 6552,
           "title": "I spent a year making an ASN.1 compiler in D",
           "imageUrl": null
+        },
+        {
+          "id": "https://www.yahoo.com/news/articles/us-investigates-waymo-robotaxis-over-102015308.html",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.yahoo.com/news/articles/us-investigates-waymo-robotaxis-over-102015308.html",
+          "publishedOn": "2025-10-23T12:40:57.000Z",
+          "wordCount": 8822,
+          "title": "US probes Waymo robotaxis over school bus safety",
+          "imageUrl": "https://media.zenfs.com/en/reuters-finance.com/11f20f2e6432520338eaeab53c4fbcfa"
         },
         {
           "id": "https://www.nango.dev/careers",
@@ -523,24 +523,24 @@
           "imageUrl": "https://repository-images.githubusercontent.com/41313736/d3621c1f-1445-4b0a-add3-ba3a7dd91f3e"
         },
         {
+          "id": "https://assetstore.unity.com/packages/tools/camera/vr-without-glasses-for-webgl-332314",
+          "author": null,
+          "description": "Comments",
+          "link": "https://assetstore.unity.com/packages/tools/camera/vr-without-glasses-for-webgl-332314",
+          "publishedOn": "2025-10-18T12:07:40.000Z",
+          "wordCount": 2295,
+          "title": "Glasses-free 3D using webcam head tracking",
+          "imageUrl": "https://assetstorev1-prd-cdn.unity3d.com/key-image/c68a3a05-2880-42e0-aac5-13493e638439.jpg?v=1"
+        },
+        {
           "id": "https://read.thecoder.cafe/p/crdt",
           "author": null,
           "description": "Comments",
           "link": "https://read.thecoder.cafe/p/crdt",
           "publishedOn": "2025-10-16T15:00:06.000Z",
-          "wordCount": 6826,
+          "wordCount": 6784,
           "title": "CRDTs: Convergence without coordination",
           "imageUrl": "https://substackcdn.com/image/fetch/$s_!It-D!,w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F509010c2-643a-46d7-a381-a84ba1d85baa_1600x800.png"
-        },
-        {
-          "id": "https://bumbershootsoft.wordpress.com/2025/09/27/upgrading-our-way-through-opengl-1-x/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://bumbershootsoft.wordpress.com/2025/09/27/upgrading-our-way-through-opengl-1-x/",
-          "publishedOn": "2025-10-15T02:04:46.000Z",
-          "wordCount": 9016,
-          "title": "Upgrading Our Way Through OpenGL 1.x",
-          "imageUrl": "https://bumbershootsoft.wordpress.com/wp-content/uploads/2025/09/pixmap_shell.png"
         },
         {
           "id": "https://www.os2museum.com/wp/the-os-2-display-driver-zoo/",
@@ -548,7 +548,7 @@
           "description": "Comments",
           "link": "https://www.os2museum.com/wp/the-os-2-display-driver-zoo/",
           "publishedOn": "2025-10-14T18:35:59.000Z",
-          "wordCount": 10014,
+          "wordCount": 10228,
           "title": "The OS/2 Display Driver Zoo",
           "imageUrl": null
         },
@@ -1456,7 +1456,7 @@
           "description": "The trend has most definitely not been your friend this week as dips get bought and rallies get sold.",
           "link": "https://www.coindesk.com/markets/2025/10/23/bitcoin-climbs-to-usd111k-as-whipsaw-action-in-crypto-continues",
           "publishedOn": "2025-10-23T18:47:21.000Z",
-          "wordCount": 8636,
+          "wordCount": 8635,
           "title": "Bitcoin Climbs to $111K as Whipsaw Action in Crypto Continues",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2c1a0623f7bb35f894eaff8c8d97e878386804b9-1919x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1466,7 +1466,7 @@
           "description": "Open interest across CME’s regulated markets jumped 27% since Oct. 10, signaling growing conviction among large traders.",
           "link": "https://www.coindesk.com/markets/2025/10/23/institutions-drive-cme-crypto-options-to-usd9b-as-eth-sol-xrp-set-records",
           "publishedOn": "2025-10-23T18:03:53.000Z",
-          "wordCount": 8552,
+          "wordCount": 8538,
           "title": "Institutions Drive CME Crypto Options to $9B as ETH, SOL, XRP Set Records",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0790c56bf0890a084f6e132a44bc35cd56baab5a-6885x4590.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1476,7 +1476,7 @@
           "description": "Security issues like data breaches and phishing attacks are a type of feedback for Web3 designers, argues Tools for Humanity’s Adrian Ludwig.",
           "link": "https://www.coindesk.com/opinion/2025/10/22/the-crypto-industry-must-evolve-to-match-real-world-security-risks",
           "publishedOn": "2025-10-23T18:00:00.000Z",
-          "wordCount": 9419,
+          "wordCount": 9405,
           "title": "The Crypto Industry Must Evolve to Match Real-World Security Risks",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d09652f7643287822b3d328ad43f52d45cdd8e11-1919x1080.jpg?auto=format"
         },
@@ -1486,7 +1486,7 @@
           "description": "The partnership combines AMINA Bank’s Swiss-regulated custody with Tokeny’s blockchain infrastructure to ease tokenisation for financial institutions.",
           "link": "https://www.coindesk.com/business/2025/10/23/swiss-crypto-bank-amina-taps-tokeny-to-build-compliant-bridge-for-asset-tokenization",
           "publishedOn": "2025-10-23T17:20:01.000Z",
-          "wordCount": 8680,
+          "wordCount": 8693,
           "title": "Swiss Crypto Bank AMINA Taps Tokeny to Build Compliant 'Bridge' for Asset Tokenization",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/73dfcf5405c6865b2c9235d7cea42fb42f9c2aa5-1918x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1496,7 +1496,7 @@
           "description": "Double-top reversal at $0.3147 resistance overshadows collaborative payment infrastructure developments.",
           "link": "https://www.coindesk.com/markets/2025/10/23/stellar-edges-lower-0-4-to-usd0-3123-as-partnership-news-surfaces",
           "publishedOn": "2025-10-23T15:37:28.000Z",
-          "wordCount": 8813,
+          "wordCount": 8812,
           "title": "Stellar Edges Lower 0.4% to $0.3123 as Partnership News Surfaces",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/def51286de651c1d4883559c17149a48d7cfdee2-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1526,7 +1526,7 @@
           "description": "No reason was given for the suspension of Tassiopoulos, who was appointed just over a year ago .",
           "link": "https://www.coindesk.com/business/2025/10/23/alt5-sigma-suspends-ceo-peter-tassiopoulos-appoints-jonathan-hugh-as-interim-leader",
           "publishedOn": "2025-10-23T15:05:38.000Z",
-          "wordCount": 8412,
+          "wordCount": 8387,
           "title": "Alt5 Sigma Suspends CEO Peter Tassiopoulos, Appoints Jonathan Hugh as Interim Leader",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/07ecccd5c810c119c3e3dca123654780c977729c-1920x1080.jpg?auto=format"
         },
@@ -1536,7 +1536,7 @@
           "description": "Stablecoin adoption surges post-GENIUS Act. Discover how cost savings, liquidity, and regulatory clarity are driving their growth in global finance.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/10/22/crypto-for-advisors-the-growth-of-stablecoins",
           "publishedOn": "2025-10-23T15:00:00.000Z",
-          "wordCount": 10256,
+          "wordCount": 10268,
           "title": "Crypto for Advisors: The Growth of Stablecoins",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/89341ab2157e91f10d59b009e46a0634ab10f6e7-4800x3188.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1546,7 +1546,7 @@
           "description": "The deal unites Fireblocks’ institutional custody infrastructure with Dynamic’s consumer wallet and onboarding tech to create an end-to-end onchain platform, it said.",
           "link": "https://www.coindesk.com/business/2025/10/23/fireblocks-acquires-dynamic-to-expand-on-chain-developer-stack",
           "publishedOn": "2025-10-23T14:41:01.000Z",
-          "wordCount": 8552,
+          "wordCount": 8551,
           "title": "Fireblocks Acquires Dynamic to Expand On-Chain Developer Stack",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1fcd025d400e245a399339fb28c03cf132a5d4e1-1919x1080.jpg?auto=format"
         },
@@ -1556,7 +1556,7 @@
           "description": "A bearish bet that bitcoin will fall to $100,000 or less is becoming just as popular as bullish bets on higher prices.",
           "link": "https://www.coindesk.com/markets/2025/10/23/bitcoin-options-open-interest-surges-to-record-usd50b-on-deribit-as-traders-actively-hedge-downside-risks",
           "publishedOn": "2025-10-23T14:24:54.000Z",
-          "wordCount": 9052,
+          "wordCount": 9051,
           "title": "Bitcoin Options Open Interest Surges to Record $50B on Deribit as Traders Hedge Downside Risks",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/189c82fe52c9ec0f1c12177569dd2b8dd6d6a5af-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1566,7 +1566,7 @@
           "description": "Acquisition brings Stable’s consumer app expertise to Aave Labs as it builds mainstream DeFi products.",
           "link": "https://www.coindesk.com/business/2025/10/23/defi-specialist-aave-labs-acquires-stable-finance-expands-consumer-access-to-onchain-savings",
           "publishedOn": "2025-10-23T14:10:41.000Z",
-          "wordCount": 8665,
+          "wordCount": 8658,
           "title": "DeFi Specialist Aave Labs Acquires Stable Finance, Expands Consumer Access to Onchain Savings",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9308f599f966cfafa038bfd44fbfb182006b6aba-1441x940.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1586,7 +1586,7 @@
           "description": "With Nasdaq compliance restored and momentum building in its Avalon mining rigs and self-mining operations, the broker sees renewed upside for Canaan’s shares.",
           "link": "https://www.coindesk.com/markets/2025/10/23/canaan-s-turnaround-gains-steam-as-benchmark-doubles-price-target-to-usd4",
           "publishedOn": "2025-10-23T13:16:57.000Z",
-          "wordCount": 8810,
+          "wordCount": 8809,
           "title": "Canaan’s Turnaround Gains Steam as Benchmark Doubles Price Target to $4",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a944f5c40b9f1fece6ecb4c387377f37ae7134cc-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1596,7 +1596,7 @@
           "description": "Bitcoin Cash (BCH) was also a top performer, rising 2% from Wednesday.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/10/23/coindesk-20-performance-update-solana-sol-gains-4-5-as-index-trades-higher",
           "publishedOn": "2025-10-23T13:15:35.000Z",
-          "wordCount": 7619,
+          "wordCount": 7631,
           "title": "CoinDesk 20 Performance Update: Solana (SOL) Gains 4.5% as Index Trades Higher",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/12a626cf28bd62d8f4cdd868deb0c093e62eb685-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1606,7 +1606,7 @@
           "description": "Digital Asset Treasuries (DATs) are the first laboratories testing how a decentralised asset can operate as productive capital within the architecture of corporate finance, argues Sygnum Bank CIO Fabian Dori.",
           "link": "https://www.coindesk.com/opinion/2025/10/22/digital-asset-treasuries-bitcoin-s-institutional-test-case",
           "publishedOn": "2025-10-23T13:00:00.000Z",
-          "wordCount": 9790,
+          "wordCount": 9802,
           "title": "Digital Asset Treasuries: Bitcoin’s Institutional Test Case",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e40ed2e0f63381212011673a2164cabf4506b227-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1616,7 +1616,7 @@
           "description": "The firm behind the fast-growing stablecoin blockchain also plans to obtain MiCA and EMI licenses as part of its expansion in Europe.",
           "link": "https://www.coindesk.com/business/2025/10/23/plasma-obtains-vasp-license-opens-amsterdam-office-to-expand-stablecoin-payments-in-eu",
           "publishedOn": "2025-10-23T12:57:19.000Z",
-          "wordCount": 9029,
+          "wordCount": 9028,
           "title": "Plasma Obtains VASP License, Opens Amsterdam Office to Expand Stablecoin Payments in EU",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2b1a230cb131c568e60742551f69e1fbfdd34027-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1636,7 +1636,7 @@
           "description": "Alongside, there's the Ledger Wallet, a reimagined version of the company's Ledger Live app, and Ledger Enterprise Multisig, a new platform for institutional asset management.",
           "link": "https://www.coindesk.com/tech/2025/10/23/ledger-unveils-usd179-nano-gen5-built-for-identity-in-an-ai-driven-world",
           "publishedOn": "2025-10-23T12:00:00.000Z",
-          "wordCount": 9357,
+          "wordCount": 9370,
           "title": "Ledger Unveils $179 Nano Gen5, Built for Identity in an AI-Driven World",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f25f3b11bf103d0db3045abc1ca360688047177c-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1656,7 +1656,7 @@
           "description": "After weeks of turbulence, the crypto market found support Thursday, with Bitcoin and Ether posting modest gains and HyperLiquid’s token HYPE soaring.",
           "link": "https://www.coindesk.com/markets/2025/10/23/crypto-markets-today-bitcoin-ether-edge-higher-hyperliquid-surges-on-usd1b-purchase-plan",
           "publishedOn": "2025-10-23T12:00:00.000Z",
-          "wordCount": 9309,
+          "wordCount": 9308,
           "title": "Crypto Markets Today: Bitcoin, Ether Edge Higher; HyperLiquid Surges on $1B Purchase Plan",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2c1a0623f7bb35f894eaff8c8d97e878386804b9-1919x1080.jpg?auto=format"
         },
@@ -1666,7 +1666,7 @@
           "description": "Your day-ahead look for Oct. 23, 2025",
           "link": "https://www.coindesk.com/daybook-us/2025/10/23/risk-proxies-challenge-bitcoin-s-bounce-hype-xmr-shine-crypto-daybook-americas",
           "publishedOn": "2025-10-23T11:15:00.000Z",
-          "wordCount": 10916,
+          "wordCount": 10929,
           "title": "Risk Proxies Challenge Bitcoin's Bounce; HYPE, XMR Shine: Crypto Daybook Americas",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/914d0a27ba5be95f43df165517ad2c5c74bf5cbf-1919x1080.jpg?auto=format"
         },
@@ -1676,7 +1676,7 @@
           "description": "Fintech giant gains CySEC approval to offer compliant crypto trading across 30 EEA markets under MiCA",
           "link": "https://www.coindesk.com/policy/2025/10/23/revolut-secures-mica-license-in-cyprus-expanding-regulated-crypto-services-across-europe",
           "publishedOn": "2025-10-23T09:59:50.000Z",
-          "wordCount": 8609,
+          "wordCount": 8608,
           "title": "Revolut Secures MiCA License in Cyprus, Expanding Regulated Crypto Services Across EU",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/069185689a8264bb61b21f2691a88036a64c16bc-1919x1080.jpg?auto=format"
         },
@@ -1696,7 +1696,7 @@
           "description": "The team cannot afford the cost of relaunching the protocol, which would require significant investment in audits and development.",
           "link": "https://www.coindesk.com/business/2025/10/23/bunni-dex-shuts-down-cites-recovery-costs-after-usd8-4m-exploit",
           "publishedOn": "2025-10-23T09:26:52.000Z",
-          "wordCount": 8456,
+          "wordCount": 8406,
           "title": "Bunni DEX Shuts Down, Cites Recovery Costs After $8.4M Exploit",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3c268b996e9f2bbfa6912d0454f5ee28dfea9704-1920x1080.jpg?auto=format"
         }

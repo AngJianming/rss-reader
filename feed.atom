@@ -1,10 +1,337 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-10-23T20:42:35.397Z</id>
+    <id>urn:2025-10-23T21:12:34.552Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-10-23T20:42:35.397Z</updated>
+    <updated>2025-10-23T21:12:34.552Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[print tree3]]></title>
+        <id>https://dev.to/query_filter_591122b53770/print-tree3-3795</id>
+        <link href="https://dev.to/query_filter_591122b53770/print-tree3-3795"/>
+        <updated>2025-10-23T20:54:11.000Z</updated>
+        <summary type="html"><![CDATA[!/usr/bin/env bash
+
+
+
+  
+  
+  Unicode tree for Linux, directories first, files second, human-readable sizes
+
+
+print_tree() {
+[[ ! -d "$dir" ]] && return
+[[ $maxdepth -ne 0 && $depth -gt $maxdepth ]] && return
+
+echo "${prefix}${dir##*/}/"
+
+# Directories first
+local d
+local dirs=()
+shopt -s nullglob
+for d in "$dir"/*; do
+    [[ -d "$d" ]] && dirs+=("$d")
+done
+IFS=$'\n' dirs=($(printf "%s\n" "${dirs[@]}" | sort))
+for i in "${!dirs[@]}"; do
+    d="${dirs[i]}"
+    local branch="├──"
+    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && branch="└──"
+    local new_prefix="$prefix"
+    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && new_prefix+="    " || new_prefix+="│   "
+    echo "${prefix}${branch} ${d##*/}/"
+    print_tree "$d" "$new_prefix" "$maxdepth" $((depth+1))
+done
+
+# Files
+local f
+local files=()
+for f in "$dir"/*; do
+    [[ -f "$f" ]] && files+=("$f")
+done
+IFS=$'\n' files=($(printf "%s\n" "${files[@]}" | sort))
+local file_count=0
+for i in "${!files[@]}"; do
+    f="${files[i]}"
+    local branch="├──"
+    [[ $i -eq $(( ${#files[@]} - 1 )) ]] && branch="└──"
+    local size=$(stat -c "%s" "$f" 2>/dev/null || echo 0)
+    local hr_size
+    if [[ "$size" -lt 1024 ]]; then hr_size="${size}B"
+    elif [[ "$size" -lt 1048576 ]]; then hr_size="$((size/1024))K"
+    elif [[ "$size" -lt 1073741824 ]]; then hr_size="$((size/1024/1024))M"
+    else hr_size="$((size/1024/1024/1024))G"; fi
+    echo "${prefix}${branch} ${f##*/} [${hr_size}]"
+    ((file_count++))
+done
+
+# Total files per directory
+[[ $file_count -gt 0 ]] && echo "${prefix}└── Total files: $file_count"
+
+shopt -u nullglob
+
+}
+
+
+  
+  
+  Usage: print_tree   
+
+
+print_tree . "" 0]]></summary>
+        <author>
+            <name>Query Filter</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[print tree2]]></title>
+        <id>https://dev.to/query_filter_591122b53770/print-tree2-2pjc</id>
+        <link href="https://dev.to/query_filter_591122b53770/print-tree2-2pjc"/>
+        <updated>2025-10-23T20:51:32.000Z</updated>
+        <summary type="html"><![CDATA[!/usr/bin/env bash
+
+
+
+  
+  
+  Unicode-style tree with file sizes and total files per directory
+
+
+print_tree() {
+# Exit if maxdepth reached
+if [[ $maxdepth -ne 0 && $depth -gt $maxdepth ]]; then
+    return
+fi
+
+# Ensure directory exists
+[[ ! -d "$dir" ]] && return
+
+echo "${prefix}${dir##*/}/"
+
+# Enable nullglob so empty dirs don't break loops
+shopt -s nullglob
+
+# Get directories first
+local dirs=("$dir"/*/)
+IFS=$'\n' dirs=($(sort <<<"${dirs[*]}"))
+
+for i in "${!dirs[@]}"; do
+    local d="${dirs[i]%/}"
+    local branch="├──"
+    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && branch="└──"
+    local new_prefix="$prefix"
+    [[ $i -eq $(( ${#dirs[@]} - 1 )) ]] && new_prefix+="    " || new_prefix+="│   "
+    echo "${prefix}${branch} ${d##*/}/"
+    print_tree "$d" "$new_prefix" "$maxdepth" $((depth+1))
+done
+
+# Then files
+local files=("$dir"/*)
+IFS=$'\n' files=($(sort <<<"${files[*]}"))
+local file_count=0
+for f in "${files[@]}"; do
+    [[ -f "$f" ]] || continue
+    local branch="├──"
+    [[ $file_count -eq $(( ${#files[@]} - 1 )) ]] && branch="└──"
+    # Human-readable size
+    local size=$(stat -c "%s" "$f" 2>/dev/null || stat -f "%z" "$f")
+    local hr_size
+    if [[ "$size" =~ ^[0-9]+$ ]]; then
+        if [ "$size" -lt 1024 ]; then
+            hr_size="${size}B"
+        elif [ "$size" -lt $((1024*1024)) ]; then
+            hr_size="$((size/1024))K"
+        elif [ "$size" -lt $((1024*1024*1024)) ]; then
+            hr_size="$((size/1024/1024))M"
+        else
+            hr_size="$((size/1024/1024/1024))G"
+        fi
+    else
+        hr_size="?"
+    fi
+    echo "${prefix}${branch} ${f##*/} [${hr_size}]"
+    ((file_count++))
+done
+
+# Total files in directory
+if [ $file_count -gt 0 ]; then
+    echo "${prefix}└── Total files: $file_count"
+fi
+
+shopt -u nullglob
+
+}
+
+
+  
+  
+  Usage: print_tree   
+
+
+
+  
+  
+  Example: print_tree . "" 0   # unlimited depth
+
+
+print_tree . "" 0]]></summary>
+        <author>
+            <name>Query Filter</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[5 Resume Mistakes You MUST Avoid]]></title>
+        <id>https://dev.to/thenishantmodi/5-resume-mistakes-you-must-avoid-18a0</id>
+        <link href="https://dev.to/thenishantmodi/5-resume-mistakes-you-must-avoid-18a0"/>
+        <updated>2025-10-23T20:49:01.000Z</updated>
+        <summary type="html"><![CDATA[According to a Software Engineer Who Landed 5 Tech Offers from FAANG and Unicorn Startups.
+When applying for my first software engineering role, I sent out 367 cold emails and LinkedIn messages. This resulted in 21 technical phone screens and ultimately five full-time offers from companies like Meta, Stripe, and three high-growth startups.
+However, most of those interviews only materialized after I started doing two crucial things: first, extensive networking with engineering managers, tech recruiters, and developers already working at my target companies; and second, completely revamping my resume based on their insider feedback.
+Here are the five biggest resume mistakes I identified, along with the changes needed to maximize your chances of landing that first technical interview.
+While y…]]></summary>
+        <author>
+            <name>Nishant Modi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Supercomputers: The Giants of Computation Driving Our Future]]></title>
+        <id>https://dev.to/sergio_snchezfuentes_6a/supercomputers-the-giants-of-computation-driving-our-future-m43</id>
+        <link href="https://dev.to/sergio_snchezfuentes_6a/supercomputers-the-giants-of-computation-driving-our-future-m43"/>
+        <updated>2025-10-23T20:48:57.000Z</updated>
+        <summary type="html"><![CDATA[upercomputers: The Giants of Computation Driving Our Future
+Supercomputers are systems built to perform calculations at speeds and scales that defy imagination. They’re not defined by a single technology, but by always being at the cutting edge of computational performance.
+🚀 What Makes Them Special?
+Extreme optimization: from architecture to software, everything is tuned for efficiency.
+Critical applications: from hurricane prediction to nuclear reaction simulations.
+🧪 Real-World Applications
+Personalized medicine: simulating molecular interactions for drug discovery.
+Astrophysics: analyzing telescope data and running cosmological simulations.
+🤖 Why Should Developers Care?
+Optimize algorithms for parallel environments.
+Design scalable software.
+Get inspired by their architecture to solve complex problems.
+📎 This post is based on my full article (in Spanish): 👉 Supercomputadoras: Gigantes del Cálculo
+If you're into software development, AI, or high-performance computing, feel free to follow me and share your thoughts!]]></summary>
+        <author>
+            <name>Sergio Sánchez Fuentes</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Git Branch Comparison — A Senior Dev’s Playbook (Concise Expert)]]></title>
+        <id>https://dev.to/cristiansifuentes/git-branch-comparison-a-senior-devs-playbook-concise-expert-2bbj</id>
+        <link href="https://dev.to/cristiansifuentes/git-branch-comparison-a-senior-devs-playbook-concise-expert-2bbj"/>
+        <updated>2025-10-23T20:45:13.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR — Use A...B for “what actually differs since the common ancestor”, A..B for “what’s in B that isn’t in A”. Start with ahead/behind counts and a stat diff, then drill into commit graphs, rename‑aware diffs, and range‑diff for rebases.
+Quick Answers (copy/paste)
+Double vs Triple Dots (mental model)
+File & Content Diffs That Read Well
+Commit‑Level Analysis (surgical view)
+What Will Actually Merge? (merge‑base)
+Triage & Impact (where the churn lives)
+Review‑Ready Workflows (pre‑PR / dry‑run)
+Windows / PowerShell Equivalents
+Pro Aliases (drop‑in)
+Decision Cheatsheet
+Replace A / B with your branches (e.g., origin/main and feature/payments).
+# How far apart are they?
+git rev-list --left-right --count A...B    # → <A-only> <B-only>
+
+# High-level file summary
+git diff --stat A...B
+
+# Full con…]]></summary>
+        <author>
+            <name>Cristian Sifuentes</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[print tree]]></title>
+        <id>https://dev.to/query_filter_591122b53770/print-tree-30k9</id>
+        <link href="https://dev.to/query_filter_591122b53770/print-tree-30k9"/>
+        <updated>2025-10-23T20:44:01.000Z</updated>
+        <summary type="html"><![CDATA[!/usr/bin/env bash
+
+
+
+  
+  
+  Recursive tree with Unicode branches, directories first, then files
+
+
+
+  
+  
+  Shows file sizes and total files per directory
+
+
+print_tree() {
+# Check maxdepth
+if [[ $maxdepth -ne 0 && $depth -gt $maxdepth ]]; then
+    return
+fi
+
+# Get sorted directories and files
+local entries=("$dir"/*)
+local dirs=()
+local files=()
+
+for e in "${entries[@]}"; do
+    [[ -d "$e" ]] && dirs+=("$e")
+    [[ -f "$e" ]] && files+=("$e")
+done
+
+# Process directories first
+local count=${#dirs[@]}
+for i in "${!dirs[@]}"; do
+    local d="${dirs[i]}"
+    local branch="├──"
+    [[ $i -eq $((count-1)) ]] && branch="└──"
+    echo "${prefix}${branch} ${d##*/}"
+    # Recurse into subdirectory
+    local new_prefix="$prefix"
+    [[ $i -eq $((count-1)) ]] && new_prefix+="    " || new_prefix+="│  …]]></summary>
+        <author>
+            <name>Query Filter</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Expanding Our Use of Google Cloud TPUs and Services]]></title>
+        <id>https://www.anthropic.com/news/expanding-our-use-of-google-cloud-tpus-and-services</id>
+        <link href="https://www.anthropic.com/news/expanding-our-use-of-google-cloud-tpus-and-services"/>
+        <updated>2025-10-23T20:39:41.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BGP Peer Monitoring: Ensuring Stability, Security, and Optimal Routing Performance]]></title>
+        <id>https://dev.to/kapusto/bgp-peer-monitoring-ensuring-stability-security-and-optimal-routing-performance-d7i</id>
+        <link href="https://dev.to/kapusto/bgp-peer-monitoring-ensuring-stability-security-and-optimal-routing-performance-d7i"/>
+        <updated>2025-10-23T20:38:36.000Z</updated>
+        <summary type="html"><![CDATA[The Border Gateway Protocol serves as the Internet's primary routing mechanism, operating through interconnected relationships between network devices. At the core of BGP functionality lies the concept of peering relationships, where routers establish connections to share routing data across different networks. These BGP peer connections determine how internet traffic flows globally, affecting everything from connection speed to network costs. Effective monitoring of these peer relationships requires understanding session stability, route exchanges, and potential security vulnerabilities. Network operators must implement comprehensive monitoring strategies that go beyond basic connectivity checks to ensure optimal performance and detect issues before they impact users.
+BGP operates through…]]></summary>
+        <author>
+            <name>Mikuz</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Day 13 of documentating my learning journey]]></title>
+        <id>https://dev.to/james_kabuga/day-13-of-documentating-my-learning-journey-180n</id>
+        <link href="https://dev.to/james_kabuga/day-13-of-documentating-my-learning-journey-180n"/>
+        <updated>2025-10-23T20:37:34.000Z</updated>
+        <summary type="html"><![CDATA[What I did today
+On what I did today
+Concept behind this is to make sure i understood how to use the decision statement(if-else)
+Resources I used
+What I'll do tomorrow
+After finishing week-one forgot to open a pull request and merge my week-one branch to main.
+I'll try and impliment this and also learn how I will make sure my local repo is upto date with main.
+The sequence of doing this.]]></summary>
+        <author>
+            <name>James Kabuga</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Building Tiny Hero: A Text-Based RPG Adventure with Python for Beginners and Intermediates]]></title>
         <id>https://dev.to/shahrouzlogs/building-tiny-hero-a-text-based-rpg-adventure-with-python-for-beginners-and-intermediates-36kn</id>
@@ -56,48 +383,6 @@ The bridge across this gap is the Model Conte…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Non Human Identity Management: The New Frontier of Enterprise Security]]></title>
-        <id>https://dev.to/kapusto/non-human-identity-management-the-new-frontier-of-enterprise-security-42a</id>
-        <link href="https://dev.to/kapusto/non-human-identity-management-the-new-frontier-of-enterprise-security-42a"/>
-        <updated>2025-10-23T20:23:12.000Z</updated>
-        <summary type="html"><![CDATA[Modern enterprise environments depend heavily on automated systems and digital processes that require their own forms of authentication and access credentials. These non-human identities—including service accounts, API keys, and automated scripts—vastly outnumber human users in most organizations, often by ratios exceeding 100 to 1. While these digital entities are essential for running cloud infrastructure, CI/CD pipelines, and AI workflows, they present significant security challenges. Unlike human accounts, these identities proliferate rapidly without proper oversight, frequently receive excessive permissions, and remain poorly tracked throughout their operational lifecycle. This combination makes them attractive targets for cybercriminals and creates substantial security vulnerabilitie…]]></summary>
-        <author>
-            <name>Mikuz</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Lessons from building a full-stack web application]]></title>
-        <id>https://dev.to/excelsior2021/lessons-from-building-a-full-stack-web-application-9eh</id>
-        <link href="https://dev.to/excelsior2021/lessons-from-building-a-full-stack-web-application-9eh"/>
-        <updated>2025-10-23T20:22:53.000Z</updated>
-        <summary type="html"><![CDATA[SmashIt! Github Repo
-I built a full-stack web application.
-A full-stack application is a complete software application that includes both the front-end (what the user sees and interacts with) and the back-end (the server, database, and application logic).
-Smash It! is a performance tracking app for Table Tennis. Users can record and track their performance and compare it to other users within distinct groups.
-Coming up with an innovative idea is challenging. What can help with the process is identifying a problem. The inspiration for Smash It! came about to solve a problem my coursemates and I faced during our web development bootcamp. 
-We would play table tennis every chance we got and we were quite competitive.
-My capstone project was a proof-of-concept built in a couple of weeks. Howeve…]]></summary>
-        <author>
-            <name>Jonathan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[From Frustration to Automation: Building a Squash Court Availability App]]></title>
-        <id>https://dev.to/aws-builders/from-frustration-to-automation-building-a-squash-court-availability-app-54f6</id>
-        <link href="https://dev.to/aws-builders/from-frustration-to-automation-building-a-squash-court-availability-app-54f6"/>
-        <updated>2025-10-23T20:14:28.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-A few months back, I wanted to reserve a squash court, as usual, on a Wednesday evening. Unfortunately, everything was booked in my favorite club, so I started looking for other places. I was on my phone, which wasn’t very convenient, and every website was different — so I quickly got frustrated.
-This situation happened a few times, and then I realized I could make this task easier by creating a small app to check court availability for me. It seemed like a good small project. I have two small kids, so I don’t have much free time, but I decided to spend 15–30 minutes on it whenever I could — and here we are!
-What started as a quick idea to save a few clicks, turned into a mini project — a Python + FastAPI app hosted on AWS Lightsail, with full GitHub Actions automation.
-Duri…]]></summary>
-        <author>
-            <name>Piotr Popiolek</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Pave Bank raises $39M led by Accel, Tether to expand programmable banking]]></title>
         <id>https://cointelegraph.com/news/pave-bank-39m-accel-tether-programmable-banking</id>
         <link href="https://cointelegraph.com/news/pave-bank-39m-accel-tether-programmable-banking?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"/>
@@ -105,67 +390,6 @@ Duri…]]></summary>
         <summary type="html"><![CDATA[The Singapore-based digital bank plans to broaden its crypto and fiat offerings for institutional clients, citing growing demand for programmable finance.]]></summary>
         <author>
             <name>Cointelegraph by Nate Kostar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[We need to adjust quickie posts to properly not count full URLs for characters. I know Twitter traditionally capped these at 17 chars regardless of length — we'll want to do something similar along those lines.]]></title>
-        <id>https://dev.to/ben/we-need-to-adjust-quickie-posts-to-properly-not-count-full-urls-for-characters-i-know-twitter-j76</id>
-        <link href="https://dev.to/ben/we-need-to-adjust-quickie-posts-to-properly-not-count-full-urls-for-characters-i-know-twitter-j76"/>
-        <updated>2025-10-23T20:04:11.000Z</updated>
-        <summary type="html"><![CDATA[A post by Ben Halpern]]></summary>
-        <author>
-            <name>Ben Halpern</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Rosetta Stone of AI: Bridging Math, Logic, and Uncertainty]]></title>
-        <id>https://dev.to/arvind_sundararajan/the-rosetta-stone-of-ai-bridging-math-logic-and-uncertainty-398a</id>
-        <link href="https://dev.to/arvind_sundararajan/the-rosetta-stone-of-ai-bridging-math-logic-and-uncertainty-398a"/>
-        <updated>2025-10-23T20:02:07.000Z</updated>
-        <summary type="html"><![CDATA[The Rosetta Stone of AI: Bridging Math, Logic, and Uncertainty
-
-
-Tired of AI systems that seem like black boxes, spitting out answers with no rhyme or reason? Ever wish you could prove your AI is making decisions that are within acceptable error margins? What if there was a unified framework to mathematically describe and reason about the behavior of probabilistic AI systems?
-This isn't science fiction. Imagine a mathematical structure that allows us to systematically simplify complex probabilistic systems while still guaranteeing bounds on information loss. This framework hinges on a new approach to quantitative abstraction, revealing a deep connection between metric spaces (distances between states) and logical semantics (how we interpret system behavior).
-Think of it like creating a sim…]]></summary>
-        <author>
-            <name>Arvind SundaraRajan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Silent Authentication in Next.js]]></title>
-        <id>https://dev.to/datarockets/silent-authentication-in-nextjs-55kp</id>
-        <link href="https://dev.to/datarockets/silent-authentication-in-nextjs-55kp"/>
-        <updated>2025-10-23T20:00:42.000Z</updated>
-        <summary type="html"><![CDATA[Authentication is an essential part of almost any application and getting it right ensures the security, and improved user experience (UX). In Single Page Applications (SPA), the most common strategy is the JWT-based authentication. It is based on tokens that are used to either authorize actions (access tokens), or allow reissuing new set of tokens (refresh tokens).  How we store and use refresh tokens provides fertile ground for security- or UX-related issues. In this article, we discuss a strategy for storing and using refresh tokens in Next.js applications that minimizes security risks while providing the best user experience - Silent Authentication. First, we briefly describe a basic form of JWT authentication and an existing SPA built with Next.js and Ruby on Rails. Then, we introduce…]]></summary>
-        <author>
-            <name>Elvin</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Set-Up MySQL with DBngin for Laravel 12 Development]]></title>
-        <id>https://dev.to/dineshstack/how-to-set-up-mysql-with-dbngin-for-laravel-12-development-21lb</id>
-        <link href="https://dev.to/dineshstack/how-to-set-up-mysql-with-dbngin-for-laravel-12-development-21lb"/>
-        <updated>2025-10-23T19:59:03.000Z</updated>
-        <summary type="html"><![CDATA[Setting Up MySQL with DBngin for Laravel 12 Development
-
-
-Welcome back to our Laravel 12 setup series! In the previous post, we got our PHP environment set up using Herd (or MAMP) and successfully installed a fresh Laravel 12 project. In this lesson, we're going to create a dedicated home for our application data.
-While tools like MAMP include MySQL, they can present some workflow challenges. In this guide, we'll configure DBngin—a streamlined and user-friendly database server manager for macOS and Windows. It enables you to run multiple versions of MySQL, PostgreSQL, and Redis simultaneously, without version conflicts.
-By the end of this tutorial, you'll have a clean, isolated database server configured for your Laravel 12 application. This setup will work seamlessly with any application …]]></summary>
-        <author>
-            <name>Dinesh Wijethunga</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[VMware to Canonical OpenStack Migration: A Complete Guide]]></title>
-        <id>https://dev.to/kapusto/vmware-to-canonical-openstack-migration-a-complete-guide-4l0h</id>
-        <link href="https://dev.to/kapusto/vmware-to-canonical-openstack-migration-a-complete-guide-4l0h"/>
-        <updated>2025-10-23T19:57:33.000Z</updated>
-        <summary type="html"><![CDATA[Moving from VMware to Canonical OpenStack offers organizations greater control over cloud infrastructure while reducing costs. This migration requires strategic planning, but the benefits include improved scalability, freedom from vendor lock-in, and access to robust open-source tools. Organizations can take advantage of OpenStack's flexible architecture to build custom cloud solutions that match their specific needs.
-Data protection remains a core focus during the migration process. A well-planned transition ensures that business operations continue smoothly while maintaining security standards. This guide provides step-by-step instructions for migrating workloads, implementing effective backup strategies, and establishing reliable recovery procedures. With the right approach and tools, y…]]></summary>
-        <author>
-            <name>Mikuz</name>
         </author>
     </entry>
     <entry>
@@ -341,16 +565,6 @@ Suleyman emphasized that the updates reflect a shift from hype to usefulnes…]]
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Tommy – Turn ESP32 devices into through-wall motion sensors]]></title>
-        <id>https://www.tommysense.com/</id>
-        <link href="https://www.tommysense.com/"/>
-        <updated>2025-10-23T17:04:07.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Make Any TypeScript Function Durable]]></title>
         <id>https://useworkflow.dev/</id>
         <link href="https://useworkflow.dev/"/>
@@ -425,16 +639,6 @@ Suleyman emphasized that the updates reflect a shift from hype to usefulnes…]]
         <id>https://www.wsj.com/finance/currencies/trump-pardons-convicted-binance-founder-7509bd63</id>
         <link href="https://www.wsj.com/finance/currencies/trump-pardons-convicted-binance-founder-7509bd63"/>
         <updated>2025-10-23T15:41:48.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Reasoning Is Not Model Improvement]]></title>
-        <id>https://manidoraisamy.com/reasoning-not-ai.html</id>
-        <link href="https://manidoraisamy.com/reasoning-not-ai.html"/>
-        <updated>2025-10-23T15:39:10.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -750,6 +954,16 @@ Llion Jones, who co-authored the seminal 2017 paper "Attention Is All You Need" 
         <id>https://bradley.chatha.dev/blog/dlang-propaganda/asn1-compiler-in-d/</id>
         <link href="https://bradley.chatha.dev/blog/dlang-propaganda/asn1-compiler-in-d/"/>
         <updated>2025-10-23T12:47:41.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[US probes Waymo robotaxis over school bus safety]]></title>
+        <id>https://www.yahoo.com/news/articles/us-investigates-waymo-robotaxis-over-102015308.html</id>
+        <link href="https://www.yahoo.com/news/articles/us-investigates-waymo-robotaxis-over-102015308.html"/>
+        <updated>2025-10-23T12:40:57.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1533,6 +1747,16 @@ Unlike traditional software, gen AI is probabilistic and adaptive. It learns fro
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Glasses-free 3D using webcam head tracking]]></title>
+        <id>https://assetstore.unity.com/packages/tools/camera/vr-without-glasses-for-webgl-332314</id>
+        <link href="https://assetstore.unity.com/packages/tools/camera/vr-without-glasses-for-webgl-332314"/>
+        <updated>2025-10-18T12:07:40.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Abstract or die: Why AI enterprises can't afford rigid vector stacks]]></title>
         <id>3Ry0bJiBrm1WPG9gGHeees</id>
         <link href="https://venturebeat.com/ai/abstract-or-die-why-ai-enterprises-cant-afford-rigid-vector-stacks"/>
@@ -1701,16 +1925,6 @@ My initial tests showed it to be a powerful and performant model that immediatel
 Unlike GitHub Copilot, Cursor, or other "vibe coding" tools that help human developers write code faster, Caffeine positions itself as a complete replacement for technical teams. Users describe what they want in plain language, and an ensemble of AI models writes, deploys, and continually updates production-grade applicatio…]]></summary>
         <author>
             <name>michael.nunez@venturebeat.com (Michael Nuñez)</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Upgrading Our Way Through OpenGL 1.x]]></title>
-        <id>https://bumbershootsoft.wordpress.com/2025/09/27/upgrading-our-way-through-opengl-1-x/</id>
-        <link href="https://bumbershootsoft.wordpress.com/2025/09/27/upgrading-our-way-through-opengl-1-x/"/>
-        <updated>2025-10-15T02:04:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
