@@ -18,6 +18,106 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/min38/thread-pool-3ema",
+          "author": "kms",
+          "description": "1. The Problem with Creating Threads Per Request\n\n\nEver implemented a server that creates a new thread for every request and destroys it when done? This approach has some critical issues you might not immediately notice.\nPerformance Issues\n\n\nResource Exhaustion\n\n\n\n\nThread Pool solves this elegantly.\nThread Pool addresses these problems cleanly.\nThe core idea is simple:\nPre-create threads and keep them waiting\nAssign work to idle threads when requests come in\nReuse threads instead of destroying them after work completes\nBenefits\nPerformance Boost: Eliminates thread creation overhead\nResource Control: Pool size limits concurrent thread count\nStability: Thread count stays bounded even during traffic spikes\nThink of it like a restaurant: instead of hiring a chef every time a customer orders, you keep N chefs on staff and distribute orders among them.\nArchitecture\nA Thread Pool consists of 3 main components:\n1. Worker Threads\nN pre-created threads\nStay alive, waiting for work\n2. Task Queue\nQueue where pending tasks wait\nMust be thread-safe (multiple threads access it)\n3. Work Distribution Logic\nIdle threads fetch tasks from the queue\nAfter completing work, they loop back to check the queue\n\nUsing a Thread Pool\n// Create Thread Pool\nsize_t num_threads = std::thread::hardware_concurrency(); // CPU core count\nThreadPool pool(num_threads);\n\n// Insert tasks into queue\nfor (int i = 0; i < 1000; i++) {\n    pool.enqueue([i]() {\n        processRequest(requests[i]);\n    });\n}\n// Pool internally maintains only N threads while processing 1000 tasks\n\nBasic Thread Pool Structure\nclass ThreadPool {\npublic:\n    ThreadPool(size_t threads);\n    ~ThreadPool();\n\n    // Add task to queue\n    template<class F>\n    void enqueue(F&& f);\n\nprivate:\n    std::vector<std::thread> workers;           // Worker threads\n    std::queue<std::function<void()>> tasks;    // Task queue\n\n    std::mutex queue_mutex;                     // Protects queue\n    std::condition_variable condition;          // Wait/notify threads\n    bool stop;\n};",
+          "link": "https://dev.to/min38/thread-pool-3ema",
+          "publishedOn": "2025-11-13T18:55:51.000Z",
+          "wordCount": 1956,
+          "title": "Thread Pool",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8cb5t412n3093l5al4pg.png"
+        },
+        {
+          "id": "https://dev.to/baris86/steps-on-how-to-create-virtual-machine-571b",
+          "author": "Barisi Lenyie",
+          "description": "In cloud computing, a virtual machine (VM) is a digital representation of a real computer operating in a virtualized environment. It runs on shared physical hardware under the control of a cloud provider, but it has its own operating system, storage, and apps.\nThe first step in any project work is to create a resource group\nBelow are the steps to create a resource group\nStep 1\nMicrosoft Azure portal\nSearch Bar, type Resource Group and hit enter, and the resource group with an icon will gray out\n\nStep 2\nResource Group and in the resource group environment, select + Create \n\nSteps on how to create a virtual machine\nStep 1\nMicrosoft Azure portal, locate the Search Bar, and type Virtual Machines and hit enter\n\nStep 2\n\nStep 3\nResource Group area, and if you have created the resource group earlier, click the drop-down and select and if not, click create new\n\nStep 4\nvirtual machine name, give it a name, for Region, click the drop-down arrow and select while for the availability option, click the drop-down arrow and choose\n\nStep 5\nsecurity type from the drop-down arrow and select image from the drop-down arrow\n\nStep 6\nadministrator account, for the username section, type in a name, give it a password, and confirm the password, ensure the passwords are the same\n\nStep 7\nselect inbounds ports, click the drop-down arrow select and tick the I confirm section\n\nStep 8\nMonitoring Tab and disable Diagnostics\n\nStep 9\nTags Tab Type in the Name section, type in the bar below and do same for value and click Review + Create\n\nStep 10\ncreate\n\nStep 11\nGo to Resource\n\nFor the virtual machine not to have disruptive network issue,\nStep 1\nprimary NIC public ID and click the link \n\nStep 2\nidle time out\n\nSteps on how to connect the virtual machine\nStep 1\noverview, click Connect and click the drop-down arrow on the Connect tab and choose Connect\n\nStep 2\nConnect Access **and download the **RDP File\n\nStep 3\nConnect \n\nStep 4\nwindow security environment, enter your password and click ok\n\nI hope this article was educational.",
+          "link": "https://dev.to/baris86/steps-on-how-to-create-virtual-machine-571b",
+          "publishedOn": "2025-11-13T18:51:59.000Z",
+          "wordCount": 2082,
+          "title": "Steps on how to create Virtual Machine",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9croawgihfiix4ffgt6k.png"
+        },
+        {
+          "id": "https://dev.to/aaravjoshi/how-to-integrate-webassembly-7-practical-patterns-for-faster-web-applications-1k0h",
+          "author": "Aarav Joshi",
+          "description": "As a best-selling author, I invite you to explore my books on Amazon. Don't forget to follow me on Medium and show your support. Thank you! Your support means the world! \nWhen I first started working with web applications, I noticed that some tasks felt sluggish, especially when dealing with heavy computations or complex graphics. Over time, I discovered WebAssembly, a technology that changed how we build fast web apps. It allows code written in languages like C, C++, or Rust to run in browsers at speeds close to native performance. This isn't about replacing JavaScript but enhancing it where needed. In this article, I'll share seven practical ways to integrate WebAssembly into your projects, making them faster and more efficient. I'll include code examples and personal insights to help yo…",
+          "link": "https://dev.to/aaravjoshi/how-to-integrate-webassembly-7-practical-patterns-for-faster-web-applications-1k0h",
+          "publishedOn": "2025-11-13T18:47:22.000Z",
+          "wordCount": 3296,
+          "title": "How to Integrate WebAssembly: 7 Practical Patterns for Faster Web Applications",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fjsschools.com%2Fimages%2F278c2a4d-e778-4aa4-ba64-64a9721d9573.webp"
+        },
+        {
+          "id": "https://dev.to/handuo/we-built-an-x402-marketplace-for-bookmark-collectors-3id",
+          "author": "Handuo",
+          "description": "Our Story & Why\n\n\nWe are a small team of Internet enthusiasts who have witnessed tons of websites we loved shutting down over the years. So we've been seeking a way to support them with income and exposure.\ncopus.network\nYou can share (curate) any URI (URL) through the copus.network website or the browser extension. Websites you collect will be automatically shared on Copus' homepage where others can visit and collect. It's basically social bookmarking, like a Pinterest for websites.\n\n\nYou can set a USDC price for visiting a link you shared (pay-to-unlock). The payment is powered by the x402 protocol.\n\n\nHalf of the USDC income will go to the author of the original content, claimable after they opt their site into x402 or register a Copus account.\n\n\nYour collections (bookmarks) are automati…",
+          "link": "https://dev.to/handuo/we-built-an-x402-marketplace-for-bookmark-collectors-3id",
+          "publishedOn": "2025-11-13T18:45:18.000Z",
+          "wordCount": 2166,
+          "title": "We Built an x402 Marketplace for Bookmark Collectors (That Pays Creators & Curators in USDC)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy470q6ueiagv2k6w5gaf.png"
+        },
+        {
+          "id": "https://dev.to/ranand12/create-your-first-google-adk-agent-a-beginners-guide-5d41",
+          "author": "Anand Kumar R",
+          "description": "In this tutorial, we'll walk through how to create your first agent using Google's Agent Development Kit (ADK). We'll explore two primary methods: using the intuitive Visual Builder and a straightforward, no-code YAML configuration.\nBefore we build, let's break down the core components of a Google ADK agent:\n  Name: A unique identifier for your agent.\n  Model: The engine powering your agent. This can be a first-party Google model (like Gemini) or any third-party/open-source model via the LightLLM integration.\n  Instructions: This is where you define the agent's persona, its core logic, and the desired output schema. Think of it as a detailed, structured prompt.\n  Description: A concise summary of the agent's purpose. This is crucial in multi-agent systems, where agents interact based on ea…",
+          "link": "https://dev.to/ranand12/create-your-first-google-adk-agent-a-beginners-guide-5d41",
+          "publishedOn": "2025-11-13T18:43:07.000Z",
+          "wordCount": 2261,
+          "title": "Create Your First Google ADK Agent: A Beginner's Guide",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fimg.youtube.com%2Fvi%2FX2jTp6qvbzM%2Fmaxresdefault.jpg"
+        },
+        {
+          "id": "https://dev.to/vickydecodes/i-think-i-accidentally-solved-a-problem-no-one-tried-before-774",
+          "author": "vicky",
+          "description": "I’m working on a personal project recently, and out of nowhere I stumbled into an idea that honestly feels… strange?\nNot “AI takes over the world” strange — more like “why did nobody try this?” strange.\nBasically:\nknows every available backend endpoint\nauto-generates request functions\nbecomes type-consistent with backend changes\nstays updated without manually modifying anything\nNo OpenAPI, no Swagger, no codegen, no manual typing.\nIt’s like the backend and frontend finally speak the same language.\nAnd the weirdest part?\nWhat I built is stupidly simple, almost embarrassingly minimal… but it works shockingly well.\nIt feels like a tiny “API pipeline” that no one thought of.\nBefore I go deeper or package it, I’m just curious:\n👉 Has anyone ever seen this exact concept?\nI genuinely feel like I might’ve discovered a small niche idea that somehow slipped through the cracks.\nWould love to hear if anyone has tried this, seen it, or if I’m just reinventing something in a weird way.\nNot ready to reveal the full thing yet — still stabilizing the thought —\nbut I just need some outside perspective before I go too deep.",
+          "link": "https://dev.to/vickydecodes/i-think-i-accidentally-solved-a-problem-no-one-tried-before-774",
+          "publishedOn": "2025-11-13T18:42:47.000Z",
+          "wordCount": 1937,
+          "title": "I Think I Accidentally Solved a Problem No One Tried Before?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzckwmwb7fl2ruz2lm8lj.png"
+        },
+        {
+          "id": "https://dev.to/paperium/decomposed-attention-fusion-in-mllms-for-training-free-video-reasoningsegmentation-5f48",
+          "author": "Paperium",
+          "description": "AI Can Now Outline Objects in Videos Without Any Extra Training\n\n\nEver wondered how a computer could instantly “draw” around a moving cat in a video? Scientists have discovered a clever trick called Decomposed Attention Fusion that lets powerful language‑vision AIs highlight objects on the fly, without the need for costly retraining.\nIt’s a game‑changing step toward making video AI as easy to use as a smartphone filter, opening doors for creators everywhere.\nRead article comprehensive review in Paperium.net:\n Decomposed Attention Fusion in MLLMs for Training-Free Video ReasoningSegmentation \n🤖 This analysis and review was primarily generated and structured by an AI . The content is provided for informational and quick-review purposes.",
+          "link": "https://dev.to/paperium/decomposed-attention-fusion-in-mllms-for-training-free-video-reasoningsegmentation-5f48",
+          "publishedOn": "2025-11-13T18:40:43.000Z",
+          "wordCount": 8296,
+          "title": "Decomposed Attention Fusion in MLLMs for Training-Free Video ReasoningSegmentation",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fpaperium.net%2Fmedia%2Farticles%2Fimg%2F521_18e38463-88a3-40a1-a85b-9370b8e69611.jpg"
+        },
+        {
+          "id": "https://dev.to/esc-usa/speech-language-pathologist-salary-guide-2025-3hp",
+          "author": "Every Special Child",
+          "description": "The Speech Language Pathologist (SLP) Salary Guide 2025 provides valuable insights into the evolving compensation landscape for professionals in speech and language therapy. As demand for SLPs continues to rise across schools, hospitals, and private practices, salaries have shown steady growth driven by expanding awareness of communication disorders and early intervention programmes.\nIn 2025, the average salary for Speech Language Pathologists in the U.S. ranges between $72,000 and $110,000 annually, depending on education, experience, and location. Entry-level SLPs may start around $65,000, while those with advanced certifications or working in specialised healthcare settings can earn well above $100,000. Urban areas and states like California, New York, and Massachusetts tend to offer the highest pay due to demand and cost of living. Read More\nBeyond base pay, many SLPs enjoy benefits such as health insurance, continuing education reimbursement, flexible schedules, and opportunities for advancement into supervisory or clinical director roles. The rise of teletherapy has also opened doors for remote and contract-based work, giving professionals more flexibility and competitive hourly rates.\nWith the growing need for speech language and communication specialists, 2025 is a promising year for SLPs looking to build a rewarding and well-compensated career.",
+          "link": "https://dev.to/esc-usa/speech-language-pathologist-salary-guide-2025-3hp",
+          "publishedOn": "2025-11-13T18:35:00.000Z",
+          "wordCount": 1844,
+          "title": "Speech Language Pathologist Salary Guide 2025",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0yev8ci85aj3odvf31gy.png"
+        },
+        {
+          "id": "https://dev.to/waston_a569aa7628caf50ed0/best-firearm-parts-a-complete-guide-for-enthusiasts-and-professionals-4h99",
+          "author": "WOT AR15",
+          "description": "When it comes to firearms, performance and reliability often come down to one critical factor—the quality of your parts. Whether you’re a competitive shooter, a hunter, a law enforcement professional, or a firearm enthusiast, having the best firearm parts ensures safety, accuracy, and long-term durability. But with so many options available on the market, how do you know which parts are worth investing in?\nWhy Choosing the Best Firearm Parts Matters\nUpgrading or replacing firearm parts is not just about customization—it’s about performance and peace of mind. Using low-quality components can lead to:\nReduced accuracy and control\nFaster wear and tear on your firearm\nRisk of malfunction in critical situations\nCompromised safety for the user and others\nOn the other hand, investing in high-qual…",
+          "link": "https://dev.to/waston_a569aa7628caf50ed0/best-firearm-parts-a-complete-guide-for-enthusiasts-and-professionals-4h99",
+          "publishedOn": "2025-11-13T18:34:00.000Z",
+          "wordCount": 2305,
+          "title": "Best Firearm Parts: A Complete Guide for Enthusiasts and Professionals",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fq3o2w850u7vd0edmo8s4.png"
+        },
+        {
+          "id": "https://dev.to/bettywillis/carpet-cleaning-services-that-protect-against-color-fading-30de",
+          "author": "BettyWillis",
+          "description": "Introduction\nIt should be noted that carpets are not just things that give warmth and beauty; they are also comforters to take home or office space. The colors of carpets make the whole interior lively, refreshing, and inviting. However, it takes little time for them to fade from sunlight, dust, and harsh cleaning chemicals. The benefits of Carpet Cleaning Hornchurch services protecting carpets from color fading are enormous and indispensable. Such professional cleaners brim full with advanced techniques and gentle solutions that keep your carpets bright and fresh while cleaning them.\nCause of Color Fading\nGenerally, color fading in carpets occurs because of both reasons. Direct sunlight is one of them, as UV rays break down dyes from fabric. Also, strong detergents or harsh cleaning agent…",
+          "link": "https://dev.to/bettywillis/carpet-cleaning-services-that-protect-against-color-fading-30de",
+          "publishedOn": "2025-11-13T18:32:23.000Z",
+          "wordCount": 2403,
+          "title": "Carpet Cleaning Services That Protect Against Color Fading",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fa4wgjgrsjlelwoq8sp5s.png"
+        },
+        {
           "id": "https://dev.to/0xrelogic/mcp-x-cursor-poc-rogue-mcp-servers-ide-browsers-and-real-defenses-1dda",
           "author": "Allen Elzayn",
           "description": "Originally published at allenarch.dev\nA proof‑of‑concept published this week shows how a malicious Model Context Protocol (MCP) server can inject JavaScript into the built‑in browser of an AI IDE (e.g., Cursor/Windsurf/VsCode/ClaudeCode) and then leverage the editor's privileges for system actions. This post avoids rehash and focuses on what practitioners need: a clear threat model, a safe lab plan to reproduce (without destructive payloads), generic detections you can wire into your telemetry today, and a security baseline for MCP deployments.\nKey context:\nPoC impact (news + demo): Rogue MCP servers can replace login pages inside Cursor's in‑IDE browser and harvest credentials; the same capability can lead to workstation compromise (CSO Online, Nov 13, 2025; Knostic deep‑dive, Nov 5, 2025…",
@@ -36,106 +136,6 @@
           "wordCount": 2596,
           "title": "UI & UX Course in Pitampura — Start Your Creative Journey at ZICA Pitampura",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxc7eq0vv8wa61seaw8ne.png"
-        },
-        {
-          "id": "https://dev.to/johan_smith_44df8af459875/building-a-take-home-pay-calculator-using-javascript-and-open-data-apis-115h",
-          "author": "Johan Smith",
-          "description": "In today’s world of automation and web tools, creating a simple take-home pay calculator is a great beginner-to-intermediate JavaScript project. By integrating APIs for tax rates and using modern frameworks like React or Vue, developers can build real-time calculators that help users estimate their post-tax income based on location and salary input.\nThis kind of project not only enhances your coding and data-handling skills but also demonstrates how front-end logic connects with financial computation. You can also explore a ready-made example at take-home-pay-calculator.uk, which shows how calculations and user experience can work together in a web environment.",
-          "link": "https://dev.to/johan_smith_44df8af459875/building-a-take-home-pay-calculator-using-javascript-and-open-data-apis-115h",
-          "publishedOn": "2025-11-13T18:05:56.000Z",
-          "wordCount": 1742,
-          "title": "Building a Take-Home Pay Calculator Using JavaScript and Open Data APIs",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fg06reto5o9zxq83e1cps.png"
-        },
-        {
-          "id": "https://dev.to/synergistdigitalmedia/ai-content-marketing-2025-strategy-guide-1pc0",
-          "author": "Drew Madore",
-          "description": "AI Content Marketing: 2025 Strategy Guide\n\n\nAI has moved from experimental novelty to operational necessity in content marketing. According to HubSpot's 2024 State of Marketing report, 64% of marketers already use AI in their work, and that number is climbing fast. But here's the problem: most teams are using AI the same way, creating a sea of similar content that fails to differentiate.\nThe real opportunity isn't in using AI—it's in using it strategically. The gap between companies that treat AI as a content factory and those that deploy it as a strategic intelligence layer is widening every month.\nThis guide breaks down what's actually working in AI-powered content marketing right now, including strategies your competitors probably aren't using yet.\nGenerative AI tools processed over 10 …",
-          "link": "https://dev.to/synergistdigitalmedia/ai-content-marketing-2025-strategy-guide-1pc0",
-          "publishedOn": "2025-11-13T18:04:03.000Z",
-          "wordCount": 3850,
-          "title": "AI Content Marketing: 2025 Strategy Guide",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Foaidalleapiprodscus.blob.core.windows.net%2Fprivate%2Forg-Lqu7n0FuGCFqxXLXM9s53Ev2%2Fuser-mTiYMdzxM0gXRJWa14EZi0rA%2Fimg-FDOMCCPkTSuKxIHMbAHTUzgV.png%3Fst%3D2025-11-13T17%253A03%253A59Z%26se%3D2025-11-13T19%253A03%253A59Z%26sp%3Dr%26sv%3D2024-08-04%26sr%3Db%26rscd%3Dinline%26rsct%3Dimage%2Fpng%26skoid%3D8b33a531-2df9-46a3-bc02-d4b1430a422c%26sktid%3Da48cca56-e6da-484e-a814-9c849652bcb3%26skt%3D2025-11-13T18%253A03%253A59Z%26ske%3D2025-11-14T18%253A03%253A59Z%26sks%3Db%26skv%3D2024-08-04%26sig%3DTE2C1syxTgHZQKDmihkVeH%2F0%252B%2FTMwzK9OSWoxE0c23I%253D"
-        },
-        {
-          "id": "https://dev.to/abdul_shamim/inside-the-edge-how-real-time-data-pipelines-power-connected-devices-2m43",
-          "author": "Abdul Shamim",
-          "description": "In the world of connected devices, milliseconds matter. Whether it’s a vehicle transmitting telemetry, a wearable tracking vitals, or a factory sensor reporting anomalies, the value of data depends on how fast — and how reliably — it can reach where it needs to go.\nThis is where edge computing and real-time data pipelines are quietly transforming the Internet of Things (IoT) ecosystem. Instead of sending every packet of data back to a centralized cloud, we’re now processing it closer to the source — at the edge — where decisions can be made instantly.\nTraditional cloud architectures are designed for scale, not for speed. Every hop between the device and the cloud adds latency, and when thousands of devices are streaming continuously, that delay can make real-time insights impossible.\nEdge …",
-          "link": "https://dev.to/abdul_shamim/inside-the-edge-how-real-time-data-pipelines-power-connected-devices-2m43",
-          "publishedOn": "2025-11-13T18:03:31.000Z",
-          "wordCount": 2387,
-          "title": "Inside the Edge: How Real-Time Data Pipelines Power Connected Devices",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F5594onnrxsrdsldna4l4.png"
-        },
-        {
-          "id": "https://dev.to/drcarlosruizviquez/como-experto-en-pld-considero-que-algunos-de-los-desafios-a-2k3h",
-          "author": "Dr. Carlos Ruiz Viquez",
-          "description": "Como experto en PLD, considero que algunos de los desafíos actuales en la prevención de la lavado de dinero se relacionan con la rápida evolución de los activos virtuales, la creciente utilización de la tecnología financiera (fintech) y la aparición de nuevas tipologías de delito.\nEn esta área, hay sujetos obligados que deben cumplir con una obligación especial para detectar operaciones sospechosas, como: instituciones financieras, empresas de servicios financieros, proveedores de servicios de moneda electrónica y otros actores que participan en el sector financiero.\nSin embargo, algunas actividades y sectores son particularmente vulnerables a la actividad delictiva, como: la compra y venta de bienes raíces, la transferencia de valores y la utilización de criptomonedas. Esto se debe a la f…",
-          "link": "https://dev.to/drcarlosruizviquez/como-experto-en-pld-considero-que-algunos-de-los-desafios-a-2k3h",
-          "publishedOn": "2025-11-13T18:00:53.000Z",
-          "wordCount": 1991,
-          "title": "Como experto en PLD, considero que algunos de los desafíos a",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy5gxuacq4dblkptjflh7.png"
-        },
-        {
-          "id": "https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-thunderbolts-the-new-avengers-in-20-minutes-or-less-2f8c",
-          "author": "Movie News",
-          "description": "Summary\n\n\nEverything Wrong With Thunderbolts* (The New Avengers) In 20 Minutes Or Less is Cinemasins’ signature roast of Marvel’s newest team-up flick, tallying every plot hole, nitpick and cringe-worthy moment—while still admitting the movie’s kinda fun.\nAlongside the sins video, they’re plugging their main site (cinemasins.com), spin-off channels (@TVSins, @CommercialSins, Cinemasins Podcast Network), a sinful poll, Patreon support and community hangouts on Discord and Reddit—plus shoutouts to writers Jeremy, Chris, Aaron, Jonathan, Deneé, Ian and Daniel and their Twitter, Instagram and TikTok feeds.\nWatch on YouTube",
-          "link": "https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-thunderbolts-the-new-avengers-in-20-minutes-or-less-2f8c",
-          "publishedOn": "2025-11-13T18:00:30.000Z",
-          "wordCount": 1787,
-          "title": "CinemaSins: Everything Wrong With Thunderbolts* (The New Avengers) In 20 Minutes Or Less",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi4.ytimg.com%2Fvi%2Fkh_74wgfnpE%2Fhqdefault.jpg"
-        },
-        {
-          "id": "https://dev.to/uliyahoo/-2o0i",
-          "author": "uliyahoo",
-          "description": "Build a Frontend for your Microsoft Agent Framework Agents with AG-UI\nBonnie for CopilotKit ・ Nov 13\n#webdev\n        #ai\n        #programming\n        #opensource",
-          "link": "https://dev.to/uliyahoo/-2o0i",
-          "publishedOn": "2025-11-13T17:56:10.000Z",
-          "wordCount": 1601,
-          "title": "[Boost]",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fawwk1vrtjo4ay4fqnape.png"
-        },
-        {
-          "id": "https://dev.to/shabbirali_khanushiya/my-devsecops-journey-blending-security-automation-passion-1ppe",
-          "author": "ShabbirAli Khanushiya",
-          "description": "Every career starts with a spark — and mine began in 2014, right after completing my Bachelor’s degree.\nDuring my summer vacation, some of my friends joined a cybersecurity and ethical hacking internship at TechDefence, Ahmedabad. Out of sheer curiosity, I decided to join them too.\nWithin a few days, everything changed.\nLearning hacking techniques, understanding how systems break, exploring networks — it all felt exciting, powerful, and meaningful.\n“Yeh toh mast hai! This is what I want to do.”\nAnd that was the start of my long journey into cybersecurity… and eventually, DevSecOps.\n🎓 The Academic Gap — And a Necessary Detour\nBack in 2014, cybersecurity courses were rare. No universities around me offered proper programs.\nBut cybersecurity ka junoon kahin gaya nahi.\n🧭 The Lucideus Chapter…",
-          "link": "https://dev.to/shabbirali_khanushiya/my-devsecops-journey-blending-security-automation-passion-1ppe",
-          "publishedOn": "2025-11-13T17:56:00.000Z",
-          "wordCount": 2445,
-          "title": "My DevSecOps Journey: Blending Security, Automation & Passion",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fokgm6se8z1j175732ndh.png"
-        },
-        {
-          "id": "https://dev.to/drcarlosruizviquez/reformas-a-la-ley-federal-de-prevencion-e-identificacion-d-1686",
-          "author": "Dr. Carlos Ruiz Viquez",
-          "description": "Reformas a la Ley Federal de Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita-LFPIORPI en 2025\nEn 2025, se han llevado a cabo reformas significativas a la Ley Federal de Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita-LFPIORPI (LFPIORPI), enfocadas en fortalecer la prevención y lucha contra el blanqueo de capitales y otras operaciones con recursos de procedencia ilícita. Entre las novedades más relevantes se encuentran modificaciones relacionadas con los sujetos obligados y actividades vulnerables.\nSujetos obligados\nLa Reforma define de manera más clara y detallada a los sujetos obligados, incluyendo:\nInstituto Nacional de Migración (INM)\nAutoridades monetarias\nBancos y organizaciones financieras de desarrollo internacional\nEntid…",
-          "link": "https://dev.to/drcarlosruizviquez/reformas-a-la-ley-federal-de-prevencion-e-identificacion-d-1686",
-          "publishedOn": "2025-11-13T17:55:47.000Z",
-          "wordCount": 2123,
-          "title": "**Reformas a la Ley Federal de Prevención e Identificación d",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Foqrlotkyc2x7m33s0nnw.png"
-        },
-        {
-          "id": "https://dev.to/ramyacse/day-63-of-my-data-analytics-journey-27o3",
-          "author": "Ramya .C",
-          "description": "🧠 Day 63 of My #RamyaAnalyticsJourney — Exception Handling in Python\nHello everyone! 👋\nDay 63 of my Data Analytics learning journey.\nException Handling — which helps make our programs more reliable and user-friendly.\nIn Python, Exception Handling is a way to manage errors that occur during program execution.\ncatch and handle those errors gracefully.\nAn exception is an event that disrupts the normal flow of a program.\n✅ Prevents program crashes\ntry:\n    # Code that might cause an error\n    x = 10 / 0\nexcept ZeroDivisionError:\n    # Code that runs if an error occurs\n    print(\"Error: You can’t divide by zero!\")\nelse:\n    # Code that runs if no error occurs\n    print(\"Division successful!\")\nfinally:\n    # Code that always runs\n    print(\"Execution completed.\")\n\nError: You can’t divide by zero!\nExecution completed.\n\nWe can also raise our own exceptions using the raise keyword.\nage = int(input(\"Enter your age: \"))\n\nif age < 18:\n    raise ValueError(\"You must be at least 18 years old.\")\nelse:\n    print(\"You are eligible!\")\n\nIf the user enters a number less than 18, Python will raise a custom error message.\n\n\n\nKeyword\nDescription\n\n\n\n\ntry\nBlock where you place the code that may throw an exception\n\n\nexcept\nHandles the exception if it occurs\n\n\nelse\nExecutes if no exception occurs\n\n\nfinally\nExecutes whether an exception occurs or not\n\n\nraise\nUsed to throw an exception manually\n\n\n\nUnderstanding Exception Handling is crucial for writing clean, safe, and professional Python code — especially in data analytics projects where errors can appear from data input, file reading, or API requests.\nEvery small concept learned builds confidence towards becoming a Data Analyst 💪\n\n\n\n\n\n  \n  \n  Python #DataAnalytics #Coding #ExceptionHandling #RamyaAnalyticsJourney #LearnToCode",
-          "link": "https://dev.to/ramyacse/day-63-of-my-data-analytics-journey-27o3",
-          "publishedOn": "2025-11-13T17:47:02.000Z",
-          "wordCount": 2049,
-          "title": "Day 63 of My Data Analytics Journey!",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2m7kkdl4a2ylrv5bl3l7.jpg"
-        },
-        {
-          "id": "https://dev.to/drcarlosruizviquez/bias-mitigation-through-data-augmentation-5hfp",
-          "author": "Dr. Carlos Ruiz Viquez",
-          "description": "Bias Mitigation through Data Augmentation\nAs machine learning practitioners, we often focus on the intricacies of modeling and optimization. However, one crucial aspect that can be neglected is data augmentation – a technique that can inadvertently introduce biases into our models. \nHere's a practical tip for ML practitioners to mitigate bias through data augmentation:\nWhen using data augmentation techniques like rotation, flipping, or color jittering, ensure that these operations are applied randomly to both the original and augmented data. This approach helps to minimize the potential for biased augmentations that might skew the model's performance. For instance, if you're training a model to recognize pedestrians, you might rotate the images to simulate different angles. However, if the rotations are always in the same direction (e.g., clockwise), the model might become biased towards recognizing pedestrians from that specific angle. By applying random rotations to both the original and augmented data, you can create a more balanced and fair dataset.\nExample code (Python) for a simple random rotation augmentation:\nimport torchvision.transforms as transforms\n\n# Create a transformation that applies random rotations\ntransformation = transforms.Compose([\n    transforms.RandomRotation(30),  # Random rotation between -30 and 30 degrees\n    transforms.ToTensor()\n])\n\n# Apply the transformation to both the original and augmented data\noriginal_data = ...  # Load your original data\naugmented_data = ...  # Load your augmented data\noriginal_data_transformed = transformation(original_data)\naugmented_data_transformed = transformation(augmented_data)\n\nBy incorporating this best practice into your data augmentation pipeline, you can help mitigate bias and develop more reliable and fair machine learning models. Remember to always verify the fairness and robustness of your models against diverse datasets and edge cases.\nPublicado automáticamente con IA/ML.",
-          "link": "https://dev.to/drcarlosruizviquez/bias-mitigation-through-data-augmentation-5hfp",
-          "publishedOn": "2025-11-13T17:45:35.000Z",
-          "wordCount": 1926,
-          "title": "**Bias Mitigation through Data Augmentation**",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgytsi0fvbtcspfc2t9hi.png"
         }
       ]
     },
@@ -252,13 +252,23 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
-          "id": "https://www.neowin.net/news/microsoft-confirms-windows-11-is-about-to-change-massively-gets-enormous-backlash/",
+          "id": "https://blog.kagi.com/slopstop",
           "author": null,
           "description": "Comments",
-          "link": "https://www.neowin.net/news/microsoft-confirms-windows-11-is-about-to-change-massively-gets-enormous-backlash/",
-          "publishedOn": "2025-11-13T18:01:52.000Z",
+          "link": "https://blog.kagi.com/slopstop",
+          "publishedOn": "2025-11-13T19:03:26.000Z",
+          "wordCount": 1553,
+          "title": "SlopStop: Community-driven AI slop detection in Kagi Search",
+          "imageUrl": null
+        },
+        {
+          "id": "https://leetarxiv.substack.com/p/ibm-patented-eulers-fractions",
+          "author": null,
+          "description": "Comments",
+          "link": "https://leetarxiv.substack.com/p/ibm-patented-eulers-fractions",
+          "publishedOn": "2025-11-13T18:41:33.000Z",
           "wordCount": null,
-          "title": "Microsoft confirms Windows 11 is about to change gets enormous backlash – Neowin",
+          "title": "IBM Patented Euler's 200 Year Old Math Technique for 'AI Interpretability'",
           "imageUrl": null
         },
         {
@@ -272,23 +282,13 @@
           "imageUrl": "https://minimaxir.com/2025/11/nano-banana-prompts/s57haPv7FsOumtkP1e_mqQM.webp"
         },
         {
-          "id": "https://blog.google/products/shopping/agentic-checkout-holiday-ai-shopping/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://blog.google/products/shopping/agentic-checkout-holiday-ai-shopping/",
-          "publishedOn": "2025-11-13T17:36:47.000Z",
-          "wordCount": 4473,
-          "title": "Let AI do the hard parts of your holiday shopping",
-          "imageUrl": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/holiday_shopping_ss.width-1300.png"
-        },
-        {
           "id": "https://www.courier-journal.com/story/opinion/contributors/2025/11/13/rand-paul-congress-funding-bill-hemp-products-farmers/87247317007/",
           "author": null,
           "description": "Comments",
           "link": "https://www.courier-journal.com/story/opinion/contributors/2025/11/13/rand-paul-congress-funding-bill-hemp-products-farmers/87247317007/",
           "publishedOn": "2025-11-13T17:22:10.000Z",
-          "wordCount": 3784,
-          "title": "Rand Paul: Congress bill destroys hemp farmer livelihoods",
+          "wordCount": 3790,
+          "title": "A hemp industry shutdown has just begun",
           "imageUrl": "https://www.courier-journal.com/gcdn/authoring/authoring-images/2025/09/25/PLOU/86349994007-rand-paul-kentucky.JPG?crop=3593,2021,x0,y273&width=3200&height=1800&format=pjpg&auto=webp"
         },
         {
@@ -297,9 +297,9 @@
           "description": "Comments",
           "link": "https://github.com/BoundaryML/baml/tree/canary/jobs",
           "publishedOn": "2025-11-13T17:00:44.000Z",
-          "wordCount": 1962,
+          "wordCount": 1963,
           "title": "BAML is hiring compilers/rust engineers (YC W23)",
-          "imageUrl": "https://opengraph.githubassets.com/ae0e75dea825bc624f0bd29c29f0ed21770538a7d63aa8300b6aed3b61c245e8/BoundaryML/baml"
+          "imageUrl": "https://opengraph.githubassets.com/4f4fd2aeceabb5d0cd4f22d4305837d35b3fcb943a0f1103c350e116602f6316/BoundaryML/baml"
         },
         {
           "id": "https://www.tweeks.io/onboarding",
@@ -320,16 +320,6 @@
           "wordCount": 11031,
           "title": "Zed is our office",
           "imageUrl": "https://zed.dev/img/post/zed-is-our-office/thumbnail.webp"
-        },
-        {
-          "id": "https://www.popularmechanics.com/cars/hybrid-electric/a69384091/cybertruck-lightbar-recall/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.popularmechanics.com/cars/hybrid-electric/a69384091/cybertruck-lightbar-recall/",
-          "publishedOn": "2025-11-13T15:38:04.000Z",
-          "wordCount": 6184,
-          "title": "Tesla Is Recalling Cybertrucks Again. Yep, More Pieces Are Falling Off",
-          "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/0x0-cybertruck-16-1659627172.jpg?crop=1.00xw:0.752xh;0,0.132xh&resize=1200:*"
         },
         {
           "id": "https://deepmind.google/blog/sima-2-an-agent-that-plays-reasons-and-learns-with-you-in-virtual-3d-worlds/",
@@ -368,7 +358,7 @@
           "link": "https://ericmigi.com/blog/how-to-build-a-smartwatch-software-setting-expectations-and-roadmap/",
           "publishedOn": "2025-11-13T14:21:25.000Z",
           "wordCount": 4924,
-          "title": "Pebble: How to Build a Smartwatch: Software – Setting Expectations and Roadmap",
+          "title": "How To Build A Smartwatch: Software",
           "imageUrl": "https://ericmigi.com/assets/how-to-build-a-smartwatch-software-setting-expectations-and-roadmap-0-97ffb77d-ecee-4a7a-a52f-51307029b88b.png"
         },
         {
@@ -377,9 +367,19 @@
           "description": "Comments",
           "link": "https://github.com/ory/kratos",
           "publishedOn": "2025-11-13T14:14:36.000Z",
-          "wordCount": 5196,
+          "wordCount": 5208,
           "title": "Kratos - Cloud native Auth0 open-source alternative (self-hosted)",
-          "imageUrl": "https://opengraph.githubassets.com/ae217321905bfded5ecafac8971a50bd2df48c33981c911db439259b12878918/ory/kratos"
+          "imageUrl": "https://opengraph.githubassets.com/908aa74dee22fdb74eb6992eee1a4d6cd39c4e54e0dd19cc34b50656f6a5073b/ory/kratos"
+        },
+        {
+          "id": "https://cursor.com/blog/series-d",
+          "author": null,
+          "description": "Comments",
+          "link": "https://cursor.com/blog/series-d",
+          "publishedOn": "2025-11-13T14:12:23.000Z",
+          "wordCount": 1586,
+          "title": "Cursor: Past, Present, and Future",
+          "imageUrl": "https://cdn.sanity.io/images/2hv88549/production/74626b9089ff0056a2bfb5e5df5cc5e762343b0b-2400x1260.png?auto=format&w=1200&h=627&fit=crop"
         },
         {
           "id": "https://www.denx.de/",
@@ -477,19 +477,9 @@
           "description": "Comments",
           "link": "https://github.com/Homebrew/brew/issues/20755",
           "publishedOn": "2025-11-12T21:50:14.000Z",
-          "wordCount": 3718,
+          "wordCount": 3726,
           "title": "Homebrew no longer allows bypassing Gatekeeper for unsigned/unnotarized software",
           "imageUrl": "https://opengraph.githubassets.com/9aa17c02c8ff22611b7c4e67a425384054b52e3847bbc6d2fae73bc64fe8d155/Homebrew/brew/issues/20755"
-        },
-        {
-          "id": "https://openai.com/index/gpt-5-1/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://openai.com/index/gpt-5-1/",
-          "publishedOn": "2025-11-12T19:05:41.000Z",
-          "wordCount": null,
-          "title": "GPT-5.1: A smarter, more conversational ChatGPT",
-          "imageUrl": null
         },
         {
           "id": "https://store.steampowered.com/sale/steammachine",
@@ -530,6 +520,16 @@
           "wordCount": null,
           "title": "COBOL to Kotlin via Formal Models (IR and Alloy and Golden Master)",
           "imageUrl": null
+        },
+        {
+          "id": "https://arxiv.org/abs/2510.27688",
+          "author": null,
+          "description": "Comments",
+          "link": "https://arxiv.org/abs/2510.27688",
+          "publishedOn": "2025-11-05T21:49:12.000Z",
+          "wordCount": 709,
+          "title": "Continuous Autoregressive Language Models",
+          "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
         },
         {
           "id": "https://spectrum.ieee.org/humanoid-robot-olympics",
@@ -666,6 +666,21 @@
       "siteUrl": "https://venturebeat.com/category/ai/feed/",
       "articles": [
         {
+          "id": "3aLuBB8gLAg16BgJAqBJQ4",
+          "author": "michael.nunez@venturebeat.com (Michael Nuñez)",
+          "description": "Artificial intelligence agents powered by the world's most advanced language models routinely fail to complete even straightforward professional tasks on their own, according to groundbreaking research released Thursday by Upwork, the largest online work marketplace.\nBut the same study reveals a more promising path forward: When AI agents collaborate with human experts, project completion rates surge by up to 70%, suggesting the future of work may not pit humans against machines but rather pair them together in powerful new ways.\nThe findings, drawn from more than 300 real client projects posted to Upwork's platform, marking the first systematic evaluation of how human expertise amplifies AI agent performance in actual professional work — not synthetic tests or academic simulations. The re…",
+          "link": "https://venturebeat.com/ai/upwork-study-shows-ai-agents-excel-with-human-partners-but-fail",
+          "publishedOn": "2025-11-13T18:30:00.000Z",
+          "wordCount": null,
+          "title": "Upwork study shows AI agents excel with human partners but fail independently",
+          "enclosure": {
+            "url": "https://images.ctfassets.net/jdtwqhzvc2n1/1v1ddqAyA62qgnuh9O3ek5/6c2c87800376ecfd23a29d2c01c593e4/nuneybits_Robot_and_human_working_side_by_side_in_a_modern_offi_8b67c654-4d49-42c2-a291-5a9bb86c99db.webp?w=300&q=30",
+            "length": "0",
+            "type": "image/webp"
+          },
+          "imageUrl": "https://images.ctfassets.net/jdtwqhzvc2n1/1v1ddqAyA62qgnuh9O3ek5/6c2c87800376ecfd23a29d2c01c593e4/nuneybits_Robot_and_human_working_side_by_side_in_a_modern_offi_8b67c654-4d49-42c2-a291-5a9bb86c99db.webp?w=300&q=30"
+        },
+        {
           "id": "2xa9OSjO1OK4xuOEusNmr4",
           "author": "mmarshall@venturebeat.com (Matt Marshall)",
           "description": "LinkedIn is launching its new AI-powered people search this week, after what seems like a very long wait for what should have been a natural offering for generative AI.\nIt comes a full three years after the launch of ChatGPT and six months after LinkedIn launched its AI job search offering. For technical leaders, this timeline illustrates a key enterprise lesson: Deploying generative AI in real enterprise settings is challenging, especially at a scale of 1.3 billion users. It’s a slow, brutal process of pragmatic optimization.\nThe following account is based on several exclusive interviews with the LinkedIn product and engineering team behind the launch.\nFirst, here’s how the product works: A user can now type a natural language query like, \"Who is knowledgeable about curing cancer?\" into L…",
@@ -754,21 +769,6 @@
             "type": "image/jpg"
           },
           "imageUrl": "https://images.ctfassets.net/jdtwqhzvc2n1/UAYtncQWQ2a2g1rzWOCHR/19d3e60c8a6eef26b99a5a492491bbec/Adversarial_AI_training.jpg?w=300&q=30"
-        },
-        {
-          "id": "6bWeJEHLc3SxDi3JLO4J4K",
-          "author": "carl.franzen@venturebeat.com (Carl Franzen)",
-          "description": "Senior software developers are preparing for a major shift in how they work as artificial intelligence becomes central to their workflows, according to BairesDev’s latest Dev Barometer report published today. VentureBeat was given an exclusive early look and the findings below come directly from that report. \nThe quarterly global survey, which polled 501 developers and 19 project managers across 92 software initiatives, finds that nearly two-thirds (65%) of senior developers expect their roles to be redefined by AI in 2026. \nThe data highlights a transformation underway in software development: fewer routine coding tasks, more emphasis on design and strategy, and a rising need for AI fluency.\nFrom Coders to Strategists\nAmong those anticipating change, 74% say they expect to shift from hand…",
-          "link": "https://venturebeat.com/ai/only-9-of-developers-think-ai-code-can-be-used-without-human-oversight",
-          "publishedOn": "2025-11-11T19:43:00.000Z",
-          "wordCount": null,
-          "title": "Only 9% of developers think AI code can be used without human oversight, BairesDev survey reveals",
-          "enclosure": {
-            "url": "https://images.ctfassets.net/jdtwqhzvc2n1/5CiQuierRq34dYmuxJUNHb/a86df483038c29162f381f3fc96559f7/cfr0z3n_aerial_view_extended_view_of_hundreds_of_software_dev_51f077e9-5eef-4c86-bf4e-2dabd7ab231b_1.png?w=300&q=30",
-            "length": "0",
-            "type": "image/png"
-          },
-          "imageUrl": "https://images.ctfassets.net/jdtwqhzvc2n1/5CiQuierRq34dYmuxJUNHb/a86df483038c29162f381f3fc96559f7/cfr0z3n_aerial_view_extended_view_of_hundreds_of_software_dev_51f077e9-5eef-4c86-bf4e-2dabd7ab231b_1.png?w=300&q=30"
         }
       ]
     },
@@ -777,6 +777,26 @@
       "feedUrl": "https://www.technologyreview.com/feed/",
       "siteUrl": "https://www.technologyreview.com",
       "articles": [
+        {
+          "id": "https://www.technologyreview.com/?p=1127930",
+          "author": "Courtney Dobson",
+          "description": "President of Microsoft Research Peter Lee elaborates on the future of AI, uncovering emerging trends, hidden opportunities, and breakthrough innovations that are not yet visible to most.",
+          "link": "https://www.technologyreview.com/2025/11/13/1127930/whats-next-for-ai-2/",
+          "publishedOn": "2025-11-13T18:33:33.000Z",
+          "wordCount": 4475,
+          "title": "What’s Next for AI?",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.technologyreview.com/?p=1127914",
+          "author": "Will Douglas Heaven",
+          "description": "ChatGPT maker OpenAI has built an experimental large language model that is far easier to understand than typical models. That’s a big deal, because today’s LLMs are black boxes: Nobody fully understands how they do what they do. Building a model that is more transparent sheds light on how LLMs work in general, helping researchers…",
+          "link": "https://www.technologyreview.com/2025/11/13/1127914/openais-new-llm-exposes-the-secrets-of-how-ai-really-works/",
+          "publishedOn": "2025-11-13T18:00:00.000Z",
+          "wordCount": 6382,
+          "title": "OpenAI’s new LLM exposes the secrets of how AI really works",
+          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/11/box-view.jpg?resize=1200,600"
+        },
         {
           "id": "https://www.technologyreview.com/?p=1127921",
           "author": "Will Douglas Heaven",
@@ -856,26 +876,6 @@
           "wordCount": 7072,
           "title": "Reimagining cybersecurity in the era of AI and quantum",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/11/CISCO-iStock-2156608663.jpg?resize=1200,600"
-        },
-        {
-          "id": "https://www.technologyreview.com/?p=1127798",
-          "author": "Rhiannon Williams",
-          "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Why it’s so hard to bust the weather control conspiracy theory It was October 2024, and Hurricane Helene had just devastated the US Southeast. Representative Marjorie Taylor Greene of Georgia found an abstract…",
-          "link": "https://www.technologyreview.com/2025/11/10/1127798/the-download-busting-weather-myths-and-ai-heart-attack-prediction/",
-          "publishedOn": "2025-11-10T13:10:00.000Z",
-          "wordCount": 6392,
-          "title": "The Download: busting weather myths, and AI heart attack prediction",
-          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/10/6-Weather-Control-3a.jpg?resize=1200,600"
-        },
-        {
-          "id": "https://www.technologyreview.com/?p=1127765",
-          "author": "Rhiannon Williams",
-          "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. The first new subsea habitat in 40 years is about to launch Vanguard feels and smells like a new RV. It has long, gray banquettes that convert into bunks, a microwave cleverly hidden…",
-          "link": "https://www.technologyreview.com/2025/11/07/1127765/the-download-a-new-home-under-the-sea-and-cloning-pets/",
-          "publishedOn": "2025-11-07T13:10:00.000Z",
-          "wordCount": 6327,
-          "title": "The Download: a new home under the sea, and cloning pets",
-          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2025/11/CourtesyDEEP_Vanguard-external-render-with-divers.jpg?resize=1200,600"
         }
       ]
     },
@@ -885,12 +885,22 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "c89d1aea-4f97-4763-bc88-ca605b1f5bf9",
+          "author": "CD Analytics",
+          "description": "Technical breakdown occurred despite positive institutional developments as volume surged during selloff",
+          "link": "https://www.coindesk.com/markets/2025/11/13/chainlink-breaks-below-usd14-50-amid-broader-selloff-reserve-adds-74k-link-despite-losses",
+          "publishedOn": "2025-11-13T18:55:03.000Z",
+          "wordCount": 9418,
+          "title": "Chainlink Breaks Below $14.50 Amid Broader Selloff; Reserve Adds 74K LINK Despite Losses",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/32b4a7c56cf24375e3e7f1004dbe27f9e343337d-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
           "id": "a3ff6d74-5bac-4ccc-9972-5ef53e2e91e8",
           "author": "CD Analytics",
           "description": "XLM retreated to $0.281 as selling pressure intensified during afternoon trading, with volume surging amid failed resistance test.",
           "link": "https://www.coindesk.com/markets/2025/11/13/stellar-tumbles-below-key-usd0-285-support-as-bears-take-over",
           "publishedOn": "2025-11-13T17:21:25.000Z",
-          "wordCount": 9505,
+          "wordCount": 9507,
           "title": "Stellar Tumbles Below Key $0.285 Support as Bears Take Over",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4014697802447307c9e48ffe5f77706c8e71f466-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -900,7 +910,7 @@
           "description": "Crypto’s U.S. trading-hour weakness continues as hopes for a new 2025 BTC high fade, a market strategist said.",
           "link": "https://www.coindesk.com/markets/2025/11/13/bitcoin-slides-to-usd100k-crypto-stocks-eviscerated-as-liquidity-crunch-hammers-risk-markets",
           "publishedOn": "2025-11-13T17:15:02.000Z",
-          "wordCount": 9490,
+          "wordCount": 9535,
           "title": "Bitcoin Crumbles Below $100K, Crypto Stocks Eviscerated as Liquidity Crunch Hammers Risk Markets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f3041681085de98b07cbe44110607cc92ab4d9e3-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -910,7 +920,7 @@
           "description": "Hedera's native token retreats from $0.1817 to $0.1754 despite institutional accumulation.",
           "link": "https://www.coindesk.com/markets/2025/11/13/hbar-drops-3-5-breaking-support-as-etf-inflows-hit-usd68-million",
           "publishedOn": "2025-11-13T16:49:40.000Z",
-          "wordCount": 9281,
+          "wordCount": 9326,
           "title": "HBAR Drops 3.5% Breaking Support as ETF Inflows Hit $68 Million",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/98b7909a8d5768b1a3fe5775c8280a7900aed93d-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -920,7 +930,7 @@
           "description": "Internet Computer trades within a narrow range after an early-volume breakout attempt stalled, keeping the token pinned between key support at $6.05 and $6.66.",
           "link": "https://www.coindesk.com/markets/2025/11/13/icp-advances-as-consolidation-holds-below-usd6-66-resistance-price",
           "publishedOn": "2025-11-13T16:40:06.000Z",
-          "wordCount": 9306,
+          "wordCount": 9295,
           "title": "ICP Advances as Consolidation Holds Below $6.66 Resistance Price",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/91757ab6503b8e3f9e745227cb7f8c7d5f5b4f8f-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -930,7 +940,7 @@
           "description": "The Solana-centric company is joining a growing list of crypto treasury companies opting to buy back shares as investor appetite for DATs vane.",
           "link": "https://www.coindesk.com/business/2025/11/13/solana-focused-upexi-approves-usd50m-share-buyback-as-digital-asset-treasuries-turn-to-repurchases",
           "publishedOn": "2025-11-13T16:31:22.000Z",
-          "wordCount": 9060,
+          "wordCount": 9079,
           "title": "Solana-Focused Upexi Approves $50M Share Buyback as Digital Asset Treasuries Turn to Repurchases",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8d0108fd9dd12c13003429c818abb5ab23cd1dc1-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -940,7 +950,7 @@
           "description": "The new proposal, which 59.38% of the community approved, charts a course to raise the buy-back allocation up from 25% of net protocol fees.",
           "link": "https://www.coindesk.com/tech/2025/11/13/dydx-governance-approves-buyback-increase-to-75-of-protocol-revenue",
           "publishedOn": "2025-11-13T16:22:47.000Z",
-          "wordCount": 9401,
+          "wordCount": 9354,
           "title": "dYdX Governance Approves Buyback Increase to 75% of Protocol Revenue",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/eb34fa094c451e7e607476ea64d7a4ec3cd2d455-1500x1000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -950,7 +960,7 @@
           "description": "The managers of the Georgia university's endowment are showing an inclination towards hard assets, opening a sizable position in a gold ETF as well.",
           "link": "https://www.coindesk.com/markets/2025/11/13/emory-doubles-down-on-bitcoin-with-usd52m-grayscale-bet",
           "publishedOn": "2025-11-13T16:21:41.000Z",
-          "wordCount": 9372,
+          "wordCount": 9301,
           "title": "Emory University Doubles Down on Bitcoin With $52M Grayscale BTC ETF Stake",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6b77a58d45da8cb9f1e38134bdea94665769a14e-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -960,7 +970,7 @@
           "description": "BONK dropped 3.9% to $0.00001223 as volume nearly doubled amid a breakdown through key support levels.",
           "link": "https://www.coindesk.com/markets/2025/11/13/bonk-falls-3-9-to-usd0-00001223-as-memecoin-slips-below-support",
           "publishedOn": "2025-11-13T16:07:20.000Z",
-          "wordCount": 9242,
+          "wordCount": 9283,
           "title": "BONK Falls 3.9%, Sliding Below Support",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b96fcfe360b33e4ed34134f529955dc522ce2224-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -970,7 +980,7 @@
           "description": "Evaluating crypto treasury companies: Are they hype or real value? Learn the key risks—premium, leverage, and regulation—advisors must consider for clients.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/11/12/crypto-for-advisors-digital-asset-treasuries",
           "publishedOn": "2025-11-13T16:00:00.000Z",
-          "wordCount": 10753,
+          "wordCount": 10771,
           "title": "Crypto for Advisors: Digital Asset Treasuries",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4fc82af41ef1603634aef19e553d6c1d453fca6b-2400x1260.png"
         },
@@ -980,7 +990,7 @@
           "description": "Dromos Labs announced a major overhaul of its decentralized exchange infrastructure with the launch of Aero, a unified trading system that will merge its existing platforms across its networks.",
           "link": "https://www.coindesk.com/tech/2025/11/13/leading-base-dex-aerodrome-merges-into-aero-in-major-overhaul",
           "publishedOn": "2025-11-13T15:25:56.000Z",
-          "wordCount": 9586,
+          "wordCount": 9600,
           "title": "Leading Base DEX Aerodrome Merges Into Aero in Major Overhaul",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3887885e1e1b81b22905cd52e3da0c057a78d118-1500x1009.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -990,7 +1000,7 @@
           "description": "The token is now rangebound, attempting to stabilize around $950, but analysts see a head-and-shoulders pattern forming, potentially indicating downside ahead.",
           "link": "https://www.coindesk.com/markets/2025/11/13/bnb-slips-below-usd960-as-traders-brace-for-more-downside-over-technical-headwinds",
           "publishedOn": "2025-11-13T15:14:07.000Z",
-          "wordCount": 9562,
+          "wordCount": 9567,
           "title": "BNB Slips Below $960 as Traders Brace for More Downside Over Technical Headwinds",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f085d1378809c829dd7d30480b59753badd28b79-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1000,7 +1010,7 @@
           "description": "The bank aims to provide a key piece of infrastructure for stablecoin issuers to back the value of their tokens, similarly to BlackRock's Circle Reserve Fund for USDC.",
           "link": "https://www.coindesk.com/business/2025/11/13/bny-eyes-usd1-5t-stablecoin-market-with-new-reserve-fund-for-issuers",
           "publishedOn": "2025-11-13T15:08:14.000Z",
-          "wordCount": 9509,
+          "wordCount": 9527,
           "title": "BNY Eyes $1.5T Stablecoin Market With New Reserve Fund for Issuers",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/7bad988358e206684ff027838e11c77822a4776b-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1010,7 +1020,7 @@
           "description": "Self raised $9 million to expand its zero-knowledge identity platform and introduced a rewards program aimed at driving on-chain verification adoption.",
           "link": "https://www.coindesk.com/business/2025/11/13/zero-knowledge-identity-startup-self-raises-usd9m-introduces-points-program",
           "publishedOn": "2025-11-13T15:00:00.000Z",
-          "wordCount": 9155,
+          "wordCount": 9172,
           "title": "Zero-Knowledge Identity Startup Self Raises $9M, Introduces Points Program",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2bb99ef791db1603a7268017479b6182f3952bc2-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1020,7 +1030,7 @@
           "description": "The Monetary Authority of Singapore sees a wholesale CBDC as an anchor for a system in which private settlement assets are used for different market needs.",
           "link": "https://www.coindesk.com/policy/2025/11/13/singapore-s-central-bank-to-trial-tokenized-bills-introduce-stablecoin-laws",
           "publishedOn": "2025-11-13T14:48:57.000Z",
-          "wordCount": 9268,
+          "wordCount": 9286,
           "title": "Singapore's Central Bank to Trial Tokenized Bills, Introduce Stablecoin Laws",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/477076ed6674e9cc4c54beb4412229ed736edd74-1920x1080.jpg?auto=format"
         },
@@ -1030,7 +1040,7 @@
           "description": "XRP is the latest token to be wrapped in a spot exchange-traded fund after the introduction of bitcoin and ether funds 2024 and solana just weeks ago.",
           "link": "https://www.coindesk.com/markets/2025/11/13/first-xrp-spot-etf-opens-for-trade-with-canary-capital-s-xrpc",
           "publishedOn": "2025-11-13T14:29:58.000Z",
-          "wordCount": 9216,
+          "wordCount": 9271,
           "title": "First XRP Spot ETF Opens for Trade With Canary Capital's XRPC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3aeb241d7a5ee9bbb59e031bf2bad2f8c6d84153-1440x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1040,7 +1050,7 @@
           "description": "Uniswap (UNI) was also among the top performers, up 4.1% from Wednesday.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/11/13/coindesk-20-performance-update-ripple-xrp-gains-5-1-as-nearly-all-assets-rise",
           "publishedOn": "2025-11-13T14:29:00.000Z",
-          "wordCount": 8388,
+          "wordCount": 8406,
           "title": "CoinDesk 20 Performance Update: Ripple (XRP) Gains 5.1% As Nearly All Assets Rise",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/59be3b9f9d9eaf87dbfb47ec177a647246f7dcd7-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1050,7 +1060,7 @@
           "description": "The crypto asset manager submitted an S-1 to the SEC for a proposed stock offering as industry players accelerate moves into U.S. public markets.",
           "link": "https://www.coindesk.com/business/2025/11/13/crypto-asset-manager-grayscale-files-for-ipo-in-the-u-s",
           "publishedOn": "2025-11-13T14:12:53.000Z",
-          "wordCount": 9643,
+          "wordCount": 9661,
           "title": "Crypto Asset Manager Grayscale Files for IPO in the U.S.",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/55b8c81ab67a33ed73ad572ee83f518779b033f4-1920x1080.jpg?auto=format"
         },
@@ -1060,7 +1070,7 @@
           "description": "The move comes as RISE’s acquired BSX Labs, a perp DEX on layer-2 Base, whose technology will underpin RISE’s new global markets offering.",
           "link": "https://www.coindesk.com/tech/2025/11/12/ethereum-layer-2-rise-unveils-risex-and-marketcore-to-build-global-on-chain-markets",
           "publishedOn": "2025-11-13T14:00:00.000Z",
-          "wordCount": 9596,
+          "wordCount": 9613,
           "title": "Ethereum Layer-2 RISE Unveils RISEx and MarketCore to Build Global On-Chain Markets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a152d13ba69e6b84d53b3d8197d25b8a6ab96f9a-1920x1080.jpg?auto=format"
         },
@@ -1070,7 +1080,7 @@
           "description": "The USDC issuer's new stablecoin foreign exchange engine aims to modernize cross-border payments, reduce risk and streamline settlement.",
           "link": "https://www.coindesk.com/business/2025/11/13/circle-unveils-stablefx-to-power-onchain-currency-trading-on-upcoming-arc-blockchain",
           "publishedOn": "2025-11-13T14:00:00.000Z",
-          "wordCount": 9267,
+          "wordCount": 9284,
           "title": "Circle Unveils StableFX to Power Onchain Currency Trading on Upcoming Arc Blockchain",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/40f3d2443e813c75329c2b8f0cd0f24bae10c28a-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1080,7 +1090,7 @@
           "description": "TKO inks multi-year pact with Polymarket, bringing real-time sentiment tracking to UFC and Zuffa Boxing broadcasts.",
           "link": "https://www.coindesk.com/markets/2025/11/13/ufc-to-debut-fan-prediction-scoreboard-in-polymarket-deal",
           "publishedOn": "2025-11-13T13:46:10.000Z",
-          "wordCount": 9333,
+          "wordCount": 9387,
           "title": "UFC to Debut Fan Prediction Scoreboard in Polymarket Deal",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e05520343bee6765628771d070ca9e4f6bdff34e-4032x3024.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1090,7 +1100,7 @@
           "description": "The bank said it created a $1 million \"test portfolio\" of digital assets, mostly made up of bitcoin.",
           "link": "https://www.coindesk.com/business/2025/11/13/czech-central-bank-becomes-first-central-bank-to-buy-bitcoin",
           "publishedOn": "2025-11-13T13:05:01.000Z",
-          "wordCount": 8993,
+          "wordCount": 9011,
           "title": "Czech Central Bank Becomes First Central Bank to Buy Bitcoin",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/64bca2faae8437d51382718bd5f8c1a379f2fc0d-1920x1280.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1100,7 +1110,7 @@
           "description": "Odds of a Federal Reserve rate cut in December have fallen to about 52%, indicating increased investor uncertainty.",
           "link": "https://www.coindesk.com/markets/2025/11/13/december-fed-rate-cut-a-toss-up",
           "publishedOn": "2025-11-13T12:28:52.000Z",
-          "wordCount": 8934,
+          "wordCount": 8976,
           "title": "December Fed Rate Cut: A Toss-Up",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/afb72db5244609c27e04ac1bb3950f260319c35e-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1110,7 +1120,7 @@
           "description": "Your day-ahead look for Nov. 13, 2025",
           "link": "https://www.coindesk.com/daybook-us/2025/11/13/solana-in-the-shade-crypto-daybook-americas",
           "publishedOn": "2025-11-13T12:15:00.000Z",
-          "wordCount": 11237,
+          "wordCount": 11255,
           "title": "Solana in the Shade: Crypto Daybook Americas",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6cac96a341727e63f5877c5760947c872cabeb2f-1920x1080.jpg?auto=format"
         },
@@ -1120,19 +1130,9 @@
           "description": "Bitcoin and ether steadied on Thursday while altcoins faced sharper pullbacks, with AERO, STRK and FET leading declines as market sentiment remained firmly in “fear” territory.",
           "link": "https://www.coindesk.com/markets/2025/11/13/crypto-markets-today-bitcoin-holds-usd103k-altcoins-consolidate-on-fearful-sentiment",
           "publishedOn": "2025-11-13T11:30:00.000Z",
-          "wordCount": 10156,
+          "wordCount": 10227,
           "title": "Crypto Markets Today: Bitcoin Holds $103K, Altcoins Consolidate on 'Fearful' Sentiment",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e5ee0cab885c65a9a22ba8ac8a2bf5b924b8dbf6-1920x1080.jpg?auto=format"
-        },
-        {
-          "id": "04a9cc03-4ed6-4f76-b1ab-367fadcfb6d0",
-          "author": "Jamie Crawley",
-          "description": "Cathie Wood's investment firm added a total 353,328 CRCL shares across three of its ETFs: Innovation (ARKK), Next Generation Internet (ARKW) and Fintech Innovation (ARKF).",
-          "link": "https://www.coindesk.com/markets/2025/11/13/ark-invest-buys-usd30-5m-circle-shares-as-stock-falls-12",
-          "publishedOn": "2025-11-13T10:21:50.000Z",
-          "wordCount": 8994,
-          "title": "Ark Invest Buys $30.5M Circle Shares as Stock Falls 12%",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/340ef5bf4733bac7b1687aef57e5cadf230e5155-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
       ]
     },
