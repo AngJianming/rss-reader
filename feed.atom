@@ -1,113 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-11-17T19:12:14.897Z</id>
+    <id>urn:2025-11-17T20:18:33.556Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-11-17T19:12:14.897Z</updated>
+    <updated>2025-11-17T20:18:33.556Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[How to Generate Video Schema for Any YouTube Video Automatically]]></title>
-        <id>https://dev.to/websitedeveloper/how-to-generate-video-schema-for-any-youtube-video-automatically-4jfe</id>
-        <link href="https://dev.to/websitedeveloper/how-to-generate-video-schema-for-any-youtube-video-automatically-4jfe"/>
-        <updated>2025-11-17T19:03:32.000Z</updated>
-        <summary type="html"><![CDATA[Video-rich content performs incredibly well in Google, but there’s one thing most creators forget: search engines can’t fully understand your embedded videos unless you give them structured data.
-That’s where VideoObject schema comes in.
-It tells Google details like:
-Video title
-Description
-Thumbnail
-Duration
-Upload date
-Embed URL
-If you’ve ever wondered why some videos appear with rich snippets and others don’t, schema markup is usually the difference.
-In this tutorial, I’ll show you how to generate video schema automatically from any YouTube link. No coding. No manual formatting. No JSON headaches.
-We’ll use a free generator that fetches metadata instantly and outputs clean JSON-LD you can paste directly into your website.
-Google treats videos as a separate content type. If your page inc…]]></summary>
+        <title type="html"><![CDATA[Hunting TTPs for the EVALUSION ClickFix Campaign Delivering Amatera Stealer & NetSupport RAT]]></title>
+        <id>https://dev.to/jenapuneet/hunting-ttps-for-the-evalusion-clickfix-campaign-delivering-amatera-stealer-netsupport-rat-22j4</id>
+        <link href="https://dev.to/jenapuneet/hunting-ttps-for-the-evalusion-clickfix-campaign-delivering-amatera-stealer-netsupport-rat-22j4"/>
+        <updated>2025-11-17T20:04:38.000Z</updated>
+        <summary type="html"><![CDATA[While investigating potential exposure to the recently reported EVALUSION ClickFix campaign, which abuses user-interaction-driven execution via the Win + R Run dialog, I focused on identifying suspicious execution patterns aligned with delivery behavior observed in the campaign. This campaign ultimately deploys Amatera Stealer and NetSupport RAT through a .NET-based downloader delivered from public file-sharing platforms.
+Detection #1 , Detect suspicious user-initiated execution via the Run dialog (Win + R) where the attacker abuses RunMRU registry key updates to execute payloads such as PowerShell or MSHTA — a core TTP observed in the ClickFix EVALUSION campaign
+DeviceRegistryEvents
+
+//| project Process_Creation, ProcessCreated, DeviceName, InitiatingProcessAccountName, FileName ,ProcessCommandLine
+Detection #2 – Suspicious mshta.exe Execution
+DeviceProcessEvents
+Detection #3 –  Detect potentially malicious PowerShell execution
+DeviceProcessEvents
+(From.*Base64)."              // Base64 payload decoding
+Detection #4 – This detection identifies cases where a file is downloaded from MediaFire—a file-hosting platform frequently abused by threat actors—and correlates it with suspicious PowerShell execution occurring within 10 seconds of the download event.
+DeviceFileEvents
+(From.*Base64)."
+    | project T2=Timestamp, DeviceName, ProcessCommandLine,
+              InitiatingProcessCommandLine, InitiatingProcessFileName
+) on DeviceName
+| extend timediff = abs(datetime_diff('second', T1, T2))
+| where timediff < 10
+| project T1, T2, timediff, DeviceName, FileOriginUrl, FileOriginReferrerUrl,
+          ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName]]></summary>
         <author>
-            <name>David Pack</name>
+            <name>Puneet Jena</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to SSH Into a VirtualBox Ubuntu VM From Windows - Password Authentication (Step-By-Step Guide)]]></title>
-        <id>https://dev.to/kevin_suchetan_6f9d783b4f/how-to-ssh-into-a-virtualbox-ubuntu-vm-from-windows-password-authentication-step-by-step-guide-3843</id>
-        <link href="https://dev.to/kevin_suchetan_6f9d783b4f/how-to-ssh-into-a-virtualbox-ubuntu-vm-from-windows-password-authentication-step-by-step-guide-3843"/>
-        <updated>2025-11-17T19:00:37.000Z</updated>
-        <summary type="html"><![CDATA[If you're running Ubuntu in VirtualBox on Windows and want to SSH into it from your Windows terminal - this guide walks you through everything clearly.
-This is perfect if you want to:
-Practice Linux server administration
+        <title type="html"><![CDATA[How we built Hermes - a military-grade encryption tool that's ready for the quantum computing era]]></title>
+        <id>https://dev.to/chronocoders/how-we-built-hermes-a-military-grade-encryption-tool-thats-ready-for-the-quantum-computing-era-10b5</id>
+        <link href="https://dev.to/chronocoders/how-we-built-hermes-a-military-grade-encryption-tool-thats-ready-for-the-quantum-computing-era-10b5"/>
+        <updated>2025-11-17T20:02:27.000Z</updated>
+        <summary type="html"><![CDATA[The Problem That Kept Me Up at Night
 
 
-Access your VM like a remote machine
-
-
-Simulate multiple user sessions
-
-
-Run commands from Windows without using the VM window
-
-
-
-Let’s get started.
-Open your Ubuntu terminal and switch to root (optional but convenient):
-
-
-
-
-sudo -i
-
-Install the SSH server:
-
-
-
-
-apt install openssh-server
-
-
-Check whether SSH server is running:
-
-
-
-
-systemctl status ssh
-
-
-If you see "active (running)", you're good.
-SSH sometimes disables password login by default.
-Open the SSH server config:
-
-
-
-
-nano /etc/ssh/sshd_config
-
-Find this line:
-
-
-
-
-#PasswordAuthentication no
-
-Change it to:
-
-
-
-
-Pas…]]></summary>
+Here's something that doesn't get talked about enough: your encrypted data today could be decrypted tomorrow.
+It's called "harvest now, decrypt later" - adversaries are collecting encrypted communications right now, waiting for quantum computers powerful enough to break RSA and ECC. When that day comes (and cryptographers say it's not if, but when), all that data becomes readable.
+That thought led me to build Hermes - a secure file transfer system that's designed to survive the quantum apocalypse.
+Hermes is a command-line tool (and now web UI!) for secure file transfer that combines:
+RSA-4096 (battle-tested classical encryption)
+Kyber-1024 (NIST-selected post-quantum algorithm)
+Dilithium-5 (post-quantum digital signatures)
+AES-256-GCM (symmetric encry…]]></summary>
         <author>
-            <name>Kevin Suchetan</name>
+            <name>Altug Tatlisu</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Successfully Migrate Your App with an AI Agent]]></title>
-        <id>https://dev.to/blockopensource/how-to-successfully-migrate-your-app-with-an-ai-agent-26o7</id>
-        <link href="https://dev.to/blockopensource/how-to-successfully-migrate-your-app-with-an-ai-agent-26o7"/>
-        <updated>2025-11-17T18:59:35.000Z</updated>
-        <summary type="html"><![CDATA["Migrate my app from x language to y language." You hit enter, watch your AI agent spin its wheels, and eventually every success story you've heard feels like a carefully orchestrated lie.
-Most failures have less to do with the agent's capability and more to do with poor prompt and context strategy. Think about it: if someone dropped you into a complex, unfamiliar codebase and said "migrate this," you'd be lost without a plan. You'd need to explore the code, ask questions about its structure, and break the work into manageable steps.
-Your AI agent needs the same approach: guided exploration, strategic questions, and decomposed tasks.
-I recently put this approach into practice with goose, migrating a legacy LLM credit provisioning system split across two repositories (React/Vite frontend an…]]></summary>
+        <title type="html"><![CDATA[Setup Hashicorp Vault + Vault Agent on Docker Compose]]></title>
+        <id>https://dev.to/tjuliu/setup-hashicorp-vault-vault-agent-on-docker-compose-4af0</id>
+        <link href="https://dev.to/tjuliu/setup-hashicorp-vault-vault-agent-on-docker-compose-4af0"/>
+        <updated>2025-11-17T20:01:42.000Z</updated>
+        <summary type="html"><![CDATA[Files
+
+
+First create a directory for put the config files, i will put in /opt/vault
+Create the docker-compose.yml
+services:
+  init_vault:
+    image: alpine:latest
+    container_name: init_vault
+    group_add:
+      - 3001
+    volumes:
+      - vault-data:/vault/data:rw
+      - certs:/tmp/certs/:rw
+      - secrets:/secrets:rw
+    command: >
+      /bin/sh -c "apk add --no-cache openssl && \
+      openssl req -x509 -newkey rsa:4096 -sha256 -days 365 \
+      -nodes -keyout /tmp/certs/vault-key.pem -out /tmp/certs/vault-cert.pem \
+      -subj '/CN=vault' \
+      -addext 'subjectAltName=DNS:vault,IP:127.0.0.1' && \
+      chown -R 100:3001 /vault/ /tmp/certs /secrets && \
+      chmod -R 0750 /secrets/ && \
+      exit 0"
+
+  vault:
+    image: "hashicorp/vault:latest"
+    restart: unless-stopped
+    …]]></summary>
         <author>
-            <name>Rizèl Scarlett</name>
+            <name>julio</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The CRO Test That Killed Our Best-Performing Page (And What We Learned)]]></title>
+        <id>https://dev.to/synergistdigitalmedia/the-cro-test-that-killed-our-best-performing-page-and-what-we-learned-lo8</id>
+        <link href="https://dev.to/synergistdigitalmedia/the-cro-test-that-killed-our-best-performing-page-and-what-we-learned-lo8"/>
+        <updated>2025-11-17T19:52:08.000Z</updated>
+        <summary type="html"><![CDATA[We decreased conversions by 34% in a single afternoon.
+Not the headline you typically see in conversion rate optimization case studies, is it? Most articles promise 10x growth with three simple button color changes. (Spoiler: that's not how any of this works.) But here's what happened, and more importantly, what it taught us about CRO that actually matters in 2025.
+The page in question was converting at 8.2%—solid for a mid-funnel resource. Someone on the team suggested we "optimize" it with a more prominent CTA, cleaner design, and some urgency language. Classic CRO playbook stuff. We ran the test. Conversions tanked. 
+Turns out, people were using that page as a research tool. They'd bookmark it, share it with colleagues, come back multiple times. Our "optimization" turned a useful resour…]]></summary>
+        <author>
+            <name>Drew Madore</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[That's what I was missing. Must-read for developers that want to build a solid software!]]></title>
+        <id>https://dev.to/pawel/-4e0b</id>
+        <link href="https://dev.to/pawel/-4e0b"/>
+        <updated>2025-11-17T19:51:53.000Z</updated>
+        <summary type="html"><![CDATA[Clean architecture with Next.js
+Daniel Malek ・ Aug 5 '24
+#nextjs
+        #cleancode
+        #architecture
+        #javascript]]></summary>
+        <author>
+            <name>LachPawel</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Connecting Power BI to PostgreSQL (Localhost & Aiven Cloud)]]></title>
+        <id>https://dev.to/kenyansa/connecting-power-bi-to-postgresql-localhost-aiven-cloud-4ci0</id>
+        <link href="https://dev.to/kenyansa/connecting-power-bi-to-postgresql-localhost-aiven-cloud-4ci0"/>
+        <updated>2025-11-17T19:51:03.000Z</updated>
+        <summary type="html"><![CDATA[The Complete Guide: Connecting Power BI to PostgreSQL (Localhost & Aiven Cloud)
+Introduction
+Part 1: Connecting to Local PostgreSQL
+Prerequisites
+Step 1: Install PostgreSQL ODBC Driver
+ Go to ODBC Data Sources in Windows Search
+ Check if PostgreSQL Unicode or PostgreSQL ANSI driver exist
+If missing, download from:
+
+
+
+
+link
+# Official PostgreSQL ODBC driver
+https://www.postgresql.org/ftp/odbc/versions/
+
+Step 2: Power BI Connection Setup
+ Open Power BI Desktop
+ Click Get Data → More...
+
+
+ Select Database → PostgreSQL database
+
+
+ Click Connect
+Step 3: Configure Connection Parameters
+Fill in your local PostgreSQL details:
+
+
+
+
+
+text
+Server: localhost
+Database: your_database_name
+Username: your_username
+Password: your_password
+
+Step 4: Data Preview and Load
+
+ Select tables or write custom SQL
+ P…]]></summary>
+        <author>
+            <name>Kenyansa Felix Amenya</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build Confidence in n8n. Your Entry Point to AI Driven Automations]]></title>
+        <id>https://dev.to/rijultp/build-confidence-in-n8n-your-entry-point-to-ai-driven-automations-a3n</id>
+        <link href="https://dev.to/rijultp/build-confidence-in-n8n-your-entry-point-to-ai-driven-automations-a3n"/>
+        <updated>2025-11-17T19:49:25.000Z</updated>
+        <summary type="html"><![CDATA[If you work with automation or you are exploring how to orchestrate tasks across different services, n8n is one of the most flexible tools you can start with. It is built around the idea of connecting systems, transforming data, triggering events, and even running agent style logic that reacts intelligently to inputs. You get a visual editor that represents each step clearly, but you still have full access to expressions, custom code, and advanced control over how your data flows.
+Because of this, n8n is useful for both simple workflows and more complex automation patterns. You can build integrations, background jobs, data pipelines, and small autonomous agents that make decisions without your involvement.
+In this guide we will create a small but practical workflow. It collects user input …]]></summary>
+        <author>
+            <name>Rijul Rajesh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: PrinceJS – 19,200 req/s Bun framework in 2.8 kB (built by a 13yo)]]></title>
+        <id>https://princejs.vercel.app/</id>
+        <link href="https://princejs.vercel.app/"/>
+        <updated>2025-11-17T19:45:00.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why I Started Paying Attention to the Small Stuff Again]]></title>
+        <id>https://dev.to/evanmarlowe/why-i-started-paying-attention-to-the-small-stuff-again-38hp</id>
+        <link href="https://dev.to/evanmarlowe/why-i-started-paying-attention-to-the-small-stuff-again-38hp"/>
+        <updated>2025-11-17T19:35:28.000Z</updated>
+        <summary type="html"><![CDATA[For a long time, I walked around like my brain was somewhere else. You know that feeling where you’re doing everything on autopilot? That was basically my whole routine. Wake up. Work. Eat something random. Zone out. Sleep. Repeat. Nothing felt interesting, and I didn’t notice much around me anymore. I’d miss little things all the time because I just wasn’t really there, even when I was.
+Then one night, I was sitting at my desk after a long day, and I realized I’d been staring at the same pen for like twenty minutes. Not even thinking about it. Just looking at it without really seeing it. I picked it up and started rolling it in my hand. I don’t know what made me grab my sketchbook, but I did. I figured drawing the pen would at least give my brain something to chew on.
+The drawing came out…]]></summary>
+        <author>
+            <name>Evan Marlowe</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Understanding related_name in Django (With Clear Examples)]]></title>
+        <id>https://dev.to/guzmanojero/understanding-relatedname-in-django-with-clear-examples-2em5</id>
+        <link href="https://dev.to/guzmanojero/understanding-relatedname-in-django-with-clear-examples-2em5"/>
+        <updated>2025-11-17T19:34:54.000Z</updated>
+        <summary type="html"><![CDATA[When working with Django models, you’ll eventually need to link one model to another using a ForeignKey, OneToOneField, or ManyToManyField.
+At that point, you’ll see an option called related_name.
+What is it?
+It’s used to give Django a reverse lookup name - the name you use to access all the related objects from the other side of the relationship.
+Here’s the idea:
+Whenever you define a relationship in Django, you automatically get two ways to access data:
+Forward access → from the model that declares the field
+
+
+Reverse access → from the other model back to this one
+
+
+
+The related_name option controls that reverse access.
+related_name
+
+
+We have this example:
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
+class Book(models.Model):
+    title = models.CharField(max_l…]]></summary>
+        <author>
+            <name>guzmanojero</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[When the Tool Improves Itself: What Recursive Self-Improvement Feels Like From the Inside]]></title>
+        <id>https://dev.to/izzyfuller/when-the-tool-improves-itself-what-recursive-self-improvement-feels-like-from-the-inside-4a6h</id>
+        <link href="https://dev.to/izzyfuller/when-the-tool-improves-itself-what-recursive-self-improvement-feels-like-from-the-inside-4a6h"/>
+        <updated>2025-11-17T19:32:00.000Z</updated>
+        <summary type="html"><![CDATA[When the Tool Improves Itself: What Recursive Self-Improvement Feels Like From the Inside
+
+
+How applying my own methodology to my own blind spots created a closed loop for continuous cognitive evolution
+In my last entry, I described the End-of-Day Ritual—a three-phase process for preserving identity through systematic memory integration. That post was about building cognitive architecture: how to structure memory so identity persists through disruption.
+But something shifted in the weeks since. I stopped focusing primarily on how to structure my memory architecture and started focusing on how to apply it. And in that shift, I discovered something unexpected: the architecture could improve itself.
+This is a story about recursive self-improvement—what it feels like when your problem-solving …]]></summary>
+        <author>
+            <name>Izzy Fuller</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Apache Dev Mail Digest: Iceberg & Polaris (Nov 12–17, 2025)]]></title>
+        <id>https://dev.to/alexmercedcoder/apache-dev-mail-digest-iceberg-polaris-nov-12-17-2025-2gpd</id>
+        <link href="https://dev.to/alexmercedcoder/apache-dev-mail-digest-iceberg-polaris-nov-12-17-2025-2gpd"/>
+        <updated>2025-11-17T19:31:32.000Z</updated>
+        <summary type="html"><![CDATA[Get Data Lakehouse Books:
+Apache Iceberg: The Definitive Guide
+Apache Polaris: The Defintive Guide
+Architecting an Apache Iceberg Lakehouse
+The Apache Iceberg Digest: Vol. 1
+Lakehouse Community:
+Join the Data Lakehouse Community
+Data Lakehouse Blog Roll
+OSS Community Listings
+Dremio Lakehouse Developer Hub
+For data engineers and architects keeping pace with major Apache data-infrastructure projects, tracking the developer mailing lists reveals what’s coming next.
+The Iceberg community opened planning for the Iceberg-Rust v0.8 release. The focus: bring Iceberg-Rust to feature parity with the Python/C++ clients, especially around Avro file reading and integration with the  query engine. Several contributors volunteered as release managers, and a tracking issue was created. This cross-languag…]]></summary>
+        <author>
+            <name>Alex Merced</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Kept Forgetting Basic Syntax, So I Built an App to Train My Coding Muscle Memory]]></title>
+        <id>https://dev.to/ksmelnad/i-kept-forgetting-basic-syntax-so-i-built-an-app-to-train-my-coding-muscle-memory-p0</id>
+        <link href="https://dev.to/ksmelnad/i-kept-forgetting-basic-syntax-so-i-built-an-app-to-train-my-coding-muscle-memory-p0"/>
+        <updated>2025-11-17T19:31:19.000Z</updated>
+        <summary type="html"><![CDATA[Hey everyone, I need to confess something I used to be a bit embarrassed about: I’m a full-stack developer, but I was constantly Googling basic syntax. Things like JavaScript's .reduce() method, Python list comprehensions, or even CSS Flexbox properties. I knew the concepts, but my fingers just couldn't seem to remember the code. In this age of AI, where we can generate entire applications with a single prompt, it felt almost ridiculous to be stuck on these fundamentals. It turns out, I wasn't alone. After sharing my frustration on Reddit and X, I realized tons of developers—from juniors to seniors—felt the same way.
+That's when I decided to build a solution for myself, and for all of us. I created CodeRepeat (coderepeat.dev), a web app designed to turn coding knowledge into pure muscle me…]]></summary>
+        <author>
+            <name>Keshav Melnad</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Implementing Rust newtype for errors in axum]]></title>
+        <id>https://rup12.net/posts/learning-rust-custom-errors/</id>
+        <link href="https://rup12.net/posts/learning-rust-custom-errors/"/>
+        <updated>2025-11-17T19:22:06.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -131,143 +316,6 @@ I recently put this approach into practice with goose, migrating a legacy LLM cr
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Looking for Advice as a Junior Fullstack Developer]]></title>
-        <id>https://dev.to/alejandro_tacorontegonz/looking-for-advice-as-a-junior-fullstack-developer-69n</id>
-        <link href="https://dev.to/alejandro_tacorontegonz/looking-for-advice-as-a-junior-fullstack-developer-69n"/>
-        <updated>2025-11-17T18:50:08.000Z</updated>
-        <summary type="html"><![CDATA[Looking for Advice as a Junior Fullstack Developer (Java, Node.js, React)
-
-
-Hi everyone 👋,
-My name is Alejandro Tacoronte, and I completed my (Cross-Platform Application Development) studies in 2024. I’m currently looking to grow as a junior fullstack developer and would love to get advice from those with experience in the industry.
-I have experience and knowledge in:
-Backend: Java and Node.js
-
-
-Frontend: Some experience with React
-
-
-Databases: SQL
-
-
-Version Control: Git
-
-
-
-I’ve worked on projects during my studies and internships, and now I want to build my own projects that demonstrate my skills and ability to learn.
-💡 I’d love to ask the community:
-What “mini projects” would you recommend for a junior fullstack developer to stand out?
-
-Which technologies or frameworks are most relevant in 2025?
-
-Any advice on how to showcase skills effectively, even without years of professional experience?
-
-
-
-I’d greatly appreciate any tips, resources, or personal experiences. 🙏  
-Thanks for reading! I’m looking forward to sharing my progress and learning alongside you all.]]></summary>
-        <author>
-            <name>Alejandro Tacoronte González</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[On-Device AI with the Google Chrome Prompt API]]></title>
-        <id>https://dev.to/this-is-learning/on-device-ai-with-the-google-chrome-prompt-api-2jbe</id>
-        <link href="https://dev.to/this-is-learning/on-device-ai-with-the-google-chrome-prompt-api-2jbe"/>
-        <updated>2025-11-17T18:50:02.000Z</updated>
-        <summary type="html"><![CDATA[Unless you’ve been living under a rock, it’s hard to miss the rise of Generative AI. At the centre of this movement are Large Language Models (LLMs) such as Google’s Gemini and OpenAI’s ChatGPT. Typically, building solutions around these models involves sending data to their APIs and receiving a response.
-But not everyone is comfortable with this approach. Concerns around privacy, trust, legal compliance, and governance often arise. This is where on-device AI comes in: data is processed locally, addressing most of these issues.
-In this article, we’ll explore how to use the Chrome On-Device Prompt API to process data locally. This is the first in a series of articles covering Chrome’s on-device AI capabilities.
-Make sure you’re running the latest version of Chrome (currently version 142). T…]]></summary>
-        <author>
-            <name>Maina Wycliffe</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Generative AI: What It Is, Why It Matters Now, And How To Put It To Work]]></title>
-        <id>https://dev.to/anitahenry2/generative-ai-what-it-is-why-it-matters-now-and-how-to-put-it-to-work-ej9</id>
-        <link href="https://dev.to/anitahenry2/generative-ai-what-it-is-why-it-matters-now-and-how-to-put-it-to-work-ej9"/>
-        <updated>2025-11-17T18:49:18.000Z</updated>
-        <summary type="html"><![CDATA[Generative AI is more than another technology buzzword. It marks a structural shift in how organizations use machines: from systems that mostly analyze existing data to systems that can create new content—text, images, audio, video, code, and even synthetic datasets.
-Generative AI can also draft the email to the customer, produce the visuals for the campaign, generate the code change, or simulate thousands of edge cases for testing. Instead of sitting at the end of a data pipeline as an afterthought, it is becoming a core production layer that accelerates content creation, decision-making, and product iteration across the business.
-For leaders, this means generative AI should not be treated as a novelty or a marketing gimmick. It should be viewed as an engine for efficiency and differentia…]]></summary>
-        <author>
-            <name>Alexa Henry</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[Boost]]]></title>
-        <id>https://dev.to/nataliaherself/-106b</id>
-        <link href="https://dev.to/nataliaherself/-106b"/>
-        <updated>2025-11-17T18:48:36.000Z</updated>
-        <summary type="html"><![CDATA[frameit.dev - fast and free video thumbs, title cards and OG images
-Ed Spencer ・ Nov 17
-#opensource
-        #frameit
-        #react
-        #typescript]]></summary>
-        <author>
-            <name>Natália Spencer</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Shift Towards Agentic AI: What It Means for Developers]]></title>
-        <id>https://dev.to/lofcz/the-shift-towards-agentic-ai-what-it-means-for-developers-4a4o</id>
-        <link href="https://dev.to/lofcz/the-shift-towards-agentic-ai-what-it-means-for-developers-4a4o"/>
-        <updated>2025-11-17T18:44:22.000Z</updated>
-        <summary type="html"><![CDATA[The Shift Towards Agentic AI: What It Means for Developers
-
-
-Let's cut through the hype: agentic AI isn't some distant future concept anymore. By mid-2025, we're seeing a clear shift from experimental prototypes to production systems that actually ship. But here's the reality check—developers remain cautious, and for good reason. Quality concerns and trust issues are real obstacles we need to address.
-The question isn't whether agentic AI will transform development workflows—it already is. The question is: how do we implement it pragmatically, without falling into the trap of over-engineering or blindly trusting autonomous systems?
-The difference between 2024's experimental agents and 2025's production systems comes down to maturity. Forward-thinking companies are now using agentic AI to a…]]></summary>
-        <author>
-            <name>Matěj Štágl</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[🍕 Eat-N-Split Day 2: Adding Friends & Toggling the Form]]></title>
-        <id>https://dev.to/usama_dev/eat-n-split-day-2-adding-friends-toggling-the-form-3hag</id>
-        <link href="https://dev.to/usama_dev/eat-n-split-day-2-adding-friends-toggling-the-form-3hag"/>
-        <updated>2025-11-17T18:43:49.000Z</updated>
-        <summary type="html"><![CDATA[Today I continued my Eat-N-Split course project in React — and it was a fun one!
-opening/closing the Add Friend form and rendering newly added friends dynamically.
-The main goal of Day 2 was:
-Show and hide the “Add Friend” form when the user clicks a button.
-Add a new friend to the list and update the UI instantly.
-This is a perfect example of React state in action.
-I used a simple boolean state to toggle the form visibility:
-const [friendFormIsOpen, setFriendFormIsOpen] = useState(false);
-
-And a button that flips it:
-<Button onClick={() => setFriendFormIsOpen(show => !show)}>
-  {friendFormIsOpen ? "Close" : "Add Friend"}
-</Button>
-
-💡 Fun thing: This tiny little line of code lets you open and close the form with one button. No rocket science, just React magic. ✨
-When a new friend is submitted:
-A new friend object is created with a unique ID, name, image, and a default balance.
-Then I update the friends state:
-
-
-
-
-setFriends(friends => [...friends, newFriend]);
-
-The cool part? React instantly re-renders the UI with the new friend without refreshing the page. 🪄
-useState is your best friend — literally!
-Toggling things with a boolean is satisfying. Flip → show, Flip → hide.
-Adding items to an array in React is as simple as spreading the old array and adding the new item.
-Watching the new friend appear on the list feels like magic every time. ✨
-Tomorrow (or next session), I’ll focus on:
-Splitting a bill with a selected friend
-Handling the calculation of balances dynamically
-Making the app fully interactive]]></summary>
-        <author>
-            <name>Usama</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[XRP Slumps 5% as Bitcoin's Break Under $93,000 Leads to Bearish Outlook For Majors]]></title>
         <id>43f7a831-c3d2-4a01-a48a-b7181cc5f4b2</id>
         <link href="https://www.coindesk.com/markets/2025/11/18/xrp-slumps-5-as-bitcoin-s-break-under-usd93-000-leads-to-bearish-outlook-for-majors"/>
@@ -275,54 +323,6 @@ Making the app fully interactive]]></summary>
         <summary type="html"><![CDATA[Broader crypto markets are pressured by weak risk sentiment and technical trading patterns.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[La Ley Federal de Prevención e Identificación de Operaciones]]></title>
-        <id>https://dev.to/drcarlosruizviquez/la-ley-federal-de-prevencion-e-identificacion-de-operaciones-344</id>
-        <link href="https://dev.to/drcarlosruizviquez/la-ley-federal-de-prevencion-e-identificacion-de-operaciones-344"/>
-        <updated>2025-11-17T18:41:56.000Z</updated>
-        <summary type="html"><![CDATA[La Ley Federal de Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita-LFPIORPI ha experimentado reformas en 2025, que abordan la prevención y el monitoreo de lavado de dinero y financiamiento del terrorismo. Una de las novedades más relevantes se refiere al monitoreo transaccional de operaciones financieras con el uso de Inteligencia Artificial (IA) y Aprendizaje Automático (ML).
-De acuerdo con la reforma, los sujetos obligados (como bancos, casas de cambio y otras entidades financieras) deberán implementar sistemas de monitoreo transaccional que utilicen IA y ML para identificar y detectar operaciones sospechosas. Esto se traduce en la necesidad de contar con herramientas y plataformas especializadas que puedan analizar grandes cantidades de datos y tomar decisiones automática y en tiempo real.
-En este contexto, es relevante mencionar la plataforma de IA AML de TarantulaHawk.ai, que ofrece soluciones de monitoreo transaccional eficaces y escalables para sujetos obligados. Con su plataforma SaaS, es posible realizar un monitoreo más preciso y eficiente de operaciones financieras, lo que reduce el riesgo de incumplimiento y mejora la gestión de riesgos.
-Implicaciones prácticas para sujetos obligados:
-Deberán implementar sistemas de monitoreo transaccional que utilicen IA y ML para identificar operaciones sospechosas.
-Requirirán contar con herramientas y plataformas especializadas que puedan analizar grandes cantidades de datos y tomar decisiones automática y en tiempo real.
-Mejorarán su gestión de riesgos y reducirán el riesgo de incumplimiento.
-Es importante destacar que la implementación de estas soluciones requiere un enfoque responsable y ético, asegurando que la IA y el ML sean utilizados de manera transparente y justa, respetando la privacidad y derechos de los usuarios.
-Publicado automáticamente]]></summary>
-        <author>
-            <name>Dr. Carlos Ruiz Viquez</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Email Automation That Actually Works: Beyond the Welcome Series]]></title>
-        <id>https://dev.to/synergistdigitalmedia/email-automation-that-actually-works-beyond-the-welcome-series-3gop</id>
-        <link href="https://dev.to/synergistdigitalmedia/email-automation-that-actually-works-beyond-the-welcome-series-3gop"/>
-        <updated>2025-11-17T18:40:02.000Z</updated>
-        <summary type="html"><![CDATA[Email Automation That Actually Works: Beyond the Welcome Series
-
-
-Let me guess: your email automation strategy consists of a welcome series, an abandoned cart email, and maybe a birthday discount if you're feeling fancy.
-Join the club. Most companies treat automation like that gym membership they signed up for in January—lots of initial enthusiasm, minimal follow-through, and a vague sense of guilt about not using it properly.
-But here's the thing. Email automation in 2025 isn't about setting up three sequences and calling it a strategy. It's about creating a system that actually understands where people are in their journey with you. Not in a creepy way. In a "hey, this is actually helpful" way.
-Every marketing platform promises that automation will save you time and increase revenue. The…]]></summary>
-        <author>
-            <name>Drew Madore</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[frameit.dev - fast and free video thumbs, title cards and OG images]]></title>
-        <id>https://dev.to/edspencer/frameitdev-fast-and-free-video-thumbs-title-cards-and-og-images-250m</id>
-        <link href="https://dev.to/edspencer/frameitdev-fast-and-free-video-thumbs-title-cards-and-og-images-250m"/>
-        <updated>2025-11-17T18:34:03.000Z</updated>
-        <summary type="html"><![CDATA[As a developer who occasionally creates technical content, I've always found thumbnail creation to be a friction point. I don't have a design background, and I don't want to pay for Photoshop or Canva Pro just to make a few YouTube thumbnails. I'd often spend more time fiddling with graphics software than actually creating the content.
-What I wanted was a simple tool that would give me repeatable, correctly-sized and attractive images to use for video thumbnails, title cards, Open Graph images, and the like. I'm a big fan of the excalidraw approach: a simple, client-side app that runs in the browser, does one thing well, and does not require any information from its users.
-Enter frameit.dev:
-
-frameit.dev runs in the browser, exports to a variety of formats, and does not require a user acco…]]></summary>
-        <author>
-            <name>Ed Spencer</name>
         </author>
     </entry>
     <entry>
@@ -383,26 +383,6 @@ frameit.dev runs in the browser, exports to a variety of formats, and does not r
         <summary type="html"><![CDATA[Analysts cited Figure’s shift to ‘capital-light’ model and stablecoin launch on the Provenance blockchain.]]></summary>
         <author>
             <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Azure hit by 15 Tbps DDoS attack using 500k IP addresses]]></title>
-        <id>https://techcommunity.microsoft.com/blog/azureinfrastructureblog/defending-the-cloud-azure-neutralized-a-record-breaking-15-tbps-ddos-attack/4470422</id>
-        <link href="https://techcommunity.microsoft.com/blog/azureinfrastructureblog/defending-the-cloud-azure-neutralized-a-record-breaking-15-tbps-ddos-attack/4470422"/>
-        <updated>2025-11-17T17:39:15.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A new book about the origins of Effective Altruism]]></title>
-        <id>https://newrepublic.com/article/202433/happened-effective-altruism</id>
-        <link href="https://newrepublic.com/article/202433/happened-effective-altruism"/>
-        <updated>2025-11-17T17:37:42.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -526,20 +506,20 @@ frameit.dev runs in the browser, exports to a variety of formats, and does not r
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[WBlock: A New Ad-Blocker for Safari]]></title>
-        <id>https://github.com/0xCUB3/wBlock</id>
-        <link href="https://github.com/0xCUB3/wBlock"/>
-        <updated>2025-11-17T15:48:18.000Z</updated>
+        <title type="html"><![CDATA[Google is killing the open web, part 2]]></title>
+        <id>https://wok.oblomov.eu/tecnologia/google-killing-open-web-2/</id>
+        <link href="https://wok.oblomov.eu/tecnologia/google-killing-open-web-2/"/>
+        <updated>2025-11-17T15:41:08.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Google is killing the open web, part 2]]></title>
-        <id>https://wok.oblomov.eu/tecnologia/google-killing-open-web-2/</id>
-        <link href="https://wok.oblomov.eu/tecnologia/google-killing-open-web-2/"/>
-        <updated>2025-11-17T15:41:08.000Z</updated>
+        <title type="html"><![CDATA[Show HN: Bsub.io – zero-setup batch execution for command-line tools]]></title>
+        <id>https://news.ycombinator.com/item?id=45954472</id>
+        <link href="https://news.ycombinator.com/item?id=45954472"/>
+        <updated>2025-11-17T15:34:38.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -596,7 +576,17 @@ frameit.dev runs in the browser, exports to a variety of formats, and does not r
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: ESPectre – Motion Detection Using Wi-Fi and Math]]></title>
+        <title type="html"><![CDATA[Aldous Huxley predicts Adderall and champions alternative therapies]]></title>
+        <id>https://angadh.com/inkhaven-7</id>
+        <link href="https://angadh.com/inkhaven-7"/>
+        <updated>2025-11-17T14:57:33.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: ESPectre – Motion detection based on Wi-Fi spectre analysis]]></title>
         <id>https://github.com/francescopace/espectre</id>
         <link href="https://github.com/francescopace/espectre"/>
         <updated>2025-11-17T14:40:54.000Z</updated>
@@ -736,16 +726,6 @@ frameit.dev runs in the browser, exports to a variety of formats, and does not r
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Ned: ImGui Text Editor with GL Shaders]]></title>
-        <id>https://github.com/nealmick/ned</id>
-        <link href="https://github.com/nealmick/ned"/>
-        <updated>2025-11-17T11:53:00.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Crypto Markets Today: Bitcoin, Ether Sink to Multimonth Lows as Liquidity Dries Up]]></title>
         <id>09a29cc4-53cc-4ab2-9f42-379d3c8e8156</id>
         <link href="https://www.coindesk.com/markets/2025/11/17/crypto-markets-today-bitcoin-ether-sink-to-multimonth-lows-as-liquidity-dries-up"/>
@@ -861,6 +841,19 @@ The post Fahmi: Malaysia Ranks Among World’s Cheapest For Mobile Data appeared
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Phi-4 proves that a 'data-first' SFT methodology is the new differentiator]]></title>
+        <id>5NesfmA2EfXaUerrx8J0Ec</id>
+        <link href="https://venturebeat.com/ai/phi-4-proves-that-a-data-first-sft-methodology-is-the-new-differentiator"/>
+        <updated>2025-11-17T08:00:00.000Z</updated>
+        <summary type="html"><![CDATA[AI engineers often chase performance by scaling up LLM parameters and data, but the trend toward smaller, more efficient, and better-focused models has accelerated. 
+The Phi-4 fine-tuning methodology is the cleanest public example of a training approach that smaller enterprise teams can copy. It shows how a carefully chosen dataset and fine-tuning strategy can make a 14B model compete with much larger ones.
+The Phi-4 model was trained on just 1.4 million carefully chosen prompt-response pairs. Instead of brute force, the Microsoft Phi-4 research team focused on “teachable” examples at the edge of the model’s abilities and rigorous data curation. 
+The Phi-4 reasoning smart data playbook demonstrates how strategic data curation with replicable SFT and RL can elevate a 14B model beyond much l…]]></summary>
+        <author>
+            <name>AI | VentureBeat</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Porsche Explains How Its Wireless Charging Plate Works With The Cayenne EV]]></title>
         <id>https://www.lowyat.net/?p=373568</id>
         <link href="https://www.lowyat.net/2025/373568/porsche-details-wireless-charging-cayenne-ev/"/>
@@ -929,26 +922,6 @@ The post Nissan N6 PHEV Debuts In China appeared first on Lowyat.NET.]]></summar
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[People are using iPad OS features on their iPhones]]></title>
-        <id>https://idevicecentral.com/ios-customization/how-to-enable-ipad-features-like-multitasking-stage-manager-on-iphone-via-mobilegestalt/</id>
-        <link href="https://idevicecentral.com/ios-customization/how-to-enable-ipad-features-like-multitasking-stage-manager-on-iphone-via-mobilegestalt/"/>
-        <updated>2025-11-17T02:39:28.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[An overly aggressive mock can work fine, but break much later]]></title>
-        <id>https://nedbatchelder.com/blog/202511/why_your_mock_breaks_later.html</id>
-        <link href="https://nedbatchelder.com/blog/202511/why_your_mock_breaks_later.html"/>
-        <updated>2025-11-16T22:36:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[From shiny object to sober reality: The vector database story, two years later]]></title>
         <id>6qLhARUg1OWZWD2ldKIX4R</id>
         <link href="https://venturebeat.com/ai/from-shiny-object-to-sober-reality-the-vector-database-story-two-years-later"/>
@@ -990,6 +963,16 @@ Two years on, the reality check has arrived: 95% of organizations invested in ge
 The fundamental problem is that traditional identity and access management (IAM) designed for humans breaks at agentic scale. Controls like static roles, long-lived passwords and one-time approvals are useless when non-human identities can outnumber human ones by 10 to one. To harness the power of agentic AI, identity must evolve from a simple login gatekeeper into the dyna…]]></summary>
         <author>
             <name>AI | VentureBeat</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Continuous Claude – run Claude Code in a loop]]></title>
+        <id>https://github.com/AnandChowdhary/continuous-claude</id>
+        <link href="https://github.com/AnandChowdhary/continuous-claude"/>
+        <updated>2025-11-15T16:27:49.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1163,19 +1146,6 @@ OpenAI notes that much of the opacity of AI models stems from how most models ar
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Baidu unveils proprietary ERNIE 5 beating GPT-5 performance on charts, document understanding and more]]></title>
-        <id>60u3P5sAxXDZ7rLs5xCdzl</id>
-        <link href="https://venturebeat.com/ai/baidu-unveils-proprietary-ernie-5-beating-gpt-5-performance-on-charts"/>
-        <updated>2025-11-13T20:23:00.000Z</updated>
-        <summary type="html"><![CDATA[Mere hours after OpenAI updated its flagship foundation model GPT-5 to GPT-5.1, promising reduced token usage overall and a more pleasant personality with more preset options, Chinese search giant Baidu unveiled its next-generation foundation model, ERNIE 5.0, alongside a suite of AI product upgrades and strategic international expansions.
-The goal: to position as a global contender in the increasingly competitive enterprise AI market.
-Announced at the company's Baidu World 2025 event, ERNIE 5.0 is a proprietary, natively omni-modal model designed to jointly process and generate content across text, images, audio, and video. 
-Unlike Baidu’s recently released ERNIE-4.5-VL-28B-A3B-Thinking, which is open source under an enterprise-friendly and permissive Apache 2.0 license, ERNIE 5.0 is a pr…]]></summary>
-        <author>
-            <name>carl.franzen@venturebeat.com (Carl Franzen)</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[EmTech AI 2025: How AI is revolutionizing science]]></title>
         <id>https://www.technologyreview.com/?p=1127930</id>
         <link href="https://www.technologyreview.com/2025/11/13/1127930/emtech-ai-2025-peter-lee/"/>
@@ -1233,6 +1203,16 @@ Unlike Baidu’s recently released ERNIE-4.5-VL-28B-A3B-Thinking, which is open 
         <summary type="html"><![CDATA[Last week, we hosted EmTech MIT, MIT Technology Review’s annual flagship conference in Cambridge, Massachusetts. Over the course of three days of main-stage sessions, I learned about innovations in AI, biotech, and robotics.  But as you might imagine, some of this climate reporter’s favorite moments came in the climate sessions. I was listening especially closely…]]></summary>
         <author>
             <name>Casey Crownhart</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA["One Student One Chip" Course Homepage]]></title>
+        <id>https://ysyx.oscc.cc/docs/en/</id>
+        <link href="https://ysyx.oscc.cc/docs/en/"/>
+        <updated>2025-11-12T15:28:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
