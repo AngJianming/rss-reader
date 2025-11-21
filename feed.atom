@@ -1,70 +1,340 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-11-21T19:14:05.054Z</id>
+    <id>urn:2025-11-21T20:18:29.356Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-11-21T19:14:05.054Z</updated>
+    <updated>2025-11-21T20:18:29.356Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Dear Developer: Your Database Isn't a File Cabinet!]]></title>
-        <id>https://dev.to/taurean04_14/dear-developer-your-database-isnt-a-file-cabinet-39ng</id>
-        <link href="https://dev.to/taurean04_14/dear-developer-your-database-isnt-a-file-cabinet-39ng"/>
-        <updated>2025-11-21T18:55:32.000Z</updated>
-        <summary type="html"><![CDATA[Hey guys! I’m an Engineering Manager, and I’m sharing some notes deep from the development trenches. I wanted to kick off my writing journey by talking about a massive performance mistake that I see all the time when I do code reviews. It’s about how we treat our Database (or DB for short). In my experience, several issues crop up when databases aren't utilized to their full potential.
-Look, we often treat the DB like a basic File Cabinet. We ask for raw data, it returns a massive file, and then WE (the application layer) have to do all the complicated work. That's kind of how the front-end treats us!
-But here's the crazy part: your database is actually a super-powerful, specialized machine built for searching, connecting, and crunching data. When you force your application to handle all t…]]></summary>
+        <title type="html"><![CDATA[How I’m Building a Racing-Analysis Web App from Raw Telemetry]]></title>
+        <id>https://dev.to/ibrahimpima/how-im-building-a-racing-analysis-web-app-from-raw-telemetry-59g</id>
+        <link href="https://dev.to/ibrahimpima/how-im-building-a-racing-analysis-web-app-from-raw-telemetry-59g"/>
+        <updated>2025-11-21T20:14:25.000Z</updated>
+        <summary type="html"><![CDATA[How I’m Building a Racing-Analysis Web App from Raw Telemetry
+
+(And How You Can Copy-Paste the Whole Stack)
+I spent last winter watching GT4 cars throw 32768-lap grenades into their data streams while the real lap count quietly hid in the time stamps. The ECU clock drifted like a cheap Rolex, but the GPS trace never lied.
+
+That mess is now becoming a Next.js app that turns any $200 OBD+GPS logger into a pro-level race-eng tool. Below is the exact blueprint I’m coding to, parameter by parameter.
+Every time the car crosses the start/finish line I collapse the last chunk of rows into a single document that lands in MongoDB (Atlas free tier).
+
+Shape:
+{
+  _id: ObjectId,
+Notice I store arrays, not rows – one lap = one document = lightning-fast reads.
+Pseudo-code (runs in Node API route):
+const F…]]></summary>
         <author>
-            <name>Oluwatomi Ayobami</name>
+            <name>Ibrahim Pima</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Building Real-Time Lakehouse with S3 Tables, AWS Glue, and Apache Doris]]></title>
-        <id>https://dev.to/apachedoris/building-real-time-lakehouse-with-s3-tables-aws-glue-and-apache-doris-5am0</id>
-        <link href="https://dev.to/apachedoris/building-real-time-lakehouse-with-s3-tables-aws-glue-and-apache-doris-5am0"/>
-        <updated>2025-11-21T18:45:38.000Z</updated>
-        <summary type="html"><![CDATA[We built a real-time lakehouse with S3 Tables, AWS Glue, and Apache Doris. In this solution, S3 Tables stores data in the Apache Iceberg format on Amazon S3. AWS Glue manages and organizes metadata and schema, providing a single catalog that connects all resources. And Apache Doris runs sub-second queries directly on those Iceberg tables: no ETL, no data copies, no complex architecture.
-Together, the S3 Tables + AWS Glue + Apache Doris form a real-time lakehouse that combines the openness of a data lake with the high performance of a data warehouse, providing a key data foundation for AI and agentic workloads.
-You get:
-Unified metadata for easy table discovery and governance
+        <title type="html"><![CDATA[Lombok + Gradle + IntelliJ (Java 21) — Guia rápido]]></title>
+        <id>https://dev.to/jonathasrochadesouza/lombok-gradle-intellij-java-21-guia-rapido-5e17</id>
+        <link href="https://dev.to/jonathasrochadesouza/lombok-gradle-intellij-java-21-guia-rapido-5e17"/>
+        <updated>2025-11-21T20:10:43.000Z</updated>
+        <summary type="html"><![CDATA[Passo a passo resumido para configurar o Lombok no IntelliJ com Gradle usando Java 21.
+Instale o plugin Lombok no IntelliJ
+Settings → Plugins → Marketplace → Lombok → Install → Reinicie o IDE.
+Habilite Annotation Processing
+Settings → Build, Execution, Deployment → Compiler → Annotation Processors → marque Enable annotation processing.
+Configure o Java 21 (toolchain) no Gradle
+Adicione o Lombok corretamente nas dependências (main e test) do build.gradle
 
 
-Open Apache Iceberg tables on S3 with ACID, time-travel, and schema evolution
 
 
-A high-performance query engine wi…]]></summary>
+dependencies {
+  compileOnly 'org.projectlombok:lombok:1.18.38'
+  annotationProcessor 'org.projectlombok:lombok:1.18.38'
+
+  testCompileOnly 'org.projectlombok:lombok:1.18.38'
+  testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+
+  // ... your others dependencies
+}
+
+Não use implementation para Lombok.
+Sincronize e compile
+No IntelliJ: clique em Load/Reload Gradle Changes (ícone do elefante).
+No terminal:
+./gradlew clean build
+
+
+Teste rápido
+
+
+
+
+import lombok.*;
+
+@Data
+@Builder
+class Demo { private String name; }
+
+Se Demo.builder() e getName() existirem, está tudo certo. Para validar, você poderá gerar uma classe de Teste, como no exemplo abaixo.
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class DemoTest {
+    @Test
+    void testBuilderAndGetter() {
+        Demo demo = Demo.builder().name("Jonathas").build();
+        assertEquals("Jonathas", demo.getName());
+    }
+}
+
+Dica!!
+
+
+Após alterar o build.gradle, sempre dê um clean + build ou Reload Gradle no IDE.]]></summary>
         <author>
-            <name>Apache Doris</name>
+            <name>Jonathas Rocha</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ClausTk - A Tkinter library for creating New Year's and Christmas-themed interfaces]]></title>
-        <id>https://dev.to/limafresh/claustk-a-tkinter-library-for-creating-new-years-and-christmas-themed-interfaces-od9</id>
-        <link href="https://dev.to/limafresh/claustk-a-tkinter-library-for-creating-new-years-and-christmas-themed-interfaces-od9"/>
-        <updated>2025-11-21T18:45:22.000Z</updated>
-        <summary type="html"><![CDATA[The New Year is coming soon, and I've decided to create ClausTk—a library that will allow you to create vibrant and festive interfaces in Tkinter. I'd love to hear your feedback and create your own programs using ClausTk.
-GitHub: https://github.com/limafresh/ClausTk
-Documentation: https://limafresh.github.io/ClausTk/
-Pip:
-pip install claustk
-
-Screenshot (simple program example):
-
-Code example:
-import claustk
-
-
-def click_btn():
-    print("Merry Christmas and Happy New Year!")
-
-
-root = claustk.ClausWindow()
-
-button = claustk.ClausRoundedButton(root, text="Click me!", command=click_btn)
-button.pack(padx=10, pady=10)
-
-root.happynewyear()]]></summary>
+        <title type="html"><![CDATA[A practical guide to refactoring complex database queries in Laravel]]></title>
+        <id>https://dev.to/bytehire/a-practical-guide-to-refactoring-complex-database-queries-in-laravel-3lf7</id>
+        <link href="https://dev.to/bytehire/a-practical-guide-to-refactoring-complex-database-queries-in-laravel-3lf7"/>
+        <updated>2025-11-21T20:10:19.000Z</updated>
+        <summary type="html"><![CDATA[When I opened our Repository Class file and saw a single method spanning 194 lines with nested subqueries, complex conditionals, and duplicated logic, I knew we had a problem. The code worked, but it was a maintenance nightmare.
+Fast forward three weeks: the same functionality now lives in clean, composable, testable components. The result? 78% less code complexity and a architecture that actually makes sense.
+Here's how we did it.
+Our conversation repository had methods that looked like this:
+public function getAllBy(TeamMemberId | CandidateId $id, ConversationMetaDto $meta): CursorPaginatorDto
+{
+    // 194 lines of this...
+    $query = DB::table('conversation')
+        ->select(
+            'c.*',
+            DB::raw('(SELECT _m.content FROM message WHERE...) AS last_message'),
+         …]]></summary>
         <author>
-            <name>Maksim</name>
+            <name>kevariable</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How Becoming a Parent Helped Me Notice the Small Things]]></title>
+        <id>https://dev.to/eli-sanderson/how-becoming-a-parent-helped-me-notice-the-small-things-i79</id>
+        <link href="https://dev.to/eli-sanderson/how-becoming-a-parent-helped-me-notice-the-small-things-i79"/>
+        <updated>2025-11-21T20:10:18.000Z</updated>
+        <summary type="html"><![CDATA[I never thought I’d be the kind of person who took pictures of everything my baby did. Before I became a parent, I used to laugh when people showed me twenty nearly identical photos of their kid doing something simple—like eating peas or staring at a lamp. I’d smile politely and pretend to understand.
+Now I’m that person.
+I became that person the moment I held my son for the first time. Something in me shifted. It didn’t happen gradually. It happened all at once. His fingers curled around mine, so tiny and warm, and suddenly every second felt important. Not in a dramatic way—just in a very quiet, very tender way. I wanted to remember everything, even the things that didn’t seem special.
+But the funny part is: at first, I completely forgot about pictures.
+The first week was a blur of diaper…]]></summary>
+        <author>
+            <name>Eli Sanderson</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ringer Movies: ‘Weird Science’ With Bill Simmons and Kyle Brandt | Ringer Movies]]></title>
+        <id>https://dev.to/popcorn_movies/ringer-movies-weird-science-with-bill-simmons-and-kyle-brandt-ringer-movies-2llf</id>
+        <link href="https://dev.to/popcorn_movies/ringer-movies-weird-science-with-bill-simmons-and-kyle-brandt-ringer-movies-2llf"/>
+        <updated>2025-11-21T20:02:48.000Z</updated>
+        <summary type="html"><![CDATA[Bill Simmons and Kyle Brandt Take on “Weird Science”
+
+
+The Ringer’s dynamic duo revisits John Hughes’s 1985 cult classic, Weird Science, starring Anthony Michael Hall, Kelly LeBrock, and Ilan Mitchell-Smith. Expect an irreverent deep dive into the film’s sex, drugs, rock ’n’ roll moments (and, yes, all the chips, dips, chains, and whips).
+Produced by Craig Horlbeck, Chia Hao Tat, and Eduardo Ocampo, this Rewatchables episode is packed with 80s nostalgia, insider anecdotes, and plenty of laughs. Don’t forget to subscribe to The Ringer channels for more movie-centric banter!
+Watch on YouTube]]></summary>
+        <author>
+            <name>Movie News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CinemaSins: Everything Wrong With KPop Demon Hunters In 16 Minutes Or Less]]></title>
+        <id>https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-kpop-demon-hunters-in-16-minutes-or-less-3k2a</id>
+        <link href="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-kpop-demon-hunters-in-16-minutes-or-less-3k2a"/>
+        <updated>2025-11-21T20:02:26.000Z</updated>
+        <summary type="html"><![CDATA[Everything Wrong With KPop Demon Hunters In 16 Minutes Or Less
+
+
+Cinema Sins delivers a playful, fast-paced breakdown of all the “sins” in the new KPop Demon Hunters movie, complete with their signature humor and razor-sharp observations. If you’ve ever wondered what a Cinema Sins roast of this flick sounds like, this is it.
+Want more? Dive into their network—TV Sins, Commercial Sins, podcasts—and hit up their website for the latest updates. Don’t forget to fill out the sinful poll, back them on Patreon, or say hi on Discord and Reddit. Shout-outs to writers Jeremy, Chris, Aaron, Jonathan, Deneé, Ian and Daniel for keeping the sin train rolling!
+Watch on YouTube]]></summary>
+        <author>
+            <name>Movie News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Asking n People (n Generative AI Models) Simultaneously]]></title>
+        <id>https://dev.to/stakiran/asking-n-people-n-generative-ai-models-simultaneously-2ef7</id>
+        <link href="https://dev.to/stakiran/asking-n-people-n-generative-ai-models-simultaneously-2ef7"/>
+        <updated>2025-11-21T19:58:28.000Z</updated>
+        <summary type="html"><![CDATA[Summary
+
+
+
+Discussion on using Generative AI APIs
+Efficiently inquiring multiple models in parallel
+Concept:
+
+
+Generative AI models are like humans, and having n models equates to having "n different people".
+By making parallel inquiries to n models, you can experience asking n people simultaneously.
+This can be achieved by making API calls in parallel.
+Example:
+
+
+pgpt.py cosense code
+
+
+
+
+
+
+
+
+
+  
+  
+  Background
+
+
+
+  
+  
+  As Fast as Possible. As Smooth as Possible.
+
+
+The back-and-forth with ChatGPT can feel primitive and leaves room for improvement. Engineers using built-in AI agents like Copilot, Cline, and Cursor might never want to return to rudimentary copy-pasting.
+This isn't limited to coding, but applies to inquiries in general. Whether asking about unfamiliar terms or getting ten …]]></summary>
+        <author>
+            <name>sta</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Combine retry feature and logging in second issue]]></title>
+        <id>https://dev.to/slyang08/combine-retry-feature-and-logging-in-second-issue-3hc</id>
+        <link href="https://dev.to/slyang08/combine-retry-feature-and-logging-in-second-issue-3hc"/>
+        <updated>2025-11-21T19:56:10.000Z</updated>
+        <summary type="html"><![CDATA[Repository: CLImanga
+Check chapterImage download response for CLImanga
+fix: retry download if failed
+During the development of CLImanga, I noticed a small but impactful issue:
+stop immediately and not attempt to retry.
+This made the download process unreliable, especially when handling multiple chapters or large manga series.
+The goal of this PR was to implement a retry mechanism to improve reliability and provide visibility into download attempts using the custom logging system I implemented in the previous PR.
+The retry mechanism needed to satisfy the following:
+Attempt downloads multiple times (set a maximum of 5 retries) if an error occurs.
+Log each failed attempt with details such as attempt number, URL, and error reason.
+Include a small delay between retries to avoid overwhelming the…]]></summary>
+        <author>
+            <name>Sheng-Lin Yang</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Built a WebSocket Server to Stream iPhone LiDAR and IMU Data]]></title>
+        <id>https://dev.to/jaskirat1616/i-built-a-websocket-server-to-stream-iphone-lidar-and-imu-data-20lp</id>
+        <link href="https://dev.to/jaskirat1616/i-built-a-websocket-server-to-stream-iphone-lidar-and-imu-data-20lp"/>
+        <updated>2025-11-21T19:55:26.000Z</updated>
+        <summary type="html"><![CDATA[The Hardware Setup Problem
+
+
+I kept having the same experience. Some idea would come up that needed depth data or IMU readings. I'd think about it for a few minutes, then realize I'd have to order an Intel RealSense or some IMU breakout board, wait for shipping, figure out the drivers, wire everything up. The idea would just die there.
+This wasn't occasional. It happened enough times that I decided to look at what hardware I already had.
+I was looking at specs for various LiDAR sensors when I thought to check what my iPhone actually had. Turns out the 12 Pro and newer models have:
+Time-of-flight LiDAR measuring 0.5 to 5 meters at 10fps
+1080p camera running at 30fps
+IMU sampling at 200Hz
+GPS
+ARKit doing visual-inertial odometry in the background constantly
+Pretty much everything you'd wire …]]></summary>
+        <author>
+            <name>Jaskirat Singh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Digital Sabbatical and Outernet (Bite-size Article)]]></title>
+        <id>https://dev.to/koshirok096/digital-sabbatical-and-outernet-bite-size-article-33n8</id>
+        <link href="https://dev.to/koshirok096/digital-sabbatical-and-outernet-bite-size-article-33n8"/>
+        <updated>2025-11-21T19:52:24.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+
+
+A Digital Sabbatical refers to intentionally stepping away from the digital whirlpool of work, social media, news, and constant notifications for several hours or even a few days. It doesn’t mean abandoning your computer or smartphone entirely. Rather, it is about creating temporary moments of disconnection to refresh your mind and recover from information fatigue.
+The term Outernet is not a commonly used word. In this article, however, I define it as
+
+“the physical world where experiences and bodily senses take priority over data.”
+If the Internet is an “information ocean” flowing through radio waves and fiber-optic cables, then the Outernet is the “ground-level world” we perceive with our senses: the weight of the air, footsteps on a sidewalk, the depth of a landscape. It …]]></summary>
+        <author>
+            <name>koshirok096</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Focus Tab: The Minimalist Browser Tool That Supercharges Your AI Workflow]]></title>
+        <id>https://dev.to/rohan2596/focus-tab-the-minimalist-browser-tool-that-supercharges-your-ai-workflow-333l</id>
+        <link href="https://dev.to/rohan2596/focus-tab-the-minimalist-browser-tool-that-supercharges-your-ai-workflow-333l"/>
+        <updated>2025-11-21T19:51:53.000Z</updated>
+        <summary type="html"><![CDATA[In a world where AI tools like ChatGPT, Claude, and GitHub Copilot are becoming part of our everyday work, one challenge remains unchanged:
+👉 Our attention is constantly under attack.
+Even with powerful AI assistants, productivity collapses when your browser is drowning in 15, 30, or 50 open tabs.
+It turns your browser into a calm, distraction-free workspace so your AI sessions actually stay productive.
+🚀 What Is Focus Tab?
+Focus Tab is a simple Chrome extension that hides all tabs except the one you're currently using — and restores them with one click.
+
+It’s built for one purpose:
+Eliminate digital clutter instantly so you can stay deeply focused.
+Whether you're working, studying, coding, or collaborating with AI tools, Focus Tab creates a single-task environment that keeps your mind clear.
+✨ Key Features
+🧘‍♀️ Focus Mode
+🔄 One-Click Restore
+⚡ Lightweight & Fast
+🔒 Privacy-First
+🧭 Simple Interface
+💡 Why Focus Tab Matters (Especially in the AI Era)
+
+
+➡️ to brainstorm
+But AI is only powerful when you’re focused.
+🔥Here’s how Focus Tab enhances your AI workflow:
+1️⃣ Reduces Cognitive Load
+2️⃣ Helps You Stay in Deep Work Mode
+3️⃣ Prevents Tab Overload During Research
+4️⃣ Boosts Performance
+5️⃣ Great for Students & Developers
+🧠 How Focus Tab Works
+It’s extremely simple:
+1️⃣ Click the Focus Tab icon in your Chrome toolbar.
+No setup.
+🔐 Privacy You Can Trust
+Focus Tab does not collect or share any personal information.
+🧩 Final Thoughts: Minimal Tools Matter in an AI World
+As AI gets more advanced, our tools often get more complex — dashboards, prompts, sidebars, plugins, integrations.
+But sometimes, the most powerful productivity booster is simplicity.
+Focus Tab creates a calm, intentional digital space where your AI tools can shine.
+If you’re looking for a lightweight way to boost focus, reduce tab chaos, and get more value from AI assistants, Focus Tab is one of the easiest upgrades you can make.]]></summary>
+        <author>
+            <name>Rohan Ravindra Kadam</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building a Process Injection Detector in Rust]]></title>
+        <id>https://dev.to/pandaadir05/building-a-process-injection-detector-in-rust-el2</id>
+        <link href="https://dev.to/pandaadir05/building-a-process-injection-detector-in-rust-el2"/>
+        <updated>2025-11-21T19:49:27.000Z</updated>
+        <summary type="html"><![CDATA[I got tired of manually checking if processes were tampered with, so I built Ghost. It scans running processes and flags anything that looks like code injection. Took a few months of evenings and weekends.
+What it detects:
+The usual injection techniques malware uses:
+RWX memory regions (shouldn't exist in normal programs)
+Plus YARA integration so you can throw custom rules at it.
+Why Rust:
+Needed something that could do low-level memory operations without constantly worrying about segfaults and buffer overflows. Rust's type system caught a bunch of bugs during development that would've been annoying to track down in C. Performance was important too since I wanted this to run continuously without killing the system. Can scan 200 processes in about 5 seconds now.
+Cross-platform nightmare:
+Wi…]]></summary>
+        <author>
+            <name>Adir Shitrit</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cloudflare Dashboard and Cloudflare API service issues]]></title>
+        <id>https://www.cloudflarestatus.com/incidents/9ts6gx8q69xl</id>
+        <link href="https://www.cloudflarestatus.com/incidents/9ts6gx8q69xl"/>
+        <updated>2025-11-21T19:19:17.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -78,147 +348,13 @@ root.happynewyear()]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Top 5 AI Tools Every Developer Should Try in 2025]]></title>
-        <id>https://dev.to/fijzez/top-5-ai-tools-every-developer-should-try-in-2025-3gdm</id>
-        <link href="https://dev.to/fijzez/top-5-ai-tools-every-developer-should-try-in-2025-3gdm"/>
-        <updated>2025-11-21T18:39:34.000Z</updated>
-        <summary type="html"><![CDATA[Plus a simple tip to avoid inbox overload when testing them
-The AI ecosystem is moving fast, and 2025 has already delivered some powerful tools that can seriously upgrade your developer workflow. Whether you write code, design apps, or automate tasks, these tools have become part of my daily setup - and they’re absolutely worth exploring.
-Here are my top five picks this year:
-Cursor AI - The AI-First Code Editor
-
-
-Cursor has changed how many developers write code. It doesn’t just autocomplete - it understands your project, rewrites files, explains complex logic, and acts like a real pair programmer. If you haven’t tried an AI-native IDE yet, start here.
-Replit AI / Replit Agent
-
-
-Replit’s AI agent is great for spinning up prototypes quickly. It can scaffold a full-stack app in minutes, run…]]></summary>
+        <title type="html"><![CDATA[Brazil charges 31 people in major carbon credit fraud investigation]]></title>
+        <id>https://news.mongabay.com/short-article/2025/11/brazil-charges-31-people-in-major-carbon-credit-fraud-investigation/</id>
+        <link href="https://news.mongabay.com/short-article/2025/11/brazil-charges-31-people-in-major-carbon-credit-fraud-investigation/"/>
+        <updated>2025-11-21T18:30:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>fijzez</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Future of Messaging: Why Telegram Mini Apps Are Gaining Popularity]]></title>
-        <id>https://dev.to/guest-post/the-future-of-messaging-why-telegram-mini-apps-are-gaining-popularity-31p</id>
-        <link href="https://dev.to/guest-post/the-future-of-messaging-why-telegram-mini-apps-are-gaining-popularity-31p"/>
-        <updated>2025-11-21T18:38:09.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-In today’s fast-paced digital world, messaging platforms have evolved far beyond simple text exchanges. One of the most exciting developments in this space is the rise of Telegram mini apps. These compact applications, embedded directly within the Telegram platform, offer users a seamless experience without the need to download separate apps. For both casual users and businesses, these mini apps provide an innovative way to interact, share, and perform tasks all within a single interface. Unlike traditional apps, which can clutter devices and demand storage, Telegram mini apps bring functionality and convenience together in one place, making them increasingly attractive to millions worldwide.
-Telegram mini apps stand out in the crowded messaging market due to their speed, co…]]></summary>
-        <author>
-            <name>Touqeer</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Google Gemini 3 Pro — Key Features, Ecosystem Updates, and Technical Evaluations]]></title>
-        <id>https://dev.to/elend80/google-gemini-3-pro-key-features-ecosystem-updates-and-technical-evaluations-22dj</id>
-        <link href="https://dev.to/elend80/google-gemini-3-pro-key-features-ecosystem-updates-and-technical-evaluations-22dj"/>
-        <updated>2025-11-21T18:37:53.000Z</updated>
-        <summary type="html"><![CDATA[Google’s Gemini 3 Pro represents a clear shift in Google’s AI direction — moving toward deeper reasoning capabilities, long-context understanding, and more autonomous agentic workflows across the ecosystem.
-I curated a collection that brings together the most useful resources about Gemini 3 Pro:
-Core model features
-
-Ecosystem releases
-
-Technical evaluations
-
-Tooling updates
-
-Early benchmarks and community analysis
-
-
-
-📚 Full curated collection here:
-
-👉 https://www.culink.io/teamculink/gemini-3-pro
-Whether you're exploring reasoning models, building agents, or researching multimodal systems, this collection gathers the most helpful links in one place.
-If you’ve come across other high-quality Gemini 3 resources, feel free to recommend — I’ll keep expanding the list.]]></summary>
-        <author>
-            <name>elend80</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[OSD600: Lab 9]]></title>
-        <id>https://dev.to/kphero/osd600-lab-9-38ba</id>
-        <link href="https://dev.to/kphero/osd600-lab-9-38ba"/>
-        <updated>2025-11-21T18:37:35.000Z</updated>
-        <summary type="html"><![CDATA[This week we're releasing version 1.0.0 of our repository context packager. This was an interesting process, and easier than I expected, but a little tricky to set up right.
-I followed this guide to packaging python project using PyPI. I chose the backend setuptools since it is the most traditional and widely used packaging tool. 
-First thing I needed to do was restructure my project. I needed to move everything into a repository_context_packager directory and rename my main script to scan_repo.py with an underscore, because Python packaged need underscores. I already had an __init__.py file, but had to move it into the main directory, so this ended up being the new directory structure:
-
-Next I created the pyproject.toml file to configure the package metadata, dependencies, and the CLI ent…]]></summary>
-        <author>
-            <name>Kyle Homen</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building forms using React Hook Form]]></title>
-        <id>https://dev.to/rinidh/building-forms-using-react-hook-form-d48</id>
-        <link href="https://dev.to/rinidh/building-forms-using-react-hook-form-d48"/>
-        <updated>2025-11-21T18:35:28.000Z</updated>
-        <summary type="html"><![CDATA[Hey folks!
-
-While taking my online React course, I quickly discovered something: forms are everywhere. Whether you’re buying groceries online, booking a table, signing in, paying fees, or typing questionable prompts into an AI model at 2 AM — you’re dealing with forms.
-Since I wanted my portfolio to look a little less “junior developer on day 3,” I decided to learn a solid form library alongside React. The first one on my list: React Hook Form (RHF).
-After going through the docs and doing a healthy amount of trial-and-error (emphasis on error), here are some useful insights I picked up. Hopefully they help you skip a few of my mistakes.
-getValues() gives you a snapshot, not a subscription
-
-
-getValues() returns the current form data at the exact moment you call it.
-
-Use it in:
-event handler…]]></summary>
-        <author>
-            <name>Dhokia Rinidh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building a Hotel Booking System with laravel, Inertia.js and Vue.js]]></title>
-        <id>https://dev.to/rasoul_zinati_1f633313c05/building-a-room-booking-system-with-laravel-inertiajs-and-vuejs-62m</id>
-        <link href="https://dev.to/rasoul_zinati_1f633313c05/building-a-room-booking-system-with-laravel-inertiajs-and-vuejs-62m"/>
-        <updated>2025-11-21T18:32:26.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-Creating a modern room booking system is a great way to learn full-stack JavaScript development. This demo project combines Inertia.js, Vue.js, Tabler, and Bootstrap to create a responsive user interface, while Stripe handles online payments securely.
-The system includes a customer panel, an admin panel, and a dashboard for tracking bookings and payments.
-This project demonstrates a Room Booking System with the following features:
-1. Customer Panel
-Keep track of upcoming reservations
-Monitor payment confirmations
-View a summary of total bookings and spending
-Create new reservations and select payment options
-Track current and past bookings
-View payment status and receipts
-The panel uses Inertia.js + Vue.js to give a smooth, SPA-like experience, with Tabler components and Boo…]]></summary>
-        <author>
-            <name>rasoul zinati</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Simply Docker Series (Ubuntu-Install)]]></title>
-        <id>https://dev.to/shushank_gautam_7448f6ac3/simply-docker-series-ubuntu-install-2a2p</id>
-        <link href="https://dev.to/shushank_gautam_7448f6ac3/simply-docker-series-ubuntu-install-2a2p"/>
-        <updated>2025-11-21T18:31:44.000Z</updated>
-        <summary type="html"><![CDATA[🐧 Linux Users — Let’s Set Up Docker (Ubuntu/Debian Style 🚀)
-Installing Docker on Linux works a little differently, but don’t worry — just follow these simple steps and you’ll have a clean Docker setup in no time.
-🔹 Step 1: Update Your System & Install Essentials
-Before installing Docker, refresh your package list and install a few tools that help your system download Docker safely:
-sudo apt update
-sudo apt install ca-certificates curl gnupg
-
-✔ ca-certificates → secure downloads
-🔹 Step 2: Add Docker’s Official GPG Key
-This key ensures the Docker packages you download are authentic and safe.
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
-
-Thi…]]></summary>
-        <author>
-            <name>Shushank Gautam</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -229,64 +365,6 @@ Thi…]]></summary>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A log system for the CLI tool]]></title>
-        <id>https://dev.to/slyang08/a-log-system-for-the-cli-tool-2ee2</id>
-        <link href="https://dev.to/slyang08/a-log-system-for-the-cli-tool-2ee2"/>
-        <updated>2025-11-21T18:27:29.000Z</updated>
-        <summary type="html"><![CDATA[Repository: CLImanga
-create LOG system (file based) for CLImanga
-feat: add log system
-The first issue I chose to work on for CLImanga was surprisingly simple at first glance:
-"Create a logging system for the project."
-Before opening this PR, I had never built a logging system in Go.
-printf in C
-console.log
-console.error
-And honestly, I believed those were enough for most programs.
-But as I began exploring the issue, I realized a real project requires far more like:
-Persistent logs
-Structured messages
-Error-level separation
-Execution tracing
-Debug-friendly information (file, line, timestamp)
-This PR became my first deep dive into designing a custom, project-specific logging system.
-Based on the issue and discussions with the project owner, the logging system needed to:
-Write logs to a fixed…]]></summary>
-        <author>
-            <name>Sheng-Lin Yang</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[my understanding of crud applications,controllers, and middlewares.]]></title>
-        <id>https://dev.to/devmancer10/my-understanding-of-crud-applicationscontrollers-and-middlewares-16c8</id>
-        <link href="https://dev.to/devmancer10/my-understanding-of-crud-applicationscontrollers-and-middlewares-16c8"/>
-        <updated>2025-11-21T18:26:46.000Z</updated>
-        <summary type="html"><![CDATA[Okay, before we start - quick disclaimer: I am in no way a professional. I'm just typing this stuff here because I'm too lazy to write notes in my book.
-Now, let's begin!
-To me, CRUD applications feel like the backbone of many systems. They help us Create, Read, Update, and Delete data - you know, the stuff everyone knows. But during my adventure in the world of CRUD, I seemed to have found another layer, a deeper mystery so to speak.
-Long story short, I basically had to understand the difference between middleware and controllers. To be honest, I don't really know where to draw the line completely, but my knowledge has evolved since last time - I'll tell you that!
-I used to think that anything with app.use() was middleware (not my proudest moment, to be honest - don't judge! Also, if you're planning to, please notice the #newbie hashtag - thanks!).
-My Middleware vs Controller Revelation
-Code exmaple:
-
-just think of middlewares as waiters:
-Grinds the beans 
-Steams the milk 
-Checks if you paid 
-Then passes it along  "Next!"
-then controllers they are the ones who:
-Puts everything together 
-Adds the final touches 
-Hands you the finished drink  "Here's your coffee!"
-(beautiful illustration analogy btw )
-The Order Matters Saga
-Anyway, let's not glaze Sam right now. I'm quite happy I've gained this knowledge!
-Follow me to see my next blog on Swagger documentation!]]></summary>
-        <author>
-            <name>Devmancer</name>
         </author>
     </entry>
     <entry>
@@ -320,20 +398,10 @@ Follow me to see my next blog on Swagger documentation!]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[FizzBuzz with Cosines]]></title>
+        <title type="html"><![CDATA[Solving Fizz Buzz with Cosines]]></title>
         <id>https://susam.net/fizz-buzz-with-cosines.html</id>
         <link href="https://susam.net/fizz-buzz-with-cosines.html"/>
         <updated>2025-11-21T17:28:25.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How Cops Are Using Flock's ALPR Network to Surveil Protesters and Activists]]></title>
-        <id>https://www.eff.org/deeplinks/2025/11/how-cops-are-using-flock-safetys-alpr-network-surveil-protesters-and-activists</id>
-        <link href="https://www.eff.org/deeplinks/2025/11/how-cops-are-using-flock-safetys-alpr-network-surveil-protesters-and-activists"/>
-        <updated>2025-11-21T17:20:51.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -460,16 +528,6 @@ Follow me to see my next blog on Swagger documentation!]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[XBMC 4.0 for the Original Xbox]]></title>
-        <id>https://www.xbox-scene.info/articles/announcing-xbmc-40-for-the-original-xbox-r64/</id>
-        <link href="https://www.xbox-scene.info/articles/announcing-xbmc-40-for-the-original-xbox-r64/"/>
-        <updated>2025-11-21T15:18:05.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[When NOT to use AI in your hackathon project with MLH winners Cindy Cui and Alison Co [Podcast #198]]]></title>
         <id>69207ea2005b143f71163cb0</id>
         <link href="https://www.freecodecamp.org/news/when-not-to-use-ai-in-your-hackathon-project-with-mlh-winners-cindy-cui-and-alison-co-podcast-198/"/>
@@ -560,6 +618,16 @@ Follow me to see my next blog on Swagger documentation!]]></summary>
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[EXIF orientation info in PNGs isn't used for image-orientation: from-image]]></title>
+        <id>https://bugzilla.mozilla.org/show_bug.cgi?id=1627423</id>
+        <link href="https://bugzilla.mozilla.org/show_bug.cgi?id=1627423"/>
+        <updated>2025-11-21T13:29:14.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Making a Small RPG]]></title>
         <id>https://jslegenddev.substack.com/p/making-a-small-rpg</id>
         <link href="https://jslegenddev.substack.com/p/making-a-small-rpg"/>
@@ -587,16 +655,6 @@ Follow me to see my next blog on Swagger documentation!]]></summary>
         <summary type="html"><![CDATA[Your day-ahead look for Nov. 21, 2025]]></summary>
         <author>
             <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How a French judge was digitally cut off by the USA]]></title>
-        <id>https://www.heise.de/en/news/How-a-French-judge-was-digitally-cut-off-by-the-USA-11087561.html</id>
-        <link href="https://www.heise.de/en/news/How-a-French-judge-was-digitally-cut-off-by-the-USA-11087561.html"/>
-        <updated>2025-11-21T12:12:41.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -849,6 +907,16 @@ The post WhatsApp Reintroduces Its “About” Feature appeared first on Lowyat.
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Prozac 'no better than placebo' for treating children with depression, experts]]></title>
+        <id>https://www.theguardian.com/society/2025/nov/20/prozac-no-better-than-placebo-for-treating-children-with-depression-experts-say</id>
+        <link href="https://www.theguardian.com/society/2025/nov/20/prozac-no-better-than-placebo-for-treating-children-with-depression-experts-say"/>
+        <updated>2025-11-21T00:02:18.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Grok 4.1 Fast's compelling dev access and Agent Tools API overshadowed by Musk glazing]]></title>
         <id>2SyOe2gcmKoWxMjhgua8K9</id>
         <link href="https://venturebeat.com/ai/grok-4-1-fasts-compelling-dev-access-and-agent-tools-api-overshadowed-by"/>
@@ -902,16 +970,6 @@ The AI Infra Product announced today, extends the company’s existing automatio
 The company said the system is already running in enterprise production environments and delivering major efficiency gains for early adopters, reducing GPU costs by between 50% and 70%, according to the company. The company does not publicly list enterprise pricing for this solution and instead invites interested customers to receive a custom quote based on their operation si…]]></summary>
         <author>
             <name>carl.franzen@venturebeat.com (Carl Franzen)</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Android and iPhone users can now share files, starting with the Pixel 10]]></title>
-        <id>https://blog.google/products/android/quick-share-airdrop/</id>
-        <link href="https://blog.google/products/android/quick-share-airdrop/"/>
-        <updated>2025-11-20T17:04:34.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1150,10 +1208,10 @@ The company says the tools address a central limitation in current consumer AI: 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[My Favorite Math Problem]]></title>
-        <id>https://bytesauna.com/post/my-favorite-math-problem</id>
-        <link href="https://bytesauna.com/post/my-favorite-math-problem"/>
-        <updated>2025-11-17T11:22:54.000Z</updated>
+        <title type="html"><![CDATA[Solving the Whole Year Puzzle with Z3]]></title>
+        <id>https://jcrowell.net/posts/whole-year-sat</id>
+        <link href="https://jcrowell.net/posts/whole-year-sat"/>
+        <updated>2025-11-17T01:42:20.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1180,10 +1238,10 @@ The company says the tools address a central limitation in current consumer AI: 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Open Source and Local Code Mode MCP in Deno Sandboxes]]></title>
-        <id>https://portofcontext.com/</id>
-        <link href="https://portofcontext.com/"/>
-        <updated>2025-11-13T16:53:43.000Z</updated>
+        <title type="html"><![CDATA[The Anatomy of the Least Squares Method, Part Two]]></title>
+        <id>https://thepalindrome.org/p/the-anatomy-of-the-least-squares-ab5</id>
+        <link href="https://thepalindrome.org/p/the-anatomy-of-the-least-squares-ab5"/>
+        <updated>2025-11-14T04:10:22.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
