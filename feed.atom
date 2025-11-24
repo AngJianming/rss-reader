@@ -1,98 +1,360 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-11-24T01:18:26.936Z</id>
+    <id>urn:2025-11-24T03:20:48.468Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-11-24T01:18:26.936Z</updated>
+    <updated>2025-11-24T03:20:48.468Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Can we use Rust to Develop Extensions for PostgreSQL?]]></title>
-        <id>https://dev.to/shinyakato_/can-we-use-rust-to-develop-extensions-for-postgresql-5431</id>
-        <link href="https://dev.to/shinyakato_/can-we-use-rust-to-develop-extensions-for-postgresql-5431"/>
-        <updated>2025-11-24T01:13:02.000Z</updated>
-        <summary type="html"><![CDATA[Although it has been a while since the event, I am sharing the full transcript of my talk from POSETTE 2025. Please note that some information may be outdated as time has passed.
-Additionally, the Call for Proposals (CFP) for POSETTE 2026 is now open. Let's make the next POSETTE a great success together!
-Slides: 
+        <title type="html"><![CDATA[强制浏览器 reflow（重排）]]></title>
+        <id>https://dev.to/nikimunger/qiang-zhi-liu-lan-qi-reflowzhong-pai--2n07</id>
+        <link href="https://dev.to/nikimunger/qiang-zhi-liu-lan-qi-reflowzhong-pai--2n07"/>
+        <updated>2025-11-24T03:00:29.000Z</updated>
+        <summary type="html"><![CDATA[访问某些布局相关属性（offsetLeft / offsetTop / offsetWidth / clientWidth / getComputedStyle 等）会让浏览器 强制刷新布局，以便获得一个最新、真实的数值。
+浏览器为了性能会进行 layout（重排） 和 paint（重绘） 的优化：
+不会每次 DOM 改变就立即计算布局
+会等待、合并多个 DOM 改动
+等到下一帧（约 16ms），统一执行布局计算
+但是！当 JS 访问某些属性时，浏览器 必须 给出确切数值！
+indicator.offsetLeft
 
-
-YouTube: 
-
-
-
-
-
-
-
-  
-  
-  Can We Use Rust to Develop Extensions for PostgreSQL? #1
+offsetLeft 是个 布局属性（layout property）
+因此浏览器会：
+立即执行 layout（重排）
+更新所有 layout 相关计算
+返回最新的 offsetLeft 值
+这称为：
 
 
 
-Hello everyone.
-Today, I will talk about Postgres extensions.
+属性
+会强制 Reflow
 
-Here we go.
-Let me introduce myself a little bit.
-I specialize in Postgres, offering technical support, conducting R&D, contributing to the Postgres project, and maintaining two key extensions: pg_bulkload and pg_rman.
 
-To begin, can we use Rust to develop extensions for PostgreSQL?
 
-Yes, we can.
 
-However, getting started with Postgr…]]></summary>
+offsetLeft / offsetTop
+✔
+
+
+offsetWidth / offsetHeight
+✔
+
+
+scrollWidth / scrollHeight
+✔
+
+
+clientWidth / clientHeight
+✔
+
+
+getBoundingClientRect()
+✔
+
+
+getComputedStyle()
+✔
+
+
+
+最典型的代码：
+element.classList.remove("animate");
+void element.offsetWidth; // 强制 reflow
+element.classList.add("animate");
+
+这能让 CSS 动画从头开始执行。
+为什么？
+移除类 → 动画属性被移除，但浏览器还没计算布局
+强制 reflow → 浏览器计算新的布局
+再添加类 → 动画重新触发
+如果没有 reflow，浏览器可能把两次操作合并，导致动画 不重新触发。]]></summary>
         <author>
-            <name>Shinya Kato</name>
+            <name>NikiMunger</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Announcing SvelteKit OG v4: An alternative to @vercel/og for sveltekit]]></title>
-        <id>https://dev.to/theether0/announcing-sveltekit-og-v4-an-alternative-to-vercelog-for-sveltekit-3cg1</id>
-        <link href="https://dev.to/theether0/announcing-sveltekit-og-v4-an-alternative-to-vercelog-for-sveltekit-3cg1"/>
-        <updated>2025-11-24T01:10:39.000Z</updated>
+        <title type="html"><![CDATA[Stop Struggling with Axios! My First NPM Package "axios-fluent" Solves 3 Major Pain Points]]></title>
+        <id>https://dev.to/oharu121/stop-struggling-with-axios-my-first-npm-package-axios-fluent-solves-3-major-pain-points-33ko</id>
+        <link href="https://dev.to/oharu121/stop-struggling-with-axios-my-first-npm-package-axios-fluent-solves-3-major-pain-points-33ko"/>
+        <updated>2025-11-24T02:54:21.000Z</updated>
         <summary type="html"><![CDATA[Introduction
 
 
-We're thrilled to announce the official release of @ethercorps/sveltekit-og@v4! This major version represents a complete architectural overhaul focused on delivering uncompromising stability, simplifying the developer API, and providing the tools needed for robust, high-performance image generation across all Javascript runtimes.
-This release introduces powerful new features that eliminate manual steps and complex workarounds.
-I learnt a lot while fixing @ethercorps/sveltekit-og like wasm issue, runtime issues and developer experience with typescript.
-Docs
-Source
-Examples
-With v4, we focused on fixing issues related to runtime and fonts. We are happy with the results and I hope it makes you happy too.
-The core architecture was rebuilt to ensure cross-runtime reliability, res…]]></summary>
+Do you experience this every time you write HTTP requests?
+// Configuration is too complex...
+const response = await axios.post('https://api.example.com/users', data, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  timeout: 5000,
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false  // Writing this for self-signed certificates every time...
+  })
+});
+const user = response.data;  // Why do I need to write .data every single time?
+
+// Error handling is a nightmare
+try {
+  await axios.get('/api/data');
+} catch (error) {
+  // error.response?.data?.message? error.response?.status? error.config?.url?
+  // Always checking docs to find where things are...
+  console.log('Status:', error.response?.status);
+  console.log('Mes…]]></summary>
         <author>
-            <name>Shivam Meena</name>
+            <name>Yu-Chen, Lin</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Unlocking Soccer Secrets: AI-Powered Play Analysis from Broadcast Footage by Arvind Sundararajan]]></title>
-        <id>https://dev.to/arvind_sundararajan/unlocking-soccer-secrets-ai-powered-play-analysis-from-broadcast-footage-by-arvind-sundararajan-5e8e</id>
-        <link href="https://dev.to/arvind_sundararajan/unlocking-soccer-secrets-ai-powered-play-analysis-from-broadcast-footage-by-arvind-sundararajan-5e8e"/>
-        <updated>2025-11-24T01:02:08.000Z</updated>
-        <summary type="html"><![CDATA[Unlocking Soccer Secrets: AI-Powered Play Analysis from Broadcast Footage
-
-
-\Imagine trying to decipher the complex strategies of a soccer match just by watching the broadcast. It's like trying to understand a symphony by only hearing individual instruments – you miss the overall harmony. Current AI struggles to reliably extract play-by-play data from video, hindering deeper tactical insights.
-But what if AI could understand the 'why' behind every pass, every tackle, every run? The key lies in combining computer vision with tactical understanding. Imagine a system that not only recognizes player actions but also interprets them within the context of the game's strategic flow.
-This new approach uses 'tactical priors' – knowledge of common formations, player roles, and strategic patterns – t…]]></summary>
+        <title type="html"><![CDATA[Music Monday (Anything goes!)]]></title>
+        <id>https://dev.to/musicforem/test-1cid</id>
+        <link href="https://dev.to/musicforem/test-1cid"/>
+        <updated>2025-11-24T02:39:39.000Z</updated>
+        <summary type="html"><![CDATA[Happy Monday! What have been listening to? Anything goes!
+Drop a YouTube, Bandcamp, SoundCloud, or Spotify {% embed %} in the comments.]]></summary>
         <author>
-            <name>Arvind SundaraRajan</name>
+            <name>Mikey Dorje</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Boost Developer Revenue with Monetzly’s Conversational AI API]]></title>
-        <id>https://dev.to/monetzly/boost-developer-revenue-with-monetzlys-conversational-ai-api-37d1</id>
-        <link href="https://dev.to/monetzly/boost-developer-revenue-with-monetzlys-conversational-ai-api-37d1"/>
-        <updated>2025-11-24T01:01:11.000Z</updated>
-        <summary type="html"><![CDATA[Why 90% of AI Apps Fail to Monetize Effectively—and How You Can Be Different
-
-
-The AI app landscape is booming, but did you know that 90% of AI applications struggle to find a sustainable monetization model? This staggering statistic highlights a crucial problem in our industry: while innovation is at an all-time high, many developers find themselves grappling with how to effectively monetize their creations without alienating users. 
-Enter Monetzly: The Google Ads for AI Conversations. Imagine a platform where not only can you monetize your AI app, but you can also earn revenue by hosting contextually relevant ads—without interrupting the user experience. 
-In the current climate, developers need to think beyond traditional revenue models like subscriptions or paywalls. Monetzly introduces…]]></summary>
+        <title type="html"><![CDATA[We stopped roadmap work for a week and fixed 189 bugs]]></title>
+        <id>https://lalitm.com/fixits-are-good-for-the-soul/</id>
+        <link href="https://lalitm.com/fixits-are-good-for-the-soul/"/>
+        <updated>2025-11-24T02:36:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Monetzly</name>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stop Coding, Start Managing: A First Look at Google's AntiGravity IDE 🚀]]></title>
+        <id>https://dev.to/ranand12/stop-coding-start-managing-a-first-look-at-googles-antigravity-ide-3j9h</id>
+        <link href="https://dev.to/ranand12/stop-coding-start-managing-a-first-look-at-googles-antigravity-ide-3j9h"/>
+        <updated>2025-11-24T02:36:38.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR: I took Google's new agentic IDE, AntiGravity, for a spin. It shifts the workflow from writing code to managing asynchronous agents. In this post, I break down how I built a Stock Dividend Tracker using Google Antigravity and Gemini 3, parallel task execution, and the tool's really cool feature: verifiable screen recordings.
+The biggest difference in AntiGravity is the interface. While it has a traditional code editor (VS Code style) on the left, the right side is dominated by the Agent Manager.
+Think of the Agent Manager as an autonomous coding engine. Instead of pair programming, you are assigning tasks.
+The Inbox: This is your command center. You spin up tasks and check your inbox for status updates.
+Modes: You can toggle between Planning Mode (for complex architecture) and Fast M…]]></summary>
+        <author>
+            <name>Anand Kumar R</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🔍 Observability Practices: A Practical Guide With Real-World Examples]]></title>
+        <id>https://dev.to/cesar_nikolascamacmelen/observability-practices-a-practical-guide-with-real-world-examples-4eld</id>
+        <link href="https://dev.to/cesar_nikolascamacmelen/observability-practices-a-practical-guide-with-real-world-examples-4eld"/>
+        <updated>2025-11-24T02:34:56.000Z</updated>
+        <summary type="html"><![CDATA[Modern software systems are more distributed, dynamic, and complex than ever. Microservices, serverless functions, containers, and event-driven architectures make traditional monitoring insufficient.
+observability.
+This article explains the foundational pillars of observability, best practices, common tools, and includes a hands-on real-world example using Grafana + Prometheus for metrics and ELK Stack for logs.
+Observability is the ability to understand the internal state of a system based solely on the data it produces, such as metrics, logs, and traces.
+Unlike classical monitoring, which answers “Is the system up?”, observability answers:
+Why is the system slow?
+Where is the latency coming from?
+Which dependency failed?
+What changed recently that caused errors?
+1. Metrics
+
+
+Numeric meas…]]></summary>
+        <author>
+            <name>CESAR NIKOLAS CAMAC MELENDEZ</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why React Developers Are Moving to Next.js in 2025]]></title>
+        <id>https://dev.to/oliver_grant/why-react-developers-are-moving-to-nextjs-in-2025-20nj</id>
+        <link href="https://dev.to/oliver_grant/why-react-developers-are-moving-to-nextjs-in-2025-20nj"/>
+        <updated>2025-11-24T02:30:22.000Z</updated>
+        <summary type="html"><![CDATA[React has been the foundation of modern frontend development for years, but as applications grow, developers often need tools that go beyond a simple UI library. That’s where Next.js comes in. It builds on top of React and solves some of the framework’s biggest real-world challenges—performance, routing, SEO, and developer experience.
+In this post, I’ll break down why more React developers are shifting toward Next.js and why it might be the right move for your next project.
+React doesn’t include a router out of the box—you have to install react-router and configure everything yourself.
+/pages/index.js    →  Home
+
+
+No configuration. No boilerplate. Just create files and go.
+React apps are typically client-side rendered, which isn’t ideal for SEO and can slow down initial page load.
+SSR (getServerSideProps)
+SSG (getStaticProps)
+Incremental Static Regeneration
+App Router (Server Components)
+This makes dynamic apps feel faster and more SEO-friendly right out of the box.
+client-side rendered, which can slow down initial load times and weaken SEO.
+Next.js provides multiple rendering strategies:
+SSR (Server-Side Rendering)
+
+
+SSG (Static Site Generation)
+
+
+ISR (Incremental Static Regeneration)
+
+React Server Components via App Router
+This flexibility ensures better performance and significantly improved SEO.
+The Next.js App Router introduces a more modern and structured way to build applications:
+Server and Client Components
+
+Nested layouts
+
+Streaming + Suspense support
+
+Built-in SEO & metadata handling
+
+
+
+This architecture promotes cleaner code and better performance.]]></summary>
+        <author>
+            <name>oliver grant</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Ultimate Guide to AI-Powered Marketing Automation: Building Autonomous Systems That Convert]]></title>
+        <id>https://dev.to/bobby_sanders_63117dbdf8a/the-ultimate-guide-to-ai-powered-marketing-automation-building-autonomous-systems-that-convert-453j</id>
+        <link href="https://dev.to/bobby_sanders_63117dbdf8a/the-ultimate-guide-to-ai-powered-marketing-automation-building-autonomous-systems-that-convert-453j"/>
+        <updated>2025-11-24T02:28:27.000Z</updated>
+        <summary type="html"><![CDATA[The Ultimate Guide to AI-Powered Marketing Automation: Building Autonomous Systems That Convert
+
+
+
+  
+  
+  Introduction: The Dawn of Autonomous Marketing
+
+
+
+The strategies outlined in the Test Marketing Book are already being adopted by leading product developers to significantly reduce launch risk. Learn more →
+The landscape of business is changing faster than ever, driven by two powerful forces: marketing automation and Artificial Intelligence (AI). For years, businesses have relied on automation to handle repetitive tasks—scheduling emails, posting social media updates, and segmenting basic lists. But true transformation requires moving beyond simple efficiency. It demands autonomy.
+This guide is not about setting up another drip campaign. It’s about building a self-optimizing, intellig…]]></summary>
+        <author>
+            <name>bobby sanders</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Ultimate Guide to Autonomous Marketing: How AI, Automation, and Strategy Drive Exponential Growth]]></title>
+        <id>https://dev.to/bobby_sanders_63117dbdf8a/the-ultimate-guide-to-autonomous-marketing-how-ai-automation-and-strategy-drive-exponential-p98</id>
+        <link href="https://dev.to/bobby_sanders_63117dbdf8a/the-ultimate-guide-to-autonomous-marketing-how-ai-automation-and-strategy-drive-exponential-p98"/>
+        <updated>2025-11-24T02:27:13.000Z</updated>
+        <summary type="html"><![CDATA[The Ultimate Guide to Autonomous Marketing: How AI, Automation, and Strategy Drive Exponential Growth
+
+
+
+  
+  
+  Introduction: The New Dawn of Marketing Efficiency
+
+
+
+The strategies outlined in the Test Marketing Book are already being implemented by leading startups to validate new product launches. Learn more →
+For decades, marketing has been a game of intuition, effort, and often, educated guesswork. We’ve chased trends, optimized campaigns manually, and spent countless hours analyzing data that was often outdated before the coffee got cold.
+But the rules have changed.
+We are standing at the precipice of a revolution—a shift from reactive, labor-intensive marketing to proactive, intelligent, and truly autonomous marketing. This isn't just about scheduling social media posts or setting u…]]></summary>
+        <author>
+            <name>bobby sanders</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Kicking Off 2026: Top Trends & Predictions for the Next Big Tournament]]></title>
+        <id>https://dev.to/mabualzait/kicking-off-2026-top-trends-predictions-for-the-next-big-tournament-obi</id>
+        <link href="https://dev.to/mabualzait/kicking-off-2026-top-trends-predictions-for-the-next-big-tournament-obi"/>
+        <updated>2025-11-24T02:26:31.000Z</updated>
+        <summary type="html"><![CDATA[As we delve into the ongoing qualifying stages for the highly anticipated World Cup 2026, one thing is clear - every nation has its eyes set on the coveted prize. The road to Qatar has been a marathon of trials and tribulations, with teams testing their mettle against each other in what promises to be an exciting spectacle.
+The recent statement from former international player Gabriel Zakuani urging his national team, DR Congo, to maintain focus amidst the intense qualifying phase, echoes a sentiment that resonates across all participating nations. The 2026 qualifiers are not just about scoring goals or winning matches; they represent an opportunity for teams to fine-tune their strategies and prepare themselves for the biggest stage in international football.
+Group Leaders: Teams like Braz…]]></summary>
+        <author>
+            <name>Malik Abualzait</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ask HN: Hearing aid wearers, what's hot?]]></title>
+        <id>https://news.ycombinator.com/item?id=46029699</id>
+        <link href="https://news.ycombinator.com/item?id=46029699"/>
+        <updated>2025-11-24T02:25:39.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to use C# to digitally sign a Word document?]]></title>
+        <id>https://dev.to/yahey/how-to-use-c-to-digitally-sign-a-word-document-1f77</id>
+        <link href="https://dev.to/yahey/how-to-use-c-to-digitally-sign-a-word-document-1f77"/>
+        <updated>2025-11-24T02:24:07.000Z</updated>
+        <summary type="html"><![CDATA[In an increasingly digital world, the security and authenticity of documents are paramount. Whether for legal, financial, or confidential business communications, ensuring that a Word document hasn't been tampered with and originates from a trusted source is critical. This article delves into the practical application of digitally signing Word documents using C#, offering a robust solution to these common pain points. We will explore how to implement digital signatures, focusing on a widely used library to streamline the process.
+Digital signatures serve as the electronic equivalent of a handwritten signature, but with enhanced security benefits. They provide three core assurances:
+  Authenticity: Verifies the identity of the signer, confirming who created or approved the document.
+  Integ…]]></summary>
+        <author>
+            <name>YaHey</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Passing the Torch – My Last Root DNSSEC KSK Ceremony as Crypto Officer 4]]></title>
+        <id>https://technotes.seastrom.com/2025/11/23/passing-the-torch.html</id>
+        <link href="https://technotes.seastrom.com/2025/11/23/passing-the-torch.html"/>
+        <updated>2025-11-24T02:16:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mastering FizzBuzz in Python: A Step-by-Step Guide]]></title>
+        <id>https://dev.to/highcenburg/mastering-fizzbuzz-in-python-a-step-by-step-guide-2hmm</id>
+        <link href="https://dev.to/highcenburg/mastering-fizzbuzz-in-python-a-step-by-step-guide-2hmm"/>
+        <updated>2025-11-24T02:13:25.000Z</updated>
+        <summary type="html"><![CDATA[FizzBuzz is one of the most famous coding interview questions. While it may seem simple at first glance, it tests a programmer's ability to handle conditional logic, control flow, and edge cases effectively. In this post, we'll break down a clean and efficient Python solution.
+The rules of FizzBuzz are straightforward. We need to write a function that prints numbers from 1 to n, but with specific substitutions:
+  For multiples of 3, print "Fizz".
+  For multiples of 5, print "Buzz".
+  For multiples of both 3 and 5, print "FizzBuzz".
+  For all other numbers, print the number itself.
+The function should return a list of these results.
+Example:
+fizzbuzz(15) should return:
+[1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 11, 'Fizz', 13, 14, 'FizzBuzz']
+Here is a clear and readable Python…]]></summary>
+        <author>
+            <name>Vicente G. Reyes</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Occam’s Razor destroyed my polynomial model in 5 minutes]]></title>
+        <id>https://dev.to/mohammadreza_mahdian_3841/occams-razor-destroyed-my-polynomial-model-in-5-minutes-3779</id>
+        <link href="https://dev.to/mohammadreza_mahdian_3841/occams-razor-destroyed-my-polynomial-model-in-5-minutes-3779"/>
+        <updated>2025-11-24T02:11:46.000Z</updated>
+        <summary type="html"><![CDATA[I keep seeing people add higher-degree polynomials “just in case”.
+A simple, reproducible example showing why a more complex model is not always better — even on perfectly linear data.
+Today I created a perfectly linear dataset:
+
+y = 2x + 3 + some random noise
+Then I trained two models:
+Simple Linear Regression → Test R² ≈ 0.8626
+Polynomial Degree 2 (more complex) → Test R² ≈ 0.8623
+Guess what?
+
+The complex model did slightly better on training data…
+
+but performed worse (or at best equal) on unseen test data.
+This notebook walks through the entire experiment — step by step — with clean plots and real numbers.
+
+It’s a classic illustration of overfitting and why Occam’s Razor matters in machine learning.
+Let’s dive in.
+We generate a perfectly linear dataset based on the true relationship y …]]></summary>
+        <author>
+            <name>MohammadReza Mahdian</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[My Life Is a Lie: How a Broken Benchmark Broke America]]></title>
+        <id>https://www.yesigiveafig.com/p/part-1-my-life-is-a-lie</id>
+        <link href="https://www.yesigiveafig.com/p/part-1-my-life-is-a-lie"/>
+        <updated>2025-11-24T02:05:01.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -118,36 +380,6 @@ The post US Government Floats Possibility Of Selling NVIDIA H200 AI Chips To Chi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Tesser Project is Officially Open to Contributions!]]></title>
-        <id>https://dev.to/tesser/the-tesser-project-is-officially-open-to-contributions-16e4</id>
-        <link href="https://dev.to/tesser/the-tesser-project-is-officially-open-to-contributions-16e4"/>
-        <updated>2025-11-24T00:55:43.000Z</updated>
-        <summary type="html"><![CDATA[The Tesser Project is now open to any contributions on Github! 
-buy me a coffee]]></summary>
-        <author>
-            <name>The Tesser Project</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[TeraBox – Is it really Secure.]]></title>
-        <id>https://dev.to/john_david_bdcb2298ef9b07/terabox-is-it-really-secure-519j</id>
-        <link href="https://dev.to/john_david_bdcb2298ef9b07/terabox-is-it-really-secure-519j"/>
-        <updated>2025-11-24T00:50:52.000Z</updated>
-        <summary type="html"><![CDATA[What is TeraBox?
-
-
-TeraBox is a cloud storage and backup service designed to help users store, sync, and access digital files across multiple devices. It allows individuals to save photos, videos, music, documents, and other data securely on remote servers instead of local storage. TeraBox Mod is available on Android, iOS, and PC, and also offers a web version for browser access.
-Its main attraction is its large free storage offering, which has positioned the platform as a popular option for smartphone users, photographers, content creators, and anyone who needs extra storage without upgrading their device.
-TeraBox functions like most cloud platforms:
-Install the app or open the web version
-Create an account
-Upload files manually or use automatic backup
-Access your files anytime from any d…]]></summary>
-        <author>
-            <name>John David</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Qualcomm Confirms Snapdragon Devices Will Support Quick Share-To-AirDrop]]></title>
         <id>https://www.lowyat.net/?p=374117</id>
         <link href="https://www.lowyat.net/2025/374117/qualcomm-confirms-snapdragon-devices-will-support-quick-share-to-airdrop/"/>
@@ -163,145 +395,6 @@ The post Qualcomm Confirms Snapdragon Devices Will Support Quick Share-To-AirDro
         <id>https://www.asahi.com/ajw/articles/16137995</id>
         <link href="https://www.asahi.com/ajw/articles/16137995"/>
         <updated>2025-11-24T00:18:21.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[When Heaven Comes at Midnight: A Deep Journey Through John Chapter 3]]></title>
-        <id>https://dev.to/douglasvandergraph/when-heaven-comes-at-midnight-a-deep-journey-through-john-chapter-3-1dib</id>
-        <link href="https://dev.to/douglasvandergraph/when-heaven-comes-at-midnight-a-deep-journey-through-john-chapter-3-1dib"/>
-        <updated>2025-11-24T00:13:23.000Z</updated>
-        <summary type="html"><![CDATA[Some chapters of Scripture open like a door you walk through.
-It is quiet.
-The crowds have gone home.
-His name is Nicodemus — a Pharisee, a ruler of the Jews, a scholar, an expert, a man respected for his discipline and admired for his mastery of the Law. He knows the Torah. He keeps the traditions. He guards the boundaries. He understands the system, because he is the system.
-And yet, something inside him is unsettled.
-Something in him has begun to ache.
-Something in him has heard the footsteps of God moving through the streets of Judea, and he cannot go to sleep until he understands the voice behind the miracles.
-So he chooses the one hour no one is watching.
-He goes at night.
-Not because he is weak.
-And there, under the cloak of darkness, Nicodemus meets the Light of the world.
-The enco…]]></summary>
-        <author>
-            <name>DouglasVandergraph</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Speed up your Laravel development using CRUD Templates]]></title>
-        <id>https://dev.to/jcsoriano/speed-up-your-laravel-development-using-crud-templates-2k0g</id>
-        <link href="https://dev.to/jcsoriano/speed-up-your-laravel-development-using-crud-templates-2k0g"/>
-        <updated>2025-11-24T00:13:04.000Z</updated>
-        <summary type="html"><![CDATA[Hi Laravel developers! 
-I've recently created a new package designed to radically speed up your Laravel application development by generating routes, controllers, models, migrations, factories, requests, resources, and tests - all using a single command. 
-Let's generate a complete CRUD API for the Post model:
-php artisan crud:generate Content/Post \
-  --template=api \
-  --fields="title:string,content:text,published_at:datetime,category:belongsTo,comments:hasMany,status:enum:PublishStatus" \
-  --options="scope:user"
-
-The above command generates the following fully functional files:
-app/Http/Controllers/Api/Content/PostController.php
-app/Models/Content/Post.php
-app/Policies/PostPolicy.php
-app/Http/Requests/Content/StorePostRequest.php
-app/Http/Requests/Content/UpdatePostRequest.php
-app/Http/Resources/Content/PostResource.php
-database/migrations/{timestamp}_create_posts_table.php
-database/migrations/{timestamp}_create_{pivot}_tables.php (if belongsToMany or morphToMany relationships are present)
-database/factories/Content/PostFactory.php
-tests/Feature/Api/Content/PostControllerTest.php
-API routes automatically added to routes/api.php (will run install:api if the file doesn't exist yet)
-Laravel Pint run on all generated files
-🔗 Package: jcsoriano/laravel-crud-templates
-Documentation: laravelcrudtemplates.com
-GitHub: github.com/jcsoriano/laravel-crud-templates]]></summary>
-        <author>
-            <name>JC Soriano</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[dev diary 20251123]]></title>
-        <id>https://dev.to/hirooka_kazuya_d7f37d3cde/dev-diary-20251123-38pd</id>
-        <link href="https://dev.to/hirooka_kazuya_d7f37d3cde/dev-diary-20251123-38pd"/>
-        <updated>2025-11-24T00:10:57.000Z</updated>
-        <summary type="html"><![CDATA[organizing app UI
-
-
-i organized the UI of application and then built menu button and slide bar to show user name, existing table and sign out all in one.
-i have to make policy of UI. button click, input text, font, color, and so on. if there is already some general policy in this field, i'll check it.
-i built almost the all coding with ai, so don't understand detail, i have to read and comprehend them. in order to make countermeasure at trouble shooting, or expand some function on them.
-i regard this front and backend code as basement and i wanna develop new application on it. this has basic CRUD function, list page and detail edit page, sidebar for menu.]]></summary>
-        <author>
-            <name>hirooka kazuya</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Doge 'doesn't exist' with eight months left on its charter]]></title>
-        <id>https://www.reuters.com/world/us/doge-doesnt-exist-with-eight-months-left-its-charter-2025-11-23/</id>
-        <link href="https://www.reuters.com/world/us/doge-doesnt-exist-with-eight-months-left-its-charter-2025-11-23/"/>
-        <updated>2025-11-24T00:05:14.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Mocked data for learning]]></title>
-        <id>https://dev.to/karenpayneoregon/mocked-data-for-learning-5ekm</id>
-        <link href="https://dev.to/karenpayneoregon/mocked-data-for-learning-5ekm"/>
-        <updated>2025-11-23T23:56:20.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-When a developer is learning a new method or technique, data is generally required to populate a development instance of a database; this article explains how.
-For all samples, a NuGet package Bogus was used to generate data. Each time a sample project runs, the data remains the same, although there is an option to randomize it.
-
-Rather than creating fictitious data in a project, instead, create a class project that contains classes to generate data into models that also exist in the class project.
-There are several options for using the class project. Create a test project in the same Visual Studio solution, copy the class project to another Visual Studio solution, or create a local NuGet package that can then be used no differently than any other NuGet package.
-In general,…]]></summary>
-        <author>
-            <name>Karen Payne</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Regression Coefficient Was Positive… Until I Added One Variable and It Flipped Negative]]></title>
-        <id>https://dev.to/mohammadreza_mahdian_3841/the-regression-coefficient-was-positive-until-i-added-one-variable-and-it-flipped-negative-2360</id>
-        <link href="https://dev.to/mohammadreza_mahdian_3841/the-regression-coefficient-was-positive-until-i-added-one-variable-and-it-flipped-negative-2360"/>
-        <updated>2025-11-23T23:54:36.000Z</updated>
-        <summary type="html"><![CDATA[Why a Regression Coefficient Can Turn Negative When the Bivariate Relationship Is Clearly Positive
-
-
-One plot that instantly breaks every intuition you had about regression coefficients.
-
-Take a good look at that green line sloping down.
-That single line is the clearest proof you’ll ever see that regression coefficients can lie — beautifully — when multicollinearity is severe.
-One of the deepest and most frequently misunderstood concepts in multiple linear regression:
-The regression coefficient is not the simple bivariate slope.
-partial effect of that variable while holding all other predictors constant.
-When severe multicollinearity exists, "holding all other predictors constant" becomes a counterfactual — often physically impossible — scenario. In such cases, the sign of the coefficient …]]></summary>
-        <author>
-            <name>MohammadReza Mahdian</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Breaking Into Gaming Analytics: From 1 Billion Mobile Users to 5B Daily Events]]></title>
-        <id>https://dev.to/sai_krishnachaitanyachi/breaking-into-gaming-analytics-from-1-billion-mobile-users-to-5b-daily-events-5dh7</id>
-        <link href="https://dev.to/sai_krishnachaitanyachi/breaking-into-gaming-analytics-from-1-billion-mobile-users-to-5b-daily-events-5dh7"/>
-        <updated>2025-11-23T23:54:33.000Z</updated>
-        <summary type="html"><![CDATA[My journey into gaming analytics started with a beaten-up SEGA 16-bit console in the late '90s, blasting through Contra and Teenage Mutant Ninja Turtles with the kind of obsessive dedication I'd later apply to debugging production pipelines at 3 AM. Like most kids, I had no idea those pixelated adventures were generating exactly zero data points—because nobody was tracking my completion rates, optimal routes, or how many times I rage-quit before finally beating that boss.
-Fast forward through countless hours of Need for Speed at my cousin's place (where I held the undefeated lap record, thank you very much), a 2007 PC that became my platform for mastering Hitman's stealth mechanics and dominating NFS Most Wanted, and eventually college. I earned my Bachelor's in Electronics and Communicati…]]></summary>
-        <author>
-            <name>Sai Krishna Chaitanya Chigili</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ISPs more likely to throttle netizens who connect through CG-NAT: Cloudflare]]></title>
-        <id>https://www.theregister.com/2025/11/03/cloudflare_cgnat_bias_research/</id>
-        <link href="https://www.theregister.com/2025/11/03/cloudflare_cgnat_bias_research/"/>
-        <updated>2025-11-23T23:53:06.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -358,7 +451,7 @@ Fast forward through countless hours of Need for Speed at my cousin's place (whe
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Iowa City made its buses free. traffic cleared, and so did the air]]></title>
+        <title type="html"><![CDATA[Iowa City made its buses free. Traffic cleared, and so did the air]]></title>
         <id>https://www.nytimes.com/2025/11/18/climate/iowa-city-free-buses.html</id>
         <link href="https://www.nytimes.com/2025/11/18/climate/iowa-city-free-buses.html"/>
         <updated>2025-11-23T22:06:44.000Z</updated>
@@ -372,16 +465,6 @@ Fast forward through countless hours of Need for Speed at my cousin's place (whe
         <id>https://sandbox-science.com/particle-life</id>
         <link href="https://sandbox-science.com/particle-life"/>
         <updated>2025-11-23T21:54:32.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Several core problems with Rust]]></title>
-        <id>https://bykozy.me/blog/rust-is-a-disappointment/</id>
-        <link href="https://bykozy.me/blog/rust-is-a-disappointment/"/>
-        <updated>2025-11-23T21:52:48.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -408,30 +491,10 @@ Fast forward through countless hours of Need for Speed at my cousin's place (whe
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Giving the Jakks Atari Paddle a Spin]]></title>
-        <id>https://nicole.express/2025/paddle-me-atari.html</id>
-        <link href="https://nicole.express/2025/paddle-me-atari.html"/>
-        <updated>2025-11-23T20:31:45.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA["Good engineering management" is a fad]]></title>
         <id>https://lethain.com/good-eng-mgmt-is-a-fad/</id>
         <link href="https://lethain.com/good-eng-mgmt-is-a-fad/"/>
         <updated>2025-11-23T20:16:04.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[1M Downloads of Zorin OS 18]]></title>
-        <id>https://blog.zorin.com/2025/11/18/test-the-upgrade-from-zorin-os-17-to-18-and-celebrating-1-million-downloads-of-zorin-os-18/</id>
-        <link href="https://blog.zorin.com/2025/11/18/test-the-upgrade-from-zorin-os-17-to-18-and-celebrating-1-million-downloads-of-zorin-os-18/"/>
-        <updated>2025-11-23T19:38:15.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1139,6 +1202,16 @@ The company said the system is already running in enterprise production environm
         <summary type="html"><![CDATA[A group of quantum physicists claims to have created a version of the powerful reasoning AI model DeepSeek R1 that strips out the censorship built into the original by its Chinese creators.  The scientists at Multiverse Computing, a Spanish firm specializing in quantum-inspired AI techniques, created DeepSeek R1 Slim, a model that is 55% smaller…]]></summary>
         <author>
             <name>Caiwei Chen</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Rust Performance Book]]></title>
+        <id>https://nnethercote.github.io/perf-book/</id>
+        <link href="https://nnethercote.github.io/perf-book/"/>
+        <updated>2025-11-19T09:08:10.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
