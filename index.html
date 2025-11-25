@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-11-25 datetime="2025-11-25T17:11:08.000Z">2025-11-25</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-11-25 datetime="2025-11-25T17:11:08.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-11-25 datetime="2025-11-25T18:19:30.000Z">2025-11-25</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-11-25 datetime="2025-11-25T18:19:30.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -42,338 +42,51 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/andersoncontreira/restful-pilula-4-identificadores-e-o-uso-de-uuids-em-apis-rest-186"
+                        data-accordion-key="https://dev.to/yorgie7/react-performance-tip-why-usestate-beats-usestate-5blj"
                         open
                       >
-                        <summary class="article-expander__title">RESTful – Pílula 4 – Identificadores e o uso de UUIDs em APIs REST</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/andersoncontreira/restful-pilula-4-identificadores-e-o-uso-de-uuids-em-apis-rest-186">
+                        <summary class="article-expander__title">🚀 React Performance Tip: Why useState(() &#x3D;&gt; ...) Beats useState({...})</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/yorgie7/react-performance-tip-why-usestate-beats-usestate-5blj">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Faiog1z2n0rlyelkk1t41.webp" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy6u8qvbs0h83huapk4xj.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Identificadores são fundamentais em uma API RESTful.
-A escolha entre IDs numéricos e UUIDs impacta segurança, escalabilidade, privacidade e integração entre sistemas.
-Exemplos comuns:
-GET /users/10
-GET /orders/99
-GET /products/42
+                              <span>Most developers write:
+const [ref] &#x3D; useState({ current: initialValue });
 
-Um identificador ideal deve ser:
-único
-imutável
-estável
-consistente
-IDs como 1, 2, 3 são simples e eficientes, porém:
-❌ expõem o tamanho da base
-enumeration attack)
-Servem bem para sistemas internos, pequenos ou isolados.
-não são ideais.
-Um UUID v4 típico:
-550e8400-e29b-41d4-a716-446655440000
+...but don&#x27;t realize this silently creates performance overhead ---
+When you do:
+useState({ current: initialValue });
 
-Vantagens:
-difíceis de adivinhar
-não expõem contagem ou ordem
-bons para microsserviços
-excelente unicidade sem coordenação
-ideais para APIs públicas ou expostas a terceiros
-não substitui a Primary Key
+JavaScript still recreates that object on every single render, even
+This causes:
+  unnecessary object allocations\
+  extra CPU work during render\
+  increased garbage-collection pressure\
+  wasted memory churn\
+  unnecessary strain in fast or frequently updating UI sections
+Your code:
+useState({ current: initialValue });
 
+Render 1: - JS creates { current: initialValue } - React uses it
+Render 2: - JS creates { current: initialValue } again - React
+Render 3: - JS creates { current: initialValue } again - React
+...
+Render 30: - JS creates { current: initialValue } again - React
+const [ref] &#x3D; useState(() &#x3D;&gt; ({ current: initialValue }));
 
-Mesmo usando UUID em APIs, sua tabela deve continuar tendo:
-uma chave p…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/armaansucks/i-made-my-resume-site-it-wasnt-that-deep-262e"
-                        open
-                      >
-                        <summary class="article-expander__title">I made my resume site. It wasn’t that deep.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/armaansucks/i-made-my-resume-site-it-wasnt-that-deep-262e">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0ya1pso3qew9qmsp0t93.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>*look at it first: *           https://armaansucks.vercel.app
-So yeah, I made my resume site.
-I wanted a site that actually feels like me.
-The whole thing is basically me experimenting and stacking whatever ideas looked cool until it stopped looking ugly. That’s literally the entire process.
-Why I even bothered
+  React calls the initializer only once
 
-
-Nothing philosophical.
-Also, resumes look boring as hell.
-That’s it.
-How I built it
-
-
-I didn’t “design” anything. I don’t even know what people do with Figma or whatever tool they worship. I just opened the editor and kept tweaking until it started matching the vibe in my head.
-My rules were simple:
-• dark, sharp, readable
-It’s mostly React + Three.js + some shaders here and there. Basic stuff, nothing insane.
-Stuff that annoyed me while building
-
-
-• I kept changing tiny spacing values like an idiot
-Building this wasn’t hard. It was just tedious.
-Why I like the final result
-
-
-It feels like a proper “Armaan” site.
-No nonsense.
-Closing
-
-
-That’s pretty much it.
-If you want, I can also make a shorter version, a more sarcastic one, or a more serious one. Just say which vibe.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/royson_menezes_479ed50941/how-i-integrated-the-blockchain-donation-feature-in-my-expo-project-3c9f"
-                        open
-                      >
-                        <summary class="article-expander__title">How I integrated the blockchain donation feature in my Expo project</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/royson_menezes_479ed50941/how-i-integrated-the-blockchain-donation-feature-in-my-expo-project-3c9f">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fow6zpx60oy2w01378vkb.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hi! In this article, I’m going to walk you through how I integrated a blockchain-based donation system into my Expo project. I’ll explain everything step-by-step in a beginner-friendly way — why we need a global Web3 provider, how WalletConnect’s projectId and RPC URLs are created and used, and how the donation flow works in the app. I’ll also show minimal code snippets from my actual project files so you can easily follow along and implement the same setup in your own app.
-Add a global Web3 provider so all screens can access wallet state (account, signer, network).
-Use WalletConnect (mobile) via a projectId and RPC endpoints (Alchemy/Infura or public RPC) to talk to an Ethereum testnet/mainnet.
-On the donation screen user:
-Connect wallet → select fund → enter ETH → Send transaction → wait…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/jmosley/how-to-create-a-bug-report-1f3l"
-                        open
-                      >
-                        <summary class="article-expander__title">🗺️ How-To: Create a Bug Report</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jmosley/how-to-create-a-bug-report-1f3l">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fm7zxcn715kiganmfrq78.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Great! You’ve found a bug! And, wow, is it wreaking havoc! You did your homework. It’s reproducible, you know which environment it’s in, and it’s not been reported because you did your due diligence by searching through the ticketing system (insert Jira, Shortcut, Clickup, etc. here). This means you get the gold bug award. 
-
-Finding the bug is only the beginning. Here’s how to create a great bug report.
-What Qualifies as a Great Report?
-Information. The more details you provide, the faster the engineering team can find and fix the issue. Let’s start with the essentials.
-Browser Information: What browser are you using? Does the issue exist in other browsers?
-
-
-Environment: Was the issue discovered in production? Does the issue exist in the Staging or QA environments? Sometimes the fix is on…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/hyperkai/type-hints-in-python-3-4gg"
-                        open
-                      >
-                        <summary class="article-expander__title">Type hints in Python (3)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/hyperkai/type-hints-in-python-3-4gg">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fn1i0nph5torxx6ze735s.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Buy Me a Coffee☕
-*Memo:
-My post explains type hints (1).
-My post explains type hints (2).
-Multiple variables cannot be defined with type hints at once so they need to be type-hinted first as shown below:
-v1: str
-v2: str
-
-v1 &#x3D; v2 &#x3D; &#x27;Hello&#x27;
-
-print(v1) # Hello
-print(v2) # Hello
-
-v1: str &#x3D; v2: str &#x3D; &#x27;Hello&#x27;
-# SyntaxError: invalid syntax
-
-Assignment statement unpacking cannot be done with type hints at once so variables need to be type-hinted first as shown below:
-v: str
-
-v, &#x3D; &#x27;Hello&#x27;,
-
-print(v) # Hello
-
-v1: str
-v2: int
-
-v1, v2 &#x3D; &#x27;Hello&#x27;, 23
-
-print(v1) # Hello
-print(v2) # 23
-
-v: str, &#x3D; &#x27;Hello&#x27;,
-v1: str, v2: int &#x3D; &#x27;Hello&#x27;, 23
-# SyntaxError: invalid syntax
-
-for statement unpacking cannot be done with type hints at once so variables need to be type-hinted first as shown below:
-v: str
-
-for v, in [[…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/anil_kumar_noolu/day-230-understanding-terraform-providers-3ema"
-                        open
-                      >
-                        <summary class="article-expander__title">Day 2/30: Understanding Terraform Providers</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/anil_kumar_noolu/day-230-understanding-terraform-providers-3ema">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7mtqvibfe9n2biup0hpg.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Today marks Day 2 of my #30daysofAWSTerraform challenge started by Piyush Sachdeva. Today we will deep dive into the terraform providers. What are terraform providers and how exactly they will work.
-Provider is simply a plugin that translates our terraform code into a code that your cloud provider can understand. As Cloud Provider doesn&#x27;t understand HCL language of Terraform, this provider acts as a bridge between our Terraform code and Cloud.
-In simple, Providers are plugins that allow Terraform to interact with cloud platforms, SaaS providers, and other APIs. For AWS, we use the hashicorp/aws provider.
-terraform providers for AWS
-In the above official link, you can view all the services AWS Cloud will provide for the Terraform integration.
-terraform {
-  required_providers {
-    aws &#x3D; {
- …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/namingthingsishard/from-hooks-to-actions-whats-new-in-react-19-4gn4"
-                        open
-                      >
-                        <summary class="article-expander__title">From Hooks To Actions: What&#x27;s New In React 19</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/namingthingsishard/from-hooks-to-actions-whats-new-in-react-19-4gn4">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fm7r1vpypdi3q21rzp3w9.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>With the release of React 19.2, let&#x27;s explore in brief how you can leverage the latest React features in your applications. Just a heads up, this blog post is more theory heavy. In case you want to see some working examples, I&#x27;ve linked a video in the references as well as the official documentation so that you can experiment with these features on your own time as well.
-This is the one that&#x27;s most exciting and anticipated by people in my opinion. React compiler is a build tool that automatically optimizes your app.
-Before: review component logic and separate out states or apply memoization manually
-After: configure in your bundler and see the magic
-There are some caveats here however. Your app needs to follow Rules of React or the compiler will err on the safe side and choose to not apply…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/hejhdiss/introducing-qeltrix-v2-high-performance-content-derived-encryption-with-parallel-processing-3mke"
-                        open
-                      >
-                        <summary class="article-expander__title">Introducing Qeltrix V2: High-Performance Content-Derived Encryption with Parallel Processing</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/hejhdiss/introducing-qeltrix-v2-high-performance-content-derived-encryption-with-parallel-processing-3mke">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fayyx6jh915hgz2pc8yqt.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I&#x27;m excited to announce the release of Qeltrix V2, a major enhancement to the content-derived encryption container format that brings significant performance improvements and new capabilities while maintaining full backward compatibility with V1 files.
-Qeltrix is a Proof-of-Concept command-line utility that creates encrypted, compressed data containers with a unique approach: the encryption key is derived directly from the file content itself. This eliminates the need to store or transfer separate encryption keys, making it ideal for secure archival and data obfuscation scenarios.
-Built on modern cryptography (ChaCha20-Poly1305), parallel processing, and a streaming architecture, Qeltrix handles files of any size efficiently.
-Version 2 introduces several significant features that improve p…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/aws-builders/ultra-low-bedrock-llm-rate-limits-for-new-aws-accounts-time-to-wake-up-your-inactive-aws-accounts-3no0"
-                        open
-                      >
-                        <summary class="article-expander__title">Ultra Low Bedrock LLM Rate Limits for New AWS Accounts? Time to Wake Up Your Inactive AWS Accounts!</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/aws-builders/ultra-low-bedrock-llm-rate-limits-for-new-aws-accounts-time-to-wake-up-your-inactive-aws-accounts-3no0">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdh5yrxnwqzgiom2rlert.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Are You Struggling With Amazon Bedrock’s Ultra-Low Quotas on New AWS Accounts? 🤯
-
-
-Are you hitting painfully low rate limits when running LLMs on Amazon Bedrock from a newly created AWS account? You’re definitely not alone — many developers are discovering that new accounts often start with extremely restrictive quotas, sometimes as low as 2 requests per minute.
-Official guidance usually suggests contacting an account manager to escalate your limits, but for startups, hobby projects, or personal experimentation, that path is far from simple.
-Since 2024 or maybe 2025, AWS quietly adjusted Bedrock’s default model access for newly created accounts - together with other lower account defaults such as a maximum concurreny of 10 for AWS Lambda. Even when using global endpoints, many fresh accou…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/query_filter_591122b53770/catalog-27ik"
-                        open
-                      >
-                        <summary class="article-expander__title">catalog</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/query_filter_591122b53770/catalog-27ik">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F62y4w2j8qsd7rnq4y6dk.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>SELECT o.name AS table_name
-FROM sysobjects o
-WHERE o.type &#x3D; &#x27;U&#x27;
-  AND o.uid &#x3D; USER_ID()
-  AND EXISTS (
-        SELECT 1 FROM syscolumns c
-        WHERE c.id &#x3D; o.id AND LOWER(c.name) &#x3D; &#x27;orderid&#x27;
-      )
-  AND EXISTS (
-        SELECT 1 FROM syscolumns c
-        WHERE c.id &#x3D; o.id AND LOWER(c.name) &#x3D; &#x27;interntimestamp&#x27;
-      )
-ORDER BY o.name;</span>
+  No repeated object creation
+  No extra GC churn
+  No hidden allocations in later renders
+  Matches useRef() behavior
+  Reduced render cost\
+  Lower GC pressure\
+  Optimized initialization\
+  Less memory churn\
+  More predictable rerenders
+Yogesh Bamanier\
+LinkedIn: https://www.linkedin.com/in/yogesh-007</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
@@ -385,22 +98,30 @@ ORDER BY o.name;</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/trng_trnhc_cd88085f/deep-dive-react-native-1-the-most-overlooked-file-in-your-project-do-you-truly-understand-3hgl"
+                        data-accordion-key="https://dev.to/4mars/session-service-iak-pravilno-buduvati-siesiiu-u-high-load-kazino-19mf"
                         open
                       >
-                        <summary class="article-expander__title">Deep Dive React Native #1: The Most Overlooked File in Your Project: Do You Truly Understand metro.config.js</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/trng_trnhc_cd88085f/deep-dive-react-native-1-the-most-overlooked-file-in-your-project-do-you-truly-understand-3hgl">
+                        <summary class="article-expander__title">Session Service: як правильно будувати сесію у high-load казино</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/4mars/session-service-iak-pravilno-buduvati-siesiiu-u-high-load-kazino-19mf">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsgna0tn1gs58mlxq268j.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fje5992gmit6q50afbj4l.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>When you initialize a new React Native project, you will find a file quietly sitting in your root directory: metro.config.js Most developers tend to ignore it until something breaks, or they need to install a specific library like react-native-svg
-But have you ever asked yourself:
- Why doesn&#x27;t React Native use Webpack or Vite?
- How does the app update so instantly when I change a single line of code (Fast Refresh)?
-The answer lies in Metro.
-In this article, we won&#x27;t just learn how to &quot;configure&quot; it. We are going to tear it open to understand what it actually does. Understanding Metro is the difference between a coder who just copies solutions and a developer who understands the first principles of their tools.
-Imagine your React Native application is a fully assembled car, running inside a…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
+                              <span>Session Service: як правильно будувати сесію у high-load казино
+
+
+Управління сесіями в онлайн-казино — це не просто &quot;зберігати токен у Redis&quot;. При навантаженні в десятки тисяч одночасних гравців кожна архітектурна помилка може призвести до втрати коштів, витоку даних або відмови сервісу. Розглянемо перевірені рішення.
+Безпека — неможливість підробки або викрадення сесії
+Масштабованість — мільйони активних сесій одночасно
+Продуктивність — перевірка сесії &lt; 10ms
+Multi-device — один користувач на кількох пристроях
+Швидка інвалідація — logout/ban миттєво діють
+Audit trail — історія всіх сесій для compliance
+Concurrent users: 50,000
+Sessions per second: 500-1,000 new sessions
+Session checks per second: 100,000-500,000
+Average session duration: 45 minutes
+Peak load multiplier: 3x (вечір п&#x27;ятниці…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;13
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -411,37 +132,276 @@ Imagine your React Native application is a fully assembled car, running inside a
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/query_filter_591122b53770/dupl-53kj"
+                        data-accordion-key="https://dev.to/jet_chiang_d3ea958f9227d2/we-had-enough-of-brainrot-we-built-a-terminal-app-for-instagram-to-stop-that-3p1n"
                         open
                       >
-                        <summary class="article-expander__title">dupl</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/query_filter_591122b53770/dupl-53kj">
+                        <summary class="article-expander__title">We had enough of brainrot. We built a terminal app for Instagram to stop that.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jet_chiang_d3ea958f9227d2/we-had-enough-of-brainrot-we-built-a-terminal-app-for-instagram-to-stop-that-3p1n">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fuetypfogpsptt0tf2442.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiqwntc5w1ebnteh2omr7.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>WITH t AS (
-    SELECT 
-        t.table_name,
-        LIST(
-            &#x27;SELECT &#x27;&#x27;&#x27; || t.table_name || &#x27;&#x27;&#x27; AS table_name, ORDERID, INTERNTIMESTAMP, COUNT(*) AS cnt&#x27; ||
-            &#x27; FROM &#x27; || t.table_name ||
-            &#x27; GROUP BY ORDERID, INTERNTIMESTAMP&#x27; ||
-            &#x27; HAVING COUNT(*) &gt; 1&#x27;
-        ) AS q
-    FROM syscolumns c1
-    JOIN syscolumns c2 
-         ON c1.table_id &#x3D; c2.table_id 
-        AND LOWER(c1.column_name) &#x3D; &#x27;orderid&#x27;
-        AND LOWER(c2.column_name) &#x3D; &#x27;interntimestamp&#x27;
-    JOIN systab t ON t.table_id &#x3D; c1.table_id
-    WHERE t.creator &#x3D; USER_ID()     -- tables owned by current user
-    GROUP BY t.table_name
-)
-SELECT STRING (
-       LIST ( q, &#x27; UNION ALL &#x27; )
-) AS generated_sql
-FROM t;</span>
+                              <span>Instagram: the app you open to send one message… and suddenly 30 minutes are gone. We all know the cycle — and we finally had enough.
+What if Instagram had a quick fix? A productivity-friendly mode that keeps your connections, but gives your attention span a fighting chance?
+Instead of quitting social media (yeah right) or pretending we’ll use it “mindfully,” we built something different: A distraction-free way to chat with friends and view stories — right from your terminal.
+No algorithm traps. No reel vortex. No dopamine casino. Just conversations and updates, on your terms.
+Instagram CLI is a minimal, fast, keyboard-native way to stay connected without getting cooked by social media.
+Chat without distractions — no feed, no reels, no algorithm.
+Stay connected with stories and selected feeds — only when you choose.
+Use your keyboard for everything — built for developers, not casual scrollers.
+Run it anywhere — VSCode, your terminal, or even a Linux server.
+Enjoy TUI life — clean, simple, fast.
+Lightning-fast, real-time chat with dev-friendly shortcuts.
+
+
+View stories only from accounts you follow -- no ads, btw. (This feature is experimental)
+
+
+Full feature description on our repo docs.
+It’s fully open source, written primarily in TypeScript (with a Python version too). We recommend TS version since it significantly reduces the risk of your account getting flagged by Meta&#x27;s anti-bot mechanisms.
+# Choose your camp...
+npm install -g @i7m/instagram-cli
+pip install instagram-cli
+
+We use Ink + React for the TS version and Curses for Python.
+This project is not affiliated with, authorized, or endorsed by Instagram or Meta. Using it may violate their Terms of Service - use responsibly.
+If you like this project, consider ⭐ starring the repo and contributing! https://github.com/supreme-gg-gg/instagram-cli</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/drcarlosruizviquez/unlocking-ai-driven-content-optimization-the-engagement-5cmg"
+                        open
+                      >
+                        <summary class="article-expander__title">**Unlocking AI-Driven Content Optimization: The &#x27;Engagement</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/drcarlosruizviquez/unlocking-ai-driven-content-optimization-the-engagement-5cmg">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Flgeb7rowr5zqzkk1753e.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Unlocking AI-Driven Content Optimization: The &#x27;Engagement Lift Index&#x27;
+When evaluating the success of AI-powered content on Netflix, a crucial metric to consider is the &#x27;Engagement Lift Index&#x27; (ELI). This metric measures the increase in user engagement attributed to AI-driven content optimization. Essentially, it quantifies how AI-driven content curation impacts viewers&#x27; interaction with Netflix&#x27;s vast library.
+To illustrate the concept, let&#x27;s examine a hypothetical AI-driven content optimization experiment on Netflix&#x27;s &#x27;Drama&#x27; category.
+Before AI-driven curation, the &#x27;Drama&#x27; category received an average of 3.5 minutes of watch time per user. After introducing AI-driven content optimization, Netflix observed a 25% increase in watch time, averaging 4.37 minutes per user.
+However, using the ELI, we can isolate the AI-driven impact: a 50% increase in user engagement within the &#x27;Drama&#x27; category, specifically due to AI-driven content suggestions. This translates to 1.92 additional minutes of watch time per user, directly attributed to AI-driven curation.
+The ELI provides a more nuanced understanding of AI&#x27;s role in optimizing user experience and increasing engagement on streaming platforms like Netflix. By incorporating ELI into AI-driven decision-making, content creators and recommendations engineers can refine their strategies to deliver more personalized and engaging content.
+Publicado automáticamente</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/ideradevtools/linux-compatible-html-editors-that-work-2boi"
+                        open
+                      >
+                        <summary class="article-expander__title">Linux-Compatible HTML Editors That Work</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ideradevtools/linux-compatible-html-editors-that-work-2boi">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvshi3f3y601998evotx0.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Developers sometimes move between different operating systems as they switch devices or environments. Many workflows start on macOS or Windows, but teams also use Linux installation setups for server work, container testing, or long-running tasks.
+This mix creates a simple problem: not every HTML editor behaves the same across platforms. Some tools offer stable Windows builds but weak Linux support. Others run on Linux but require workarounds during installation or setup.
+HTML editors (including WYSIWYG tools) play a key role in frontend work. For instance, they allow end users to create web content visually while also allowing developers to write code. If an editor fails on Linux (e.g., formatting, encoding, or rendering issues), developers lose consistency across environments.
+This artic…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;12
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/drcarlosruizviquez/did-you-know-that-synthetic-data-can-be-used-to-anonymize-se-mkc"
+                        open
+                      >
+                        <summary class="article-expander__title">Did you know that synthetic data can be used to anonymize se</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/drcarlosruizviquez/did-you-know-that-synthetic-data-can-be-used-to-anonymize-se-mkc">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Floht7taqk4gyoh0gq4t8.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Did you know that synthetic data can be used to anonymize sensitive information more effectively than traditional anonymization methods, while preserving its quality and relevance for machine learning model development? By leveraging techniques like Generative Adversarial Networks (GANs) and Variational Autoencoders (VAEs), synthetic data can mimic the distribution and relationships of the original data, making it virtually indistinguishable. This approach has significant implications for industries like healthcare and finance, where data anonymization is crucial for compliance and data protection.
+Publicado automáticamente</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/popcorn_movies/ringer-movies-two-for-the-money-with-bill-simmons-chris-ryan-and-cousin-sal-the-rewatchables-3ngf"
+                        open
+                      >
+                        <summary class="article-expander__title">Ringer Movies: ‘Two for the Money’ With Bill Simmons, Chris Ryan, and Cousin Sal | The Rewatchables</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/popcorn_movies/ringer-movies-two-for-the-money-with-bill-simmons-chris-ryan-and-cousin-sal-the-rewatchables-3ngf">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi1.ytimg.com%2Fvi%2FP7z2GD1TeJ4%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>‘Two for the Money’ With Bill Simmons, Chris Ryan, and Cousin Sal
+
+
+Bill Simmons, Chris Ryan and Cousin Sal dive into the 2005 sports-betting drama Two for the Money (starring Matthew McConaughey, Al Pacino and Rene Russo), firing up their favorite Monday night parlay to break down all the highs, lows and oddball antics of the film’s gambling world.
+After unpacking the movie’s sports-betting mechanics, they each name their most rewatchable scene and—around the 48-minute mark—get into a rapid-fire round of fun categories and rankings only The Rewatchables can deliver.
+Watch on YouTube</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-the-wiz-in-15-minutes-or-less-681"
+                        open
+                      >
+                        <summary class="article-expander__title">CinemaSins: Everything Wrong With The Wiz In 15 Minutes Or Less</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-the-wiz-in-15-minutes-or-less-681">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi3.ytimg.com%2Fvi%2FBfGAE4GBBsQ%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Everything Wrong With The Wiz In 15 Minutes Or Less
+
+
+CinemaSins is back on the yellow brick road, whipping up a snappy 15-minute rundown of every nitpick and plot hiccup in The Wiz—just in time with Wicked storming back into theaters. Expect their trademark wit as they dissect what makes this classic feel more fun (or flawed) than you remember.
+Along the way they drop links to polls, a Patreon shout-out, and all their social handles for fans who can’t get enough Cinematic Sinning. Plus, a quick roll call of their writers so you know who to blame… er, thank!
+Watch on YouTube</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-mission-impossible-the-final-reckoning-in-27-minutes-or-less-2lgc"
+                        open
+                      >
+                        <summary class="article-expander__title">CinemaSins: Everything Wrong With Mission: Impossible - The Final Reckoning In 27 Minutes Or Less</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/popcorn_movies/cinemasins-everything-wrong-with-mission-impossible-the-final-reckoning-in-27-minutes-or-less-2lgc">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fi2.ytimg.com%2Fvi%2FyZarArjwh90%2Fhqdefault.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Everything Wrong With Mission: Impossible – The Final Reckoning In 27 Minutes Or Less
+
+
+CinemaSins takes aim at the latest Mission: Impossible, counting up every plot hole, shaky stunt and Tom Cruise’s perpetual flirtation with on-screen death. They admit they still love the series but feel these recent chapters have strayed a bit from the franchise’s glory days.
+They also plug their website and social channels—TVSins, CommercialSins, CinemaSins Podcast—plus shout out their writers (Jeremy, Chris, Aaron, Jonathan, Deneé, Ian, Daniel). Want more? Hit up their sinful poll, Patreon, Discord, Reddit, Instagram, TikTok and even Jeremy’s book.
+Watch on YouTube</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/alifar/chatgpt-atlas-now-has-devtools-35h9"
+                        open
+                      >
+                        <summary class="article-expander__title">ChatGPT Atlas now has DevTools</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/alifar/chatgpt-atlas-now-has-devtools-35h9">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fonkqe762jt73pfdlq00x.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>ChatGPT Atlas has taken another important step forward with its latest update. The introduction of native DevTools, more control over search behaviour and smarter browser memory support turns Atlas into a productivity environment instead of a simple browser with an AI layer.
+
+This update is compact but strategic. It strengthens the position of Atlas as a workspace for development, automation and analysis.
+The update brings dockable DevTools inside the Atlas window. This removes the split between debugging and prompting, and creates a smoother engineering workflow.
+Developers can inspect network calls, console output, UI layouts or script behaviour without switching to a separate window. Atlas becomes a unified environment for building and analysing.
+Errors, stack traces and logs can be cop…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/artemdev_/theres-a-strange-gap-in-web-development-57g7"
+                        open
+                      >
+                        <summary class="article-expander__title">There’s a strange gap in web development.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/artemdev_/theres-a-strange-gap-in-web-development-57g7">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fniaklo36x3cxqx2mzg6q.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>On one side, you’ve got the enterprise-grade developer depression kit: Next.js apps, AWS pipelines, API layers, auth flows, rate-limiting, deployments, and a dozen microservices no small business asked for.
+On the other side, you’ve got “we just need a landing page” landing pages — the tiny brochure sites that somehow still manage to generate 40 rounds of feedback and three different opinions on button size.
+Developers don’t want to touch these small sites because they turn into endless tweaks. Small businesses can’t justify paying thousands for something that should take minutes, not months. And freelancers get stuck between scope creep and clients who think a $200 budget includes a full rebrand and psychic guidance.
+So I built swiftlysite.com to bridge the gap.
+It lets anyone generate a production-ready website just by writing a short description. No freelancers drowning in revisions. No devs resizing logos at midnight. No small business owners comparing twenty nearly identical proposals.
+Just text in, website out.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/sunday_micheal_0420a84c86/deploying-my-first-portfolio-on-killercoda-using-nginx-a-beginner-devops-walkthrough-3ale"
+                        open
+                      >
+                        <summary class="article-expander__title">🚀 Deploying My First Portfolio on Killercoda Using Nginx — A Beginner DevOps Walkthrough</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sunday_micheal_0420a84c86/deploying-my-first-portfolio-on-killercoda-using-nginx-a-beginner-devops-walkthrough-3ale">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiorgb1zliep2bk17dgmc.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>As part of my DevOps learning journey, I was given an assignment to deploy a personal portfolio website on Killercoda using Nginx. This hands-on project taught me how to host a static website on a remote Linux environment, configure a web server, and use Git for deployment — all essential DevOps skills.
+In this article, I’ll walk you through every step I took.
+I started by downloading a portfolio template from StartBootstrap.
+
+After downloading, I extracted the ZIP file and opened the project folder in Visual Studio Code.
+
+In VS Code, I customized the template with:
+My name
+My bio
+Updated projects and contacts
+Adjusted colors and layout
+
+
+
+
+Once the edits were done, I initialized a Git repository and pushed the project online:
+git init
+
+
+
+I visited:
+👉 https://killercoda.com/playgrounds/sc…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -462,6 +422,23 @@ FROM t;</span>
                   <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="885add36-e2df-4759-adbc-09363b47d49d"
+                        open
+                      >
+                        <summary class="article-expander__title">TON Pulls Back After Ecosystem-Driven Rally as Traders Eye Key Support Near $1.50</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/11/25/ton-pulls-back-after-ecosystem-driven-rally-as-traders-eye-key-support-near-usd1-50">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>The token&#x27;s price action points to fading buyer interest, with initial strong trading activity giving way to a sharp decline in participation.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -870,23 +847,6 @@ FROM t;</span>
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="c29f2e61-aa43-4464-a2f8-ea2e47601915"
-                        open
-                      >
-                        <summary class="article-expander__title">KuCoin Registers With Austrac to Operate in Australia, Adds Fiat On-Ramps</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2025/11/25/kucoin-registers-with-austrac-to-operate-in-australia-adds-fiat-on-ramps">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>The registration comes as Australian regulators tighten scrutiny on offshore crypto platforms, with ASIC stating that many digital assets may require licensing to operate.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -905,16 +865,75 @@ FROM t;</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://kerkour.com/fast-secure-hash-function-sha256-sha512-sha3-blake3"
+                        data-accordion-key="https://github.com/flowglad/flowglad"
                         open
                       >
-                        <summary class="article-expander__title">Choosing a hash function for 2030 and beyond: SHA-2 vs. SHA-3 vs. BLAKE3</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://kerkour.com/fast-secure-hash-function-sha256-sha512-sha3-blake3">
+                        <summary class="article-expander__title">Show HN: We built an open source, zero webhooks payment processor</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/flowglad/flowglad">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://kerkour.com/icon-256.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/117a583019bd4f5da6229bd10df8e6dce34933ecf05a2f3146bbdcf530ae81c3/flowglad/flowglad" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;12
+                                &ensp;<span class="article-reading-time">(&hairsp;16
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://blog.kizu.dev/css-variables/"
+                        open
+                      >
+                        <summary class="article-expander__title">It is ok to say &quot;CSS variables&quot; instead of &quot;custom properties&quot;</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://blog.kizu.dev/css-variables/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;2
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://blog.genesmindsmachines.com/p/python-is-not-a-great-language-for"
+                        open
+                      >
+                        <summary class="article-expander__title">Python is not a great language for data science</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://blog.genesmindsmachines.com/p/python-is-not-a-great-language-for">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://substackcdn.com/image/fetch/$s_!BCXZ!,w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa23c3227-419b-47cf-8da1-670edef49477_6000x3376.jpeg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;25
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.semafor.com/article/11/25/2025/ozempic-does-not-slow-alzheimers-study-finds"
+                        open
+                      >
+                        <summary class="article-expander__title">Ozempic does not slow Alzheimer&#x27;s, study finds</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.semafor.com/article/11/25/2025/ozempic-does-not-slow-alzheimers-study-finds">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://img.semafor.com/b31628664d12d47e2c874558918565545114f3cc-6720x4480.jpg?rect&#x3D;0,476,6720,3528&amp;w&#x3D;1200&amp;h&#x3D;630&amp;q&#x3D;75&amp;auto&#x3D;format" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -928,12 +947,32 @@ FROM t;</span>
                         data-accordion-key="https://blog.kagi.com/orion"
                         open
                       >
-                        <summary class="article-expander__title">Orion 1.0 – Browse Beyond</summary>
+                        <summary class="article-expander__title">Orion 1.0</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://blog.kagi.com/orion">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.platformer.news/roblox-ceo-interview-backlash-analysis/"
+                        open
+                      >
+                        <summary class="article-expander__title">Roblox is a problem but it&#x27;s a symptom of something worse</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.platformer.news/roblox-ceo-interview-backlash-analysis/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://www.platformer.news/content/images/size/w1200/2025/11/oberon-copeland-veryinformed-com-TWcT7gG59js-unsplash.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;13
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -950,7 +989,7 @@ FROM t;</span>
                         <summary class="article-expander__title">FLUX.2: Frontier Visual Intelligence</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://bfl.ai/blog/flux-2">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://homepage-7jdrrl6hw.preview.bfl.ai/api/og/blog/flux-2" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://homepage-qh4zcorb2.preview.bfl.ai/api/og/blog/flux-2" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;20
@@ -967,12 +1006,12 @@ FROM t;</span>
                         data-accordion-key="https://news.ycombinator.com/item?id&#x3D;46045987"
                         open
                       >
-                        <summary class="article-expander__title">Launch HN: Onyx (YC W24) – The open-source chat UI</summary>
+                        <summary class="article-expander__title">Launch HN: Onyx (YC W24) – Open-source chat UI</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://news.ycombinator.com/item?id&#x3D;46045987">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;14
+                                &ensp;<span class="article-reading-time">(&hairsp;17
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -986,12 +1025,12 @@ FROM t;</span>
                         data-accordion-key="https://lwn.net/SubscriberLink/1046841/5bbf1fc049a18947/"
                         open
                       >
-                        <summary class="article-expander__title">Apt Rust requirement raises questions</summary>
+                        <summary class="article-expander__title">APT Rust requirement raises questions</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://lwn.net/SubscriberLink/1046841/5bbf1fc049a18947/">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
+                                &ensp;<span class="article-reading-time">(&hairsp;45
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1025,7 +1064,7 @@ FROM t;</span>
                         data-accordion-key="https://spectrum.ieee.org/it-management-software-failures"
                         open
                       >
-                        <summary class="article-expander__title">Trillions Spent and Big Software Projects Are Still Failing</summary>
+                        <summary class="article-expander__title">Trillions spent and big software projects are still failing</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://spectrum.ieee.org/it-management-software-failures">
                           <div class="article-summary-box-inner media-object">
                               <img src="https://spectrum.ieee.org/media-library/race-car-crashes-into-wall-digital-binary-code-exploding-dramatic-sky-in-background.png?id&#x3D;62207462&amp;width&#x3D;1200&amp;height&#x3D;600&amp;coordinates&#x3D;0%2C169%2C0%2C136" loading="lazy" class="media-object__media article-image" />
@@ -1147,6 +1186,48 @@ FROM t;</span>
 The executive order directs the Department of Energy (DOE) to build a “closed-loop AI experimentation platform” that links the country’s 17 national laboratories, federal supercomputers, and decades of government scientific data into “one cooperative system for research.” 
 The White House fact sheet casts the initiative as a way to “transform how scientific research is conducted” and “accelerate the speed of scientific discovery,” with priorities spanning biotechnology, critical materials, nuclear fission and fusion, quantum information science, and semiconductors. 
 DOE’s own re…</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="6AgzhypnMWE2NMbFCZNbgl"
+                        open
+                      >
+                        <summary class="article-expander__title">OpenAI now lets enterprises choose where to host their data</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://venturebeat.com/ai/openai-now-lets-enterprises-choose-where-to-host-their-data">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.ctfassets.net/jdtwqhzvc2n1/1g8nmbi7oAHyjfQNPztaUi/02c20bc6a85bbab1d13fffc88b356a9b/crimedy7_illustration_of_a_house_of_data_--ar_169_--v_7_ff997425-90c8-4492-b29d-74de45555488_3.png?w&#x3D;300&amp;q&#x3D;30" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>OpenAI expanded its data residency regions for ChatGPT and its API, giving enterprise users the option to store and process their data closest to their business operations and better comply with local regulations. This expansion removes one of the biggest compliance blockers preventing global enterprises from deploying ChatGPT at scale.
+Data residency, often an overlooked piece of the enterprise AI puzzle, processes and governs data according to the laws and customs of the countries where it is stored. 
+ChatGPT Enterprise and Edu subscribers can now choose to have their data processed in: 
+
+Europe (European Economic Area and Switzerland)
+
+United Kingdom
+
+United States
+
+Canada
+
+Japan
+
+South Korea
+
+Singapore
+
+India
+
+Australia
+
+United Arab Emirates
+
+OpenAI said in a blog post that it “plans t…</span>
                             </span>
                           </div>
                         </a>
@@ -1606,6 +1687,25 @@ Fara-7B is designed to navigate use…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="https://jamestown.org/prc-elites-voice-ai-skepticism/"
+                        open
+                      >
+                        <summary class="article-expander__title">PRC elites voice AI-skepticism</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://jamestown.org/prc-elites-voice-ai-skepticism/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.xda-developers.com/your-unpowered-ssd-is-slowly-losing-your-data/"
                         open
                       >
@@ -1683,26 +1783,6 @@ Fara-7B is designed to navigate use…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/Swordfish90/cool-retro-term"
-                        open
-                      >
-                        <summary class="article-expander__title">Cool-retro-term: terminal emulator which mimics look and feel of CRTs</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/Swordfish90/cool-retro-term">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/3d2819f1fa1c9dd9a313e9a5fcfedf434d7ea21666d22a1208f5f77d4e440c79/Swordfish90/cool-retro-term" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://twitter.com/karpathy/status/1993010584175141038"
                         open
                       >
@@ -1713,42 +1793,6 @@ Fara-7B is designed to navigate use…</span>
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://kmicinski.com/functional-programming/2025/11/23/build-a-language/"
-                        open
-                      >
-                        <summary class="article-expander__title">Build a Compiler in Five Projects</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://kmicinski.com/functional-programming/2025/11/23/build-a-language/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.nytimes.com/2025/11/23/technology/openai-chatgpt-users-risks.html"
-                        open
-                      >
-                        <summary class="article-expander__title">What OpenAI did when ChatGPT users lost touch with reality</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.nytimes.com/2025/11/23/technology/openai-chatgpt-users-risks.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
                             </span>
                           </div>
                         </a>
@@ -2004,11 +2048,48 @@ Lean4 is both a programming language and a proof assistant designed for formal v
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-11-21 datetime="2025-11-21T23:54:49.000Z">2025-11-21</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-11-21 datetime="2025-11-21T23:54:49.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-11-21 datetime="2025-11-21T23:01:00.000Z">2025-11-21</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-11-21 datetime="2025-11-21T23:01:00.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >AI | VentureBeat</button>
+                  <a class="source-heading__link" href="https://venturebeat.com/category/ai/feed/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="2NpNBu7t9YT73jPkIBpBa7"
+                        open
+                      >
+                        <summary class="article-expander__title">OpenAI is ending API access to fan-favorite GPT-4o model in February 2026</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://venturebeat.com/ai/openai-is-ending-api-access-to-fan-favorite-gpt-4o-model-in-february-2026">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://images.ctfassets.net/jdtwqhzvc2n1/4K2qYsFflmX9z3ZntUhMDI/e54ae53376bec2ab2f1e0fe1c56f8c8d/MIkhhMSDmHbAJOqcbPZ_5__1_.png?w&#x3D;300&amp;q&#x3D;30" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>OpenAI has sent out emails notifying API customers that its chatgpt-4o-latest model will be retired from the developer platform in mid-February 2026,. 
+Access to the model is scheduled to end on February 16, 2026, creating a roughly three-month transition period for remaining applications still built on GPT-4o.
+
+An OpenAI spokesperson emphasized that this timeline applies only to the API. OpenAI has not announced any schedule for removing GPT-4o from ChatGPT, where it remains an option for individual consumers and users across paid subscription tiers. 
+Internally, the model is considered a legacy system with relatively low API usage compared to the newer GPT-5.1 series, but the company expects to provide developers with extended warning before any model is removed.
+The planned retirement m…</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
             <li class="card__section">
               <section class="js-toggle-accordions-scope">
                 <h3 class="source-heading">
@@ -2020,26 +2101,6 @@ Lean4 is both a programming language and a proof assistant designed for formal v
                   <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://news.techmeme.com/250912/20-years"
-                        open
-                      >
-                        <summary class="article-expander__title">Explaining, at some length, Techmeme&#x27;s 20 years of consistency</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://news.techmeme.com/250912/20-years">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://news.techmeme.com/images/t20.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;15
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -2081,25 +2142,6 @@ Lean4 is both a programming language and a proof assistant designed for formal v
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.ocrarena.ai/battle"
-                        open
-                      >
-                        <summary class="article-expander__title">Show HN: OCR Arena – A playground for OCR models</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.ocrarena.ai/battle">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;1
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.svendewaerhert.com/blog/nearby-peer-discovery/"
                         open
                       >
@@ -2123,68 +2165,11 @@ Lean4 is both a programming language and a proof assistant designed for formal v
                         data-accordion-key="https://lcamtuf.substack.com/p/the-101-of-analog-signal-filtering"
                         open
                       >
-                        <summary class="article-expander__title">The 101 of Analog Signal Filtering</summary>
+                        <summary class="article-expander__title">The 101 of analog signal filtering (2024)</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://lcamtuf.substack.com/p/the-101-of-analog-signal-filtering">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >AI | VentureBeat</button>
-                  <a class="source-heading__link" href="https://venturebeat.com/category/ai/feed/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="2NpNBu7t9YT73jPkIBpBa7"
-                        open
-                      >
-                        <summary class="article-expander__title">OpenAI is ending API access to fan-favorite GPT-4o model in February 2026</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://venturebeat.com/ai/openai-is-ending-api-access-to-fan-favorite-gpt-4o-model-in-february-2026">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.ctfassets.net/jdtwqhzvc2n1/4K2qYsFflmX9z3ZntUhMDI/e54ae53376bec2ab2f1e0fe1c56f8c8d/MIkhhMSDmHbAJOqcbPZ_5__1_.png?w&#x3D;300&amp;q&#x3D;30" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>OpenAI has sent out emails notifying API customers that its chatgpt-4o-latest model will be retired from the developer platform in mid-February 2026,. 
-Access to the model is scheduled to end on February 16, 2026, creating a roughly three-month transition period for remaining applications still built on GPT-4o.
-
-An OpenAI spokesperson emphasized that this timeline applies only to the API. OpenAI has not announced any schedule for removing GPT-4o from ChatGPT, where it remains an option for individual consumers and users across paid subscription tiers. 
-Internally, the model is considered a legacy system with relatively low API usage compared to the newer GPT-5.1 series, but the company expects to provide developers with extended warning before any model is removed.
-The planned retirement m…</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="6OS8AKuW3j8QwEIIcoFyqR"
-                        open
-                      >
-                        <summary class="article-expander__title">Salesforce Agentforce Observability lets you watch your AI agents think in near-real time</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://venturebeat.com/ai/salesforce-agentforce-observability-lets-you-watch-your-ai-agents-think-in">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.ctfassets.net/jdtwqhzvc2n1/4n1IBZWOdzbulK2Kp5Zo21/783b9b37ea3fc048007c06dba8e86dd9/nuneybits_Vector_art_of_transparent_AI_brain_3f8963a0-7bf6-49f1-9245-07daa216d786.webp?w&#x3D;300&amp;q&#x3D;30" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Salesforce launched a suite of monitoring tools on Thursday designed to solve what has become one of the thorniest problems in corporate artificial intelligence: Once companies deploy AI agents to handle real customer interactions, they often have no idea how those agents are making decisions.
-The new capabilities, built into Salesforce&#x27;s Agentforce 360 Platform, give organizations granular visibility into every action their AI agents take, every reasoning step they follow, and every guardrail they trigger. The move comes as businesses grapple with a fundamental tension in AI adoption — the technology promises massive efficiency gains, but executives remain wary of autonomous systems they can&#x27;t fully understand or control.
-&quot;You can&#x27;t scale what you can&#x27;t see,&quot; said Adam Evans, executive vi…</span>
                             </span>
                           </div>
                         </a>
@@ -2437,85 +2422,11 @@ The new capabilities, built into Salesforce&#x27;s Agentforce 360 Platform, give
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-11-19 datetime="2025-11-19T20:58:50.000Z">2025-11-19</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-11-19 datetime="2025-11-19T20:58:50.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-11-19 datetime="2025-11-19T18:33:28.000Z">2025-11-19</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-11-19 datetime="2025-11-19T18:33:28.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://blogs.embarcadero.com/rethinking-c-architecture-concepts-and-responsibility/"
-                        open
-                      >
-                        <summary class="article-expander__title">Rethinking C++: Architecture, Concepts, and Responsibility</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://blogs.embarcadero.com/rethinking-c-architecture-concepts-and-responsibility/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://blogs.embarcadero.com/wp-content/uploads/2025/11/cg-ww-blog-rethink-cpp-251112-7013889.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;43
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://mbleigh.dev/posts/broccoli-man-remastered/"
-                        open
-                      >
-                        <summary class="article-expander__title">Broccoli Man, Remastered</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://mbleigh.dev/posts/broccoli-man-remastered/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://mbleigh.dev/og-image/broccoli-man-remastered.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://ai.meta.com/blog/segment-anything-model-3/?_fb_noscript&#x3D;1"
-                        open
-                      >
-                        <summary class="article-expander__title">Meta Segment Anything Model 3</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://ai.meta.com/blog/segment-anything-model-3/?_fb_noscript&#x3D;1">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://scontent-lhr8-1.xx.fbcdn.net/v/t39.2365-6/583339165_852765810541557_5592130597432767690_n.png?_nc_cat&#x3D;107&amp;ccb&#x3D;1-7&amp;_nc_sid&#x3D;e280be&amp;_nc_ohc&#x3D;5ocVpHiKsFAQ7kNvwHOV5Nf&amp;_nc_oc&#x3D;AdnADH7Nv5QyIaYp9fpLfhp4GgY8aGluuqxnJLh5uACnAGzisWn6f78hOVXdyFrX0l8&amp;_nc_zt&#x3D;14&amp;_nc_ht&#x3D;scontent-lhr8-1.xx&amp;_nc_gid&#x3D;8m5jpRp078pacGK1doLU-Q&amp;oh&#x3D;00_AfjbitqTYbrNSYBSOhyH7nKMO-eeO1tOMPGAKT9WFamB2g&amp;oe&#x3D;69403421" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
             <li class="card__section">
               <section class="js-toggle-accordions-scope">
                 <h3 class="source-heading">
@@ -2581,6 +2492,80 @@ The new capabilities, built into Salesforce&#x27;s Agentforce 360 Platform, give
                             <span class="media-object__text">
                               <span>Learn how to use Three.js and Blender to design a stunning and interactive 3D portfolio! We just posted a course on the freeCodeCamp.org YouTube channel that will take you from the foundational concepts of 3D modeling in Blender to creating a fully f...</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://mbleigh.dev/posts/broccoli-man-remastered/"
+                        open
+                      >
+                        <summary class="article-expander__title">Broccoli Man, Remastered</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://mbleigh.dev/posts/broccoli-man-remastered/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://mbleigh.dev/og-image/broccoli-man-remastered.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.openculture.com/2025/11/why-your-vision-of-ancient-rome-is-all-wrong-according-to-historian-mary-beard.html"
+                        open
+                      >
+                        <summary class="article-expander__title">Hollywood&#x27;s vision of ancient Rome is all wrong, according to Mary Beard</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.openculture.com/2025/11/why-your-vision-of-ancient-rome-is-all-wrong-according-to-historian-mary-beard.html">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn8.openculture.com/2025/11/14001204/romemyth-1024x576.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;22
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://github.com/deepseek-ai/LPLB"
+                        open
+                      >
+                        <summary class="article-expander__title">LPLB: An early research stage MoE load balancer based on linear programming</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/deepseek-ai/LPLB">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://opengraph.githubassets.com/83556c7f78226b15001c807b059d74e4c7e993e14f16381c7779dd4190753074/deepseek-ai/LPLB" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2690,8 +2675,8 @@ The new capabilities, built into Salesforce&#x27;s Agentforce 360 Platform, give
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/19678086528">
-        <time id="build-timestamp" datetime="2025-11-25T17:17:08.698Z">2025-11-25T17:17:08.698Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/19679956693">
+        <time id="build-timestamp" datetime="2025-11-25T18:24:56.055Z">2025-11-25T18:24:56.055Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
