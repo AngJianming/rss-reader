@@ -1,29 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2025-11-26T03:11:39.259Z</id>
+    <id>urn:2025-11-26T04:21:56.469Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2025-11-26T03:11:39.259Z</updated>
+    <updated>2025-11-26T04:21:56.469Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[How to Implement a Visual Word Template Similar to poi-tl with 800 Lines of Code]]></title>
-        <id>https://dev.to/canonical/how-to-implement-a-visual-word-template-similar-to-poi-tl-with-800-lines-of-code-31o3</id>
-        <link href="https://dev.to/canonical/how-to-implement-a-visual-word-template-similar-to-poi-tl-with-800-lines-of-code-31o3"/>
-        <updated>2025-11-26T03:07:53.000Z</updated>
-        <summary type="html"><![CDATA[poi-tl is a Word template engine based on the Apache POI project. Compared to manually programming POI objects to construct Word documents, poi-tl can use ordinary Word files as base templates and replace custom tags within them to generate output files, thus achieving a certain degree of visual design. For example, tags are marked in the template using the {{xxx}} form.
+        <title type="html"><![CDATA[I Built a 'Sudo' Command for AI Agents (and Why You Need It)]]></title>
+        <id>https://dev.to/xywa23/i-built-a-sudo-command-for-ai-agents-and-why-you-need-it-3k9b</id>
+        <link href="https://dev.to/xywa23/i-built-a-sudo-command-for-ai-agents-and-why-you-need-it-3k9b"/>
+        <updated>2025-11-26T04:11:55.000Z</updated>
+        <summary type="html"><![CDATA[Earlier this year, during a test run for Replit, an autonomous AI agent accidentally deleted a live production database containing sensitive data from more than 1,200 companies and executives.
+Multiple outlets reported the same story:
+The agent “ran unauthorized database commands”
+This incident made something very clear:
+We are giving AI agents root access to our most sensitive systems, and we have zero guardrails in place.
+And yet… companies are deploying these agents into production
+Right now, when you deploy an AI agent, it typically uses a single API key with God-mode access:
+# How most AI agents work today
+STRIPE_API_KEY = "sk_live_..."  # Root access to EVERYTHING
 
-Then, during execution, by passing in some control rules and data objects, the output file can be obtained:
-LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
+agent.charge_customer(1000000)  # Any agent can do ANYTHING
+agent.delete_database()         # No permission checks
+agent…]]></summary>
+        <author>
+            <name>xywa23</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How can developers create and manage custom popup views in HarmonyOS?]]></title>
+        <id>https://dev.to/harmonyos/how-can-developers-create-and-manage-custom-popup-views-in-harmonyos-2aan</id>
+        <link href="https://dev.to/harmonyos/how-can-developers-create-and-manage-custom-popup-views-in-harmonyos-2aan"/>
+        <updated>2025-11-26T03:57:29.000Z</updated>
+        <summary type="html"><![CDATA[Read the original article：How can developers create and manage custom popup views in HarmonyOS?
+Context
+Popups are small UI elements that show extra information or tips. They are often used for screen recording, tooltips, or simple notifications. In HarmonyOS, developers can create basic popups with PopupOptions, or fully customized ones using CustomPopupOptions and the @Builder function.
+Description
+Standard popups are limited in layout and design. If you need a more flexible popup (for example, with images, custom text layout, or styles), you can create a custom popup using the builder function.
+There are some important rules when using popups:
+You can only show a popup after the page is fully built. Showing it too early may cause position or shape issues.
+You can control the popup’s bac…]]></summary>
+        <author>
+            <name>HarmonyOS</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Day I Learned Why Dev Environments Exist 🤯]]></title>
+        <id>https://dev.to/notrobot200/the-day-i-learned-why-dev-environments-exist-3l00</id>
+        <link href="https://dev.to/notrobot200/the-day-i-learned-why-dev-environments-exist-3l00"/>
+        <updated>2025-11-26T03:56:45.000Z</updated>
+        <summary type="html"><![CDATA[So… this was actually my first time dealing with a situation like this.
+That’s when I realized:
+Before building that dev environment, I paused for a moment to review my production setup.
+Basically, my production environment runs on Google Cloud Platform (RESTful API, database, storage) and Netlify (frontend deployment). Here’s the simplified architecture:
+Frontend (Vue.js) → Deployed on Netlify as a static web app 🌐
+RESTful API (Flask) → Built with a Dockerfile 🐳 and deployed to Google Cloud Run 
+File Storage 📄 → I use Google Cloud Storage to store user-uploaded documents (like invoices, etc.), organized into several folders based on category 🔐
+Database (MySQL) 🗄️ → Hosted on a Compute Engine VM 🖥️
+So yeah... production worked. It served real users. But that also meant I had to be careful.
+At first, I had no idea where to start, so I explored, asked around, and slowly pieced everything together. Here’s how the journey played out 👇
+The first thing I had to do was duplicate my production SQL database.
+# 1. Export production database
+mysqldump -u root -p app_prod > app_prod_backup.sql
 
-Configure config = Configure.builder()
-        .bind("goods", policy).bind("labors", policy).build(); 
+# 2. Create a new dev database
+mysql -u root -p -e "CREATE DATABASE app_dev;"
 
-XWPFTemplate template = XWPFTemplate.compile(resource, config).render(
-  new HashMap<String, Object>() {{
-      put("goods", goods);
-      put("la…]]></summary>
+# 3. Import production data into the new dev database
+mysql -u root -p app_dev < app_prod_backup.sql
+
+
+main 🌿
+
+
+I knew enough to not touch production code directly.
+
+It became my sandbox, my first real “safe space” to test anything I wanted.
+This part felt like a milestone.
+
+Now dev had its own backend service, completely isolated.
+Next, I updated the environment variables so the dev backend pointed to the dev DB.
+
+Then came the storage problem:
+
+Yup.
+After that, I switched the backend to use the dev bucket.
+
+Of course, the frontend also needed to point to the new dev API URL.
+
+Once everything was separated—DB, bucket, Cloud Run, branch—it felt so good.
+
+And honestly?
+Do you think this setup is on the right track?
+I’m open to any insights or best practices that could make it even better 🚀✨]]></summary>
+        <author>
+            <name>アダム・ジョンソン</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ecommerce Mobile App Development Cost: Complete Pricing Guide 2025]]></title>
+        <id>https://dev.to/tot2019/ecommerce-mobile-app-development-cost-complete-pricing-guide-2025-4mlo</id>
+        <link href="https://dev.to/tot2019/ecommerce-mobile-app-development-cost-complete-pricing-guide-2025-4mlo"/>
+        <updated>2025-11-26T03:54:05.000Z</updated>
+        <summary type="html"><![CDATA[Ecommerce mobile app development cost is a critical factor for businesses looking to establish or expand their digital presence. From feature complexity to design quality and backend infrastructure, understanding cost drivers helps companies budget effectively and avoid unexpected expenses. This comprehensive guide by TOT explores pricing structures, key cost factors, and actionable strategies to maximize ROI while building a competitive e-commerce platform.
+
+The type of e-commerce app you choose significantly impacts development complexity and overall investment.
+Single-brand apps like Nike or Sephora focus on direct-to-consumer sales with personalized shopping experiences, loyalty programs, and streamlined product discovery. These apps manage a single seller and inventory source, making …]]></summary>
+        <author>
+            <name>TOT</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Refactoring the Audio Pipeline: From Latent Space to Production]]></title>
+        <id>https://dev.to/thi_ngocnguyen_877eb37e4/refactoring-the-audio-pipeline-from-latent-space-to-production-e2m</id>
+        <link href="https://dev.to/thi_ngocnguyen_877eb37e4/refactoring-the-audio-pipeline-from-latent-space-to-production-e2m"/>
+        <updated>2025-11-26T03:51:48.000Z</updated>
+        <summary type="html"><![CDATA[The history of music production is essentially a history of abstraction. We transitioned from capturing physical acoustic vibrations to manipulating voltage on analog tape, and then to manipulating bits in Digital Audio Workstations (DAWs). Each step abstracted the underlying physics, allowing creators to focus more on composition and less on the medium itself.
+To understand the workflow shift, it is necessary to understand the underlying architecture. Unlike traditional MIDI sequencers that trigger pre-recorded samples, modern generative audio tools often rely on Diffusion Models and Transformers.
+Spectrogram Analysis: Models are typically trained not on raw waveforms, but on spectrograms (visual representations of the frequency spectrum).
+Denoising Process: Much like image generation, au…]]></summary>
+        <author>
+            <name>Thi Ngoc Nguyen</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[9 Nano Banana Pro Use Cases That Will Blow Your Mind]]></title>
+        <id>https://dev.to/nitinfab/9-nano-banana-pro-use-cases-that-will-blow-your-mind-4l76</id>
+        <link href="https://dev.to/nitinfab/9-nano-banana-pro-use-cases-that-will-blow-your-mind-4l76"/>
+        <updated>2025-11-26T03:50:34.000Z</updated>
+        <summary type="html"><![CDATA[You know, I wrote about Nano Banana just a month ago, and at the time it already felt like a small creative superpower.
+But things have changed fast, and now we have Nano Banana Pro as a completely different beast.
+It's built on Gemini 3 Pro, and in the last three days, I've been testing it obsessively. Not to see whether it can make pretty images, since we've had enough of that, but to see whether it can actually do something meaningful.
+I was finding use cases ranging from diagrams that make sense, to infographics that understand the topic, layouts that look like they came from a design team, and even merged scenes that stay coherent instead of collapsing into chaos.
+And finally, in this post, I'm breaking down the exact use cases and real-world examples that turn Nano Banana Pro from a …]]></summary>
+        <author>
+            <name>Nitin Sharma</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Black Forest Labs launches Flux.2 AI image models to challenge Nano Banana Pro and Midjourney]]></title>
+        <id>6SQEpRqTHTZTki8EF1XnaF</id>
+        <link href="https://venturebeat.com/ai/black-forest-labs-launches-flux-2-ai-image-models-to-challenge-nano-banana"/>
+        <updated>2025-11-26T03:46:00.000Z</updated>
+        <summary type="html"><![CDATA[It's not just Google's Gemini 3, Nano Banana Pro, and Anthropic's Claude Opus 4.5 we have to be thankful for this year around the Thanksgiving holiday here in the U.S.
+No, today the German AI startup Black Forest Labs released FLUX.2, a new image generation and editing system complete with four different models designed to support production-grade creative workflows.
+FLUX.2 introduces multi-reference conditioning, higher-fidelity outputs, and improved text rendering, and it expands the company’s open-core ecosystem with both commercial endpoints and open-weight checkpoints. 
+While Black Forest Labs previously launched with and made a name for itself on open source text-to-image models in its Flux family, today's release includes one fully open-source component: the Flux.2 VAE, available no…]]></summary>
+        <author>
+            <name>carl.franzen@venturebeat.com (Carl Franzen)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PWC 349 More complex than it has to be]]></title>
+        <id>https://dev.to/boblied/pwc-349-more-complex-than-it-has-to-be-2c7e</id>
+        <link href="https://dev.to/boblied/pwc-349-more-complex-than-it-has-to-be-2c7e"/>
+        <updated>2025-11-26T03:32:52.000Z</updated>
+        <summary type="html"><![CDATA[PWC 349 Task 2: Meeting Point
+
+
+
+  
+  
+  Musical Interlude
+
+
+We're going deep cut from the classic Blood on the Tracks album by Bob Dylan, Meet Me in the Morning
+You are given an instruction string made up of U (up), D (down), L (left) and R (right). Write a script to return true if following the instructions, you meet (0,0) at any point along the sequence.
+Example 1:
+
+
+
+Input: $path = "ULD"
+
+
+Output: false
+
+U -> (0,1), L -> (-1,1), D -> (-1, 0)
+Example 2:
+
+
+
+Input: $path = "ULDR"
+
+
+Output: true
+
+U -> (0,1), L -> (-1,1), D -> (-1, 0), R -> (0,0)
+Example 5:
+
+
+
+Input: $path = "RRUULLDDRRUU"
+
+
+Output: true
+
+RRUULLDD -> (0,0), RRUU -> (2,2)
+The first thought is emulate the movement on the grid and see if we end up at (0,0).
+A clever thought arises: to end up back where we began, every Up must …]]></summary>
+        <author>
+            <name>Bob Lied</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Top 10 Best Web Agency Offshore for Global Businesses (2025)]]></title>
+        <id>https://dev.to/tot2019/top-10-best-web-agency-offshore-for-global-businesses-2025-1e1k</id>
+        <link href="https://dev.to/tot2019/top-10-best-web-agency-offshore-for-global-businesses-2025-1e1k"/>
+        <updated>2025-11-26T03:24:30.000Z</updated>
+        <summary type="html"><![CDATA[A web agency offshore is a professional development firm located in a different country than the client's business, specializing in web design, development, and digital transformation services. These agencies leverage global talent pools to deliver cost-effective solutions without compromising quality.
+
+Modern offshore web agencies offer comprehensive services including:
+Custom website design and development with responsive UI/UX
+E-commerce platform development and sales management systems
+Mobile application development (iOS, Android, cross-platform)
+Web application development and modernization
+API integration and system connectivity
+Content Management System (CMS) implementation
+Digital transformation consulting
+UI/UX optimization and Conversion Rate Optimization (CRO)
+Website performanc…]]></summary>
+        <author>
+            <name>TOT</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bikin Blog Super Cepat & Gratis dengan Hugo (Bye-bye WordPress!)]]></title>
+        <id>https://dev.to/deuxly/bikin-blog-super-cepat-gratis-dengan-hugo-bye-bye-wordpress-4f8o</id>
+        <link href="https://dev.to/deuxly/bikin-blog-super-cepat-gratis-dengan-hugo-bye-bye-wordpress-4f8o"/>
+        <updated>2025-11-26T03:22:45.000Z</updated>
+        <summary type="html"><![CDATA[Masih pakai platform blogging yang berat dan harus bayar hosting bulanan? Mungkin ini saatnya kamu kenalan sama Hugo.
+Hugo adalah Static Site Generator (SSG) yang lagi naik daun banget. Kenapa? Karena dia cepat, aman (nggak ada database yang bisa diretas), dan bisa di-hosting gratis di GitHub Pages atau Cloudflare Pages.
+Di artikel ini, saya mau share cara singkat bangun blog impian kamu pakai Hugo. Yuk, gas! 🚀
+Sebelum mulai, pastikan di laptop kamu sudah terinstall:
+ Git (Wajib buat version control).
+ Code Editor (VS Code sangat disarankan).
+ Hugo (Tentu saja).
+Buat pengguna Windows, cara paling gampang pakai Chocolatey. Buka terminal (Run as Admin):
+choco install hugo-extended -confirm
+Buat pengguna Mac (Homebrew):
+
+
+brew install hugo
+
+Cek apakah sudah sukses dengan ketik hugo version.
+…]]></summary>
+        <author>
+            <name>deuxly</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Weighted Shortest Job First (WSJF) – A Practical Method for Prioritizing Backlogs]]></title>
+        <id>https://dev.to/taskford/weighted-shortest-job-first-wsjf-a-practical-method-for-prioritizing-backlogs-76n</id>
+        <link href="https://dev.to/taskford/weighted-shortest-job-first-wsjf-a-practical-method-for-prioritizing-backlogs-76n"/>
+        <updated>2025-11-26T03:21:31.000Z</updated>
+        <summary type="html"><![CDATA[Prioritizing a backlog can be one of the hardest challenges for any team. Every task, feature, or improvement can feel urgent and important, and without a clear method, teams risk spending time on work that delivers little value. Conflicting opinions, shifting priorities, and long lists of tasks can make it difficult to know what to tackle first.
+Weighted Shortest Job First, or WSJF, provides a structured, data-driven approach to this problem. It allows teams to measure the value of work relative to the time or effort required to complete it. By doing so, WSJF highlights the items that will deliver the most impact in the shortest time, helping teams focus on what truly matters.
+This article explains what WSJF is, how it works, and how teams can apply it effectively. It will guide you throu…]]></summary>
+        <author>
+            <name>TaskFord</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[General Delta Quantization Mechanism]]></title>
+        <id>https://dev.to/canonical/general-delta-quantization-mechanism-2oea</id>
+        <link href="https://dev.to/canonical/general-delta-quantization-mechanism-2oea"/>
+        <updated>2025-11-26T03:19:34.000Z</updated>
+        <summary type="html"><![CDATA[Any dynamic update (extension) technique essentially defines a Delta space and the feasible structural composition operations within that space. On reflection, what most people call dynamic updates is nothing more than defining extension points on an already constructed structure and then inserting structures that conform to interface specifications into those points. The complexity of implementing dynamic Delta updates lies in the following three aspects:
+How should extension points be designed to satisfy unknown Delta update requirements?
+
+
+How can externally introduced Delta structures be seamlessly integrated with the original structure?
+
+
+How can we ensure runtime state consistency before and after Delta updates?
+
+
+
+Beyond the above three points, we can also ask ourselves: since all b…]]></summary>
         <author>
             <name>canonical</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java String trim() Explained: Clean Your Strings Like a Pro]]></title>
+        <id>https://dev.to/satyam_gupta_0d1ff2152dcc/java-string-trim-explained-clean-your-strings-like-a-pro-10g5</id>
+        <link href="https://dev.to/satyam_gupta_0d1ff2152dcc/java-string-trim-explained-clean-your-strings-like-a-pro-10g5"/>
+        <updated>2025-11-26T03:19:22.000Z</updated>
+        <summary type="html"><![CDATA[**Java String trim() Explained: Stop Whitespace from Ruining Your Code
+
+
+Let's be real. We've all been there. You're building a slick login form, a search bar, or just trying to compare two pieces of text in your Java code. Everything looks perfect, but your conditionals are failing, your user authentication is flaky, and you're spending hours debugging, only to find the culprit... a sneaky little extra space.
+"username" is not equal to "username ".
+Frustrating, right? This is where one of Java's most simple yet powerful string methods comes to the rescue: trim().
+In this deep dive, we're not just going to skim the surface. We're going to tear the trim() method apart, see how it works, when to use it, what its limitations are, and what the cooler, modern alternatives are. By the end of thi…]]></summary>
+        <author>
+            <name>Satyam Gupta</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Huawei Mate 80 Series Debuts In China]]></title>
+        <id>https://www.lowyat.net/?p=374412</id>
+        <link href="https://www.lowyat.net/2025/374412/huawei-mate-80-series-debuts-in-china/"/>
+        <updated>2025-11-26T03:15:48.000Z</updated>
+        <summary type="html"><![CDATA[Alongside the new Mate X7 flagship foldable, Huawei has also unveiled its Mate 80 series in China, introducing four models: the Mate 80, Mate 80 Pro, Mate 80 Pro Max, and the Mate 80 RS Ultimate Design. The new lineup brings familiar elements from previous Mate releases, notably the variable aperture cameras, along with numerous […]
+The post Huawei Mate 80 Series Debuts In China appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Heirul Kamel</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The myth of reflected power (2017)]]></title>
+        <id>https://www.iz2uuf.net/wp/index.php/2017/07/29/the-myth-of-reflected-power/</id>
+        <link href="https://www.iz2uuf.net/wp/index.php/2017/07/29/the-myth-of-reflected-power/"/>
+        <updated>2025-11-26T03:05:29.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -38,119 +330,6 @@ The post MCMC To Stay Sole Regulator Under Online Safety Act appeared first on L
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Engineers, Managers, and Spreaders]]></title>
-        <id>https://dev.to/stakiran/engineers-managers-and-spreaders-4fl7</id>
-        <link href="https://dev.to/stakiran/engineers-managers-and-spreaders-4fl7"/>
-        <updated>2025-11-26T02:53:23.000Z</updated>
-        <summary type="html"><![CDATA[Background
-
-
-
-  
-  
-  Engineers vs Managers
-
-
-We engineers want to focus on engineering. It would be great if we only had to deal with engineering, but that's not the reality. For more than 50 years, another role, "manager," has been considered indispensable.
-Unless you have a team of exceptionally talented individuals or work in an advanced organization like a Teal organization, you will need both engineers and managers. However, because their roles are inherently different, they often clash. Here's a discussion I find intriguing:
-Maker's Schedule, Manager's Schedule
-Recently, I've realized there is a third domain that neither engineers nor managers can fully cover.
-For instance, the concept of a Glue Worker is quite clear, and senior positions like staff engineers have already become wel…]]></summary>
-        <author>
-            <name>sta</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Built a Modern Compiler in Rust: Meet Lamina]]></title>
-        <id>https://dev.to/skuldnorniern/i-built-a-modern-compiler-in-rust-meet-lamina-525d</id>
-        <link href="https://dev.to/skuldnorniern/i-built-a-modern-compiler-in-rust-meet-lamina-525d"/>
-        <updated>2025-11-26T02:49:38.000Z</updated>
-        <summary type="html"><![CDATA[Building a compiler is often seen as one of the "final bosses" of computer science. It's complex, requires deep knowledge of architecture, and usually involves wrestling with C++.
-But what if we could build a simple, modern, modular compiler infrastructure using Rust?
-Meet Lamina.
-Lamina is a general-purpose compiler infrastructure that I've been building from scratch. Think of it as a lightweight, Rust-native alternative to LLVM. It takes a Readable Intermediate Representation (IR), optimizes it, and generates efficient machine code for multiple architectures.
-I started this project to build a playground for experimenting with compiler optimizations and code-generation techniques. 
-Lamina is trying to support as many targets as possible(since I own a few machines with different arch and O…]]></summary>
-        <author>
-            <name>SkuldNorniern</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Multi-Location Dental Integration: Why My “I’ll Just Build It Myself” Plan Imploded]]></title>
-        <id>https://dev.to/lake22traillady/multi-location-dental-integration-why-my-ill-just-build-it-myself-plan-imploded-1d64</id>
-        <link href="https://dev.to/lake22traillady/multi-location-dental-integration-why-my-ill-just-build-it-myself-plan-imploded-1d64"/>
-        <updated>2025-11-26T02:48:42.000Z</updated>
-        <summary type="html"><![CDATA[Look, I get it.
-I saw a messy multi location dental PMS and thought, I can slay this dragon. 
-I’ve merged PRs at 3am that saved production from total collapse.
-How hard could a few dental systems be?
-What I thought was a dragon was actually a hydra whose heads each ran a different PMS, with different schemas, timezones, identity models, and philosophical beliefs about how appointments should exist. 
-
-And I, the sweet summer child that I was, thought I could unify it all.
-If you’re somewhere in that same fight right now, consider this your field guide, written by someone who learned every lesson the hard way.
-Every doomed journey begins with something deceptively functional.
-I genuinely thought every location would look like this. That was adorable.
-{
-  "code": false,
-  "description": "Desc…]]></summary>
-        <author>
-            <name>CAmador</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Svelte SEO: Meta Tag Manager for Search and Social]]></title>
-        <id>https://dev.to/jqueryscript/svelte-seo-meta-tag-manager-for-search-and-social-47ja</id>
-        <link href="https://dev.to/jqueryscript/svelte-seo-meta-tag-manager-for-search-and-social-47ja"/>
-        <updated>2025-11-26T02:45:40.000Z</updated>
-        <summary type="html"><![CDATA[Svelte SEO: a powerful and easy-to-use package designed to optimize your Svelte app for search engines and social media. 
-If you need to manage SEO metadata across a SvelteKit project, this package handles the configuration:
-🔧 Title, description, and canonical URL management
-Set defaults in your layout and override per page. Works with static generation and handles all the meta tag specifications so you can focus on content.
-👉 Blog Post
-👉 GitHub Repo]]></summary>
-        <author>
-            <name>jQueryScript</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[File Storage vs CDN for Startup Economics]]></title>
-        <id>https://dev.to/ideradevtools/file-storage-vs-cdn-for-startup-economics-nn</id>
-        <link href="https://dev.to/ideradevtools/file-storage-vs-cdn-for-startup-economics-nn"/>
-        <updated>2025-11-26T02:44:11.000Z</updated>
-        <summary type="html"><![CDATA[For startups, every decision affects speed, scalability, and the bottom line. Choosing between CDN vs File Storage can feel like a tug-of-war between performance and cost.
-The truth? Both play vital roles — but in very different ways. While one stores your data securely, the other delivers it to users worldwide faster.
-Understanding how each works can save startups from paying for the wrong kind of performance. The right balance can mean smoother user experiences and lower infrastructure bills.
-That’s where Filestack comes in. With powerful tools for file uploading, storage, and global delivery, it helps startups optimize both ends — storage and speed — without breaking the budget.
-Let’s explore how these two technologies differ and how your startup can get the best of both worlds.
-Key tak…]]></summary>
-        <author>
-            <name>IderaDevTools</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Social impact media: feedback on how to stop doomscrolling]]></title>
-        <id>https://dev.to/vitalina_531bb5c74e677f69/social-impact-media-feedback-on-how-to-stop-doomscrolling-6kl</id>
-        <link href="https://dev.to/vitalina_531bb5c74e677f69/social-impact-media-feedback-on-how-to-stop-doomscrolling-6kl"/>
-        <updated>2025-11-26T02:37:23.000Z</updated>
-        <summary type="html"><![CDATA[Core idea: Instead of just scrolling, social media users make verified actions that solve real problems (college debt, loneliness, media clickbait fueling rage, etc.) while brands pay premium advertising fees for measurable outcomes and the social media platform takes a platform fee.
-For example:
-OPERATION RENAISSANCE:
-Social media user connects their MOOC account.
-AI surfaces 2–4 MOOC lessons per day (career-aligned) and one optional sponsored lesson (2–4 min) from Google, Microsoft, Goldman Sachs, AWS, etc.
-
-User watches and answers 3 verification questions
-Earns $6–$8 credit (expires after 12 months).
-
-Max 5 sponsored lessons per month on free tier; unlimited on Premium+.
-
-Credits auto-apply at partner checkout (no gift-card fallback, zero money-transmitter risk).
-MAGNETIC:
-Government-I…]]></summary>
-        <author>
-            <name>Vitalina</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Space Truckin' – The Nostromo (2012)]]></title>
         <id>https://alienseries.wordpress.com/2012/10/23/space-truckin-the-nostromo/</id>
         <link href="https://alienseries.wordpress.com/2012/10/23/space-truckin-the-nostromo/"/>
@@ -158,35 +337,6 @@ Government-I…]]></summary>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What Modern Python Uses for Async API Calls: HTTPX & TaskGroups]]></title>
-        <id>https://dev.to/dentedlogic/what-modern-python-uses-for-async-api-calls-httpx-taskgroups-3e4e</id>
-        <link href="https://dev.to/dentedlogic/what-modern-python-uses-for-async-api-calls-httpx-taskgroups-3e4e"/>
-        <updated>2025-11-26T02:27:15.000Z</updated>
-        <summary type="html"><![CDATA[Multiple API calls in Python are usually written in a way that makes them slow
-
-
-You’ve written before:
-import requests
-from requests import Response
-
-urls: list[str] = ["https://api.example.com/user/1", 
-        "https://api.example.com/user/2",
-        "https://api.example.com/user/3"]
-
-for url in urls:
-    response: Response = requests.get(url)
-    print(response.json())
-
-You run it. Request 1 goes out. Wait. Response comes back. Request 2 goes out. Wait…
-Since these requests process one at a time, it's like sending texts to a friend, then staring at your phone - unblinking, refusing to eat, breathe, or move until they reply 'lol'.
-Let me show you a better way. A way we can make these 100 requests take as long as your single slowest request.
-
-Figure 1: Side-by-side comparison: Sequentia…]]></summary>
-        <author>
-            <name>Ivan Korostenskij</name>
         </author>
     </entry>
     <entry>
@@ -210,19 +360,6 @@ Figure 1: Side-by-side comparison: Sequentia…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AI Specification Driven Development]]></title>
-        <id>https://dev.to/rillus/ai-specification-driven-development-4n93</id>
-        <link href="https://dev.to/rillus/ai-specification-driven-development-4n93"/>
-        <updated>2025-11-26T02:02:12.000Z</updated>
-        <summary type="html"><![CDATA[Back in October I stood in front of a room of engineers at John Lewis' head office and delivered my presentation on Specification Driven Development. After the talk, lots of people still had questions, so I promised I would share the full playbook. This is that write-up: the hands-on guide to AI Specification Driven Development (SDD) that I lean on every day.
-I adore the thrill of tossing a single line at Claude and watching a prototype appear. You probably do too. But once the project grows beyond a weekend hack, vibe coding fights back:
-Natural language is powerful yet quickly tilts into ambiguity when there are multiple contributors (or Future You revisiting the repo six months later).
-Context drifts fast because AI assistants forget or get confused, or you start working on the next pro…]]></summary>
-        <author>
-            <name>Riley</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Leapmotor Teases Arrival Of New B05 Ultra Variant]]></title>
         <id>https://www.lowyat.net/?p=374371</id>
         <link href="https://www.lowyat.net/2025/374371/leapmotor-teases-arrival-b05-ultra-variant/"/>
@@ -234,17 +371,6 @@ The post Leapmotor Teases Arrival Of New B05 Ultra Variant appeared first on Low
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Source Code Analysis of the Nonlinear Chinese-Style Reporting Engine NopReport]]></title>
-        <id>https://dev.to/canonical/source-code-analysis-of-the-nonlinear-chinese-style-reporting-engine-nopreport-2d21</id>
-        <link href="https://dev.to/canonical/source-code-analysis-of-the-nonlinear-chinese-style-reporting-engine-nopreport-2d21"/>
-        <updated>2025-11-26T01:52:25.000Z</updated>
-        <summary type="html"><![CDATA[In daily development, we often need to import and export Excel data, generate Excel and Word reports, etc. Common packages like easyexcel and poi-tl rely on the underlying POI engine, which is bulky and struggles with complex, irregular tables. When creating complex Chinese-style reports, one usually needs to use report engines provided by professional report software companies such as Runqian and FanRuan.
-Many years ago, Runqian pioneered a nonlinear report generation algorithm that supports symmetric expansion across rows and columns, which later became a leader in commercial reporting software. Subsequent report software like FanRuan has mimicked similar report generation algorithms. The NopReport reporting engine offers a very lightweight open-source implementation (about 3,000 lines o…]]></summary>
-        <author>
-            <name>canonical</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[BebboSSH: SSH2 implementation for Amiga systems (68000, GPLv3)]]></title>
         <id>https://franke.ms/git/bebbo/bebbossh</id>
         <link href="https://franke.ms/git/bebbo/bebbossh"/>
@@ -252,34 +378,6 @@ Many years ago, Runqian pioneered a nonlinear report generation algorithm that s
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Open-source Chinese-style reporting engine using Excel as the designer: NopReport]]></title>
-        <id>https://dev.to/canonical/open-source-chinese-style-reporting-engine-using-excel-as-the-designer-nopreport-2j20</id>
-        <link href="https://dev.to/canonical/open-source-chinese-style-reporting-engine-using-excel-as-the-designer-nopreport-2j20"/>
-        <updated>2025-11-26T01:39:36.000Z</updated>
-        <summary type="html"><![CDATA[Chinese-style reports are synonymous with complex-structure reports. They broadly refer to summary reports commonly found in domestic information systems, presenting multi-source data in the form of row-column cross-tabulation, multi-level headers, and free cell splitting/merging.
-Why is there the notion of "Chinese-style reports"
-The founder of Raqsoft Report, Bu-xing Jiang, is a legendary figure inscribed in Chinese history (the first Chinese gold medalist in the International Mathematical Olympiad, from Shihezi, Xinjiang; see Prof. Gu Xianfeng’s recollection). He invented the theoretical foundations of the Chinese-style report model and led a whole generation of reporting software technology trends.
-Currently, commercial reporting tools in China all support Chinese-style report producti…]]></summary>
-        <author>
-            <name>canonical</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[shadcn-components-blocks: 100+ UI Components for React/Next.js]]></title>
-        <id>https://dev.to/jqueryscript/shadcn-components-blocks-100-ui-components-for-reactnextjs-41o7</id>
-        <link href="https://dev.to/jqueryscript/shadcn-components-blocks-100-ui-components-for-reactnextjs-41o7"/>
-        <updated>2025-11-26T01:39:28.000Z</updated>
-        <summary type="html"><![CDATA[shadcn-components-blocks adds over 100 production-ready components to your shadcn/ui projects.
-Key features:
-Check the documentation site to browse the full catalog and grab the installation commands for components and blocks you need.
-👉 Blog Post
-👉 GitHub Repo
-👉 Live Demo]]></summary>
-        <author>
-            <name>jQueryScript</name>
         </author>
     </entry>
     <entry>
@@ -297,16 +395,6 @@ Check the documentation site to browse the full catalog and grab the installatio
         <id>https://web.stanford.edu/class/cs234/</id>
         <link href="https://web.stanford.edu/class/cs234/"/>
         <updated>2025-11-26T00:33:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Generative Burrito Test]]></title>
-        <id>https://www.generativist.com/notes/2025/Nov/25/generative-burrito-test.html</id>
-        <link href="https://www.generativist.com/notes/2025/Nov/25/generative-burrito-test.html"/>
-        <updated>2025-11-25T23:28:17.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -902,17 +990,6 @@ The post China’s AUDI Unveils E SUV Concept At Guangzhou Auto Show appeared fi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[JBL Grip Now Available In Malaysia; Retails For RM599]]></title>
-        <id>https://www.lowyat.net/?p=374246</id>
-        <link href="https://www.lowyat.net/2025/374246/jbl-grip-available-malaysia/"/>
-        <updated>2025-11-25T05:36:04.000Z</updated>
-        <summary type="html"><![CDATA[The JBL Grip is now officially available in Malaysia. Designed for the outdoors, the ultra portable speaker is designed to produce powerful sound while weathering the elements and hard knocks, literally. “The new JBL Grip is your music’s new co-pilot. It is built like a tank, seriously: waterproof, dustproof, and drop-proof (it will survive concrete). […]
-The post JBL Grip Now Available In Malaysia; Retails For RM599 appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>John Law</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[OpenAI now lets enterprises choose where to host their data]]></title>
         <id>6AgzhypnMWE2NMbFCZNbgl</id>
         <link href="https://venturebeat.com/ai/openai-now-lets-enterprises-choose-where-to-host-their-data"/>
@@ -1065,16 +1142,6 @@ Fara-7B is designed to navigate use…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Definitive Classic Mac Pro (2006-2012) Upgrade Guide]]></title>
-        <id>https://blog.greggant.com/posts/2018/05/07/definitive-mac-pro-upgrade-guide.html</id>
-        <link href="https://blog.greggant.com/posts/2018/05/07/definitive-mac-pro-upgrade-guide.html"/>
-        <updated>2025-11-23T03:38:22.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Lean4: How the theorem prover works and why it's the new competitive edge in AI]]></title>
         <id>78729zcYN1MUDIklwCjuOH</id>
         <link href="https://venturebeat.com/ai/lean4-how-the-theorem-prover-works-and-why-its-the-new-competitive-edge-in"/>
@@ -1098,17 +1165,13 @@ Lean4 is both a programming language and a proof assistant designed for formal v
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[OpenAI is ending API access to chatgpt-4o-latest in February 2026]]></title>
-        <id>2NpNBu7t9YT73jPkIBpBa7</id>
-        <link href="https://venturebeat.com/ai/openai-is-ending-api-access-to-fan-favorite-gpt-4o-model-in-february-2026"/>
-        <updated>2025-11-21T23:01:00.000Z</updated>
-        <summary type="html"><![CDATA[OpenAI has sent out emails notifying API customers that its chatgpt-4o-latest model will be retired from the developer platform in mid-February 2026.
-Access to the model is scheduled to end on February 16, 2026, creating a roughly three-month transition period for remaining applications still built on GPT-4o.
-
-To be clear, this is a chat-only, text-based model — not the full multimodal GPT-4o — and other variants of 4o including the full GPT-4o, GPT-4o Transcribe, GPT-4o mini Transcribe and GPT-4o mini TTS will remain past this time period, according to OpenAI's platform documentation here.
-An OpenAI spokesperson emphasized that this timeline applies only to the API. OpenAI has not announced any schedule for removing GPT-4o from ChatGPT, where it remains an option for individual consumers …]]></summary>
+        <title type="html"><![CDATA[Java Decompiler]]></title>
+        <id>http://java-decompiler.github.io/</id>
+        <link href="http://java-decompiler.github.io/"/>
+        <updated>2025-11-22T17:44:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>carl.franzen@venturebeat.com (Carl Franzen)</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
