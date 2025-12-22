@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/osalumense/why-nestjs-hot-reload-does-not-work-in-docker-and-how-to-fix-it-properly-4de4",
-          "author": "Stephen Akugbe",
-          "description": "If you are running NestJS inside Docker and your code changes are not reflecting, you are not alone. This is one of the most common pain points developers hit when combining NestJS, Docker, and macOS or Windows.\nYou save a file.\nSidenote: I have actually fixed this exact problem before on another project. But when I hit it again on a new NestJS setup, I realized I could not remember all the details. That was the moment I decided to document it properly this time.\nAt some point, you install webpack because someone on the internet said it fixes the issue.\nThis article explains what is really going on, why Docker behaves this way, when webpack is actually needed, and what the correct setup looks like for NestJS development.\nDocker does not watch your files.\nDocker only sees what exists inside…",
-          "link": "https://dev.to/osalumense/why-nestjs-hot-reload-does-not-work-in-docker-and-how-to-fix-it-properly-4de4",
-          "publishedOn": "2025-12-22T21:51:00.000Z",
-          "wordCount": 2611,
-          "title": "Why NestJS Hot Reload Does Not Work in Docker and How to Fix It Properly",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9oh85466e0xh830g0h5c.png"
+          "id": "https://dev.to/daviesbrown/part-2-process-managers-keeping-your-app-alive-with-pm2-4knl",
+          "author": "David Nwosu",
+          "description": "Series: From \"Just Put It on a Server\" to Production DevOps\n\nReading time: 10 minutes\n\nLevel: Beginner-friendly\nIn Part 1, we deployed our Sales Signal Processing Platform to a Linode server the manual way. It worked... until:\nWe closed our SSH session (app died)\nThe app crashed (stayed dead)\nThe server rebooted (app didn't restart)\nToday's mission: Keep the app alive without babysitting it.\nLet's simulate what happens in production.\nSSH into your server and start the API:\ncd /opt/sspp/services/api\nnpm start &\n\nNow kill it on purpose:\n# Find the process ID\nps aux | grep node\n\n# Kill it\nkill -9 <pid>\n\nTest the API:\ncurl http://localhost:3000/api/v1/health\n\nDead. And it's not coming back.\nIn production, processes die for many reasons:\nUnhandled exceptions\nMemory leaks (OOM killer strikes)\nDe…",
+          "link": "https://dev.to/daviesbrown/part-2-process-managers-keeping-your-app-alive-with-pm2-4knl",
+          "publishedOn": "2025-12-22T23:11:19.000Z",
+          "wordCount": 3374,
+          "title": "Part 2: Process Managers - Keeping Your App Alive with PM2",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fed5ayqhalx3xshhi950q.png"
         },
         {
-          "id": "https://dev.to/opzozi/building-a-serverless-pdf-merger-editor-using-react-and-pdf-lib-no-backend-1f1l",
-          "author": "opzozi",
-          "description": "I merge PDFs about twice a week. Not enough to pay for an Adobe subscription, but enough to be annoyed by online tools.\nYou know the drill:\nGoogle \"merge pdf free\".\nUpload your private bank statement to a random server.\nGet hit with a \"Daily Limit Reached\" popup just when you need to download the result.\nI got tired of this. I realized that modern browsers and WebAssembly are fast enough to handle PDF manipulation client-side. We don't actually need a backend for this anymore.\nSo, I built Simple VaultPDF.\nThe Tech Stack\nFramework: React (Vite)\nPDF Engine: pdf-lib (for merging/splitting) & pdf.js (for rendering)\nOCR: tesseract.js\nState: Just React hooks, kept it simple.\nThe Code (How it works)\nJavaScript\nimport { PDFDocument } from 'pdf-lib';\n\nconst mergeFiles = async (files) => {\n  const mergedPdf = await PDFDocument.create();\n\n  for (const file of files) {\n    const fileBuffer = await file.arrayBuffer();\n\n    const pdf = await PDFDocument.load(fileBuffer);\n\n    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());\n\n    copiedPages.forEach((page) => mergedPdf.addPage(page));\n  }\n\n  const pdfBytes = await mergedPdf.save();\n  return pdfBytes;\n};\n\nWhy Local-First?\nZero Server Costs: Since I don't process the files, I don't pay for AWS/Cloud functions.\nPrivacy: Users don't have to trust me with their data, because the data never leaves their machine.\nSpeed: No upload/download latency.\nThe Result\nI just published it to the Chrome Web Store. If you are tired of paywalls or just want to see how pdf-lib performs in a real extension, give it a try.\nLink: Simple VaultPDF on Chrome Web Store\nLet me know if you find any bugs! I'm still optimizing the memory usage for large files.\nHappy coding!",
-          "link": "https://dev.to/opzozi/building-a-serverless-pdf-merger-editor-using-react-and-pdf-lib-no-backend-1f1l",
-          "publishedOn": "2025-12-22T21:33:08.000Z",
-          "wordCount": 1971,
-          "title": "Building a Serverless PDF Merger & Editor using React and pdf-lib (No Backend!)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwbu4y5ykmqygbx850fao.png"
+          "id": "https://dev.to/daviesbrown/part-1-the-default-way-putting-an-app-on-a-server-and-why-it-breaks-2a5j",
+          "author": "David Nwosu",
+          "description": "Series: From \"Just Put It on a Server\" to Production DevOps\n\nReading time: 12 minutes\n\nLevel: Beginner-friendly\nEvery developer has a moment where they think: \"I've built this amazing app locally. Now I just need to put it on a server somewhere.\"\nSounds simple, right?\nYou rent a server, upload your code, run npm start, and boom—you're live.\nThis article is about what happens next.\nWe're going to deploy a real application—the Sales Signal Processing Platform (SSPP)—the old-school way. No Docker. No Kubernetes. No CI/CD magic. Just you, a Linux server, and SSH.\nBy the end, you'll understand why modern DevOps tools exist—not because someone said they're \"best practices,\" but because you'll feel the pain they solve.\nThe Sales Signal Processing Platform is an event-driven system that:\nAccepts e…",
+          "link": "https://dev.to/daviesbrown/part-1-the-default-way-putting-an-app-on-a-server-and-why-it-breaks-2a5j",
+          "publishedOn": "2025-12-22T23:09:33.000Z",
+          "wordCount": 3447,
+          "title": "Part 1: The Default Way - Putting an App on a Server (And Why It Breaks)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fhyk4z9y25r3y08awlzdv.png"
         },
         {
-          "id": "https://dev.to/sukkergris/2creating-the-pinnacle-of-niche-software-the-devcontainer-305l",
-          "author": "Theodor Heiselberg",
-          "description": "The Elm development environment\n\n\nI prefer as ultra stable, shareable and reproducible an environment as possible so my preferred approach is using a devcontainer.\nUntil recently I saw the .devcontainer as a intrinsically part of my project only containing the one true development container setup. Devs could use dotfiles to bring custom configs and setup that way.\nHowever my perspective has changed recently and now I just add a folder with my own name to the .devcontainer folder and leave it up to each dev how they prefer to roll.\nHere I'll share my current favorite setup when developing for Elm in the previously described tech stack. And it dose involve quite a few moving parts - so hold on!\nThe project for the base contaner - tailored for my needs - can be found here: elm-development-env…",
-          "link": "https://dev.to/sukkergris/2creating-the-pinnacle-of-niche-software-the-devcontainer-305l",
-          "publishedOn": "2025-12-22T21:31:43.000Z",
-          "wordCount": 2774,
-          "title": "(2)Creating the Pinnacle of Niche Software: The devcontainer",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb33pfgldso891tglntkg.png"
+          "id": "https://dev.to/the_duchess_of_hackers/if-you-learn-to-code-who-will-you-teach-3in2",
+          "author": "The Duchess of Hackers",
+          "description": "A Conversation Every Learner Should Be Having\n\n\nIf you’re learning how to code right now, let me ask you one simple question:\nWho are you learning it for..just yourself, or others too?\nBecause coding isn’t just a personal skill.\ntransferable power.\nAnd when knowledge is shared, impact multiplies.\nLearning to code is great.\nBut the real magic happens when you pass it on.\nWhen you explain a concept to someone else:\nYou understand it deeper\nYou simplify complex ideas\nYou build confidence (yours and theirs)\nTeaching doesn’t require perfection.\nwillingness.\nThis is the cycle I believe in:\n1️⃣ Learn something new\n2️⃣ Practice it until it makes sense\n3️⃣ Share it in the simplest way possible\nYou don’t need a classroom.\na WhatsApp message\na short post\na quick explanation to a friend\nThat’s how communities start.\nCoding isn’t just about writing syntax.\nopening doors\nsolving problems\nhelping others believe “I can do this too”\nWhen one person learns and teaches another, the ripple effect begins.\nIf you’re learning to code today:\nWho could you help tomorrow?\nThat’s how real tech communities grow \none person learning, one person teaching, one person inspiring.\nThe Duchess of Hackers \nFull Stack Developer | Digital Marketer | Community Builder",
+          "link": "https://dev.to/the_duchess_of_hackers/if-you-learn-to-code-who-will-you-teach-3in2",
+          "publishedOn": "2025-12-22T23:08:14.000Z",
+          "wordCount": 1945,
+          "title": "If You Learn to Code, Who Will You Teach?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fz9smvp9mni9fbn8k1jw7.png"
         },
         {
-          "id": "https://dev.to/adzhydra/how-i-built-a-stroke-capture-system-for-an-ai-drawing-game-g44",
-          "author": "Adam",
-          "description": "Most drawing apps save the final image. I wanted to capture the whole journey.\nFor Paint Your Partner, I built a system that records every single brush stroke. Position, timing, pressure, colour, order. Everything.\nWhy? Because an AI is watching. And it needs to see the drawing happen, not just the end result.\nI was building a couples drawing game. You draw your partner, they draw you, an AI commentates live.\nBut if the AI only sees the finished image, the commentary is boring. \"Nice portrait.\" Cool. Thanks.\nI wanted it to react as you draw. Spot the eyes appearing. Notice you're spending ages on the hair. Catch the moment you give up on the nose and scribble something abstract.\nFor that, I needed stroke data.\nEvery stroke is an object. It contains:\nPath data (array of x/y coordinates)\nCol…",
-          "link": "https://dev.to/adzhydra/how-i-built-a-stroke-capture-system-for-an-ai-drawing-game-g44",
-          "publishedOn": "2025-12-22T21:31:42.000Z",
-          "wordCount": 2067,
-          "title": "How I Built a Stroke Capture System for an AI Drawing Game",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmlx2jvh81ffdm5b8jxil.jpeg"
+          "id": "https://dev.to/dan_ledger_ce2886f0037972/2025-12-22-daily-ai-news-7k2",
+          "author": "Dan",
+          "description": "As 2025 draws to a close, the AI landscape is accelerating toward unprecedented capabilities, with OpenAI's GPT-5.2 dominating benchmarks, robotics poised for explosive growth in 2026, and fierce competition in hardware and compute infrastructure reshaping the race to AGI. Industry leaders like Greg Brockman and Yann LeCun are sharing insights on prompting techniques, labor impacts, and the primacy of algorithms over raw scaling, while breakthroughs in math proofs and Chinese chip tech signal paradigm shifts. Viral discussions highlight accelerating agent autonomy, potential intelligence explosions from Anthropic, and supercluster battles among Google, xAI, OpenAI, and others. This report synthesizes the day's most impactful updates, weaving together expert predictions, technical feats, an…",
+          "link": "https://dev.to/dan_ledger_ce2886f0037972/2025-12-22-daily-ai-news-7k2",
+          "publishedOn": "2025-12-22T23:06:11.000Z",
+          "wordCount": 3084,
+          "title": "2025-12-22 Daily Ai News",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0feb3gxas2j5v4oxt9qx.png"
         },
         {
-          "id": "https://dev.to/aws-espanol/el-error-de-seguridad-mas-comun-es-dale-admin-y-ya-o82",
-          "author": "Augusto Valdivia",
-          "description": "Cuando estamos bajo presión, casi siempre gana la solución más rápida. Algo falla, alguien necesita acceso, hay una entrega cerca. Entonces hacemos lo típico: damos permisos amplios “por ahora”.\nEl problema es que lo temporal suele quedarse para siempre.\nMenor privilegio no es paranoia. Es intención. Damos solo lo necesario para que los errores tengan un impacto pequeño y la seguridad sea más predecible.\nMenor privilegio significa:\nSolo las acciones necesarias\nSolo los recursos necesarios\nSolo cuando se necesita\nSolo para la identidad correcta\nUna buena política responde:\nQué necesita hacer este sistema\nEn qué recursos lo hará\nQué cosas nunca debería poder hacer\nIAM no es solo seguridad. IAM también es estabilidad. Un rol con demasiado poder puede romper más cosas más rápido.\nEn entornos p…",
-          "link": "https://dev.to/aws-espanol/el-error-de-seguridad-mas-comun-es-dale-admin-y-ya-o82",
-          "publishedOn": "2025-12-22T21:28:18.000Z",
-          "wordCount": 2090,
-          "title": "El error de seguridad más común es “Dale Admin y Ya”",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffjioqpin50rzs24ohez4.png"
+          "id": "https://dev.to/eriperspective/ai-engineering-advent-of-ai-with-goose-day-14-complete-operations-system-2cm2",
+          "author": "Erica",
+          "description": "Day 14: Building a Complete Operations Knowledge System with goose Skills\nThe Winter Festival succeeded because of the expertise of its team. Every department had developed its own workflows, escalation paths, and operational knowledge, but none of it was documented in a way that could scale. With three neighboring towns requesting help to run their own festivals, the Director needed a system that could capture this expertise and make it reusable.\nThis challenge introduced goose Skills, a mechanism for encoding domain knowledge into structured, discoverable, and portable expertise. Instead of producing a static manual, the goal was to build a living operational system that goose can load and apply automatically whenever a coordinator needs guidance.\nThe Challenge: Capture Operational Knowl…",
+          "link": "https://dev.to/eriperspective/ai-engineering-advent-of-ai-with-goose-day-14-complete-operations-system-2cm2",
+          "publishedOn": "2025-12-22T23:06:10.000Z",
+          "wordCount": 2846,
+          "title": "AI Engineering: Advent of AI with goose Day 14 - Complete Operations System",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fl6d102vgq62g7t7q87ue.png"
         },
         {
-          "id": "https://dev.to/kurt0x/sending-eip-4844-blob-transactions-with-ethersjs-and-kzg-wasm-306a",
-          "author": "Kurt",
-          "description": "EIP-4844 introduces blob transactions (Type 3) as part of Proto-Danksharding. Sending blob transactions in practice comes with constraints around tooling, RPC support, and transaction preparation.\nThis article summarizes hands-on experimentation with ethers.js v6 and kzg-wasm, focusing on what works, what does not, and how to get a minimal setup running.\nIf you just want to create a blob without diving into code, https://blobsender.xyz lets anyone write a message and submit it as a blob on Ethereum.\nBrowser wallets and connectors do not support blob transactions yet.\n\n\nRPC support is inconsistent.\n\n\n\n\n\n\n\n  \n  \n  RPC support on Sepolia\n\n\nRPC support was one of the main friction points. About 20 Sepolia RPC providers were tested. Many rejected blob transactions or lacked EIP-4844 support.\nThe following public RPC endpoints worked reliably:\nhttps://sepolia.infura.io/v3/YOUR_API_KEY\nhttps://ethereum-sepolia-rpc.publicnode.com\nhttps://eth-sepolia.api.onfinality.io/public\nhttps://0xrpc.io/sep\nhttps://sepolia.drpc.org\nThis list is included in the repository to save others testing time.\nAll working examples live here:\nhttps://github.com/0xKurt/eip-4844-ethers-examples\nThe repository contains two scripts:\nsend-blob.ts – a simple blob transaction\nsend-blob-contract.ts – a blob transaction combined with a contract call\nBoth use ethers.js v6 and kzg-wasm, and send Type 3 transactions.\nAt a high level, sending a blob transaction requires preparing a fixed-size blob, generating a KZG commitment and proof, and sending a transaction with type: 3.\nBlobscan allows inspection of:\nblob versioned hashes\nblob gas prices\nother blob-related metadata\nThe scripts print direct links to Blobscan using the blob versioned hash returned by ethers, making verification and inspection easy.\nThis post is a condensed summary. A complete step-by-step walkthrough of setup, code, and transaction flow is available in the original Medium article:\nhttps://medium.com/@Kurt0x/sending-eip-4844-blob-transactions-using-ethers-js-and-kzg-wasm-d84224be6b81",
-          "link": "https://dev.to/kurt0x/sending-eip-4844-blob-transactions-with-ethersjs-and-kzg-wasm-306a",
-          "publishedOn": "2025-12-22T21:19:43.000Z",
-          "wordCount": 1946,
-          "title": "Sending EIP-4844 Blob Transactions with ethers.js and kzg-wasm",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fba073vkqa6yy6i6sl0h6.png"
+          "id": "https://dev.to/jumptotech/project-terraform-challenges-in-production-580k",
+          "author": "Aisalkyn Aidarova",
+          "description": "0) Root structure\n\n\nCreate one directory:\nmkdir terraform-prod-challenges\ncd terraform-prod-challenges\n\nFinal structure:\nterraform-prod-challenges/\n├── 00-baseline/\n├── 01-drift-and-refresh/\n├── 02-import-existing/\n├── 03-rename-without-destroy-state-mv/\n├── 04-address-change-count-to-foreach/\n├── 05-prevent-destroy-safety/\n├── 06-backend-change-reconfigure/\n├── 07-state-locking-simulation/\n├── 08-partial-apply-and-recovery/\n├── 09-outputs-remote-state-contract/\n└── 10-provider-version-lock-file/\n\nEach folder is one “production challenge”.\nPurpose: a simple baseline resource (local file) used across labs.\n00-baseline/\n├── main.tf\n└── outputs.tf\n\n00-baseline/main.tf\n\n\n\n\n\nterraform {\n  required_version = \">= 1.5.0\"\n\n  required_providers {\n    local = {\n      source  = \"hashicorp/local\"\n     …",
+          "link": "https://dev.to/jumptotech/project-terraform-challenges-in-production-580k",
+          "publishedOn": "2025-12-22T23:00:01.000Z",
+          "wordCount": 3140,
+          "title": "PROJECT: Terraform Challenges in Production",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqyzl71kp2d9a0w75kx8x.png"
         },
         {
-          "id": "https://dev.to/fatima_naz_a51c3b5fa73475/cicd-for-beginners-2mng",
-          "author": "Fatima naz",
-          "description": "CI/CD for Beginners: Automate Your Code Like a Pro 🚀💻\n\n\nWhen I first started my career building websites, I loved creating things from scratch.  \nBut very quickly, I ran into a problem: deploying updates over and over was exhausting.  \nWith my personal projects on Vercel, it was easy — push your code, and it’s live. Simple.  \nBut with bigger projects or websites not hosted on Vercel, even a tiny change meant going through the entire deployment process again. Fix a typo? Push. Update a layout? Push again.  \nIt felt repetitive, slow, and honestly tiring.  \nThat’s when I realized: I needed automation. I wanted a system that could test my code, deploy updates, and save me from doing the same manual steps repeatedly.  \nThat’s when I discovered CI/CD — a game-changer for developers, beginners …",
-          "link": "https://dev.to/fatima_naz_a51c3b5fa73475/cicd-for-beginners-2mng",
-          "publishedOn": "2025-12-22T21:19:32.000Z",
-          "wordCount": 2136,
-          "title": "CI/CD for Beginners",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwtymocgadv3cbnkvu978.png"
+          "id": "https://dev.to/james_miller_8dc58a89cb9e/8-essential-java-libraries-for-productive-development-in-2026-21e9",
+          "author": "James Miller",
+          "description": "In Java’s massive ecosystem, picking the right libraries often matters more than the syntax you write. Good libraries help you avoid reinventing the wheel, improve code readability, and make systems more reliable. This post walks through 8 battle‑tested libraries that cover JSON, testing, utilities, documents, mapping, and more — plus a note on keeping your local setup under control.\n\nWhen working with JSON in Java, Jackson is effectively the industry standard.[web:369][web:371][web:377]\nWhy it’s essential:\nHigh performance serialization/deserialization.\n\nMultiple modes: Streaming API, Tree Model, and Data Binding.\n\nRich annotations: @JsonProperty, @JsonIgnore, etc.\n\nHandles generics, nested objects, and complex types gracefully.[web:372][web:373]\nExample:\n\nimport com.fasterxml.jackson.cor…",
+          "link": "https://dev.to/james_miller_8dc58a89cb9e/8-essential-java-libraries-for-productive-development-in-2026-21e9",
+          "publishedOn": "2025-12-22T22:50:56.000Z",
+          "wordCount": 2786,
+          "title": "8 Essential Java Libraries for Productive Development in 2026",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fddicrdzfcqova84gkku2.png"
         },
         {
-          "id": "https://dev.to/muhammad_usmanzafar_0a45/data-architect-master-professional-workbook-54ph",
-          "author": "Usman Zafar",
-          "description": "I built a modular, audit‑ready data engineering project and wanted to share it with the community.\nIt includes:\nRepo link: https://github.com/usman19zafar/Data-Architect-Master-Professional-Workbook\nIf you have feedback or want me to add more examples (ETL, modeling, debugging, etc.), I’d love to hear it.",
-          "link": "https://dev.to/muhammad_usmanzafar_0a45/data-architect-master-professional-workbook-54ph",
-          "publishedOn": "2025-12-22T21:18:08.000Z",
-          "wordCount": 1677,
-          "title": "Data-Architect-Master-Professional-Workbook",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgal9go2e8n8aiy0to6dy.png"
+          "id": "https://dev.to/kyle_dring_6c89d266c5c4ab/movie-cataloguer-gcl",
+          "author": "Kyle Dring",
+          "description": "I made a free, open-source movie cataloguer because I was tired of subscription-based alternatives.\nPhysical media focused (Blu-ray / DVD / 4K)\nTMDb poster & metadata lookup\nSearch, filters, CSV import/export\nSelf-hosted, fast, and customizable\nRepo: Repo\nDiscord: Discord",
+          "link": "https://dev.to/kyle_dring_6c89d266c5c4ab/movie-cataloguer-gcl",
+          "publishedOn": "2025-12-22T22:48:09.000Z",
+          "wordCount": 1656,
+          "title": "Movie Cataloguer",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Figwg21v3efk6axg492tv.png"
         },
         {
-          "id": "https://dev.to/stevenstuartm/what-engineering-leaders-ask-that-others-dont-35jo",
-          "author": "Steven Stuart",
-          "description": "I've worked with engineers who had senior titles but didn't lead anyone. I've also worked with junior engineers who mentored half the team. The difference wasn't in their resume or their technical depth; it was in how they approached their work, their growth, and their responsibility to others.\nLeadership and mentorship in software development aren't granted by org charts. They emerge from patterns of behavior that compound over time. Here are the questions that reveal those characteristics.\nThere's a difference between ten years of experience and one year of experience repeated ten times. Repeating experience means doing the same work year after year, measuring tenure rather than growth. You master a domain, then stay there. The work feels comfortable because you've solved these problems …",
-          "link": "https://dev.to/stevenstuartm/what-engineering-leaders-ask-that-others-dont-35jo",
-          "publishedOn": "2025-12-22T21:15:15.000Z",
-          "wordCount": 2515,
-          "title": "What Engineering Leaders Ask That Others Don't",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fp5vm7tnfe560j2s5fxey.png"
+          "id": "https://dev.to/pradeep_kumar_fc55a4d876b/how-we-prevent-ads-from-interrupting-critical-user-workflows-30d7",
+          "author": "Pradeep Kumar",
+          "description": "A practical engineering approach to interaction-aware ad suppression\n⸻\n\nWhy This Problem Matters\nIn many mobile applications, ads are inserted based on screen placement or timing rules, without considering what the user is actively doing.\nFrom an engineering perspective, this creates several problems:\nWhile building a production mobile application, we observed that the issue wasn’t which ads were shown — it was when they were shown.\nThis led us to implement an interaction-aware ad suppression system that treats monetization as a runtime decision based on user interaction state.\nThis post focuses on the engineering side of that system.\n⸻\n\nTracking Interaction Events\nThe first step is capturing meaningful interaction signals locally.\nExamples of events we track:\nRather than reacting to indiv…",
+          "link": "https://dev.to/pradeep_kumar_fc55a4d876b/how-we-prevent-ads-from-interrupting-critical-user-workflows-30d7",
+          "publishedOn": "2025-12-22T22:39:38.000Z",
+          "wordCount": 2196,
+          "title": "How We Prevent Ads from Interrupting Critical User Workflows",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fv0jcsr7nasti4fgkt0st.png"
         },
         {
-          "id": "https://dev.to/fatima_naz_a51c3b5fa73475/automate-your-life-with-n8n-beginner-friendly-guide-5337",
-          "author": "Fatima naz",
-          "description": "Automate Your Life with n8n (Beginner-Friendly Guide) 🤖✨\n\n\nEver wished your apps could just do things for you? Like:  \nSend a Slack message when a GitHub issue is opened\n\nUpdate a Google Sheet automatically\n\nGet notified by email when something important happens\n\n\n\nMeet n8n—an open-source tool that lets you automate tasks without being a coding expert. Let me show you how.\nn8n is like Zapier, but free and more flexible.  \nIt lets you connect apps and automate workflows using a visual drag-and-drop editor. No heavy coding required!  \nCool things you can do:  \nConnect 200+ apps like Slack, GitHub, Google Sheets, Notion, and more\n\nAdd conditions like “only do this if…”\n\nUse JavaScript for custom logic (optional)\n\n\n\n\n\n\n\n  \n  \n  Beginner Example: GitHub → Slack 📣\n\n\nWant to notify your team on Slack whenever a new GitHub issue appears?  \nCreate a new workflow in n8n\n\nAdd a GitHub trigger node → select your repo\n\nAdd a Slack node → choose your channel & message\n\nConnect nodes & activate\n\n\n\nBoom! Every new issue automatically sends a Slack message. 🚀\nNo coding required – just drag, drop, connect\n\n\nFast results – build workflows in minutes\n\n\nFlexible – add custom logic with JavaScript if needed\n\n\nFree & open-source – experiment without paying\n\n\n\n\n\n\n\n  \n  \n  Getting Started 🏁\n\n\n\nGo to n8n.io\n\nUse desktop app, cloud version, or self-host\n\nPick one repetitive task\n\nBuild your workflow & watch automation in action ✨\n\n\n\n💡 Tip: Start small. Slack messages, email alerts, or Google Sheet updates are perfect first workflows.",
-          "link": "https://dev.to/fatima_naz_a51c3b5fa73475/automate-your-life-with-n8n-beginner-friendly-guide-5337",
-          "publishedOn": "2025-12-22T21:00:15.000Z",
-          "wordCount": 1927,
-          "title": "Automate Your Life with n8n (Beginner-Friendly Guide)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fo2eobroknf59xe314epe.png"
+          "id": "https://dev.to/snnajieze/cicd-is-not-only-for-the-cloud-building-a-cicd-pipeline-for-shared-hosting-using-github-actions-4c4h",
+          "author": "Solomon Nnajieze",
+          "description": "Introduction: CI/CD Beyond Cloud Platforms\n\n\nWhen people hear Continuous Integration and Continuous Deployment (CI/CD), they often think it’s something that only works on cloud platforms like AWS, Azure, or GCP, Kubernetes, EC2, containers, and all that.\nBut the truth is:\nCI/CD is not made for the cloud alone. It is a workflow, and it can work anywhere, including shared hosting.\nCI/CD pipelines are not exclusive to cloud infrastructure.\nCI/CD pipeline for a Laravel application deployed on shared hosting (Namecheap) using GitHub Actions + SSH + rsync, even with the limitations of traditional cPanel servers.\nThis guild is based on a real-world deployment on Namecheap shared hosting, highlighting challenges, fixes, and best practices.\nShared hosting is still very common for:\nPersonal projects…",
+          "link": "https://dev.to/snnajieze/cicd-is-not-only-for-the-cloud-building-a-cicd-pipeline-for-shared-hosting-using-github-actions-4c4h",
+          "publishedOn": "2025-12-22T22:38:51.000Z",
+          "wordCount": 3453,
+          "title": "CI/CD Is Not Only for the Cloud: Building a CI/CD Pipeline for Shared Hosting Using GitHub Actions",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F5cjnnanzps1yyugdkh6n.png"
         },
         {
-          "id": "https://dev.to/bharathkumar28/nextjs-16-type-safety-async-pageprops-typed-routes-3ilc",
-          "author": "Bharath Kumar S",
-          "description": "Next.js has quietly become one of the most type-safe full-stack frameworks out there — yet many teams still use only a fraction of what it offers.\nIn this post, I’ll walk through practical, production-ready type safety features in modern Next.js (App Router), including:\nNext.js TypeScript plugin\nStatically Typed Links\nRoute-aware type helpers\nAuto complete environment variables\nTyped NextRequest and NextResponse\nThis is not a beginner guide — it focuses on features that actually prevent bugs in real-world applications.\nNext.js ships with a custom TypeScript plugin that enhances type-checking beyond what plain tsc can do.\nIt understands Next.js concepts such as:\nFile-based routing\nServer vs Client Components\nMetadata APIs\nLayout and page conventions\nTo ensure VS Code uses this plugin:\nOpen …",
-          "link": "https://dev.to/bharathkumar28/nextjs-16-type-safety-async-pageprops-typed-routes-3ilc",
-          "publishedOn": "2025-12-22T20:57:49.000Z",
-          "wordCount": 2395,
-          "title": "Next.js 16 Type Safety: Async PageProps & Typed Routes",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ff7gt9itlkl3cic21qsn6.png"
+          "id": "https://dev.to/daniel_shaibu/creating-ec2-instance-10g1",
+          "author": "daniel shaibu",
+          "description": "An EC2 is the counterpart of the virtual machine in Azure but the EC2 is deploy by Amazon Web Service.\nLog in to the AWS Management Console\nGo to the AWS Console.\nSearch for EC2 in the services search bar and Open the EC2 Dashboard.\n\n\n\n\n\nLaunch a New Instance\nClick Launch Instance.\n\n\n\nGive your instance a Name (e.g., MyWebServer).\n\n\n\n\n\nChoose an Amazon Machine Image (AMI)\nThis defines your OS.\nCommon choices: Amazon Linux 2, Ubuntu Server, Windows Server\n\nSelect an Instance Type\n\n\n\nConfigure Key Pair (SSH Access)\n\n\n\n\n\nCreate a new key pair or use an existing one.\n \n\n\n\nDownload the .pem file — you’ll need it to SSH into the instance.\n\n\n\n\n\nConfigure Network Settings\nChoose a VPC and Subnet.\n\n\n\nConfigure Storage\n\n\n\nLaunch the Instance\n\n\n\nConnect to Your Instance\n\n\n\n\n\nFor Windows:\n\n\n\n\n\n\nDecrypt the admin password using your key pair.\n\n\n\nDownload remote desktop file and copy the password\n\n\n\n\n\n\nYour EC2 Instance Is Ready\nYou can now install software, deploy apps, or configure it as a server.",
+          "link": "https://dev.to/daniel_shaibu/creating-ec2-instance-10g1",
+          "publishedOn": "2025-12-22T22:32:24.000Z",
+          "wordCount": 1845,
+          "title": "Creating EC2 Instance",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F22kdij1168xzo1ujho0v.png"
         },
         {
-          "id": "https://dev.to/ai_miracle_ai/vibe-coding-does-coding-feel-different-to-you-now-3l3g",
-          "author": "AI Miracle",
-          "description": "Do you remember opening a project and already feeling tired?\nNot because the problem was hard, but because you knew what was coming.\nYou open Stack Overflow.\nYou scroll. You try again.\nLately, many developers describe a shift toward vibe coding — a more fluid, flow-based way of working.\nDoes that resonate with you?\nHas vibe coding changed how you approach problems, or do you still prefer the old, logic-heavy grind?",
-          "link": "https://dev.to/ai_miracle_ai/vibe-coding-does-coding-feel-different-to-you-now-3l3g",
-          "publishedOn": "2025-12-22T20:55:29.000Z",
-          "wordCount": 1755,
-          "title": "Vibe Coding: Does Coding Feel Different to You Now?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8iqdttwn558r0dzqupg3.png"
+          "id": "https://dev.to/eddybenchek/what-i-learned-building-with-github-copilot-as-a-java-developer-9bk",
+          "author": "Eddy Benchek",
+          "description": "As a seasoned Java developer, I was skeptical about AI coding assistants at first. But after trying GitHub Copilot, my view changed a lot.\nI wanted to see how this tool could improve my coding. In this article, I'll talk about my move from traditional coding to using AI. I'll share the good and the bad I found.\nUsing AI in coding has really changed the game for me. I'll share what I learned and offer tips on using this new tool.\nBefore using AI tools, my Java work was tough. I spent a lot of time on simple tasks. This included writing the same code over and over, solving complex problems, and keeping my code clean.\nEvery day, I faced:\nWriting the same code for simple classes and data transfer objects\nCreating and using complex algorithms and designs\nKeeping my code up to standard and error…",
+          "link": "https://dev.to/eddybenchek/what-i-learned-building-with-github-copilot-as-a-java-developer-9bk",
+          "publishedOn": "2025-12-22T22:24:59.000Z",
+          "wordCount": 3925,
+          "title": "What I Learned Building with GitHub Copilot as a Java Developer",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fh9kvih3bujoewlv1zrwk.jpg"
         }
       ]
     },
@@ -252,6 +252,26 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://itsfoss.com/news/alexander-linton-interview/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://itsfoss.com/news/alexander-linton-interview/",
+          "publishedOn": "2025-12-22T22:43:22.000Z",
+          "wordCount": 3575,
+          "title": "There Is No Future for Online Safety Without Privacy and Security",
+          "imageUrl": "https://itsfoss.com/content/images/2025/12/alexandar-linton-interview-banner.png"
+        },
+        {
+          "id": "https://www.koi.ai/blog/npm-package-with-56k-downloads-malware-stealing-whatsapp-messages",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.koi.ai/blog/npm-package-with-56k-downloads-malware-stealing-whatsapp-messages",
+          "publishedOn": "2025-12-22T22:35:45.000Z",
+          "wordCount": 4156,
+          "title": "NPM Package with 56K Downloads Caught Stealing WhatsApp Messages",
+          "imageUrl": "https://cdn.prod.website-files.com/689ad8c5d13f40cf59df0e0c/694806d8d1a011b13249a012_image%20(17)%20copy.jpg"
+        },
+        {
           "id": "https://github.com/ahoward/tc",
           "author": null,
           "description": "Comments",
@@ -259,17 +279,7 @@
           "publishedOn": "2025-12-22T22:03:07.000Z",
           "wordCount": 4850,
           "title": "Tc – Theodore Calvin's language-agnostic testing framework",
-          "imageUrl": "https://opengraph.githubassets.com/d01505ef58e789907bd74c7b5caf9e9fe2b24d160b374c0c2ec4657d7a8d6bc4/ahoward/tc"
-        },
-        {
-          "id": "https://twitter.com/rtwlz/status/2003211685650374823",
-          "author": null,
-          "description": "Comments",
-          "link": "https://twitter.com/rtwlz/status/2003211685650374823",
-          "publishedOn": "2025-12-22T21:44:45.000Z",
-          "wordCount": 767,
-          "title": "DOJ uploaded a 12-SEC video showing Epstein attempting suicide?",
-          "imageUrl": null
+          "imageUrl": "https://opengraph.githubassets.com/bf1bc666f4a21fe5864fd4a0c3caa3b0bca2233b703283def9f46b0ad7838907/ahoward/tc"
         },
         {
           "id": "https://brooker.co.za/blog/2024/05/09/nagle.html",
@@ -279,26 +289,6 @@
           "publishedOn": "2025-12-22T21:09:59.000Z",
           "wordCount": 1192,
           "title": "It's Always TCP_NODELAY",
-          "imageUrl": null
-        },
-        {
-          "id": "https://successfulsoftware.net/2025/12/22/is-the-golden-age-of-indie-software-over/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://successfulsoftware.net/2025/12/22/is-the-golden-age-of-indie-software-over/",
-          "publishedOn": "2025-12-22T21:06:10.000Z",
-          "wordCount": 4516,
-          "title": "Is the golden age of Indie software over?",
-          "imageUrl": "https://secure.gravatar.com/blavatar/64279352bb3ebe47dbed8c1bae921ee74a40ef409fecadd81991b423f12c588d?s=200&ts=1766441467"
-        },
-        {
-          "id": "https://nevadacurrent.com/2025/12/22/feds-demand-compromise-on-colorado-river-states-flounder-despite-water-shoratge/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://nevadacurrent.com/2025/12/22/feds-demand-compromise-on-colorado-river-states-flounder-despite-water-shoratge/",
-          "publishedOn": "2025-12-22T21:03:04.000Z",
-          "wordCount": null,
-          "title": "Feds demand compromise on Colorado River while states flounder",
           "imageUrl": null
         },
         {
@@ -317,7 +307,7 @@
           "description": "Comments",
           "link": "https://comicbook.com/gaming/news/vince-zampella-developer-of-call-of-duty-and-battlefield-dead-at-55/",
           "publishedOn": "2025-12-22T20:12:20.000Z",
-          "wordCount": 6334,
+          "wordCount": 6527,
           "title": "Vince Zampella, developer of Call of Duty and Battlefield has died",
           "imageUrl": "https://comicbook.com/wp-content/uploads/sites/4/2025/12/Vince-Zampella.jpg?resize=2000,1125"
         },
@@ -337,7 +327,7 @@
           "description": "Comments",
           "link": "https://arstechnica.com/science/2025/12/us-government-finds-new-excuse-to-stop-construction-of-offshore-wind/",
           "publishedOn": "2025-12-22T19:31:11.000Z",
-          "wordCount": 2542,
+          "wordCount": 2556,
           "title": "US blocks all offshore wind construction, says reason is classified",
           "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2025/05/GettyImages-1350384252-1152x648.jpg"
         },
@@ -360,6 +350,16 @@
           "wordCount": 4213,
           "title": "The Illustrated Transformer",
           "imageUrl": null
+        },
+        {
+          "id": "https://www.latimes.com/environment/story/2025-12-18/state-regulators-vote-to-keep-utility-profits-high-angering-customers",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.latimes.com/environment/story/2025-12-18/state-regulators-vote-to-keep-utility-profits-high-angering-customers",
+          "publishedOn": "2025-12-22T19:06:16.000Z",
+          "wordCount": 5815,
+          "title": "State regulators vote to keep utility profits high angering customers across CA",
+          "imageUrl": "https://ca-times.brightspotcdn.com/dims4/default/f42885a/2147483647/strip/true/crop/1728x907+0+122/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F87%2F53%2F262fe21d4db1b2be2d69c604312b%2Fhttps-delivery-gettyimages.com%2Fdownloads%2F569196041"
         },
         {
           "id": "https://arxiv.org/abs/2512.14693",
@@ -442,24 +442,14 @@
           "imageUrl": "https://www.404media.co/content/images/size/w1200/2025/12/1222.gif"
         },
         {
-          "id": "https://skilldeliver.com/your-supabase-is-public",
-          "author": null,
-          "description": "Comments",
-          "link": "https://skilldeliver.com/your-supabase-is-public",
-          "publishedOn": "2025-12-22T16:14:43.000Z",
-          "wordCount": 1090,
-          "title": "Your Supabase Is Public",
-          "imageUrl": null
-        },
-        {
           "id": "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
           "author": null,
           "description": "Comments",
           "link": "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
           "publishedOn": "2025-12-22T15:59:01.000Z",
-          "wordCount": null,
+          "wordCount": 26036,
           "title": "Claude Code gets native LSP support",
-          "imageUrl": null
+          "imageUrl": "https://opengraph.githubassets.com/61d6c6c0c862b0d6c923abf32c9e24befded228ab8121cdc4f60d9db387ae291/anthropics/claude-code"
         },
         {
           "id": "https://blog.kierangill.xyz/oversight-and-guidance",
@@ -522,13 +512,23 @@
           "imageUrl": null
         },
         {
-          "id": "https://www.getvurge.com/",
+          "id": "https://www.allaboutcircuits.com/industry-articles/fpgas-need-a-new-future/",
           "author": null,
           "description": "Comments",
-          "link": "https://www.getvurge.com/",
-          "publishedOn": "2025-12-18T19:14:38.000Z",
-          "wordCount": 559,
-          "title": "Show HN: It's Like Clay but in Google Sheets",
+          "link": "https://www.allaboutcircuits.com/industry-articles/fpgas-need-a-new-future/",
+          "publishedOn": "2025-12-19T10:29:33.000Z",
+          "wordCount": null,
+          "title": "FPGAs Need a New Future",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.youtube.com/watch?v=N5yV1Q9O6r4",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.youtube.com/watch?v=N5yV1Q9O6r4",
+          "publishedOn": "2025-12-18T17:14:44.000Z",
+          "wordCount": null,
+          "title": "There's no such thing as a fake feather [video]",
           "imageUrl": null
         },
         {
@@ -798,7 +798,7 @@
           "description": "An FT report alleged Binance failed to stop suspicious transactions, despite agreeing to pay $4.3 billion to settle a U.S. criminal case in 2023.",
           "link": "https://www.coindesk.com/markets/2025/12/22/bnb-lags-market-despite-break-above-usd860-as-scrutiny-of-binance-grows",
           "publishedOn": "2025-12-22T17:32:33.000Z",
-          "wordCount": 10013,
+          "wordCount": 10011,
           "title": "BNB at $860 lags broader market as scrutiny of Binance grows",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/56d1830a3eb04636993db4e0ff7b1a283fe9ba88-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -818,7 +818,7 @@
           "description": "This is the company's second sale of part of its ETH treasury, following a $40 million sale in October to fund share repurchases.",
           "link": "https://www.coindesk.com/business/2025/12/22/ethzilla-sells-usd74-5-million-of-ether-in-effort-to-trim-debt-load",
           "publishedOn": "2025-12-22T16:53:44.000Z",
-          "wordCount": 9853,
+          "wordCount": 9826,
           "title": "ETHZilla sells $74.5 million of ether in effort to trim debt load",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4853dd74c80fc2679cc738a259a38b305149f867-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -828,7 +828,7 @@
           "description": "New House proposal would exempt some stablecoin payments from capital gains taxes and allow stakers to defer income recognition for up to five years.",
           "link": "https://www.coindesk.com/policy/2025/12/22/u-s-bipartisan-lawmakers-draw-up-tax-bill-with-stablecoin-and-staking-relief",
           "publishedOn": "2025-12-22T16:18:14.000Z",
-          "wordCount": 10057,
+          "wordCount": 10070,
           "title": "U.S. bipartisan lawmakers draw up tax bill with stablecoin and staking relief",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/11d38e96067e18f4d9e1e0057cdf51ebefe2cca9-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -838,7 +838,7 @@
           "description": "The world's largest asset manager is promoting its underperforming bitcoin fund over higher-fee winners, signaling long-term commitment.",
           "link": "https://www.coindesk.com/markets/2025/12/22/blackrock-names-bitcoin-etf-a-top-2025-theme-despite-price-slump",
           "publishedOn": "2025-12-22T16:01:13.000Z",
-          "wordCount": 9742,
+          "wordCount": 9728,
           "title": "BlackRock names bitcoin ETF a top 2025 theme despite price slump",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/41cbb7ee40d94b98973687037c93204cb2d611a6-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -848,7 +848,7 @@
           "description": "Behind the move is a sharp narrowing in the profitability of the basis trade, in which traders attempt to capture a spread by buying spot bitcoin while selling BTC futures.",
           "link": "https://www.coindesk.com/markets/2025/12/22/cme-loses-top-spot-to-binance-in-bitcoin-futures-open-interest-as-institutional-demand-wanes",
           "publishedOn": "2025-12-22T15:46:19.000Z",
-          "wordCount": 9784,
+          "wordCount": 9785,
           "title": "CME loses top spot to Binance in bitcoin futures open interest as institutional demand wanes",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1bcf4c0f104cf5c93e93443baef20058cd93c32a-3200x1800.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -858,7 +858,7 @@
           "description": "Technical momentum built as institutional flows drove price through key resistance levels amid an 87% volume surge above average.",
           "link": "https://www.coindesk.com/markets/2025/12/22/filecoin-climbs-after-breaking-above-usd1-29-resistance-zone",
           "publishedOn": "2025-12-22T15:07:14.000Z",
-          "wordCount": 9745,
+          "wordCount": 9732,
           "title": "Filecoin climbs after breaking above $1.29 resistance zone",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8d5d441f4d5317c073228483f261397bbdedbac7-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -888,7 +888,7 @@
           "description": "Cronos (CRO) was also a top performer, rising 2.5%.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/12/22/coindesk-20-performance-update-uniswap-uni-surges-19-over-the-weekend",
           "publishedOn": "2025-12-22T14:20:08.000Z",
-          "wordCount": 8797,
+          "wordCount": 8810,
           "title": "CoinDesk 20 Performance Update: Uniswap (UNI) Surges 19% Over the Weekend",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/095b9d249e70c79dc4491d9464e76d2da6ab27b4-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -898,7 +898,7 @@
           "description": "Shares of the bitcoin miner jumped higher last week on its $7 billion pact with Google-backed Fluidstack.",
           "link": "https://www.coindesk.com/markets/2025/12/22/hut-8-s-ai-data-center-deal-is-bigger-than-meets-the-eye-benchmark-lifts-price-target-to-usd85",
           "publishedOn": "2025-12-22T14:13:38.000Z",
-          "wordCount": 10017,
+          "wordCount": 10030,
           "title": "Hut 8’s AI data center deal is bigger than meets the eye: Benchmark lifts price target to $85",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0e41b18850ed9d8943910b3d5e230bb4e1242ddc-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -908,7 +908,7 @@
           "description": "Thomas Lee's ETH treasury firm acquired nearly 99,000 tokens last week as crypto markets slid.",
           "link": "https://www.coindesk.com/business/2025/12/22/bitmine-buys-usd300-million-in-ether-crossing-4-million-eth-treasury-milestone",
           "publishedOn": "2025-12-22T14:12:45.000Z",
-          "wordCount": 9573,
+          "wordCount": 9575,
           "title": "BitMine buys $300 million in ether, crossing 4 million ETH treasury milestone",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0579b05c0aa6a42517b5b67f1e6b1955364845de-1920x1080.jpg?auto=format"
         },
@@ -918,7 +918,7 @@
           "description": "Kalshi's markets aggregate information from diverse traders with financial incentives, creating a \"wisdom of the crowd\" effect, the platform said.",
           "link": "https://www.coindesk.com/business/2025/12/22/prediction-markets-beat-wall-street-in-forecasting-inflation-kalshi-says",
           "publishedOn": "2025-12-22T14:00:00.000Z",
-          "wordCount": 10444,
+          "wordCount": 10458,
           "title": "Prediction markets beat Wall Street in forecasting inflation, Kalshi says",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b9af51677e37bb4510aa4b2a9926115d0a9673d7-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -928,7 +928,7 @@
           "description": "A tax change in Trump’s Big Beautiful Bill may steer gamblers toward blockchain-based prediction markets to reduce their IRS bill, Coinbase said.",
           "link": "https://www.coindesk.com/markets/2025/12/19/prediction-markets-may-offer-tax-loophole-for-gamblers-under-trump-s-crypto-law-coinbase-says",
           "publishedOn": "2025-12-22T13:59:31.000Z",
-          "wordCount": 9890,
+          "wordCount": 9903,
           "title": "Prediction markets may offer a tax loophole for gamblers under Trump’s Big Beautiful Bill, Coinbase says",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/40a160f22112f4b81aa2316fe6105b628072f287-3840x2160.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -948,7 +948,7 @@
           "description": "A time-honored Wall Street pattern could bring relief to battered BTC bulls as the year end nears.",
           "link": "https://www.coindesk.com/markets/2025/12/22/stock-market-s-santa-tradition-offers-hope-to-battered-bitcoin-bulls",
           "publishedOn": "2025-12-22T13:19:46.000Z",
-          "wordCount": 9874,
+          "wordCount": 9861,
           "title": "Stock market's Santa tradition offers hope to battered Bitcoin bulls",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/159ccfc0e564ea40df4254c4f0aae6afd5624a77-1080x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -958,7 +958,7 @@
           "description": "Led by Executive Chairman Michael Saylor, the company raised the funds entirely by sales of common stock.",
           "link": "https://www.coindesk.com/markets/2025/12/22/strategy-boosted-cash-reserve-by-usd748-million-last-week",
           "publishedOn": "2025-12-22T13:16:29.000Z",
-          "wordCount": 9689,
+          "wordCount": 9702,
           "title": "Strategy pauses bitcoin buys, boosting cash reserve by $748 million last week",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9d302f6b412098bad85dd59c89828e2eaf23514e-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -968,7 +968,7 @@
           "description": "Futures open interest rose steadily as BTC pushed higher, climbing toward $60 billion across major venues.",
           "link": "https://www.coindesk.com/markets/2025/12/22/bitcoin-reclaims-usd90-000-with-u-s-trading-risk-ahead",
           "publishedOn": "2025-12-22T13:11:19.000Z",
-          "wordCount": 9840,
+          "wordCount": 9853,
           "title": "Bitcoin reclaims $90,000, but risk of U.S. trading day awaits",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e5ee0cab885c65a9a22ba8ac8a2bf5b924b8dbf6-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -978,7 +978,7 @@
           "description": "Even if quantum machines capable of breaking Bitcoin’s cryptography are decades away, the work required to update software, infrastructure and user behavior would be measured in years, not months.",
           "link": "https://www.coindesk.com/tech/2025/12/22/bitcoin-isn-t-under-quantum-threat-yet-but-upgrading-it-could-take-5-10-years",
           "publishedOn": "2025-12-22T12:18:12.000Z",
-          "wordCount": 10370,
+          "wordCount": 10383,
           "title": "Bitcoin isn’t under quantum threat yet, but upgrade could take 5-10 years",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0f1b9c03fd3ed65cdd6e26eb07f32893eb80a64d-5473x3649.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -988,7 +988,7 @@
           "description": "Your day-ahead look for Dec. 22, 2025",
           "link": "https://www.coindesk.com/daybook-us/2025/12/22/bitcoin-finds-its-legs-crypto-daybook-americas",
           "publishedOn": "2025-12-22T12:15:00.000Z",
-          "wordCount": 11453,
+          "wordCount": 11454,
           "title": "Bitcoin finds its legs: Crypto Daybook Americas",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/42487e24d2fff479f2eee74f5bea1bf50f61a802-1920x1080.jpg?auto=format"
         },
@@ -1018,7 +1018,7 @@
           "description": "The expiration involves over 50% of Deribit's total open interest, with a bullish bias indicated by a put-call ratio of 0.38.",
           "link": "https://www.coindesk.com/markets/2025/12/22/boxing-day-bonanza-usd27-billion-in-bitcoin-ether-options-set-for-year-end-reset",
           "publishedOn": "2025-12-22T10:14:49.000Z",
-          "wordCount": 10475,
+          "wordCount": 10462,
           "title": "Boxing Day bonanza: $27 billion in bitcoin, ether options set for year-end reset",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e0627380971eb192cf86e7c27e83b43a3c1ce867-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
