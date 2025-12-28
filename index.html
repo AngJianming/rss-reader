@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-12-28 datetime="2025-12-28T08:04:57.000Z">2025-12-28</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-12-28 datetime="2025-12-28T08:04:57.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2025-12-28 datetime="2025-12-28T08:52:17.000Z">2025-12-28</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2025-12-28 datetime="2025-12-28T08:52:17.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -38,6 +38,496 @@
                   <a class="source-heading__link" href="https://dev.to">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/victor_mvarela_0e25679d/opentofu-oras-backend-store-state-in-ghcrdocker-hub-77f"
+                        open
+                      >
+                        <summary class="article-expander__title">OpenTofu ORAS Backend: Store State in GitHub Container Registry (GHCR)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/victor_mvarela_0e25679d/opentofu-oras-backend-store-state-in-ghcrdocker-hub-77f">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3glgmjrylbl1q80ac7oy.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>When OpenTofu 1.10 announced OCI support for providers, many thought: &quot;What about state?&quot; Until now, nothing. So I created a fork that solves this gap.
+153 MB of tfstate in S3 + DynamoDB for locking &#x3D; overkill for many projects. If your team already has:
+OCI registry used (such as GHCR)
+GitHub Actions to deploy terraform code
+Why add S3 + DynamoDB complexity and cost?
+My fork adds a native oras backend:
+terraform {
+  backend &quot;oras&quot; {
+    repository  &#x3D; &quot;ghcr.io/org/project-state&quot;
+    compression &#x3D; &quot;gzip&quot;
+
+    versioning {
+      enabled      &#x3D; true
+      max_versions &#x3D; 5
+    }
+  }
+}
+
+✅ Stores state as OCI artifacts (content-addressable)
+# Installs as &#x60;tofu-oras&#x60;
+curl -sSL https://raw.githubusercontent.com/vmvarela/opentofu/develop/install.sh | sh
+
+I opened a PR #3600 but it is blocked because OpenTofu has long-standing discussions about backends integration. So I maintain an independent fork that syncs with official releases:
+v1.11.2-oras
+etc.
+Perfect for:
+Startups with lean infra-as-code
+Personal/side projects with free GHCR
+Air-gapped environments (registry mirror)
+Teams already invested in OCI ecosystem
+Multi-cloud projects
+git clone https://github.com/vmvarela/opentofu
+cd opentofu
+go build -o tofu-oras ./cmd/tofu
+
+Full documentation: ORAS Backend README
+terraform {
+  backend &quot;oras&quot; {
+    repository &#x3D; &quot;ghcr.io/my-org/tf-state&quot;
+  }
+
+  encryption {
+    key_provider &quot;pbkdf2&quot; &quot;main&quot; {
+      passphrase &#x3D; var.state_passphrase
+    }
+    method &quot;aes_gcm&quot; &quot;main&quot; {
+      key_provider &#x3D; key_provider.pbkdf2.main
+    }
+    state {
+      method &#x3D; method.aes_gcm.main
+    }
+  }
+}
+
+If the community shows interest, I can:
+Improve test coverage
+Add more examples for different use cases
+Test with other OCI registries besides GHCR
+What do you think? Would you store state in OCI registries instead of S3? What features would you need to adopt this?
+Repo: github.com/vmvarela/opentofu</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/programmerraja/prompt-engineering-from-first-principles-the-mechanics-they-dont-teach-you-part-1-12nb"
+                        open
+                      >
+                        <summary class="article-expander__title">Prompt Engineering From First Principles: The Mechanics They Don&#x27;t Teach You part-1</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/programmerraja/prompt-engineering-from-first-principles-the-mechanics-they-dont-teach-you-part-1-12nb">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fuvj2rgc5ew7ilhpk597t.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>This is my new series on Prompt Engineering and it&#x27;s different from everything else out there.
+Most blogs give you templates: &quot;Try this prompt!&quot; or &quot;Use these 10 techniques!&quot; That&#x27;s not what we&#x27;re doing here.
+We&#x27;re going deep: How do LLMs actually process your prompts? What makes a prompt effective at the mechanical level? Where do LLMs fail and why?
+This series will give you the mental models to engineer prompts yourself, not just copy someone else&#x27;s examples. Let&#x27;s dive in.
+We going to have 5 parts (so far I think but may be in future we add more )
+The Foundation - How LLMs Really Work
+The Art &amp; Science of Prompting
+Prompting techniques and optimization
+Prompt Evaluation and Scaling
+Tips, Tricks, and Experience
+Let&#x27;s jump into Part 1.
+Let me ask you something: Do you think LLMs are intel…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/0xdolan/why-wazuh-missed-react2shell-59jm"
+                        open
+                      >
+                        <summary class="article-expander__title">Why Wazuh Missed React2Shell</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/0xdolan/why-wazuh-missed-react2shell-59jm">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmryvyasys7sgm544x5s3.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Introduction
+
+
+The security community was recently shaken by React2Shell, a critical unauthenticated Remote Code Execution (RCE) vulnerability. It was initially tracked under two CVEs:
+CVE-2025-55182 – React
+
+
+CVE-2025-66478 – Next.js
+
+
+
+With a CVSS score of 10.0, this vulnerability impacts Next.js 15/16 (App Router) and any framework relying on React 19’s RSC implementation.
+Wazuh published a great blog explaining how to detect this vulnerability:
+👉 https://wazuh.com/blog/detecting-next-js-cve-2025-66478-rce-vulnerability-with-wazuh/
+However, after doing deeper research, I found a critical limitation that applies not only to this CVE, but to most modern application stacks.
+The Detection Gap: Why SIEMs Are Blind to Local Projects
+apt or npm install -g. But modern development happens elsew…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/yifeng_jiang_6391a61fd8ff/i-built-an-ai-image-upscaler-saas-4k-16k-what-i-learned-shipping-it-36j9"
+                        open
+                      >
+                        <summary class="article-expander__title">I Built an AI Image Upscaler SaaS (4K / 16K) — What I Learned Shipping It</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/yifeng_jiang_6391a61fd8ff/i-built-an-ai-image-upscaler-saas-4k-16k-what-i-learned-shipping-it-36j9">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft1xdpa18u62zjd45mibw.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I recently launched a small SaaS product called Upscale Image:
+👉 https://upscale-image.org/
+It’s an AI-powered image upscaler that enhances low-resolution images and can export results in 4K and even 16K. I also included a few extra utilities like resizing, compression, and background tools so users can finish common image tasks in one place.
+This post is a quick breakdown of:
+why I built it,
+what the product does,
+some UX + conversion decisions that mattered,
+and what I learned shipping an AI tool.
+The need for high-resolution images shows up everywhere:
+old photos and scans become pixelated when enlarged
+
+ecommerce platforms require sharper product images
+
+screenshots, icons, memes, and UI assets break when resized
+
+designers need large assets for print and high-DPI screens
+
+
+
+Tradition…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/bittam/backend-latency-and-transaction-broadcasting-failures-at-intblt-1gp4"
+                        open
+                      >
+                        <summary class="article-expander__title">Backend Latency and Transaction Broadcasting Failures at IntBlt</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/bittam/backend-latency-and-transaction-broadcasting-failures-at-intblt-1gp4">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftxiykyv1hjga019jmqwr.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>For developers and algorithmic traders, the reliability of an exchange&#x27;s API and settlement layer is more important than its UI. A trading bot or a portfolio management script is rendered useless if the final step of the loop—asset withdrawal—fails to execute programmatically. A technical review of the IntBlt infrastructure reveals concerning inconsistencies in its transaction broadcasting mechanisms, pointing to potential instability in its node architecture or wallet management systems.
+
+The core issue lies in the delay between the withdrawal_request event and the generation of a valid tx_hash on the blockchain. On a robust stack, this latency should be minimal. However, logging data suggests that IntBlt frequently fails to broadcast transactions to the mempool immediately. This &quot;hanging state,&quot; where the database marks a transaction as pending but the blockchain sees nothing, indicates a disconnect between the web front-end at https://www.intblt.exchange/ and the actual blockchain nodes.
+This behavior often stems from poor hot wallet management scripts or insufficient gas fee calculation algorithms, causing transactions to be dropped. However, from a DevOps perspective, the persistence of this issue implies a lack of redundancy and scalability in their system design. If a platform cannot scale its withdrawal architecture to meet user demand, it creates a &quot;Hotel California&quot; scenario: assets can be ingested via deposits easily (which are passive listeners), but cannot leave (which requires active broadcasting).
+For technical users integrating with IntBlt, this unreliability poses a critical breaking change. The inability to rely on timely settlements disrupts arbitrage strategies and cross-exchange hedging. Unless the platform significantly upgrades its wallet infrastructure and provides transparent status webhooks, it fails to meet the reliability standards required for automated trading environments.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/rigole/angular-is-opinionated-heres-why-that-made-me-a-better-developer-2lp3"
+                        open
+                      >
+                        <summary class="article-expander__title">Angular Is Opinionated — Here’s Why That Made Me a Better Developer</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/rigole/angular-is-opinionated-heres-why-that-made-me-a-better-developer-2lp3">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbe6gulgyb2ri1c78q43d.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>One of the most common criticisms of Angular is that it’s too opinionated.
+People say it’s restrictive.
+I used to see that as a weakness.
+Today, I see it as one of the main reasons Angular helped me grow—not just as a coder, but as a software engineer.
+An opinionated framework provides:
+strong conventions
+
+
+strong conventions
+
+
+recommended patterns
+
+
+
+Instead of asking  “How should we organize this?”
+At first, this can feel uncomfortable.
+Angular encourages a predictable structure:
+Components for UI
+
+
+Services for business logic
+
+
+Modules and shared folders for organization
+
+
+
+This consistency matters.
+When you open an Angular project—especially a large one—you immediately know where to look.
+Structure reduces cognitive load.
+Angular strongly pushes you to separate responsibilities:
+Compon…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/keshav_agrawal_c6fa832cfc/ai-qr-generator-with-a-bubble-game-that-hacks-the-price-3gc0"
+                        open
+                      >
+                        <summary class="article-expander__title">AI QR Generator with a bubble game that hacks the price.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/keshav_agrawal_c6fa832cfc/ai-qr-generator-with-a-bubble-game-that-hacks-the-price-3gc0">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fe7y5f0uwmpflqc7pudim.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>KyurGen_GHOST is a &quot;Ghost Protocol&quot; AI QR generator built for those who hate subscriptions. Use our neural engine to blend URLs into artistic, scannable art without ever creating an account.
+🚨 Privacy First: We don’t save your QRs or your data. 🎮 Gamified Pricing: Pop bubbles while the AI works to slash your price in real-time. 💀 Zero Tracking: 100% ownership. One-time pay. No strings.
+https://kyu-r-gen-pro.vercel.app/</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/asroyalchoice54/strong-password-generator-your-ultimate-guide-to-secure-online-protection-2f50"
+                        open
+                      >
+                        <summary class="article-expander__title">Strong Password Generator: Your Ultimate Guide to Secure Online Protection</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/asroyalchoice54/strong-password-generator-your-ultimate-guide-to-secure-online-protection-2f50">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fu6e25lodu391avru1gp9.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Strong Password Generator: Your Ultimate Guide to Secure Online Protection
+
+
+
+  
+  
+  Strong Password Generator
+
+
+
+
+
+## Introduction
+
+
+In today’s digital world, online security is no longer optional—it’s a necessity. From social media accounts to banking, cloud tools, and work platforms, everything depends on one critical element: your password. A weak password can be cracked within seconds, leading to data theft, financial loss, and identity fraud.
+This is where a Strong Password Generator becomes essential. In this detailed guide, you’ll learn why strong passwords matter, how password generators work, and why using a trusted tool like PasswordGeneratorOnline.net is the smartest way to protect your digital life.
+A strong password generator is an online security tool that automatically cre…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/wellallytech/personal-productivity-how-to-forecast-your-peak-focus-hours-with-data-50e2"
+                        open
+                      >
+                        <summary class="article-expander__title">Personal Productivity: How to Forecast Your Peak Focus Hours with Data</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/wellallytech/personal-productivity-how-to-forecast-your-peak-focus-hours-with-data-50e2">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcz7jc1ulv2nxt4az92fo.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Have you ever noticed how your energy levels follow an unpredictable map? One day you’re ticking off tasks with ease, and the next, a single email feels like a mountain. This fluctuation is often associated with our natural cognitive rhythms, and understanding them is the first step toward a more balanced workday. 
+Instead of fighting against your &quot;low-energy&quot; days, you can learn to predict them. This data-driven approach suggests that your past behavior is a powerful window into your future performance. For a deeper look at the visuals and setup, explore this productivity forecasting guide.
+The core challenge for many high-performers is identifying hidden patterns. Are you truly more productive in the morning, or is that just a common myth? By using time-series forecasting, we can turn yo…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/yang_ella_f2a3e16ccb54550/qwen-image-edit-2511ren-wu-zhi-xing-zai-shang-xin-tai-jie-1h2"
+                        open
+                      >
+                        <summary class="article-expander__title">Qwen-Image-Edit-2511：人物一致性再上新台阶</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/yang_ella_f2a3e16ccb54550/qwen-image-edit-2511ren-wu-zhi-xing-zai-shang-xin-tai-jie-1h2">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fppo5msifci286itwuzju.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>自从 Qwen Image 系列发布以来，它凭借强大的图像生成与编辑能力在开源社区持续受到关注。在“编辑模型”路线中，Qwen-Image-Edit-2511 是基于此前版本（如 2509）的又一次增强迭代，在人物一致性、多主体场景稳定性、编辑风格能力与空间几何理解等方面带来了更好的体验。
+本文将从产品体验与实测角度出发，重点观察模型在真实编辑任务中的表现。
+与此前版本相比，Qwen-Image-Edit-2511 在以下方面更具“可感知提升”：
+✅ 人物一致性显著提高
+
+✅ 多主体场景结构更稳定
+
+✅ 融入更多编辑与风格能力（含内置 LoRA 能力）
+
+✅ 工业设计 &amp; 空间几何推理表现更好
+
+✅ 在线 / 本地支持体系更完善
+这一版本的重点之一，是人物身份与特征保持能力的增强。
+在执行以下场景时：
+更换背景
+
+风格转换
+
+局部服饰修改
+
+多轮编辑叠加
+
+
+
+角色的以下特征更容易保持不变：
+面部结构与辨识度
+
+服饰核心元素
+
+饰品与细节轮廓
+
+整体身份语义
+
+
+
+
+在多人场景中，2511 的表现也更加稳定：
+主体区分能力更清晰
+
+人物关系不易错位
+
+语义整体性更强
+
+
+
+
+人物的衣着、脸型、配饰等关键特征能在编辑操作后得到较为完整的保留，减少“重新生成导致人物变形”的风险。
+x上有一张Qwen-Image-Edit-2511和2509的详细对比图，可以更直观地感受两个版本之间的区别：source
+
+Qwen-Image-Edit 社区一直非常活跃，围绕该模型产生了大量基于 LoRA 的增强风格能力。本次版本的体验重点在于：
+🔹 部分常用能力已被“原生融合到模型中”
+这意味着在 不额外加载 LoRA 的情况下，就能获得更丰富的风格表达能力，同时仍保持较高的编辑稳定性。
+例如：
+📍 视角变化
+
+
+📍 打光与氛围增强
+
+
+整体观感更接近“编辑 + 风格增益”，而非“风格覆…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/jumptotech/linux-day-6-35ol"
+                        open
+                      >
+                        <summary class="article-expander__title">linux day #6</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jumptotech/linux-day-6-35ol">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fq4fzax1t1cdrqrviby4a.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Full Ubuntu Version Upgrade (Release Upgrade)
+
+
+
+  
+  
+  1. What Is a “Full Software Upgrade”?
+
+
+So far, we have used commands like:
+apt update
+apt upgrade
+apt dist-upgrade
+apt full-upgrade
+These commands upgrade packages only, but they do NOT upgrade the Ubuntu OS version itself.
+Ubuntu releases a new OS version every 6 months.
+release upgrade means upgrading from one Ubuntu version to another (for example: 22.04 → 22.10 → 23.04).
+
+
+
+Type
+What it upgrades
+Ubuntu version changes?
+
+
+
+
+apt upgrade
+Installed packages
+❌ No
+
+
+apt dist-upgrade
+Packages + dependencies
+❌ No
+
+
+do-release-upgrade
+Entire OS version
+✅ Yes
+
+
+
+Before Upgrading
+
+
+A release upgrade is risky, especially on servers. Before upgrading, always check the following.
+Always have a verified backup
+
+Backup must be accessible even i…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;53
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -92,332 +582,34 @@ No impu…</span>
                         </a>
                       </details>
                     </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
+                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
                     <article>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/bysontech_8dd1313811a8895/understanding-cookies-from-the-ground-up-part-1-fundamentals-and-the-critical-difference-between-2ofg"
+                        data-accordion-key="7f8e04e7-6dca-439f-bf0f-db84b0804d6e"
                         open
                       >
-                        <summary class="article-expander__title">Understanding Cookies from the Ground Up: Part 1 - Fundamentals and the Critical Difference between 1st and 3rd Party Cookies</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/bysontech_8dd1313811a8895/understanding-cookies-from-the-ground-up-part-1-fundamentals-and-the-critical-difference-between-2ofg">
+                        <summary class="article-expander__title">Coinbase says three areas will dominate the crypto market in 2026</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2025/12/28/coinbase-says-three-areas-will-dominate-the-crypto-market-in-2026">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4wgjqf273a21ca02alj9.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/490d44e8658ba690aaf9e1e527c93495e34f829a-1920x1080.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>When developing web applications, we often encounter challenges related to session management or tracking. Most of these issues trace back to a fundamental understanding of Cookies.
-&quot;Why aren&#x27;t my cookies being sent as expected?&quot;
-&quot;Why does a cookie persist even after I try to delete it?&quot;
-&quot;Why does the behavior change depending on the browser?&quot;
-To solve these problems, it is essential to revisit the basics of how cookies work. In this series, I will organize the fundamentals of cookies, specifically tailored for engineers. In this first part, we will cover the definition of cookies and the crucial distinction between 1st Party and 3rd Party Cookies.
-A Cookie is a small piece of data stored in the user&#x27;s browser.
-Since HTTP is a &quot;stateless&quot; protocol—meaning each request is independent and th…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/ambalogun/why-i-chose-voice-over-chat-for-ai-interviews-and-why-it-almost-backfired-2fab"
-                        open
-                      >
-                        <summary class="article-expander__title">Why I Chose Voice Over Chat for AI Interviews (And Why It Almost Backfired)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ambalogun/why-i-chose-voice-over-chat-for-ai-interviews-and-why-it-almost-backfired-2fab">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fugtv7poacx0xl4zmxg7q.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Most AI interview platforms are glorified chatbots with better questions. We built Squrrel to do something harder: have actual spoken conversations with candidates.
-That decision nearly killed the product before launch.
-The Obvious Choice That Wasn&#x27;t Obvious
-When I started building Squrrel, the safe play was text-based interviews. Lower latency, fewer technical headaches, easier to parse and analyze. Every AI product manager I talked to said the same thing: &quot;Start with chat. Voice is a nightmare.&quot;
-They were right about the nightmare part.
-But I kept coming back to one fact: 78% of recruiting happens over the phone. Not email. Not Slack. Phone calls. Because hiring managers want to hear how candidates think on their feet, how they structure explanations, whether they can articulate complex …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/vamsi_krishna_budati/what-is-javascript-and-how-it-works-in-the-browser-a-simple-guide-2fni"
-                        open
-                      >
-                        <summary class="article-expander__title">What Is JavaScript and How It Works in the Browser? (A Simple Guide)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vamsi_krishna_budati/what-is-javascript-and-how-it-works-in-the-browser-a-simple-guide-2fni">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8ys8gnzjefjjkt5nndqi.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Introduction
-
-
-If you’re starting your journey as a web developer, JavaScript is one word you’ll hear everywhere.
-But beginners often ask:
-What exactly is JavaScript?
-How is it different from HTML and CSS?
-Where does JavaScript actually run?
-What happens inside the browser when JavaScript code executes?
-In this blog, we’ll answer all these questions in simple language, without jargon, and with real-world clarity.
-JavaScript (JS) is a programming language used to make websites interactive and dynamic.
-Without JavaScript:
-Websites would be static
-Buttons wouldn’t respond
-Forms wouldn’t validate
-Pages wouldn’t update without refresh
-Examples of what JavaScript does:
-Show/hide elements on click
-Validate form inputs
-Fetch data from APIs
-Build modern apps (React, Angular, Vue)
-HTML:
-Defines what…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/satya00089/learning-algorithms-by-watching-them-run-a-visual-walkthrough-with-learn-algo-5aei"
-                        open
-                      >
-                        <summary class="article-expander__title">Learning Algorithms by Watching Them Run (A Visual Walkthrough with Learn-Algo)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/satya00089/learning-algorithms-by-watching-them-run-a-visual-walkthrough-with-learn-algo-5aei">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fw8s5hv601kx1kzegq1az.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Most of us learned algorithms the same way:
-Read a definition
-Look at pseudocode
-Try to memorize the steps
-Hope it “clicks” later
-For simple cases, that works. But once you hit sorting edge cases, recursion, trees, or ML concepts, things get fuzzy fast.
-I built Learn-Algo to fix exactly that problem.
-👉 https://learn-algo.com/
-Instead of reading about algorithms, Learn-Algo lets you watch them execute step by step, pause them, rewind them, and experiment with inputs — the same way you’d debug real code.
-In this post, I’ll walk through:
-How Learn-Algo visualizes algorithms internally
-A concrete example (sorting / traversal / ML flow)
-Why visual execution leads to better algorithm intuition
-No theory overload. No math walls. Just how algorithms actually behave.
-Algorithms aren’t static — the…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/nityam2007/i-built-my-own-s3-for-5mo-shared-hosting-because-no-one-else-did-1168"
-                        open
-                      >
-                        <summary class="article-expander__title">I built my own S3 for $5/mo Shared Hosting (because no one else did)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nityam2007/i-built-my-own-s3-for-5mo-shared-hosting-because-no-one-else-did-1168">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcc7h7v8mzxg1ab4z1t8d.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The Problem: S3 is expensive, and MinIO needs VPS
-
-
-I was looking for a way to have S3-compatible object storage without paying AWS/Cloudflare/Backblaze fees, and specifically, I wanted to run it on the cheap Shared Hosting (cPanel) plan I already pay for.
-The problem?
- MinIO requires a binary/Docker (can&#x27;t run on shared hosting).
- LocalStack is for testing, not storage.
- Existing PHP scripts were either 10 years old, unmaintained, or didn&#x27;t support the S3 API properly.
-I wanted something I could just FTP upload, create a MySQL database, and boom—my own personal S3 bucket.
-Since it didn&#x27;t exist, I built it (with a lot of help from AI agents).
-Lite-S3 is a pure PHP implementation of an S3-compatible server.
-  ✅ S3 API Compatible: Works with AWS SDK, boto3, rclone, etc.
-  ✅ Shared Hosting Fr…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/krishna-nayak/why-exposing-persistence-entities-in-apis-is-a-dangerous-shortcut-3oim"
-                        open
-                      >
-                        <summary class="article-expander__title">Why Exposing Persistence Entities in APIs Is a Dangerous Shortcut</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/krishna-nayak/why-exposing-persistence-entities-in-apis-is-a-dangerous-shortcut-3oim">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4q11wd31t92jl6g7pnhk.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I recently revisited one of my old backend projects.
-Everything was working fine. No errors. No failing APIs.
-But while reading the code, one design decision immediately stood out — I had exposed persistence entities directly in API requests and responses.
-At the time, it felt like a smart move. Looking back now, I realize it was a shortcut with hidden costs.
-In the initial version, my controller looked something like this:
-@PostMapping(&quot;/books&quot;)
-public BookItem create(@RequestBody BookItem bookItem) {
-    return bookService.save(bookItem);
-}
-
-Why did this feel right?
-The entity already had all the fields
-No extra classes to write
-Faster development
-DTOs felt like unnecessary boilerplate. For a small project, this approach worked — and that’s exactly why it was misleading.
-When an entity i…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/oncs21/serving-a-deep-learning-model-with-django-5ff8"
-                        open
-                      >
-                        <summary class="article-expander__title">Serving a deep learning model with Django</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/oncs21/serving-a-deep-learning-model-with-django-5ff8">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fr7ysshbqtpb3u7oxrrrq.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Deep learning did not suddenly appear with large language models. The field has been evolving for decades, starting with early neural network research in the late 20th century and gradually improving as compute, data, and algorithms advanced. Today, deep learning systems are used in image recognition, natural language processing, recommendation systems, and many other real-world applications. Training a model, however, is only part of the workflow. To make a model useful, it must be served. It needs to accept inputs and return predictions in a reliable way. In this article, we will walk through a practical approach to serving a deep learning model using Django and PyTorch.
-Note: The focus here is clarity and correctness rather than production-scale optimization (we will see this in a futur…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/codeatoms/if-you-are-building-a-developer-tool-lets-connect-3dod"
-                        open
-                      >
-                        <summary class="article-expander__title">If you are building a developer tool, Let&#x27;s Connect!!!</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/codeatoms/if-you-are-building-a-developer-tool-lets-connect-3dod">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F11hw652sero34utuneq2.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>CodeAtoms is a developer tools marketplace where people can post their developer tools...</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/prateekshaweb/laravel-faqs-beginner-to-advanced-2ojh"
-                        open
-                      >
-                        <summary class="article-expander__title">Laravel FAQs (Beginner to Advanced)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/prateekshaweb/laravel-faqs-beginner-to-advanced-2ojh">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F07335m16xfwyyxgtw90f.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Why Laravel still matters (and what this FAQ solves)
-
-
-Laravel remains one of the fastest ways to ship secure, maintainable PHP applications — from simple sites to SaaS platforms. If you’re juggling setup, tooling, integrations, or strange runtime errors, this practical FAQ cuts through the noise with clear answers, implementation tips, and quick fixes you can apply today.
-Laravel is a modern, open-source PHP framework that follows MVC (Model-View-Controller) architecture and bundles routing, database abstractions, authentication, queues, and more. Use it for:
-Custom web applications and admin dashboards
-RESTful APIs and headless backends
-E-commerce stores and SaaS platforms
-Laravel is flexible enough for both monolithic apps and headless architectures where a JS framework handles the fron…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/firebird/what-is-vibe-coding-a-practical-guide-to-ai-assisted-development-3e9e"
-                        open
-                      >
-                        <summary class="article-expander__title">What Is Vibe Coding? A Practical Guide to AI-Assisted Development</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/firebird/what-is-vibe-coding-a-practical-guide-to-ai-assisted-development-3e9e">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F75arjz1bdaxsr9bqgvul.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Introduction
-
-
-A few months ago, I got stuck on a very small feature.
-Nothing fancy.
-I knew exactly what I wanted to build.
-I kept switching tabs—documentation, Stack Overflow, old projects.
-Then I tried something different.
-Instead of writing code, I wrote what I wanted in simple English.
-The code came back.
-That moment didn’t make me feel replaced.
-That’s where vibe coding started to make sense.
-Not as magic.
-But as a new way of thinking about development.
-Vibe coding is a workflow, not a tool.
-It means you focus on your idea and intent, and let AI help translate that into code.
-You’re not writing every line by hand.
-guiding the code.
-Think of it like this:
-Traditional coding: “I write code, then test.”
-You still control the logic.
-Traditional approach:
-Think about the layout
-Write HTML
-…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/frosnerd/addressing-the-limitations-of-local-path-provisioner-in-kubernetes-3g12"
-                        open
-                      >
-                        <summary class="article-expander__title">Addressing the Limitations of Local Path Provisioner in Kubernetes</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/frosnerd/addressing-the-limitations-of-local-path-provisioner-in-kubernetes-3g12">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3zcyrttro68enzhm57rt.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Temporary Storage in Kubernetes
-
-
-In Kubernetes, containers are ephemeral and stateless by default, allowing for easy scaling and management. Some workloads might require storage for temporary files, however. In vanilla Kubernetes, you are presented with the following options:
-Mount an emptyDir volume, which will be created on the node where the pod is scheduled. It can either be backed by the node&#x27;s default disk or the node&#x27;s memory (tmpfs). Some cloud providers also offer emptyDir backed by local SSDs based on the node type. However, you cannot customize the mount point on the node for emptyDir volumes, which means less flexibility.
-Mount a hostPath volume which allows you to specify a custom mount point on the node. This is not recommended for most application due to security risks as i…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;19
+                              <span>Coinbase Institutional says shifting market structure, not hype cycles, will shape crypto trading and adoption in 2026 as activity concentrates in a few key areas.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;34
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -438,6 +630,25 @@ Mount a hostPath volume which allows you to specify a custom mount point on the 
                   <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://news.ycombinator.com/item?id&#x3D;46409375"
+                        open
+                      >
+                        <summary class="article-expander__title">Ask HN: By what percentage has AI changed your output as a software engineer?</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://news.ycombinator.com/item?id&#x3D;46409375">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;1
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -702,26 +913,6 @@ The post realme 16 Pro Series To Launch On 6 January In India; Key Specs Teased 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://web.law.duke.edu/cspd/publicdomainday/2026/"
-                        open
-                      >
-                        <summary class="article-expander__title">Public Domain Day 2026</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://web.law.duke.edu/cspd/publicdomainday/2026/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://web.law.duke.edu/sites/default/files/images/centers/cspd/pdd2025/PDDmontageRS.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;54
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://notopalantir.goodlawproject.org/email-to-target/stop-palantir-in-the-nhs/"
                         open
                       >
@@ -773,23 +964,6 @@ The post realme 16 Pro Series To Launch On 6 January In India; Key Specs Teased 
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;24
                                   min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.economist.com/united-states/2025/12/18/toll-roads-are-spreading-in-america"
-                        open
-                      >
-                        <summary class="article-expander__title">Toll roads are spreading in America</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.economist.com/united-states/2025/12/18/toll-roads-are-spreading-in-america">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
                             </span>
                           </div>
                         </a>
@@ -1157,7 +1331,7 @@ The post Samsung Galaxy Z TriFold Buckles Under Excessive Bend Pressure appeared
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/a74f0d9b532c9eb5b3e2ae935b4fe845091c0e43-1080x1080.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>The crypto exchange’s tokenization, AI tools, and stablecoin revenue help it stand out in ‘transition year’ for crypto equities, said Clear Street&#x27;s Owen Lau.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;32
+                                &ensp;<span class="article-reading-time">(&hairsp;33
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1875,26 +2049,6 @@ The post Zeekr 9S Plug-In Hybrid SUV Spied Testing Ahead Of Speculated 2026 Chin
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="f14a1f1b-96a3-476e-8a3d-7a04db9fe6bd"
-                        open
-                      >
-                        <summary class="article-expander__title">Sling Money receives approval to offer crypto services in UK as stablecoin payments gain popularity</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2025/12/24/sling-money-receives-approval-to-offer-crypto-services-in-uk-as-stablecoin-payments-gain-popularity">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/fe3215e055efea72645440d22a845a02a961b59d-1920x1079.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The crypto payments app joins a growing group of regulated firms as stablecoin transfers gain traction as a cross-border alternative.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;32
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -2047,6 +2201,60 @@ The post Zeekr 9S Plug-In Hybrid SUV Spied Testing Ahead Of Speculated 2026 Chin
                     class="source-heading__name"
                     data-action="toggle-accordions"
                     title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://arpitbhayani.me/blogs/clock-sync-nightmare/"
+                        open
+                      >
+                        <summary class="article-expander__title">Clock synchronization is a nightmare</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://arpitbhayani.me/blogs/clock-sync-nightmare/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://edge.arpitbhayani.me/img/covers/general-cover.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;12
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://github.com/rex-rs/rex"
+                        open
+                      >
+                        <summary class="article-expander__title">Rex is a safe kernel extension framework that allows Rust in the place of eBPF</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/rex-rs/rex">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://opengraph.githubassets.com/6572488896da7d927de93d6e7d1ef13e6c334ab56380310389f4d0106aacc953/rex-rs/rex" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;12
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
                   >MIT Technology Review</button>
                   <a class="source-heading__link" href="https://www.technologyreview.com">Open</a>
                 </h3>
@@ -2105,60 +2313,6 @@ The post Zeekr 9S Plug-In Hybrid SUV Spied Testing Ahead Of Speculated 2026 Chin
                             <span class="media-object__text">
                               <span>Lately, everywhere I scroll, I keep seeing the same fish-eyed CCTV view: a grainy wide shot from the corner of a living room, a driveway at night, an empty grocery store. Then something impossible happens. JD Vance shows up at the doorstep in a crazy outfit. A car folds into itself like paper and drives…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;44
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/DeepMyst/Mysti"
-                        open
-                      >
-                        <summary class="article-expander__title">Show HN: Mysti – Claude, Codex, and Gemini debate your code, then synthesize</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/DeepMyst/Mysti">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/39b1dccc6b6c5f539761e8534883e349f9cd8588cfe1bcc0f912164af8c8b9b7/DeepMyst/Mysti" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;22
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/rex-rs/rex"
-                        open
-                      >
-                        <summary class="article-expander__title">Rex is a safe kernel extension framework that allows Rust in the place of eBPF</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/rex-rs/rex">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/866f2cb2fa6b004c46ab538b528ddf6e47234e21a3b27eafe4e20f736a10e019/rex-rs/rex" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;12
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2302,6 +2456,25 @@ The post Zeekr 9S Plug-In Hybrid SUV Spied Testing Ahead Of Speculated 2026 Chin
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="https://eli.thegreenplace.net/2025/plugins-case-study-mdbook-preprocessors/"
+                        open
+                      >
+                        <summary class="article-expander__title">Plugins case study: mdBook preprocessors</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://eli.thegreenplace.net/2025/plugins-case-study-mdbook-preprocessors/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.youtube.com/watch?v&#x3D;8kUQWuK1L4w"
                         open
                       >
@@ -2427,7 +2600,7 @@ The post Zeekr 9S Plug-In Hybrid SUV Spied Testing Ahead Of Speculated 2026 Chin
                         <summary class="article-expander__title">Immer – A library of persistent and immutable data structures written in C++</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/arximboldi/immer">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/669adaaf1ad36fdd013331d69c4319d48141179288732817375587e1bb5dccd5/arximboldi/immer" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/9d6849d90a5ec24697f91b41a7395ba27e596b86fa2f3eabd50201598f84e21d/arximboldi/immer" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;12
@@ -2449,7 +2622,7 @@ The post Zeekr 9S Plug-In Hybrid SUV Spied Testing Ahead Of Speculated 2026 Chin
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;13
+                                &ensp;<span class="article-reading-time">(&hairsp;14
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2658,8 +2831,8 @@ The post Zeekr 9S Plug-In Hybrid SUV Spied Testing Ahead Of Speculated 2026 Chin
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/20551144790">
-        <time id="build-timestamp" datetime="2025-12-28T08:21:32.774Z">2025-12-28T08:21:32.774Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/20551725626">
+        <time id="build-timestamp" datetime="2025-12-28T09:16:41.379Z">2025-12-28T09:16:41.379Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>

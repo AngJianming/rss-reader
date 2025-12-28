@@ -18,6 +18,116 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
+          "id": "https://dev.to/victor_mvarela_0e25679d/opentofu-oras-backend-store-state-in-ghcrdocker-hub-77f",
+          "author": "Victor M. Varela",
+          "description": "When OpenTofu 1.10 announced OCI support for providers, many thought: \"What about state?\" Until now, nothing. So I created a fork that solves this gap.\n153 MB of tfstate in S3 + DynamoDB for locking = overkill for many projects. If your team already has:\nOCI registry used (such as GHCR)\nGitHub Actions to deploy terraform code\nWhy add S3 + DynamoDB complexity and cost?\nMy fork adds a native oras backend:\nterraform {\n  backend \"oras\" {\n    repository  = \"ghcr.io/org/project-state\"\n    compression = \"gzip\"\n\n    versioning {\n      enabled      = true\n      max_versions = 5\n    }\n  }\n}\n\n✅ Stores state as OCI artifacts (content-addressable)\n# Installs as `tofu-oras`\ncurl -sSL https://raw.githubusercontent.com/vmvarela/opentofu/develop/install.sh | sh\n\nI opened a PR #3600 but it is blocked because OpenTofu has long-standing discussions about backends integration. So I maintain an independent fork that syncs with official releases:\nv1.11.2-oras\netc.\nPerfect for:\nStartups with lean infra-as-code\nPersonal/side projects with free GHCR\nAir-gapped environments (registry mirror)\nTeams already invested in OCI ecosystem\nMulti-cloud projects\ngit clone https://github.com/vmvarela/opentofu\ncd opentofu\ngo build -o tofu-oras ./cmd/tofu\n\nFull documentation: ORAS Backend README\nterraform {\n  backend \"oras\" {\n    repository = \"ghcr.io/my-org/tf-state\"\n  }\n\n  encryption {\n    key_provider \"pbkdf2\" \"main\" {\n      passphrase = var.state_passphrase\n    }\n    method \"aes_gcm\" \"main\" {\n      key_provider = key_provider.pbkdf2.main\n    }\n    state {\n      method = method.aes_gcm.main\n    }\n  }\n}\n\nIf the community shows interest, I can:\nImprove test coverage\nAdd more examples for different use cases\nTest with other OCI registries besides GHCR\nWhat do you think? Would you store state in OCI registries instead of S3? What features would you need to adopt this?\nRepo: github.com/vmvarela/opentofu",
+          "link": "https://dev.to/victor_mvarela_0e25679d/opentofu-oras-backend-store-state-in-ghcrdocker-hub-77f",
+          "publishedOn": "2025-12-28T08:52:17.000Z",
+          "wordCount": 2009,
+          "title": "OpenTofu ORAS Backend: Store State in GitHub Container Registry (GHCR)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3glgmjrylbl1q80ac7oy.png"
+        },
+        {
+          "id": "https://dev.to/programmerraja/prompt-engineering-from-first-principles-the-mechanics-they-dont-teach-you-part-1-12nb",
+          "author": "Boopathi",
+          "description": "This is my new series on Prompt Engineering and it's different from everything else out there.\nMost blogs give you templates: \"Try this prompt!\" or \"Use these 10 techniques!\" That's not what we're doing here.\nWe're going deep: How do LLMs actually process your prompts? What makes a prompt effective at the mechanical level? Where do LLMs fail and why?\nThis series will give you the mental models to engineer prompts yourself, not just copy someone else's examples. Let's dive in.\nWe going to have 5 parts (so far I think but may be in future we add more )\nThe Foundation - How LLMs Really Work\nThe Art & Science of Prompting\nPrompting techniques and optimization\nPrompt Evaluation and Scaling\nTips, Tricks, and Experience\nLet's jump into Part 1.\nLet me ask you something: Do you think LLMs are intel…",
+          "link": "https://dev.to/programmerraja/prompt-engineering-from-first-principles-the-mechanics-they-dont-teach-you-part-1-12nb",
+          "publishedOn": "2025-12-28T08:42:21.000Z",
+          "wordCount": 3335,
+          "title": "Prompt Engineering From First Principles: The Mechanics They Don't Teach You part-1",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fuvj2rgc5ew7ilhpk597t.png"
+        },
+        {
+          "id": "https://dev.to/0xdolan/why-wazuh-missed-react2shell-59jm",
+          "author": "Dolan",
+          "description": "Introduction\n\n\nThe security community was recently shaken by React2Shell, a critical unauthenticated Remote Code Execution (RCE) vulnerability. It was initially tracked under two CVEs:\nCVE-2025-55182 – React\n\n\nCVE-2025-66478 – Next.js\n\n\n\nWith a CVSS score of 10.0, this vulnerability impacts Next.js 15/16 (App Router) and any framework relying on React 19’s RSC implementation.\nWazuh published a great blog explaining how to detect this vulnerability:\n👉 https://wazuh.com/blog/detecting-next-js-cve-2025-66478-rce-vulnerability-with-wazuh/\nHowever, after doing deeper research, I found a critical limitation that applies not only to this CVE, but to most modern application stacks.\nThe Detection Gap: Why SIEMs Are Blind to Local Projects\napt or npm install -g. But modern development happens elsew…",
+          "link": "https://dev.to/0xdolan/why-wazuh-missed-react2shell-59jm",
+          "publishedOn": "2025-12-28T08:36:59.000Z",
+          "wordCount": 2722,
+          "title": "Why Wazuh Missed React2Shell",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmryvyasys7sgm544x5s3.jpg"
+        },
+        {
+          "id": "https://dev.to/yifeng_jiang_6391a61fd8ff/i-built-an-ai-image-upscaler-saas-4k-16k-what-i-learned-shipping-it-36j9",
+          "author": "yifeng jiang",
+          "description": "I recently launched a small SaaS product called Upscale Image:\n👉 https://upscale-image.org/\nIt’s an AI-powered image upscaler that enhances low-resolution images and can export results in 4K and even 16K. I also included a few extra utilities like resizing, compression, and background tools so users can finish common image tasks in one place.\nThis post is a quick breakdown of:\nwhy I built it,\nwhat the product does,\nsome UX + conversion decisions that mattered,\nand what I learned shipping an AI tool.\nThe need for high-resolution images shows up everywhere:\nold photos and scans become pixelated when enlarged\n\necommerce platforms require sharper product images\n\nscreenshots, icons, memes, and UI assets break when resized\n\ndesigners need large assets for print and high-DPI screens\n\n\n\nTradition…",
+          "link": "https://dev.to/yifeng_jiang_6391a61fd8ff/i-built-an-ai-image-upscaler-saas-4k-16k-what-i-learned-shipping-it-36j9",
+          "publishedOn": "2025-12-28T08:33:00.000Z",
+          "wordCount": 2275,
+          "title": "I Built an AI Image Upscaler SaaS (4K / 16K) — What I Learned Shipping It",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft1xdpa18u62zjd45mibw.png"
+        },
+        {
+          "id": "https://dev.to/bittam/backend-latency-and-transaction-broadcasting-failures-at-intblt-1gp4",
+          "author": "Bittam",
+          "description": "For developers and algorithmic traders, the reliability of an exchange's API and settlement layer is more important than its UI. A trading bot or a portfolio management script is rendered useless if the final step of the loop—asset withdrawal—fails to execute programmatically. A technical review of the IntBlt infrastructure reveals concerning inconsistencies in its transaction broadcasting mechanisms, pointing to potential instability in its node architecture or wallet management systems.\n\nThe core issue lies in the delay between the withdrawal_request event and the generation of a valid tx_hash on the blockchain. On a robust stack, this latency should be minimal. However, logging data suggests that IntBlt frequently fails to broadcast transactions to the mempool immediately. This \"hanging state,\" where the database marks a transaction as pending but the blockchain sees nothing, indicates a disconnect between the web front-end at https://www.intblt.exchange/ and the actual blockchain nodes.\nThis behavior often stems from poor hot wallet management scripts or insufficient gas fee calculation algorithms, causing transactions to be dropped. However, from a DevOps perspective, the persistence of this issue implies a lack of redundancy and scalability in their system design. If a platform cannot scale its withdrawal architecture to meet user demand, it creates a \"Hotel California\" scenario: assets can be ingested via deposits easily (which are passive listeners), but cannot leave (which requires active broadcasting).\nFor technical users integrating with IntBlt, this unreliability poses a critical breaking change. The inability to rely on timely settlements disrupts arbitrage strategies and cross-exchange hedging. Unless the platform significantly upgrades its wallet infrastructure and provides transparent status webhooks, it fails to meet the reliability standards required for automated trading environments.",
+          "link": "https://dev.to/bittam/backend-latency-and-transaction-broadcasting-failures-at-intblt-1gp4",
+          "publishedOn": "2025-12-28T08:31:04.000Z",
+          "wordCount": 1956,
+          "title": "Backend Latency and Transaction Broadcasting Failures at IntBlt",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftxiykyv1hjga019jmqwr.png"
+        },
+        {
+          "id": "https://dev.to/rigole/angular-is-opinionated-heres-why-that-made-me-a-better-developer-2lp3",
+          "author": "Placide",
+          "description": "One of the most common criticisms of Angular is that it’s too opinionated.\nPeople say it’s restrictive.\nI used to see that as a weakness.\nToday, I see it as one of the main reasons Angular helped me grow—not just as a coder, but as a software engineer.\nAn opinionated framework provides:\nstrong conventions\n\n\nstrong conventions\n\n\nrecommended patterns\n\n\n\nInstead of asking  “How should we organize this?”\nAt first, this can feel uncomfortable.\nAngular encourages a predictable structure:\nComponents for UI\n\n\nServices for business logic\n\n\nModules and shared folders for organization\n\n\n\nThis consistency matters.\nWhen you open an Angular project—especially a large one—you immediately know where to look.\nStructure reduces cognitive load.\nAngular strongly pushes you to separate responsibilities:\nCompon…",
+          "link": "https://dev.to/rigole/angular-is-opinionated-heres-why-that-made-me-a-better-developer-2lp3",
+          "publishedOn": "2025-12-28T08:24:51.000Z",
+          "wordCount": 2110,
+          "title": "Angular Is Opinionated — Here’s Why That Made Me a Better Developer",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbe6gulgyb2ri1c78q43d.jpg"
+        },
+        {
+          "id": "https://dev.to/keshav_agrawal_c6fa832cfc/ai-qr-generator-with-a-bubble-game-that-hacks-the-price-3gc0",
+          "author": "Keshav Agrawal",
+          "description": "KyurGen_GHOST is a \"Ghost Protocol\" AI QR generator built for those who hate subscriptions. Use our neural engine to blend URLs into artistic, scannable art without ever creating an account.\n🚨 Privacy First: We don’t save your QRs or your data. 🎮 Gamified Pricing: Pop bubbles while the AI works to slash your price in real-time. 💀 Zero Tracking: 100% ownership. One-time pay. No strings.\nhttps://kyu-r-gen-pro.vercel.app/",
+          "link": "https://dev.to/keshav_agrawal_c6fa832cfc/ai-qr-generator-with-a-bubble-game-that-hacks-the-price-3gc0",
+          "publishedOn": "2025-12-28T08:24:37.000Z",
+          "wordCount": 1716,
+          "title": "AI QR Generator with a bubble game that hacks the price.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fe7y5f0uwmpflqc7pudim.png"
+        },
+        {
+          "id": "https://dev.to/asroyalchoice54/strong-password-generator-your-ultimate-guide-to-secure-online-protection-2f50",
+          "author": "As Royal Choice",
+          "description": "Strong Password Generator: Your Ultimate Guide to Secure Online Protection\n\n\n\n  \n  \n  Strong Password Generator\n\n\n\n\n\n## Introduction\n\n\nIn today’s digital world, online security is no longer optional—it’s a necessity. From social media accounts to banking, cloud tools, and work platforms, everything depends on one critical element: your password. A weak password can be cracked within seconds, leading to data theft, financial loss, and identity fraud.\nThis is where a Strong Password Generator becomes essential. In this detailed guide, you’ll learn why strong passwords matter, how password generators work, and why using a trusted tool like PasswordGeneratorOnline.net is the smartest way to protect your digital life.\nA strong password generator is an online security tool that automatically cre…",
+          "link": "https://dev.to/asroyalchoice54/strong-password-generator-your-ultimate-guide-to-secure-online-protection-2f50",
+          "publishedOn": "2025-12-28T08:23:16.000Z",
+          "wordCount": 2337,
+          "title": "Strong Password Generator: Your Ultimate Guide to Secure Online Protection",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fu6e25lodu391avru1gp9.png"
+        },
+        {
+          "id": "https://dev.to/wellallytech/personal-productivity-how-to-forecast-your-peak-focus-hours-with-data-50e2",
+          "author": "wellallyTech",
+          "description": "Have you ever noticed how your energy levels follow an unpredictable map? One day you’re ticking off tasks with ease, and the next, a single email feels like a mountain. This fluctuation is often associated with our natural cognitive rhythms, and understanding them is the first step toward a more balanced workday. \nInstead of fighting against your \"low-energy\" days, you can learn to predict them. This data-driven approach suggests that your past behavior is a powerful window into your future performance. For a deeper look at the visuals and setup, explore this productivity forecasting guide.\nThe core challenge for many high-performers is identifying hidden patterns. Are you truly more productive in the morning, or is that just a common myth? By using time-series forecasting, we can turn yo…",
+          "link": "https://dev.to/wellallytech/personal-productivity-how-to-forecast-your-peak-focus-hours-with-data-50e2",
+          "publishedOn": "2025-12-28T08:22:49.000Z",
+          "wordCount": 2127,
+          "title": "Personal Productivity: How to Forecast Your Peak Focus Hours with Data",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcz7jc1ulv2nxt4az92fo.png"
+        },
+        {
+          "id": "https://dev.to/yang_ella_f2a3e16ccb54550/qwen-image-edit-2511ren-wu-zhi-xing-zai-shang-xin-tai-jie-1h2",
+          "author": "Yang ella",
+          "description": "自从 Qwen Image 系列发布以来，它凭借强大的图像生成与编辑能力在开源社区持续受到关注。在“编辑模型”路线中，Qwen-Image-Edit-2511 是基于此前版本（如 2509）的又一次增强迭代，在人物一致性、多主体场景稳定性、编辑风格能力与空间几何理解等方面带来了更好的体验。\n本文将从产品体验与实测角度出发，重点观察模型在真实编辑任务中的表现。\n与此前版本相比，Qwen-Image-Edit-2511 在以下方面更具“可感知提升”：\n✅ 人物一致性显著提高\n\n✅ 多主体场景结构更稳定\n\n✅ 融入更多编辑与风格能力（含内置 LoRA 能力）\n\n✅ 工业设计 & 空间几何推理表现更好\n\n✅ 在线 / 本地支持体系更完善\n这一版本的重点之一，是人物身份与特征保持能力的增强。\n在执行以下场景时：\n更换背景\n\n风格转换\n\n局部服饰修改\n\n多轮编辑叠加\n\n\n\n角色的以下特征更容易保持不变：\n面部结构与辨识度\n\n服饰核心元素\n\n饰品与细节轮廓\n\n整体身份语义\n\n\n\n\n在多人场景中，2511 的表现也更加稳定：\n主体区分能力更清晰\n\n人物关系不易错位\n\n语义整体性更强\n\n\n\n\n人物的衣着、脸型、配饰等关键特征能在编辑操作后得到较为完整的保留，减少“重新生成导致人物变形”的风险。\nx上有一张Qwen-Image-Edit-2511和2509的详细对比图，可以更直观地感受两个版本之间的区别：source\n\nQwen-Image-Edit 社区一直非常活跃，围绕该模型产生了大量基于 LoRA 的增强风格能力。本次版本的体验重点在于：\n🔹 部分常用能力已被“原生融合到模型中”\n这意味着在 不额外加载 LoRA 的情况下，就能获得更丰富的风格表达能力，同时仍保持较高的编辑稳定性。\n例如：\n📍 视角变化\n\n\n📍 打光与氛围增强\n\n\n整体观感更接近“编辑 + 风格增益”，而非“风格覆…",
+          "link": "https://dev.to/yang_ella_f2a3e16ccb54550/qwen-image-edit-2511ren-wu-zhi-xing-zai-shang-xin-tai-jie-1h2",
+          "publishedOn": "2025-12-28T08:20:27.000Z",
+          "wordCount": 2284,
+          "title": "Qwen-Image-Edit-2511：人物一致性再上新台阶",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fppo5msifci286itwuzju.png"
+        },
+        {
+          "id": "https://dev.to/jumptotech/linux-day-6-35ol",
+          "author": "Aisalkyn Aidarova",
+          "description": "Full Ubuntu Version Upgrade (Release Upgrade)\n\n\n\n  \n  \n  1. What Is a “Full Software Upgrade”?\n\n\nSo far, we have used commands like:\napt update\napt upgrade\napt dist-upgrade\napt full-upgrade\nThese commands upgrade packages only, but they do NOT upgrade the Ubuntu OS version itself.\nUbuntu releases a new OS version every 6 months.\nrelease upgrade means upgrading from one Ubuntu version to another (for example: 22.04 → 22.10 → 23.04).\n\n\n\nType\nWhat it upgrades\nUbuntu version changes?\n\n\n\n\napt upgrade\nInstalled packages\n❌ No\n\n\napt dist-upgrade\nPackages + dependencies\n❌ No\n\n\ndo-release-upgrade\nEntire OS version\n✅ Yes\n\n\n\nBefore Upgrading\n\n\nA release upgrade is risky, especially on servers. Before upgrading, always check the following.\nAlways have a verified backup\n\nBackup must be accessible even i…",
+          "link": "https://dev.to/jumptotech/linux-day-6-35ol",
+          "publishedOn": "2025-12-28T08:19:51.000Z",
+          "wordCount": 15778,
+          "title": "linux day #6",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fq4fzax1t1cdrqrviby4a.png"
+        },
+        {
           "id": "https://dev.to/niranjannlc/-my-data-science-journey-restaurant-tips-analysis-30ek",
           "author": "NIRANJAN LAMICHHANE",
           "description": "Project: Exploratory Data Analysis on Restaurant Tips Dataset\nDuration: Full EDA Process\nDataset: 243 restaurant transactions, 7 variables\nStatus: ✅ COMPLETED\nSource: Restaurant tips dataset\nInitial Size: 244 rows × 7 columns\nFinal Size: 243 rows × 7 columns (after cleaning)\nVariables:\n\n\nNumerical: total_bill, tip, size\n\nCategorical: sex, smoker, day, time\n\n\n\n\n\n  \n  \n  Project Goal\n\n\nUnderstand what factors influence tipping behavior in restaurants through comprehensive exploratory data analysis.\nHypothesis: \"The Null Hypothesis\" - Why might data be missing?\nWhat I Did:\n# Checked for missing values\ndata.isnull().sum()\ndata.isnull().any()\n(data.isnull().sum() / len(data)) * 100  # Percentage\n\nResults:\n✅ 0 missing values in all columns\nThis indicated excellent data collection quality\nNo impu…",
@@ -26,116 +136,6 @@
           "wordCount": 3997,
           "title": "My Data Science Journey: Restaurant Tips Analysis",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1blmryeps66e7v9wjobw.png"
-        },
-        {
-          "id": "https://dev.to/bysontech_8dd1313811a8895/understanding-cookies-from-the-ground-up-part-1-fundamentals-and-the-critical-difference-between-2ofg",
-          "author": "BysonTech",
-          "description": "When developing web applications, we often encounter challenges related to session management or tracking. Most of these issues trace back to a fundamental understanding of Cookies.\n\"Why aren't my cookies being sent as expected?\"\n\"Why does a cookie persist even after I try to delete it?\"\n\"Why does the behavior change depending on the browser?\"\nTo solve these problems, it is essential to revisit the basics of how cookies work. In this series, I will organize the fundamentals of cookies, specifically tailored for engineers. In this first part, we will cover the definition of cookies and the crucial distinction between 1st Party and 3rd Party Cookies.\nA Cookie is a small piece of data stored in the user's browser.\nSince HTTP is a \"stateless\" protocol—meaning each request is independent and th…",
-          "link": "https://dev.to/bysontech_8dd1313811a8895/understanding-cookies-from-the-ground-up-part-1-fundamentals-and-the-critical-difference-between-2ofg",
-          "publishedOn": "2025-12-28T08:03:03.000Z",
-          "wordCount": 2154,
-          "title": "Understanding Cookies from the Ground Up: Part 1 - Fundamentals and the Critical Difference between 1st and 3rd Party Cookies",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4wgjqf273a21ca02alj9.png"
-        },
-        {
-          "id": "https://dev.to/ambalogun/why-i-chose-voice-over-chat-for-ai-interviews-and-why-it-almost-backfired-2fab",
-          "author": "Ademola Balogun",
-          "description": "Most AI interview platforms are glorified chatbots with better questions. We built Squrrel to do something harder: have actual spoken conversations with candidates.\nThat decision nearly killed the product before launch.\nThe Obvious Choice That Wasn't Obvious\nWhen I started building Squrrel, the safe play was text-based interviews. Lower latency, fewer technical headaches, easier to parse and analyze. Every AI product manager I talked to said the same thing: \"Start with chat. Voice is a nightmare.\"\nThey were right about the nightmare part.\nBut I kept coming back to one fact: 78% of recruiting happens over the phone. Not email. Not Slack. Phone calls. Because hiring managers want to hear how candidates think on their feet, how they structure explanations, whether they can articulate complex …",
-          "link": "https://dev.to/ambalogun/why-i-chose-voice-over-chat-for-ai-interviews-and-why-it-almost-backfired-2fab",
-          "publishedOn": "2025-12-28T08:00:26.000Z",
-          "wordCount": 3148,
-          "title": "Why I Chose Voice Over Chat for AI Interviews (And Why It Almost Backfired)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fugtv7poacx0xl4zmxg7q.png"
-        },
-        {
-          "id": "https://dev.to/vamsi_krishna_budati/what-is-javascript-and-how-it-works-in-the-browser-a-simple-guide-2fni",
-          "author": "Vamsi Krishna Budati",
-          "description": "Introduction\n\n\nIf you’re starting your journey as a web developer, JavaScript is one word you’ll hear everywhere.\nBut beginners often ask:\nWhat exactly is JavaScript?\nHow is it different from HTML and CSS?\nWhere does JavaScript actually run?\nWhat happens inside the browser when JavaScript code executes?\nIn this blog, we’ll answer all these questions in simple language, without jargon, and with real-world clarity.\nJavaScript (JS) is a programming language used to make websites interactive and dynamic.\nWithout JavaScript:\nWebsites would be static\nButtons wouldn’t respond\nForms wouldn’t validate\nPages wouldn’t update without refresh\nExamples of what JavaScript does:\nShow/hide elements on click\nValidate form inputs\nFetch data from APIs\nBuild modern apps (React, Angular, Vue)\nHTML:\nDefines what…",
-          "link": "https://dev.to/vamsi_krishna_budati/what-is-javascript-and-how-it-works-in-the-browser-a-simple-guide-2fni",
-          "publishedOn": "2025-12-28T07:59:53.000Z",
-          "wordCount": 2162,
-          "title": "What Is JavaScript and How It Works in the Browser? (A Simple Guide)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8ys8gnzjefjjkt5nndqi.png"
-        },
-        {
-          "id": "https://dev.to/satya00089/learning-algorithms-by-watching-them-run-a-visual-walkthrough-with-learn-algo-5aei",
-          "author": "satya subudhi",
-          "description": "Most of us learned algorithms the same way:\nRead a definition\nLook at pseudocode\nTry to memorize the steps\nHope it “clicks” later\nFor simple cases, that works. But once you hit sorting edge cases, recursion, trees, or ML concepts, things get fuzzy fast.\nI built Learn-Algo to fix exactly that problem.\n👉 https://learn-algo.com/\nInstead of reading about algorithms, Learn-Algo lets you watch them execute step by step, pause them, rewind them, and experiment with inputs — the same way you’d debug real code.\nIn this post, I’ll walk through:\nHow Learn-Algo visualizes algorithms internally\nA concrete example (sorting / traversal / ML flow)\nWhy visual execution leads to better algorithm intuition\nNo theory overload. No math walls. Just how algorithms actually behave.\nAlgorithms aren’t static — the…",
-          "link": "https://dev.to/satya00089/learning-algorithms-by-watching-them-run-a-visual-walkthrough-with-learn-algo-5aei",
-          "publishedOn": "2025-12-28T07:58:37.000Z",
-          "wordCount": 2086,
-          "title": "Learning Algorithms by Watching Them Run (A Visual Walkthrough with Learn-Algo)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fw8s5hv601kx1kzegq1az.png"
-        },
-        {
-          "id": "https://dev.to/nityam2007/i-built-my-own-s3-for-5mo-shared-hosting-because-no-one-else-did-1168",
-          "author": "Nityam Sheth",
-          "description": "The Problem: S3 is expensive, and MinIO needs VPS\n\n\nI was looking for a way to have S3-compatible object storage without paying AWS/Cloudflare/Backblaze fees, and specifically, I wanted to run it on the cheap Shared Hosting (cPanel) plan I already pay for.\nThe problem?\n MinIO requires a binary/Docker (can't run on shared hosting).\n LocalStack is for testing, not storage.\n Existing PHP scripts were either 10 years old, unmaintained, or didn't support the S3 API properly.\nI wanted something I could just FTP upload, create a MySQL database, and boom—my own personal S3 bucket.\nSince it didn't exist, I built it (with a lot of help from AI agents).\nLite-S3 is a pure PHP implementation of an S3-compatible server.\n  ✅ S3 API Compatible: Works with AWS SDK, boto3, rclone, etc.\n  ✅ Shared Hosting Fr…",
-          "link": "https://dev.to/nityam2007/i-built-my-own-s3-for-5mo-shared-hosting-because-no-one-else-did-1168",
-          "publishedOn": "2025-12-28T07:57:03.000Z",
-          "wordCount": 2122,
-          "title": "I built my own S3 for $5/mo Shared Hosting (because no one else did)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcc7h7v8mzxg1ab4z1t8d.png"
-        },
-        {
-          "id": "https://dev.to/krishna-nayak/why-exposing-persistence-entities-in-apis-is-a-dangerous-shortcut-3oim",
-          "author": "Krishna Nayak",
-          "description": "I recently revisited one of my old backend projects.\nEverything was working fine. No errors. No failing APIs.\nBut while reading the code, one design decision immediately stood out — I had exposed persistence entities directly in API requests and responses.\nAt the time, it felt like a smart move. Looking back now, I realize it was a shortcut with hidden costs.\nIn the initial version, my controller looked something like this:\n@PostMapping(\"/books\")\npublic BookItem create(@RequestBody BookItem bookItem) {\n    return bookService.save(bookItem);\n}\n\nWhy did this feel right?\nThe entity already had all the fields\nNo extra classes to write\nFaster development\nDTOs felt like unnecessary boilerplate. For a small project, this approach worked — and that’s exactly why it was misleading.\nWhen an entity i…",
-          "link": "https://dev.to/krishna-nayak/why-exposing-persistence-entities-in-apis-is-a-dangerous-shortcut-3oim",
-          "publishedOn": "2025-12-28T07:48:38.000Z",
-          "wordCount": 2198,
-          "title": "Why Exposing Persistence Entities in APIs Is a Dangerous Shortcut",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4q11wd31t92jl6g7pnhk.png"
-        },
-        {
-          "id": "https://dev.to/oncs21/serving-a-deep-learning-model-with-django-5ff8",
-          "author": "Onkar Apte",
-          "description": "Deep learning did not suddenly appear with large language models. The field has been evolving for decades, starting with early neural network research in the late 20th century and gradually improving as compute, data, and algorithms advanced. Today, deep learning systems are used in image recognition, natural language processing, recommendation systems, and many other real-world applications. Training a model, however, is only part of the workflow. To make a model useful, it must be served. It needs to accept inputs and return predictions in a reliable way. In this article, we will walk through a practical approach to serving a deep learning model using Django and PyTorch.\nNote: The focus here is clarity and correctness rather than production-scale optimization (we will see this in a futur…",
-          "link": "https://dev.to/oncs21/serving-a-deep-learning-model-with-django-5ff8",
-          "publishedOn": "2025-12-28T07:42:29.000Z",
-          "wordCount": 2577,
-          "title": "Serving a deep learning model with Django",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fr7ysshbqtpb3u7oxrrrq.png"
-        },
-        {
-          "id": "https://dev.to/codeatoms/if-you-are-building-a-developer-tool-lets-connect-3dod",
-          "author": "CodeAtoms",
-          "description": "CodeAtoms is a developer tools marketplace where people can post their developer tools...",
-          "link": "https://dev.to/codeatoms/if-you-are-building-a-developer-tool-lets-connect-3dod",
-          "publishedOn": "2025-12-28T07:31:42.000Z",
-          "wordCount": 1673,
-          "title": "If you are building a developer tool, Let's Connect!!!",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F11hw652sero34utuneq2.png"
-        },
-        {
-          "id": "https://dev.to/prateekshaweb/laravel-faqs-beginner-to-advanced-2ojh",
-          "author": "prateekshaweb",
-          "description": "Why Laravel still matters (and what this FAQ solves)\n\n\nLaravel remains one of the fastest ways to ship secure, maintainable PHP applications — from simple sites to SaaS platforms. If you’re juggling setup, tooling, integrations, or strange runtime errors, this practical FAQ cuts through the noise with clear answers, implementation tips, and quick fixes you can apply today.\nLaravel is a modern, open-source PHP framework that follows MVC (Model-View-Controller) architecture and bundles routing, database abstractions, authentication, queues, and more. Use it for:\nCustom web applications and admin dashboards\nRESTful APIs and headless backends\nE-commerce stores and SaaS platforms\nLaravel is flexible enough for both monolithic apps and headless architectures where a JS framework handles the fron…",
-          "link": "https://dev.to/prateekshaweb/laravel-faqs-beginner-to-advanced-2ojh",
-          "publishedOn": "2025-12-28T07:30:22.000Z",
-          "wordCount": 2389,
-          "title": "Laravel FAQs (Beginner to Advanced)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F07335m16xfwyyxgtw90f.png"
-        },
-        {
-          "id": "https://dev.to/firebird/what-is-vibe-coding-a-practical-guide-to-ai-assisted-development-3e9e",
-          "author": "Moriam Akter Swarna",
-          "description": "Introduction\n\n\nA few months ago, I got stuck on a very small feature.\nNothing fancy.\nI knew exactly what I wanted to build.\nI kept switching tabs—documentation, Stack Overflow, old projects.\nThen I tried something different.\nInstead of writing code, I wrote what I wanted in simple English.\nThe code came back.\nThat moment didn’t make me feel replaced.\nThat’s where vibe coding started to make sense.\nNot as magic.\nBut as a new way of thinking about development.\nVibe coding is a workflow, not a tool.\nIt means you focus on your idea and intent, and let AI help translate that into code.\nYou’re not writing every line by hand.\nguiding the code.\nThink of it like this:\nTraditional coding: “I write code, then test.”\nYou still control the logic.\nTraditional approach:\nThink about the layout\nWrite HTML\n…",
-          "link": "https://dev.to/firebird/what-is-vibe-coding-a-practical-guide-to-ai-assisted-development-3e9e",
-          "publishedOn": "2025-12-28T07:26:07.000Z",
-          "wordCount": 2719,
-          "title": "What Is Vibe Coding? A Practical Guide to AI-Assisted Development",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F75arjz1bdaxsr9bqgvul.png"
-        },
-        {
-          "id": "https://dev.to/frosnerd/addressing-the-limitations-of-local-path-provisioner-in-kubernetes-3g12",
-          "author": "Frank Rosner",
-          "description": "Temporary Storage in Kubernetes\n\n\nIn Kubernetes, containers are ephemeral and stateless by default, allowing for easy scaling and management. Some workloads might require storage for temporary files, however. In vanilla Kubernetes, you are presented with the following options:\nMount an emptyDir volume, which will be created on the node where the pod is scheduled. It can either be backed by the node's default disk or the node's memory (tmpfs). Some cloud providers also offer emptyDir backed by local SSDs based on the node type. However, you cannot customize the mount point on the node for emptyDir volumes, which means less flexibility.\nMount a hostPath volume which allows you to specify a custom mount point on the node. This is not recommended for most application due to security risks as i…",
-          "link": "https://dev.to/frosnerd/addressing-the-limitations-of-local-path-provisioner-in-kubernetes-3g12",
-          "publishedOn": "2025-12-28T07:25:51.000Z",
-          "wordCount": 5706,
-          "title": "Addressing the Limitations of Local Path Provisioner in Kubernetes",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3zcyrttro68enzhm57rt.png"
         }
       ]
     },
@@ -252,6 +252,16 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://news.ycombinator.com/item?id=46409375",
+          "author": null,
+          "description": "Comments",
+          "link": "https://news.ycombinator.com/item?id=46409375",
+          "publishedOn": "2025-12-28T08:15:35.000Z",
+          "wordCount": 417,
+          "title": "Ask HN: By what percentage has AI changed your output as a software engineer?",
+          "imageUrl": null
+        },
+        {
           "id": "https://manus.im/blog/manus-100m-arr",
           "author": null,
           "description": "Comments",
@@ -342,16 +352,6 @@
           "imageUrl": "https://exquisite.tube/lazy-static/previews/c30b17f2-00c1-4aeb-9996-601cfd5abe0b.jpg"
         },
         {
-          "id": "https://web.law.duke.edu/cspd/publicdomainday/2026/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://web.law.duke.edu/cspd/publicdomainday/2026/",
-          "publishedOn": "2025-12-27T22:15:43.000Z",
-          "wordCount": 16315,
-          "title": "Public Domain Day 2026",
-          "imageUrl": "https://web.law.duke.edu/sites/default/files/images/centers/cspd/pdd2025/PDDmontageRS.jpg"
-        },
-        {
           "id": "https://notopalantir.goodlawproject.org/email-to-target/stop-palantir-in-the-nhs/",
           "author": null,
           "description": "Comments",
@@ -377,19 +377,9 @@
           "description": "Comments",
           "link": "https://www.shanethegamer.com/esports-news/rainbow-six-siege-hacked-global-server-outage/",
           "publishedOn": "2025-12-27T19:45:28.000Z",
-          "wordCount": 7061,
+          "wordCount": 7073,
           "title": "Rainbow Six Siege hacked as players get billions of credits and random bans",
           "imageUrl": "https://www.shanethegamer.com/wp-content/uploads/2025/12/STG-Cover-7-1.webp"
-        },
-        {
-          "id": "https://www.economist.com/united-states/2025/12/18/toll-roads-are-spreading-in-america",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.economist.com/united-states/2025/12/18/toll-roads-are-spreading-in-america",
-          "publishedOn": "2025-12-27T18:31:27.000Z",
-          "wordCount": null,
-          "title": "Toll roads are spreading in America",
-          "imageUrl": null
         },
         {
           "id": "https://www.ninakalinina.com/notes/win2apri/",
@@ -472,14 +462,14 @@
           "imageUrl": "https://media.springernature.com/m685/springer-static/image/art%3A10.1038%2Fs41467-025-65661-8/MediaObjects/41467_2025_65661_Fig1_HTML.png"
         },
         {
-          "id": "https://github.com/DeepMyst/Mysti",
+          "id": "https://arpitbhayani.me/blogs/clock-sync-nightmare/",
           "author": null,
           "description": "Comments",
-          "link": "https://github.com/DeepMyst/Mysti",
-          "publishedOn": "2025-12-23T13:18:32.000Z",
-          "wordCount": 6608,
-          "title": "Show HN: Mysti – Claude, Codex, and Gemini debate your code, then synthesize",
-          "imageUrl": "https://opengraph.githubassets.com/39b1dccc6b6c5f539761e8534883e349f9cd8588cfe1bcc0f912164af8c8b9b7/DeepMyst/Mysti"
+          "link": "https://arpitbhayani.me/blogs/clock-sync-nightmare/",
+          "publishedOn": "2025-12-23T18:59:45.000Z",
+          "wordCount": 3558,
+          "title": "Clock synchronization is a nightmare",
+          "imageUrl": "https://edge.arpitbhayani.me/img/covers/general-cover.jpg"
         },
         {
           "id": "https://github.com/rex-rs/rex",
@@ -489,7 +479,7 @@
           "publishedOn": "2025-12-23T02:58:32.000Z",
           "wordCount": 3483,
           "title": "Rex is a safe kernel extension framework that allows Rust in the place of eBPF",
-          "imageUrl": "https://opengraph.githubassets.com/866f2cb2fa6b004c46ab538b528ddf6e47234e21a3b27eafe4e20f736a10e019/rex-rs/rex"
+          "imageUrl": "https://opengraph.githubassets.com/6572488896da7d927de93d6e7d1ef13e6c334ab56380310389f4d0106aacc953/rex-rs/rex"
         },
         {
           "id": "https://www.anthropic.com/research/project-vend-2",
@@ -500,6 +490,16 @@
           "wordCount": 6721,
           "title": "Project Vend: Phase Two",
           "imageUrl": "https://cdn.sanity.io/images/4zrzovbb/website/1d139b7dd4c67a44a58a3c42d207624264fe0a42-1920x1080.png"
+        },
+        {
+          "id": "https://eli.thegreenplace.net/2025/plugins-case-study-mdbook-preprocessors/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://eli.thegreenplace.net/2025/plugins-case-study-mdbook-preprocessors/",
+          "publishedOn": "2025-12-22T10:26:48.000Z",
+          "wordCount": 769,
+          "title": "Plugins case study: mdBook preprocessors",
+          "imageUrl": null
         },
         {
           "id": "https://www.youtube.com/watch?v=8kUQWuK1L4w",
@@ -529,7 +529,7 @@
           "publishedOn": "2025-12-21T20:59:06.000Z",
           "wordCount": 3633,
           "title": "Immer – A library of persistent and immutable data structures written in C++",
-          "imageUrl": "https://opengraph.githubassets.com/669adaaf1ad36fdd013331d69c4319d48141179288732817375587e1bb5dccd5/arximboldi/immer"
+          "imageUrl": "https://opengraph.githubassets.com/9d6849d90a5ec24697f91b41a7395ba27e596b86fa2f3eabd50201598f84e21d/arximboldi/immer"
         },
         {
           "id": "https://news.ycombinator.com/item?id=46346648",
@@ -537,7 +537,7 @@
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=46346648",
           "publishedOn": "2025-12-21T17:49:36.000Z",
-          "wordCount": 4035,
+          "wordCount": 4061,
           "title": "Ask HN: Resources to get better at outbound sales?",
           "imageUrl": null
         },
@@ -773,12 +773,22 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "7f8e04e7-6dca-439f-bf0f-db84b0804d6e",
+          "author": "Siamak Masnavi",
+          "description": "Coinbase Institutional says shifting market structure, not hype cycles, will shape crypto trading and adoption in 2026 as activity concentrates in a few key areas.",
+          "link": "https://www.coindesk.com/markets/2025/12/28/coinbase-says-three-areas-will-dominate-the-crypto-market-in-2026",
+          "publishedOn": "2025-12-28T08:29:19.000Z",
+          "wordCount": 10267,
+          "title": "Coinbase says three areas will dominate the crypto market in 2026",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/490d44e8658ba690aaf9e1e527c93495e34f829a-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
           "id": "053fe0d7-f169-448b-931e-a3cfee1d5f91",
           "author": "Shaurya Malwa",
           "description": "The market remains technical, with DOGE and SHIB's movements reflecting broader risk sentiment and liquidity conditions.",
           "link": "https://www.coindesk.com/markets/2025/12/27/price-action-of-dog-memecoins-dogecoin-shiba-inu-muted-amid-thin-holiday-liquidity",
           "publishedOn": "2025-12-27T15:41:47.000Z",
-          "wordCount": 10589,
+          "wordCount": 10562,
           "title": "Price-action of dog memecoins dogecoin, shiba inu muted amid thin holiday liquidity",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/24810a1084d4556cb5a5c8f0d2e8d4c0145120f3-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -788,7 +798,7 @@
           "description": "XRP remains in a tight trading range, with sellers defending the $1.90 resistance and buyers supporting the $1.86 level, indicating a potential decisive move soon.",
           "link": "https://www.coindesk.com/markets/2025/12/27/bitcoin-s-rebound-fades-as-xrp-slips-to-usd1-86-even-with-etf-assets-at-usd1-25b",
           "publishedOn": "2025-12-27T15:26:56.000Z",
-          "wordCount": 10543,
+          "wordCount": 10561,
           "title": "Bitcoin’s rebound fades as XRP slips to $1.86 even with ETF assets at $1.25B",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b1bb9e25fda428dd5319f14fc15b829b3408930c-1192x734.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -798,7 +808,7 @@
           "description": "How did 2025 shake out for crypto?",
           "link": "https://www.coindesk.com/policy/2025/12/27/state-of-crypto-year-in-review",
           "publishedOn": "2025-12-27T15:00:00.000Z",
-          "wordCount": 9618,
+          "wordCount": 9627,
           "title": "State of Crypto: Year in review",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/11d38e96067e18f4d9e1e0057cdf51ebefe2cca9-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -808,7 +818,7 @@
           "description": "Gold, silver, platinum and copper all surged to new records as metals — not bitcoin — attracted capital on the debasement trade and geopolitical tension.",
           "link": "https://www.coindesk.com/markets/2025/12/26/crypto-assets-slide-as-geopolitical-tensions-rise-whole-gold-silver-rally",
           "publishedOn": "2025-12-26T16:01:33.000Z",
-          "wordCount": 9783,
+          "wordCount": 9827,
           "title": "Bitcoin sinks below $87,000 as crypto assets slide, metals soar post-Xmas",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2dc924d0f7f6ef0f6ddf97b95664779c9b0c0a19-1440x810.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -818,7 +828,7 @@
           "description": "Diversification into AI and HPC infrastructure drove sharp outperformance for miners, while pure-play bitcoin miners lagged.",
           "link": "https://www.coindesk.com/markets/2025/12/26/bitcoin-mining-in-2025-iren-claims-the-crown-as-bitdeer-s-stock-trails-the-pack",
           "publishedOn": "2025-12-26T16:00:00.000Z",
-          "wordCount": 9991,
+          "wordCount": 10009,
           "title": "Bitcoin mining in 2025: IREN claims the crown as Bitdeer's stock trails the pack",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8dc6d23668d6f98ba6b7defb7758619ae24c34a5-2562x1652.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -828,7 +838,7 @@
           "description": "The crypto exchange’s tokenization, AI tools, and stablecoin revenue help it stand out in ‘transition year’ for crypto equities, said Clear Street's Owen Lau.",
           "link": "https://www.coindesk.com/markets/2025/12/26/coinbase-named-a-top-three-2026-fintech-pick-at-clear-street",
           "publishedOn": "2025-12-26T15:23:13.000Z",
-          "wordCount": 9736,
+          "wordCount": 9754,
           "title": "Coinbase named a top three 2026 fintech pick at Clear Street",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a74f0d9b532c9eb5b3e2ae935b4fe845091c0e43-1080x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -838,7 +848,7 @@
           "description": "The proposal, which transforms UNI into a value-accruing asset, received more than 125 million votes in support with just 742 dissenting.",
           "link": "https://www.coindesk.com/business/2025/12/26/uniswap-s-token-burn-protocol-fee-proposal-backed-overwhelmingly-by-voters",
           "publishedOn": "2025-12-26T11:01:18.000Z",
-          "wordCount": 9575,
+          "wordCount": 9577,
           "title": "Uniswap's token burn, protocol fee proposal backed overwhelmingly by voters",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/326925d00d6fceb36afb103633f796e570ab9be2-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -848,7 +858,7 @@
           "description": "Changpeng Zhao, a co-founder of Binance, which owns the utility, said the losses will be reimbursed.",
           "link": "https://www.coindesk.com/business/2025/12/26/trust-wallet-users-lose-more-than-usd7-million-to-hacked-chrome-extension",
           "publishedOn": "2025-12-26T09:53:44.000Z",
-          "wordCount": 9593,
+          "wordCount": 9599,
           "title": "Trust Wallet users lose $7 million to hacked Chrome extension",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6fe21d3c13aafbf5a49e7ff4b6c7e89bfb6bd6d5-1440x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -858,7 +868,7 @@
           "description": "Five years of CME futures data shows where bitcoin has, and has not, built meaningful price support.",
           "link": "https://www.coindesk.com/markets/2025/12/25/bitcoin-s-usd70-000-to-usd80-000-zone-highlights-gap-in-historical-price-support",
           "publishedOn": "2025-12-25T14:00:00.000Z",
-          "wordCount": 10005,
+          "wordCount": 9990,
           "title": "Bitcoin’s $70,000 to $80,000 zone highlights gap in historical price support",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/88cf73b901fc7f9e0b418e62614ca37a12146028-3200x1800.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -868,7 +878,7 @@
           "description": "The FSTB and SFC concluded consultations on virtual regimes and plan to introduce new bill to LegCo next year.",
           "link": "https://www.coindesk.com/policy/2025/12/25/hong-kong-regulators-target-2026-legislation-for-virtual-asset-dealer-and-custodian-rules",
           "publishedOn": "2025-12-25T12:00:03.000Z",
-          "wordCount": 9844,
+          "wordCount": 9846,
           "title": "Hong Kong regulators target 2026 legislation for virtual asset dealer and custodian rules",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/eaa42c1177304a6399740ab2206c6e37036ef097-2560x1706.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -878,7 +888,7 @@
           "description": "The biggest single-day exit came from BlackRock’s IBIT, which saw $91.37 million leave the fund. Grayscale’s GBTC followed with a $24.62 million outflow.",
           "link": "https://www.coindesk.com/markets/2025/12/25/bitcoin-and-ether-etfs-see-outflows-ahead-of-christmas-led-by-ibit-and-ethe",
           "publishedOn": "2025-12-25T06:57:03.000Z",
-          "wordCount": 9801,
+          "wordCount": 9799,
           "title": "Bitcoin and ether ETFs see outflows ahead of Christmas, led by IBIT and ETHE",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/af0566a2ed6670673a190b8ff3a72c11b5ab0c81-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -888,7 +898,7 @@
           "description": "XRP remains in a $1.85–$1.91 range, with strong selling near $1.90 and consistent bids near $1.86, suggesting a potential decisive break ahead.",
           "link": "https://www.coindesk.com/markets/2025/12/25/xrp-etf-inflows-cross-usd1-25-billion-milestone-but-price-action-muted",
           "publishedOn": "2025-12-25T06:46:20.000Z",
-          "wordCount": 10513,
+          "wordCount": 10524,
           "title": "XRP ETF net assets cross $1.25 billion milestone, but price-action muted",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/91f0759fc1befe913bddfb129949fbb369117162-1188x740.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -898,7 +908,7 @@
           "description": "Such sudden price changes are often due to thin liquidity and can be exacerbated by fewer active traders during quieter hours.",
           "link": "https://www.coindesk.com/markets/2025/12/25/bitcoin-briefly-trades-at-usd24-000-on-binance-s-usd1-pair-in-flash-move",
           "publishedOn": "2025-12-25T04:48:53.000Z",
-          "wordCount": 9689,
+          "wordCount": 9700,
           "title": "Bitcoin briefly trades at $24,000 on Binance’s USD1 pair in flash move",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d33fb32b78838a712ce8b81ec264008525c7b22b-612x460.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -908,7 +918,7 @@
           "description": "The release, distributed on Christmas Eve, used Circle branding and claimed to quote executives, but a Circle spokesperson said it was \"not real.\"",
           "link": "https://www.coindesk.com/web3/2025/12/24/circle-platform-promising-tokenized-gold-silver-swaps-is-fake-company-says",
           "publishedOn": "2025-12-24T18:54:33.000Z",
-          "wordCount": 10011,
+          "wordCount": 10013,
           "title": "Circle platform promising tokenized gold, silver swaps is 'fake,' company says",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6510beb7a4b57768a8a45d17df0872e445fe0175-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -918,7 +928,7 @@
           "description": "Technical factors dominated as FIL maintained a tight correlation with broader crypto sentiment while establishing support above $1.27.",
           "link": "https://www.coindesk.com/markets/2025/12/24/filecoin-drops-2-as-crypto-markets-weaken",
           "publishedOn": "2025-12-24T15:36:02.000Z",
-          "wordCount": 9730,
+          "wordCount": 9741,
           "title": "Filecoin drops 2% as crypto markets weaken",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/184c4f9c3a7ebf7a53b5203359cc6a117497a67b-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -928,7 +938,7 @@
           "description": "Ethereum’s Glamsterdam, Bitcoin and quantum computing, and new Eigenlayer governance proposal",
           "link": "https://www.coindesk.com/tech/2025/12/24/the-protocol-aave-community-split",
           "publishedOn": "2025-12-24T14:46:53.000Z",
-          "wordCount": 11786,
+          "wordCount": 11801,
           "title": "The Protocol: Aave community split",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3a7a432489bb40de0b3b1307d8545fd4bb3abae8-1500x1000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -938,7 +948,7 @@
           "description": "New directive, which operates alongside MiCA, expands tax data sharing, sets July 1 compliance deadline for exchanges across bloc.",
           "link": "https://www.coindesk.com/policy/2025/12/24/eu-s-crypto-tax-reporting-starts-in-january-with-threat-of-asset-seizure",
           "publishedOn": "2025-12-24T14:42:00.000Z",
-          "wordCount": 9797,
+          "wordCount": 9799,
           "title": "EU’s crypto tax reporting starts in January with threat of asset seizure",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0a3baa74b0186e64bc8d95792ada2acdbbf35304-1500x1000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -948,7 +958,7 @@
           "description": "The analyst team said the first long-term co-location agreement at NC-1 validates WhiteFiber’s retrofit model.",
           "link": "https://www.coindesk.com/markets/2025/12/24/whitefiber-nc-1-deal-is-promising-says-b-riley-seeing-127-stock-price-upside-after-price-plunge",
           "publishedOn": "2025-12-24T14:31:31.000Z",
-          "wordCount": 9641,
+          "wordCount": 9652,
           "title": "WhiteFiber NC-1 deal is promising, says B. Riley, seeing 127% upside after stock price plunge",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a6fce8efe0570bdf6dccecadb5072b55ba54a7ac-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -958,7 +968,7 @@
           "description": "XRP's price action aligns with broader market trends, but, contrarily, negative social sentiment may signal a potential rebound.",
           "link": "https://www.coindesk.com/markets/2025/12/24/xrp-price-reaction-muted-even-as-new-income-generation-opportunity-appears",
           "publishedOn": "2025-12-24T14:25:40.000Z",
-          "wordCount": 9673,
+          "wordCount": 9697,
           "title": "XRP price reaction muted even as new income-generation opportunity appears",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c3ac40e216e0a2276cfec64adeb74b4e08399884-1919x1080.jpg?auto=format"
         },
@@ -968,7 +978,7 @@
           "description": "APT has support at $1.56 and resistance at $1.63, per CoinDesk technical models.",
           "link": "https://www.coindesk.com/markets/2025/12/24/aptos-apt-drops-as-token-tracks-broader-crypto-market-weakness",
           "publishedOn": "2025-12-24T13:51:41.000Z",
-          "wordCount": 9646,
+          "wordCount": 9657,
           "title": "Aptos' APT drops as token tracks broader crypto market weakness",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1b471101d70669b712a18d0d86c88c54f461a3f1-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -978,7 +988,7 @@
           "description": "The largest deals of the year included Coinbase's $2.9 billion acquisition of Deribit, Kraken's $1.5 billion purchase of NinjaTrader, and Ripple's $1.25 billion buyout of Hidden Road.",
           "link": "https://www.coindesk.com/business/2025/12/24/crypto-m-and-a-hits-record-usd8-6-billion-in-2025-as-trump-s-regulatory-stance-spurs-deals",
           "publishedOn": "2025-12-24T13:41:11.000Z",
-          "wordCount": 9655,
+          "wordCount": 9657,
           "title": "Crypto M&A hits record $8.6 billion in 2025 as Trump’s regulatory stance spurs deals",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/aad1ffb508271a6adb94a8bc7d91764ae64ed854-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -988,7 +998,7 @@
           "description": "The movement follows inflows into wallets tied to Trump Media, implying the company is actively managing its bitcoin position rather than leaving it static.",
           "link": "https://www.coindesk.com/business/2025/12/24/trump-media-shuffles-2-000-btc-after-fresh-bitcoin-inflows",
           "publishedOn": "2025-12-24T12:54:58.000Z",
-          "wordCount": 9841,
+          "wordCount": 9847,
           "title": "Trump Media moves $174 million bitcoin after fresh purchase",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b7540e5f4ce263639ab052e4c17c2e5c4075c251-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -998,7 +1008,7 @@
           "description": "The HashKey Fintech Multi-Strategy Fund IV aims will invest in blockchain infrastructure and applications with real-world use cases.",
           "link": "https://www.coindesk.com/business/2025/12/24/hashkey-capital-s-usd500-million-target-blockchain-fund-raises-usd250-million-in-first-round",
           "publishedOn": "2025-12-24T12:32:23.000Z",
-          "wordCount": 9607,
+          "wordCount": 9609,
           "title": "HashKey Capital's $500 million-target blockchain fund raises $250 million in first round",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ed80db9acebe4efa05975c5c87747f9b835045dd-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1008,19 +1018,9 @@
           "description": "Measured against U.S. money supply, gold is back at levels that marked major historical peaks, while bitcoin retraces toward a key cycle floor.",
           "link": "https://www.coindesk.com/markets/2025/12/24/gold-knocks-on-a-door-that-s-been-shut-for-50-years-as-bitcoin-tests-a-defining-support",
           "publishedOn": "2025-12-24T12:03:21.000Z",
-          "wordCount": 9613,
+          "wordCount": 9650,
           "title": "Gold knocks on a door that's been shut for 50 years as bitcoin tests a defining support",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c8f56b8ff904533d9074ceae6786d5710607a6ee-2562x1604.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "f14a1f1b-96a3-476e-8a3d-7a04db9fe6bd",
-          "author": "Olivier Acuna",
-          "description": "The crypto payments app joins a growing group of regulated firms as stablecoin transfers gain traction as a cross-border alternative.",
-          "link": "https://www.coindesk.com/policy/2025/12/24/sling-money-receives-approval-to-offer-crypto-services-in-uk-as-stablecoin-payments-gain-popularity",
-          "publishedOn": "2025-12-24T10:56:30.000Z",
-          "wordCount": 9501,
-          "title": "Sling Money receives approval to offer crypto services in UK as stablecoin payments gain popularity",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/fe3215e055efea72645440d22a845a02a961b59d-1920x1079.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
       ]
     },
