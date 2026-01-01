@@ -1,176 +1,343 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-01-01T22:16:37.442Z</id>
+    <id>urn:2026-01-01T23:16:31.283Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-01-01T22:16:37.442Z</updated>
+    <updated>2026-01-01T23:16:31.283Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[The "Thundering Herd" of 2026: Preparing SRE for Agent-Native Infrastructure]]></title>
-        <id>https://dev.to/meena_nukala/the-thundering-herd-of-2026-preparing-sre-for-agent-native-infrastructure-mno</id>
-        <link href="https://dev.to/meena_nukala/the-thundering-herd-of-2026-preparing-sre-for-agent-native-infrastructure-mno"/>
-        <updated>2026-01-01T22:09:33.000Z</updated>
-        <summary type="html"><![CDATA[For years, SREs have modeled traffic based on human behavior. Humans are predictable: they sleep at night, they click at a certain speed, and they generally follow a linear path through an application.
-The Death of the "Diurnal Cycle"
-We used to scale up at 8 AM and down at 10 PM. That world is gone. AI Agents don't sleep, and they don't work in predictable waves. An agent-driven task can trigger thousands of sub-tasks in milliseconds, creating a "thundering herd" effect that can melt a standard load balancer.
-The Shift: We need to move from Reactive Scaling to Predictive Concurrency.
+        <title type="html"><![CDATA[Coding Challenge Practice - Question 91]]></title>
+        <id>https://dev.to/tomivan/coding-challenge-practice-question-91-56pl</id>
+        <link href="https://dev.to/tomivan/coding-challenge-practice-question-91-56pl"/>
+        <updated>2026-01-01T23:04:11.000Z</updated>
+        <summary type="html"><![CDATA[The task is to implement the async function helper parallel()
+The boilerplate code
+function parallel(funcs){
+  // your code here
+}
 
+The parallel function is supposed to accept an array of async functions,  run all the functions at the same time, with each function having the form func(callback).
+If there are no functions
+if (funcs.length === 0) {
+  callback(undefined, []);
+  return;
+}
 
-Cold Starts are the New Outage: In an agentic world, waiting 10 seconds for a pod to spin up is an eternity. Your infrastructure must treat "instant-on" as a requirement, not a luxury.
-Aggressive Rate Limit…]]></summary>
+Store the outputs by index, count the finished tasks and ensure the callback fires only once
+const results = [];
+let completed = 0;
+let hasError = false;
+
+To run all the functions in parallel
+funcs.forEach((func, index) => {
+  func((error, result) => {
+
+To prevent multiple callbacks
+if (hasError) return;
+
+To handle errors
+if (error) {
+  hasError = true;
+  callback(error, undefined);
+  return;
+}
+
+To preserve the order even if tasks finish out of order
+results[index] = result;
+
+The callback should be called when all the tasks are completed
+completed++;
+
+if (completed === funcs.length) {
+  callback(undefined, results);
+}
+
+The final code
+function parallel(funcs){
+  // your code here
+  return function (callback) {
+    if(funcs.length === 0) {
+      callback(undefined, []);
+      return;
+    }
+
+    const results = [];
+    let completed = 0;
+    let hasError = false;
+
+    funcs.forEach((func, index) => {
+      func((error, result) => {
+        if(hasError) return;
+
+        if(error) {
+          hasError = true;
+          callback(error, undefined);
+          return;
+        }
+        results[index] = result;
+        completed++;
+
+        if (completed === funcs.length) {
+          callback(undefined, results)
+        }
+      })
+    })
+  }
+}
+
+That's all folks!]]></summary>
         <author>
-            <name>Meena Nukala</name>
+            <name>Bukunmi Odugbesan</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Find and Use Resume Keywords from Tech Job Descriptions to Beat ATS and Get More Interviews]]></title>
-        <id>https://dev.to/saber-amani/how-to-find-and-use-resume-keywords-from-tech-job-descriptions-to-beat-ats-and-get-more-interviews-13p9</id>
-        <link href="https://dev.to/saber-amani/how-to-find-and-use-resume-keywords-from-tech-job-descriptions-to-beat-ats-and-get-more-interviews-13p9"/>
-        <updated>2026-01-01T21:50:12.000Z</updated>
-        <summary type="html"><![CDATA[How to Analyze a Job Description for Key Resume Keywords
+        <title type="html"><![CDATA[End-to-End Deployment of a Two-Tier Application Using Docker, Kubernetes, Helm, and AWS]]></title>
+        <id>https://dev.to/safi-ullah/end-to-end-deployment-of-a-two-tier-application-using-docker-kubernetes-helm-and-aws-3gma</id>
+        <link href="https://dev.to/safi-ullah/end-to-end-deployment-of-a-two-tier-application-using-docker-kubernetes-helm-and-aws-3gma"/>
+        <updated>2026-01-01T22:58:25.000Z</updated>
+        <summary type="html"><![CDATA[In modern cloud-native environments, deploying applications manually is no longer scalable or reliable. DevOps practices and container orchestration tools help us automate, standardize, and scale applications efficiently.
+In this article, I’ll walk you through an end-to-end deployment of a Two-Tier Application using:
+GitHub, Docker & DockerHub, Kubernetes, Helm &  AWS.
+This architecture represents a real-world DevOps workflow, commonly used in production systems.
+Before diving deep into the project implementation or practical demonstration, it’s important to first understand the term "two-tier-application"
+A Two-Tier Application Consists of:
+Application Tier (Backend):
+Flask-based backend service
+Handles business logic
+Processes API requests
+Communicates with the database
+This layer is res…]]></summary>
+        <author>
+            <name>SAFI-ULLAH SAFEER</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Event-Driven Architecture: Why Your App Should Stop Talking to Itself (And Start Listening)]]></title>
+        <id>https://dev.to/ftwoli/event-driven-architecture-why-your-app-should-stop-talking-to-itself-and-start-listening-4mp1</id>
+        <link href="https://dev.to/ftwoli/event-driven-architecture-why-your-app-should-stop-talking-to-itself-and-start-listening-4mp1"/>
+        <updated>2026-01-01T22:54:49.000Z</updated>
+        <summary type="html"><![CDATA[Reading time: 8 minutes
+You know what's wild? Most applications today are basically playing telephone. Service A calls Service B, which calls Service C, which calls Service D... and suddenly your innocent "add to cart" button takes 3 seconds to respond because seventeen different services need to have a meeting about it.
+There's a better way. It's called Event-Driven Architecture, and once you understand it, you'll see why companies like Netflix, Uber, and Amazon have bet their entire infrastructure on it.
+Let me paint you a picture. You're building an e-commerce app. When someone places an order, you need to:
+Save the order to the database
+Send a confirmation email
+Update inventory
+Notify the warehouse
+Create a shipping label
+Update analytics
+Charge the payment method
+Send a notification …]]></summary>
+        <author>
+            <name>Felix Twoli</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why AI Governance Cannot Be Treated as Compliance]]></title>
+        <id>https://dev.to/antonio_socorro_95e3ff086/why-ai-governance-cannot-be-treated-as-compliance-1dep</id>
+        <link href="https://dev.to/antonio_socorro_95e3ff086/why-ai-governance-cannot-be-treated-as-compliance-1dep"/>
+        <updated>2026-01-01T22:53:40.000Z</updated>
+        <summary type="html"><![CDATA[Over the past few years, AI systems have moved from experimental tools to decision-influencing components embedded in real operational environments. Yet, in many organizations, AI governance is still approached as if it were a compliance checklist rather than a structural governance challenge.
+This creates a growing gap.
+Most existing governance and cybersecurity frameworks are excellent at defining controls, baselines, and audit requirements. However, AI-enabled systems introduce dynamics that are not easily captured by static compliance models: adaptive behavior, probabilistic outputs, opaque decision paths, and human-machine interaction loops.
+The problem is not that compliance frameworks are wrong.
+AI systems increasingly participate in decisions that affect security posture, operation…]]></summary>
+        <author>
+            <name>Antonio Jose Socorro Marin</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[StyleX + ESLint: When Best Practices Fight Each Other]]></title>
+        <id>https://dev.to/sal_lancaster/stylex-eslint-when-best-practices-fight-each-other-4o17</id>
+        <link href="https://dev.to/sal_lancaster/stylex-eslint-when-best-practices-fight-each-other-4o17"/>
+        <updated>2026-01-01T22:51:42.000Z</updated>
+        <summary type="html"><![CDATA[or... "How the @stylexjs/sort-keys rule silently breaks responsive styles"
+After solving the StyleX + Vite "Invalid empty selector" mystery, I thought I had StyleX figured out. I was following every documented best practice:
+Vite config - using enableMediaQueryOrder: true as recommended in v0.15.0:
+// vite.config.js
+styleXUnplugin.vite({
+  enableMediaQueryOrder: true,
+})
+
+ESLint config - using the recommended StyleX plugin rules:
+// eslint.config.mjs
+rules: {
+  "@stylexjs/valid-styles": "error",
+  "@stylexjs/sort-keys": "warn",  // Keep styles organized!
+}
+
+Responsive styles - using inline strings (learned that lesson) with correct cascade order:
+const styles = stylex.create({
+  container: {
+    padding: {
+      default: "2rem",
+      "@media (max-width: 768px)": "1.5rem",  // tablet
+     …]]></summary>
+        <author>
+            <name>sal lancaster</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Starting My Journey into C# .NET]]></title>
+        <id>https://dev.to/sabin_sim/starting-my-journey-into-c-net-2ob7</id>
+        <link href="https://dev.to/sabin_sim/starting-my-journey-into-c-net-2ob7"/>
+        <updated>2026-01-01T22:51:01.000Z</updated>
+        <summary type="html"><![CDATA[💻 Starting My Journey into C# and .NET
 
 
-If your applications keep getting ignored, the problem might not be your skills, it could be missing keywords in your CV. Most tech roles (AI, ML, software development, cloud) are processed by Applicant Tracking Systems (ATS) before a human ever sees them. ATS scans for specific keywords from the job description. If you miss those, your application could get filtered out, no matter how qualified you are.
-ATS uses keywords to filter and rank candidates automatically
+I haven’t mastered Python yet — but I’ve decided to begin studying C# and .NET as my next step.
+While attending university, I explored several programming languages in a rather surface-level way. Among them, Python stood out to me as the most intuitive and expressive. It was the first language that made me feel, “Maybe I can actually become a developer.”
+One of the reasons I started with Python was its immediacy — I could see results instantly on the web as I modified or added lines of code. It was fun, visual, and rewarding.
+There are several reasons behind this decision.
+my natural way of thinking is to understand structures first — then explore the details inside them.
+C# immediately appealed to me because it’s a structure-oriented, strongly typed language that matches how I process and reason about systems.
+I’ve also earned my Microsoft Azure AZ-900 certification, and I plan to pursue AZ-104 and AZ-400 next.
+C# and the Azure cloud environment work together — and that combination feels both practical and exciting to me.
+Another motivation is the Swiss job market.
+C# is also a common and in-demand language.
+and that has professional value feels like the right path — both personally and strategically.
+Unlike my Python journey, I won’t focus much on basic syntax this time.
+directly through small projects instead.
+No strict roadmap, no endless theory.
+I believe that by building consistently, even small projects will naturally lead to something meaningful.
+For this new C# series, I’ll still use AI tools for light editing and formatting,
+comment, explanation, and reflection will be written by me — even if my comparisons or analogies sound a bit unusual sometimes.
+My goal isn’t just to write clean code — I want to think deeply, understand systems, and eventually become a true professional in this field.
+To those who are studying and building their own paths — I’m rooting for you.
+Wishing everyone an amazing year ahead.
+Happy New Year 2026 — and let’s keep growing together. ✨]]></summary>
+        <author>
+            <name>Sabin Sim</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[📞 DNS Explained Like You're 5]]></title>
+        <id>https://dev.to/esreekarreddy/dns-explained-like-youre-5-4ki</id>
+        <link href="https://dev.to/esreekarreddy/dns-explained-like-youre-5-4ki"/>
+        <updated>2026-01-01T22:50:18.000Z</updated>
+        <summary type="html"><![CDATA[The phone book of the internet
+Day 7 of 149
+👉 Full deep-dive with code examples
+Remember phone books? (Ask your parents! 📚)
+You wanted to call Pizza Hut, but you didn't memorize their number.
+You looked up: "Pizza Hut" → Found: 555-1234
+Then you called 555-1234.
+DNS does the same thing for websites!
+Computers don't understand "google.com".
+They understand IP addresses (numbers), like <ip-address> for example.com.
+That's like a phone number for a computer.
+You type: example.com
+Your Browser: "Hey DNS, what's the number for example.com?"
+     ↓
+DNS: "Let me check... It's `<ip-address>`"
+     ↓
+Your Browser: "Thanks!" → Calls `<ip-address>`
+     ↓
+Google's Server: "Hello! Here's your search page!"
 
+Imagine memorizing numbers for every website:
+(an IP address) (Google)
+(an IP address) (Facebook)
+(an IP address) (Netflix)
+Not practical!
+DNS lets us use easy names instead.
+DNS translates friendly website names into the number addresses that computers actually use.
+🔗 Enjoying these? Follow for daily ELI5 explanations!
+Making complex tech concepts simple, one day at a time.]]></summary>
+        <author>
+            <name>Sreekar Reddy</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Happy birthday Tiffany!]]></title>
+        <id>https://dev.to/frnk_kstl_023971127c81dcf/happy-birthday-tiffany-560</id>
+        <link href="https://dev.to/frnk_kstl_023971127c81dcf/happy-birthday-tiffany-560"/>
+        <updated>2026-01-01T22:35:59.000Z</updated>
+        <summary type="html"><![CDATA[Check out this Pen I made!]]></summary>
+        <author>
+            <name>Frnk Kstl</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Gemini Prompts Thumbnails: Best Ideas Guide]]></title>
+        <id>https://dev.to/flatratemechanic1glitch/gemini-prompts-thumbnails-best-ideas-guide-1m4m</id>
+        <link href="https://dev.to/flatratemechanic1glitch/gemini-prompts-thumbnails-best-ideas-guide-1m4m"/>
+        <updated>2026-01-01T22:31:49.000Z</updated>
+        <summary type="html"><![CDATA[This is a summary of an article originally published on Banana Thumbnail Blog. Read the full guide for complete details and step-by-step instructions.
 
-Human recruiters often search by keywords to quickly shortlist applicants
+In the world of AI and digital creativity, understanding gemini can transform your workflow.
+Gemini
+Prompts
+Thumbnails
+Ideas
+Guide
 
-
-Keywords signal direct relevance to the job requirements
-
-
-Missing critical terms can lead to instant rejection, even if you have the right experience
 
 
 
 
   
   
-  Practical Steps: Extracting Ke…]]></summary>
+  Article Summary
+
+
+All right, let’s get into this. You know, there’s this huge misconception floating around about Gemini prompts thumbnails—people still think AI image generators are terrible at spelling. Think about that. This is where thumbnail work its magic. People think you ask for a YouTube thumbnail with text, and you get back a garbled mess of alien hieroglyphics. Maybe that was true back in 2023, but honestly, if you’re still thinking that way, you’re missing out on some serious time-saving…]]></summary>
         <author>
-            <name>Saber Amani</name>
+            <name>Curtis</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Solved: Any Connectwise MSP’s out there that recently (in the past year) implemented REWST?]]></title>
-        <id>https://dev.to/techresolve/solved-any-connectwise-msps-out-there-that-recently-in-the-past-year-implemented-rewst-2g99</id>
-        <link href="https://dev.to/techresolve/solved-any-connectwise-msps-out-there-that-recently-in-the-past-year-implemented-rewst-2g99"/>
-        <updated>2026-01-01T21:40:13.000Z</updated>
-        <summary type="html"><![CDATA[🚀 Executive Summary
-
-
-TL;DR: ConnectWise MSPs implementing REWST often face integration complexities, workflow design challenges, and issues stemming from data inconsistency. The solution involves adopting a phased rollout strategy with quick wins, prioritizing thorough data hygiene and standardization within ConnectWise, and leveraging REWST’s advanced capabilities like state machines, custom API integrations, and REWST Agents for maximum automation impact.
-Adopt a phased rollout for REWST, starting with high-impact, low-complexity automations (quick wins) to build internal expertise and demonstrate value quickly.
-Prioritize data hygiene and standardization in ConnectWise Manage and Automate, including consistent naming conventions and cleanup of stale data, as inconsistent data leads to…]]></summary>
+        <title type="html"><![CDATA[Understanding Smart Contract working in etherium]]></title>
+        <id>https://dev.to/harshbansal47/understanding-smart-contract-in-etherium-and-solidity-1o01</id>
+        <link href="https://dev.to/harshbansal47/understanding-smart-contract-in-etherium-and-solidity-1o01"/>
+        <updated>2026-01-01T22:31:43.000Z</updated>
+        <summary type="html"><![CDATA[Solidity is a programming language designed for writing smart contracts on the Ethereum blockchain. Smart contracts are self-executing programs that contain a predefined set of rules, conditions, and functions. Once deployed to the blockchain, they run automatically when specific conditions are met—without the need for intermediaries.
+Smart contracts run on the Ethereum Virtual Machine (EVM), a decentralized runtime environment that ensures the same code executes identically on every Ethereum node. These contracts handle transactions, store data, and interact with other contracts based on their programmed logic.
+How Are Smart Contracts Triggered?
+Smart contracts do not run automatically on their own. They execute only when triggered by a transaction.
+A smart contract is triggered when:
+A u…]]></summary>
         <author>
-            <name>Darian Vance</name>
+            <name>Harsh Bansal</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Can Bundler Be as Fast as Uv?]]></title>
+        <title type="html"><![CDATA[⚡_Latency_Optimization_Practical_Guide[20260101223109]]]></title>
+        <id>https://dev.to/member_8659c28a/latencyoptimizationpracticalguide20260101223109-2i6i</id>
+        <link href="https://dev.to/member_8659c28a/latencyoptimizationpracticalguide20260101223109-2i6i"/>
+        <updated>2026-01-01T22:31:10.000Z</updated>
+        <summary type="html"><![CDATA[As an engineer focused on system performance optimization, I have been dedicated to reducing web application latency for the past decade. Recently, I participated in a project with extremely strict latency requirements - a financial trading system. This system requires that 99.9% of request latency must be below 10ms, which made me re-examine the potential of web frameworks in latency optimization. Today I want to share practical latency optimization experience based on real project experience.
+Applications like financial trading systems, real-time games, and online conferences have extremely strict latency requirements. I have summarized several key characteristics of such applications:
+In our financial trading system, we established the following SLA metrics:
+P99 latency < 10ms
+P95 laten…]]></summary>
+        <author>
+            <name>member_8659c28a</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Proxy Economy: Residential, Datacenter, and ISP Rotation]]></title>
+        <id>https://dev.to/deepak_mishra_35863517037/the-proxy-economy-residential-datacenter-and-isp-rotation-59o8</id>
+        <link href="https://dev.to/deepak_mishra_35863517037/the-proxy-economy-residential-datacenter-and-isp-rotation-59o8"/>
+        <updated>2026-01-01T22:30:00.000Z</updated>
+        <summary type="html"><![CDATA[1. Introduction: Proxies as an Economic Constraint
+
+
+In modern data acquisition, proxies are no longer just a technical configuration; they are the primary variable in the unit economics of web scraping. Ten years ago, a scraping engineer’s primary challenge was parsing HTML. Today, it is managing the cost-per-successful-request (CPSR).
+The "Proxy Economy" is defined by a distinct trade-off: Access vs. Cost. Datacenter IPs offer speed and low cost but suffer from massive block rates on protected targets. Residential IPs offer near-perfect human emulation but cost 20x to 50x more per gigabyte.
+For senior engineers architecting scraping systems, the goal is not to buy the "best" proxy, but to buy the minimum viable proxy for a specific target. This analysis dissects the technical mechanics o…]]></summary>
+        <author>
+            <name>Lalit Mishra</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Can Bundler be as fast as uv?]]></title>
         <id>https://tenderlovemaking.com/2025/12/29/can-bundler-be-as-fast-as-uv/</id>
         <link href="https://tenderlovemaking.com/2025/12/29/can-bundler-be-as-fast-as-uv/"/>
         <updated>2026-01-01T21:37:10.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Debugging StyleX + Vite: The Mystery of "Invalid Empty Selector"]]></title>
-        <id>https://dev.to/sal_lancaster/debugging-stylex-vite-the-mystery-of-invalid-empty-selector-158k</id>
-        <link href="https://dev.to/sal_lancaster/debugging-stylex-vite-the-mystery-of-invalid-empty-selector-158k"/>
-        <updated>2026-01-01T21:36:06.000Z</updated>
-        <summary type="html"><![CDATA[A methodical journey through debugging a CSS-in-JS race condition when the error message tells you nothing
-TL;DR: If you're getting Invalid empty selector errors from StyleX with Vite, and you're using imported constants as computed property keys like [breakpoints.tablet]: '1rem', that's the problem. Replace them with inline strings like "@media (max-width: 768px)": '1rem'. Read on for why this happens and how we figured it out.
-If you landed here from a search, you might have seen one of these errors:
-Error: Invalid empty selector
-
-Invalid empty selector
-unknown file:528:1
-    at lightningTransform (node_modules/@stylexjs/unplugin/lib/es/index.mjs)
-
-LightningCSS error: Invalid empty selector
-
-@stylexjs/unplugin: Invalid empty selector
-
-vite stylex Invalid empty selector
-
-Or you might see …]]></summary>
-        <author>
-            <name>sal lancaster</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building a Data-Driven Astrology Platform: Inside Love Horoscope Daily]]></title>
-        <id>https://dev.to/romulusjustinianus/building-a-data-driven-astrology-platform-inside-love-horoscope-daily-379c</id>
-        <link href="https://dev.to/romulusjustinianus/building-a-data-driven-astrology-platform-inside-love-horoscope-daily-379c"/>
-        <updated>2026-01-01T21:36:03.000Z</updated>
-        <summary type="html"><![CDATA[Astrology websites are usually perceived as static content platforms: pre-written texts, generic zodiac descriptions, and little technical depth. When we started Love Horoscope Daily, the goal was different. We wanted to build an astrology platform that behaves more like a data product than a blog—one that adapts to user behavior, encourages recurring engagement, and scales without sacrificing personalization.
-This article breaks down the technical and architectural thinking behind Love Horoscope Daily: how daily love horoscopes, compatibility tools, tarot features, and calculators are designed as interconnected systems rather than isolated pages.
-If you’re interested in content-driven products, SEO engineering, behavioral loops, or building “soft personalization” without invasive user dat…]]></summary>
-        <author>
-            <name>romulus</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building a Football Formation Component for React Native ⚽]]></title>
-        <id>https://dev.to/arbab-io/building-a-football-formation-component-for-react-native-4jib</id>
-        <link href="https://dev.to/arbab-io/building-a-football-formation-component-for-react-native-4jib"/>
-        <updated>2026-01-01T21:32:45.000Z</updated>
-        <summary type="html"><![CDATA[As a football enthusiast and React Native developer, I've always been fascinated by the tactical side of the beautiful game. Whether it's analyzing how Guardiola's 4-3-3 differs from Klopp's setup or understanding why a 3-5-2 might counter a 4-2-3-1, formations tell a story.
-But when I needed to display team lineups in a mobile app, I hit a wall. There was no ready-made React Native component that could elegantly render football formations with player statistics, custom styling, and proper TypeScript support.
-So I built one. And today, I'm sharing the journey of creating react-native-football-formation — a package that's now available on npm for the entire React Native community.
-If you've ever tried to build a football app, you know the challenge. A team formation isn't just a static imag…]]></summary>
-        <author>
-            <name>Arbab Rafiq</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Networking in a Hurry: From ARP to Geneve(Q&A Format)]]></title>
-        <id>https://dev.to/ypeavler/networking-in-a-hurry-from-arp-to-geneveqa-format-59l4</id>
-        <link href="https://dev.to/ypeavler/networking-in-a-hurry-from-arp-to-geneveqa-format-59l4"/>
-        <updated>2026-01-01T21:31:26.000Z</updated>
-        <summary type="html"><![CDATA[Understanding modern cloud networking through the lens of envelopes, mailrooms, and postal services
-I have spent quite few days debugging kubernetes networking issues. I realized that I had gaps in my understanding of networking components/terms. So I went on a mission with my AI friend to ask all the questions that I can possibly ask to better my mental model of what goes on beneath the orchestrator and below is the documentation of all that learning.  
-The OSI (Open Systems Interconnection) model divides networking into seven layers. Each layer only communicates with the layers directly above and below it. It's your mental map for understanding how networking works.
-Layer 7: Application — HTTP, DNS, SSH
-Layer 6: Presentation — TLS/SSL, Compression
-Layer 5: Session — Connection management…]]></summary>
-        <author>
-            <name>Yuva</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why Data SLAs Fail — and How to Enforce Them with a Unified Reliability Framework]]></title>
-        <id>https://dev.to/baharath_bathula_76908479/why-data-slas-fail-and-how-to-enforce-them-with-a-unified-reliability-framework-2l5m</id>
-        <link href="https://dev.to/baharath_bathula_76908479/why-data-slas-fail-and-how-to-enforce-them-with-a-unified-reliability-framework-2l5m"/>
-        <updated>2026-01-01T21:27:27.000Z</updated>
-        <summary type="html"><![CDATA[Modern data platforms are powerful, but they are also fragile.
-Silent data failures, late-arriving datasets, and quality regressions continue to break analytics, dashboards, and business decisions.
-Most organizations believe they have “data monitoring,” yet incidents keep happening.
-Why? Because data SLAs are rarely enforced as first-class constraints.
-The Core Problem: Data SLAs Are Implicit, Not Enforced
-Data quality checks exist, but they are ad hoc
-Data arrives late but pipelines show “green”
-Why Existing Tools Fall Short
-Data quality libraries validate schemas or nulls, but don’t enforce timeliness or readiness SLAs
-A Unified Approach to Data Quality + SLA Enforcement
-The core idea is simple but powerful: Treat data SLAs as enforceable, measurable constraints alongside automated data quality validation.
-Key characteristics of the framework:
-Architecture Overview
-Data sources (warehouses, lakes)
-Why This Matters to the Industry
-Decision accuracy
-Detect issues earlier
-Studied
-https://github.com/BaharathBathula/cloud-data-sla-monitor
-Final Thought
-Treating data SLAs as first-class constraints is a critical step toward building data platforms that teams and businesses can trust.
-https://medium.com/@baharath.bathula/why-data-slas-fail-and-how-to-enforce-them-with-a-unified-reliability-framework-66b9d2d89228]]></summary>
-        <author>
-            <name>Baharath Bathula</name>
         </author>
     </entry>
     <entry>
@@ -184,110 +351,10 @@ https://medium.com/@baharath.bathula/why-data-slas-fail-and-how-to-enforce-them-
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why React Is a Game-Changer for Modern Web Development]]></title>
-        <id>https://dev.to/walidchahmi/why-react-is-a-game-changer-for-modern-web-development-36a0</id>
-        <link href="https://dev.to/walidchahmi/why-react-is-a-game-changer-for-modern-web-development-36a0"/>
-        <updated>2026-01-01T21:25:52.000Z</updated>
-        <summary type="html"><![CDATA[🚀 Why React Is a Game-Changer for Modern Web Development
-React has become one of the most powerful and trusted tools for building modern web applications — and for good reason. 💡
-From component-based architecture to scalability, SEO optimization, and reusable code, React helps developers build fast, secure, and user-friendly applications with ease.
-✨ Key benefits of React include:
-Whether you’re a student, developer, or business, learning React is an investment in the future of web development. 🌐
-📌 Consistency, performance, and scalability — React delivers it all.]]></summary>
-        <author>
-            <name>Walid Chahmi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Generative Simulation Benchmarking for circular manufacturing supply chains under real-time policy constraints]]></title>
-        <id>https://dev.to/rikinptl/generative-simulation-benchmarking-for-circular-manufacturing-supply-chains-under-real-time-policy-eh6</id>
-        <link href="https://dev.to/rikinptl/generative-simulation-benchmarking-for-circular-manufacturing-supply-chains-under-real-time-policy-eh6"/>
-        <updated>2026-01-01T21:24:42.000Z</updated>
-        <summary type="html"><![CDATA[Generative Simulation Benchmarking for circular manufacturing supply chains under real-time policy constraints
-
-
-
-  
-  
-  A Personal Journey into Complex Systems Simulation
-
-
-My fascination with this problem began not in a clean research lab, but in the chaotic reality of a mid-sized electronics remanufacturing facility. While consulting on an AI optimization project, I spent weeks observing how policy changes—new environmental regulations, shifting material tariffs, sudden supplier disruptions—rippled through their circular supply chain with unpredictable consequences. The plant manager showed me spreadsheets with hundreds of interdependent variables, each manually adjusted whenever a policy shifted. "We're flying blind," he told me. "Every regulation change costs us weeks of recalibratio…]]></summary>
-        <author>
-            <name>Rikin Patel</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Straussian Memes: A Lens on Techniques for Mass Persuasion]]></title>
+        <title type="html"><![CDATA[Straussian Memes]]></title>
         <id>https://www.lesswrong.com/posts/CAwnnKoFdcQucq4hG/straussian-memes-a-lens-on-techniques-for-mass-persuasion</id>
         <link href="https://www.lesswrong.com/posts/CAwnnKoFdcQucq4hG/straussian-memes-a-lens-on-techniques-for-mass-persuasion"/>
         <updated>2026-01-01T21:24:39.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stealth Architecture: How to Design an Invisible Real-Time AI Interview Copilot for Chrome]]></title>
-        <id>https://dev.to/aijob/stealth-architecture-how-to-design-an-invisible-real-time-ai-interview-copilot-for-chrome-5gjp</id>
-        <link href="https://dev.to/aijob/stealth-architecture-how-to-design-an-invisible-real-time-ai-interview-copilot-for-chrome-5gjp"/>
-        <updated>2026-01-01T21:19:18.000Z</updated>
-        <summary type="html"><![CDATA[Real-time communication AI is a difficult technical problem to solve. It is not simply speech recognition, not just prompt generation, and not just user interface convenience. It is a system design challenge that sits at the intersection of latency constraints, privacy by design, contextual understanding, cross-platform compatibility, and human performance psychology.
-Building an AI interview copilot for real interviews requires fundamentally different engineering priorities than building a preparation tool. A preparation tool operates in controlled environments. A performance system must survive unpredictable ones. It must be reliable in Zoom, Google Meet, Teams, live coding platforms, panel interviews, and everything in between. It must remain fast enough to be useful, quiet enough to be…]]></summary>
-        <author>
-            <name>Mahdi Eghbali</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[LeetCode DSA Series #1]]></title>
-        <id>https://dev.to/daveson217/leetcode-dsa-series-1-53l</id>
-        <link href="https://dev.to/daveson217/leetcode-dsa-series-1-53l"/>
-        <updated>2026-01-01T21:18:56.000Z</updated>
-        <summary type="html"><![CDATA[It is a new year. Happy New Year!
-On December 31, 2025, I saw a post on X (formerly Twitter) from someone who had solved LeetCode problems every day in 2025. 
-
-
-
-  // Detect dark theme
-  var iframe = document.getElementById('tweet-2006322352368279585-377');
-  if (document.body.className.includes('dark-theme')) {
-    iframe.src = "https://platform.twitter.com/embed/Tweet.html?id=2006322352368279585&theme=dark"
-  }
-
-
-
-
-
-This has inspired me to begin my own challenge in 2026. I honestly do not know if I have the drive to see it through. I will see how it goes.
-My submission for Day 1 is 191. Number of 1 Bits
-This is my solution
-class Solution:
-    def hammingWeight(self, n: int) -> int:
-        n_binary  = ""
-        while n > 0:
-            remainder = n % 2
-            n = n // 2
-            n_binary += str(remainder)
-        n_binary = n_binary[::-1]
-
-        count = 0
-        for char in n_binary:
-            if char == '1':
-                count += 1
-
-        return count        
-
-Both time and space complexity are O(Log N).
-Is there a better way to do this? Please let me know.]]></summary>
-        <author>
-            <name>David Babalola</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Cycling Game (Mini Neural Net Demo)]]></title>
-        <id>https://www.doc.ic.ac.uk/~ajd/Cycling/</id>
-        <link href="https://www.doc.ic.ac.uk/~ajd/Cycling/"/>
-        <updated>2026-01-01T21:10:31.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -304,16 +371,6 @@ Is there a better way to do this? Please let me know.]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Tasker – An open-source desktop agent for browser and OS automation]]></title>
-        <id>https://automatewithtasker.com/</id>
-        <link href="https://automatewithtasker.com/"/>
-        <updated>2026-01-01T20:53:23.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[A website to destroy all websites]]></title>
         <id>https://henry.codes/writing/a-website-to-destroy-all-websites/</id>
         <link href="https://henry.codes/writing/a-website-to-destroy-all-websites/"/>
@@ -324,7 +381,7 @@ Is there a better way to do this? Please let me know.]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Linux is good now; to feel like you actually own your PC, put Linux on it]]></title>
+        <title type="html"><![CDATA[Linux is good now]]></title>
         <id>https://www.pcgamer.com/software/linux/im-brave-enough-to-say-it-linux-is-good-now-and-if-you-want-to-feel-like-you-actually-own-your-pc-make-2026-the-year-of-linux-on-your-desktop/</id>
         <link href="https://www.pcgamer.com/software/linux/im-brave-enough-to-say-it-linux-is-good-now-and-if-you-want-to-feel-like-you-actually-own-your-pc-make-2026-the-year-of-linux-on-your-desktop/"/>
         <updated>2026-01-01T20:35:11.000Z</updated>
@@ -354,16 +411,6 @@ Is there a better way to do this? Please let me know.]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Finland detains ship and its crew after critical undersea cable damaged]]></title>
-        <id>https://www.cnn.com/2025/12/31/europe/finland-estonia-undersea-cable-ship-detained-intl</id>
-        <link href="https://www.cnn.com/2025/12/31/europe/finland-estonia-undersea-cable-ship-detained-intl"/>
-        <updated>2026-01-01T18:46:07.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Building an internal agent: Code-driven vs. LLM-driven workflows]]></title>
         <id>https://lethain.com/agents-coordinators/</id>
         <link href="https://lethain.com/agents-coordinators/"/>
@@ -378,16 +425,6 @@ Is there a better way to do this? Please let me know.]]></summary>
         <id>https://ocw.mit.edu/courses/18-098-street-fighting-mathematics-january-iap-2008/pages/readings/</id>
         <link href="https://ocw.mit.edu/courses/18-098-street-fighting-mathematics-january-iap-2008/pages/readings/"/>
         <updated>2026-01-01T18:20:38.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Gemini 3.0 Deciphered the Mystery of a Nuremberg Chronicle Leaf's]]></title>
-        <id>https://blog.gdeltproject.org/gemini-as-indiana-jones-how-gemini-3-0-deciphered-the-mystery-of-a-nuremberg-chronicle-leafs-500-year-old-roundels/</id>
-        <link href="https://blog.gdeltproject.org/gemini-as-indiana-jones-how-gemini-3-0-deciphered-the-mystery-of-a-nuremberg-chronicle-leafs-500-year-old-roundels/"/>
-        <updated>2026-01-01T18:08:48.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -421,6 +458,16 @@ Is there a better way to do this? Please let me know.]]></summary>
         <summary type="html"><![CDATA[After major technical gains in 2025, Buterin says the network must double down on usability and decentralization to meet its original goals.]]></summary>
         <author>
             <name>Siamak Masnavi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sony PS5 ROM keys leaked – jailbreaking could be made easier with BootROM codes]]></title>
+        <id>https://www.tomshardware.com/video-games/playstation/playstation-5-rom-keys-leaked-jailbreaking-could-be-made-easier-with-bootrom-codes</id>
+        <link href="https://www.tomshardware.com/video-games/playstation/playstation-5-rom-keys-leaked-jailbreaking-could-be-made-easier-with-bootrom-codes"/>
+        <updated>2026-01-01T15:57:39.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -538,6 +585,26 @@ Is there a better way to do this? Please let me know.]]></summary>
         <id>https://takes.jamesomalley.co.uk/p/this-might-be-oversharing</id>
         <link href="https://takes.jamesomalley.co.uk/p/this-might-be-oversharing"/>
         <updated>2026-01-01T11:01:38.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Worlds largest electric ship launched by Tasmanian boatbuilder]]></title>
+        <id>https://www.theguardian.com/australia-news/2025/may/02/hull-096-worlds-largest-electric-ship-battery-power-launched</id>
+        <link href="https://www.theguardian.com/australia-news/2025/may/02/hull-096-worlds-largest-electric-ship-battery-power-launched"/>
+        <updated>2026-01-01T10:29:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Wario Synth – Turn any song into Game Boy version]]></title>
+        <id>https://www.wario.style/</id>
+        <link href="https://www.wario.style/"/>
+        <updated>2026-01-01T10:25:53.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -980,6 +1047,16 @@ The post The RAM Price Situation May Delay The Next Console Generation appeared 
         <summary type="html"><![CDATA[It’s getting harder to beat the heat. During the summer of 2025, heat waves knocked out power grids in North America, Europe, and the Middle East. Global warming means more people need air-­conditioning, which requires more power and strains grids. But a millennia-old idea (plus 21st-century tech) might offer an answer: radiative cooling. Paints, coatings,…]]></summary>
         <author>
             <name>Becky Ferreira</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Moving Images Related to the Apollo Missions, 1967–1969]]></title>
+        <id>https://catalog.archives.gov/id/133360601</id>
+        <link href="https://catalog.archives.gov/id/133360601"/>
+        <updated>2025-12-26T03:20:11.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
