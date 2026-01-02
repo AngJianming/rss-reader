@@ -29,124 +29,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/tomivan/coding-challenge-practice-question-91-56pl",
-          "author": "Bukunmi Odugbesan",
-          "description": "The task is to implement the async function helper parallel()\nThe boilerplate code\nfunction parallel(funcs){\n  // your code here\n}\n\nThe parallel function is supposed to accept an array of async functions,  run all the functions at the same time, with each function having the form func(callback).\nIf there are no functions\nif (funcs.length === 0) {\n  callback(undefined, []);\n  return;\n}\n\nStore the outputs by index, count the finished tasks and ensure the callback fires only once\nconst results = [];\nlet completed = 0;\nlet hasError = false;\n\nTo run all the functions in parallel\nfuncs.forEach((func, index) => {\n  func((error, result) => {\n\nTo prevent multiple callbacks\nif (hasError) return;\n\nTo handle errors\nif (error) {\n  hasError = true;\n  callback(error, undefined);\n  return;\n}\n\nTo preserve the order even if tasks finish out of order\nresults[index] = result;\n\nThe callback should be called when all the tasks are completed\ncompleted++;\n\nif (completed === funcs.length) {\n  callback(undefined, results);\n}\n\nThe final code\nfunction parallel(funcs){\n  // your code here\n  return function (callback) {\n    if(funcs.length === 0) {\n      callback(undefined, []);\n      return;\n    }\n\n    const results = [];\n    let completed = 0;\n    let hasError = false;\n\n    funcs.forEach((func, index) => {\n      func((error, result) => {\n        if(hasError) return;\n\n        if(error) {\n          hasError = true;\n          callback(error, undefined);\n          return;\n        }\n        results[index] = result;\n        completed++;\n\n        if (completed === funcs.length) {\n          callback(undefined, results)\n        }\n      })\n    })\n  }\n}\n\nThat's all folks!",
-          "link": "https://dev.to/tomivan/coding-challenge-practice-question-91-56pl",
-          "publishedOn": "2026-01-01T23:04:11.000Z",
-          "wordCount": 1945,
-          "title": "Coding Challenge Practice - Question 91",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fe54474expv8u3yjtzubu.png"
+          "id": "https://dev.to/kskiii/designing-around-external-api-assumptions-a-lesson-from-a-free-exchange-rate-api-38jn",
+          "author": "Asuka Suehiro",
+          "description": "I developed and deployed an application called YenUp, which compares today's exchange rate with yesterday's and sends a notification based on the result. To keep the project simple and free, I used the Frankfurter API as the data source.\nI was happy to have completed it. However, I soon noticed something wrong with the notification I received. \nIt was supposed to notify me when today's rate is better than yesterday's. To debug the delivery pipeline end-to-end, I added a notification=true flag that forces a Slack message even when the rate doesn’t change.\nTest Notification (forced). CAD/JPY: Yesterday 114.4300 -> Today 114.4300\n\n\nAt first, I suspected a bug in my own implementation. I reviewed the logic and double-checked the comparison code. Eventually, I realized that the issue was not in my code, but in my assumption about the API.\nThis behavior was further amplified by my own fallback logic.\nlatest endpoint.\nThis experience made me realize that the real problem was not the API behavior itself, but my assumption about it.\nBased on this, I'm considering changing the comparison logic to use business days instead of calendar days.\nThis small bug led me to question my assumptions, which changed how I think about external APIs and business rules. I hope to continue learning through future projects.",
+          "link": "https://dev.to/kskiii/designing-around-external-api-assumptions-a-lesson-from-a-free-exchange-rate-api-38jn",
+          "publishedOn": "2026-01-02T01:01:23.000Z",
+          "wordCount": 2026,
+          "title": "Designing Around External API Assumptions: A Lesson from a Free Exchange Rate API",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F95bnawkjubi3yylzrlfx.png"
         },
         {
-          "id": "https://dev.to/safi-ullah/end-to-end-deployment-of-a-two-tier-application-using-docker-kubernetes-helm-and-aws-3gma",
-          "author": "SAFI-ULLAH SAFEER",
-          "description": "In modern cloud-native environments, deploying applications manually is no longer scalable or reliable. DevOps practices and container orchestration tools help us automate, standardize, and scale applications efficiently.\nIn this article, I’ll walk you through an end-to-end deployment of a Two-Tier Application using:\nGitHub, Docker & DockerHub, Kubernetes, Helm &  AWS.\nThis architecture represents a real-world DevOps workflow, commonly used in production systems.\nBefore diving deep into the project implementation or practical demonstration, it’s important to first understand the term \"two-tier-application\"\nA Two-Tier Application Consists of:\nApplication Tier (Backend):\nFlask-based backend service\nHandles business logic\nProcesses API requests\nCommunicates with the database\nThis layer is res…",
-          "link": "https://dev.to/safi-ullah/end-to-end-deployment-of-a-two-tier-application-using-docker-kubernetes-helm-and-aws-3gma",
-          "publishedOn": "2026-01-01T22:58:25.000Z",
-          "wordCount": 2925,
-          "title": "End-to-End Deployment of a Two-Tier Application Using Docker, Kubernetes, Helm, and AWS",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fp15aiessl8zdocimk50s.png"
+          "id": "https://dev.to/jdrch/how-to-set-up-stash-as-a-windows-service-ifd",
+          "author": "jdrch",
+          "description": "Note\n\n\nThere are quite a few packages out there called Stash. This guide is for this Stash.\nStash is provided as a standalone executable. Here's how to turn it into a Windows service that launches automatically when you login to Windows (and possibly before?)\nDownload Stash\n\n\nDownload the latest stash-win.exe to C:\\Program Files\\stash. You can use other locations, but that one gives the executable max protection from non-admin actions.\nAs Windows generally doesn't give browsers access to Program Files, you'll likely have to download Stash to an intermediate folder and then use a file manager to move it to its final destination.\nInstall Servy\n\n\nI suggest using the non-net installer.\nLaunch Servy.\nGo to the Main tab. Technically, the only things you need to fill out here are Service Name * a…",
+          "link": "https://dev.to/jdrch/how-to-set-up-stash-as-a-windows-service-ifd",
+          "publishedOn": "2026-01-02T00:55:19.000Z",
+          "wordCount": 2216,
+          "title": "How to set up Stash as a Windows service",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjtlqpss91vdvyzhefjfl.png"
         },
         {
-          "id": "https://dev.to/ftwoli/event-driven-architecture-why-your-app-should-stop-talking-to-itself-and-start-listening-4mp1",
-          "author": "Felix Twoli",
-          "description": "Reading time: 8 minutes\nYou know what's wild? Most applications today are basically playing telephone. Service A calls Service B, which calls Service C, which calls Service D... and suddenly your innocent \"add to cart\" button takes 3 seconds to respond because seventeen different services need to have a meeting about it.\nThere's a better way. It's called Event-Driven Architecture, and once you understand it, you'll see why companies like Netflix, Uber, and Amazon have bet their entire infrastructure on it.\nLet me paint you a picture. You're building an e-commerce app. When someone places an order, you need to:\nSave the order to the database\nSend a confirmation email\nUpdate inventory\nNotify the warehouse\nCreate a shipping label\nUpdate analytics\nCharge the payment method\nSend a notification …",
-          "link": "https://dev.to/ftwoli/event-driven-architecture-why-your-app-should-stop-talking-to-itself-and-start-listening-4mp1",
-          "publishedOn": "2026-01-01T22:54:49.000Z",
-          "wordCount": 3709,
-          "title": "Event-Driven Architecture: Why Your App Should Stop Talking to Itself (And Start Listening)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fh4r8h7nt6lveitqqtdr1.png"
+          "id": "https://dev.to/exploredataaiml/supplychainai-building-an-intelligent-vendor-recommendation-engine-poc-1888",
+          "author": "Aniket Hingane",
+          "description": "I built a Python-based intelligent recommendation engine to solve a real-world B2B problem: finding the right vendor for niche procurement needs. Using TF-IDF and Cosine Similarity, I created a system that matches natural language queries (like \"sustainable packaging for electronics\") to a database of vendors. This article documents my experiment, the architecture I designed, and the code I wrote.\nIn my experience working with various business processes, I've observed that B2B procurement is often stuck in the dark ages. Procurement officers send out generic RFPs (Requests for Proposals) or manually search through spreadsheets to find suppliers. I thought, \"Why can't this be as easy as a Google search?\"\nI decided to run an experiment. Could I build a lightweight, intelligent recommendation…",
+          "link": "https://dev.to/exploredataaiml/supplychainai-building-an-intelligent-vendor-recommendation-engine-poc-1888",
+          "publishedOn": "2026-01-02T00:54:57.000Z",
+          "wordCount": 2789,
+          "title": "SupplyChainAI: Building an Intelligent Vendor Recommendation Engine (PoC)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftmaau31qhz61bfmsflei.png"
         },
         {
-          "id": "https://dev.to/antonio_socorro_95e3ff086/why-ai-governance-cannot-be-treated-as-compliance-1dep",
-          "author": "Antonio Jose Socorro Marin",
-          "description": "Over the past few years, AI systems have moved from experimental tools to decision-influencing components embedded in real operational environments. Yet, in many organizations, AI governance is still approached as if it were a compliance checklist rather than a structural governance challenge.\nThis creates a growing gap.\nMost existing governance and cybersecurity frameworks are excellent at defining controls, baselines, and audit requirements. However, AI-enabled systems introduce dynamics that are not easily captured by static compliance models: adaptive behavior, probabilistic outputs, opaque decision paths, and human-machine interaction loops.\nThe problem is not that compliance frameworks are wrong.\nAI systems increasingly participate in decisions that affect security posture, operation…",
-          "link": "https://dev.to/antonio_socorro_95e3ff086/why-ai-governance-cannot-be-treated-as-compliance-1dep",
-          "publishedOn": "2026-01-01T22:53:40.000Z",
-          "wordCount": 1998,
-          "title": "Why AI Governance Cannot Be Treated as Compliance",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fj5jlc3s9dhgrxt17jwx0.png"
+          "id": "https://dev.to/abhinavshinoy90/gc-isnt-slow-your-frontend-is-just-hoarding-memory-27al",
+          "author": "Abhinav Shinoy",
+          "description": "Garbage Collection (GC) is one of those topics frontend engineers know exists but rarely think about—until something stutters, freezes, or mysteriously slows down.\nWhen performance issues arise, GC often becomes the default suspect:\n“The garbage collector is probably running.”\nSometimes that’s true. Often, it’s not.\nIn this post, we’ll break down common garbage collection myths in frontend applications, what browsers actually do, and where your performance problems are more likely coming from.\nGC is not random.\nModern JavaScript engines (V8, SpiderMonkey, JavaScriptCore) run deterministic, heuristic-driven collectors. They decide when to collect based on:\nAllocation rate\nHeap size\nMemory pressure\nPast GC behavior\nGC runs because you allocated memory, not because the browser woke up in a ba…",
+          "link": "https://dev.to/abhinavshinoy90/gc-isnt-slow-your-frontend-is-just-hoarding-memory-27al",
+          "publishedOn": "2026-01-02T00:52:28.000Z",
+          "wordCount": 2370,
+          "title": "GC Isn’t Slow — Your frontend Is Just Hoarding Memory",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvysochzn3d0mf1b99h0h.png"
         },
         {
-          "id": "https://dev.to/sal_lancaster/stylex-eslint-when-best-practices-fight-each-other-4o17",
-          "author": "sal lancaster",
-          "description": "or... \"How the @stylexjs/sort-keys rule silently breaks responsive styles\"\nAfter solving the StyleX + Vite \"Invalid empty selector\" mystery, I thought I had StyleX figured out. I was following every documented best practice:\nVite config - using enableMediaQueryOrder: true as recommended in v0.15.0:\n// vite.config.js\nstyleXUnplugin.vite({\n  enableMediaQueryOrder: true,\n})\n\nESLint config - using the recommended StyleX plugin rules:\n// eslint.config.mjs\nrules: {\n  \"@stylexjs/valid-styles\": \"error\",\n  \"@stylexjs/sort-keys\": \"warn\",  // Keep styles organized!\n}\n\nResponsive styles - using inline strings (learned that lesson) with correct cascade order:\nconst styles = stylex.create({\n  container: {\n    padding: {\n      default: \"2rem\",\n      \"@media (max-width: 768px)\": \"1.5rem\",  // tablet\n     …",
-          "link": "https://dev.to/sal_lancaster/stylex-eslint-when-best-practices-fight-each-other-4o17",
-          "publishedOn": "2026-01-01T22:51:42.000Z",
-          "wordCount": 2309,
-          "title": "StyleX + ESLint: When Best Practices Fight Each Other",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Furnfjenao9i4ly5edsvk.png"
+          "id": "https://dev.to/aws-builders/5-best-practices-for-securing-amazon-bedrock-agents-from-prompt-injections-30eg",
+          "author": "Pablo Salas",
+          "description": "Prompt Injection Attacks Are the Biggest Security Risk Facing Amazon Bedrock Agents\nAmazon Bedrock is making Generative and Agentic AI easier to adopt than ever. But as organizations deploy autonomous Bedrock Agents across business workflows, prompt injection attacks have emerged as a critical new threat—one that targets how agents think, reason, and act, not traditional code vulnerabilities.\nUnlike classic cyberattacks, prompt injections manipulate agent behavior through cleverly crafted inputs, often hidden inside emails, documents, or retrieved knowledge. The result? Unauthorized actions, data leakage, and broken trust in AI automation.\nTo safely scale Bedrock Agents, security must be agent-aware and multi-layered. Here are 5 essential best practices every organization should implement …",
+          "link": "https://dev.to/aws-builders/5-best-practices-for-securing-amazon-bedrock-agents-from-prompt-injections-30eg",
+          "publishedOn": "2026-01-02T00:33:57.000Z",
+          "wordCount": 2077,
+          "title": "5 Best Practices for Securing Amazon Bedrock Agents from Prompt Injections.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqhxsa0q6vsve4bdw0bby.jpg"
         },
         {
-          "id": "https://dev.to/sabin_sim/starting-my-journey-into-c-net-2ob7",
-          "author": "Sabin Sim",
-          "description": "💻 Starting My Journey into C# and .NET\n\n\nI haven’t mastered Python yet — but I’ve decided to begin studying C# and .NET as my next step.\nWhile attending university, I explored several programming languages in a rather surface-level way. Among them, Python stood out to me as the most intuitive and expressive. It was the first language that made me feel, “Maybe I can actually become a developer.”\nOne of the reasons I started with Python was its immediacy — I could see results instantly on the web as I modified or added lines of code. It was fun, visual, and rewarding.\nThere are several reasons behind this decision.\nmy natural way of thinking is to understand structures first — then explore the details inside them.\nC# immediately appealed to me because it’s a structure-oriented, strongly typed language that matches how I process and reason about systems.\nI’ve also earned my Microsoft Azure AZ-900 certification, and I plan to pursue AZ-104 and AZ-400 next.\nC# and the Azure cloud environment work together — and that combination feels both practical and exciting to me.\nAnother motivation is the Swiss job market.\nC# is also a common and in-demand language.\nand that has professional value feels like the right path — both personally and strategically.\nUnlike my Python journey, I won’t focus much on basic syntax this time.\ndirectly through small projects instead.\nNo strict roadmap, no endless theory.\nI believe that by building consistently, even small projects will naturally lead to something meaningful.\nFor this new C# series, I’ll still use AI tools for light editing and formatting,\ncomment, explanation, and reflection will be written by me — even if my comparisons or analogies sound a bit unusual sometimes.\nMy goal isn’t just to write clean code — I want to think deeply, understand systems, and eventually become a true professional in this field.\nTo those who are studying and building their own paths — I’m rooting for you.\nWishing everyone an amazing year ahead.\nHappy New Year 2026 — and let’s keep growing together. ✨",
-          "link": "https://dev.to/sabin_sim/starting-my-journey-into-c-net-2ob7",
-          "publishedOn": "2026-01-01T22:51:01.000Z",
-          "wordCount": 2228,
-          "title": "Starting My Journey into C# .NET",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F09kwbad4kl1fxq9yax0k.png"
+          "id": "https://dev.to/a7mdfre7at/type-safe-collections-in-c-how-nonemptylist-eliminates-runtime-exceptions-3k4h",
+          "author": "Ahmad Al-Freihat",
+          "description": "The Problem with Empty Collections\n\n\nEvery C# developer has encountered this scenario: a method returns a collection that should contain data, but at runtime, it's empty. The result? InvalidOperationException, null reference errors, or subtle bugs that only surface in production.\npublic async Task<decimal> CalculateAverageOrderValueAsync(int customerId)\n{\n    var orders = await _repository.GetOrdersAsync(customerId);\n    return orders.Average(o => o.Total); // Throws if orders is empty\n}\n\nThe traditional solution involves defensive programming:\nif (orders.Any())\n{\n    return orders.Average(o => o.Total);\n}\nreturn 0m; // What does zero mean here? No orders? An error?\n\nThis approach has significant drawbacks:\nSilent failures: Returning default values masks underlying issues\nCode duplication:…",
+          "link": "https://dev.to/a7mdfre7at/type-safe-collections-in-c-how-nonemptylist-eliminates-runtime-exceptions-3k4h",
+          "publishedOn": "2026-01-02T00:16:27.000Z",
+          "wordCount": 2807,
+          "title": "Type-Safe Collections in C#: How NonEmptyList Eliminates Runtime Exceptions",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6c3gp4gbhmjepc4knq7z.png"
         },
         {
-          "id": "https://dev.to/esreekarreddy/dns-explained-like-youre-5-4ki",
-          "author": "Sreekar Reddy",
-          "description": "The phone book of the internet\nDay 7 of 149\n👉 Full deep-dive with code examples\nRemember phone books? (Ask your parents! 📚)\nYou wanted to call Pizza Hut, but you didn't memorize their number.\nYou looked up: \"Pizza Hut\" → Found: 555-1234\nThen you called 555-1234.\nDNS does the same thing for websites!\nComputers don't understand \"google.com\".\nThey understand IP addresses (numbers), like <ip-address> for example.com.\nThat's like a phone number for a computer.\nYou type: example.com\nYour Browser: \"Hey DNS, what's the number for example.com?\"\n     ↓\nDNS: \"Let me check... It's `<ip-address>`\"\n     ↓\nYour Browser: \"Thanks!\" → Calls `<ip-address>`\n     ↓\nGoogle's Server: \"Hello! Here's your search page!\"\n\nImagine memorizing numbers for every website:\n(an IP address) (Google)\n(an IP address) (Facebook)\n(an IP address) (Netflix)\nNot practical!\nDNS lets us use easy names instead.\nDNS translates friendly website names into the number addresses that computers actually use.\n🔗 Enjoying these? Follow for daily ELI5 explanations!\nMaking complex tech concepts simple, one day at a time.",
-          "link": "https://dev.to/esreekarreddy/dns-explained-like-youre-5-4ki",
-          "publishedOn": "2026-01-01T22:50:18.000Z",
-          "wordCount": 1885,
-          "title": "📞 DNS Explained Like You're 5",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F5okg3udx59x3nc3hecv7.png"
+          "id": "https://dev.to/fadydesokysaeedabdelaziz/green-software-engineering-measuring-energy-not-just-performance-3i00",
+          "author": "Fady Desoky Saeed Abdelaziz",
+          "description": "We measure speed, but what about the energy?\nMost software engineers measure success using performance metrics. We optimize for speed, latency, and throughput, assuming that faster software automatically means better software. However, in 2026, an equally important question is often overlooked: how much energy does our software actually consume?\nFaster software does not always mean more energy-efficient software. High CPU utilization, excessive memory usage, and inefficient execution patterns can significantly increase energy consumption, even in systems that appear highly optimized from a performance perspective. Optimizing solely for performance ignores a critical sustainability dimension that modern software systems can no longer afford to overlook.\nGreen Software Engineering focuses on…",
+          "link": "https://dev.to/fadydesokysaeedabdelaziz/green-software-engineering-measuring-energy-not-just-performance-3i00",
+          "publishedOn": "2026-01-02T00:06:06.000Z",
+          "wordCount": 2008,
+          "title": "Green Software Engineering: Measuring Energy, Not Just Performance",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3xvo0th3dboby054r1v0.jpg"
         },
         {
-          "id": "https://dev.to/frnk_kstl_023971127c81dcf/happy-birthday-tiffany-560",
-          "author": "Frnk Kstl",
-          "description": "Check out this Pen I made!",
-          "link": "https://dev.to/frnk_kstl_023971127c81dcf/happy-birthday-tiffany-560",
-          "publishedOn": "2026-01-01T22:35:59.000Z",
-          "wordCount": 1634,
-          "title": "Happy birthday Tiffany!",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3uldfkshtp4ayrxfr7vg.png"
+          "id": "https://dev.to/justgeek/the-era-of-mechanical-horses-3dlm",
+          "author": "Mohammed Taher",
+          "description": "We’re Still Teaching AI to Build Faster Horses\n\n\nScroll through any developer feed today and you’ll see the same debates repeating themselves:\nAll of these discussions share a hidden assumption—that the way we build software today will stay fundamentally the same, just with AI assisting along the way.\nI think that assumption is wrong.\nI started my software journey as an embedded systems engineer, writing code for microcontrollers. Before Embedded C—already considered a high-level language—I worked with assembly. In both cases, the end result was identical: hex code written into EEPROM, executing predefined logic on hardware.\nLater, as a side hobby, I worked with ActionScript (RIP Flash), which eventually helped me move into the JavaScript ecosystem and shift my career toward web developmen…",
+          "link": "https://dev.to/justgeek/the-era-of-mechanical-horses-3dlm",
+          "publishedOn": "2026-01-02T00:05:12.000Z",
+          "wordCount": 2180,
+          "title": "The Era of Mechanical Horses",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6cmfshst4x30sm2kyqeh.png"
         },
         {
-          "id": "https://dev.to/flatratemechanic1glitch/gemini-prompts-thumbnails-best-ideas-guide-1m4m",
-          "author": "Curtis",
-          "description": "This is a summary of an article originally published on Banana Thumbnail Blog. Read the full guide for complete details and step-by-step instructions.\n\nIn the world of AI and digital creativity, understanding gemini can transform your workflow.\nGemini\nPrompts\nThumbnails\nIdeas\nGuide\n\n\n\n\n\n  \n  \n  Article Summary\n\n\nAll right, let’s get into this. You know, there’s this huge misconception floating around about Gemini prompts thumbnails—people still think AI image generators are terrible at spelling. Think about that. This is where thumbnail work its magic. People think you ask for a YouTube thumbnail with text, and you get back a garbled mess of alien hieroglyphics. Maybe that was true back in 2023, but honestly, if you’re still thinking that way, you’re missing out on some serious time-saving…",
-          "link": "https://dev.to/flatratemechanic1glitch/gemini-prompts-thumbnails-best-ideas-guide-1m4m",
-          "publishedOn": "2026-01-01T22:31:49.000Z",
-          "wordCount": 2284,
-          "title": "Gemini Prompts Thumbnails: Best Ideas Guide",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fblog.bananathumbnail.com%2Fwp-content%2Fuploads%2F2026%2F01%2Fgemini_3_pro_image_Gemini_Prompts_Thumbnails__Bes-1024x571.jpg"
+          "id": "https://dev.to/jjdelcerro/refrag-y-la-dependencia-critica-a-los-pesos-del-modelo-370h",
+          "author": "Joaquin Jose del Cerro Murciano",
+          "description": "Hola,\nLlevamos todo el 2025 obsesionados con el tamaño de la ventana de contexto. 128k, 1 millón, 2 millones de tokens... Los proveedores nos vendían la idea de que podíamos volcar bibliotecas enteras en el prompt. Pero la realidad en producción nos dio un portazo en la cara: la latencia. Debido a la naturaleza cuadrática del mecanismo de atención, procesar esos contextos gigantescos hacía que el Time-To-First-Token (el tiempo que tardas en ver la primera palabra de la respuesta) se disparara a cifras inasumibles.\nFue entonces cuando apareció REFRAG, una técnica capaz de acelerar hasta 30 veces la respuesta sin perder calidad. Sobre el papel, es el sueño de cualquier ingeniero. Pero cuando levantas el capó y miras el mecanismo, te das cuenta de que la eficiencia tiene un precio oculto: nue…",
+          "link": "https://dev.to/jjdelcerro/refrag-y-la-dependencia-critica-a-los-pesos-del-modelo-370h",
+          "publishedOn": "2026-01-02T00:00:00.000Z",
+          "wordCount": 2733,
+          "title": "REFRAG y la dependencia crítica a los pesos del modelo",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzpnxqljqgqj9os5kye5l.png"
         },
         {
-          "id": "https://dev.to/harshbansal47/understanding-smart-contract-in-etherium-and-solidity-1o01",
-          "author": "Harsh Bansal",
-          "description": "Solidity is a programming language designed for writing smart contracts on the Ethereum blockchain. Smart contracts are self-executing programs that contain a predefined set of rules, conditions, and functions. Once deployed to the blockchain, they run automatically when specific conditions are met—without the need for intermediaries.\nSmart contracts run on the Ethereum Virtual Machine (EVM), a decentralized runtime environment that ensures the same code executes identically on every Ethereum node. These contracts handle transactions, store data, and interact with other contracts based on their programmed logic.\nHow Are Smart Contracts Triggered?\nSmart contracts do not run automatically on their own. They execute only when triggered by a transaction.\nA smart contract is triggered when:\nA u…",
-          "link": "https://dev.to/harshbansal47/understanding-smart-contract-in-etherium-and-solidity-1o01",
-          "publishedOn": "2026-01-01T22:31:43.000Z",
-          "wordCount": 2233,
-          "title": "Understanding Smart Contract working in etherium",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvpo6g1942v4a9zj0b0yf.png"
+          "id": "https://dev.to/makanaki/building-least-privilege-architectures-with-kiro-assistance-elg",
+          "author": "Angel",
+          "description": "I was wondering if it could be able to create a simple example about a stack that applies the least privilege architecture principle using AWS, and as I was thinking about a simple and practical example, what could be better than using Kiro?\nBut wait a moment, what is Kiro? Good question! Kiro is an AI-powered assistant developed by AWS that is designed to help you reason about your cloud architectures while you build them. Instead of just writing code and hoping for the best, Kiro works alongside you, helping you understand what you’re doing, why you’re doing it, and whether it actually makes sense from a best-practices perspective. You can ask Kiro questions about IAM policies, CloudFormation templates, security decisions, or even architectural trade-offs, and it will guide you with expl…",
+          "link": "https://dev.to/makanaki/building-least-privilege-architectures-with-kiro-assistance-elg",
+          "publishedOn": "2026-01-01T23:59:59.000Z",
+          "wordCount": 2854,
+          "title": "Building Least-Privilege Architectures with Kiro Assistance",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbe2z97y98akj5oqol4m0.png"
         },
         {
-          "id": "https://dev.to/member_8659c28a/latencyoptimizationpracticalguide20260101223109-2i6i",
-          "author": "member_8659c28a",
-          "description": "As an engineer focused on system performance optimization, I have been dedicated to reducing web application latency for the past decade. Recently, I participated in a project with extremely strict latency requirements - a financial trading system. This system requires that 99.9% of request latency must be below 10ms, which made me re-examine the potential of web frameworks in latency optimization. Today I want to share practical latency optimization experience based on real project experience.\nApplications like financial trading systems, real-time games, and online conferences have extremely strict latency requirements. I have summarized several key characteristics of such applications:\nIn our financial trading system, we established the following SLA metrics:\nP99 latency < 10ms\nP95 laten…",
-          "link": "https://dev.to/member_8659c28a/latencyoptimizationpracticalguide20260101223109-2i6i",
-          "publishedOn": "2026-01-01T22:31:10.000Z",
-          "wordCount": 3220,
-          "title": "⚡_Latency_Optimization_Practical_Guide[20260101223109]",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcl3dfqa9i62hrw0cc1l5.png"
+          "id": "https://dev.to/palash90/part-9-generating-simba-network-with-rust-31bh",
+          "author": "Palash Kanti Kundu",
+          "description": "Generating Simba Network with Rust\n\n\nAfter successfully approximating the lottery math function (check previous post for context), I decided to challenge the network more. There are so many functions to choose from. Mathematics has evolved a lot from the inception and honestly, I know very little about them. Proving them would be another chore for me. I needed something interesting, something exciting. It struck me, image is nothing but a 2D plot of an arbitrary and arguably very complex function. \nWhat if I could ask the network to approximate it?\nI found a Lion Cub drawing in Black and White and used the following encoder/decoder script to encode/decode pixels into numbers and vice versa: Image to CSV Encoder Decoder\nOnce done, I again launched my Python script to feed the generated CSV …",
+          "link": "https://dev.to/palash90/part-9-generating-simba-network-with-rust-31bh",
+          "publishedOn": "2026-01-01T23:56:30.000Z",
+          "wordCount": 4350,
+          "title": "Part 9: Generating Simba Network with Rust",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fljq5xpfkfghfxekv126w.png"
         },
         {
-          "id": "https://dev.to/deepak_mishra_35863517037/the-proxy-economy-residential-datacenter-and-isp-rotation-59o8",
-          "author": "Lalit Mishra",
-          "description": "1. Introduction: Proxies as an Economic Constraint\n\n\nIn modern data acquisition, proxies are no longer just a technical configuration; they are the primary variable in the unit economics of web scraping. Ten years ago, a scraping engineer’s primary challenge was parsing HTML. Today, it is managing the cost-per-successful-request (CPSR).\nThe \"Proxy Economy\" is defined by a distinct trade-off: Access vs. Cost. Datacenter IPs offer speed and low cost but suffer from massive block rates on protected targets. Residential IPs offer near-perfect human emulation but cost 20x to 50x more per gigabyte.\nFor senior engineers architecting scraping systems, the goal is not to buy the \"best\" proxy, but to buy the minimum viable proxy for a specific target. This analysis dissects the technical mechanics o…",
-          "link": "https://dev.to/deepak_mishra_35863517037/the-proxy-economy-residential-datacenter-and-isp-rotation-59o8",
-          "publishedOn": "2026-01-01T22:30:00.000Z",
-          "wordCount": 2927,
-          "title": "The Proxy Economy: Residential, Datacenter, and ISP Rotation",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxoasp70f6cbe04bwelhl.png"
+          "id": "https://dev.to/franckpachot/mongodb-equivalent-to-for-update-skip-locked-1m15",
+          "author": "Franck Pachot",
+          "description": "SELECT ... FOR UPDATE SKIP LOCKED is a vendor-specific SQL feature available in several relational databases (e.g., PostgreSQL, Oracle, MySQL). It helps parallel workers avoid waiting on locked rows. MongoDB’s concurrency model uses optimistic concurrency: reads don’t block writes, and writes don’t block reads. To coordinate parallel processing, you can reserve a document by writing a lock field so other workers skip it.\nI'll use an example discussed in the Reddit question \"ACID read then write – Python\":\nClient in python, multi process. Each process picks and reads one document, calls some public APIs, and add data to the document and save it. Then next document. What is written can depend on the read data. Question is: in python, how can I create and configure transactions in the code to…",
+          "link": "https://dev.to/franckpachot/mongodb-equivalent-to-for-update-skip-locked-1m15",
+          "publishedOn": "2026-01-01T23:54:22.000Z",
+          "wordCount": 3235,
+          "title": "MongoDB equivalent to FOR UPDATE SKIP LOCKED",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmi796h8rh2i7nri70kv2.png"
         }
       ]
     },
@@ -263,6 +263,26 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "http://textfiles.com/uploads/textfiles.txt",
+          "author": null,
+          "description": "Comments",
+          "link": "http://textfiles.com/uploads/textfiles.txt",
+          "publishedOn": "2026-01-01T23:33:09.000Z",
+          "wordCount": 452,
+          "title": "Why Prefer Textfiles? (2010)",
+          "imageUrl": null
+        },
+        {
+          "id": "https://nullprogram.com/blog/2026/01/01/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://nullprogram.com/blog/2026/01/01/",
+          "publishedOn": "2026-01-01T22:09:16.000Z",
+          "wordCount": 2597,
+          "title": "WebAssembly as a Python Extension Platform",
+          "imageUrl": null
+        },
+        {
           "id": "https://tenderlovemaking.com/2025/12/29/can-bundler-be-as-fast-as-uv/",
           "author": null,
           "description": "Comments",
@@ -271,16 +291,6 @@
           "wordCount": 3473,
           "title": "Can Bundler be as fast as uv?",
           "imageUrl": null
-        },
-        {
-          "id": "https://lisyarus.github.io/blog/posts/a-silly-diffuse-shading-model.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://lisyarus.github.io/blog/posts/a-silly-diffuse-shading-model.html",
-          "publishedOn": "2026-01-01T21:26:49.000Z",
-          "wordCount": 892,
-          "title": "A silly diffuse shading model",
-          "imageUrl": "/blog/media/a-silly-diffuse-shading-model/cover.png"
         },
         {
           "id": "https://www.lesswrong.com/posts/CAwnnKoFdcQucq4hG/straussian-memes-a-lens-on-techniques-for-mass-persuasion",
@@ -313,16 +323,6 @@
           "imageUrl": "https://cdn.mos.cms.futurecdn.net/N7349wfXfd84gf2gpZ6VeH-2560-80.jpg"
         },
         {
-          "id": "https://kuber.studio/blog/Reflections/Prompting-People",
-          "author": null,
-          "description": "Comments",
-          "link": "https://kuber.studio/blog/Reflections/Prompting-People",
-          "publishedOn": "2026-01-01T19:33:53.000Z",
-          "wordCount": 794,
-          "title": "Prompting People",
-          "imageUrl": "https://kuber.studio/blog/static/social-images/content-Reflections-Prompting People.md.webp"
-        },
-        {
           "id": "https://www.jeffgeerling.com/blog/2025/dells-version-dgx-spark-fixes-pain-points",
           "author": null,
           "description": "Comments",
@@ -330,6 +330,16 @@
           "publishedOn": "2026-01-01T19:11:53.000Z",
           "wordCount": 1869,
           "title": "Dell's version of the DGX Spark fixes pain points",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.cnn.com/2025/12/31/europe/finland-estonia-undersea-cable-ship-detained-intl",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.cnn.com/2025/12/31/europe/finland-estonia-undersea-cable-ship-detained-intl",
+          "publishedOn": "2026-01-01T18:46:07.000Z",
+          "wordCount": null,
+          "title": "Finland detains ship and its crew after critical undersea cable damaged",
           "imageUrl": null
         },
         {
@@ -341,16 +351,6 @@
           "wordCount": 905,
           "title": "Building an internal agent: Code-driven vs. LLM-driven workflows",
           "imageUrl": "https://lethain.com/static/author.png"
-        },
-        {
-          "id": "https://ocw.mit.edu/courses/18-098-street-fighting-mathematics-january-iap-2008/pages/readings/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://ocw.mit.edu/courses/18-098-street-fighting-mathematics-january-iap-2008/pages/readings/",
-          "publishedOn": "2026-01-01T18:20:38.000Z",
-          "wordCount": 859,
-          "title": "Street-Fighting Mathematics (2008)",
-          "imageUrl": "https://ocw.mit.edu/courses/18-098-street-fighting-mathematics-january-iap-2008/99d82e3449eef5b852fd2e5034e52fd2_18-098iap08.jpg"
         },
         {
           "id": "https://johnnysswlab.com/memory-subsystem-optimizations/",
@@ -373,34 +373,14 @@
           "imageUrl": "https://ciechanow.ski/images/og/lenses.jpg"
         },
         {
-          "id": "https://www.tomshardware.com/video-games/playstation/playstation-5-rom-keys-leaked-jailbreaking-could-be-made-easier-with-bootrom-codes",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.tomshardware.com/video-games/playstation/playstation-5-rom-keys-leaked-jailbreaking-could-be-made-easier-with-bootrom-codes",
-          "publishedOn": "2026-01-01T15:57:39.000Z",
-          "wordCount": 32588,
-          "title": "Sony PS5 ROM keys leaked – jailbreaking could be made easier with BootROM codes",
-          "imageUrl": "https://cdn.mos.cms.futurecdn.net/Vy6yo6NzRverNeZry3FQBo-1920-80.jpg"
-        },
-        {
           "id": "https://www.bloomberg.com/news/articles/2026-01-01/byd-sells-4-6-million-vehicles-in-2025-meets-revised-sales-goal",
           "author": null,
           "description": "Comments",
           "link": "https://www.bloomberg.com/news/articles/2026-01-01/byd-sells-4-6-million-vehicles-in-2025-meets-revised-sales-goal",
           "publishedOn": "2026-01-01T15:49:42.000Z",
-          "wordCount": null,
+          "wordCount": 6206,
           "title": "BYD Sells 4.6M Vehicles in 2025, Meets Revised Sales Goal",
-          "imageUrl": null
-        },
-        {
-          "id": "https://centamori.com/index.php?slug=hierarchical-navigable-small-world-hnsw-php&lang=en",
-          "author": null,
-          "description": "Comments",
-          "link": "https://centamori.com/index.php?slug=hierarchical-navigable-small-world-hnsw-php&lang=en",
-          "publishedOn": "2026-01-01T15:48:31.000Z",
-          "wordCount": 1605,
-          "title": "Implementing HNSW (Hierarchical Navigable Small World) Vector Search in PHP",
-          "imageUrl": null
+          "imageUrl": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ifK.dyRoJbio/v0/1200x800.jpg"
         },
         {
           "id": "https://github.com/fsmunoz/datastar-cl",
@@ -410,7 +390,17 @@
           "publishedOn": "2026-01-01T15:47:17.000Z",
           "wordCount": 2483,
           "title": "Common Lisp SDK for the Datastar Hypermedia Framework",
-          "imageUrl": "https://opengraph.githubassets.com/0195e1bf3a9f6dc968494961227ba4bb1f5bf0c40fd6897788197728ca61582d/fsmunoz/datastar-cl"
+          "imageUrl": "https://opengraph.githubassets.com/8c6d7d4a1b04d6a127658f5410242af55ba4fa1fc70c2c3519edf529f2db9143/fsmunoz/datastar-cl"
+        },
+        {
+          "id": "https://lightcapai.medium.com/the-great-return-from-digital-abundance-to-analog-meaning-cfda9e428752",
+          "author": null,
+          "description": "Comments",
+          "link": "https://lightcapai.medium.com/the-great-return-from-digital-abundance-to-analog-meaning-cfda9e428752",
+          "publishedOn": "2026-01-01T15:45:25.000Z",
+          "wordCount": null,
+          "title": "50% of U.S. vinyl buyers don't own a record player",
+          "imageUrl": null
         },
         {
           "id": "https://openworkers.com/introducing-openworkers",
@@ -418,7 +408,7 @@
           "description": "Comments",
           "link": "https://openworkers.com/introducing-openworkers",
           "publishedOn": "2026-01-01T15:09:06.000Z",
-          "wordCount": 618,
+          "wordCount": 619,
           "title": "Show HN: OpenWorkers – Self-hosted Cloudflare workers in Rust",
           "imageUrl": null
         },
@@ -448,7 +438,7 @@
           "description": "Comments",
           "link": "https://danwang.co/2025-letter/",
           "publishedOn": "2026-01-01T14:32:12.000Z",
-          "wordCount": 15004,
+          "wordCount": 15860,
           "title": "2025 Letter",
           "imageUrl": "https://danwang.co/wp-content/uploads/2026/01/Grossberg-Maschinensaal-700x777.jpg"
         },
@@ -483,24 +473,14 @@
           "imageUrl": "https://substackcdn.com/image/fetch/$s_!2cbR!,w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F843e4d28-1b2e-4861-9fa9-c86cd50e908c_1536x1024.heic"
         },
         {
-          "id": "https://www.theguardian.com/australia-news/2025/may/02/hull-096-worlds-largest-electric-ship-battery-power-launched",
+          "id": "https://enroll.sh/",
           "author": null,
           "description": "Comments",
-          "link": "https://www.theguardian.com/australia-news/2025/may/02/hull-096-worlds-largest-electric-ship-battery-power-launched",
-          "publishedOn": "2026-01-01T10:29:54.000Z",
-          "wordCount": 4359,
-          "title": "Worlds largest electric ship launched by Tasmanian boatbuilder",
-          "imageUrl": "https://i.guim.co.uk/img/media/4a1f05edc646b5262dd37f92e9f216f3402527ef/123_0_3559_2136/master/3559.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=bb328f86d96a99d3622c7e3b3e24df2b"
-        },
-        {
-          "id": "https://www.wario.style/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.wario.style/",
-          "publishedOn": "2026-01-01T10:25:53.000Z",
-          "wordCount": 2715,
-          "title": "Show HN: Wario Synth – Turn any song into Game Boy version",
-          "imageUrl": "/warioX.png"
+          "link": "https://enroll.sh/",
+          "publishedOn": "2026-01-01T00:23:54.000Z",
+          "wordCount": 626,
+          "title": "Show HN: Enroll, a tool to reverse-engineer servers into Ansible config mgmt",
+          "imageUrl": null
         },
         {
           "id": "https://bcantrill.dtrace.org/2025/12/31/love-your-customers/",
@@ -518,9 +498,29 @@
           "description": "Comments",
           "link": "https://github.com/quickemu-project/quickemu",
           "publishedOn": "2025-12-30T08:19:08.000Z",
-          "wordCount": 2395,
+          "wordCount": 2407,
           "title": "Quickemu: Quickly create and run optimised Windows, macOS and Linux VMs",
-          "imageUrl": "https://opengraph.githubassets.com/edce2e843b26844f36af669ec6100ca1013ff9f70c683d57a82b8529e5fb92d7/quickemu-project/quickemu"
+          "imageUrl": "https://opengraph.githubassets.com/cd925b19c0c3b0e01272ae2fd531e85e0a245af001f53316944cccec2de37811/quickemu-project/quickemu"
+        },
+        {
+          "id": "https://blog.jgc.org/2025/12/if-you-care-about-security-you-might.html",
+          "author": null,
+          "description": "Comments",
+          "link": "https://blog.jgc.org/2025/12/if-you-care-about-security-you-might.html",
+          "publishedOn": "2025-12-28T18:28:07.000Z",
+          "wordCount": 3547,
+          "title": "If you care about security you might want to move the iPhone Camera app",
+          "imageUrl": "https://blogger.googleusercontent.com/img/a/AVvXsEh_n7C7-AZVWdKp41tN41JNMVQqj-nzIXSD8K3pHXC9Zijl5Z3wtLA7OXRX0h7QRNDzE6juLUc10qyIoRf_CO5CTF8rtNjuVQ9MkGoDGGrhr-osKlxqOXaNoalhcaVpywdIXsHSCdik2SpothXBzFoLDYKUjKORzLwio-m5KXX7k6tZdacgAyHBzQ=w1200-h630-p-k-no-nu"
+        },
+        {
+          "id": "https://www.davidschlachter.com/misc/no-cd-patch",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.davidschlachter.com/misc/no-cd-patch",
+          "publishedOn": "2025-12-28T17:20:53.000Z",
+          "wordCount": 868,
+          "title": "Bypassing a Clever CD-Check",
+          "imageUrl": "no-cd-patch-generic-error.png"
         },
         {
           "id": "https://media.ccc.de/v/39c3-all-my-deutschlandtickets-gone-fraud-at-an-industrial-scale",
@@ -540,7 +540,7 @@
           "publishedOn": "2025-12-27T14:25:43.000Z",
           "wordCount": 8066,
           "title": "How to construct complex data declaratively and progressively?",
-          "imageUrl": "https://opengraph.githubassets.com/2e72720738e7d34195120292f75488b4037044b71b7f44bf5b467fb2dc9cf264/allmonday/pydantic-resolve"
+          "imageUrl": "https://opengraph.githubassets.com/0f6f19ddd3e3c854185e281e1bd359cc5de2e25bac28fbc4469d3f8c5804d405/allmonday/pydantic-resolve"
         },
         {
           "id": "https://zelang-dev.github.io/c-events/",
@@ -625,7 +625,7 @@
           "description": "One-Notebook, the Chinese company behind the ONEXPLAYER and ONEXFLY gaming handhelds, recently teased a new ONEXSUGAR Wallet console. The gimmick for this console, though, is the use of a foldable display. The teaser video, which was shared on the Chinese social media platform, Bilibili, shows a console with an elongated and narrower-than-usual design. Again, the […]\nThe post Company Behind ONEXPLAYER Teaser ONEXSUGAR Wallet Handheld With Foldable Screen appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2025/377396/company-behind-onexplayer-teaser-onexsugar-wallet-handheld-with-foldable-screen/",
           "publishedOn": "2025-12-31T01:00:02.000Z",
-          "wordCount": 10789,
+          "wordCount": 10791,
           "title": "Company Behind ONEXPLAYER Teaser ONEXSUGAR Wallet Handheld With Foldable Screen",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/12/ONEXSUGAR-Wallet-1.jpg"
         },
@@ -809,7 +809,7 @@
           "description": "Crypto analyst Chris Millas has highlighted an unusually persistent slump in Strategy shares, breaking with past drawdown patterns even as the firm continued accumulating bitcoin.",
           "link": "https://www.coindesk.com/markets/2026/01/01/strategy-shares-register-first-six-month-losing-streak-since-adoption-of-bitcoin-strategy-in-2020",
           "publishedOn": "2026-01-01T12:45:10.000Z",
-          "wordCount": 10397,
+          "wordCount": 10407,
           "title": "Strategy shares register first six-month losing streak since adoption of bitcoin strategy in 2020",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5b103d803ff339d80affb47d92493929004e62a9-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -819,7 +819,7 @@
           "description": "Digital asset treasuries, altcoin ETFs and bitcoin’s famed year‑end seasonality were meant to supercharge prices. What came instead was the worst drawdown since 2022's crypto winter.",
           "link": "https://www.coindesk.com/markets/2026/01/01/how-crypto-s-promised-year-end-fireworks-turned-into-a-bloodbath",
           "publishedOn": "2026-01-01T12:00:00.000Z",
-          "wordCount": 11822,
+          "wordCount": 11818,
           "title": "How crypto's promised year-end fireworks turned into a bloodbath",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e454babd90e4f7d1d5963e49471105fe994f5e3b-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -829,7 +829,7 @@
           "description": "Builders on Base are pushing back against the network’s close alignment with Zora, arguing the creator-coin narrative sidelines established projects.",
           "link": "https://www.coindesk.com/business/2025/12/31/base-s-creator-coin-push-sparks-builder-backlash-over-favoritism-concerns",
           "publishedOn": "2025-12-31T16:53:41.000Z",
-          "wordCount": 10276,
+          "wordCount": 10289,
           "title": "Coinbase’s Base faces builder backlash over creator coin push",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/90c767da4c522b12041b72fde9d5c6e96171ae6a-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -849,7 +849,7 @@
           "description": "Bubblemaps CEO says outflows seen on Lighter on Dec. 31 are not uncommon as users rebalance hedging positions and move on to the next farming opportunity.",
           "link": "https://www.coindesk.com/markets/2025/12/31/lighter-trading-platform-sees-usd250-million-withdrawn-24-hours-after-tge",
           "publishedOn": "2025-12-31T15:29:13.000Z",
-          "wordCount": 9989,
+          "wordCount": 9959,
           "title": "Lighter trading platform sees $250 million withdrawn 24 hours after airdrop",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/42a88548b864def38f6300dcef273c2e76f4d5f5-1920x1080.jpg?auto=format"
         },
@@ -859,7 +859,7 @@
           "description": "The Truth Social parent said it will issue a new digital token on Crypto.com’s Cronos blockchain, with shares and crypto prices rising following the announcement.",
           "link": "https://www.coindesk.com/business/2025/12/31/trump-media-to-distribute-digital-tokens-to-djt-shareholders",
           "publishedOn": "2025-12-31T14:56:31.000Z",
-          "wordCount": 9842,
+          "wordCount": 9844,
           "title": "Trump Media to distribute new digital tokens to DJT shareholders",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ff15caa6f6575048c255e3f7ef5dd9c049b2bc19-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -869,7 +869,7 @@
           "description": "Cronos (CRO) joined Solana (SOL) as a top performer, also rising 1.4%.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/12/31/coindesk-20-performance-update-solana-sol-gains-1-4-leading-the-index-higher",
           "publishedOn": "2025-12-31T14:18:51.000Z",
-          "wordCount": 8935,
+          "wordCount": 8948,
           "title": "CoinDesk 20 Performance Update: Solana (SOL) Gains 1.4%, Leading the Index Higher",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/613b22723dd77d4948db7c2fcc1553a863129f85-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -889,7 +889,7 @@
           "description": "The token underperformed broader digital assets as trading activity remained subdued despite recent ecosystem developments.",
           "link": "https://www.coindesk.com/markets/2025/12/31/apt-falls-as-token-underperforms-wider-crypto-markets",
           "publishedOn": "2025-12-31T13:32:10.000Z",
-          "wordCount": 9952,
+          "wordCount": 9939,
           "title": "APT falls as token underperforms wider crypto markets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e3b79cbfba7adca87d672014653b9f154c4e9525-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -909,7 +909,7 @@
           "description": "The October flash crash exposed how fragile bitcoin’s rally had become. It also illustrated a fundamental change in how BTC is perceived.",
           "link": "https://www.coindesk.com/markets/2025/12/29/why-bitcoin-missed-most-forecasts-in-2025",
           "publishedOn": "2025-12-31T12:00:00.000Z",
-          "wordCount": 11303,
+          "wordCount": 11290,
           "title": "Bitcoin got stuck after slumping 30% from its peak. Here's why.",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/462aa44fc614504ef506e076687060227de07a47-1919x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -929,7 +929,7 @@
           "description": "ETFs tied to altcoins need to pull in deeper liquidity to match BTC's chill.",
           "link": "https://www.coindesk.com/markets/2025/12/31/xrp-and-solana-2025-ride-twice-as-bumpy-as-bitcoin",
           "publishedOn": "2025-12-31T11:14:43.000Z",
-          "wordCount": 9931,
+          "wordCount": 9927,
           "title": "XRP and solana volatility in 2025 was twice as bumpy as bitcoin's",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/397d299abf98bf0546b0a51642dc99cebd6fa670-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -939,7 +939,7 @@
           "description": "Cypherpunk Technologies boosted its zcash bet with a $28 million token purchase, lifting its holdings to 1.7% of ZEC’s circulating supply.",
           "link": "https://www.coindesk.com/business/2025/12/31/winklevoss-backed-cypherpunk-buys-usd28-million-of-zcash-now-owns-1-7-of-supply",
           "publishedOn": "2025-12-31T09:50:57.000Z",
-          "wordCount": 9763,
+          "wordCount": 9760,
           "title": "Winklevoss-backed Cypherpunk buys $28 million of zcash, now owns 1.7% of supply",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f8973989ef6f990ba087bd3cb595fec84fdbe807-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -979,7 +979,7 @@
           "description": "The market's focus is now on whether bitcoin can maintain its support levels into the new year, as the failed rally may signal a need for a deeper market reset.",
           "link": "https://www.coindesk.com/markets/2025/12/31/bitcoin-ether-drop-more-than-22-in-q4-as-december-santa-rally-fizzles",
           "publishedOn": "2025-12-31T05:31:18.000Z",
-          "wordCount": 10362,
+          "wordCount": 10350,
           "title": "Bitcoin, ether drop more than 22% in Q4 as December ‘Santa rally’ fizzles",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b88d3548e2bf6ce1a9780df7e901bda3d36597f8-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -989,7 +989,7 @@
           "description": "The health sciences company, co-founded by English football icon, announcement comes as the crypto’s market capitalization continues to lose ground.",
           "link": "https://www.coindesk.com/business/2025/12/30/david-beckham-backed-prenetics-ditches-bitcoin-purchase",
           "publishedOn": "2025-12-30T18:26:41.000Z",
-          "wordCount": 9999,
+          "wordCount": 10012,
           "title": "David Beckham-backed Prenetics ditches bitcoin purchase",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3a20486ba52276f10948b4fdf9117e51c69f1621-1920x1080.jpg?auto=format"
         },
@@ -999,7 +999,7 @@
           "description": "The Digital Asset Basic Act is stalled as regulators clash over who should be allowed to issue won-pegged stablecoins, extending uncertainty in one of Asia’s most active crypto markets.",
           "link": "https://www.coindesk.com/policy/2025/12/30/south-korea-s-long-awaited-crypto-law-stalls-over-who-can-issue-stablecoins",
           "publishedOn": "2025-12-30T17:36:41.000Z",
-          "wordCount": 10322,
+          "wordCount": 10318,
           "title": "South Korea’s long-awaited crypto law stalls over who can issue stablecoins",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/95e1919ec19d919d87578503e30460cf5c59c6ea-1920x1080.jpg?auto=format"
         },
@@ -1070,16 +1070,6 @@
           "publishedOn": "2025-12-23T12:02:19.000Z",
           "wordCount": null,
           "title": "Decentralized Voices: Closing This Chapter & Carrying the Lessons Forward",
-          "imageUrl": null
-        },
-        {
-          "id": "https://medium.com/p/ddc1290b7add",
-          "author": "Web3 Foundation Team",
-          "description": "",
-          "link": "https://medium.com/web3foundation/web3-summit-returns-to-berlin-june-18-19-2026-ddc1290b7add?source=rss----69b4b54b183c---4",
-          "publishedOn": "2025-12-18T12:53:40.000Z",
-          "wordCount": null,
-          "title": "Web3 Summit Returns to Berlin | June 18–19, 2026",
           "imageUrl": null
         }
       ]
