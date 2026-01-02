@@ -29,124 +29,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/saber-amani/surviving-breaking-changes-in-evolving-c-apis-hard-lessons-and-practical-strategies-for-net-devs-2g5p",
-          "author": "Saber Amani",
-          "description": "Handling Breaking Changes in Evolving APIs: Lessons from the Trenches\n\n\nWhen you ship APIs in the real world, change is inevitable. But breaking changes? That’s where things get expensive, fast. I’ve been on both sides: the dev introducing a “simple” tweak that nuked integrations, and the poor soul on-call when a client’s dashboard went dark. Here’s what I’ve learned the hard way about managing breaking changes in growing APIs, focusing on C#/.NET.\nNot every change is a breaking change (contrary to what your more anxious teammates might say). But some are more dangerous than they look. Here’s a quick, practical list I keep in mind:\nRemoving or renaming an endpoint or field\n\n\nChanging response shape (e.g., a property becomes an object)\n\n\nTightening validation (suddenly, old requests are rej…",
-          "link": "https://dev.to/saber-amani/surviving-breaking-changes-in-evolving-c-apis-hard-lessons-and-practical-strategies-for-net-devs-2g5p",
-          "publishedOn": "2026-01-02T19:00:53.000Z",
-          "wordCount": 2385,
-          "title": "Surviving Breaking Changes in Evolving C# APIs, Hard Lessons and Practical Strategies for .NET Devs",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fpostpal-medias.s3.amazonaws.com%2Fusers%2F0fd69fd9-bfd7-48ed-994a-23397c1b1e77%2Fposts%2F0a44e3eb-eddf-4da8-b283-10574fd5b38f%2F028c8de0-686f-4a29-8a14-665b8797d32b.png"
+          "id": "https://dev.to/ofri-peretz/the-n1-insert-loop-that-slowed-our-api-to-a-crawl-4534",
+          "author": "Ofri Peretz",
+          "description": "Our CSV import endpoint was timing out. 30 seconds wasn't enough.\n// ❌ The pattern that killed our performance\nasync function importUsers(users) {\n  for (const user of users) {\n    await pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [\n      user.name,\n      user.email,\n    ]);\n  }\n}\n\nFor 1000 users:\n1000 round trips to database\n~50ms per query\n50 seconds total\n\n\n\nRows\nN+1 Time\nBulk Time\nSpeedup\n\n\n\n\n100\n5s\n50ms\n100x\n\n\n1000\n50s\n100ms\n500x\n\n\n10000\n500s\n500ms\n1000x\n\n\n\n// ✅ Single query, any number of rows\nasync function importUsers(users) {\n  const values = users\n    .map((u, i) => `($${i * 2 + 1}, $${i * 2 + 2})`)\n    .join(', ');\n\n  const params = users.flatMap((u) => [u.name, u.email]);\n\n  await pool.query(`INSERT INTO users (name, email) VALUES ${values}`, params);\n}\n\nOr ev…",
+          "link": "https://dev.to/ofri-peretz/the-n1-insert-loop-that-slowed-our-api-to-a-crawl-4534",
+          "publishedOn": "2026-01-02T20:06:27.000Z",
+          "wordCount": 2144,
+          "title": "The N+1 Insert Loop That Slowed Our API to a Crawl",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffwhvzhr213wviwky8s66.png"
         },
         {
-          "id": "https://dev.to/shubhambattoo/side-projects-and-ai-3njg",
-          "author": "Shubham Battoo",
-          "description": "Reminiscing about side projects going through my GitHub repositories(a.k.a graveyard for side projects), and how they used to really motivate me to be creative. The joy of buying a domain, even before building something, the joy of just securing the name on every service ever, even before writing a single line of code. How building them shaped me, and made me a better developer.\nToday with the onset of AI and one shotting an app is so in fashion, which I feel just takes away the joy of building, but at the same time, saves so much of our time and helps to grasp topics so much more easily and quickly. I wanted to look at building Side Projects with and without AI.\nBuilding, continuously building helped me be a better developer, not only helping me learn new skills, but also practicing alrea…",
-          "link": "https://dev.to/shubhambattoo/side-projects-and-ai-3njg",
-          "publishedOn": "2026-01-02T18:56:32.000Z",
-          "wordCount": 2168,
-          "title": "Side Projects and AI",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkytm6f8nf24qs0sry31n.png"
+          "id": "https://dev.to/blamsa0mine/building-a-task-manager-with-laravel-inertiajs-vue-3-crud-tags-filters-and-a-kanban-board-34hh",
+          "author": "A0mineTV",
+          "description": "What we’re building\n\n\nIn this article, I’ll walk through how I built a Task Manager using:\nLaravel 12 (back-end, routing, validation, Eloquent)\nInertia.js (no API layer, SPA-like UX)\nVue 3 + Vite (front-end)\nTypeScript (typed UI components)\nFeatures included:\n✅ Full CRUD (create, list, edit, delete tasks)\n✅ Filters (status, priority, tag, overdue)\n✅ Search (title + details)\n✅ Sorting (created date or due date with nulls last)\n✅ Tags (many-to-many, custom colors, create-on-the-fly)\n✅ Kanban board (drag & drop between columns)\n✅ Small animations on drop (Vue TransitionGroup)\n✅ Flash messages (success) shared via Inertia\nThis is a great “real app” example of Laravel + Inertia because it’s not just a CRUD — it starts to feel like a product.\nIf you like Laravel but don’t want to maintain a sepa…",
+          "link": "https://dev.to/blamsa0mine/building-a-task-manager-with-laravel-inertiajs-vue-3-crud-tags-filters-and-a-kanban-board-34hh",
+          "publishedOn": "2026-01-02T20:05:01.000Z",
+          "wordCount": 2980,
+          "title": "Building a Task Manager with Laravel + Inertia.js (Vue 3): CRUD, Tags, Filters, and a Kanban Board",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0d8nhodi9c3xbrwyjm64.png"
         },
         {
-          "id": "https://dev.to/ash_dubai/building-ai-chat-saas-multi-llm-chat-app-development-chatfaster--e9g",
-          "author": "i Ash",
-          "description": "My Journey Building AI Chat SaaS, Multi-LLM Chat App Coding, ChatFaster\n\n\nHave you ever felt limited by using just one AI model for your work? In January 2026, the AI world is moving faster than ever. I decided to build a solution that gives users the best of every major model in one place. This article shares my personal story of building ai chat saas, multi-llm chat app coding, chatfaster.\nI've spent over seven years as a Senior Fullstack Engineer. I've built systems for big names like DIOR, IKEA, and M&S. But building my own product was a different kind of challenge. I wanted to create something production-grade that solved real problems. You'll learn about the tech stack I used and the hurdles I cleared while building ai chat saas, multi-llm chat app coding, chatfaster.\nMy goal was to …",
-          "link": "https://dev.to/ash_dubai/building-ai-chat-saas-multi-llm-chat-app-development-chatfaster--e9g",
-          "publishedOn": "2026-01-02T18:55:36.000Z",
-          "wordCount": 3547,
-          "title": "building ai chat saas, multi-llm chat app development, chatfaster -...",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fassets.code-park.com%2Fpseo%2Fmo-ashraf-work%2Fi-ash%2Farticles%2F1767380128840-my-journey-building-ai-chat-saas-multi-l.webp"
+          "id": "https://dev.to/cristiansifuentes/cpus-ram-explained-how-computers-actually-think-and-remember-a5g",
+          "author": "Cristian Sifuentes",
+          "description": "Every modern device you use — laptops, phones, ATMs, smart TVs, even car dashboards — relies on two core components:\nthe CPU (processor) and memory (RAM).\nThey are the thinking and remembering parts of a computer.\nUnderstanding how they work together is a foundational skill for any software engineer. This article explains CPUs and RAM from the ground up — not as marketing terms, but as real physical systems built from transistors, electricity, and time.\nThe CPU (Central Processing Unit) is the component responsible for executing instructions.\nEvery calculation, comparison, loop, condition, or function call in your code eventually becomes an operation executed by the CPU.\nAt a high level, the CPU:\nPerforms mathematical operations\n\nMoves data between memory locations\nMakes decisions (branchi…",
+          "link": "https://dev.to/cristiansifuentes/cpus-ram-explained-how-computers-actually-think-and-remember-a5g",
+          "publishedOn": "2026-01-02T20:02:38.000Z",
+          "wordCount": 2617,
+          "title": "CPUs & RAM Explained — How Computers Actually Think and Remember",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0suh99ndyg74voheswj2.png"
         },
         {
-          "id": "https://dev.to/ash_dubai/understanding-llm-vs-generative-ai-for-your-2026-tech-stack-1agh",
-          "author": "i Ash",
-          "description": "Understanding LLM vs generative AI for Your 2026 Tech Stack\n\n\nHave you ever felt lost in the sea of AI buzzwords? One day everyone is talking about chatbots. The next day, they are obsessed with AI art. As a senior engineer with over 7 years of time, I get asked about LLM vs generative AI all the time. As of January 2026, these terms are everywhere, but many people still mix them up.\nI've built several products like PostFaster and ChatFaster using these technologies. I've also worked on massive systems for brands like Dior and IKEA. My time has taught me that knowing the difference isn't just for trivia. It helps you pick the right tech stack for your project. At my engineering blog, I focus on making these complex topics easy to understand for founders and devs alike.\nIn this guide, I'll …",
-          "link": "https://dev.to/ash_dubai/understanding-llm-vs-generative-ai-for-your-2026-tech-stack-1agh",
-          "publishedOn": "2026-01-02T18:55:21.000Z",
-          "wordCount": 2976,
-          "title": "Understanding LLM vs generative AI for Your 2026 Tech Stack",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fassets.code-park.com%2Fpseo%2Fmo-ashraf-work%2Fi-ash%2Farticles%2F1767380114889-understanding-llm-vs-generative-ai-for-y.webp"
+          "id": "https://dev.to/davidscanu/por-que-estoy-aprendiendo-espanol-50gd",
+          "author": "David Scanu",
+          "description": "Con frecuencia, la gente me pregunta: \"¿Por qué estás aprendiendo español?\". Esto es un poco extraño porque no sé realmente qué contestar a eso. En verdad, no sé realmente por qué empecé a aprender este idioma pero lo que sé ahora es por qué sigo. Es de lo que hablaré en este artículo.\nSiempre he querido aprender el español, pero no encontré la motivación real. Tenía un nivel bastante alto de inglés y eso era suficiente para mí durante muchos años. Podía ver y leer todo lo que quería en inglés. Leí un montón de libros y artículos en inglés. También, estaba siguiendo muchos canales de YouTube en inglés. Para mí, francés e inglés eran intercambiables, es decir que solo me preocupaba del contenido o la información que estaba buscando cuando veía un video en francés o inglés.\nAl contrario, ant…",
+          "link": "https://dev.to/davidscanu/por-que-estoy-aprendiendo-espanol-50gd",
+          "publishedOn": "2026-01-02T19:57:40.000Z",
+          "wordCount": 2770,
+          "title": "Por qué estoy aprendiendo espanol?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbs0ojz9n4agus3zxvsvl.png"
         },
         {
-          "id": "https://dev.to/ash_dubai/what-is-a-realistic-frontend-engineer-berlin-salary-in-2026-9ff",
-          "author": "i Ash",
-          "description": "What Is a Realistic Frontend Engineer Berlin Salary in 2026?\n\n\nAre you thinking about moving to Germany's tech capital? Or maybe you're already here and feel underpaid. I've spent years building enterprise systems and shipping products. I know that talk about money can feel awkward. But knowing the current the brand data on pay is vital for your career.\nIn January 2026, the market looks different than it did a few years ago. Companies are more selective now. They want engineers who can hit the ground running with tools like React. I've seen this shift firsthand while working on projects for brands like IKEA and DIOR. Finding a fair frontend engineer berlin salary requires understanding your specific value in this new landscape.\nAt the brand, I want to help you handle these numbers with con…",
-          "link": "https://dev.to/ash_dubai/what-is-a-realistic-frontend-engineer-berlin-salary-in-2026-9ff",
-          "publishedOn": "2026-01-02T18:54:56.000Z",
-          "wordCount": 2935,
-          "title": "What Is a Realistic Frontend Engineer Berlin Salary in 2026?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fassets.code-park.com%2Fpseo%2Fmo-ashraf-work%2Fi-ash%2Farticles%2F1767380089206-what-is-a-realistic-frontend-engineer-be.webp"
+          "id": "https://dev.to/abhishek_shahi_9d131e426d/boolean-field-becomes-null-in-spring-boot-dto-heres-why-and-how-to-fix-it-4i39",
+          "author": "Abhishek Shahi",
+          "description": "If you’re building REST APIs using Spring Boot, you may encounter a strange and frustrating issue:\nnull.\nNo exception.\nNo warning.\nNo stack trace.\nThis is not a bug in Spring Boot — it’s a Jackson + Java Bean naming trap that frequently appears in real-world applications.\nIn this article, you’ll learn:\n- Why boolean values become null in Spring Boot DTOs\n- How Jackson maps JSON properties to Java fields\n- Why @JsonProperty fixes the issue\n- The recommended best practice to avoid this forever\nConsider this request payload sent from the frontend:\n{\n  \"isActive\": true\n}\n\n\nNow look at the DTO:\npublic class UserRequest {\n\n    private Boolean isActive;\n\n    public Boolean getIsActive() {\n        return isActive;\n    }\n\n    public void setIsActive(Boolean isActive) {\n        this.isActive = isAct…",
+          "link": "https://dev.to/abhishek_shahi_9d131e426d/boolean-field-becomes-null-in-spring-boot-dto-heres-why-and-how-to-fix-it-4i39",
+          "publishedOn": "2026-01-02T19:57:06.000Z",
+          "wordCount": 2292,
+          "title": "Boolean Field Becomes null in Spring Boot DTO? Here’s Why (And How to Fix It)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2o2q3lj4x7dla5gdlb5y.png"
         },
         {
-          "id": "https://dev.to/ash_dubai/javascript-performance-optimization-how-to-master-javascript-speed-b1n",
-          "author": "i Ash",
-          "description": "How to Master JavaScript Speed Improvement for Faster Apps\n\n\nEver felt the frustration of a laggy website? We've all been there. You click a button and nothing happens for two seconds. It's January 2026, and users expect things to load instantly. If your app feels slow, your users will just leave. I've spent over seven years building enterprise systems for brands like Dior and IKEA. I've learned that speed isn't just a luxury. It's a requirement for success.\nAt the brand, I share my real-world times to help you build better software. I want to show you how to make your code fly. Good JavaScript speed improvement can save your project from failing. It keeps your users happy and your server costs low. This guide will show you just how to speed up your web apps today.\nWe'll look at why speed …",
-          "link": "https://dev.to/ash_dubai/javascript-performance-optimization-how-to-master-javascript-speed-b1n",
-          "publishedOn": "2026-01-02T18:54:51.000Z",
-          "wordCount": 3122,
-          "title": "JavaScript performance optimization - How to Master JavaScript Speed...",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fassets.code-park.com%2Fpseo%2Fmo-ashraf-work%2Fi-ash%2Farticles%2F1767380082551-how-to-master-javascript-performance-opt.webp"
+          "id": "https://dev.to/justcatdev/the-seed-corn-4pn4",
+          "author": "JustC",
+          "description": "Episode II\n\n\nThe first episode discussed the thinkers; this episode focuses on the doers.\nThis is not an argument against automation or AI.\nIt is an argument against mistaking acceleration for succession.\n\nThe doers\nExecute -> Build -> Operate\nAs they work, they accumulate the tacit/tribal knowledge\n\nEarn battle scars, and more importantly, the judgment\n\nOver time, some transition to become \"The Thinkers\"\nSee...\nThe doers are thinkers in incubation\nIn other words\nYou don’t grow thinkers by hiring them.\nAutomation attacks the doer layer first.\nNot because doers lack value, but because:\ntheir work is observable\nrepeatable\nspecifiable\nThe immediate gain looks rational:\ncheaper\nfaster\nscalable\nBut the unseen loss is this:\nYou are not just removing labour...\nThat is the seed corn.\nAI is absolutely needed\nThe missing point is this:\nIf AI is to automate the work that once trained our future thinkers, then we must deliberately invent new paths for judgment to form.",
+          "link": "https://dev.to/justcatdev/the-seed-corn-4pn4",
+          "publishedOn": "2026-01-02T19:56:12.000Z",
+          "wordCount": 1841,
+          "title": "The Seed Corn",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxo5u5a632xwb4ro9zgb9.png"
         },
         {
-          "id": "https://dev.to/rkeeves/advent-of-code-whats-the-difference-between-a-strip-club-and-a-ballet-studio-135m",
-          "author": "rkeeves",
-          "description": "Advent of Code is an annual coding puzzle.\nWe're going to deal with AoC 2025 Day 1: Secret Entrance, Part 2.\nThe straightforward solution is a run-length-encoded list unrolling algorithm.\nOn some inputs - which we'll see later - this approach is quite slow (here's a Rust snippet from an author, I came across his code in his pretty good code walkthrough video):\n\nDisclaimer: It wasn't ever supposed to be run on this input. There's nothing wrong with using the run-length-encoded list unrolling algorithm for the AoC inputs.\nThe Other Guys is a Hollywood movie about Ballet.\nCan this Hollywood movie help us?\nThe puzzle is a bit tricky... it involves a clock, and moving the clock's pointer...\nI mean:\n\nThe moves of the clock are a bit complicated, so you have to watch out for edge cases.\nHere's an…",
-          "link": "https://dev.to/rkeeves/advent-of-code-whats-the-difference-between-a-strip-club-and-a-ballet-studio-135m",
-          "publishedOn": "2026-01-02T18:48:07.000Z",
-          "wordCount": 3315,
-          "title": "Advent of Code: What's the difference between a strip club and a ballet studio?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fs7kwuzdj6gs9iodjmhz7.png"
+          "id": "https://dev.to/danielmx/zephyr-on-arduino-uno-q-mcu-5974",
+          "author": "Daniel Guerrero",
+          "description": "The Arduino UNO Q have a STM32U585 inside doing all the Arduino stuff, it communicates with main processor and GPIO pins on board; it seems the only way to get a pinout is the schematics:\nhttps://docs.arduino.cc/resources/schematics/ABX00162-schematics.pdf\nThe pinout image have brief information about the MCU pins\n \nSource\nBut only shows that pins belong to MCU, and the only indication are on RGB LED 3 and 4 that shows the GPIO used for the MCU.\nFor this example it will be needed:\nZephyr (on the PC Host, probably can be reused the version in UNO Q)\nADB tools (to connect to the device from PC Host)\nYou need to install / update Zephyr. Is important to have at least version 4.3.0 as that is the first version with support\nIt can be used the blinky example directly from documentation:\n# use the…",
+          "link": "https://dev.to/danielmx/zephyr-on-arduino-uno-q-mcu-5974",
+          "publishedOn": "2026-01-02T19:53:20.000Z",
+          "wordCount": 1997,
+          "title": "Zephyr on Arduino UNO Q MCU",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F14s1utq8elm6rgi7g789.png"
         },
         {
-          "id": "https://dev.to/xbze3/ai-in-guyana-what-is-it-where-we-already-use-it-and-why-it-matters-2820",
-          "author": "xb",
-          "description": "Introduction\n\n\nTechnological advancement is inevitable, and artificial intelligence is simply the next chapter. Computers and digital computational devices have evolved at an extraordinary pace, becoming such a cornerstone of daily life that it is easy to forget they have existed for only about eighty years. Alongside the rapid development of computing hardware, there has been equally significant progress in the fields that study and expand its capabilities. One of the most consequential, and compelling, of these fields is artificial intelligence.\nEarly forms of AI date back to 1950, just five years after the creation of the first digital computer in 1945. One of the earliest demonstrations involved a remote-controlled mechanical mouse, developed by Claude Shannon, that could navigate a ma…",
-          "link": "https://dev.to/xbze3/ai-in-guyana-what-is-it-where-we-already-use-it-and-why-it-matters-2820",
-          "publishedOn": "2026-01-02T18:46:55.000Z",
-          "wordCount": 4252,
-          "title": "AI in Guyana: What Is It, Where We Already Use It, and Why It Matters",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjvn8kfuztwfns69o762z.png"
+          "id": "https://dev.to/koralarts/fundamentals-documentation-and-discomfort-keys-to-dev-growth-310n",
+          "author": "Karl Castillo",
+          "description": "During my tenure as a software engineer of 10 years, mostly in a startup environment, I've seen many developers of varying skill levels come and go. I've noticed a few things that hinder their development. As I reflect, I realized that I suffered from these as well, especially early on in my career.\nI'm writing this post to hopefully help you reflect as well, and ask yourself, \"Am I doing any of these?\"\nIt's imperative you learn the fundamentals of software development; at the minimum, understand the fundamentals of the language you work with. Having the fundamentals provides a solid foundation for you to learn new languages, concepts, and frameworks efficiently.\nYou might say to yourself, \"I already know the fundamentals. I use this language everyday.\" Do you really understand it on a dee…",
+          "link": "https://dev.to/koralarts/fundamentals-documentation-and-discomfort-keys-to-dev-growth-310n",
+          "publishedOn": "2026-01-02T19:50:12.000Z",
+          "wordCount": 2260,
+          "title": "Fundamentals, Documentation, and Discomfort: Keys to Dev Growth",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frekutkceokxgx295ryq3.png"
         },
         {
-          "id": "https://dev.to/andrey_andrade_7a534cfc95/i-analyzed-478m-hn-items-to-create-an-interactive-2025-infographic-nm6",
-          "author": "Andrey Andrade",
-          "description": "I downloaded the complete Hacker News archive (160 SQLite shards via StaticNews) and analyzed all 2025 data to create a GitHub Octoverse-style interactive infographic.\nhttps://andreyandrade.com/static/hn-universe/\nKey Findings\nAI Dominated 2025\nThe AI conversation on HN shifted dramatically:\nAI-related stories grew from 8% to 13% of all submissions\nClaude overtook ChatGPT in mentions during H2\nDeepSeek was January's phenomenon, then vanished (-92%)\nThe \"Models Race\" shows Claude at +482% growth vs GPT's +65%\nProgramming Languages\n\n\n\nLanguage\nGrowth\nAvg Points\n\n\n\n\nZig\n+282%\n59\n\n\nRust\n+97%\n45\n\n\nRuby\n+41%\n38\n\n\nGo\n+23%\n42\n\n\n\nZig is the most hyped language of 2025. Ruby had a surprising comeback.\nJob Market (4,885 postings analyzed)\nRemote:  57% ████████████████████░░░░░░░░░░░░░░░\n71% mention A…",
-          "link": "https://dev.to/andrey_andrade_7a534cfc95/i-analyzed-478m-hn-items-to-create-an-interactive-2025-infographic-nm6",
-          "publishedOn": "2026-01-02T18:46:38.000Z",
-          "wordCount": 2064,
-          "title": "I Analyzed 4.78M HN Items to Create an Interactive 2025 Infographic",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc3yqv2vcp7jtezuizhe3.png"
+          "id": "https://dev.to/ofri-peretz/searchpath-hijacking-the-postgresql-attack-youve-never-heard-of-10co",
+          "author": "Ofri Peretz",
+          "description": "Most developers know about SQL injection. Few know about search_path hijacking.\nIt's just as dangerous.\nPostgreSQL's search_path determines which schema to look in when you reference an unqualified table name.\n-- With search_path = public, these are equivalent:\nSELECT * FROM users;\nSELECT * FROM public.users;\n\nIf an attacker can control the search_path, they can redirect your queries to malicious tables:\n// ❌ Dynamic search_path from user input\nconst schema = req.query.tenant; // Attacker controls this\nawait client.query(`SET search_path TO ${schema}`);\nawait client.query('SELECT * FROM users'); // Now queries attacker's schema\n\nThe attacker:\nCreates a schema with a malicious users table\nSets search_path to their schema\nYour query returns their fake data\n\n\n\nAttack\nImpact\n\n\n\n\nData theft\nRet…",
+          "link": "https://dev.to/ofri-peretz/searchpath-hijacking-the-postgresql-attack-youve-never-heard-of-10co",
+          "publishedOn": "2026-01-02T19:49:31.000Z",
+          "wordCount": 2072,
+          "title": "search_path Hijacking: The PostgreSQL Attack You've Never Heard Of",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1jc21e3q5petyd92xlx5.png"
         },
         {
-          "id": "https://dev.to/member_8659c28a/scalabilityarchitecturedesign20260102184530-5d5k",
-          "author": "member_8659c28a",
-          "description": "As a veteran who has experienced multiple system architecture evolutions, I deeply understand the importance of scalability for web applications. From monolithic to microservices architecture, I have witnessed countless successes and failures in system scalability. Today I want to share practical experience in web framework scalability design based on real project experience.\nDuring the system architecture evolution process, we face several core challenges:\nAs system scale expands, architecture complexity grows exponentially.\nMaintaining data consistency in distributed environments becomes extremely difficult.\nPerformance monitoring and troubleshooting become complex in large-scale systems.\nI designed a comprehensive scalability test covering different architecture patterns:\n\n\n\nFramework\nS…",
-          "link": "https://dev.to/member_8659c28a/scalabilityarchitecturedesign20260102184530-5d5k",
-          "publishedOn": "2026-01-02T18:45:31.000Z",
-          "wordCount": 3397,
-          "title": "📈_Scalability_Architecture_Design[20260102184530]",
+          "id": "https://dev.to/cristiansifuentes/bits-bytes-explained-the-true-foundation-of-all-software-1l8d",
+          "author": "Cristian Sifuentes",
+          "description": "Every message you send, every image you see, every app you open — from emojis to operating systems — is built on two deceptively simple concepts:\nbits and bytes.\nThey are the atoms of the digital world.\n\nAnd if you truly want to understand software engineering, you must understand them deeply.\nThis article breaks down what bits and bytes really are, why they exist, and how they power everything from IP addresses to emojis.\nA bit (short for binary digit) is the smallest unit of information in computing.\nIt can exist in only two possible states:\n0 or 1\n\noff or on\nfalse or true\nlow voltage or high voltage\nAt the physical level, a bit is implemented using a transistor — a tiny electronic switch that either allows electricity to flow or blocks it.\nIn electronic circuits:\nA high voltage (for exa…",
+          "link": "https://dev.to/cristiansifuentes/bits-bytes-explained-the-true-foundation-of-all-software-1l8d",
+          "publishedOn": "2026-01-02T19:48:28.000Z",
+          "wordCount": 2548,
+          "title": "Bits & Bytes Explained — The True Foundation of All Software",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffg2j34o1t5355mmd6xls.png"
+        },
+        {
+          "id": "https://dev.to/member_6331818c/ultimatewebframeworkspeedshowdown20260102194711-5g8j",
+          "author": "member_6331818c",
+          "description": "As a full-stack engineer with 10 years of development experience, I've witnessed the rise and fall of countless web frameworks. From the early jQuery era to today's high-performance Rust frameworks, I've seen the rapid evolution of web development technology. Today I want to share a performance comparison test that shocked me and completely changed my understanding of web framework performance.\nIn 2024, the performance requirements for web applications are getting higher and higher. Whether it's e-commerce websites, social platforms, or enterprise applications, users expect millisecond-level response times. I spent a full month conducting comprehensive performance tests on mainstream web frameworks on the market, including Tokio, Rocket, Gin, Go standard library, Rust standard library, Nod…",
+          "link": "https://dev.to/member_6331818c/ultimatewebframeworkspeedshowdown20260102194711-5g8j",
+          "publishedOn": "2026-01-02T19:47:13.000Z",
+          "wordCount": 3162,
+          "title": "🚀_Ultimate_Web_Framework_Speed_Showdown[20260102194711]",
           "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcl3dfqa9i62hrw0cc1l5.png"
         },
         {
-          "id": "https://dev.to/tech_croc_f32fbb6ea8ed4/the-ultimate-guide-to-data-engineering-on-google-cloud-2026-30a7",
-          "author": "Tech Croc",
-          "description": "Data is no longer just a byproduct of business; it is the engine. And among the \"Big Three\" cloud providers, Google Cloud Platform (GCP) has arguably staked its claim as the premier destination for data and analytics.\nWhy? Because Google is a data company. The tools available to you as a Data Engineer on GCP - like BigQuery and Pub/Sub - are the same technologies Google uses to run Search, YouTube, and Gmail.\nIf you are looking to master Data Engineering on Google Cloud, this guide covers the essential architecture, the \"Big 4\" tools you must know, and how to structure your learning path.\nWhy GCP for Data Engineering?\nBefore we talk about the tools, we need to talk about the philosophy. GCP distinguishes itself with a Serverless-First approach.\nScalability: Services like BigQuery can scale…",
-          "link": "https://dev.to/tech_croc_f32fbb6ea8ed4/the-ultimate-guide-to-data-engineering-on-google-cloud-2026-30a7",
-          "publishedOn": "2026-01-02T18:42:35.000Z",
-          "wordCount": 2479,
-          "title": "The Ultimate Guide to Data Engineering on Google Cloud (2026)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy122sn19vj3yx6zy9iam.png"
-        },
-        {
-          "id": "https://dev.to/ash_dubai/chatfaster-building-ai-chat-saas-multi-llm-chat-app-development--4ipd",
-          "author": "i Ash",
-          "description": "How I Built ChatFaster: Building AI Chat SaaS, Multi-LLM Chat App Coding\n\n\nHave you ever felt overwhelmed by the number of AI models coming out every week? In January 2026, the pace of AI feels faster than ever. I wanted a single place to use GPT-4o, Claude 4, and Gemini 2. 5 without jumping between five different tabs. That's why I started ChatFaster, building ai chat saas, multi-llm chat app coding as a solo project to solve my own workflow problems.\nBuilding a production-grade app isn't just about a pretty chat interface. It’s about handling complex state management across different providers while keeping things fast. I’ve spent the last year refining this system. I want to share the technical choices, the late-night bugs. The architecture that makes it all work.\nIn this guide, I’ll wa…",
-          "link": "https://dev.to/ash_dubai/chatfaster-building-ai-chat-saas-multi-llm-chat-app-development--4ipd",
-          "publishedOn": "2026-01-02T18:38:08.000Z",
-          "wordCount": 3610,
-          "title": "chatfaster, building ai chat saas, multi-llm chat app development -...",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fassets.code-park.com%2Fpseo%2Fmo-ashraf-work%2Fi-ash%2Farticles%2F1767379079446-how-i-built-chatfaster-building-ai-chat.webp"
+          "id": "https://dev.to/liudasjan/server-headers-that-talk-too-much-10kp",
+          "author": "Liudas",
+          "description": "People like to say “security is hard”.\nIf your API responds with something like:\nServer: nginx/1.18.0\nApache/2.4.49\n\nyou’ve already helped the attacker more than you think.\nWhy this matters in practice? Exposing an exact server version makes fingerprinting trivial:\nidentify the tech\nidentify the version\nmap it to known CVEs\nautomate exploitation\nThis isn’t theory. This is how large-scale attacks start.\nOWASP explicitly points out that knowing the server and its version helps determine whether it’s vulnerable — especially when older or partially patched components are involved.\n“But we patch regularly…” Good. Then this check passes and nobody cares. Until: \nthe reverse proxy wasn’t updated\nOpenSSL lagged behind\na rushed hotfix re-enabled “helpful” headers\nAnd because nothing breaks, nobody notices. That’s why this issue survives in production for months.\nThe fix is boring (and that’s good)\nDon’t disclose server versions in headers\nKeep banners minimal \nDon’t leak framework or proxy details unless absolutely necessary\nRemove version info → remove a whole class of cheap attacks.\nI documented this check in more detail here",
+          "link": "https://dev.to/liudasjan/server-headers-that-talk-too-much-10kp",
+          "publishedOn": "2026-01-02T19:43:58.000Z",
+          "wordCount": 1834,
+          "title": "Server headers that talk too much",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Feo6jllrov8rq2ht461x0.png"
         }
       ]
     },
@@ -263,6 +263,46 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://indieweb.org/POSSE#",
+          "author": null,
+          "description": "Comments",
+          "link": "https://indieweb.org/POSSE#",
+          "publishedOn": "2026-01-02T19:48:25.000Z",
+          "wordCount": 5614,
+          "title": "Publish (On Your) Own Site, Syndicate Elsewhere",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.readtpa.com/p/grok-cant-apologize-grok-isnt-sentient",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.readtpa.com/p/grok-cant-apologize-grok-isnt-sentient",
+          "publishedOn": "2026-01-02T19:30:52.000Z",
+          "wordCount": 5737,
+          "title": "Grok Can't Apologize. So Why Do Headlines Keep Saying It Did?",
+          "imageUrl": "https://substackcdn.com/image/fetch/$s_!S_rh!,w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F330536b4-d6bc-414f-a739-6804eb3e76e0_1024x682.jpeg"
+        },
+        {
+          "id": "https://unixv4.dev/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://unixv4.dev/",
+          "publishedOn": "2026-01-02T19:18:36.000Z",
+          "wordCount": 4370,
+          "title": "4th Edition Unix in the Browser",
+          "imageUrl": null
+        },
+        {
+          "id": "https://github.com/Alanma23/tinytinyTPU-co",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/Alanma23/tinytinyTPU-co",
+          "publishedOn": "2026-01-02T19:13:24.000Z",
+          "wordCount": 8976,
+          "title": "TinyTinyTPU: 2×2 systolic-array TPU-style matrix-multiply unit deployed on FPGA",
+          "imageUrl": "https://opengraph.githubassets.com/7748ca8911f71c2d04580e931c8ea3feeb7d548ae3326cce1e4a78c2c4b48ea7/Alanma23/tinytinyTPU-co"
+        },
+        {
           "id": "https://www.behind-the-enemy-lines.com/2025/12/fighting-fire-with-fire-scalable-oral.html",
           "author": null,
           "description": "Comments",
@@ -273,14 +313,34 @@
           "imageUrl": "https://blogger.googleusercontent.com/img/a/AVvXsEg5fX5d3GQ2cOHfJpbT5os_5WBQSnb5iLSULS76cNn0LGOFq3RxpjyAu4sGJ2DEFMpo8_mWe9Vum1yzpLbfI82qK-m2yXDFQApP_X01G_fO0xFz-utUW3dHelb8XsqEHP3sgHNjxKAEKnZoCJDZkpJVneeF_ej0T8sq_HGm9YtWeE42I_hWkpfDDB1jbd8=w1200-h630-p-k-no-nu"
         },
         {
+          "id": "https://martin.kleppmann.com/2011/03/07/accounting-for-computer-scientists.html",
+          "author": null,
+          "description": "Comments",
+          "link": "https://martin.kleppmann.com/2011/03/07/accounting-for-computer-scientists.html",
+          "publishedOn": "2026-01-02T18:16:07.000Z",
+          "wordCount": 2998,
+          "title": "Accounting for Computer Scientists (2011)",
+          "imageUrl": null
+        },
+        {
           "id": "https://www.clicksphone.com/en/communicator",
           "author": null,
           "description": "Comments",
           "link": "https://www.clicksphone.com/en/communicator",
           "publishedOn": "2026-01-02T17:22:04.000Z",
-          "wordCount": 4367,
+          "wordCount": 4406,
           "title": "Clicks Communicator",
           "imageUrl": "https://cdn.prod.website-files.com/66f575e72f06b9820f448d43/6957c2f239a9f8b7c2518950_communicator-opengraph.jpg"
+        },
+        {
+          "id": "https://www.andrew.cmu.edu/course/15-749/READINGS/required/cas/tridgell96.pdf",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.andrew.cmu.edu/course/15-749/READINGS/required/cas/tridgell96.pdf",
+          "publishedOn": "2026-01-02T16:56:19.000Z",
+          "wordCount": 11784,
+          "title": "The rsync algorithm (1996) [pdf]",
+          "imageUrl": null
         },
         {
           "id": "https://www.punkt.ch/blogs/news/punkt-unveils-mc03",
@@ -298,7 +358,7 @@
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=46466074",
           "publishedOn": "2026-01-02T16:00:42.000Z",
-          "wordCount": 10558,
+          "wordCount": 13457,
           "title": "Ask HN: Who is hiring? (January 2026)",
           "imageUrl": null
         },
@@ -308,7 +368,7 @@
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=46466073",
           "publishedOn": "2026-01-02T16:00:42.000Z",
-          "wordCount": 8562,
+          "wordCount": 11458,
           "title": "Ask HN: Who wants to be hired? (January 2026)",
           "imageUrl": null
         },
@@ -318,7 +378,7 @@
           "description": "Comments",
           "link": "https://www.theregister.com/2025/12/31/ipv6_at_30/",
           "publishedOn": "2026-01-02T14:55:09.000Z",
-          "wordCount": 2015,
+          "wordCount": 2022,
           "title": "IPv6 just turned 30 and still hasn't taken over the world",
           "imageUrl": "https://regmedia.co.uk/2016/09/15/ipvs_speed.jpg"
         },
@@ -353,16 +413,6 @@
           "imageUrl": "https://repository-images.githubusercontent.com/304152687/a82ee280-1ba9-11eb-9932-339cbd5a28fa"
         },
         {
-          "id": "https://github.com/orgs/Dealta-Foundation/repositories",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/orgs/Dealta-Foundation/repositories",
-          "publishedOn": "2026-01-02T12:31:03.000Z",
-          "wordCount": 426,
-          "title": "Show HN: Dealta – A game-theoretic decentralized trading protocol",
-          "imageUrl": "https://avatars.githubusercontent.com/u/208548941?s=280&v=4"
-        },
-        {
           "id": "https://blog.thechases.com/posts/assorted-less-tips/",
           "author": null,
           "description": "Comments",
@@ -371,16 +421,6 @@
           "wordCount": 1110,
           "title": "Assorted less(1) tips",
           "imageUrl": null
-        },
-        {
-          "id": "https://custompaste.com/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://custompaste.com/",
-          "publishedOn": "2026-01-02T12:07:00.000Z",
-          "wordCount": 2126,
-          "title": "Show HN: I built a clipboard tool to strip/keep specific formatting like Italics",
-          "imageUrl": "https://www.custompaste.com/meta.jpg"
         },
         {
           "id": "https://sgoel.dev/posts/10-years-of-personal-finances-in-plain-text-files/",
@@ -428,7 +468,7 @@
           "description": "Comments",
           "link": "https://carette.xyz/posts/going_immutable_macos/",
           "publishedOn": "2026-01-02T08:42:34.000Z",
-          "wordCount": 1598,
+          "wordCount": 1603,
           "title": "Going immutable on macOS, using Nix-Darwin",
           "imageUrl": null
         },
@@ -441,26 +481,6 @@
           "wordCount": 2822,
           "title": "Standard Ebooks: Public Domain Day 2026 in Literature",
           "imageUrl": "https://standardebooks.org/images/logo.png"
-        },
-        {
-          "id": "https://www.futilitycloset.com/2026/01/02/round-and-round/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.futilitycloset.com/2026/01/02/round-and-round/",
-          "publishedOn": "2026-01-02T08:16:21.000Z",
-          "wordCount": 1563,
-          "title": "Round and Round",
-          "imageUrl": "https://www.futilitycloset.com/wp-content/uploads/2026/01/2026-01-02-round-and-round.jpg"
-        },
-        {
-          "id": "https://rtfm.co.ua/en/freebsd-home-nas-part-1-configuring-zfs-mirror-raid1/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://rtfm.co.ua/en/freebsd-home-nas-part-1-configuring-zfs-mirror-raid1/",
-          "publishedOn": "2026-01-02T06:48:32.000Z",
-          "wordCount": 3361,
-          "title": "FreeBSD: Home NAS, part 1 – configuring ZFS mirror (RAID1)",
-          "imageUrl": "https://rtfm.co.ua/wp-content/uploads/2025/11/freebsd_logo1.jpg"
         },
         {
           "id": "https://publicdomainreview.org/blog/2026/01/public-domain-day-2026/",
@@ -478,19 +498,9 @@
           "description": "Comments",
           "link": "https://github.com/ghostty-org/ghostty/issues/3558",
           "publishedOn": "2026-01-02T01:24:51.000Z",
-          "wordCount": 1697,
+          "wordCount": 1761,
           "title": "Why users cannot create Issues directly",
           "imageUrl": "https://opengraph.githubassets.com/4cfd6d53bf09b6cf107374eb07cf115de75cbbc602c83f64c5358798bf44e622/ghostty-org/ghostty/issues/3558"
-        },
-        {
-          "id": "https://tenderlovemaking.com/2025/12/29/can-bundler-be-as-fast-as-uv/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://tenderlovemaking.com/2025/12/29/can-bundler-be-as-fast-as-uv/",
-          "publishedOn": "2026-01-01T21:37:10.000Z",
-          "wordCount": 3473,
-          "title": "Can Bundler be as fast as uv?",
-          "imageUrl": null
         },
         {
           "id": "https://henry.codes/writing/a-website-to-destroy-all-websites/",
@@ -501,26 +511,6 @@
           "wordCount": 3223,
           "title": "A website to destroy all websites",
           "imageUrl": "https://henry.codes/img/og/og-a-website-to-destroy-all-websites.png"
-        },
-        {
-          "id": "https://ciechanow.ski/cameras-and-lenses/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://ciechanow.ski/cameras-and-lenses/",
-          "publishedOn": "2026-01-01T17:18:01.000Z",
-          "wordCount": 6403,
-          "title": "Cameras and Lenses (2020)",
-          "imageUrl": "https://ciechanow.ski/images/og/lenses.jpg"
-        },
-        {
-          "id": "https://devblogs.microsoft.com/oldnewthing/20170728-00/?p=96706",
-          "author": null,
-          "description": "Comments",
-          "link": "https://devblogs.microsoft.com/oldnewthing/20170728-00/?p=96706",
-          "publishedOn": "2025-12-29T10:28:38.000Z",
-          "wordCount": 7747,
-          "title": "Can I throw a C++ exception from a structured exception?",
-          "imageUrl": "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
         },
         {
           "id": "https://research.ralfj.de/papers/2026-popl-miri.pdf",
@@ -541,6 +531,16 @@
           "wordCount": 3059,
           "title": "ThingsBoard: Open-Source IoT Platform",
           "imageUrl": "https://repository-images.githubusercontent.com/75277003/2a8d6a9e-d560-44c9-a8b8-8fae8717b6c7"
+        },
+        {
+          "id": "http://www.observationalhazard.com/2025/12/c-java-java-llm.html",
+          "author": null,
+          "description": "Comments",
+          "link": "http://www.observationalhazard.com/2025/12/c-java-java-llm.html",
+          "publishedOn": "2025-12-28T04:40:56.000Z",
+          "wordCount": 6938,
+          "title": "C –> Java != Java –> LLM",
+          "imageUrl": null
         },
         {
           "id": "https://gist.github.com/arch1t3cht/b5b9552633567fa7658deee5aec60453/",
@@ -789,7 +789,7 @@
           "description": "The U.S. hacker pleaded guilty to stealing and laundering nearly 120,000 bitcoin from cryptocurrency exchange Bitfinex in 2016.",
           "link": "https://www.coindesk.com/tech/2026/01/02/crypto-hacker-ilya-lichtenstein-credits-trump-s-first-step-act-for-early-prison-release",
           "publishedOn": "2026-01-02T18:50:43.000Z",
-          "wordCount": 10285,
+          "wordCount": 10284,
           "title": "Bitfinex hacker Ilya Lichtenstein credits Trump’s First Step Act for early prison release",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9d5e9e821ae5f5453a5c2fe8e1076ec0f1fd6568-1920x1079.jpg?auto=format"
         },
@@ -799,7 +799,7 @@
           "description": "The chairman of the former bitcoin miner-turned-ether treasury firm reiterated his view that Ethereum is the future of finance.",
           "link": "https://www.coindesk.com/business/2026/01/02/tom-lee-urges-bitmine-shareholders-to-approve-share-increase-ahead-of-jan-14-vote",
           "publishedOn": "2026-01-02T17:12:25.000Z",
-          "wordCount": 10130,
+          "wordCount": 10129,
           "title": "Tom Lee urges BitMine shareholders to approve share increase ahead of January 14 vote",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/13c2f3d8f4a14835d564bac5cf5d5cdd106bdcfd-1919x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -809,7 +809,7 @@
           "description": "Particularly hard-hit in 2025's final sessions, crypto-related stocks are bouncing in this year's first trading day.",
           "link": "https://www.coindesk.com/markets/2026/01/02/bitcoin-pushes-above-usd90-000-as-traders-eye-change-in-pattern",
           "publishedOn": "2026-01-02T16:16:55.000Z",
-          "wordCount": 9688,
+          "wordCount": 9700,
           "title": "Bitcoin pushes above $90,000 as traders eye change in pattern",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ad9ee8dab91a300e5696f81b3b2b61422e6df159-1080x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -819,7 +819,7 @@
           "description": "While South Korean financial officials acknowledged the need for new rules, disagreements over stablecoins delayed a broader crypto framework.",
           "link": "https://www.coindesk.com/business/2026/01/02/usd110-billion-in-crypto-left-south-korea-in-2025-owing-to-strict-trading-rules",
           "publishedOn": "2026-01-02T14:25:41.000Z",
-          "wordCount": 10124,
+          "wordCount": 10123,
           "title": "$110 billion in crypto left South Korea in 2025 owing to strict trading rules",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/108512002c2e59c2562e0797e4658ea9337dfd80-1920x1080.jpg?auto=format"
         },
@@ -829,7 +829,7 @@
           "description": "The company is selling the site to the Sympatheia Power Fund, managed by Singapore-based Hawksburn Capital.",
           "link": "https://www.coindesk.com/business/2026/01/02/bitcoin-miner-bitfarms-to-exit-latin-america-with-usd30m-sale-of-paraguay-site",
           "publishedOn": "2026-01-02T13:24:11.000Z",
-          "wordCount": 9744,
+          "wordCount": 9743,
           "title": "Bitcoin miner Bitfarms exiting Latin America with $30M sale of Paraguay site",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/58e935863e39605892acf3fca91ceba74c90f9c9-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -839,7 +839,7 @@
           "description": "Prospective customers could purchase weapons such as missiles, tanks and drones using crypto, according to a government website.",
           "link": "https://www.coindesk.com/policy/2026/01/02/iran-accepts-cryptocurrency-as-payment-for-advanced-weapons",
           "publishedOn": "2026-01-02T12:09:40.000Z",
-          "wordCount": 9608,
+          "wordCount": 9607,
           "title": "Iran accepts cryptocurrency as payment for advanced weapons",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/56384cad1c4ed5151c5608147e8af347c0e91e5d-1920x1080.jpg?auto=format"
         },
@@ -849,7 +849,7 @@
           "description": "The legislation aims to boost economic development and foreign investment while treating virtual assets strictly as property.",
           "link": "https://www.coindesk.com/policy/2026/01/02/turkmenistan-legalizes-crypto-mining-and-exchanges-to-boost-the-economy",
           "publishedOn": "2026-01-02T11:57:24.000Z",
-          "wordCount": 9993,
+          "wordCount": 9992,
           "title": "Turkmenistan legalizes crypto mining and exchanges to boost the economy",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f6f7c191d18f7193daaabdf752e7c5a3245747ba-1920x1080.jpg?auto=format"
         },
@@ -859,7 +859,7 @@
           "description": "ICP pushed above the $3 level on rising activity, holding recent gains as traders reassess near-term direction.",
           "link": "https://www.coindesk.com/markets/2026/01/02/internet-computer-climbs-back-to-usd3-as-short-term-momentum-improves",
           "publishedOn": "2026-01-02T10:04:52.000Z",
-          "wordCount": 9928,
+          "wordCount": 9923,
           "title": "Internet Computer climbs back to $3 as short-term momentum improves",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b15d04dfc79b4b84a0708401543a3f2a22b62567-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -869,7 +869,7 @@
           "description": "The Solana-based token passed through a key technical level before easing back into consolidation.",
           "link": "https://www.coindesk.com/markets/2026/01/02/bonk-jumps-more-than-10-in-24-hours-as-momentum-pushes-price-higher",
           "publishedOn": "2026-01-02T09:02:21.000Z",
-          "wordCount": 9954,
+          "wordCount": 9952,
           "title": "BONK jumps more than 10% in 24 hours as momentum pushes price higher",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f89742871c0c22bc608e62058b402b2037946f60-700x430.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -879,7 +879,7 @@
           "description": "Spot BTC ETFs registered their sharpest outflows on record through November and December as prices dropped 20%.",
           "link": "https://www.coindesk.com/markets/2026/01/02/bitcoin-etfs-lose-record-usd4-57-billion-in-two-months",
           "publishedOn": "2026-01-02T07:45:37.000Z",
-          "wordCount": 9877,
+          "wordCount": 9876,
           "title": "Bitcoin ETFs lose record $4.57 billion in two months",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b7990c1aee6dc662da6a92e4675c895b7b28cf2b-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -889,7 +889,7 @@
           "description": "BTC's volatility bands have compressed to levels that have historically paved the way for a renewed price turbulence.",
           "link": "https://www.coindesk.com/markets/2026/01/02/bitcoin-s-squeeze-sets-stage-for-major-price-swing",
           "publishedOn": "2026-01-02T05:10:44.000Z",
-          "wordCount": 10048,
+          "wordCount": 10047,
           "title": "Bitcoin's squeeze sets stage for major price swing",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/aa651f593b05892413d8006cdf3a5cea49f53472-1260x843.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -899,7 +899,7 @@
           "description": "ADA outperforms as traders return from the holiday break, but analysts say the market is still far from a broad altcoin season.",
           "link": "https://www.coindesk.com/markets/2026/01/02/cardano-s-ada-pops-7-bitcoin-ether-show-steady-gains-as-traders-enter-2026",
           "publishedOn": "2026-01-02T03:49:20.000Z",
-          "wordCount": 10242,
+          "wordCount": 10241,
           "title": "Cardano's ADA pops 7%, bitcoin, ether show steady gains as traders enter 2026",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f49d4c68e25542b032d598eca35cddf2b90b900e-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -909,7 +909,7 @@
           "description": "The purchase is part of Tether's strategy to use up to 15% of its quarterly profits for bitcoin acquisitions.",
           "link": "https://www.coindesk.com/markets/2026/01/02/tether-adds-nearly-usd800-million-in-bitcoin-bringing-holdings-above-96-000-btc",
           "publishedOn": "2026-01-02T03:36:16.000Z",
-          "wordCount": 9900,
+          "wordCount": 9899,
           "title": "Tether adds nearly $800 million in bitcoin, bringing holdings above 96,000 BTC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b2e3ecb2dd0afc982a2fd15713b824b337e2c807-1919x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -919,7 +919,7 @@
           "description": "The breakout was supported by spot activity, indicating a healthier market move.",
           "link": "https://www.coindesk.com/markets/2026/01/02/dogecoin-surges-7-as-a-double-bottom-break-sparks-doge-rally",
           "publishedOn": "2026-01-02T03:21:50.000Z",
-          "wordCount": 10685,
+          "wordCount": 10684,
           "title": "Dogecoin surges 7% as a double-bottom break sparks DOGE rally",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/680d3e2c4962a57acefd0777b65cf58822b6f6fb-1206x738.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -929,7 +929,7 @@
           "description": "Exchange balances have decreased by about 57% since October, suggesting tokens are moving into longer-term storage.",
           "link": "https://www.coindesk.com/markets/2026/01/02/xrp-bounces-but-usd2-remains-the-hurdle-as-exchange-supply-hits-8-year-low",
           "publishedOn": "2026-01-02T03:14:31.000Z",
-          "wordCount": 10781,
+          "wordCount": 10777,
           "title": "XRP bounces, but $2 remains the hurdle as exchange supply hits 8-year low",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6fbff84ac0802a0cd07b9da692897222c9f84981-1196x740.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -939,7 +939,7 @@
           "description": "Fed officials were focused less on rate moves and more on whether the financial system has enough cash to avoid sudden disruptions.",
           "link": "https://www.coindesk.com/policy/2026/01/01/december-fomc-minutes-show-the-fed-is-worried-short-term-funding-could-seize-up",
           "publishedOn": "2026-01-01T20:58:10.000Z",
-          "wordCount": 10736,
+          "wordCount": 10735,
           "title": "December FOMC minutes show the Fed is worried short-term funding could seize up",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6775769940b945fb5645850455ae71c4a2cb8db7-1920x1080.jpg?auto=format"
         },
@@ -949,7 +949,7 @@
           "description": "After major technical gains in 2025, Buterin says the network must double down on usability and decentralization to meet its original goals.",
           "link": "https://www.coindesk.com/tech/2026/01/01/vitalik-buterin-on-the-two-goals-ethereum-must-meet-to-become-the-world-computer",
           "publishedOn": "2026-01-01T16:05:24.000Z",
-          "wordCount": 10636,
+          "wordCount": 10635,
           "title": "Vitalik Buterin on the two goals Ethereum must meet to become the ‘world computer’",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4d36b4d555058a50f2056e7f58d881601b0021d4-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -959,7 +959,7 @@
           "description": "Crypto analyst Chris Millas has highlighted an unusually persistent slump in Strategy shares, breaking with past drawdown patterns even as the firm continued accumulating bitcoin.",
           "link": "https://www.coindesk.com/markets/2026/01/01/strategy-shares-register-first-six-month-losing-streak-since-adoption-of-bitcoin-strategy-in-2020",
           "publishedOn": "2026-01-01T12:45:10.000Z",
-          "wordCount": 10346,
+          "wordCount": 10345,
           "title": "Strategy shares register first six-month losing streak since adoption of bitcoin strategy in 2020",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5b103d803ff339d80affb47d92493929004e62a9-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -979,7 +979,7 @@
           "description": "Builders on Base are pushing back against the network’s close alignment with Zora, arguing the creator-coin narrative sidelines established projects.",
           "link": "https://www.coindesk.com/business/2025/12/31/base-s-creator-coin-push-sparks-builder-backlash-over-favoritism-concerns",
           "publishedOn": "2025-12-31T16:53:41.000Z",
-          "wordCount": 10293,
+          "wordCount": 10292,
           "title": "Coinbase’s Base faces builder backlash over creator coin push",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/90c767da4c522b12041b72fde9d5c6e96171ae6a-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -989,7 +989,7 @@
           "description": "Led by Zcash, the privacy space had a breakout year in 2025. What’s coming next?",
           "link": "https://www.coindesk.com/opinion/2025/12/31/4-predictions-for-privacy-in-2026",
           "publishedOn": "2025-12-31T15:48:57.000Z",
-          "wordCount": 10727,
+          "wordCount": 10726,
           "title": "4 predictions for privacy in 2026",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c7b7ef94d35accd2385bfa01badc36ccd8ea9395-4384x3008.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -999,7 +999,7 @@
           "description": "Bubblemaps CEO says outflows seen on Lighter on Dec. 31 are not uncommon as users rebalance hedging positions and move on to the next farming opportunity.",
           "link": "https://www.coindesk.com/markets/2025/12/31/lighter-trading-platform-sees-usd250-million-withdrawn-24-hours-after-tge",
           "publishedOn": "2025-12-31T15:29:13.000Z",
-          "wordCount": 9978,
+          "wordCount": 9977,
           "title": "Lighter trading platform sees $250 million withdrawn 24 hours after airdrop",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/42a88548b864def38f6300dcef273c2e76f4d5f5-1920x1080.jpg?auto=format"
         },
@@ -1009,7 +1009,7 @@
           "description": "The Truth Social parent said it will issue a new digital token on Crypto.com’s Cronos blockchain, with shares and crypto prices rising following the announcement.",
           "link": "https://www.coindesk.com/business/2025/12/31/trump-media-to-distribute-digital-tokens-to-djt-shareholders",
           "publishedOn": "2025-12-31T14:56:31.000Z",
-          "wordCount": 9938,
+          "wordCount": 9937,
           "title": "Trump Media to distribute new digital tokens to DJT shareholders",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ff15caa6f6575048c255e3f7ef5dd9c049b2bc19-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1019,7 +1019,7 @@
           "description": "Cronos (CRO) joined Solana (SOL) as a top performer, also rising 1.4%.",
           "link": "https://www.coindesk.com/coindesk-indices/2025/12/31/coindesk-20-performance-update-solana-sol-gains-1-4-leading-the-index-higher",
           "publishedOn": "2025-12-31T14:18:51.000Z",
-          "wordCount": 9010,
+          "wordCount": 9009,
           "title": "CoinDesk 20 Performance Update: Solana (SOL) Gains 1.4%, Leading the Index Higher",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/613b22723dd77d4948db7c2fcc1553a863129f85-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1029,7 +1029,7 @@
           "description": "The bank raised its its price target on the shares to $24 from $9.50.",
           "link": "https://www.coindesk.com/markets/2025/12/31/kbw-upgrades-terawulf-to-outperform-sees-ai-pivot-as-catalyst-for-sharp-growth",
           "publishedOn": "2025-12-31T13:51:00.000Z",
-          "wordCount": 9997,
+          "wordCount": 9996,
           "title": "KBW upgrades TeraWulf to outperform, sees AI pivot as catalyst for sharp growth",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a944f5c40b9f1fece6ecb4c387377f37ae7134cc-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }

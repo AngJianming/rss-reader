@@ -1,101 +1,393 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-01-02T19:11:19.779Z</id>
+    <id>urn:2026-01-02T20:18:11.450Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-01-02T19:11:19.779Z</updated>
+    <updated>2026-01-02T20:18:11.450Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Surviving Breaking Changes in Evolving C# APIs, Hard Lessons and Practical Strategies for .NET Devs]]></title>
-        <id>https://dev.to/saber-amani/surviving-breaking-changes-in-evolving-c-apis-hard-lessons-and-practical-strategies-for-net-devs-2g5p</id>
-        <link href="https://dev.to/saber-amani/surviving-breaking-changes-in-evolving-c-apis-hard-lessons-and-practical-strategies-for-net-devs-2g5p"/>
-        <updated>2026-01-02T19:00:53.000Z</updated>
-        <summary type="html"><![CDATA[Handling Breaking Changes in Evolving APIs: Lessons from the Trenches
+        <title type="html"><![CDATA[The N+1 Insert Loop That Slowed Our API to a Crawl]]></title>
+        <id>https://dev.to/ofri-peretz/the-n1-insert-loop-that-slowed-our-api-to-a-crawl-4534</id>
+        <link href="https://dev.to/ofri-peretz/the-n1-insert-loop-that-slowed-our-api-to-a-crawl-4534"/>
+        <updated>2026-01-02T20:06:27.000Z</updated>
+        <summary type="html"><![CDATA[Our CSV import endpoint was timing out. 30 seconds wasn't enough.
+// ❌ The pattern that killed our performance
+async function importUsers(users) {
+  for (const user of users) {
+    await pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [
+      user.name,
+      user.email,
+    ]);
+  }
+}
+
+For 1000 users:
+1000 round trips to database
+~50ms per query
+50 seconds total
 
 
-When you ship APIs in the real world, change is inevitable. But breaking changes? That’s where things get expensive, fast. I’ve been on both sides: the dev introducing a “simple” tweak that nuked integrations, and the poor soul on-call when a client’s dashboard went dark. Here’s what I’ve learned the hard way about managing breaking changes in growing APIs, focusing on C#/.NET.
-Not every change is a breaking change (contrary to what your more anxious teammates might say). But some are more dangerous than they look. Here’s a quick, practical list I keep in mind:
-Removing or renaming an endpoint or field
+
+Rows
+N+1 Time
+Bulk Time
+Speedup
 
 
-Changing response shape (e.g., a property becomes an object)
 
 
-Tightening validation (suddenly, old requests are rej…]]></summary>
+100
+5s
+50ms
+100x
+
+
+1000
+50s
+100ms
+500x
+
+
+10000
+500s
+500ms
+1000x
+
+
+
+// ✅ Single query, any number of rows
+async function importUsers(users) {
+  const values = users
+    .map((u, i) => `($${i * 2 + 1}, $${i * 2 + 2})`)
+    .join(', ');
+
+  const params = users.flatMap((u) => [u.name, u.email]);
+
+  await pool.query(`INSERT INTO users (name, email) VALUES ${values}`, params);
+}
+
+Or ev…]]></summary>
         <author>
-            <name>Saber Amani</name>
+            <name>Ofri Peretz</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Side Projects and AI]]></title>
-        <id>https://dev.to/shubhambattoo/side-projects-and-ai-3njg</id>
-        <link href="https://dev.to/shubhambattoo/side-projects-and-ai-3njg"/>
-        <updated>2026-01-02T18:56:32.000Z</updated>
-        <summary type="html"><![CDATA[Reminiscing about side projects going through my GitHub repositories(a.k.a graveyard for side projects), and how they used to really motivate me to be creative. The joy of buying a domain, even before building something, the joy of just securing the name on every service ever, even before writing a single line of code. How building them shaped me, and made me a better developer.
-Today with the onset of AI and one shotting an app is so in fashion, which I feel just takes away the joy of building, but at the same time, saves so much of our time and helps to grasp topics so much more easily and quickly. I wanted to look at building Side Projects with and without AI.
-Building, continuously building helped me be a better developer, not only helping me learn new skills, but also practicing alrea…]]></summary>
+        <title type="html"><![CDATA[Building a Task Manager with Laravel + Inertia.js (Vue 3): CRUD, Tags, Filters, and a Kanban Board]]></title>
+        <id>https://dev.to/blamsa0mine/building-a-task-manager-with-laravel-inertiajs-vue-3-crud-tags-filters-and-a-kanban-board-34hh</id>
+        <link href="https://dev.to/blamsa0mine/building-a-task-manager-with-laravel-inertiajs-vue-3-crud-tags-filters-and-a-kanban-board-34hh"/>
+        <updated>2026-01-02T20:05:01.000Z</updated>
+        <summary type="html"><![CDATA[What we’re building
+
+
+In this article, I’ll walk through how I built a Task Manager using:
+Laravel 12 (back-end, routing, validation, Eloquent)
+Inertia.js (no API layer, SPA-like UX)
+Vue 3 + Vite (front-end)
+TypeScript (typed UI components)
+Features included:
+✅ Full CRUD (create, list, edit, delete tasks)
+✅ Filters (status, priority, tag, overdue)
+✅ Search (title + details)
+✅ Sorting (created date or due date with nulls last)
+✅ Tags (many-to-many, custom colors, create-on-the-fly)
+✅ Kanban board (drag & drop between columns)
+✅ Small animations on drop (Vue TransitionGroup)
+✅ Flash messages (success) shared via Inertia
+This is a great “real app” example of Laravel + Inertia because it’s not just a CRUD — it starts to feel like a product.
+If you like Laravel but don’t want to maintain a sepa…]]></summary>
         <author>
-            <name>Shubham Battoo</name>
+            <name>A0mineTV</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[building ai chat saas, multi-llm chat app development, chatfaster -...]]></title>
-        <id>https://dev.to/ash_dubai/building-ai-chat-saas-multi-llm-chat-app-development-chatfaster--e9g</id>
-        <link href="https://dev.to/ash_dubai/building-ai-chat-saas-multi-llm-chat-app-development-chatfaster--e9g"/>
-        <updated>2026-01-02T18:55:36.000Z</updated>
-        <summary type="html"><![CDATA[My Journey Building AI Chat SaaS, Multi-LLM Chat App Coding, ChatFaster
+        <title type="html"><![CDATA[CPUs & RAM Explained — How Computers Actually Think and Remember]]></title>
+        <id>https://dev.to/cristiansifuentes/cpus-ram-explained-how-computers-actually-think-and-remember-a5g</id>
+        <link href="https://dev.to/cristiansifuentes/cpus-ram-explained-how-computers-actually-think-and-remember-a5g"/>
+        <updated>2026-01-02T20:02:38.000Z</updated>
+        <summary type="html"><![CDATA[Every modern device you use — laptops, phones, ATMs, smart TVs, even car dashboards — relies on two core components:
+the CPU (processor) and memory (RAM).
+They are the thinking and remembering parts of a computer.
+Understanding how they work together is a foundational skill for any software engineer. This article explains CPUs and RAM from the ground up — not as marketing terms, but as real physical systems built from transistors, electricity, and time.
+The CPU (Central Processing Unit) is the component responsible for executing instructions.
+Every calculation, comparison, loop, condition, or function call in your code eventually becomes an operation executed by the CPU.
+At a high level, the CPU:
+Performs mathematical operations
 
-
-Have you ever felt limited by using just one AI model for your work? In January 2026, the AI world is moving faster than ever. I decided to build a solution that gives users the best of every major model in one place. This article shares my personal story of building ai chat saas, multi-llm chat app coding, chatfaster.
-I've spent over seven years as a Senior Fullstack Engineer. I've built systems for big names like DIOR, IKEA, and M&S. But building my own product was a different kind of challenge. I wanted to create something production-grade that solved real problems. You'll learn about the tech stack I used and the hurdles I cleared while building ai chat saas, multi-llm chat app coding, chatfaster.
-My goal was to …]]></summary>
+Moves data between memory locations
+Makes decisions (branchi…]]></summary>
         <author>
-            <name>i Ash</name>
+            <name>Cristian Sifuentes</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Understanding LLM vs generative AI for Your 2026 Tech Stack]]></title>
-        <id>https://dev.to/ash_dubai/understanding-llm-vs-generative-ai-for-your-2026-tech-stack-1agh</id>
-        <link href="https://dev.to/ash_dubai/understanding-llm-vs-generative-ai-for-your-2026-tech-stack-1agh"/>
-        <updated>2026-01-02T18:55:21.000Z</updated>
-        <summary type="html"><![CDATA[Understanding LLM vs generative AI for Your 2026 Tech Stack
-
-
-Have you ever felt lost in the sea of AI buzzwords? One day everyone is talking about chatbots. The next day, they are obsessed with AI art. As a senior engineer with over 7 years of time, I get asked about LLM vs generative AI all the time. As of January 2026, these terms are everywhere, but many people still mix them up.
-I've built several products like PostFaster and ChatFaster using these technologies. I've also worked on massive systems for brands like Dior and IKEA. My time has taught me that knowing the difference isn't just for trivia. It helps you pick the right tech stack for your project. At my engineering blog, I focus on making these complex topics easy to understand for founders and devs alike.
-In this guide, I'll …]]></summary>
+        <title type="html"><![CDATA[Por qué estoy aprendiendo espanol?]]></title>
+        <id>https://dev.to/davidscanu/por-que-estoy-aprendiendo-espanol-50gd</id>
+        <link href="https://dev.to/davidscanu/por-que-estoy-aprendiendo-espanol-50gd"/>
+        <updated>2026-01-02T19:57:40.000Z</updated>
+        <summary type="html"><![CDATA[Con frecuencia, la gente me pregunta: "¿Por qué estás aprendiendo español?". Esto es un poco extraño porque no sé realmente qué contestar a eso. En verdad, no sé realmente por qué empecé a aprender este idioma pero lo que sé ahora es por qué sigo. Es de lo que hablaré en este artículo.
+Siempre he querido aprender el español, pero no encontré la motivación real. Tenía un nivel bastante alto de inglés y eso era suficiente para mí durante muchos años. Podía ver y leer todo lo que quería en inglés. Leí un montón de libros y artículos en inglés. También, estaba siguiendo muchos canales de YouTube en inglés. Para mí, francés e inglés eran intercambiables, es decir que solo me preocupaba del contenido o la información que estaba buscando cuando veía un video en francés o inglés.
+Al contrario, ant…]]></summary>
         <author>
-            <name>i Ash</name>
+            <name>David Scanu</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What Is a Realistic Frontend Engineer Berlin Salary in 2026?]]></title>
-        <id>https://dev.to/ash_dubai/what-is-a-realistic-frontend-engineer-berlin-salary-in-2026-9ff</id>
-        <link href="https://dev.to/ash_dubai/what-is-a-realistic-frontend-engineer-berlin-salary-in-2026-9ff"/>
-        <updated>2026-01-02T18:54:56.000Z</updated>
-        <summary type="html"><![CDATA[What Is a Realistic Frontend Engineer Berlin Salary in 2026?
+        <title type="html"><![CDATA[Boolean Field Becomes null in Spring Boot DTO? Here’s Why (And How to Fix It)]]></title>
+        <id>https://dev.to/abhishek_shahi_9d131e426d/boolean-field-becomes-null-in-spring-boot-dto-heres-why-and-how-to-fix-it-4i39</id>
+        <link href="https://dev.to/abhishek_shahi_9d131e426d/boolean-field-becomes-null-in-spring-boot-dto-heres-why-and-how-to-fix-it-4i39"/>
+        <updated>2026-01-02T19:57:06.000Z</updated>
+        <summary type="html"><![CDATA[If you’re building REST APIs using Spring Boot, you may encounter a strange and frustrating issue:
+null.
+No exception.
+No warning.
+No stack trace.
+This is not a bug in Spring Boot — it’s a Jackson + Java Bean naming trap that frequently appears in real-world applications.
+In this article, you’ll learn:
+- Why boolean values become null in Spring Boot DTOs
+- How Jackson maps JSON properties to Java fields
+- Why @JsonProperty fixes the issue
+- The recommended best practice to avoid this forever
+Consider this request payload sent from the frontend:
+{
+  "isActive": true
+}
 
 
-Are you thinking about moving to Germany's tech capital? Or maybe you're already here and feel underpaid. I've spent years building enterprise systems and shipping products. I know that talk about money can feel awkward. But knowing the current the brand data on pay is vital for your career.
-In January 2026, the market looks different than it did a few years ago. Companies are more selective now. They want engineers who can hit the ground running with tools like React. I've seen this shift firsthand while working on projects for brands like IKEA and DIOR. Finding a fair frontend engineer berlin salary requires understanding your specific value in this new landscape.
-At the brand, I want to help you handle these numbers with con…]]></summary>
+Now look at the DTO:
+public class UserRequest {
+
+    private Boolean isActive;
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isAct…]]></summary>
         <author>
-            <name>i Ash</name>
+            <name>Abhishek Shahi</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[JavaScript performance optimization - How to Master JavaScript Speed...]]></title>
-        <id>https://dev.to/ash_dubai/javascript-performance-optimization-how-to-master-javascript-speed-b1n</id>
-        <link href="https://dev.to/ash_dubai/javascript-performance-optimization-how-to-master-javascript-speed-b1n"/>
-        <updated>2026-01-02T18:54:51.000Z</updated>
-        <summary type="html"><![CDATA[How to Master JavaScript Speed Improvement for Faster Apps
+        <title type="html"><![CDATA[The Seed Corn]]></title>
+        <id>https://dev.to/justcatdev/the-seed-corn-4pn4</id>
+        <link href="https://dev.to/justcatdev/the-seed-corn-4pn4"/>
+        <updated>2026-01-02T19:56:12.000Z</updated>
+        <summary type="html"><![CDATA[Episode II
 
 
-Ever felt the frustration of a laggy website? We've all been there. You click a button and nothing happens for two seconds. It's January 2026, and users expect things to load instantly. If your app feels slow, your users will just leave. I've spent over seven years building enterprise systems for brands like Dior and IKEA. I've learned that speed isn't just a luxury. It's a requirement for success.
-At the brand, I share my real-world times to help you build better software. I want to show you how to make your code fly. Good JavaScript speed improvement can save your project from failing. It keeps your users happy and your server costs low. This guide will show you just how to speed up your web apps today.
-We'll look at why speed …]]></summary>
+The first episode discussed the thinkers; this episode focuses on the doers.
+This is not an argument against automation or AI.
+It is an argument against mistaking acceleration for succession.
+
+The doers
+Execute -> Build -> Operate
+As they work, they accumulate the tacit/tribal knowledge
+
+Earn battle scars, and more importantly, the judgment
+
+Over time, some transition to become "The Thinkers"
+See...
+The doers are thinkers in incubation
+In other words
+You don’t grow thinkers by hiring them.
+Automation attacks the doer layer first.
+Not because doers lack value, but because:
+their work is observable
+repeatable
+specifiable
+The immediate gain looks rational:
+cheaper
+faster
+scalable
+But the unseen loss is this:
+You are not just removing labour...
+That is the seed corn.
+AI is absolutely needed
+The missing point is this:
+If AI is to automate the work that once trained our future thinkers, then we must deliberately invent new paths for judgment to form.]]></summary>
         <author>
-            <name>i Ash</name>
+            <name>JustC</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Zephyr on Arduino UNO Q MCU]]></title>
+        <id>https://dev.to/danielmx/zephyr-on-arduino-uno-q-mcu-5974</id>
+        <link href="https://dev.to/danielmx/zephyr-on-arduino-uno-q-mcu-5974"/>
+        <updated>2026-01-02T19:53:20.000Z</updated>
+        <summary type="html"><![CDATA[The Arduino UNO Q have a STM32U585 inside doing all the Arduino stuff, it communicates with main processor and GPIO pins on board; it seems the only way to get a pinout is the schematics:
+https://docs.arduino.cc/resources/schematics/ABX00162-schematics.pdf
+The pinout image have brief information about the MCU pins
+ 
+Source
+But only shows that pins belong to MCU, and the only indication are on RGB LED 3 and 4 that shows the GPIO used for the MCU.
+For this example it will be needed:
+Zephyr (on the PC Host, probably can be reused the version in UNO Q)
+ADB tools (to connect to the device from PC Host)
+You need to install / update Zephyr. Is important to have at least version 4.3.0 as that is the first version with support
+It can be used the blinky example directly from documentation:
+# use the…]]></summary>
+        <author>
+            <name>Daniel Guerrero</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fundamentals, Documentation, and Discomfort: Keys to Dev Growth]]></title>
+        <id>https://dev.to/koralarts/fundamentals-documentation-and-discomfort-keys-to-dev-growth-310n</id>
+        <link href="https://dev.to/koralarts/fundamentals-documentation-and-discomfort-keys-to-dev-growth-310n"/>
+        <updated>2026-01-02T19:50:12.000Z</updated>
+        <summary type="html"><![CDATA[During my tenure as a software engineer of 10 years, mostly in a startup environment, I've seen many developers of varying skill levels come and go. I've noticed a few things that hinder their development. As I reflect, I realized that I suffered from these as well, especially early on in my career.
+I'm writing this post to hopefully help you reflect as well, and ask yourself, "Am I doing any of these?"
+It's imperative you learn the fundamentals of software development; at the minimum, understand the fundamentals of the language you work with. Having the fundamentals provides a solid foundation for you to learn new languages, concepts, and frameworks efficiently.
+You might say to yourself, "I already know the fundamentals. I use this language everyday." Do you really understand it on a dee…]]></summary>
+        <author>
+            <name>Karl Castillo</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[search_path Hijacking: The PostgreSQL Attack You've Never Heard Of]]></title>
+        <id>https://dev.to/ofri-peretz/searchpath-hijacking-the-postgresql-attack-youve-never-heard-of-10co</id>
+        <link href="https://dev.to/ofri-peretz/searchpath-hijacking-the-postgresql-attack-youve-never-heard-of-10co"/>
+        <updated>2026-01-02T19:49:31.000Z</updated>
+        <summary type="html"><![CDATA[Most developers know about SQL injection. Few know about search_path hijacking.
+It's just as dangerous.
+PostgreSQL's search_path determines which schema to look in when you reference an unqualified table name.
+-- With search_path = public, these are equivalent:
+SELECT * FROM users;
+SELECT * FROM public.users;
+
+If an attacker can control the search_path, they can redirect your queries to malicious tables:
+// ❌ Dynamic search_path from user input
+const schema = req.query.tenant; // Attacker controls this
+await client.query(`SET search_path TO ${schema}`);
+await client.query('SELECT * FROM users'); // Now queries attacker's schema
+
+The attacker:
+Creates a schema with a malicious users table
+Sets search_path to their schema
+Your query returns their fake data
+
+
+
+Attack
+Impact
+
+
+
+
+Data theft
+Ret…]]></summary>
+        <author>
+            <name>Ofri Peretz</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bits & Bytes Explained — The True Foundation of All Software]]></title>
+        <id>https://dev.to/cristiansifuentes/bits-bytes-explained-the-true-foundation-of-all-software-1l8d</id>
+        <link href="https://dev.to/cristiansifuentes/bits-bytes-explained-the-true-foundation-of-all-software-1l8d"/>
+        <updated>2026-01-02T19:48:28.000Z</updated>
+        <summary type="html"><![CDATA[Every message you send, every image you see, every app you open — from emojis to operating systems — is built on two deceptively simple concepts:
+bits and bytes.
+They are the atoms of the digital world.
+
+And if you truly want to understand software engineering, you must understand them deeply.
+This article breaks down what bits and bytes really are, why they exist, and how they power everything from IP addresses to emojis.
+A bit (short for binary digit) is the smallest unit of information in computing.
+It can exist in only two possible states:
+0 or 1
+
+off or on
+false or true
+low voltage or high voltage
+At the physical level, a bit is implemented using a transistor — a tiny electronic switch that either allows electricity to flow or blocks it.
+In electronic circuits:
+A high voltage (for exa…]]></summary>
+        <author>
+            <name>Cristian Sifuentes</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Publish (On Your) Own Site, Syndicate Elsewhere]]></title>
+        <id>https://indieweb.org/POSSE#</id>
+        <link href="https://indieweb.org/POSSE#"/>
+        <updated>2026-01-02T19:48:25.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🚀_Ultimate_Web_Framework_Speed_Showdown[20260102194711]]]></title>
+        <id>https://dev.to/member_6331818c/ultimatewebframeworkspeedshowdown20260102194711-5g8j</id>
+        <link href="https://dev.to/member_6331818c/ultimatewebframeworkspeedshowdown20260102194711-5g8j"/>
+        <updated>2026-01-02T19:47:13.000Z</updated>
+        <summary type="html"><![CDATA[As a full-stack engineer with 10 years of development experience, I've witnessed the rise and fall of countless web frameworks. From the early jQuery era to today's high-performance Rust frameworks, I've seen the rapid evolution of web development technology. Today I want to share a performance comparison test that shocked me and completely changed my understanding of web framework performance.
+In 2024, the performance requirements for web applications are getting higher and higher. Whether it's e-commerce websites, social platforms, or enterprise applications, users expect millisecond-level response times. I spent a full month conducting comprehensive performance tests on mainstream web frameworks on the market, including Tokio, Rocket, Gin, Go standard library, Rust standard library, Nod…]]></summary>
+        <author>
+            <name>member_6331818c</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Server headers that talk too much]]></title>
+        <id>https://dev.to/liudasjan/server-headers-that-talk-too-much-10kp</id>
+        <link href="https://dev.to/liudasjan/server-headers-that-talk-too-much-10kp"/>
+        <updated>2026-01-02T19:43:58.000Z</updated>
+        <summary type="html"><![CDATA[People like to say “security is hard”.
+If your API responds with something like:
+Server: nginx/1.18.0
+Apache/2.4.49
+
+you’ve already helped the attacker more than you think.
+Why this matters in practice? Exposing an exact server version makes fingerprinting trivial:
+identify the tech
+identify the version
+map it to known CVEs
+automate exploitation
+This isn’t theory. This is how large-scale attacks start.
+OWASP explicitly points out that knowing the server and its version helps determine whether it’s vulnerable — especially when older or partially patched components are involved.
+“But we patch regularly…” Good. Then this check passes and nobody cares. Until: 
+the reverse proxy wasn’t updated
+OpenSSL lagged behind
+a rushed hotfix re-enabled “helpful” headers
+And because nothing breaks, nobody notices. That’s why this issue survives in production for months.
+The fix is boring (and that’s good)
+Don’t disclose server versions in headers
+Keep banners minimal 
+Don’t leak framework or proxy details unless absolutely necessary
+Remove version info → remove a whole class of cheap attacks.
+I documented this check in more detail here]]></summary>
+        <author>
+            <name>Liudas</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Grok Can't Apologize. So Why Do Headlines Keep Saying It Did?]]></title>
+        <id>https://www.readtpa.com/p/grok-cant-apologize-grok-isnt-sentient</id>
+        <link href="https://www.readtpa.com/p/grok-cant-apologize-grok-isnt-sentient"/>
+        <updated>2026-01-02T19:30:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[4th Edition Unix in the Browser]]></title>
+        <id>https://unixv4.dev/</id>
+        <link href="https://unixv4.dev/"/>
+        <updated>2026-01-02T19:18:36.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[TinyTinyTPU: 2×2 systolic-array TPU-style matrix-multiply unit deployed on FPGA]]></title>
+        <id>https://github.com/Alanma23/tinytinyTPU-co</id>
+        <link href="https://github.com/Alanma23/tinytinyTPU-co"/>
+        <updated>2026-01-02T19:13:24.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -109,150 +401,20 @@ We'll look at why speed …]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Advent of Code: What's the difference between a strip club and a ballet studio?]]></title>
-        <id>https://dev.to/rkeeves/advent-of-code-whats-the-difference-between-a-strip-club-and-a-ballet-studio-135m</id>
-        <link href="https://dev.to/rkeeves/advent-of-code-whats-the-difference-between-a-strip-club-and-a-ballet-studio-135m"/>
-        <updated>2026-01-02T18:48:07.000Z</updated>
-        <summary type="html"><![CDATA[Advent of Code is an annual coding puzzle.
-We're going to deal with AoC 2025 Day 1: Secret Entrance, Part 2.
-The straightforward solution is a run-length-encoded list unrolling algorithm.
-On some inputs - which we'll see later - this approach is quite slow (here's a Rust snippet from an author, I came across his code in his pretty good code walkthrough video):
-
-Disclaimer: It wasn't ever supposed to be run on this input. There's nothing wrong with using the run-length-encoded list unrolling algorithm for the AoC inputs.
-The Other Guys is a Hollywood movie about Ballet.
-Can this Hollywood movie help us?
-The puzzle is a bit tricky... it involves a clock, and moving the clock's pointer...
-I mean:
-
-The moves of the clock are a bit complicated, so you have to watch out for edge cases.
-Here's an…]]></summary>
-        <author>
-            <name>rkeeves</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AI in Guyana: What Is It, Where We Already Use It, and Why It Matters]]></title>
-        <id>https://dev.to/xbze3/ai-in-guyana-what-is-it-where-we-already-use-it-and-why-it-matters-2820</id>
-        <link href="https://dev.to/xbze3/ai-in-guyana-what-is-it-where-we-already-use-it-and-why-it-matters-2820"/>
-        <updated>2026-01-02T18:46:55.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-Technological advancement is inevitable, and artificial intelligence is simply the next chapter. Computers and digital computational devices have evolved at an extraordinary pace, becoming such a cornerstone of daily life that it is easy to forget they have existed for only about eighty years. Alongside the rapid development of computing hardware, there has been equally significant progress in the fields that study and expand its capabilities. One of the most consequential, and compelling, of these fields is artificial intelligence.
-Early forms of AI date back to 1950, just five years after the creation of the first digital computer in 1945. One of the earliest demonstrations involved a remote-controlled mechanical mouse, developed by Claude Shannon, that could navigate a ma…]]></summary>
-        <author>
-            <name>xb</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Analyzed 4.78M HN Items to Create an Interactive 2025 Infographic]]></title>
-        <id>https://dev.to/andrey_andrade_7a534cfc95/i-analyzed-478m-hn-items-to-create-an-interactive-2025-infographic-nm6</id>
-        <link href="https://dev.to/andrey_andrade_7a534cfc95/i-analyzed-478m-hn-items-to-create-an-interactive-2025-infographic-nm6"/>
-        <updated>2026-01-02T18:46:38.000Z</updated>
-        <summary type="html"><![CDATA[I downloaded the complete Hacker News archive (160 SQLite shards via StaticNews) and analyzed all 2025 data to create a GitHub Octoverse-style interactive infographic.
-https://andreyandrade.com/static/hn-universe/
-Key Findings
-AI Dominated 2025
-The AI conversation on HN shifted dramatically:
-AI-related stories grew from 8% to 13% of all submissions
-Claude overtook ChatGPT in mentions during H2
-DeepSeek was January's phenomenon, then vanished (-92%)
-The "Models Race" shows Claude at +482% growth vs GPT's +65%
-Programming Languages
-
-
-
-Language
-Growth
-Avg Points
-
-
-
-
-Zig
-+282%
-59
-
-
-Rust
-+97%
-45
-
-
-Ruby
-+41%
-38
-
-
-Go
-+23%
-42
-
-
-
-Zig is the most hyped language of 2025. Ruby had a surprising comeback.
-Job Market (4,885 postings analyzed)
-Remote:  57% ████████████████████░░░░░░░░░░░░░░░
-71% mention A…]]></summary>
-        <author>
-            <name>Andrey Andrade</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[📈_Scalability_Architecture_Design[20260102184530]]]></title>
-        <id>https://dev.to/member_8659c28a/scalabilityarchitecturedesign20260102184530-5d5k</id>
-        <link href="https://dev.to/member_8659c28a/scalabilityarchitecturedesign20260102184530-5d5k"/>
-        <updated>2026-01-02T18:45:31.000Z</updated>
-        <summary type="html"><![CDATA[As a veteran who has experienced multiple system architecture evolutions, I deeply understand the importance of scalability for web applications. From monolithic to microservices architecture, I have witnessed countless successes and failures in system scalability. Today I want to share practical experience in web framework scalability design based on real project experience.
-During the system architecture evolution process, we face several core challenges:
-As system scale expands, architecture complexity grows exponentially.
-Maintaining data consistency in distributed environments becomes extremely difficult.
-Performance monitoring and troubleshooting become complex in large-scale systems.
-I designed a comprehensive scalability test covering different architecture patterns:
-
-
-
-Framework
-S…]]></summary>
-        <author>
-            <name>member_8659c28a</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Ultimate Guide to Data Engineering on Google Cloud (2026)]]></title>
-        <id>https://dev.to/tech_croc_f32fbb6ea8ed4/the-ultimate-guide-to-data-engineering-on-google-cloud-2026-30a7</id>
-        <link href="https://dev.to/tech_croc_f32fbb6ea8ed4/the-ultimate-guide-to-data-engineering-on-google-cloud-2026-30a7"/>
-        <updated>2026-01-02T18:42:35.000Z</updated>
-        <summary type="html"><![CDATA[Data is no longer just a byproduct of business; it is the engine. And among the "Big Three" cloud providers, Google Cloud Platform (GCP) has arguably staked its claim as the premier destination for data and analytics.
-Why? Because Google is a data company. The tools available to you as a Data Engineer on GCP - like BigQuery and Pub/Sub - are the same technologies Google uses to run Search, YouTube, and Gmail.
-If you are looking to master Data Engineering on Google Cloud, this guide covers the essential architecture, the "Big 4" tools you must know, and how to structure your learning path.
-Why GCP for Data Engineering?
-Before we talk about the tools, we need to talk about the philosophy. GCP distinguishes itself with a Serverless-First approach.
-Scalability: Services like BigQuery can scale…]]></summary>
-        <author>
-            <name>Tech Croc</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[chatfaster, building ai chat saas, multi-llm chat app development -...]]></title>
-        <id>https://dev.to/ash_dubai/chatfaster-building-ai-chat-saas-multi-llm-chat-app-development--4ipd</id>
-        <link href="https://dev.to/ash_dubai/chatfaster-building-ai-chat-saas-multi-llm-chat-app-development--4ipd"/>
-        <updated>2026-01-02T18:38:08.000Z</updated>
-        <summary type="html"><![CDATA[How I Built ChatFaster: Building AI Chat SaaS, Multi-LLM Chat App Coding
-
-
-Have you ever felt overwhelmed by the number of AI models coming out every week? In January 2026, the pace of AI feels faster than ever. I wanted a single place to use GPT-4o, Claude 4, and Gemini 2. 5 without jumping between five different tabs. That's why I started ChatFaster, building ai chat saas, multi-llm chat app coding as a solo project to solve my own workflow problems.
-Building a production-grade app isn't just about a pretty chat interface. It’s about handling complex state management across different providers while keeping things fast. I’ve spent the last year refining this system. I want to share the technical choices, the late-night bugs. The architecture that makes it all work.
-In this guide, I’ll wa…]]></summary>
-        <author>
-            <name>i Ash</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Fighting Fire with Fire: Scalable Oral Exams]]></title>
         <id>https://www.behind-the-enemy-lines.com/2025/12/fighting-fire-with-fire-scalable-oral.html</id>
         <link href="https://www.behind-the-enemy-lines.com/2025/12/fighting-fire-with-fire-scalable-oral.html"/>
         <updated>2026-01-02T18:18:47.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Accounting for Computer Scientists (2011)]]></title>
+        <id>https://martin.kleppmann.com/2011/03/07/accounting-for-computer-scientists.html</id>
+        <link href="https://martin.kleppmann.com/2011/03/07/accounting-for-computer-scientists.html"/>
+        <updated>2026-01-02T18:16:07.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -276,6 +438,16 @@ In this guide, I’ll wa…]]></summary>
         <summary type="html"><![CDATA[The chairman of the former bitcoin miner-turned-ether treasury firm reiterated his view that Ethereum is the future of finance.]]></summary>
         <author>
             <name>Olivier Acuna</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The rsync algorithm (1996) [pdf]]]></title>
+        <id>https://www.andrew.cmu.edu/course/15-749/READINGS/required/cas/tridgell96.pdf</id>
+        <link href="https://www.andrew.cmu.edu/course/15-749/READINGS/required/cas/tridgell96.pdf"/>
+        <updated>2026-01-02T16:56:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -379,16 +551,6 @@ In this guide, I’ll wa…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Dealta – A game-theoretic decentralized trading protocol]]></title>
-        <id>https://github.com/orgs/Dealta-Foundation/repositories</id>
-        <link href="https://github.com/orgs/Dealta-Foundation/repositories"/>
-        <updated>2026-01-02T12:31:03.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Assorted less(1) tips]]></title>
         <id>https://blog.thechases.com/posts/assorted-less-tips/</id>
         <link href="https://blog.thechases.com/posts/assorted-less-tips/"/>
@@ -406,16 +568,6 @@ In this guide, I’ll wa…]]></summary>
         <summary type="html"><![CDATA[Prospective customers could purchase weapons such as missiles, tanks and drones using crypto, according to a government website.]]></summary>
         <author>
             <name>Jamie Crawley</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: I built a clipboard tool to strip/keep specific formatting like Italics]]></title>
-        <id>https://custompaste.com/</id>
-        <link href="https://custompaste.com/"/>
-        <updated>2026-01-02T12:07:00.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -562,16 +714,6 @@ The post MediaTek Introduced Mid-Range Dimensity 7100 Chipset appeared first on 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Round and Round]]></title>
-        <id>https://www.futilitycloset.com/2026/01/02/round-and-round/</id>
-        <link href="https://www.futilitycloset.com/2026/01/02/round-and-round/"/>
-        <updated>2026-01-02T08:16:21.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Bitcoin ETFs lose record $4.57 billion in two months]]></title>
         <id>955fa033-d7aa-4d8f-834e-ff99fcdb15d2</id>
         <link href="https://www.coindesk.com/markets/2026/01/02/bitcoin-etfs-lose-record-usd4-57-billion-in-two-months"/>
@@ -590,16 +732,6 @@ The post MediaTek Introduced Mid-Range Dimensity 7100 Chipset appeared first on 
 The post Melaka Implements Smart Tourism Melaka AI As Part Of Its Tourism Strategy appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Kiran Ganesan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[FreeBSD: Home NAS, part 1 – configuring ZFS mirror (RAID1)]]></title>
-        <id>https://rtfm.co.ua/en/freebsd-home-nas-part-1-configuring-zfs-mirror-raid1/</id>
-        <link href="https://rtfm.co.ua/en/freebsd-home-nas-part-1-configuring-zfs-mirror-raid1/"/>
-        <updated>2026-01-02T06:48:32.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -717,16 +849,6 @@ The post Samsung Galaxy S26 Series Leak Suggests 25 February Launch, Same Pricin
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Can Bundler be as fast as uv?]]></title>
-        <id>https://tenderlovemaking.com/2025/12/29/can-bundler-be-as-fast-as-uv/</id>
-        <link href="https://tenderlovemaking.com/2025/12/29/can-bundler-be-as-fast-as-uv/"/>
-        <updated>2026-01-01T21:37:10.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[December FOMC minutes show the Fed is worried short-term funding could seize up]]></title>
         <id>07491a48-36b9-4d15-9e47-f4e7ef910426</id>
         <link href="https://www.coindesk.com/policy/2026/01/01/december-fomc-minutes-show-the-fed-is-worried-short-term-funding-could-seize-up"/>
@@ -741,16 +863,6 @@ The post Samsung Galaxy S26 Series Leak Suggests 25 February Launch, Same Pricin
         <id>https://henry.codes/writing/a-website-to-destroy-all-websites/</id>
         <link href="https://henry.codes/writing/a-website-to-destroy-all-websites/"/>
         <updated>2026-01-01T20:36:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Cameras and Lenses (2020)]]></title>
-        <id>https://ciechanow.ski/cameras-and-lenses/</id>
-        <link href="https://ciechanow.ski/cameras-and-lenses/"/>
-        <updated>2026-01-01T17:18:01.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -918,16 +1030,6 @@ The post Prasarana Rolls Out Reverse Vending Machines At Select LRT Stations app
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Can I throw a C++ exception from a structured exception?]]></title>
-        <id>https://devblogs.microsoft.com/oldnewthing/20170728-00/?p=96706</id>
-        <link href="https://devblogs.microsoft.com/oldnewthing/20170728-00/?p=96706"/>
-        <updated>2025-12-29T10:28:38.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Miri: Practical Undefined Behavior Detection for Rust [pdf]]]></title>
         <id>https://research.ralfj.de/papers/2026-popl-miri.pdf</id>
         <link href="https://research.ralfj.de/papers/2026-popl-miri.pdf"/>
@@ -942,6 +1044,16 @@ The post Prasarana Rolls Out Reverse Vending Machines At Select LRT Stations app
         <id>https://github.com/thingsboard/thingsboard</id>
         <link href="https://github.com/thingsboard/thingsboard"/>
         <updated>2025-12-28T11:19:23.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[C –> Java != Java –> LLM]]></title>
+        <id>http://www.observationalhazard.com/2025/12/c-java-java-llm.html</id>
+        <link href="http://www.observationalhazard.com/2025/12/c-java-java-llm.html"/>
+        <updated>2025-12-28T04:40:56.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
