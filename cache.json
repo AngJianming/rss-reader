@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/harishkotra/how-to-dynamically-switch-local-llms-with-langchain-5aje",
-          "author": "Harish Kotra (he/him)",
-          "description": "In production RAG applications, you often need to evaluate different models against the same prompts. Does Llama 3.2 handle formatting better? Is Gemma 3 (12B) better at reasoning?\nHardcoding model swaps or reloading your application is slow. In this post, I'll show you how to use LangChain's configurable_alternatives to build a Streamlit app where you can hot-swap models per request.\nWe want a User Interface (Streamlit) that passes a configuration object to our Logic Layer (LangChain). The Logic Layer then routes the request to the appropriate Model Provider (Ollama).\ngraph TD\n    User[User via Streamlit] -->|Selects Model| UI[UI Config]\n    UI -->|config='gemma'| Chain[LangChain Runnable]\n\n    subgraph \"Swappable Backend\"\n        Chain -->|Default| Llama[Llama 3.2]\n        Chain -->|Alternative| Gemma[Gemma 3 (12B)]\n    end\n\n    Llama --> Output\n    Gemma --> Output\n\nThe core magic lies in the configurable_alternatives method on any Runnable (including LLMs).\nfrom langchain_ollama import OllamaLLM\nfrom langchain_core.runnables import ConfigurableField\n\n# 1. Base Model\nllm = OllamaLLM(model=\"llama3.2\")\n\n# 2. Add Alternatives\nllm_swappable = llm.configurable_alternatives(\n    ConfigurableField(id=\"model_provider\"), \n    default_key=\"llama\",\n    gemma=OllamaLLM(model=\"gemma3:12b\")\n)\n\n# 3. Invoke with Config\nresponse = llm_swappable.invoke(\n    \"Why is the sky blue?\", \n    config={\"configurable\": {\"model_provider\": \"gemma\"}}\n)\n\nThis approach decouples your Chain Definition from your Execution Configuration. You build the pipeline once, and modify its behavior at runtime. This is essential for:\n A/B Testing: Randomly routing 50% of traffic to a new model.\n User Preference: Letting power users choose their \"engine\".\n Fallback: If the primary model times out, switch to a backup.\nBy combining Streamlit for the frontend and LangChain's LCEL for dynamic routing, we built a robust \"Model Playground\" in under 50 lines of code.\nGithub repo is here: https://github.com/harishkotra/langchain-ollama-cookbook",
-          "link": "https://dev.to/harishkotra/how-to-dynamically-switch-local-llms-with-langchain-5aje",
-          "publishedOn": "2026-02-07T12:30:00.000Z",
-          "wordCount": 1027,
-          "title": "How to Dynamically Switch Local LLMs with LangChain",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0jp0sgggqdqjud8hwqqr.jpg"
+          "id": "https://dev.to/srsandrade/my-data-lake-runs-on-mongodb-and-postgresql-and-im-not-sorry-1g2j",
+          "author": "Sara A.",
+          "description": "A Brief History of How I Angered Absolutely No One (So Far)\n\n\nBefore we ever talked about technologies, we were dealing with a fairly uncomfortable data problem. We were collecting large volumes of data from multiple external sources, many of which we did not fully control or even fully understand. At the point of collection, the data arrived with little reliable context, inconsistent structure, and no clear guarantees about meaning.\nMore importantly, the data could not be meaningfully analysed at ingestion time. Individual values were not inherently valid or invalid, useful or useless. Their significance only emerged later, once they were combined with other datasets, configuration, and a set of calculations applied in a subsequent processing phase.\nTo make this harder, the same incoming …",
+          "link": "https://dev.to/srsandrade/my-data-lake-runs-on-mongodb-and-postgresql-and-im-not-sorry-1g2j",
+          "publishedOn": "2026-02-07T13:34:10.000Z",
+          "wordCount": 3380,
+          "title": "My Data Lake Runs on MongoDB and PostgreSQL and I’m Not Sorry",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fu7g4yltixb42bb9wtqp9.png"
         },
         {
-          "id": "https://dev.to/hosby/why-i-use-typetify-a-type-safe-alternative-to-lodash-3gp0",
-          "author": "Siddick FOFANA",
-          "description": "Runtime TypeScript helpers that actually protect you when it matters most.\nTL;DR: I built Typetify — a zero-dependency utility library for TypeScript that provides runtime safety, not just compile-time types. Think Lodash, but TypeScript-first.\nnpm install typetify\n\nLodash is great. I've used it for years. But when you add TypeScript to the mix, something feels... off.\n_.pick() Trap\n\n\n\n\n\nimport _ from 'lodash'\n\nconst user = {\n  id: 1,\n  name: 'John',\n  email: 'john@example.com',\n  password: 'secret123'\n}\n\n// TypeScript says this is fine 🤷\nconst safe = _.pick(user, ['id', 'name', 'emial']) // Typo!\n//                                        ^^^^^^\n\n// Runtime: { id: 1, name: 'John', emial: undefined }\n// No error, no warning, just silent failure\n\nTypeScript can't catch this because Lodash's…",
-          "link": "https://dev.to/hosby/why-i-use-typetify-a-type-safe-alternative-to-lodash-3gp0",
-          "publishedOn": "2026-02-07T12:28:45.000Z",
-          "wordCount": 1832,
-          "title": "Why I use Typetify: A Type-Safe Alternative to Lodash",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fils35xtxvevo8jnef1qy.png"
+          "id": "https://dev.to/aws-builders/iam-security-audit-3lp1",
+          "author": "Toluwanimi Emmanuel Banji-Idowu",
+          "description": "This is Part 4 of a 4-part series I wrote while prepping to renew my AWS Security Specialty certification (SCS-C03). Parts 1 through 3 cover IAM foundations, STS and federation, and advanced patterns like ABAC, SCPs, and permission boundaries. You can find them on my blog at tolubanji.com.\nI ran IAM Access Analyzer on an account I'd been managing for quite a while now and found 14 resources with external access. Three S3 buckets, two Lambda functions, and nine IAM roles that could be assumed by accounts outside our organization. I knew about one of the buckets. The rest were news to me.\nTraced it back to a CloudFormation template with an overly permissive trust policy that had been copied across 18 months of microservice deployments. Nobody noticed because nothing broke.\nIf Parts 1 through…",
+          "link": "https://dev.to/aws-builders/iam-security-audit-3lp1",
+          "publishedOn": "2026-02-07T13:27:46.000Z",
+          "wordCount": 2804,
+          "title": "IAM Security Audit",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbhk8nj71q068qwn8hfcr.png"
         },
         {
-          "id": "https://dev.to/eunit/how-to-scrape-telegram-channels-the-complete-guide-to-extracting-posts-media-and-metadata-2ff",
-          "author": "Emmanuel Uchenna",
-          "description": "How to scrape Telegram channels: The complete guide to extracting posts, media, and metadata\n\n\nTelegram has evolved into a global powerhouse for real-time information, hosting over 1 billion active users in 2026. From niche specialized groups to massive news broadcasts with millions of subscribers, the platform is a goldmine for market researchers, AI developers, and competitive intelligence analysts. However, the platform is notoriously difficult to scrape. Its data is locked behind a mobile-first interface and strictly protected by anti-bot measures.\nManual data collection doesn't scale in today's era of automation. If you are trying to monitor trends across a hundred channels or build a dataset for a large language model, you need an automated solution. This is where Telegram Channels S…",
-          "link": "https://dev.to/eunit/how-to-scrape-telegram-channels-the-complete-guide-to-extracting-posts-media-and-metadata-2ff",
-          "publishedOn": "2026-02-07T12:28:27.000Z",
-          "wordCount": 2491,
-          "title": "How to scrape Telegram channels: The complete guide to extracting posts, media, and metadata",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqu92zg68bi0wjrs2ijz4.png"
+          "id": "https://dev.to/decoder_man/why-solana-txhash-address-take-more-storage-than-evm-5302",
+          "author": "decoder man",
+          "description": "After decoding on-chain transactions and saving to database, I realized that Solana tx_hash, address take more storage than EVM\n👇\nEVM\nHex encoding\n0x + 64 hex chars\n~66 ASCII bytes 0-9a-f\n\n\n\nSolana\nBase58 encoding\n~88–90 ASCII chars 1-9A-HJ-NP-Za-km-z\n\n\n\n➡️ Solana tx_hash is ~35–40% larger\nEVM address\n20 bytes → hex (40 chars + 0x)\nStrong prefix patterns\nLower entropy\nSolana address\n32 bytes → base58\nWider charset\nHigher entropy\n➡️ Similar visible length, but Solana compresses worse\nStorage engines (Snappy / Zstd) love:\nrepeated prefixes\nlow-entropy strings\nHex (0-9a-f) ≫ Base58 for compression\n➡️ EVM data shrinks better at block level\nAt scale:\nbillions of txs\nmultiple address fields per tx\nSmall per-field differences\n➡️ huge disk cost difference\nSolana optimizes for:\nsignatures\nruntime\nparallel execution\nEVM accidentally optimizes for:\nstorage\nanalytics\nlong-term indexing\nDifferent trade-offs. No winners, just design choices.\ntxdecoder.xyz\n\n\nTransaction decoding API — standardizing blockchain data into one unified, readable schema on Ethereum, Base, BSC, Solana\nWebsite: https://txdecoder.xyz/\nhttps://x.com/txdecoder_xyz\nhttps://t.me/txdecoder\nhttps://t.me/txdecoder_announcements\nhttps://medium.com/@txdecoder",
+          "link": "https://dev.to/decoder_man/why-solana-txhash-address-take-more-storage-than-evm-5302",
+          "publishedOn": "2026-02-07T13:21:45.000Z",
+          "wordCount": 930,
+          "title": "🧵 Why Solana tx_hash & address take more storage than EVM",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsc081z9ui31gvdkw210c.png"
         },
         {
-          "id": "https://dev.to/mike-vincent/quarks-outlines-python-code-blocks-j0n",
-          "author": "Mike Vincent",
-          "description": "Quark’s Outlines: Python Code Blocks\n\n\nOverview, Historical Timeline, Problems & Solutions\nWhen you write a Python program, you group statements together. This group is called a Python code block. A code block is a section of code that Python can run as one unit. It can be as short as one line or as long as a full module.\nYou use code blocks in many places. A function body is a code block. A class definition is a code block. Each module you import is also a code block. Python reads these blocks and sets up the right space to run them.\nPython lets you group statements into code blocks that run together.\ndef greet(name):\n    print(\"Hello,\", name)\n\ngreet(\"Ada\")\n# prints:\n# Hello, Ada\n\nThe function body is a code block. Python runs it when you call greet().\nYou use code blocks in many parts of…",
-          "link": "https://dev.to/mike-vincent/quarks-outlines-python-code-blocks-j0n",
-          "publishedOn": "2026-02-07T12:13:50.000Z",
-          "wordCount": 2331,
-          "title": "Quark's Outlines: Python Code Blocks",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Ffiles.catbox.moe%2F6wul0c.png"
+          "id": "https://dev.to/hunt092/git-is-not-magic-part-2-where-are-you-in-the-timeline-4ifn",
+          "author": "Yash Chavan",
+          "description": "Remember that question from Part 1?\n\"Where exactly are YOU in this timeline?\"\nLet's answer it.\nThe Pointer Called HEAD\n\n\nNow that we know our commits form a linked list pointing backward through time, there's one crucial piece missing: where are we right now?\nThink back to our Polaroid album. You've got all these photos laid out, but you need to know which photo represents \"now\", which step of the cake you're currently working on. Are you still layering cream? Or have you moved on to adding decorations?\nIn Git, this \"you are here\" marker is called HEAD.\nHEAD is just a pointer. That's it. It points to whichever commit you're currently looking at. Most of the time, it points to your latest commit, the present moment in your project's timeline.\ncommit 0 <- commit 1 <- commit 2 <- commit 3\n   …",
+          "link": "https://dev.to/hunt092/git-is-not-magic-part-2-where-are-you-in-the-timeline-4ifn",
+          "publishedOn": "2026-02-07T13:20:35.000Z",
+          "wordCount": 1808,
+          "title": "Git is Not Magic- Part 2: Where Are You in the Timeline?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9qemu0cqjhpmbpmln5fk.png"
         },
         {
-          "id": "https://dev.to/marcosomma/how-i-accidentally-start-sdd-by-failing-at-prompts-for-six-months-477l",
-          "author": "marcosomma",
-          "description": "The confession\n\n\nI spent the first six months of serious AI pair programming producing what I now call vibe architecture.\nYou know the pattern. You open a chat with a strong model. You explain what you want. It produces clean code fast. You feel productive. Three weeks later the repo looks like it was designed by five different people, on five different days, with five different mental models.\nEach file is locally correct. The system is globally confused.\nI would plan with the model in one session. I would implement in another. By step five the implementation had drifted far enough that the plan was basically historical fiction. Then I would come back after a weekend and lose the thread. Not because the model did something wrong. It did exactly what I asked at each moment. The issue was co…",
-          "link": "https://dev.to/marcosomma/how-i-accidentally-start-sdd-by-failing-at-prompts-for-six-months-477l",
-          "publishedOn": "2026-02-07T12:12:01.000Z",
-          "wordCount": 3681,
-          "title": "How I accidentally start SDD by failing at prompts for six months",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8xfrshnxcyw3d1d3wkkv.png"
+          "id": "https://dev.to/the-software-s-journey/like-lego-love-python-2104",
+          "author": "Willem van Heemstra",
+          "description": "Episode 1: Building Your First Brick (Defining Classes)\n\n\nRemember when you were a kid and got your first LEGO set? That moment of pure possibility, staring at a pile of colorful bricks, the instruction manual mocking you with its deceptively simple Step 1?\nWell, buckle up, because Python classes are basically LEGO instruction manuals that you get to write yourself. Except instead of losing the tiny pieces in your carpet, you’ll lose them in your codebase. Progress!\nIn LEGO-land, someone at corporate HQ designs the molds for each brick type. A 2x4 red brick isn’t just a brick - it’s one of potentially thousands of identical 2x4 red bricks, all stamped from the same master design.\nPython classes work exactly the same way (minus the Danish engineering precision):\nclass LegoBrick:\n    \"\"\"Our …",
+          "link": "https://dev.to/the-software-s-journey/like-lego-love-python-2104",
+          "publishedOn": "2026-02-07T13:20:22.000Z",
+          "wordCount": 1440,
+          "title": "Like LEGO? Love Python! 🧱🐍",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwg30at6eby6g20u7i1il.png"
         },
         {
-          "id": "https://dev.to/houdaifa360/i-wrote-my-first-article-here-devto-sharing-my-solution-for-deploying-a-laravel-app-in-a-limited-133a",
-          "author": "HoudaifaDevBS",
-          "description": "Deploying Laravel on Shared Hosting (No SSH Required)\nHoudaifaDevBS ・ Feb 7\n#laravel\n        #php\n        #tutorial\n        #cpanel",
-          "link": "https://dev.to/houdaifa360/i-wrote-my-first-article-here-devto-sharing-my-solution-for-deploying-a-laravel-app-in-a-limited-133a",
-          "publishedOn": "2026-02-07T12:08:45.000Z",
-          "wordCount": 766,
-          "title": "I wrote my first article here @dev.to, sharing my solution for deploying a Laravel app in a limited shared hosting environment without SSH access. I hope someone will find it useful, enjoy it, and leave a comment",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fv8wmvdpy05vhsmtevpd1.png"
+          "id": "https://dev.to/srijan-xi/building-devpulse-a-project-health-checker-in-80-minutes-with-github-copilot-cli-2gh6",
+          "author": "Srijan Kumar",
+          "description": "This is a submission for the GitHub Copilot CLI Challenge\nI built DevPulse, a local-first development project health checker with both CLI and GUI interfaces in just 80 minutes using GitHub Copilot CLI. It scans codebases to detect tech stacks, check repository hygiene, find security issues, and auto-fix common problems—all with zero external dependencies.\n🔗 View on GitHub\nWhen I saw the GitHub Copilot CLI Challenge, I wanted to build something that:\nActually solves a real problem (not just a toy project)\nDemonstrates Copilot's power across architecture, coding, and documentation\nCan be built fast (to show how Copilot accelerates development)\nHas professional quality (production-ready, not a hackathon demo)\nSo I asked myself: \"What do I wish existed when starting or evaluating a project?\"…",
+          "link": "https://dev.to/srijan-xi/building-devpulse-a-project-health-checker-in-80-minutes-with-github-copilot-cli-2gh6",
+          "publishedOn": "2026-02-07T13:16:20.000Z",
+          "wordCount": 2337,
+          "title": "Building DevPulse: A Project Health Checker in 80 Minutes with GitHub Copilot CLI",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fogdnq0kky5x29wqtut6t.png"
         },
         {
-          "id": "https://dev.to/houdaifa360/deploying-laravel-on-shared-hosting-no-ssh-required-1kbg",
-          "author": "HoudaifaDevBS",
-          "description": "Have you ever wondered if you can deploy a Laravel application on shared hosting without SSH?\nThe answer is YES. I faced this exact situation during my early freelance journey: a client with a tight budget needed to see the first version of his Laravel website online before moving forward. The hosting environment had no SSH, no Composer, no Artisan, no NPM.\nSo I had to figure out a safe and reliable alternative.\nIn this article, I'll share the exact workflow I use to deploy Laravel applications on shared hosting without SSH access.\nA typical Laravel project looks like this:\nproject/  \n ├── app/  \n ├── bootstrap/  \n ├── config/  \n ├── public/  \n ├── storage/  \n ├── vendor/  \n └── artisan\n\nHowever, shared hosting usually exposes only one public directory:\n├── public_html/\n\nIf there is SSH ac…",
-          "link": "https://dev.to/houdaifa360/deploying-laravel-on-shared-hosting-no-ssh-required-1kbg",
-          "publishedOn": "2026-02-07T12:04:29.000Z",
-          "wordCount": 1741,
-          "title": "Deploying Laravel on Shared Hosting (No SSH Required)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fff9cx3ecn4ujqn69y4zw.webp"
+          "id": "https://dev.to/taronvardanyan/risks-when-business-logic-is-forgotten-30o8",
+          "author": "Taron Vardanyan",
+          "description": "Sometimes, the system remembers more than the people managing it.\nIn legacy or large projects, team changes happen frequently. New product managers arrive, stakeholders may forget key details, and important business logic risks being overlooked.\nThis can lead to feature duplication, conflicts, or unintended behavior if the technical team doesn’t step in.\nExisting business rules get ignored or reimplemented\nFeatures may conflict with hidden dependencies\nProduct behavior can become inconsistent or unpredictable\nHere are key approaches and considerations:\nKeep technical documentation and system diagrams updated\nDocument existing features and dependencies clearly\nProvide explanations when rejecting or modifying requests\nBefore implementing a new request, check if the functionality already exis…",
+          "link": "https://dev.to/taronvardanyan/risks-when-business-logic-is-forgotten-30o8",
+          "publishedOn": "2026-02-07T13:15:58.000Z",
+          "wordCount": 1118,
+          "title": "Risks When Business Logic Is Forgotten",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftiownkt4uimfxozl9d1a.png"
         },
         {
-          "id": "https://dev.to/rawveg/the-invisible-workforce-20g4",
-          "author": "Tim Green",
-          "description": "Every morning across corporate offices worldwide, a familiar digital routine unfolds. Company email, check. Slack, check. Salesforce, check. And then, in separate browser windows that never appear in screen-sharing sessions, ChatGPT Plus launches. Thousands of employees are paying the £20 monthly subscription themselves. Their managers don't know. IT certainly doesn't know. But productivity metrics tell a different story.\nThis pattern represents a quiet revolution happening across the modern workplace. It's not a coordinated rebellion, but rather millions of individual decisions made by workers who've discovered that artificial intelligence can dramatically amplify their output. The numbers are staggering: 75% of knowledge workers now use AI tools at work, with 77% of employees pasting dat…",
-          "link": "https://dev.to/rawveg/the-invisible-workforce-20g4",
-          "publishedOn": "2026-02-07T12:00:00.000Z",
-          "wordCount": 5519,
-          "title": "The Invisible Workforce",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fi.snap.as%2FxixtCjRJ.png"
+          "id": "https://dev.to/zaselalk/day-01-my-journey-from-laptop-to-lab-building-a-headless-debian-server-for-devops-ai-pl5",
+          "author": "Asela",
+          "description": "Hey everyone! As an undergraduate always looking to get my hands dirty, I decided it was time to level up my old Dell Inspiron 15-3567. Instead of letting it gather dust running a resource-heavy desktop OS, I embarked on a mission: transform it into a lean, mean, headless Debian server specifically for my DevOps and Agentic AI experiments.\nThis isn't just about getting a machine running; it's about deeply understanding the underlying tech. I hope to learn lot of fundamental concepts throughout the process and hope to share my experience with you.\nAlso appreciate your supportive comments and ideas, because I’m not an expert at all and I learn things by searching and asking by AI.\nHere’s a breakdown of what I’ve been up to, and more importantly, what I’ve learned (sometimes the hard way!).\nM…",
+          "link": "https://dev.to/zaselalk/day-01-my-journey-from-laptop-to-lab-building-a-headless-debian-server-for-devops-ai-pl5",
+          "publishedOn": "2026-02-07T13:14:17.000Z",
+          "wordCount": 1517,
+          "title": "[Day 01] - My Journey from Laptop to Lab: Building a Headless Debian Server for DevOps & AI",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fswzzwkzc6k94wlr7qj35.webp"
         },
         {
-          "id": "https://dev.to/mayu2008/building-an-ultra-low-latency-live-streaming-server-a-developers-guide-to-ovenmediaengine-jco",
-          "author": "Mayuresh Smita Suresh",
-          "description": "If you've ever tried to build a live streaming app, you know the \"0.5-second latency\" dream can quickly turn into a firewall nightmare. I recently set up a sub-second latency streaming backend using OvenMediaEngine (OME) on Oracle Cloud, and I'm sharing the exact steps to save you hours of troubleshooting.\nTraditional streaming solutions like RTMP deliver video with 20-60 second latency. For interactive applications—live auctions, gaming, webinars, or financial trading—this lag breaks the user experience. WebRTC solves this with sub-second delivery, but the setup is notoriously complex.\nThe biggest culprits? Firewalls, misconfigured security rules, and incorrect IP configuration in the media server.\nOur architecture combines industry-standard tools for maximum reliability:\nOBS Studio: Prof…",
-          "link": "https://dev.to/mayu2008/building-an-ultra-low-latency-live-streaming-server-a-developers-guide-to-ovenmediaengine-jco",
-          "publishedOn": "2026-02-07T11:47:05.000Z",
-          "wordCount": 3300,
-          "title": "Building an Ultra-Low Latency Live Streaming Server: A Developer's Guide to OvenMediaEngine",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fh0nkz58p99tfplq4un0h.png"
+          "id": "https://dev.to/arcticchainlab/technical-analysis-the-anatomy-of-a-public-rugpull-2kfi",
+          "author": "ArcticChain lab",
+          "description": "Subject: BlockDAG (BDAG) – Structural Risks and Retail Fraud Allegations\nNo Treasury Transparency: Refusal to provide a real-time audit of the $452M.\nHardware Hostage: Holding back miner deliveries ensures the founders maintain 51% control of the network at launch.\n​Investor Action: If you have purchased hardware that has not arrived, you likely have the right to file for a refund under international distance-selling laws. Document all \"promises\" from Medium vs. the lack of shipment tracking as evidence for a formal IC3 or local police report.",
+          "link": "https://dev.to/arcticchainlab/technical-analysis-the-anatomy-of-a-public-rugpull-2kfi",
+          "publishedOn": "2026-02-07T13:13:29.000Z",
+          "wordCount": 1264,
+          "title": "Technical Analysis: The Anatomy of a Public Rugpull",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fucsw3yibupoz0l6qp4sv.png"
         },
         {
-          "id": "https://dev.to/es2026/openclaw-meets-anyapiai-how-to-scrape-the-web-without-losing-your-mind-2cci",
-          "author": "E S",
-          "description": "Let’s be real for a second. Web scraping used to be a nightmare of broken CSS selectors and constant cat-and-mouse games with site updates. If you are tired of your scrapers breaking because a developer changed a div to a section, you are in the right place.\nToday we are combining OpenClaw (the eyes and hands) with AnyAPI.ai (the brain). This combo lets you turn any messy website into clean JSON without writing a single line of fragile selector code.\n‍\n\nWhat is the deal with OpenClaw?\nIt handles the scrolling, the clicking, and the messy HTML. But to actually understand what it’s looking at, it needs to talk to a Large Language Model (LLM). That is where things usually get annoying with API keys and regional blocks.\n‍\n\nEnter AnyAPI.ai: The ultimate LLM shortcut\nOne billing setup:\nOpenAI-compatible:\nNo borders:\n‍\n\nThe 3-minute setup\n‍\n**\nThe config (The .env way)**\nThe cleanest way to do this is to set up a .env file. We are going to \"trick\" OpenClaw into thinking it is talking to OpenAI, while actually routing it through AnyAPI.\n`# Redirect OpenClaw to the AnyAPI gateway\nhttps://api.anyapi.ai/v1\"\n` Your AnyAPI Key goes here\nPick your favorite model from the AnyAPI list\n\n‍\nThe Python code**\nHere is a simple script to get you started. No complex setup, just pure data extraction.\n`from openclaw import OpenClaw\nWe point the base_url to AnyAPI\nhttps://api.anyapi.ai/v1\",\nasync def scrape_site():\nprint(\"Working my magic...\")\n\nresult = await claw.scrape(\n    url=\"https://example-shop.com/product\",\n    schema=my_schema\n)\n\n!\n    print(f\"Here is your data: {result}\")\nif name == \"main\":\nPro-tips for a better experience\nTimeouts are your friend:\nModel switching:\nFinal thoughts\nBy pairing OpenClaw with AnyAPI.ai, you have essentially built a scraper that is \"future-proof.\" Even if the website changes its entire design tomorrow, the AI will still find your data.",
-          "link": "https://dev.to/es2026/openclaw-meets-anyapiai-how-to-scrape-the-web-without-losing-your-mind-2cci",
-          "publishedOn": "2026-02-07T11:43:28.000Z",
-          "wordCount": 1297,
-          "title": "OpenClaw meets AnyAPI.ai: How to scrape the web without losing your mind",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fm2war47q5vvk2bwo59m2.png"
+          "id": "https://dev.to/getdevits/why-most-saas-boilerplates-fail-european-developers-44g9",
+          "author": "Devits",
+          "description": "If you're building a SaaS in Europe, you've probably looked at boilerplates. Ship faster, skip the boring setup, focus on your product. Sounds great.\nBut here's the problem: most boilerplates are built for the US market.\nAnd that creates real issues when you're trying to launch in the EU.\nStripe is everywhere. Almost every boilerplate uses it. But Stripe isn't always the best choice for European businesses.\nSome EU countries have low Stripe adoption\nLocal payment methods (iDEAL in Netherlands, Bancontact in Belgium) aren't supported by default\nEuropean customers often prefer local alternatives\nMollie is built for Europe. It supports local payment methods out of the box, has transparent pricing, and is designed with EU businesses in mind.\nYet almost no boilerplate includes Mollie. You're st…",
+          "link": "https://dev.to/getdevits/why-most-saas-boilerplates-fail-european-developers-44g9",
+          "publishedOn": "2026-02-07T13:12:37.000Z",
+          "wordCount": 1117,
+          "title": "Why Most SaaS Boilerplates Fail European Developers",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmtev7omo9qh0lvg2mwq5.png"
         },
         {
-          "id": "https://dev.to/shinomontaz/russias-internet-filtering-infrastructure-evolution-and-architecture-cel",
-          "author": "Denis Rybakov",
-          "description": "Part 1 of the series: \"Internet Censorship in Russia: A Technical Deep Dive\"\nEducational Purpose: This article examines the technical architecture of internet filtering systems for educational purposes. The author does not encourage violation of local laws. All information is based on publicly available sources and open-source research.\nWhat makes Russia's internet filtering infrastructure technically interesting for us, engineers:\nScale: Distributed real-time system operating at main network speeds\nComplexity: Combining networking, cryptography, and ML/staticsics in a single architecture\nEvolution: A genuine \"arms race\" of algorithms, protocols and ideas happening in real-time\nArchitecture: Lessons applicable to any high-throughput, stateful inspection system\nHere we examines the technica…",
-          "link": "https://dev.to/shinomontaz/russias-internet-filtering-infrastructure-evolution-and-architecture-cel",
-          "publishedOn": "2026-02-07T11:37:15.000Z",
-          "wordCount": 3012,
-          "title": "Russia's Internet Filtering Infrastructure: Evolution and Architecture",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0jgyp7jvp80kn3u7d9ps.png"
+          "id": "https://dev.to/marcus_jh/i-supercharged-my-goals-with-ai-react-native-mandaact-110-update-446a",
+          "author": "Marcus",
+          "description": "The Problem: Planning is Easy, Doing is Hard\n\n\nWe've all been there with New Year's resolutions. We write down \"Get Fit\", \"Learn Rust\", or \"Start a Side Project\". But a month later, the motivation fades. \nWhy? Because goals feel distant and abstract.\nI built MandaAct to solve this using the Mandalart (9x9 Grid) technique. It breaks big goals down into bite-sized actions. But even with a great plan, execution needs a smart assistant.\nThat's why I'm excited to share the MandaAct 1.1.0 Update: The \"AI & Clarity\" Update.\nA plan is useless if it's vague. \"Exercise more\" is a wish, not a plan. \"Do 30 pushups daily\" is a plan.\nIn 1.1.0, I introduced Goal Diagnosis. The app analyzes your grid and gives you a Clarity Score.\n\n(Caption: The new Report screen showing 34% completion and 100% clarity score)\nIt checks:\n  Specificity: Are your actions concrete?\n  Measurability: Did you set a frequency (e.g., \"Daily\", \"Weekly\")?\nFiling a 9x9 grid means coming up with 64 actionable tasks. That's mentally exhausting. Sometimes you just stare at a blank cell.\nIn 1.1.0, AI Suggestions come to the rescue.\n\n(Caption: AI suggesting concrete actions like 'Morning Routine' and 'Mindful Breathing' for a health goal)\n  Idea Generation: Stuck on \"Financial Stability\"? The AI suggests actions you might not have thought of (e.g., \"Review subscriptions monthly\", \"Set up auto-transfer\").\n  Actionable & Specific: It doesn't just give generic advice; it gives you checkable tasks.\nNow, planning your goals feels less like homework and more like assembling a strategy with a smart assistant.\nIf you're struggling to stick to your goals, give MandaAct a try. The 1.1.0 update is live on the App Store.\n👉 Download on App Store\nWeb Landing Page\nLet me know what you think! I'm actively building based on feedback.\n\n\n  \n  \n  productivity #indiehackers #buildinpublic",
+          "link": "https://dev.to/marcus_jh/i-supercharged-my-goals-with-ai-react-native-mandaact-110-update-446a",
+          "publishedOn": "2026-02-07T13:12:28.000Z",
+          "wordCount": 1028,
+          "title": "I Supercharged My Goals with AI & React Native (MandaAct 1.1.0 Update)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fraw.githubusercontent.com%2Fhevi35-coder%2Fdevto-publisher%2Fmain%2Fassets%2Fmandaact_intro_cover.png"
         },
         {
-          "id": "https://dev.to/mrakdon/how-ai-automation-is-redefining-junior-developer-roles-and-threatening-the-future-of-software-10hb",
-          "author": "Mrakdon.com",
-          "description": "Introduction\n\n\n\nInsight: Automation is great—until it removes the very training ground that produces the next generation of senior engineers.\nFive years ago, a tedious task—writing unit tests for a legacy module, converting a JSON schema—was a perfect learning opportunity for a junior developer. It taught them the codebase, discipline, and how systems break. Today, we hand those same tasks to AI assistants like GitHub Copilot or Claude. The speed and cost savings are undeniable, but the hidden cost is a broken career ladder.\nWhy automating “boring” entry‑level work threatens the long‑term health of software teams.\nThe “Vibe Coding” trap and how it undermines code longevity.\nHow the industry is evolving into a Barbell Distribution of talent.\nPractical steps to re‑integrate junior developers…",
-          "link": "https://dev.to/mrakdon/how-ai-automation-is-redefining-junior-developer-roles-and-threatening-the-future-of-software-10hb",
-          "publishedOn": "2026-02-07T11:34:20.000Z",
-          "wordCount": 1413,
-          "title": "How AI Automation is Redefining Junior Developer Roles and Threatening the Future of Software Engineering",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbowwzkcng4oh3wqzx0ko.png"
+          "id": "https://dev.to/kozerkarol/i-built-a-react-native-scheduling-timeline-library-heres-why-4amf",
+          "author": "karolk",
+          "description": "I Built a React Native Scheduling Timeline Library — Here’s Why\n\n\nScheduling UIs look simple… until you try to build one.\nAfter working on multiple products that required time-based layouts — planners, calendars, EPG-style TV guides, and complex schedulers — I realized how quickly things become complicated:\nprecise time positioning\n\nvirtualization and performance\n\nscrolling synchronization\n\nfocus handling on TV devices\n\nresponsive layouts for mobile and tablet\n\ndrag & drop interactions\n\nreal-world edge cases everywhere\n\n\n\nI described many of these challenges in detail in this article:\n👉 https://dev.to/kozerkarol/building-scheduling-timeline-uis-in-react-native-why-it-gets-hard-so-fast-38g2\nWhile solving those problems, I ended up building something bigger.\nHey everyone 👋\nI wanted to shar…",
+          "link": "https://dev.to/kozerkarol/i-built-a-react-native-scheduling-timeline-library-heres-why-4amf",
+          "publishedOn": "2026-02-07T13:11:28.000Z",
+          "wordCount": 1188,
+          "title": "I Built a React Native Scheduling Timeline Library — Here’s Why",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fafuyv11u5ose1b0uqjs3.png"
         }
       ]
     },
@@ -252,34 +252,44 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://arxiv.org/abs/2504.12501",
+          "author": null,
+          "description": "Comments",
+          "link": "https://arxiv.org/abs/2504.12501",
+          "publishedOn": "2026-02-07T12:53:39.000Z",
+          "wordCount": 702,
+          "title": "Reinforcement Learning from Human Feedback",
+          "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
+        },
+        {
+          "id": "https://www.spritely.institute/hoot/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.spritely.institute/hoot/",
+          "publishedOn": "2026-02-07T12:18:20.000Z",
+          "wordCount": 136,
+          "title": "Hoot: Scheme on WebAssembly",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.washingtonpost.com/technology/2026/02/07/ai-spending-economy-shortages/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.washingtonpost.com/technology/2026/02/07/ai-spending-economy-shortages/",
+          "publishedOn": "2026-02-07T11:21:29.000Z",
+          "wordCount": null,
+          "title": "The AI boom is causing shortages everywhere else",
+          "imageUrl": null
+        },
+        {
           "id": "https://jesperordrup.github.io/vocal-guide/",
           "author": null,
           "description": "Comments",
           "link": "https://jesperordrup.github.io/vocal-guide/",
           "publishedOn": "2026-02-07T07:37:03.000Z",
-          "wordCount": 8544,
+          "wordCount": 8615,
           "title": "Vocal Guide – belt sing without killing yourself",
           "imageUrl": "https://jesperordrup.github.io/vocal-guide/og-image.svg"
-        },
-        {
-          "id": "https://www.si.edu/newsdesk/releases/female-asian-elephant-calf-born-smithsonians-national-zoo-and-conservation?user_id=66c4bf745d78644b3aa57b08&utm_medium=email&utm_placement=newsletter&utm_source=join1440",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.si.edu/newsdesk/releases/female-asian-elephant-calf-born-smithsonians-national-zoo-and-conservation?user_id=66c4bf745d78644b3aa57b08&utm_medium=email&utm_placement=newsletter&utm_source=join1440",
-          "publishedOn": "2026-02-07T02:35:49.000Z",
-          "wordCount": null,
-          "title": "Female Asian Elephant Calf Born at the Smithsonian National Zoo",
-          "imageUrl": null
-        },
-        {
-          "id": "https://www.brendangregg.com/blog/2026-02-07/why-i-joined-openai.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.brendangregg.com/blog/2026-02-07/why-i-joined-openai.html",
-          "publishedOn": "2026-02-07T01:45:04.000Z",
-          "wordCount": 1982,
-          "title": "Why I Joined OpenAI",
-          "imageUrl": null
         },
         {
           "id": "https://developers.googleblog.com/introducing-the-developer-knowledge-api-and-mcp-server/",
@@ -290,16 +300,6 @@
           "wordCount": 955,
           "title": "Introducing the Developer Knowledge API and MCP Server",
           "imageUrl": "https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/Gemini_Generated_Image_2w7m6k2w7m.2e16d0ba.fill-1200x600.png"
-        },
-        {
-          "id": "https://github.com/phreda4/r3",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/phreda4/r3",
-          "publishedOn": "2026-02-06T22:10:13.000Z",
-          "wordCount": 3898,
-          "title": "Show HN: R3forth, a ColorForth-inspired language with a tiny VM",
-          "imageUrl": "https://opengraph.githubassets.com/b91437b36c2b650e4470895b6355090e1ed9afd540a0d95c5f436f9d1df22567/phreda4/r3"
         },
         {
           "id": "https://openciv3.org/",
@@ -319,7 +319,7 @@
           "publishedOn": "2026-02-06T21:33:11.000Z",
           "wordCount": 2668,
           "title": "Show HN: Look Ma, No Linux: Shell, App Installer, Vi, Cc on ESP32-S3 / BreezyBox",
-          "imageUrl": "https://opengraph.githubassets.com/a95dfc9cf9a567a408cc2bb3d93380cbc3a1d6bf8dc5ff997ab8d3119b26691d/valdanylchuk/breezydemo"
+          "imageUrl": "https://opengraph.githubassets.com/d7a25df63a086be761346518bb36bf9b026f7fa20e375bceb7d2d47b49d00fd3/valdanylchuk/breezydemo"
         },
         {
           "id": "https://github.com/pydantic/monty",
@@ -329,7 +329,7 @@
           "publishedOn": "2026-02-06T21:16:36.000Z",
           "wordCount": 6574,
           "title": "Monty: A minimal, secure Python interpreter written in Rust for use by AI",
-          "imageUrl": "https://opengraph.githubassets.com/8f7baa18d4dbaf11b0648bc59f2d42c026f3c68ca2c849a048774329bdece65e/pydantic/monty"
+          "imageUrl": "https://opengraph.githubassets.com/679c9afaca0651995cc2d2088706a987fb77a76639dadcaac7c99a7ec2ae532d/pydantic/monty"
         },
         {
           "id": "https://vecti.com/",
@@ -360,16 +360,6 @@
           "wordCount": 1405,
           "title": "How to effectively write quality code with AI",
           "imageUrl": "https://heidenstedt.org/posts/2026/how-to-effectively-write-quality-code-with-ai/An_oil_painting-style_illustration_of_a_woman_holding_a_tablet_and_directing_four_white_hu18152475972348526249.jpg"
-        },
-        {
-          "id": "https://infisical.com/blog/devops-to-solutions-engineering",
-          "author": null,
-          "description": "Comments",
-          "link": "https://infisical.com/blog/devops-to-solutions-engineering",
-          "publishedOn": "2026-02-06T16:45:47.000Z",
-          "wordCount": 5383,
-          "title": "I spent 5 years in DevOps – Solutions engineering gave me what I was missing",
-          "imageUrl": "https://infisical.com/static/images/devops-to-solutions-engineering.png"
         },
         {
           "id": "https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation",
@@ -409,7 +399,7 @@
           "publishedOn": "2026-02-06T15:13:04.000Z",
           "wordCount": 1600,
           "title": "Microsoft open-sources LiteBox, a security-focused library OS",
-          "imageUrl": "https://opengraph.githubassets.com/d527d3177bd2fc097d3c915298b922faeb5528c52ddf56913bab60112272ed2f/microsoft/litebox"
+          "imageUrl": "https://opengraph.githubassets.com/e86fda20130bd0841ad527178994210bf3ca9335f83fdb018713f4f42646cc45/microsoft/litebox"
         },
         {
           "id": "https://hackers-1995.vercel.app/",
@@ -438,7 +428,7 @@
           "link": "https://floedb.ai/blog/how-we-made-geo-joins-400-faster-with-h3-indexes",
           "publishedOn": "2026-02-05T11:19:40.000Z",
           "wordCount": 2019,
-          "title": "How we made geo joins 400× faster with H3 indexes",
+          "title": "Making geo joins faster with H3 indexes",
           "imageUrl": "https://floedb.ai/hubfs/geo_cover.webp"
         },
         {
@@ -448,7 +438,7 @@
           "link": "https://rhodesmill.org/brandon/2009/commands-with-comma/",
           "publishedOn": "2026-02-04T19:59:12.000Z",
           "wordCount": 555,
-          "title": "Start all of your commands with a comma",
+          "title": "Start all of your commands with a comma (2009)",
           "imageUrl": null
         },
         {
@@ -457,7 +447,7 @@
           "description": "Comments",
           "link": "https://arxiv.org/abs/2602.01122",
           "publishedOn": "2026-02-03T21:50:38.000Z",
-          "wordCount": 656,
+          "wordCount": 654,
           "title": "Was Benoit Mandelbrot a hedgehog or a fox?",
           "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
         },
@@ -467,7 +457,7 @@
           "description": "Comments",
           "link": "https://www.jsnover.com/blog/2026/02/01/welcome-to-the-room/",
           "publishedOn": "2026-02-03T17:49:49.000Z",
-          "wordCount": 3237,
+          "wordCount": 3390,
           "title": "Jeffrey Snover: \"Welcome to the Room\"",
           "imageUrl": "https://www.jsnover.com/blog/wp-content/uploads/2026/02/WelcomeToTheRoom-scaled.png"
         },
@@ -502,13 +492,13 @@
           "imageUrl": "https://datawrapper.de/cdn-cgi/image/width=1200/https://kirby.datawrapper.de/media/pages/blog/science-fiction-decline/293a2f8e99-1769698962/feature-image.jpg"
         },
         {
-          "id": "https://hy.tencent.com/research/100025?langVersion=en",
+          "id": "https://medium.com/lensesio/cross-region-msk-replication-a-comprehensive-performance-comparison-of-lenses-k2k-vs-mirrormaker2-e9d930de01bf",
           "author": null,
           "description": "Comments",
-          "link": "https://hy.tencent.com/research/100025?langVersion=en",
-          "publishedOn": "2026-02-03T13:07:37.000Z",
-          "wordCount": 29,
-          "title": "Learning from context is harder than we thought",
+          "link": "https://medium.com/lensesio/cross-region-msk-replication-a-comprehensive-performance-comparison-of-lenses-k2k-vs-mirrormaker2-e9d930de01bf",
+          "publishedOn": "2026-02-03T09:42:10.000Z",
+          "wordCount": null,
+          "title": "Cross-Region MSK Replication: K2K vs. MirrorMaker2",
           "imageUrl": null
         },
         {
@@ -520,6 +510,16 @@
           "wordCount": 4410,
           "title": "Unseen Footage of Atari Battlezone Arcade Cabinet Production",
           "imageUrl": "https://i0.wp.com/arcadeblogger.com/wp-content/uploads/2026/02/battlezone-factory-1.jpg?fit=1200%2C843&ssl=1"
+        },
+        {
+          "id": "https://writings.stephenwolfram.com/2026/01/what-is-ruliology/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://writings.stephenwolfram.com/2026/01/what-is-ruliology/",
+          "publishedOn": "2026-02-03T06:40:40.000Z",
+          "wordCount": 3261,
+          "title": "What Is Ruliology?",
+          "imageUrl": "https://content.wolfram.com/sites/43/2026/01/sw01122026tweet.png"
         },
         {
           "id": "https://mirageos.org/blog/delimcc-vs-lwt",
@@ -784,7 +784,7 @@
           "description": "The firm’s looped ETH long position unraveled this week as ether's price crashed, resulting in an estimated $686 million loss.",
           "link": "https://www.coindesk.com/markets/2026/02/07/ether-s-recent-crash-below-usd2-000-leaves-usd686-million-gaping-hole-in-trading-firm-s-book",
           "publishedOn": "2026-02-07T07:19:07.000Z",
-          "wordCount": 6268,
+          "wordCount": 6256,
           "title": "Ether's recent crash below $2,000 leaves $686 million gaping hole in trading firm's book",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d6a9e7b82850066e396e9121ec98afd31759b8ff-1080x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -794,7 +794,7 @@
           "description": "Options trading on BlackRock's spot bitcoin ETF, IBIT, surged to a record 2.33 million contracts on Thursday as bitcoin crashed.",
           "link": "https://www.coindesk.com/markets/2026/02/07/blackrock-bitcoin-etf-options-errupt-in-crash-hedge-fund-blowup-or-just-market-madness",
           "publishedOn": "2026-02-07T02:25:31.000Z",
-          "wordCount": 7221,
+          "wordCount": 7235,
           "title": "BlackRock bitcoin ETF options saw record activity during crash, sparking theories of hedge fund blowup",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6e312b1c77b2d9056de0fb6e1c3a5776f3e42e55-1280x720.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -804,7 +804,7 @@
           "description": "The repurchase plan follows a volatile earnings week and signals confidence in the firm’s balance sheet.",
           "link": "https://www.coindesk.com/markets/2026/02/06/galaxy-digital-shares-jump-18-after-company-approves-usd200-million-buyback",
           "publishedOn": "2026-02-06T20:15:04.000Z",
-          "wordCount": 5993,
+          "wordCount": 5994,
           "title": "Galaxy Digital shares jump 18% after company approves $200 million buyback",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f58cbddcbf685514c2ffe68e48de9a9ddc3338db-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -814,7 +814,7 @@
           "description": "\"401ks exist to help people save for a secure retirement, not gamble on speculative assets,\" said an industry observer.",
           "link": "https://www.coindesk.com/business/2026/02/06/crypto-s-eligibility-for-401k-retirement-is-under-fire-after-brutal-market-rout-wipes-out-usd2-trillion",
           "publishedOn": "2026-02-06T18:44:57.000Z",
-          "wordCount": 7159,
+          "wordCount": 7160,
           "title": "Crypto's eligibility for 401k retirement funds is under fire after brutal market rout wipes out $2 trillion",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6d3eb363e7caac0592410239b1b77e5b24dd0c96-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -824,7 +824,7 @@
           "description": "Ondo showcases rapid growth in tokenized assets and unveils plans to turn that momentum into a full-stack on-chain financial services ecosystem at its summit.",
           "link": "https://www.coindesk.com/coindesk-news/2026/02/06/ondo-wants-to-rebuild-prime-brokerage-on-chain-and-perps-are-the-first-step",
           "publishedOn": "2026-02-06T17:54:43.000Z",
-          "wordCount": 5647,
+          "wordCount": 5648,
           "title": "Ondo wants to rebuild prime brokerage on-chain — and perps are the first step",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f0a8aaeaf4d33e9e316ba5ee2fe64b5a73738115-1006x566.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -834,7 +834,7 @@
           "description": "Russia’s biggest bank said it plans to offer loans secured by cryptocurrency following a pilot deal with a mining firm, with legislation expected by mid-2026.",
           "link": "https://www.coindesk.com/business/2026/02/06/russia-s-largest-bank-sberbank-prepares-to-issue-crypto-backed-loans",
           "publishedOn": "2026-02-06T17:29:14.000Z",
-          "wordCount": 6045,
+          "wordCount": 6059,
           "title": "Russia’s largest bank, Sberbank, prepares to issue crypto-backed loans",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6d98bba600b0752813aab0311e8e27e66faa18e8-1919x1080.jpg?auto=format"
         },
@@ -844,7 +844,7 @@
           "description": "The move came as bitcoin briefly rose over $70,000 in U.S. morning hours, reversing Thursday's sharp declines ahead of the weekend.",
           "link": "https://www.coindesk.com/markets/2026/02/06/xrp-price-rockets-18-staging-wildest-recovery-among-major-tokens",
           "publishedOn": "2026-02-06T17:24:54.000Z",
-          "wordCount": 6038,
+          "wordCount": 6052,
           "title": "XRP price rockets 18%, staging wildest recovery among major tokens",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f52e0d8bb4eb06978bb35c931f65519d55952c53-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -854,7 +854,7 @@
           "description": "Crypto’s “wild west” era for companies is ending as DATs enter a new phase of normalcy, says AVAX One's Jolie Kahn.",
           "link": "https://www.coindesk.com/opinion/2026/02/06/why-normalization-of-digital-asset-treasuries-is-the-next-big-business-trend",
           "publishedOn": "2026-02-06T17:03:00.000Z",
-          "wordCount": 6565,
+          "wordCount": 6566,
           "title": "Why normalization of digital asset treasuries is the next big business trend",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/525d2e74df7a02a340fd08bf7ac1784b3a73ea78-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -864,7 +864,7 @@
           "description": "The numbers weren't pretty, but the fourth-quarter loss does not signal a cash crunch or the necessity of bitcoin sales, say analysts.",
           "link": "https://www.coindesk.com/markets/2026/02/06/here-s-what-wall-street-analysts-are-saying-about-strategy-after-massive-q4-loss",
           "publishedOn": "2026-02-06T17:00:28.000Z",
-          "wordCount": 6254,
+          "wordCount": 6242,
           "title": "Here's what Wall Street analysts are saying about Strategy after massive Q4 loss",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/be2481990e55316ea6740925190a484e9d44efba-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -874,7 +874,7 @@
           "description": "An internal reward distribution mistake briefly sent bitcoin prices sharply lower on South Korea’s Bithumb exchange after users were mistakenly credited with large phantom balances.",
           "link": "https://www.coindesk.com/business/2026/02/06/bitcoin-crashed-to-usd55-000-on-bithumb-after-exchange-accidentally-airdropped-users-2-000-btc",
           "publishedOn": "2026-02-06T16:14:41.000Z",
-          "wordCount": 5658,
+          "wordCount": 5659,
           "title": "Bitcoin crashed to $55,000 on Bithumb after exchange accidentally airdropped users 2,000 BTC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a67b233975ce2aa1fe5f0f08988cc6ba7796bb0c-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -884,7 +884,7 @@
           "description": "The set of new rules reaffirm China’s hardline stance on crypto and impose restrictions on tokenized real-world assets and overseas issuance of yuan stablecoins.",
           "link": "https://www.coindesk.com/policy/2026/02/06/china-expands-crypto-crackdown-to-stablecoins-asset-tokenization",
           "publishedOn": "2026-02-06T16:10:47.000Z",
-          "wordCount": 5656,
+          "wordCount": 5657,
           "title": "China expands crypto crackdown to stablecoins, asset tokenization",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/233a7caf440a6da58fc64ec7216dd2ff338745bc-1920x1080.jpg?auto=format"
         },
@@ -894,7 +894,7 @@
           "description": "The crypto asset manager argued that while the current drawdown mirrors the anxiety of 2018 and 2022, long-term upside catalysts remain intact.",
           "link": "https://www.coindesk.com/markets/2026/02/06/bitwise-says-peak-anxiety-signals-crypto-market-is-nearing-a-bottom",
           "publishedOn": "2026-02-06T15:57:54.000Z",
-          "wordCount": 6178,
+          "wordCount": 6179,
           "title": "Bitwise says peak anxiety signals crypto market is nearing a bottom",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/92243b183679e0c3e210c5b2ef8509db34a2ced4-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -904,7 +904,7 @@
           "description": "Extreme capitulation metrics are now matching levels seen only at major cycle lows.",
           "link": "https://www.coindesk.com/markets/2026/02/06/record-breaking-stats-from-bitcoin-s-thursday-capitulation-signal-a-bottom-is-near",
           "publishedOn": "2026-02-06T15:30:37.000Z",
-          "wordCount": 5933,
+          "wordCount": 5934,
           "title": "Record breaking stats from bitcoin’s Thursday capitulation signal a bottom is near",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c397ec470875d547d7ecf10a967c19f1a197d7fc-1919x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -914,7 +914,7 @@
           "description": "Strategy, MARA Holdings and Galaxy Digital are among crypto-related stocks posting double-digit percentage gains early Friday.",
           "link": "https://www.coindesk.com/markets/2026/02/06/bitcoin-rises-to-usd70-000-extending-bounce-from-thursday-s-crash",
           "publishedOn": "2026-02-06T15:18:08.000Z",
-          "wordCount": 5819,
+          "wordCount": 5808,
           "title": "Bitcoin rises above $70,000, extending bounce from Thursday's crash",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d79c21764d6309c55ad6f450bc4a450283db356e-1900x1172.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -924,7 +924,7 @@
           "description": "The company said it will focus on building data centers for high-performance computing and artificial-intelligence workloads.",
           "link": "https://www.coindesk.com/business/2026/02/06/bitfarms-says-it-s-no-longer-a-bitcoin-company-doubling-down-on-ai-with-u-s-move",
           "publishedOn": "2026-02-06T14:58:28.000Z",
-          "wordCount": 5678,
+          "wordCount": 5679,
           "title": "Bitfarms shares surge after it ditches its 'bitcoin company' identity and doubles down on AI with U.S. move",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1f6e03074c8faaaf659a63c972d810cb3e1cf14a-1024x683.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -934,7 +934,7 @@
           "description": "The weaker results were tempered by continued progress in the bitcoin miner’s shift toward AI infrastructure.",
           "link": "https://www.coindesk.com/markets/2026/02/06/here-s-what-wall-street-analysts-are-saying-after-iren-s-earnings-miss",
           "publishedOn": "2026-02-06T14:53:54.000Z",
-          "wordCount": 6649,
+          "wordCount": 6663,
           "title": "Here's what Wall Street analysts are saying after IREN's earnings miss",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0e41b18850ed9d8943910b3d5e230bb4e1242ddc-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -944,7 +944,7 @@
           "description": "Hedera (HBAR) was also among the top performers, rising 13.1% from Thursday.",
           "link": "https://www.coindesk.com/coindesk-indices/2026/02/06/coindesk-20-performance-update-ripple-xrp-surges-20-1-as-all-assets-trade-higher",
           "publishedOn": "2026-02-06T14:42:36.000Z",
-          "wordCount": 4916,
+          "wordCount": 4917,
           "title": "CoinDesk 20 Performance Update: Ripple (XRP) Surges 20.1% as All Assets Trade Higher",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5b30f09f78cde1cfe424f7db03bb2fa245f3ec86-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -954,7 +954,7 @@
           "description": "The bank trimmed its Coinbase revenue and earnings forecasts amid a brutal risk-off environment for crypto and delays around U.S. market structure legislation.",
           "link": "https://www.coindesk.com/markets/2026/02/06/citi-cuts-coinbase-price-target-to-usd400-after-stock-s-65-plunge-from-record-high",
           "publishedOn": "2026-02-06T14:04:58.000Z",
-          "wordCount": 5919,
+          "wordCount": 5920,
           "title": "Citi cuts Coinbase price target to $400 after stock's 65% plunge from record high",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/80f99baf5da294e11a51b05b169174d736d06f9b-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -964,7 +964,7 @@
           "description": "Metaplanet, Asia's largest publicly traded holder of bitcoin, is currently deep in the red, with its average acquisition cost per bitcoin at roughly $107,000.",
           "link": "https://www.coindesk.com/business/2026/02/06/metaplanet-commits-to-bitcoin-accumulation-even-as-shares-decline",
           "publishedOn": "2026-02-06T13:49:33.000Z",
-          "wordCount": 5916,
+          "wordCount": 5904,
           "title": "Metaplanet commits to bitcoin accumulation even as shares decline",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f41add253c1d1c37b555eb3ac74312a4255c408d-1920x1080.jpg?auto=format"
         },
@@ -974,7 +974,7 @@
           "description": "Ripple and XRPL developers say recent mainnet upgrades and upcoming features position the XRP Ledger as a hub for regulated, real-world finance.",
           "link": "https://www.coindesk.com/markets/2026/02/06/ripple-lays-out-institutional-defi-blueprint-for-xrpl-with-xrp-at-center",
           "publishedOn": "2026-02-06T12:54:09.000Z",
-          "wordCount": 5994,
+          "wordCount": 5995,
           "title": "XRP at center as Ripple lays out institutional DeFi blueprint for XRPL",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f542c898be63947a6f84e0efbf5107286dec9a07-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -984,7 +984,7 @@
           "description": "Your day-ahead look for Feb. 6, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/02/06/recovering-bitcoin-still-faces-macro-risks",
           "publishedOn": "2026-02-06T12:15:00.000Z",
-          "wordCount": 7122,
+          "wordCount": 7110,
           "title": "Recovering bitcoin still faces macro risks",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6b033151c4ef68ff79582f81f353f3bfbadba7fc-1920x1080.jpg?auto=format"
         },
@@ -994,7 +994,7 @@
           "description": "COIN lost 13.34% on the day to close at $146.12 amid ongoing tanking of the crypto market which has seen bitcoin fall as low as $60,000, its lowest since November 2024.",
           "link": "https://www.coindesk.com/markets/2026/02/06/ark-invest-sells-usd17m-of-coinbase-stock-buys-usd18m-of-bullish-amid-crypto-market-chaos",
           "publishedOn": "2026-02-06T11:42:40.000Z",
-          "wordCount": 5570,
+          "wordCount": 5571,
           "title": "ARK offloads $17 million of Coinbase, adds $18 million of Bullish amid crypto rout",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e9c99c736cf4b79270a0324031f074b3a8000b13-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1004,7 +1004,7 @@
           "description": "A brutal crypto selloff erased $2.6 billion in leveraged bets, sent bitcoin to $60,000 and left markets deeply oversold.",
           "link": "https://www.coindesk.com/markets/2026/02/06/crypto-markets-rebound-from-selloff-that-sent-bitcoin-to-lowest-since-october-2024",
           "publishedOn": "2026-02-06T11:38:21.000Z",
-          "wordCount": 6674,
+          "wordCount": 6676,
           "title": "Crypto market brightens after selloff that sent bitcoin to lowest since October 2024",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c3ac40e216e0a2276cfec64adeb74b4e08399884-1919x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1014,7 +1014,7 @@
           "description": "Earnings disappointments weigh on AI related tech, while crypto sentiment improves on bitcoin’s rebound.",
           "link": "https://www.coindesk.com/markets/2026/02/06/weak-earnings-drag-iren-amazon-bitcoin-stocks-rebound-in-pre-market",
           "publishedOn": "2026-02-06T11:14:00.000Z",
-          "wordCount": 5506,
+          "wordCount": 5507,
           "title": "Weak earnings drag IREN, Amazon; bitcoin stocks rebound in pre-market",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a944f5c40b9f1fece6ecb4c387377f37ae7134cc-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1024,7 +1024,7 @@
           "description": "Michael Saylor reinforces commitment to bitcoin and quantum security on Q4 earnings call.",
           "link": "https://www.coindesk.com/markets/2026/02/06/strategy-to-initiate-a-bitcoin-security-program-addressing-quantum-uncertainty",
           "publishedOn": "2026-02-06T10:21:53.000Z",
-          "wordCount": 5619,
+          "wordCount": 5620,
           "title": "Strategy to initiate a bitcoin security program addressing quantum uncertainty",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/28ee13d93bd9b44fa7fd6e10b0452bde47d4ddcd-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
