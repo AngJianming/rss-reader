@@ -1,285 +1,308 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-02-07T11:18:04.506Z</id>
+    <id>urn:2026-02-07T12:38:12.040Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-02-07T11:18:04.506Z</updated>
+    <updated>2026-02-07T12:38:12.040Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[I stopped setting goals. Here's what happened.]]></title>
-        <id>https://dev.to/betatesterlife/i-stopped-setting-goals-heres-what-happened-5cmc</id>
-        <link href="https://dev.to/betatesterlife/i-stopped-setting-goals-heres-what-happened-5cmc"/>
-        <updated>2026-02-07T11:13:12.000Z</updated>
-        <summary type="html"><![CDATA[92% of people fail their goals.
-82% of employees are at risk of burnout.
-$322 billion lost annually to burnout-related productivity drops.
-Maybe the problem isn't people. Maybe it's goals.
-Neuroscientist Anne-Laure Le Cunff spent years at Google before getting her PhD at King's College London. Her research led to a radical conclusion:
-Linear goals in a nonlinear world create suffering, not success.
-Her book Tiny Experiments proposes an alternative:
-Replace goals with experiments.
-The difference?
-When a goal fails, you failed. When an experiment doesn't work, you learned something. Same outcome. Completely different psychological impact.
-Three lessons from the book that changed how I think about work:
-Procrastination is protection. Neuroscience shows we delay tasks to avoid negative emotions. Instead of fighting resistance, ask what it's telling you.
-Hustle culture makes you dumber. Research shows burned-out employees have 60% reduced focus and 32% lower productivity. Working more doesn't mean achieving more.
-Uncertainty is opportunity. When you stop treating life as a path to follow and start treating it as a laboratory to explore, fear becomes curiosity.
-I've started applying this to my own work. Instead of quarterly goals, I run weekly experiments. The pressure is down. The learning is up.
-What would change if you replaced your biggest goal with an experiment?]]></summary>
+        <title type="html"><![CDATA[How to Dynamically Switch Local LLMs with LangChain]]></title>
+        <id>https://dev.to/harishkotra/how-to-dynamically-switch-local-llms-with-langchain-5aje</id>
+        <link href="https://dev.to/harishkotra/how-to-dynamically-switch-local-llms-with-langchain-5aje"/>
+        <updated>2026-02-07T12:30:00.000Z</updated>
+        <summary type="html"><![CDATA[In production RAG applications, you often need to evaluate different models against the same prompts. Does Llama 3.2 handle formatting better? Is Gemma 3 (12B) better at reasoning?
+Hardcoding model swaps or reloading your application is slow. In this post, I'll show you how to use LangChain's configurable_alternatives to build a Streamlit app where you can hot-swap models per request.
+We want a User Interface (Streamlit) that passes a configuration object to our Logic Layer (LangChain). The Logic Layer then routes the request to the appropriate Model Provider (Ollama).
+graph TD
+    User[User via Streamlit] -->|Selects Model| UI[UI Config]
+    UI -->|config='gemma'| Chain[LangChain Runnable]
+
+    subgraph "Swappable Backend"
+        Chain -->|Default| Llama[Llama 3.2]
+        Chain -->|Alternative| Gemma[Gemma 3 (12B)]
+    end
+
+    Llama --> Output
+    Gemma --> Output
+
+The core magic lies in the configurable_alternatives method on any Runnable (including LLMs).
+from langchain_ollama import OllamaLLM
+from langchain_core.runnables import ConfigurableField
+
+# 1. Base Model
+llm = OllamaLLM(model="llama3.2")
+
+# 2. Add Alternatives
+llm_swappable = llm.configurable_alternatives(
+    ConfigurableField(id="model_provider"), 
+    default_key="llama",
+    gemma=OllamaLLM(model="gemma3:12b")
+)
+
+# 3. Invoke with Config
+response = llm_swappable.invoke(
+    "Why is the sky blue?", 
+    config={"configurable": {"model_provider": "gemma"}}
+)
+
+This approach decouples your Chain Definition from your Execution Configuration. You build the pipeline once, and modify its behavior at runtime. This is essential for:
+ A/B Testing: Randomly routing 50% of traffic to a new model.
+ User Preference: Letting power users choose their "engine".
+ Fallback: If the primary model times out, switch to a backup.
+By combining Streamlit for the frontend and LangChain's LCEL for dynamic routing, we built a robust "Model Playground" in under 50 lines of code.
+Github repo is here: https://github.com/harishkotra/langchain-ollama-cookbook]]></summary>
         <author>
-            <name>Kevin Campbell</name>
+            <name>Harish Kotra (he/him)</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Ball and Chain: Why Git is an Anti-Pattern for AI-Native Engineering]]></title>
-        <id>https://dev.to/smolinari/the-ball-and-chain-why-git-is-an-anti-pattern-for-ai-native-engineering-1i47</id>
-        <link href="https://dev.to/smolinari/the-ball-and-chain-why-git-is-an-anti-pattern-for-ai-native-engineering-1i47"/>
-        <updated>2026-02-07T11:10:40.000Z</updated>
-        <summary type="html"><![CDATA[In our previous discussions on The Human-Centric AI-Native Distributed Systems Manifesto and Intent Driven Development (IDD), we established a clear vision: the future of software belongs to Architects of Intent, not laborers of syntax.
-But there is a problem. A massive, silent friction point is dragging us backward.
-We are attempting to build fluid, intent-driven, AI-generated systems, but we are storing them in a rigid, line-based history tool designed in 2005 for the Linux Kernel. We are trying to fly a starship with a steering wheel made of stone.
-It is time to say the quiet part out loud: Git is becoming the bottleneck of the AI Era.
-To fully realize the promise of Intent Driven Development, we cannot continue treating Git as the engine of our engineering. We must recognize it for wha…]]></summary>
+        <title type="html"><![CDATA[Why I use Typetify: A Type-Safe Alternative to Lodash]]></title>
+        <id>https://dev.to/hosby/why-i-use-typetify-a-type-safe-alternative-to-lodash-3gp0</id>
+        <link href="https://dev.to/hosby/why-i-use-typetify-a-type-safe-alternative-to-lodash-3gp0"/>
+        <updated>2026-02-07T12:28:45.000Z</updated>
+        <summary type="html"><![CDATA[Runtime TypeScript helpers that actually protect you when it matters most.
+TL;DR: I built Typetify — a zero-dependency utility library for TypeScript that provides runtime safety, not just compile-time types. Think Lodash, but TypeScript-first.
+npm install typetify
+
+Lodash is great. I've used it for years. But when you add TypeScript to the mix, something feels... off.
+_.pick() Trap
+
+
+
+
+
+import _ from 'lodash'
+
+const user = {
+  id: 1,
+  name: 'John',
+  email: 'john@example.com',
+  password: 'secret123'
+}
+
+// TypeScript says this is fine 🤷
+const safe = _.pick(user, ['id', 'name', 'emial']) // Typo!
+//                                        ^^^^^^
+
+// Runtime: { id: 1, name: 'John', emial: undefined }
+// No error, no warning, just silent failure
+
+TypeScript can't catch this because Lodash's…]]></summary>
         <author>
-            <name>Scott Molinari</name>
+            <name>Siddick FOFANA</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Measure Passkey Adoption: Funnels, Activation, and Device Insights]]></title>
-        <id>https://dev.to/corbado/how-to-measure-passkey-adoption-funnels-activation-and-device-insights-1fb9</id>
-        <link href="https://dev.to/corbado/how-to-measure-passkey-adoption-funnels-activation-and-device-insights-1fb9"/>
-        <updated>2026-02-07T11:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Read the full article here
-Passkey analytics helps product, identity, and security teams understand what’s really happening in passkey authentication: where users drop off, which platforms struggle, how adoption evolves over time, and what drives successful passkey login. Standard product analytics often shows only coarse events (page views, “login clicked”), while identity logs focus on backend outcomes. Passkeys introduce new failure modes and UX paths (biometric prompts, credential managers, cross-device flows) that require more specialized visibility.
-A practical passkey analytics setup focuses on three outcomes: activation (users create passkeys), usage (users actually log in with passkeys), and reliability (errors, cancellations, platform issues).
-The foundation is an authentication …]]></summary>
+        <title type="html"><![CDATA[How to scrape Telegram channels: The complete guide to extracting posts, media, and metadata]]></title>
+        <id>https://dev.to/eunit/how-to-scrape-telegram-channels-the-complete-guide-to-extracting-posts-media-and-metadata-2ff</id>
+        <link href="https://dev.to/eunit/how-to-scrape-telegram-channels-the-complete-guide-to-extracting-posts-media-and-metadata-2ff"/>
+        <updated>2026-02-07T12:28:27.000Z</updated>
+        <summary type="html"><![CDATA[How to scrape Telegram channels: The complete guide to extracting posts, media, and metadata
+
+
+Telegram has evolved into a global powerhouse for real-time information, hosting over 1 billion active users in 2026. From niche specialized groups to massive news broadcasts with millions of subscribers, the platform is a goldmine for market researchers, AI developers, and competitive intelligence analysts. However, the platform is notoriously difficult to scrape. Its data is locked behind a mobile-first interface and strictly protected by anti-bot measures.
+Manual data collection doesn't scale in today's era of automation. If you are trying to monitor trends across a hundred channels or build a dataset for a large language model, you need an automated solution. This is where Telegram Channels S…]]></summary>
         <author>
-            <name>vdelitz</name>
+            <name>Emmanuel Uchenna</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Stop Reindexing: How We Built Real-Time Search Directly Into the Database using sochDB]]></title>
-        <id>https://dev.to/sochdb/real-time-search-for-ai-agents-sql-vectors-and-memory-in-one-engine-13dg</id>
-        <link href="https://dev.to/sochdb/real-time-search-for-ai-agents-sql-vectors-and-memory-in-one-engine-13dg"/>
-        <updated>2026-02-07T10:58:40.000Z</updated>
-        <summary type="html"><![CDATA[Every time we needed “real-time search,” we were told the same thing:
-It worked — until it didn’t.
-In this post, I’ll explain why reindexing is fundamentally broken for real-time systems, and how we built SochDB to make search a native database capability instead of a separate infrastructure problem.
-Search across:
-Live APIs (news, social, pricing, telemetry)
-Fresh scraped data
-Streaming updates
-Requirement: answers must change as the internet changes.
+        <title type="html"><![CDATA[Quark's Outlines: Python Code Blocks]]></title>
+        <id>https://dev.to/mike-vincent/quarks-outlines-python-code-blocks-j0n</id>
+        <link href="https://dev.to/mike-vincent/quarks-outlines-python-code-blocks-j0n"/>
+        <updated>2026-02-07T12:13:50.000Z</updated>
+        <summary type="html"><![CDATA[Quark’s Outlines: Python Code Blocks
 
 
+Overview, Historical Timeline, Problems & Solutions
+When you write a Python program, you group statements together. This group is called a Python code block. A code block is a section of code that Python can run as one unit. It can be as short as one line or as long as a full module.
+You use code blocks in many places. A function body is a code block. A class definition is a code block. Each module you import is also a code block. Python reads these blocks and sets up the right space to run them.
+Python lets you group statements into code blocks that run together.
+def greet(name):
+    print("Hello,", name)
 
-Layer
-SochDB Role
+greet("Ada")
+# prints:
+# Hello, Ada
 
-
-
-
-Ingestion
-App pulls live data (HTTP, WebSocket, Kafka, cron)
-
-
-Storage
-SQL tables for raw data + metadata
-
-
-Vectors
-Embeddings stored alongside rows
-
-
-Context Memory
-Tracks what was already seen, freshness, relevance
-
-
-Query
-Hybrid: SQL filter → vector similarity → context re-rank
-
-
-
-
-Example
-SELECT *
-FROM web_events…]]></summary>
+The function body is a code block. Python runs it when you call greet().
+You use code blocks in many parts of…]]></summary>
         <author>
-            <name>bhaskararao arani</name>
+            <name>Mike Vincent</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I stopped trying to make HTML paginate for printing (and it finally worked)]]></title>
-        <id>https://dev.to/victoduss/i-stopped-trying-to-make-html-paginate-for-printing-and-it-finally-worked-5flp</id>
-        <link href="https://dev.to/victoduss/i-stopped-trying-to-make-html-paginate-for-printing-and-it-finally-worked-5flp"/>
-        <updated>2026-02-07T10:56:12.000Z</updated>
-        <summary type="html"><![CDATA[For several months, I struggled with a problem many developers are familiar with:
-printing HTML content correctly across multiple pages without breaking the layout.
-Like many others, I tried the usual approaches:
-CSS page-break-*
-@print media queries
-headless browsers
-HTML → PDF generators
-They work… up to a point.
-As soon as the content becomes even slightly complex, dynamic, or editable, everything starts to break down: unpredictable page breaks, truncated elements, inconsistent margins, widows and orphans everywhere.
-The underlying problem
-In hindsight, the real issue wasn’t CSS.
-The problem is that HTML was never designed to be paginated.
-The turning point
-At some point, I stopped trying to “convince” HTML to paginate properly.
-Instead of cutting the content, I inverted the reasoning:
-…]]></summary>
+        <title type="html"><![CDATA[How I accidentally start SDD by failing at prompts for six months]]></title>
+        <id>https://dev.to/marcosomma/how-i-accidentally-start-sdd-by-failing-at-prompts-for-six-months-477l</id>
+        <link href="https://dev.to/marcosomma/how-i-accidentally-start-sdd-by-failing-at-prompts-for-six-months-477l"/>
+        <updated>2026-02-07T12:12:01.000Z</updated>
+        <summary type="html"><![CDATA[The confession
+
+
+I spent the first six months of serious AI pair programming producing what I now call vibe architecture.
+You know the pattern. You open a chat with a strong model. You explain what you want. It produces clean code fast. You feel productive. Three weeks later the repo looks like it was designed by five different people, on five different days, with five different mental models.
+Each file is locally correct. The system is globally confused.
+I would plan with the model in one session. I would implement in another. By step five the implementation had drifted far enough that the plan was basically historical fiction. Then I would come back after a weekend and lose the thread. Not because the model did something wrong. It did exactly what I asked at each moment. The issue was co…]]></summary>
         <author>
-            <name>Victorien Dussart</name>
+            <name>marcosomma</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Your AI Coding Agents Are Slow Because Your Tools Talk Too Much]]></title>
-        <id>https://dev.to/teppana88/your-ai-coding-agents-are-slow-because-your-tools-talk-too-much-24h6</id>
-        <link href="https://dev.to/teppana88/your-ai-coding-agents-are-slow-because-your-tools-talk-too-much-24h6"/>
-        <updated>2026-02-07T10:39:43.000Z</updated>
-        <summary type="html"><![CDATA[Our AI code validator agent took 608 seconds to report results from a test suite that runs in 96 seconds. The agent wasn't stupid. The tool output was.
-Every developer tool we use (test runners, linters, compilers, build systems) was designed for humans reading a terminal. When an AI agent reads that same output through a context window, things break in ways you don't expect. This is one example of that problem, and a pattern for fixing it.
-We run a TypeScript monorepo with ~12,000 tests across four packages. After each feature, a code-validator agent runs tests and reports pass/fail with coverage. Simple job.
-
-
-
-Agent Task
-Actual Test Time
-Agent Time
-Overhead
-
-
-
-
-Backend (3,683 tests)
-24s
-224s
-9.3x
-
-
-Frontend (7,450 tests)
-96s
-608s
-6.3x
-
-
-
-The agent was spending 6-9x longer understanding …]]></summary>
+        <title type="html"><![CDATA[I wrote my first article here @dev.to, sharing my solution for deploying a Laravel app in a limited shared hosting environment without SSH access. I hope someone will find it useful, enjoy it, and leave a comment]]></title>
+        <id>https://dev.to/houdaifa360/i-wrote-my-first-article-here-devto-sharing-my-solution-for-deploying-a-laravel-app-in-a-limited-133a</id>
+        <link href="https://dev.to/houdaifa360/i-wrote-my-first-article-here-devto-sharing-my-solution-for-deploying-a-laravel-app-in-a-limited-133a"/>
+        <updated>2026-02-07T12:08:45.000Z</updated>
+        <summary type="html"><![CDATA[Deploying Laravel on Shared Hosting (No SSH Required)
+HoudaifaDevBS ・ Feb 7
+#laravel
+        #php
+        #tutorial
+        #cpanel]]></summary>
         <author>
-            <name>Teemu Piirainen</name>
+            <name>HoudaifaDevBS</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I stopped building apps with Claude Code. Now, Claude Code IS the app.]]></title>
-        <id>https://dev.to/chadbyte/i-stopped-building-apps-with-claude-code-now-claude-code-is-the-app-h1f</id>
-        <link href="https://dev.to/chadbyte/i-stopped-building-apps-with-claude-code-now-claude-code-is-the-app-h1f"/>
-        <updated>2026-02-07T10:37:50.000Z</updated>
-        <summary type="html"><![CDATA[I was building apps with Claude Code. Development was fast. I was excited. Then it hit me: we just got the internal combustion engine, and I'm using it to build a faster horse carriage.
-As someone with a backlog of things to manage, I wanted to build apps to improve my quality of life. Track my expenses, log my Jiu-Jitsu mat time, monitor my sleep. Claude Code made development fast, so I started building.
-But while writing the code, I had a reality check. All I really want is to record data and have AI analyze it. I don't need pretty buttons or flashy dashboards. I'm the only user. Why am I polishing a frontend? Why am I worrying about deployment?
-The speed didn't eliminate this fundamental question. What I wanted was to record data consistently, have AI interpret it, and get feedback. The…]]></summary>
+        <title type="html"><![CDATA[Deploying Laravel on Shared Hosting (No SSH Required)]]></title>
+        <id>https://dev.to/houdaifa360/deploying-laravel-on-shared-hosting-no-ssh-required-1kbg</id>
+        <link href="https://dev.to/houdaifa360/deploying-laravel-on-shared-hosting-no-ssh-required-1kbg"/>
+        <updated>2026-02-07T12:04:29.000Z</updated>
+        <summary type="html"><![CDATA[Have you ever wondered if you can deploy a Laravel application on shared hosting without SSH?
+The answer is YES. I faced this exact situation during my early freelance journey: a client with a tight budget needed to see the first version of his Laravel website online before moving forward. The hosting environment had no SSH, no Composer, no Artisan, no NPM.
+So I had to figure out a safe and reliable alternative.
+In this article, I'll share the exact workflow I use to deploy Laravel applications on shared hosting without SSH access.
+A typical Laravel project looks like this:
+project/  
+ ├── app/  
+ ├── bootstrap/  
+ ├── config/  
+ ├── public/  
+ ├── storage/  
+ ├── vendor/  
+ └── artisan
+
+However, shared hosting usually exposes only one public directory:
+├── public_html/
+
+If there is SSH ac…]]></summary>
         <author>
-            <name>Chad</name>
+            <name>HoudaifaDevBS</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Automatic versioning for GitHub Actions authors]]></title>
-        <id>https://dev.to/jessehouwing/automatic-versioning-for-github-actions-authors-2e19</id>
-        <link href="https://dev.to/jessehouwing/automatic-versioning-for-github-actions-authors-2e19"/>
-        <updated>2026-02-07T10:34:01.000Z</updated>
-        <summary type="html"><![CDATA[As a maintainer of 3 GitHub Actions, I've always struggled a bit with the versioning of them. GitHub's documentation provides guidance, but no easy way to verify you did everything right. Based on a quick scan of the actions on the marketplace I'm not alone, even some of GitHub's own actions have some inconsistencies when it comes to it.
-This is why I cobbled together v1 of my Actions Semver Checker action a couple of years ago and it has served me well. But as I threw the action together in a short amount of time way back when, it contained a few bugs, was very hard to maintain and I always dreaded making changes to it, since I had fixed my own repos, so it was hard to test whether I broke anything or accidentally introduced unwanted side effects.
-This is why I had Copilot Agent use the e…]]></summary>
+        <title type="html"><![CDATA[The Invisible Workforce]]></title>
+        <id>https://dev.to/rawveg/the-invisible-workforce-20g4</id>
+        <link href="https://dev.to/rawveg/the-invisible-workforce-20g4"/>
+        <updated>2026-02-07T12:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Every morning across corporate offices worldwide, a familiar digital routine unfolds. Company email, check. Slack, check. Salesforce, check. And then, in separate browser windows that never appear in screen-sharing sessions, ChatGPT Plus launches. Thousands of employees are paying the £20 monthly subscription themselves. Their managers don't know. IT certainly doesn't know. But productivity metrics tell a different story.
+This pattern represents a quiet revolution happening across the modern workplace. It's not a coordinated rebellion, but rather millions of individual decisions made by workers who've discovered that artificial intelligence can dramatically amplify their output. The numbers are staggering: 75% of knowledge workers now use AI tools at work, with 77% of employees pasting dat…]]></summary>
         <author>
-            <name>Jesse Houwing</name>
+            <name>Tim Green</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AI, Entropy, and the Illusion of Convergence in Modern Software]]></title>
-        <id>https://dev.to/bel_nekes_a9a83e11a4898/ai-entropy-and-the-illusion-of-convergence-in-modern-software-2354</id>
-        <link href="https://dev.to/bel_nekes_a9a83e11a4898/ai-entropy-and-the-illusion-of-convergence-in-modern-software-2354"/>
-        <updated>2026-02-07T10:30:00.000Z</updated>
-        <summary type="html"><![CDATA[Systems change faster than teams can agree on what must remain true. Code evolves, features accumulate, and test suites grow — yet confidence quietly erodes. Tests stop acting as guardrails and start adding noise.
-A while back, I came across an insight from Khalil Stemmler that reshaped how I think about software systems. He frames creation as a balance between two forces: divergence and convergence.
-To create anything in the world relies upon these two creative forces: divergence and convergence.
-Divergence is about:
-expansion
-
-
-emergence
-
-
-
-Where convergence is about:
-contraction
-
-
-contracts
-
-
-
-— Khalil Stemmler, Why You Have Spaghetti Code
-Divergence is the phase where we explore. We try approaches, generate variants, sketch solutions, and learn by doing.
-
-Most divergent work is cheap a…]]></summary>
+        <title type="html"><![CDATA[Building an Ultra-Low Latency Live Streaming Server: A Developer's Guide to OvenMediaEngine]]></title>
+        <id>https://dev.to/mayu2008/building-an-ultra-low-latency-live-streaming-server-a-developers-guide-to-ovenmediaengine-jco</id>
+        <link href="https://dev.to/mayu2008/building-an-ultra-low-latency-live-streaming-server-a-developers-guide-to-ovenmediaengine-jco"/>
+        <updated>2026-02-07T11:47:05.000Z</updated>
+        <summary type="html"><![CDATA[If you've ever tried to build a live streaming app, you know the "0.5-second latency" dream can quickly turn into a firewall nightmare. I recently set up a sub-second latency streaming backend using OvenMediaEngine (OME) on Oracle Cloud, and I'm sharing the exact steps to save you hours of troubleshooting.
+Traditional streaming solutions like RTMP deliver video with 20-60 second latency. For interactive applications—live auctions, gaming, webinars, or financial trading—this lag breaks the user experience. WebRTC solves this with sub-second delivery, but the setup is notoriously complex.
+The biggest culprits? Firewalls, misconfigured security rules, and incorrect IP configuration in the media server.
+Our architecture combines industry-standard tools for maximum reliability:
+OBS Studio: Prof…]]></summary>
         <author>
-            <name>Ábel Énekes</name>
+            <name>Mayuresh Smita Suresh</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Resourceful Computing: What Happens When We Optimize for Old Hardware?]]></title>
-        <id>https://dev.to/ben-santora/resourceful-computing-what-happens-when-we-optimize-for-old-hardware-3an6</id>
-        <link href="https://dev.to/ben-santora/resourceful-computing-what-happens-when-we-optimize-for-old-hardware-3an6"/>
-        <updated>2026-02-07T10:24:49.000Z</updated>
-        <summary type="html"><![CDATA[In 2026, laptop prices are pushing past the point of reason. At the same time, proprietary operating systems like Windows are pushing users toward buying these new devices. Even PC builders are being slowed down by the costs of hardware, especially RAM which has tripled in cost and becoming more rare every day. 
-The question at the center of this shift isn’t “How do we keep up with the latest silicon?” but rather, "Why do we need to? Can't we design software that respects the hardware that already exists?”
-For developers, this reframing is subtle but important. The last decade has trained devs to assume abundant CPU, cheap RAM, and virtually unlimited cloud infrastructure. That assumption sets the tone for design decisions from the project's start: thick abstraction layers, heavyweight run…]]></summary>
+        <title type="html"><![CDATA[OpenClaw meets AnyAPI.ai: How to scrape the web without losing your mind]]></title>
+        <id>https://dev.to/es2026/openclaw-meets-anyapiai-how-to-scrape-the-web-without-losing-your-mind-2cci</id>
+        <link href="https://dev.to/es2026/openclaw-meets-anyapiai-how-to-scrape-the-web-without-losing-your-mind-2cci"/>
+        <updated>2026-02-07T11:43:28.000Z</updated>
+        <summary type="html"><![CDATA[Let’s be real for a second. Web scraping used to be a nightmare of broken CSS selectors and constant cat-and-mouse games with site updates. If you are tired of your scrapers breaking because a developer changed a div to a section, you are in the right place.
+Today we are combining OpenClaw (the eyes and hands) with AnyAPI.ai (the brain). This combo lets you turn any messy website into clean JSON without writing a single line of fragile selector code.
+‍
+
+What is the deal with OpenClaw?
+It handles the scrolling, the clicking, and the messy HTML. But to actually understand what it’s looking at, it needs to talk to a Large Language Model (LLM). That is where things usually get annoying with API keys and regional blocks.
+‍
+
+Enter AnyAPI.ai: The ultimate LLM shortcut
+One billing setup:
+OpenAI-compatible:
+No borders:
+‍
+
+The 3-minute setup
+‍
+**
+The config (The .env way)**
+The cleanest way to do this is to set up a .env file. We are going to "trick" OpenClaw into thinking it is talking to OpenAI, while actually routing it through AnyAPI.
+`# Redirect OpenClaw to the AnyAPI gateway
+https://api.anyapi.ai/v1"
+` Your AnyAPI Key goes here
+Pick your favorite model from the AnyAPI list
+
+‍
+The Python code**
+Here is a simple script to get you started. No complex setup, just pure data extraction.
+`from openclaw import OpenClaw
+We point the base_url to AnyAPI
+https://api.anyapi.ai/v1",
+async def scrape_site():
+print("Working my magic...")
+
+result = await claw.scrape(
+    url="https://example-shop.com/product",
+    schema=my_schema
+)
+
+!
+    print(f"Here is your data: {result}")
+if name == "main":
+Pro-tips for a better experience
+Timeouts are your friend:
+Model switching:
+Final thoughts
+By pairing OpenClaw with AnyAPI.ai, you have essentially built a scraper that is "future-proof." Even if the website changes its entire design tomorrow, the AI will still find your data.]]></summary>
         <author>
-            <name>Ben Santora</name>
+            <name>E S</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Built a Sales Agent Using SendGrid: The Real Problems I Faced (and How I Solved Them)]]></title>
-        <id>https://dev.to/s3cloudhub/i-built-a-sales-agent-using-sendgrid-the-real-problems-i-faced-and-how-i-solved-them-1b3l</id>
-        <link href="https://dev.to/s3cloudhub/i-built-a-sales-agent-using-sendgrid-the-real-problems-i-faced-and-how-i-solved-them-1b3l"/>
-        <updated>2026-02-07T10:12:53.000Z</updated>
-        <summary type="html"><![CDATA[Building an AI sales agent sounds exciting.
-Connect an AI model.
-That’s the dream.
-The reality?
-Nothing breaks your confidence faster than a sales agent that sends the wrong email to the wrong person at the wrong time.
-I learned this the hard way.
-In this blog, I’ll walk you through:
-Why I decided to build a sales agent using SendGrid
-The real problems I hit (not the YouTube version)
-How I fixed them step by step
-What I’d do differently today
-The future of AI-driven sales agents
-Lessons every developer building AI agents should learn
-This isn’t theory.
-Why I Built a Sales Agent Using SendGrid
-The goal was simple:
-Automate outbound sales emails
-Personalize messages using AI
-Track opens, clicks, and replies
-Reduce manual follow-ups
-Scale outreach without hiring more sales reps
-SendGrid felt …]]></summary>
+        <title type="html"><![CDATA[Russia's Internet Filtering Infrastructure: Evolution and Architecture]]></title>
+        <id>https://dev.to/shinomontaz/russias-internet-filtering-infrastructure-evolution-and-architecture-cel</id>
+        <link href="https://dev.to/shinomontaz/russias-internet-filtering-infrastructure-evolution-and-architecture-cel"/>
+        <updated>2026-02-07T11:37:15.000Z</updated>
+        <summary type="html"><![CDATA[Part 1 of the series: "Internet Censorship in Russia: A Technical Deep Dive"
+Educational Purpose: This article examines the technical architecture of internet filtering systems for educational purposes. The author does not encourage violation of local laws. All information is based on publicly available sources and open-source research.
+What makes Russia's internet filtering infrastructure technically interesting for us, engineers:
+Scale: Distributed real-time system operating at main network speeds
+Complexity: Combining networking, cryptography, and ML/staticsics in a single architecture
+Evolution: A genuine "arms race" of algorithms, protocols and ideas happening in real-time
+Architecture: Lessons applicable to any high-throughput, stateful inspection system
+Here we examines the technica…]]></summary>
         <author>
-            <name>S3CloudHub</name>
+            <name>Denis Rybakov</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Bitcoin L2s: How Bitcoin Is Becoming More Than “Digital Gold” in 2026]]></title>
-        <id>https://dev.to/ribhavmodi/bitcoin-l2s-how-bitcoin-is-becoming-more-than-digital-gold-in-2026-2i</id>
-        <link href="https://dev.to/ribhavmodi/bitcoin-l2s-how-bitcoin-is-becoming-more-than-digital-gold-in-2026-2i"/>
-        <updated>2026-02-07T10:10:06.000Z</updated>
-        <summary type="html"><![CDATA[From “just store of value” to apps, DeFi, and L2s built on top of the oldest chain.
-When I first got into Web3, Bitcoin felt like a finished story. It was “digital gold.” You bought some, maybe dollar cost averaged a bit, watched the price, and that was it. If you wanted to build apps, NFTs, DeFi, or anything interactive, you went to Ethereum or another smart contract chain. Bitcoin was the quiet, reliable asset in the background, not the platform you built on.
-Then slowly, the headlines started to change. Lightning Network for payments. Stacks and Rootstock for smart contracts. People talking about “Bitcoin DeFi,” rollups, and even zk‑style experiments anchored to Bitcoin. The chain that was supposedly “too conservative to evolve” was quietly getting a layered ecosystem on top. Today, on …]]></summary>
+        <title type="html"><![CDATA[How AI Automation is Redefining Junior Developer Roles and Threatening the Future of Software Engineering]]></title>
+        <id>https://dev.to/mrakdon/how-ai-automation-is-redefining-junior-developer-roles-and-threatening-the-future-of-software-10hb</id>
+        <link href="https://dev.to/mrakdon/how-ai-automation-is-redefining-junior-developer-roles-and-threatening-the-future-of-software-10hb"/>
+        <updated>2026-02-07T11:34:20.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+
+
+
+Insight: Automation is great—until it removes the very training ground that produces the next generation of senior engineers.
+Five years ago, a tedious task—writing unit tests for a legacy module, converting a JSON schema—was a perfect learning opportunity for a junior developer. It taught them the codebase, discipline, and how systems break. Today, we hand those same tasks to AI assistants like GitHub Copilot or Claude. The speed and cost savings are undeniable, but the hidden cost is a broken career ladder.
+Why automating “boring” entry‑level work threatens the long‑term health of software teams.
+The “Vibe Coding” trap and how it undermines code longevity.
+How the industry is evolving into a Barbell Distribution of talent.
+Practical steps to re‑integrate junior developers…]]></summary>
         <author>
-            <name>Ribhav</name>
+            <name>Mrakdon.com</name>
         </author>
     </entry>
     <entry>
@@ -676,16 +699,6 @@ The post Logitech G325 Lightspeed Now Available In Malaysia At RM429 appeared fi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[FORTH? Really!?]]></title>
-        <id>https://rescrv.net/w/2026/02/06/associative</id>
-        <link href="https://rescrv.net/w/2026/02/06/associative"/>
-        <updated>2026-02-06T13:54:09.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Hackers (1995) Animated Experience]]></title>
         <id>https://hackers-1995.vercel.app/</id>
         <link href="https://hackers-1995.vercel.app/"/>
@@ -1073,10 +1086,30 @@ The post Google To Roll Out Quick Share-AirDrop Interoperability To Other Androi
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[ga68, the GNU Algol 68 Compiler – FOSDEM 2026 [video]]]></title>
+        <id>https://fosdem.org/2026/schedule/event/PEXRTN-ga68-intro/</id>
+        <link href="https://fosdem.org/2026/schedule/event/PEXRTN-ga68-intro/"/>
+        <updated>2026-02-03T15:38:24.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Understanding Neural Network, Visually]]></title>
         <id>https://visualrambling.space/neural-network/</id>
         <link href="https://visualrambling.space/neural-network/"/>
         <updated>2026-02-03T14:49:11.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Where did all the starships go?]]></title>
+        <id>https://www.datawrapper.de/blog/science-fiction-decline</id>
+        <link href="https://www.datawrapper.de/blog/science-fiction-decline"/>
+        <updated>2026-02-03T13:27:08.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1107,16 +1140,6 @@ The post Google To Roll Out Quick Share-AirDrop Interoperability To Other Androi
         <id>https://arcadeblogger.com/2026/02/02/unseen-footage-of-atari-battlezone-cabinet-production/</id>
         <link href="https://arcadeblogger.com/2026/02/02/unseen-footage-of-atari-battlezone-cabinet-production/"/>
         <updated>2026-02-03T08:49:40.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What Is Ruliology?]]></title>
-        <id>https://writings.stephenwolfram.com/2026/01/what-is-ruliology/</id>
-        <link href="https://writings.stephenwolfram.com/2026/01/what-is-ruliology/"/>
-        <updated>2026-02-03T06:40:40.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
