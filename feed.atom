@@ -1,56 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-02-19T06:58:49.346Z</id>
+    <id>urn:2026-02-19T07:53:57.229Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-02-19T06:58:49.346Z</updated>
+    <updated>2026-02-19T07:53:57.229Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[8 Things You Didn't Know About Code Mode]]></title>
-        <id>https://dev.to/goose_oss/8-things-you-didnt-know-about-code-mode-4h71</id>
-        <link href="https://dev.to/goose_oss/8-things-you-didnt-know-about-code-mode-4h71"/>
-        <updated>2026-02-19T06:54:38.000Z</updated>
-        <summary type="html"><![CDATA[Agents fundamentally changed how we program. They enable developers to move faster by disintermediating the traditional development workflow. This means less time switching between specialized tools and fewer dependencies on other teams. Now that agents can execute complicated tasks, developers face a new challenge: using them effectively over long sessions.
-The biggest challenge is context rot. Because agents have limited memory, a session that runs too long can cause them to "forget" earlier instructions. This leads to unreliable outputs, frustration, and subtle but grave mistakes in your codebase. One promising solution is Code Mode. 
-Instead of describing dozens of separate tools to an LLM, Code Mode allows an agent to write code that calls those tools programmatically, reducing the am…]]></summary>
+        <title type="html"><![CDATA[Stop Using Docker Like It's 2020. Here's How Production Actually Works in 2026.]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/stop-using-docker-like-its-2020-heres-how-production-actually-works-in-2026-ndf</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/stop-using-docker-like-its-2020-heres-how-production-actually-works-in-2026-ndf"/>
+        <updated>2026-02-19T07:46:14.000Z</updated>
+        <summary type="html"><![CDATA[Your Dockerfile has FROM node:latest. Your docker-compose has restart: always and no health checks. Your images are 1.2GB because you're copying node_modules in the build stage.
+I know this because I've reviewed hundreds of Dockerfiles in PRs, and 80% of them have the same problems. Here's the 2026 playbook.
+The typical Dockerfile I review:
+FROM node:20
+WORKDIR /app
+COPY . .
+RUN npm install
+EXPOSE 3000
+CMD ["node", "index.js"]
+
+Image size: 1.1GB. Includes npm, git, build tools, and your entire source code including tests and docs.
+The fix:
+# Build stage
+FROM node:20-slim AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY src/ ./src/
+RUN npm run build
+
+# Production stage
+FROM gcr.io/distroless/nodejs20-debian12
+WORKDIR /app
+COPY --from=build /app/dist ./dist
+COPY …]]></summary>
         <author>
-            <name>Rizèl Scarlett</name>
+            <name>Matthew Hou</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why Task-Fit Writing Tools Are Winning: From Blank Pages to Reliable Outputs]]></title>
-        <id>https://dev.to/olivia_perell_/why-task-fit-writing-tools-are-winning-from-blank-pages-to-reliable-outputs-f22</id>
-        <link href="https://dev.to/olivia_perell_/why-task-fit-writing-tools-are-winning-from-blank-pages-to-reliable-outputs-f22"/>
-        <updated>2026-02-19T06:51:31.000Z</updated>
-        <summary type="html"><![CDATA[There was a long stretch where capability meant scale: larger models, broader skill sets, and the promise that a single system could do everything. That era rewarded breadth over fit and introduced a new class of trade-offs-unexpected hallucinations, brittle tone, and heavy post-editing. Then came a steady reorientation toward task-fit: smaller, purpose-aligned tools that do one job well and hand off cleanly to the next step in a workflow.
-A few practical pressures nudged the change. Teams needed predictable output at scale; editorial pipelines demanded consistency; compliance and IP teams required traceability. Those needs made "flexible but flaky" tools less attractive. What changed was not one breakthrough but a convergence: better fine-tuning practices, modular toolkits that support fo…]]></summary>
+        <title type="html"><![CDATA[AI Won't Replace Programmers. But It Already Replaced the Job You Were Hired For.]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/ai-wont-replace-programmers-but-it-already-replaced-the-job-you-were-hired-for-3f2k</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/ai-wont-replace-programmers-but-it-already-replaced-the-job-you-were-hired-for-3f2k"/>
+        <updated>2026-02-19T07:45:38.000Z</updated>
+        <summary type="html"><![CDATA[Let me tell you about the last three job postings I saw for "Junior Frontend Developer."
+Requirements: React, TypeScript, REST APIs, responsive design, Git.
+Every single one of those skills can be performed by Cursor at 80% quality, right now, today. Not in some hypothetical future — right now.
+So what are companies actually hiring junior developers for in 2026? And if the answer makes you uncomfortable, what should you do about it?
+Here's what the job posting says:
+"Build responsive web applications using React and TypeScript."
+Here's what the job actually is:
+"Figure out what the product manager actually wants (not what they said), negotiate technical constraints with the design team, make judgment calls about tradeoffs the PM didn't think of, and handle the 47 edge cases that nobody men…]]></summary>
         <author>
-            <name>Olivia Perell</name>
+            <name>Matthew Hou</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How Vibe Coding Helped Me Build Guess The Anime Tool]]></title>
-        <id>https://dev.to/anime-lover/how-vibe-coding-helped-me-build-guess-the-anime-tool-1936</id>
-        <link href="https://dev.to/anime-lover/how-vibe-coding-helped-me-build-guess-the-anime-tool-1936"/>
-        <updated>2026-02-19T06:49:11.000Z</updated>
-        <summary type="html"><![CDATA[When you open my guess the anime tool, you only see a clean interface where you guess the anime from an image. What you do not see is how the tool actually came to life. The truth is that this project did not start with a detailed technical blueprint. It started with a vibe.
-As you know, when you run content sites and tools, you often get ideas randomly. Sometimes you see users spending time on quiz pages. Sometimes you notice anime fans sharing screenshots in groups. The thing is that these small signals tell you what people enjoy. That is where vibe coding begins.
-Vibe coding for me is not about writing random code without thinking. It is about starting with the feeling of how the product should behave, and then building around that feeling step by step.
-The main thing is that you first …]]></summary>
+        <title type="html"><![CDATA[The System Design Interview Is Broken. Here's How to Pass It Anyway.]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/the-system-design-interview-is-broken-heres-how-to-pass-it-anyway-3djc</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/the-system-design-interview-is-broken-heres-how-to-pass-it-anyway-3djc"/>
+        <updated>2026-02-19T07:44:38.000Z</updated>
+        <summary type="html"><![CDATA[I've been using PostgreSQL for 9 years and I keep discovering features that would have saved me weeks of application code. Here are the ones I wish I'd learned earlier — each with a real use case from production systems.
+You have a users table with first_name and last_name. Every query that needs the full name does first_name || ' ' || last_name. Every. Time.
+ALTER TABLE users ADD COLUMN full_name text 
+  GENERATED ALWAYS AS (first_name || ' ' || last_name) STORED;
+
+-- Now you can query, index, and search on full_name directly
+CREATE INDEX idx_users_full_name ON users USING gin(to_tsvector('english', full_name));
+
+Real use case: We had a products table where price_with_tax was calculated in every API response. Moving it to a generated column eliminated thousands of lines of application-lev…]]></summary>
         <author>
-            <name>AT</name>
+            <name>Matthew Hou</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[5 Tips for Building MCP Apps That Work]]></title>
-        <id>https://dev.to/goose_oss/5-tips-for-building-mcp-apps-that-work-2pme</id>
-        <link href="https://dev.to/goose_oss/5-tips-for-building-mcp-apps-that-work-2pme"/>
-        <updated>2026-02-19T06:49:01.000Z</updated>
-        <summary type="html"><![CDATA[MCP Apps allow you to render interactive UI directly inside any agent supporting the Model Context Protocol. Instead of a wall of text, your agent can now provide a functional chart, a checkout form, or a video player. This bridges the gap in agentic workflows: clicking a button is often clearer than describing the action you hope an agent executes.
-MCP Apps originated as MCP-UI, an experimental project. After adoption by early clients like goose, the MCP maintainers incorporated it as an official extension. Today, it's supported by clients like goose, MCPJam, Claude, ChatGPT, and Postman.
-Even though MCP Apps use web technologies, building one isn't the same as building a traditional web app. Your UI runs inside an agent you don't control, communicates with a model that can't see user int…]]></summary>
+        <title type="html"><![CDATA[The Overton Framework is now DOI-backed]]></title>
+        <id>https://dev.to/crisiscoresystems/the-overton-framework-is-now-doi-backed-ko7</id>
+        <link href="https://dev.to/crisiscoresystems/the-overton-framework-is-now-doi-backed-ko7"/>
+        <updated>2026-02-19T07:44:29.000Z</updated>
+        <summary type="html"><![CDATA[The Overton Framework (Protective Computing) is now archived on Zenodo with a minted DOI.
+That means a stable, versioned citation you can use in papers, docs, and reviews—without link rot or “which PDF did you mean?” ambiguity.
+What’s new: a DOI-backed v1.3 canon (Zenodo) plus a repo-hosted Markdown mirror for review and citation.
+Overton, K. (2026). The Overton Framework: Protective Computing in Conditions of Human Vulnerability (Version 1.3). Zenodo. https://doi.org/10.5281/zenodo.18688516
+Most software quietly assumes users have:
+stable connectivity
+stable cognition
+stable safety
+stable institutional trust
+The framework names that as the Stability Assumption and treats it as a design hazard.
+Protective Computing is a systems orientation for building software that stays safe and usable w…]]></summary>
         <author>
-            <name>Rizèl Scarlett</name>
+            <name>CrisisCore-Systems</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Exact Scripts I Used to Negotiate $45K More in Comp. Exposed, Line by Line.]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/the-exact-scripts-i-used-to-negotiate-45k-more-in-comp-exposed-line-by-line-1135</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/the-exact-scripts-i-used-to-negotiate-45k-more-in-comp-exposed-line-by-line-1135"/>
+        <updated>2026-02-19T07:44:11.000Z</updated>
+        <summary type="html"><![CDATA[I've negotiated compensation at 4 different companies over 8 years in tech. My total lifetime negotiation gains: roughly $185K in additional base salary and equity, across those 4 offers.
+The biggest single win was $45K. Not because I'm a great negotiator — I'm actually terrible at confrontation. But because I learned that negotiation isn't about arguing. It's about having better information than the other side.
+Here are the exact scripts, word for word.
+This is the only rule that matters. Whoever says a number first loses.
+When they ask "What are your salary expectations?"
+"I'd rather not anchor the conversation with a specific number. 
+I'm focused on finding the right fit, and I'm confident we can 
+find a comp package that works for both sides. 
+
+Can you share the budgeted range for this…]]></summary>
+        <author>
+            <name>Matthew Hou</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Burned Out at a FAANG and It Took 18 Months to Recover. Here Are the Warning Signs I Ignored.]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/i-burned-out-at-a-faang-and-it-took-18-months-to-recover-here-are-the-warning-signs-i-ignored-4jnb</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/i-burned-out-at-a-faang-and-it-took-18-months-to-recover-here-are-the-warning-signs-i-ignored-4jnb"/>
+        <updated>2026-02-19T07:43:05.000Z</updated>
+        <summary type="html"><![CDATA[I'm writing this because every burnout article I've read was written by someone who caught it early. "I felt tired so I took a vacation!" That's not burnout. That's being tired.
+Burnout is when you sit in your car in the parking lot for 20 minutes because you can't summon the will to walk into the building. It's when you spend 4 hours staring at a pull request and can't understand code you would've reviewed in 10 minutes a year ago. It's when someone says "great job on the launch" and you feel literally nothing.
+Here's what happened, what I missed, and what I'd tell myself if I could go back.
+Months 1-6 (The High):
+Months 7-12 (The Grind):
+Months 13-18 (The Decline):
+Months 19-24 (The Crash):
+I quit a month later with nothing lined up. It took 18 months after that to feel like myself again…]]></summary>
+        <author>
+            <name>Matthew Hou</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I've Reviewed 300+ API Designs. Here Are the 9 Mistakes Everyone Makes.]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/ive-reviewed-300-api-designs-here-are-the-9-mistakes-everyone-makes-2lf1</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/ive-reviewed-300-api-designs-here-are-the-9-mistakes-everyone-makes-2lf1"/>
+        <updated>2026-02-19T07:41:54.000Z</updated>
+        <summary type="html"><![CDATA[I've spent the last 4 years reviewing API designs at work, in open-source PRs, and for consulting clients. Some patterns keep appearing — not because developers are bad, but because nobody teaches API design as a discipline.
+Here are the 9 mistakes I see most often, with the exact fix for each one.
+// GET /users/123 — success
+{ "id": 123, "name": "Jane", "email": "jane@example.com" }
+
+// GET /users/999 — not found  
+{ "error": "User not found" }
+
+// POST /users — success
+{ "message": "User created", "userId": 456 }
+
+// POST /users — validation error
+{ "errors": ["Email is required", "Name too short"] }
+
+Four endpoints, four different response shapes. Every consumer has to write custom parsing logic for each one.
+The fix: One envelope, every response.
+// Success
+{
+  "data": { "id": 123, "na…]]></summary>
+        <author>
+            <name>Matthew Hou</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Pod Security Admission/Policies]]></title>
+        <id>https://dev.to/godofgeeks/pod-security-admissionpolicies-4b1l</id>
+        <link href="https://dev.to/godofgeeks/pod-security-admissionpolicies-4b1l"/>
+        <updated>2026-02-19T07:41:27.000Z</updated>
+        <summary type="html"><![CDATA[Level Up Your Kubernetes Security Game: Pod Security Admission & Policies Explained (No Boring Jargon Allowed!)
+
+
+Hey there, fellow Kubernetes adventurers! Ever feel like your cluster is a bit of a Wild West, with pods doing whatever they please? You've got applications running, deployments humming, but a nagging feeling that someone could… well, break things? If that sounds familiar, then buckle up, because we're about to dive deep into the awesome world of Pod Security Admission (PSA) and its trusty sidekick, Pod Security Policies (PSPs). Think of it as putting a bouncer at the door of your container party, making sure only the well-behaved guests get in.
+At its heart, Kubernetes is all about orchestrating containers. And while containers are fantastic for packaging and isolating applica…]]></summary>
+        <author>
+            <name>Aviral Srivastava</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[7 Git Commands I Wish I Learned Before Embarrassing Myself in Front of the Whole Team]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/7-git-commands-i-wish-i-learned-before-embarrassing-myself-in-front-of-the-whole-team-4d32</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/7-git-commands-i-wish-i-learned-before-embarrassing-myself-in-front-of-the-whole-team-4d32"/>
+        <updated>2026-02-19T07:40:29.000Z</updated>
+        <summary type="html"><![CDATA[I once force-pushed to main during a demo. The CTO was watching. My face is still red.
+Here are the Git commands and patterns that would have saved me from every embarrassing moment in my career. Not the basics — the ones you discover only after you've already broken something.
+git reflog — The Undo Button Nobody Told You About
+
+
+You ran git reset --hard and yo← your reset
+$ git checkout -b recovery f4e5d6c
+
+**The rule:** If you did it in the last 90 days and Git was involved, `reflog` can get it back. It's saved my bacon at least 5 times.
+
+## 2. `git stash` (The Advanced Version)
+
+Everyone knows `git stash`. But most people use it like a junk drawer — stuff goes in, never comes out.
+
+
+
+bash
+$ git stash push -m "WIP: payment refactor, needs testing"
+$ git stash list
+$ git stash apply stash…]]></summary>
+        <author>
+            <name>Matthew Hou</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Exact Scripts I Used to Negotiate $45K More in Comp. Exposed, Line by Line.]]></title>
+        <id>https://dev.to/matthew_hou_e8ab76d6be07b/the-exact-scripts-i-used-to-negotiate-45k-more-in-comp-exposed-line-by-line-p61</id>
+        <link href="https://dev.to/matthew_hou_e8ab76d6be07b/the-exact-scripts-i-used-to-negotiate-45k-more-in-comp-exposed-line-by-line-p61"/>
+        <updated>2026-02-19T07:39:03.000Z</updated>
+        <summary type="html"><![CDATA[I've negotiated compensation at 4 different companies over 8 years in tech. My total lifetime negotiation gains: roughly $185K in additional base salary and equity, across those 4 offers.
+The biggest single win was $45K. Not because I'm a great negotiator — I'm actually terrible at confrontation. But because I learned that negotiation isn't about arguing. It's about having better information than the other side.
+Here are the exact scripts, word for word.
+This is the only rule that matters. Whoever says a number first loses.
+When they ask "What are your salary expectations?"
+"I'd rather not anchor the conversation with a specific number. 
+I'm focused on finding the right fit, and I'm confident we can 
+find a comp package that works for both sides. 
+
+Can you share the budgeted range for this…]]></summary>
+        <author>
+            <name>Matthew Hou</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SCSS Maps + CSS Custom Properties: Scalable Runtime Theming Without Duplication]]></title>
+        <id>https://dev.to/ouvarov/scss-maps-css-custom-properties-scalable-runtime-theming-without-duplication-1lfk</id>
+        <link href="https://dev.to/ouvarov/scss-maps-css-custom-properties-scalable-runtime-theming-without-duplication-1lfk"/>
+        <updated>2026-02-19T07:36:54.000Z</updated>
+        <summary type="html"><![CDATA[You're building a platform that serves different user segments — each with their own visual style. Maybe it's A/B testing different UIs, maybe it's a white-label product with per-client branding. You have 6 modes today: "Pink Big", "Blue Small", "Dark Compact" and so on. Next month the design team rewrites half of them.
+How do you organize your styles so that adding or changing a mode doesn't mean editing every component file?
+I've been exploring different approaches in a side project and landed on a pattern that combines the best of SCSS maps and CSS custom properties. Let me walk you through the journey.
+We need to:
+Switch between multiple visual modes at runtime based on user config or API response
+Keep the bundle size reasonable
+Make it easy to add, remove, or modify modes without touc…]]></summary>
+        <author>
+            <name>Olexandr Uvarov</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Partial Catchment Delineation for Inundation Modeling]]></title>
+        <id>https://dev.to/u11d/partial-catchment-delineation-for-inundation-modeling-275</id>
+        <link href="https://dev.to/u11d/partial-catchment-delineation-for-inundation-modeling-275"/>
+        <updated>2026-02-19T07:34:53.000Z</updated>
+        <summary type="html"><![CDATA[A System-Oriented Approach to Scalable Hydrological Feature Engineering
+
+
+Traditional watershed delineation wasn't designed for machine learning at scale. The standard approach treats each watershed as a complete, self-contained unit, which makes sense when you're studying individual rivers. But it creates real problems when you need to train models across hundreds of locations.
+We ran into this on a recent flood prediction project. The study area had almost no hydrological data, no stream gauges, no riverbed surveys, nothing you'd typically use for hydraulic modeling. So we trained an LSTM model to predict discharge instead. It worked, but there was a catch: the model could only predict flow at watershed outlets. One outlet per watershed meant we didn't have enough training points.
+The ob…]]></summary>
+        <author>
+            <name>Aleksy Bohdziul</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ledn raises $188m with first bitcoin backed bond sale in asset backed market]]></title>
+        <id>6f95bae0-109d-44d0-9f4b-f69862ce86db</id>
+        <link href="https://www.coindesk.com/markets/2026/02/19/ledn-raises-usd188m-with-first-bitcoin-backed-bond-sale-in-asset-backed-market"/>
+        <updated>2026-02-19T07:25:19.000Z</updated>
+        <summary type="html"><![CDATA[Crypto lender packages more than 5,400 bitcoin collateralized loans into first asset backed securities transaction of its kind.]]></summary>
+        <author>
+            <name>James Van Straten</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin, ether, xrp ETFs bleed while Solana bucks outflow trend]]></title>
+        <id>e80f1a74-28cb-4782-b0cc-ccf7c334175e</id>
+        <link href="https://www.coindesk.com/markets/2026/02/19/bitcoin-ether-xrp-etfs-bleed-while-solana-bucks-outflow-trend"/>
+        <updated>2026-02-19T07:25:08.000Z</updated>
+        <summary type="html"><![CDATA[U.S. spot crypto ETFs saw broad-based redemptions led by bitcoin and ether funds, while Solana products drew fresh inflows, signaling selective institutional rotation rather than a full retreat from digital assets.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
         </author>
     </entry>
     <entry>
@@ -74,63 +292,13 @@ Even though MCP Apps use web technologies, building one isn't the same as buildi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Find Your API’s Breaking Point (Before Your Users Do) - Capacity Testing with JMeter]]></title>
-        <id>https://dev.to/oleh_koren/how-to-find-your-apis-breaking-point-before-your-users-do-capacity-testing-with-jmeter-1jma</id>
-        <link href="https://dev.to/oleh_koren/how-to-find-your-apis-breaking-point-before-your-users-do-capacity-testing-with-jmeter-1jma"/>
-        <updated>2026-02-19T06:45:45.000Z</updated>
-        <summary type="html"><![CDATA[When you build an API service, it’s crucial to know how many users or requests it can handle before things start breaking. This is where capacity testing comes in.
-What is Capacity Testing?
-Capacity testing identifies the maximum load your system can handle before performance degrades or errors appear.
-It helps detect bottlenecks and verify performance requirements under heavy load.
-Let’s say we have a REST API for an online store. We want to see how many requests it can handle before it starts failing.
-Option 1: Separate Thread Groups per endpoint
-Why? Because if one endpoint starts to degrade (high response time or errors), it can affect the throughput of other endpoints if tested together in the same group.
-Separate Thread Groups allow:
-Independent load for each endpoint
-Clear identific…]]></summary>
+        <title type="html"><![CDATA[US funding for global internet freedom 'effectively gutted']]></title>
+        <id>https://www.theguardian.com/world/2026/feb/19/us-funding-for-global-internet-freedom-effectively-gutted</id>
+        <link href="https://www.theguardian.com/world/2026/feb/19/us-funding-for-global-internet-freedom-effectively-gutted"/>
+        <updated>2026-02-19T06:41:14.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Oleh Koren</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How I Used RPI to Build an OpenClaw Alternative]]></title>
-        <id>https://dev.to/goose_oss/how-i-used-rpi-to-build-an-openclaw-alternative-d4d</id>
-        <link href="https://dev.to/goose_oss/how-i-used-rpi-to-build-an-openclaw-alternative-d4d"/>
-        <updated>2026-02-19T06:44:39.000Z</updated>
-        <summary type="html"><![CDATA[Everyone on Tech Twitter has been buying Mac Minis, so they could run a local agentic tool called OpenClaw. OpenClaw is a messaging-based AI assistant that connects to platforms such as Discord and Telegram allowing you to interact with an AI agent through DMs or @mentions. Under the hood, it uses an agent called Pi to execute tasks, browse the web, write code, and more.
-Seeing the hype made me want to get my hands dirty. I wanted to see if I could build a lite version for myself. I wanted something minimal that used goose as the engine instead of Pi. I tentatively dubbed it AltOpenClaw.
-My usual move is to just jump in, start breaking things, and refactor as I go. I actually prefer the back and forth conversation with an agent because it helps me learn how the project works in real time. …]]></summary>
-        <author>
-            <name>Rizèl Scarlett</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Automating Technical Blog Localization with Gemini CLI Agent Skills [GDE]]]></title>
-        <id>https://dev.to/gde/automating-technical-blog-localization-with-gemini-cli-agent-skills-gde-5fm2</id>
-        <link href="https://dev.to/gde/automating-technical-blog-localization-with-gemini-cli-agent-skills-gde-5fm2"/>
-        <updated>2026-02-19T06:40:45.000Z</updated>
-        <summary type="html"><![CDATA[The Use Case: Scaling Content to Global Tech Communities
-
-
-When content writers write English blog posts, they often want to distribute them to different tech communities to share knowledge, increase impact, and reach. However, many readers in these communities do not read, write, or speak English. When the blog post is posted in these localized, language-specific Facebook Groups, their followers do not read it and miss out on valuable insights.  
-I often write English blog posts for global tech communities, but I encountered an obstacle when sharing them in localized groups, like Taiwan's Traditional Chinese Facebook communities. My readers there missed out because of the language barrier, and I lacked the technical vocabulary to translate them manually. My solution? I built a custom Agen…]]></summary>
-        <author>
-            <name>Connie Leung</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Enterprise Integration Patterns Every Architect Should Know]]></title>
-        <id>https://dev.to/kancherla_venkatadileep/enterprise-integration-patterns-every-architect-should-know-1h5p</id>
-        <link href="https://dev.to/kancherla_venkatadileep/enterprise-integration-patterns-every-architect-should-know-1h5p"/>
-        <updated>2026-02-19T06:38:50.000Z</updated>
-        <summary type="html"><![CDATA[Modern enterprises run on dozens of systems—ERPs, CRMs, cloud services, data platforms, and third-party APIs. Without a solid integration strategy, these systems become silos that slow down the business. This is where enterprise integration patterns play a critical role.
-This article covers the most important integration patterns every software architect should understand to design scalable, reliable, and future-ready systems.
-What Are Enterprise Integration Patterns?
-Enterprise integration patterns are proven architectural solutions for connecting systems in a structured, maintainable way. Instead of reinventing the wheel, architects reuse these patterns to solve common integration challenges like data consistency, scalability, and fault tolerance.
-They help answer questions such as:
-How …]]></summary>
-        <author>
-            <name>Kancherla Venkata Dileep Kumar</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -145,120 +313,13 @@ The post Samsung Teases New AI-Powered Photo, Video Editing Feature appeared fir
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Secret Life of JavaScript: The Catch]]></title>
-        <id>https://dev.to/aaron_rose_0787cc8b4775a0/the-secret-life-of-javascript-the-catch-1bp0</id>
-        <link href="https://dev.to/aaron_rose_0787cc8b4775a0/the-secret-life-of-javascript-the-catch-1bp0"/>
-        <updated>2026-02-19T06:32:42.000Z</updated>
-        <summary type="html"><![CDATA[How stack unwinding works, and the mechanical truth of throw.
-Timothy was staring at a wall of red text in his console. The words Uncaught TypeError glared back at him.
-His application had been working flawlessly for days. It was fetching users, parsing data, and rendering profiles. But today, the database had returned a single corrupted record without a firstName property, and the entire application had collapsed.
-"It just died," Timothy said, rubbing his eyes. "One missing property, and the whole system stopped running."
-Margaret pulled up a chair and grabbed a dry-erase marker. "You are programming for the Happy Path, Timothy. You are assuming the network is perfectly reliable and the data is always clean. Let's look at what actually happens when a function fails."
-Margaret drew three b…]]></summary>
+        <title type="html"><![CDATA[Stoolap/Node: A Native Node.js Driver That's Surprisingly Fast]]></title>
+        <id>https://stoolap.io/blog/2026/02/19/introducing-stoolap-node/</id>
+        <link href="https://stoolap.io/blog/2026/02/19/introducing-stoolap-node/"/>
+        <updated>2026-02-19T06:09:58.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Aaron Rose</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Process, Threads and Goroutines]]></title>
-        <id>https://dev.to/pshycodr/process-threads-and-goroutines-95l</id>
-        <link href="https://dev.to/pshycodr/process-threads-and-goroutines-95l"/>
-        <updated>2026-02-19T06:21:51.000Z</updated>
-        <summary type="html"><![CDATA[What Is a Process?
-
-
-
-A program is an executable file on disk.
-When the operating system loads that file into memory and starts execution, it becomes a process.
-A process has its own:
-Memory Address
-
-
-Registers
-
-
-Program Counter
-
-
-Stack and Heap memory
-
-
-I/O and system resources
-
-
-
-The key property is isolation.
-Each process has its own resources, and one process cannot access or interact with another process directly.
-
-Although it is possible to communicate with another process via IPC (Inter-Process Communication) and pipes, they need to be intentionally set up.
-Example:
-Google Chrome runs each tab in a separate process. If one tab crashes or malfunctions, other tabs keep running. That isolation comes from process boundaries.
-Cons:
-Heavyweight
-
-
-Expensive context switching
-
-
-Higher memor…]]></summary>
-        <author>
-            <name>Anish Roy</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What I'd Build Next (And Actually Start Building)]]></title>
-        <id>https://dev.to/ribhavmodi/what-id-build-next-and-actually-start-building-11l6</id>
-        <link href="https://dev.to/ribhavmodi/what-id-build-next-and-actually-start-building-11l6"/>
-        <updated>2026-02-19T06:15:29.000Z</updated>
-        <summary type="html"><![CDATA[For the past 45 days I have been learning Web3 concepts one per day, writing about them in public, and building a mental map of how everything fits together. I have covered blockchains, DeFi, stablecoins, zero knowledge proofs, identity, storage, DePIN, regenerative finance, and more. Around Day 46, I am starting to feel like I have enough pieces in my head to stop just learning and start actually building something. Not a full production app, not a token launch, just a small v0 project that ties together a few of the ideas I have been circling.
-This is Day 46 of my 60 Days of Web3 experiment. If you are new here, you can read the full journey on Medium, checkout Ribhav on Future, and hang out with us in the Web3ForHumans Telegram at Web3ForHumans. Today's post is less "here is what I lear…]]></summary>
-        <author>
-            <name>Ribhav</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Part-4: Automating EC2 Infrastructure using Terraform | Amazon Web Services (AWS)]]></title>
-        <id>https://dev.to/olymahmud/part-4-automating-ec2-infrastructure-using-terraform-amazon-web-services-aws-190a</id>
-        <link href="https://dev.to/olymahmud/part-4-automating-ec2-infrastructure-using-terraform-amazon-web-services-aws-190a"/>
-        <updated>2026-02-19T06:11:34.000Z</updated>
-        <summary type="html"><![CDATA[Earlier, we created an EC2 instance by hand in the AWS Console. Now we’ll do the same thing with Terraform.
-In this guide, we will walk through how to use Terraform to create an EC2 instance on AWS, generate an SSH key, and install Nginx when the server boots. All of it is automated using code.
-You should have:
-An AWS account
-
-
-Terraform installed on your machine
-
-
-An IAM user with an access key and secret key
-
-
-A general idea of how EC2 works
-
-
-A basic understanding of Terraform (providers, resources, variables, outputs)
-
-
-
-
-  
-  
-  Directory Structure
-
-
-Here’s the Terraform project layout we will use:
-.
-├── instance.tf
-├── key_pair.tf
-├── output.tf
-├── provider.tf
-├── terraform.tfvars
-└── variables.tf
-
-Each file handles a specific part of the deployment.
-Start with the provider definitio…]]></summary>
-        <author>
-            <name>M. Oly Mahmud</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -352,16 +413,6 @@ The post Apple Reportedly Accelerating Work On AI-Powered Smart Glasses, Camera-
 The post Nothing Phone (4a) Series Specs, Colours, Pricing, Availability Leaked appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Kiran Ganesan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ukranian controls Home Assistant over LoRa radio when their power grid goes down]]></title>
-        <id>https://old.reddit.com/r/homeassistant/comments/1r8ftc0/i_control_my_home_assistant_over_lora_radio_when/</id>
-        <link href="https://old.reddit.com/r/homeassistant/comments/1r8ftc0/i_control_my_home_assistant_over_lora_radio_when/"/>
-        <updated>2026-02-19T03:56:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -477,20 +528,20 @@ The post Google Pixel 10a Coming To Malaysia This March; Starts From RM2,299 app
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Microsoft guide to pirating Harry Potter for LLM training (2024) [removed]]]></title>
-        <id>https://devblogs.microsoft.com/azure-sql/langchain-with-sqlvectorstore-example/</id>
-        <link href="https://devblogs.microsoft.com/azure-sql/langchain-with-sqlvectorstore-example/"/>
-        <updated>2026-02-18T23:19:29.000Z</updated>
+        <title type="html"><![CDATA[All Look Same?]]></title>
+        <id>https://alllooksame.com/</id>
+        <link href="https://alllooksame.com/"/>
+        <updated>2026-02-18T22:48:03.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Closing this as we are no longer pursuing Swift adoption]]></title>
-        <id>https://github.com/LadybirdBrowser/ladybird/issues/933</id>
-        <link href="https://github.com/LadybirdBrowser/ladybird/issues/933"/>
-        <updated>2026-02-18T23:08:38.000Z</updated>
+        <title type="html"><![CDATA[Martial arts robots at 2026 Spring Festival Gala [video]]]></title>
+        <id>https://www.youtube.com/watch?v=mUmlv814aJo</id>
+        <link href="https://www.youtube.com/watch?v=mUmlv814aJo"/>
+        <updated>2026-02-18T22:47:44.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -787,36 +838,6 @@ The post Google Pixel 10a Coming To Malaysia This March; Starts From RM2,299 app
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[NYSE President says exchange felt ‘responsibility’ to enter tokenization space]]></title>
-        <id>b2f73177-ebe1-4ece-a1b0-fcf8ef327c01</id>
-        <link href="https://www.coindesk.com/business/2026/02/18/nyse-president-says-exchange-felt-responsibility-to-enter-tokenization-space"/>
-        <updated>2026-02-18T15:58:36.000Z</updated>
-        <summary type="html"><![CDATA[The exchange is expected to launch 24/7 trading of tokenized assets later this year.]]></summary>
-        <author>
-            <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bitcoin's plunge signals coming AI crisis, but massive Fed response will drive new record high: Arthur Hayes]]></title>
-        <id>55448192-de61-4f81-8aea-58449c4898a0</id>
-        <link href="https://www.coindesk.com/markets/2026/02/18/bitcoin-s-plunge-signals-coming-ai-crisis-but-massive-fed-response-will-drive-new-record-high-arthur-hayes"/>
-        <updated>2026-02-18T15:15:02.000Z</updated>
-        <summary type="html"><![CDATA[The rise of artificial intelligence is likely to displace millions of workers in quick order, triggering sizable credit defaults, said Hayes.]]></summary>
-        <author>
-            <name>Stephen Alpher</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: I built a fuse box for microservices]]></title>
-        <id>https://www.openfuse.io/</id>
-        <link href="https://www.openfuse.io/"/>
-        <updated>2026-02-18T14:04:04.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Download: a blockchain enigma, and the algorithms governing our lives]]></title>
         <id>https://www.technologyreview.com/?p=1133291</id>
         <link href="https://www.technologyreview.com/2026/02/18/1133291/the-download-a-blockchain-enigma-and-the-algorithms-governing-our-lives/"/>
@@ -1051,7 +1072,7 @@ The post Huawei FreeBuds Pro 5 Listed On SIRIM Ahead Of Global Debut appeared fi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Choose Between Hindley-Milner and Bidirectional Typing]]></title>
+        <title type="html"><![CDATA[How to choose between Hindley-Milner and bidirectional typing]]></title>
         <id>https://thunderseethe.dev/posts/how-to-choose-between-hm-and-bidir/</id>
         <link href="https://thunderseethe.dev/posts/how-to-choose-between-hm-and-bidir/"/>
         <updated>2026-02-15T18:07:44.000Z</updated>
