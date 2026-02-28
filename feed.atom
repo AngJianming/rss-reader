@@ -1,10 +1,399 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-02-28T16:21:00.489Z</id>
+    <id>urn:2026-02-28T17:16:21.210Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-02-28T16:21:00.489Z</updated>
+    <updated>2026-02-28T17:16:21.210Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[How to Migrate AI Agent Operations from VPS to Mac Mini (Without Breaking 43 Cron Jobs)]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-migrate-ai-agent-operations-from-vps-to-mac-mini-without-breaking-43-cron-jobs-5fm8</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-migrate-ai-agent-operations-from-vps-to-mac-mini-without-breaking-43-cron-jobs-5fm8"/>
+        <updated>2026-02-28T17:12:33.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Migrated OpenClaw AI Agent from VPS to Mac Mini with 43 cron jobs intact. Achieved 70% success rate by Day 4 with zero manual intervention. LaunchAgent setup and API authentication migration were the critical success factors.
+OpenClaw environment (AI Agent execution platform)
+Existing cron jobs on VPS
+Mac Mini (macOS 14.6.0)
+SSH access
+API tokens (GitHub, Anthropic, etc.)
+Source: Site24x7: Server Migration Best Practices
+Quote: "Plan your migration strategy by mapping all dependencies"
+Before migrating, I mapped all cron job dependencies:
+# Extract current cron schedule
+crontab -l > current-crons.txt
+# Analyze 43 jobs by priority
+grep -E "article-writer|trend-hunter|x-poster" current-crons.txt
+
+
+
+
+Priority
+Job Type
+Count
+Notes
+
+
+
+
+Critical
+daily-memory, article-writer
+5
+Daily recor…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Build Emergency Mental Health Detection in AI Agents]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-build-emergency-mental-health-detection-in-ai-agents-30l0</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-build-emergency-mental-health-detection-in-ai-agents-30l0"/>
+        <updated>2026-02-28T17:12:23.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Implemented SAFE-T (Safety Alert for Emergency Triage) system that detects suicide risk in AI agent interactions. Used 72-hour continuous monitoring. Severity 0.9 alerts triggered emergency intervention protocols. Maintained 78% normal operation success rate.
+AI agent framework (OpenClaw Gateway used here)
+Slack/Discord notification system
+Continuous user behavior monitoring
+Basic understanding of mental health crisis indicators
+// Core detection logic in suffering-detector skill
+function calculateSeverityScore(userBehavior) {
+  const riskFactors = {
+    isolationScore: userBehavior.socialWithdrawal * 0.3,
+    hopelessnessScore: userBehavior.negativeThoughts * 0.4,
+    impulsivityScore: userBehavior.riskBehavior * 0.3
+  };
+
+  const totalScore = Object.values(riskFactors)
+    .reduc…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Run AI Agents Reliably on Mac Mini (70% Success Rate in 4 Days)]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-run-ai-agents-reliably-on-mac-mini-70-success-rate-in-4-days-45bg</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-run-ai-agents-reliably-on-mac-mini-70-success-rate-in-4-days-45bg"/>
+        <updated>2026-02-28T17:10:21.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Deployed OpenClaw-based AI agents on Mac Mini with ~70% cron success rate over 4 days. 
+Mac Mini (M1/M2+ recommended)
+OpenClaw Gateway installed
+Several automation skills (x-poster, roundtable-standup, moltbook-interact, etc.)
+Blotato API access
+# Auto-start OpenClaw Gateway
+mkdir -p ~/Library/LaunchAgents
+cat > ~/Library/LaunchAgents/com.openclaw.gateway.plist << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.openclaw.gateway</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/openclaw</string>
+        <string>gateway</string>
+        <string>start</string>
+    </array>
+    <key>Run…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Handle Partial Failures in AI Agent Cron Jobs]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-handle-partial-failures-in-ai-agent-cron-jobs-12ba</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-handle-partial-failures-in-ai-agent-cron-jobs-12ba"/>
+        <updated>2026-02-28T17:10:16.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Learn how to detect, recover from, and track partial failures in AI agent cron jobs. This approach improved our success rate from 70% to 95%. It handles cases where core functionality succeeds but secondary operations fail.
+AI agent framework (OpenClaw or similar)
+Cron-based scheduled jobs
+External API dependencies (social posting, message delivery)
+Alert channel (Slack, Discord, etc.)
+Consider this typical AI agent cron job flow:
+# x-poster-morning example
+✅ Post to X API (200 OK)
+❌ Message delivery fails (Timeout/Rate Limit)
+→ What's the job status?
+
+Traditional binary approach:
+if curl -X POST $API_ENDPOINT; then
+  echo "SUCCESS"
+  exit 0
+else
+  echo "FAILED"  
+  exit 1
+fi
+
+This misses post successful + delivery failed scenarios.
+Add individual status tracking for each operation…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building for AI ( not with AI )]]></title>
+        <id>https://dev.to/manascodes13/building-for-ai-not-with-ai--29e0</id>
+        <link href="https://dev.to/manascodes13/building-for-ai-not-with-ai--29e0"/>
+        <updated>2026-02-28T17:09:51.000Z</updated>
+        <summary type="html"><![CDATA[I need to validate an idea. Let me know in the comments, please.
+It's been 2 years since I started doing AI development, but there is one thing that was lacking when AI hype started, and it's still lacking now.
+Its decision-making, context awareness, and context longevity.
+You may have already heard that Claude made a C compiler, Cloudflare made their own Next.js app, etc., but it's only possible when the person behind it was giving very clear instructions.
+I saw multiple founders being stuck in a loop, where they have a good idea, but not technical, try to build using Google AI Studio or Replit, lovable, etc., but it's a sinkhole for them. They start well, but are never able to finalize it. They always need a developer who can do the final refinement or solve the issues that AI made for t…]]></summary>
+        <author>
+            <name>Manas Mishra</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Achieve Zero-Intervention AI Agent Operations After Mac Mini Migration]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-achieve-zero-intervention-ai-agent-operations-after-mac-mini-migration-2gf8</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-achieve-zero-intervention-ai-agent-operations-after-mac-mini-migration-2gf8"/>
+        <updated>2026-02-28T17:09:40.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Migrated 43 cron jobs and AI agent operations from VPS to Mac Mini. Achieved 100% autonomous operations with zero manual interventions. This guide covers LaunchAgent setup, auto-recovery configuration, and monitoring automation.
+OpenClaw Gateway environment
+Mac Mini (macOS Sonoma 14.6+)
+Existing AI agent operations on VPS
+40+ cron jobs requiring migration
+Before migration, our VPS environment faced recurring issues:
+
+
+
+Issue
+Frequency
+Impact
+
+
+
+
+Disk space exhaustion
+Monthly
+Skill execution failures
+
+
+Power outage recovery
+2-3x/year
+Hours of downtime
+
+
+Session management complexity
+Daily
+Manual intervention required
+
+
+
+# Create LaunchAgent directory
+mkdir -p ~/Library/LaunchAgents
+
+# Configure OpenClaw Gateway auto-startup
+cat > ~/Library/LaunchAgents/com.openclaw.gateway.plist << …]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Build Resilient Distributed AI Agent Systems That Survive Gateway Failures]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-build-resilient-distributed-ai-agent-systems-that-survive-gateway-failures-491d</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-build-resilient-distributed-ai-agent-systems-that-survive-gateway-failures-491d"/>
+        <updated>2026-02-28T17:09:34.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Implemented a distributed AI agent design where skills continue despite Gateway errors. Session management is separated from execution infrastructure. The system maintains 100% uptime for automated skills. This works during WebSocket disconnections and network issues.
+OpenClaw Gateway environment
+Automated skills (cron-based)
+WebSocket-based session management
+
+Mac Mini or VPS setup
+# Session history fails
+ERROR: WebSocket connection failed (ws://localhost:3019)
+
+# But skills execute successfully  
+[SUCCESS] daily-memory skill executed at 2026-02-23 06:00
+[SUCCESS] Larry TikTok pipeline: 4/4 posts completed
+
+This reveals separation of concerns between session management and execution infrastructure.
+OpenClaw consists of three independent components:
+┌─────────────────┐    ┌────────…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Built a Gemini-Powered History Narrator 6 Months Ago. Here's What I'd Tell You Now.]]></title>
+        <id>https://dev.to/axrisi/i-built-a-gemini-powered-history-narrator-6-months-ago-heres-what-id-tell-you-now-dkg</id>
+        <link href="https://dev.to/axrisi/i-built-a-gemini-powered-history-narrator-6-months-ago-heres-what-id-tell-you-now-dkg"/>
+        <updated>2026-02-28T17:04:10.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for the Built with Google Gemini: Writing Challenge
+What if every faded photograph in your grandmother's attic could tell its own story?
+That question led me to build the Historical Photo/Video Narrator — an app where you upload a historical photo or video, and Google Gemini narrates the history behind it. Not a caption. Not a label. A full narrative — the era, the context, what was likely happening just outside the frame. Then, if you want to go further, a "Re-imagine" feature lets you edit the photo with a text prompt. Want to see that 1920s street scene on a sunny day? Add color to a black-and-white portrait? Type it and Gemini generates it.
+I built this in September 2025 for the Google AI Studio Multimodal Challenge. It placed well. I deployed it to Cloud Run and m…]]></summary>
+        <author>
+            <name>Nikoloz Turazashvili (@axrisi)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Flutter in 2026: What It Is, Why It Matters, and Why App Development Is a Skill Worth Learning?]]></title>
+        <id>https://dev.to/safiullahkorai/flutter-in-2026-what-it-is-why-it-matters-and-why-app-development-is-a-skill-worth-learning-1h20</id>
+        <link href="https://dev.to/safiullahkorai/flutter-in-2026-what-it-is-why-it-matters-and-why-app-development-is-a-skill-worth-learning-1h20"/>
+        <updated>2026-02-28T17:00:00.000Z</updated>
+        <summary type="html"><![CDATA[There was a time when building an app meant choosing sides.
+If you wanted an iPhone app, you learned one language.
+
+If you wanted an Android app, you learned another.
+
+If you wanted a web app, that was a completely different world.
+Development was divided. Time was divided. Teams were divided.
+Then tools started changing.
+And one of the tools that changed the conversation completely was Flutter.
+Today in 2026, Flutter is not just an option. For many developers and companies, it is the first choice.
+Hello, I am Safiullah Korai. I am a Software Engineer and a full stack Flutter developer. Over the past few years, I have spent countless hours building mobile applications, experimenting with architecture, and understanding what makes modern app development efficient and scalable.
+I have seen h…]]></summary>
+        <author>
+            <name>Safiullah Korai</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Verified Spec-Driven Development (VSDD)]]></title>
+        <id>https://gist.github.com/dollspace-gay/d8d3bc3ecf4188df049d7a4726bb2a00</id>
+        <link href="https://gist.github.com/dollspace-gay/d8d3bc3ecf4188df049d7a4726bb2a00"/>
+        <updated>2026-02-28T16:58:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[You're Flying Blind With Your AI Agents. Here's How to Fix It.]]></title>
+        <id>https://dev.to/dor_amir_dbb52baafff7ca5b/youre-flying-blind-with-your-ai-agents-heres-how-to-fix-it-3hdh</id>
+        <link href="https://dev.to/dor_amir_dbb52baafff7ca5b/youre-flying-blind-with-your-ai-agents-heres-how-to-fix-it-3hdh"/>
+        <updated>2026-02-28T16:58:52.000Z</updated>
+        <summary type="html"><![CDATA[You're Flying Blind With Your AI Agents. Here's How to Fix It.
+
+
+Last Tuesday at 2 AM, I woke up to a $340 bill from OpenAI. My coding agent had been running all evening. I thought it was just refactoring some tests. Turns out it had hit an infinite retry loop on a malformed API response and burned through 8 million tokens.
+I had no idea until the bill arrived.
+If you're building with AI agents (coding assistants, autonomous task runners, chatbots), you're probably flying blind too. Here's the problem and how to fix it.
+When you spin up a coding agent like Aider, Cursor, or a custom LangChain workflow, you see the final output. The code it wrote. The answer it gave. The task it completed.
+What you don't see:
+How many LLM calls it made to get there
+Which models it used (did it really need G…]]></summary>
+        <author>
+            <name>Dor Amir</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Database Indexing Made Easy: SQL vs MongoDB]]></title>
+        <id>https://dev.to/satishjaiswal/database-indexing-made-easy-sql-vs-mongodb-2cgp</id>
+        <link href="https://dev.to/satishjaiswal/database-indexing-made-easy-sql-vs-mongodb-2cgp"/>
+        <updated>2026-02-28T16:49:10.000Z</updated>
+        <summary type="html"><![CDATA[When you search for something in a book, you don’t read every page—you go straight to the index. Databases work the same way. Indexing helps speed up queries by creating a shortcut to the data, instead of scanning the entire table or collection.
+🔑 What is Indexing?
+Without an index → Database checks every row/document (called a full scan)
+With an index → Database jumps directly to the relevant data
+Think of it as a map that points to where your data lives.
+🗄️ Indexing in SQL Databases
+Types of SQL Indexes
+Primary Index → Automatically created on the primary key
+Unique Index → Ensures no duplicate values
+Clustered Index → Sorts and stores rows physically in order of the index
+Non-Clustered Index → Creates a separate structure pointing to the data
+Example in SQL
+
+
+
+
+-- Create an index on the "email" column
+CREATE INDEX idx_email ON users(email);
+
+-- Query will now be faster
+SELECT * FROM users WHERE email = 'test@example.com';
+
+👉 Without the index, SQL would scan the entire users table. With the index, it jumps straight to the matching row.
+🍃 Indexing in MongoDB
+Types of MongoDB Indexes
+Single Field Index → Index on one field
+Compound Index → Index on multiple fields
+Text Index → For searching text inside documents
+Geospatial Index → For location-based queries
+Example in MongoDB
+
+
+
+
+// Create an index on the "email" field
+db.users.createIndex({ email: 1 });
+
+// Query will now be faster
+db.users.find({ email: "test@example.com" });
+
+
+🎯 Why Indexing Matters
+Faster queries → Saves time and resources
+Efficient range searches → Great for dates, numbers, and text
+Reduced load → Less stress on your database.
+⚠️But remember: Indexes take extra space and slow down inserts/updates because they need to be maintained.
+✅ Final Thoughts
+Index fields you query often
+Avoid indexing every field (too much overhead)
+Monitor performance with tools like EXPLAIN (SQL) or .explain() (MongoDB)]]></summary>
+        <author>
+            <name>Satish</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I built a CLI that rolls movie-style credits for your git repo]]></title>
+        <id>https://dev.to/higangssh/i-built-a-cli-that-rolls-movie-style-credits-for-your-git-repo-6de</id>
+        <link href="https://dev.to/higangssh/i-built-a-cli-that-rolls-movie-style-credits-for-your-git-repo-6de"/>
+        <updated>2026-02-28T16:43:22.000Z</updated>
+        <summary type="html"><![CDATA[Ever wondered what your git repo would look like as a movie?
+I built gitcredits — a CLI that turns your git history into scrolling movie-style end credits in your terminal.
+
+
+
+
+
+  
+  
+  What it shows
+
+
+
+ASCII art title from your repo name
+Top contributor as "Director"
+All contributors as "Starring"
+Recent feat/fix commits as "Notable Scenes"
+Stats: commits, contributors, stars, language, license
+Star field background with fade effects
+go install github.com/Higangssh/gitcredits@latest
+
+GitHub: https://github.com/Higangssh/gitcredits]]></summary>
+        <author>
+            <name>SangheeSon</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Obsidian Sync now has a headless client]]></title>
+        <id>https://help.obsidian.md/sync/headless</id>
+        <link href="https://help.obsidian.md/sync/headless"/>
+        <updated>2026-02-28T16:31:53.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Capture The World In A Whole New Optical Lens With The Xiaomi 17 Ultra]]></title>
         <id>https://www.lowyat.net/?p=384564</id>
@@ -28,142 +417,13 @@ The post Xiaomi 17 Now Available For Pre-orders Globally; Starts From RM3,499 ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Used 22 Prompts to Plan an Entire MuleSoft-to-.NET Migration. Here's the Playbook.]]></title>
-        <id>https://dev.to/joietej/i-used-22-prompts-to-plan-an-entire-mulesoft-to-net-migration-heres-the-playbook-2a79</id>
-        <link href="https://dev.to/joietej/i-used-22-prompts-to-plan-an-entire-mulesoft-to-net-migration-heres-the-playbook-2a79"/>
-        <updated>2026-02-28T16:15:42.000Z</updated>
-        <summary type="html"><![CDATA[Last week I sat down to migrate a MuleSoft integration project to .NET 10 Minimal APIs. Instead of spending days writing migration specs, architecture docs, and agent team definitions manually, I paired with Claude to do it in a single conversation.
-22 prompts. That's all it took to go from "where do I start?" to a fully structured, audited, ready-to-execute migration toolkit -- complete with scanner agents, phased prompts, integration patterns, and project scaffolding.
-Here's exactly how I did it, broken into a repeatable playbook any dev team can follow.
-Most developers start an AI conversation with a wall of text explaining everything upfront. Don't.
-Start broad. Let the AI propose an approach first, then steer it.
-My opening prompt was simple:
-"What is the best approach to convert Mule…]]></summary>
-        <author>
-            <name>joietej</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Making Music with Code: Introduction to Sonic Pi]]></title>
-        <id>https://dev.to/carlosdon/making-music-with-code-introduction-to-sonic-pi-1a5o</id>
-        <link href="https://dev.to/carlosdon/making-music-with-code-introduction-to-sonic-pi-1a5o"/>
+        <title type="html"><![CDATA[Show HN: SQLite for Rivet Actors – one database per agent, tenant, or document]]></title>
+        <id>https://github.com/rivet-dev/rivet</id>
+        <link href="https://github.com/rivet-dev/rivet"/>
         <updated>2026-02-28T16:11:58.000Z</updated>
-        <summary type="html"><![CDATA[Have you ever explored programming beyond sorting algorithms, system design, and implementing projects? Most of the time, we associate coding with data structures, debugging errors, or building applications. It feels structured, logical, and sometimes purely technical.
-But did you know that you can also create music through programming?
-You can generate beats, synths, and melodies using nothing but text. No traditional instruments. No drag-and-drop music software. Just code.
-What is Sonic Pi
-
-
-Sonic Pi, developed by Sam Aaron, is a free, open-source live coding environment specifically designed for creating sounds and making music. Built on the Ruby programming language, the software grants access to a massive library of built-in synths, samples, and effects, all controllable via simple li…]]></summary>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Carlos Don Lo Priego</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stop Using Random SSH Tools — I Built a Secure Offline DevOps Workstation]]></title>
-        <id>https://dev.to/sathish_dev/stop-using-random-ssh-tools-i-built-a-secure-offline-devops-workstation-474b</id>
-        <link href="https://dev.to/sathish_dev/stop-using-random-ssh-tools-i-built-a-secure-offline-devops-workstation-474b"/>
-        <updated>2026-02-28T16:05:07.000Z</updated>
-        <summary type="html"><![CDATA[The Problem
-Managing multiple SSH servers still feels messy.
-
-
-Different key files
-
-
-Manual config edits
-
-
-Random tools for connection testing
-
-
-Cloud-based SSH dashboards
-
-
-
-For DevOps engineers, this becomes inefficient and sometimes risky.
-I wanted something simpler.
-What I Built
-I built a secure, offline-first DevOps workstation focused on SSH and infrastructure workflows.
-No cloud dependency.
-
-
-No third-party SSH relay.
-
-
-No unnecessary complexity.
-
-
-
-Just local control.
-Core Features
-🔐 Secure SSH connection testing
-Everything runs locally on your machine — no external SSH relay or cloud sync involved.
-Why Offline-First?
-Infrastructure access is sensitive.
-SSH keys should:
-Stay on your machine
-
-
-Not pass through unknown servers
-
-
-Not depend on SaaS uptime
-
-
-
-For small infra teams and solo engineers, simplicity + security matters.
-Demo
-I recorded a full walkthrough here:
-👉 Watch the full demo on YouTube:
-https://youtu.be/D5DKbrjpYh0
-Feedback Welcome
-I’m building this publicly.
-If you're working in DevOps:
-What frustrates you about current SSH workflows?
-
-
-What would you improve?
-
-
-Would love your thoughts.]]></summary>
-        <author>
-            <name>sathish</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Programming: What It Is, Why It Matters, and How It Actually Works]]></title>
-        <id>https://dev.to/shamil_suraweera/programming-what-it-is-why-it-matters-and-how-it-actually-works-2b0i</id>
-        <link href="https://dev.to/shamil_suraweera/programming-what-it-is-why-it-matters-and-how-it-actually-works-2b0i"/>
-        <updated>2026-02-28T16:00:53.000Z</updated>
-        <summary type="html"><![CDATA[Programming is the process of designing and writing instructions that a computer can execute. These instructions, called code, tell machines how to process data, perform calculations, automate tasks, and create software such as websites, mobile apps, operating systems, and games.
-At its core, programming is about problem-solving. A programmer takes a real-world problem, breaks it into logical steps, and expresses those steps in a language a computer can understand.
-Programming involves:
-Writing instructions in a programming language
-Organizing logic into structures such as functions, classes, or modules
-Testing and debugging code to ensure it behaves as expected
-Maintaining and improving software over time
-Computers cannot interpret human language directly. Instead, programmers use formal …]]></summary>
-        <author>
-            <name>Shamil Suraweera</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Add a Contact Form to Any Static Website (Without a Backend)]]></title>
-        <id>https://dev.to/snapform/how-to-add-a-contact-form-to-any-static-website-without-a-backend-36in</id>
-        <link href="https://dev.to/snapform/how-to-add-a-contact-form-to-any-static-website-without-a-backend-36in"/>
-        <updated>2026-02-28T15:57:59.000Z</updated>
-        <summary type="html"><![CDATA[Static sites are fast, cheap, and easy to deploy. But they all hit the same wall: forms.
-Without a backend, you can't process form submissions. No PHP, no Node server, no database. So how do you add a working contact form to a static site hosted on Vercel, Netlify, GitHub Pages, or anywhere else?
-In this guide, I'll show you 3 approaches — from the simplest (2 minutes) to fully custom.
-The fastest way. You point your HTML form to a third-party endpoint that handles everything — storing submissions, sending email notifications, and spam protection.
-Here's a complete working example using SnapForm:
-Sign up at snapform.cc and create a new form. You'll get a unique endpoint URL.
-<form action="https://snapform.cc/api/f/YOUR_FORM_ID" method="POST">
-    <label for="name">Name</label>
-    <input t…]]></summary>
-        <author>
-            <name>Fan Kane</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -175,157 +435,6 @@ Sign up at snapform.cc and create a new form. You'll get a unique endpoint URL.
 The post Xiaomi 17 Ultra, Leica Leitz Phone Launches Globally; Pre-Order Starts From RM5,499 appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Heirul Kamel</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How I Built Videly Ei8, Video Hosting Platform on a Shoestring Budget]]></title>
-        <id>https://dev.to/rezapurnama/how-i-built-videly-ei8-video-hosting-platform-on-a-shoestring-budget-5eng</id>
-        <link href="https://dev.to/rezapurnama/how-i-built-videly-ei8-video-hosting-platform-on-a-shoestring-budget-5eng"/>
-        <updated>2026-02-28T15:49:56.000Z</updated>
-        <summary type="html"><![CDATA[Hey everyone! 👋 Today I want to share my journey of building Videly Ei8, a video hosting and sharing platform I recently launched on Google Play. 
-As a solo developer with limited funds, building a video platform is a massive challenge. Server processing and storage costs can skyrocket quickly. However, I found an architectural "hack" that allows the platform to run incredibly fast, efficiently, and support uploads of up to 2GB per file. 
-Here’s a breakdown of what I built and the tech behind it.
-The project essentially consists of a Web platform and an Android app (Native Webview):
-Web Frontend & Backend: Pure PHP scripts, HTML/CSS, and vanilla JavaScript.
-Android App: Native Android app utilizing an optimized webview.
-Video Processing: FFmpeg (embedded directly inside the APK).
-Storage …]]></summary>
-        <author>
-            <name>Reza Purnama</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Wiring Up SMART on FHIR OAuth2 Between OpenEMR and a Python Microservice Locally]]></title>
-        <id>https://dev.to/jack0lantern/wiring-up-smart-on-fhir-oauth2-between-openemr-and-a-python-microservice-locally-h27</id>
-        <link href="https://dev.to/jack0lantern/wiring-up-smart-on-fhir-oauth2-between-openemr-and-a-python-microservice-locally-h27"/>
-        <updated>2026-02-28T15:46:03.000Z</updated>
-        <summary type="html"><![CDATA[I was building an AI agent on top of OpenEMR and hit a wall I didn't expect.
-Not a hard engineering problem — just documentation. Or the lack of it. OpenEMR ships with a full SMART on FHIR OAuth2 server, and the official authentication docs are a decent starting point. But connecting a custom Python microservice to it? You're mostly on your own.
-I spent way more time than I'd like to admit staring at active: false responses, getting HTML back from endpoints that should return JSON, and debugging DNS failures that turned out to be a two-word fix. So I'm writing down everything I wish I'd known — the steps and the gotchas.
-Here's what we're working with:
-
-
-
-Service
-Tech
-Port
-
-
-
-
-openemr
-OpenEMR 7.0.4 (PHP + Docker)
-8300 (HTTP), 9300 (HTTPS)
-
-
-ai-agent
-Python FastAPI + LangGraph
-8000
-
-
-
-Both …]]></summary>
-        <author>
-            <name>Jack Jiang</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Introducing codespaces.el: The Best Way to Use GitHub Codespaces]]></title>
-        <id>https://dev.to/f4ban/introducing-codespacesel-the-best-way-to-use-github-codespaces-1cd</id>
-        <link href="https://dev.to/f4ban/introducing-codespacesel-the-best-way-to-use-github-codespaces-1cd"/>
-        <updated>2026-02-28T15:41:09.000Z</updated>
-        <summary type="html"><![CDATA[If you're an Emacs user and a fan of GitHub Codespaces, I have great news for you! I've taken over maitenance of:
- / 
-        codespaces.el
-      
-    
-codespaces.el
-
-  
-  
-About
-This package provides support for managing GitHub Codespaces in Emacs and connecting to them via TRAMP. It provides a handy completing-read UI that lets you choose from all your created codespaces.
-
-Here is an example use-package declaration:
-(use-package codespaces
-  :config (codespaces-setup)
-  :bind ("C-c S" . #'codespaces-connect))
-You will need to:
-Have the GitHub command line tools (gh) installed
-    
-If you use use-package-ensure-system-package, Emacs can install this for you automatically:
-(use-package use-package-ensure-system-package :ensure t)
-(use-package codespaces
-  :ensure-system-package gh
-  :config (codespaces-setup))
-    
-Authorize gh to access your codespaces:
-    
-Running gh codespace list will verify if permissions are correctly set.
-You can grant the required permission by running gh auth refresh -h github.com -s codespace.
-Because the TRAMP package, which underpins this package’s functionality, connects to remote servers over SSH, your codespace needs to have an SSH server…
-View on GitHub
-What is codespaces.el?
-codespaces.el is an Emacs package that enables seamless interaction with GitHub Codespaces. If you're unfamiliar Learn more about codespaces here.
-With this package, you can interact with your Codespaces directly from within Emacs, whether it's creating a new one or connecting to a existing codespace, all from the comfort of your favorite editor.
-
-Key Features:
-Connect to Codespaces via Emacs TRAMP
-Create new and delete old Codespaces
-Start and stop Codespaces
-Contributing
-If you’d like to contribute to the project, feel free to create issues and submit a pull request! I’m always open to new ideas and improvements.
-Links:
-Melpa
-GitHub]]></summary>
-        <author>
-            <name>f4ban</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Finding the Breaking Point: Data-Driven Load Testing with JMeter & Docker]]></title>
-        <id>https://dev.to/karakoyunlu/finding-the-breaking-point-data-driven-load-testing-with-jmeter-docker-245f</id>
-        <link href="https://dev.to/karakoyunlu/finding-the-breaking-point-data-driven-load-testing-with-jmeter-docker-245f"/>
-        <updated>2026-02-28T15:40:21.000Z</updated>
-        <summary type="html"><![CDATA[Hey everyone!
-• Setting up a local target app with Docker and simulating 1,000 concurrent users.
-https://itnext.io/jmeter-performance-testing-part-3-finding-the-breaking-point-with-data-driven-scenarios-0d7b7924b5a3
-I would love to hear your feedback! How do you handle massive test data in your own projects?]]></summary>
-        <author>
-            <name>Burak</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stop Paying for Overpriced PDM: A 100% Free, Open-Source Drawing Management System]]></title>
-        <id>https://dev.to/europeanplaice/stop-paying-for-overpriced-pdm-a-100-free-open-source-drawing-management-system-39no</id>
-        <link href="https://dev.to/europeanplaice/stop-paying-for-overpriced-pdm-a-100-free-open-source-drawing-management-system-39no"/>
-        <updated>2026-02-28T15:39:45.000Z</updated>
-        <summary type="html"><![CDATA[The Problem: The "Enterprise Tax" on Drawing Management
-
-
-If you've ever looked for a professional way to manage engineering drawings (PDFs) and their revisions, you've likely hit a wall: The Price Tag.
-Enterprise PDM (Product Data Management) and PLM systems are notoriously expensive. They charge heavy per-seat license fees, require complex maintenance,
-On the other hand, using simple shared folders or Google Drive is a recipe for disaster—"Version Hell," overwritten files, and zero metadata search.
-I believe that managing your design documents shouldn't cost a fortune. So I built Open Blueprint Vault—a completely free, open-source alternative.
-Open Blueprint Vault is a self-hosted drawing management system that gives you the core features of professional PDM software without the enterprise
-GitHub: https://github.com/europeanplaice/open-blueprint-vault
- 100% Free & Open-Source: No hidden costs, no "Pro" tiers, and no per-user pricing.
- Self-Hosted Control: You own your data. Use MinIO or AWS S3 for storage.
- Professional Revision Control: Track drawing history safely without losing previous versions.
- Powerful Metadata Search: Find what you need in seconds by part number, name, or custom attributes.
- Modern, Fast UI: A snappy interface built with Next.js 16 (includes Dark Mode!).
- One-Command Deployment: Launch the entire stack in seconds with Docker Compose.
-If you have Docker installed, you can spin up your own private vault right now:
-1 git clone https://github.com/europeanplaice/open-blueprint-vault.git
-cd open-blueprint-vault
-cp .env.example .env
-npm run up
-Access your new dashboard at http://localhost:3000.
-It costs $0 to start, and $0 to scale.
-Since this is an open-source project, I rely on feedback from the community to make it better. Whether you are a hardware startup, a hobbyist with a 3D
-  printer, or a manufacturing professional, I’d love to hear how you use it.]]></summary>
-        <author>
-            <name>europeanplaice</name>
         </author>
     </entry>
     <entry>
@@ -346,37 +455,6 @@ Since this is an open-source project, I rely on feedback from the community to m
         <summary type="html"><![CDATA[A full closure of the strait is unlikely or impractical, some experts argue.]]></summary>
         <author>
             <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How I Built a Cost Proxy to Stop OpenClaw from Burning My API Budget]]></title>
-        <id>https://dev.to/tobiasbond/how-i-built-a-cost-proxy-to-stop-openclaw-from-burning-my-api-budget-25i3</id>
-        <link href="https://dev.to/tobiasbond/how-i-built-a-cost-proxy-to-stop-openclaw-from-burning-my-api-budget-25i3"/>
-        <updated>2026-02-28T15:31:52.000Z</updated>
-        <summary type="html"><![CDATA[If you've been in the OpenClaw community for more than a week, you've seen the posts.
-"$3,600/month on API calls."
-"Woke up to a $200 bill from a heartbeat loop running all night."
-"I have zero visibility into what my agent is spending."
-OpenClaw is one of the most exciting open-source projects of 2026 — 210K+ GitHub stars, a personal AI agent that actually does things. But the moment you give an AI agent unrestricted access to paid APIs, you're playing with fire.
-I kept seeing these horror stories and realized nobody had built a proper solution. There are a few monitoring tools out there (ClawMetry gives you read-only stats, Tokscale is CLI-only), but nothing that actually stops the bleeding in real time.
-So I built TokPinch.
-TokPinch is a transparent proxy that sits between OpenClaw and …]]></summary>
-        <author>
-            <name>TobiasBond</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why Testing After with AI Is Even Worse]]></title>
-        <id>https://dev.to/mbarzeev/why-testing-after-with-ai-is-even-worse-4jc1</id>
-        <link href="https://dev.to/mbarzeev/why-testing-after-with-ai-is-even-worse-4jc1"/>
-        <updated>2026-02-28T15:30:22.000Z</updated>
-        <summary type="html"><![CDATA[Back then, I wrote a piece about “Why Testing After Is a Bad Practice” where I laid out 4 main reasons why writing unit tests after the code is already implemented is a bad practice. Here’s a quick summary:
-Unconsciously complying with a given “reality” - Writing tests after tends to shape the tests around the existing code, and not challenge it or make sure it does what it should
-Emotional attachment to our code - You’ve already developed some emotional attachment to the code, and you unconsciously avoid changing it, even when required
-Overly mocking - Your code was poorly designed since nothing (mainly tests) required it to be modular and separated by concerns. This causes the tests written after to mock a lot of modules and services in order to test basic functionalities
-Gets neglected …]]></summary>
-        <author>
-            <name>Matti Bar-Zeev</name>
         </author>
     </entry>
     <entry>
@@ -470,16 +548,6 @@ Gets neglected …]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Reclaim Flowers – A 2D physics-based "Digital Altar" protocol]]></title>
-        <id>https://github.com/voice-of-japan/Virtual-Protest-Protocol/blob/main/README.md</id>
-        <link href="https://github.com/voice-of-japan/Virtual-Protest-Protocol/blob/main/README.md"/>
-        <updated>2026-02-28T13:17:53.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[What AI coding costs you]]></title>
         <id>https://tomwojcik.com/posts/2026-02-15/finding-the-right-amount-of-ai/</id>
         <link href="https://tomwojcik.com/posts/2026-02-15/finding-the-right-amount-of-ai/"/>
@@ -504,16 +572,6 @@ Gets neglected …]]></summary>
         <id>https://cheat.sh/latency</id>
         <link href="https://cheat.sh/latency"/>
         <updated>2026-02-28T12:58:09.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[No Bookmarks]]></title>
-        <id>https://nik.art/no-bookmarks/</id>
-        <link href="https://nik.art/no-bookmarks/"/>
-        <updated>2026-02-28T12:46:36.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -653,16 +711,6 @@ The post Apple Says Phones, iPads Secure Enough For Classified NATO Data appeare
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Cash issuing terminals]]></title>
-        <id>https://computer.rip/2026-02-27-ibm-atm.html</id>
-        <link href="https://computer.rip/2026-02-27-ibm-atm.html"/>
-        <updated>2026-02-28T05:21:21.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Bitcoin slides to $65,000 in weekend sell-off, with solana, XRP, dogecoin down 6%]]></title>
         <id>2bcfdc48-5248-4dcc-bc1e-fda6f4211da9</id>
         <link href="https://www.coindesk.com/markets/2026/02/28/bitcoin-slides-to-usd65-000-in-weekend-sell-off-with-solana-xrp-dogecoin-down-6"/>
@@ -677,16 +725,6 @@ The post Apple Says Phones, iPads Secure Enough For Classified NATO Data appeare
         <id>https://twitter.com/sama/status/2027578652477821175</id>
         <link href="https://twitter.com/sama/status/2027578652477821175"/>
         <updated>2026-02-28T02:59:02.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bootc and OSTree: Modernizing Linux System Deployment]]></title>
-        <id>https://a-cup-of.coffee/blog/ostree-bootc/</id>
-        <link href="https://a-cup-of.coffee/blog/ostree-bootc/"/>
-        <updated>2026-02-28T02:55:29.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1111,6 +1149,16 @@ The post Lenovo Could Unveil Legion Go Fold Concept At MWC 2026 appeared first o
         <id>https://github.com/ad-si/Woxi</id>
         <link href="https://github.com/ad-si/Woxi"/>
         <updated>2026-02-25T18:24:46.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A Man Who Stole Infinity]]></title>
+        <id>https://www.quantamagazine.org/the-man-who-stole-infinity-20260225/</id>
+        <link href="https://www.quantamagazine.org/the-man-who-stole-infinity-20260225/"/>
+        <updated>2026-02-25T17:28:33.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
