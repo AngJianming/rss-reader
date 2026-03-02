@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-03-02 datetime="2026-03-02T11:16:51.000Z">2026-03-02</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-03-02 datetime="2026-03-02T11:16:51.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-03-02 datetime="2026-03-02T12:43:34.000Z">2026-03-02</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-03-02 datetime="2026-03-02T12:43:34.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -42,42 +42,27 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/sangminwoo/why-i-built-an-industrial-iot-gateway-using-python-and-serverless-590"
+                        data-accordion-key="https://dev.to/tarikanafarta/kuberneteste-timescaledb-retention-testleri-3i8m"
                         open
                       >
-                        <summary class="article-expander__title">Why I Built an Industrial IoT Gateway Using Python and Serverless</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sangminwoo/why-i-built-an-industrial-iot-gateway-using-python-and-serverless-590">
+                        <summary class="article-expander__title">Kubernetes&#x27;te TimescaleDB Retention Testleri</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/tarikanafarta/kuberneteste-timescaledb-retention-testleri-3i8m">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frgizhi09o7rnnpgm10a4.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fp16b752bzkajgkq9t4ns.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Building an industrial IoT platform usually feels like an endless nightmare of fragmented tech stacks. The firmware engineers are writing C++, the backend team is fighting with Docker containers and message queues, and the frontend devs are struggling to render real-time sensor data without crashing the browser. I’ve been there.
-When I set out to build a scalable remote monitoring system, I knew I had to break this cycle. I needed an architecture that was robust enough for industrial environments, yet agile enough to be maintained by a small team. The solution? Dropping the traditional C/C++ monolithic edge daemons and fully embracing a 100% Python Edge + Serverless Backend + React SPA pipeline.
-In this series, I will walk you through the exact architecture that allowed me to securely rout…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/n3x1s/data-pipeline-architecture-from-messy-csvs-to-clean-database-285a"
-                        open
-                      >
-                        <summary class="article-expander__title">Data Pipeline Architecture: From Messy CSVs to Clean Database</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/n3x1s/data-pipeline-architecture-from-messy-csvs-to-clean-database-285a">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F60ihfmqc3186k7kf8uiw.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Data Pipeline Architecture: From Messy CSVs to Clean Database
+                              <span>Önceki yazımızda Kubernetes üzerinde iki ayrı kurulum (vanilla PostgreSQL ve TimescaleDB) yapıp az veriyle tablo + index boyutlarını kıyaslamıştık. Bu yazıda aynı environment üzerinde TimescaleDB&#x27;nin data retention (eski veriyi silme) yaklaşımını pratikte test ediyoruz.
+Namespace: database
+TimescaleDB pod: timescaledb-single chart (master pod)
+StorageClass: local-path (tek node)
+Komutlarda iki değişken kullanacağız: NS ve TSPOD.
+NS&#x3D;database
+TSPOD&#x3D;&quot;$(kubectl get pod -n $NS -l release&#x3D;timescaledb,role&#x3D;master -o jsonpath&#x3D;&#x27;{.items[0].metadata.name}&#x27;)&quot;
+echo &quot;TSPOD&#x3D;$TSPOD&quot;
 
-
-Imagine this: You&#x27;re staring at a folder full of CSV files—some with inconsistent headers, others riddled with missing values, and a few that look like they were exported from a spreadsheet by a sleep-deprived intern. Your goal? To turn this chaos into a clean, structured database that powers your application. This is the heart of a data pipeline architecture: transforming raw, messy data into a reliable, queryable format. 
-In this tutorial, we’ll walk through the entire journey—from reading and cleaning CSVs to building a scalable pipeline that loads data into a database. Along the way, we’ll use Python and its powerful libraries like pandas and SQLAlchemy to automate the process. Whether you&#x27;re a data engineer, a developer, …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
+Bu blok sonraki komutlarda kullanacağımız değişkenleri hazırlar.
+Bu deneyde 48 saatlik veri bastık (5 dakikada bir), sonra 24 saatten eski chunk&#x27;ları manuel olarak dropladık.
+kubectl exec -n $NS -i $TSPOD -- psql -U postgres …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -88,117 +73,22 @@ In this tutorial, we’ll walk through the entire journey—from reading and cle
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/edmund_eryuba/designing-efficient-queries-with-sql-joins-and-window-functions-447k"
+                        data-accordion-key="https://dev.to/javieraguilarai/i-made-a-product-demo-video-entirely-with-ai-e6h"
                         open
                       >
-                        <summary class="article-expander__title">Designing Efficient Queries with SQL Joins and Window Functions</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/edmund_eryuba/designing-efficient-queries-with-sql-joins-and-window-functions-447k">
+                        <summary class="article-expander__title">I Made a Product Demo Video Entirely with AI</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/javieraguilarai/i-made-a-product-demo-video-entirely-with-ai-e6h">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy1ij6x93hnsf5we3mq1k.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fwww.javieraguilar.ai%2Fblog%2Fautomated-demo-recording-playwright.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>SQL(Structured Query Language) is a powerful tool to search through large amounts of data and return specific information for analysis. Learning SQL is crucial for anyone aspiring to be a data analyst, data engineer, or data scientist, and helpful in many other fields such as web development or marketing.
-JOINS in SQL are commands which are used to combine rows from two or more tables, based on a related column between those tables. They are predominantly used when a user is trying to extract data from tables which have one-to-many or many-to-many relationships between them.
-There are mainly four types of joins that you need to understand. They are:
-(INNER) JOIN
-LEFT (OUTER) JOIN
-RIGHT (OUTER) JOIN
-FULL (OUTER) JOIN
-INNER JOIN is used to retrieve rows where matching values exist in both ta…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/hturan/built-testream-a-better-alternative-for-jira-test-management-ah5"
-                        open
-                      >
-                        <summary class="article-expander__title">Built Testream - A Better Alternative for Jira Test Management</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/hturan/built-testream-a-better-alternative-for-jira-test-management-ah5">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Feoqo5xctyc2owutfkgb8.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hello DEV community 👋,
-My name is Hasan and I am a software engineer. For a very long time, I have been observing fellow QA engineers suffer from repetitive QA processes and whole teams struggle from deep learning curves of really bloated test managements tools like Xray and Zephyr. I was one of them and I finally built Testream (took me a while though 🙂).
-What I wanted to fix:
-Too much setup and too many layers to learn
-Manual test cases eat away QA efforts to build automation
-Poor visibility between test execution and project tracking
-Painful release sign offs while collecting test results
-Invoices that hit harder than flaky tests on release day 🫢 
-What Testream offers:
-Code-first test management
-Test results from actual real test runs (codebase/CI/CD)
-Native reporters for popular test frameworks
-Free Jira app integration
-No per-seat pricing model, open to whole team
-Please claim your free API key and give it a go! Would really appreciate your feedback on the product and onboarding. 🙏
-Website: https://testream.app
-Documentation: https://lnkd.in/g_jmySVX
-Testream Service Space: https://lnkd.in/gFJHRu2t
-Jira App: https://lnkd.in/gHQV6tWB</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/winclawdev/winclaw-auto-deploy-to-aws-azure-alibaba-cloud-with-ai-powered-conversations-4pjo"
-                        open
-                      >
-                        <summary class="article-expander__title">WinClaw: Auto-Deploy to AWS, Azure &amp; Alibaba Cloud with AI-Powered Conversations</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/winclawdev/winclaw-auto-deploy-to-aws-azure-alibaba-cloud-with-ai-powered-conversations-4pjo">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fa6ptxhg7gp0f98udjgdp.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Introduction
-
-
-&quot;I want to deploy to AWS, but writing CloudFormation YAML is a pain...&quot; &quot;Azure has too many configuration options...&quot; Sound familiar?
-I had the same frustrations until I tried WinClaw&#x27;s cloud auto-deploy skills. Just by having a conversation with AI, I got my app deployed to AWS, Azure, and Alibaba Cloud — fully automated.
-WinClaw is a free, open-source AI development tool with three cloud deployment skills:
-aws-cloud-deploy: Auto-generates CloudFormation templates
-azure-cloud-deploy: Auto-generates ARM templates
-aliyun-cloud-deploy: Auto-generates ROS templates
-All three providers share the same conversational workflow — great for multi-cloud environments.
-The AI asks you natural questions:
-Monthly budget: &quot;How much can you spend per month?&quot; → e.g., $50/mo
-Expected traffic:…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;4
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/egepakten/the-mom-test-chapter-5-commitment-and-advancement-1k27"
-                        open
-                      >
-                        <summary class="article-expander__title">The Mom Test - Chapter 5: Commitment and Advancement</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/egepakten/the-mom-test-chapter-5-commitment-and-advancement-1k27">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7mbgjgayml5efi0p7fwz.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>In the previous chapters, we learned how to have proper customer conversations — avoiding compliments, digging into specifics, and not pitching too early. But here&#x27;s a question that kept bugging me: How do I know if a meeting actually went well?
-Chapter 5 answers exactly that. And the answer is brutally simple: a meeting went well only if it ends with a commitment.
-In this post, I&#x27;ll break down Chapter 5 into the following sections:
-There&#x27;s No Such Thing as a Meeting That &quot;Went Well&quot; — Why every meeting either succeeds or fails, and how compliments trick you into thinking you&#x27;re making progress.
-Commitment and Advancement: Two Sides of the Same Coin — The two key concepts of the chapter and why they always come together.
-The Currencies of Commitment — The three types of commitment (Time, R…</span>
+                              <span>I needed a demo video for an RFP automation platform I&#x27;m building. The typical approach: record your screen, stumble through clicks, re-record when something breaks, then spend an hour in a video editor syncing voiceover. I&#x27;ve done it before. It&#x27;s painful.
+So I tried a different approach: let AI do the whole thing.
+Claude Code wrote the entire recording pipeline — Playwright scripts, ffmpeg assembly, speed control, subtitle generation
+edge-tts generated the narration with Microsoft&#x27;s neural voices
+Gemini 3.1 Pro reviewed the final video for audio/video sync issues
+The result: a 3-minute narrated demo with 14 scenes, variable speed segments, and subtitles. No video editor. No screen recording app. No manual voiceover.
+🎥 Watch the video demo on Loom
+Note: Interactive video player available …</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
                                   min&hairsp;)</span>
                             </span>
@@ -210,71 +100,27 @@ The Currencies of Commitment — The three types of commitment (Time, R…</span
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/timhilehin1/client-side-rendering-vs-server-side-rendering-1pje"
+                        data-accordion-key="https://dev.to/vnykmshr/scoring-hn-discussions-by-practitioner-depth-not-popularity-41nd"
                         open
                       >
-                        <summary class="article-expander__title">Client Side Rendering vs Server Side Rendering</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/timhilehin1/client-side-rendering-vs-server-side-rendering-1pje">
+                        <summary class="article-expander__title">Scoring HN discussions by practitioner depth, not popularity</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vnykmshr/scoring-hn-discussions-by-practitioner-depth-not-popularity-41nd">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2For1u35prlts3njreyco4.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy64t3ws0lj8q84zx4upf.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Lately I&#x27;ve decided to keep mental notes of everyday concepts I use in my work. Most times I have a good overview of what a concept does but I never really understood what goes on under the hood. I mean, it works innit. But I&#x27;m taking a step further with some of those concepts, and today&#x27;s subject is all about Client Side Rendering(CSR) and Server Side Rendering(SSR).
-We all know how wonderful Single Page Applications(SPAs) are, but to really appreciate SSR, we need to go back a little.
-So basically, the traditional way of displaying content on the internet is this little relationship that happens between the client, which is your browser and the server, whatever web hosting platform your content lives on.
-The browser asks the server for a page, the server returns an index.html with a &lt;scr…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/miraclejudeiv/building-in-public-6-i-let-ai-judge-every-ad-on-my-platform-heres-what-happened-2hj7"
-                        open
-                      >
-                        <summary class="article-expander__title">Building in public #6: I let AI judge every Ad on my platform. Here&#x27;s what happened.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/miraclejudeiv/building-in-public-6-i-let-ai-judge-every-ad-on-my-platform-heres-what-happened-2hj7">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpeg9ujl1dfu59ba7gute.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I use AI to score every ad on my platform. It is helpful most of the time, but sometimes it makes incorrect judgments.
-This feature excites me, but it also makes me nervous. When a sponsor submits an ad through Adsloty, the ad is analyzed by AI before the writer sees it. The AI scores how well the ad fits the newsletter&#x27;s audience, checks the tone, rates clarity, estimates clicks, and gives the writer specific recommendations.
-The idea is straightforward: writers should have data to determine if an ad is suitable for their newsletter. They shouldn&#x27;t have to guess.
-However, the reality is more complicated than the idea. I will explain how I built this system, what the prompts look like, and what happens when the AI confidently suggests rejecting a suitable ad.
-A writer receives an ad reques…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/shofol/job-hunting-is-tiring-so-im-developing-jobsy-2fj4"
-                        open
-                      >
-                        <summary class="article-expander__title">Job hunting is tiring, so I&#x27;m developing Jobsy</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/shofol/job-hunting-is-tiring-so-im-developing-jobsy-2fj4">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8nquy25azm3zpar6km0x.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Job hunting is scary nowadays. Endless job descriptions, requirements, and company research can feel overwhelming.
-After checking one job description after another, it becomes really annoying to read through all that text. Sometimes, it’s also hard to filter out the exact requirements and identify the skill gaps compared to our own skill set. That’s why I’m developing Jobsy.
-Users can post any job description and upload their resume. With the help of an LLM API, Jobsy summarizes the job into clear expectations, highlights the skills the user already has, and identifies the skills they need to learn.
-I’ve also added a new feature called Resume Reviewer. It provides an ATS score, section-wise scores, and improvement suggestions.
-
-
-
-
-I’m still working on it, but I hope to make it live soon.
-If you’re also struggling with this, let us know your story! And, what do you think about this idea?</span>
+                              <span>HN gets 500+ stories a day. The front page is ranked by votes - which surfaces popular content, not necessarily the best discussions. A post about a Google outage will outrank a thread where infrastructure engineers are quietly sharing how they handle failover.
+sift tries to find the second kind.
+The scoring algorithm looks at five signals in the comment tree:
+Depth breadth (30% weight) - Not max depth. The fraction of comments at 3+ levels of conversation. A thread where 20% of comments are three replies deep means real back-and-forth happened.
+Practitioner markers (25%) - Comments containing experience phrases (&quot;I built,&quot; &quot;we used,&quot; &quot;in production&quot;), code blocks, specific tool names, or hedging language like &quot;FWIW&quot; and &quot;YMMV&quot; that correlates with practitioners.
+Score velocity (15%) - Points per hour. Sustained interest over time, not a spike.
+Author diversity (15%) - Unique authors relative to comment count, weighted by thread size. High diversity at depth 3+ means different people are engaging with each other&#x27;s thinking.
+Reference density (15%) - Comments with external links. Citation culture.
+Before these signals run, threads pass through quality filters: flame detection (hostile short comments at depth), comment length IQR (catches pile-ons), temporal spread (catches flash-in-the-pan), and a discussion density band-pass.
+10-12 discussions per day. 6 above the fold, rest behind a tap. Each with a context paragraph explaining why it was picked. Updated 4x/day. Yesterday&#x27;s picks are gone.
+Astro static site. Zero client JS. Self-hosted fonts (Newsreader + JetBrains Mono). Cloudflare Pages. GitHub Actions for the pipeline (fetch from Algolia, score, build, deploy). Cloudflare KV for cross-run state so repeated threads get decayed.
+Total cost: $0/month on free tiers. Total page weight: ~18KB HTML, ~7KB CSS, ~320KB fonts.
+https://sift.1mb.dev</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
                             </span>
@@ -286,21 +132,292 @@ If you’re also struggling with this, let us know your story! And, what do you 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/sazid_ahmed_bappi/building-the-institution-members-module-for-my-blockchain-voting-app-1jon"
+                        data-accordion-key="https://dev.to/geanruca/enhancing-devlog-istlanding-page-layout-and-responsiveness-5apn"
                         open
                       >
-                        <summary class="article-expander__title">Building the Institution Members Module for My Blockchain Voting App</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sazid_ahmed_bappi/building-the-institution-members-module-for-my-blockchain-voting-app-1jon">
+                        <summary class="article-expander__title">Enhancing devlog-ist/landing Page Layout and Responsiveness</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/geanruca/enhancing-devlog-istlanding-page-layout-and-responsiveness-5apn">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb5azqnfi42o7klq86knv.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4r3wtnrg4ywl921vbjpn.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>One of the less flashy but most important parts of my blockchain voting application is the Institution Members module.
-When people hear &quot;blockchain voting system&quot;, they usually think about encrypted ballots, signatures, audit logs, and blockchain-based integrity. Those parts matter, but before any of that works, the system has to solve a more basic problem:
-How do we make sure only valid institution members can register?
-That question is why I built this module.
-Why I Needed This Feature
-If anyone can register with arbitrary identity data, the trust model becomes weak from the start. In this project, I wanted registration to begin from a controlled institutional directory instead of trusting user-entered details.
-So I created an Institution Members feature that acts as the eligibility sour…</span>
+                              <span>Improving Layout Consistency in devlog-ist/landing
+
+
+The devlog-ist/landing project aims to provide a platform for developers to share their experiences and insights. Recent work focuses on refining the visual presentation and responsiveness of the landing page.
+The initial layout of the stats page sections within devlog-ist/landing exhibited inconsistencies in height, particularly when displaying education, experience, technologies, and notable projects side-by-side in a grid. This resulted in an uneven appearance, detracting from the overall user experience. Additionally, the profile card text in the retro theme did not fully utilize the available width on desktop screens.
+To address these issues, the layout was modified to stack the education, experience, technologies, and notable proje…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/ticktockbent/this-cli-launches-parallel-ai-agents-it-didnt-launch-on-linux-3pdc"
+                        open
+                      >
+                        <summary class="article-expander__title">This CLI Launches Parallel AI Agents. It Didn&#x27;t Launch on Linux.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ticktockbent/this-cli-launches-parallel-ai-agents-it-didnt-launch-on-linux-3pdc">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fieidx8magzs7qaqtwr0k.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>All I wanted was to point a swarm of Claude Code agents at a set of GitHub issues and let them work in parallel. iloom does exactly that: spin up isolated git worktrees, assign an agent to each issue, let them run concurrently, come back to a set of PRs. I ran il start on my Linux dev server and hit three errors in a row.
+First, it couldn&#x27;t find the code CLI command (I use Code Server, which doesn&#x27;t ship one). Passed --no-code. Second, it detected a non-interactive environment (I was in a Claude Code terminal session). Passed --epic explicitly. Third:
+Terminal window launching not yet supported on linux.
+
+No flag. No fallback. No workaround. The core workflow, the entire reason the tool exists, was hardcoded for macOS. Every invocation mode failed: single issue, epic, one-shot. The worktre…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/arslan_mecom/add-an-audit-trail-to-your-api-in-minutes-with-hazeljs-3akn"
+                        open
+                      >
+                        <summary class="article-expander__title">Add an Audit Trail to Your API in Minutes with HazelJS</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/arslan_mecom/add-an-audit-trail-to-your-api-in-minutes-with-hazeljs-3akn">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fity7po7z2tpx9rrvgz68.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Who did what, when, and with what outcome? If your API needs to answer that for compliance, security, or debugging, you need a structured audit trail. This post shows how to get one quickly using the HazelJS Audit Starter: a small Orders API that logs every HTTP request and every business event to console, file, and optionally Kafka — with actors, resources, and redaction built in.
+Compliance — Regulators and policies often require a record of who accessed or changed what.
+Security — After an incident, you need a timeline of actions and actors.
+Debugging — “Why did this order change?” is easier when every create/update/delete is logged.
+Doing this from scratch means instrumenting every endpoint, normalizing event shape, and piping events to logs or a SIEM. The HazelJS Audit Starter and @ha…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/gramli/net-copytoasync-vs-writeasync-the-benchmark-you-didnt-know-you-needed-1g39"
+                        open
+                      >
+                        <summary class="article-expander__title">.NET: CopyToAsync vs WriteAsync: The Benchmark You Didn’t Know You Needed</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gramli/net-copytoasync-vs-writeasync-the-benchmark-you-didnt-know-you-needed-1g39">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ff7qzlwi7h0umlikp04uo.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I had a task where one small part involved writing a byte array to a MemoryStream.
+Since this was a trivial task, I let Copilot generate the code. But Copilot used CopyToAsync instead of WriteAsync.
+That raised a question, so I asked why.
+It kept trying to convince me that CopyToAsync was a better fit for this scenario (a 1 MB file), and I quote:
+CopyToAsync might offer better performance due to its internal optimizations for copying data between streams. The performance difference between these two approaches can be minimal for small to moderately sized data.
+According to Copilot:
+Small to medium data: 12 KB – 32 KB
+Large data: 5 MB – 10 MB
+But here’s the important detail:
+I wasn’t copying between two independent streams.
+In that case, wrapping it in a MemoryStream just to call CopyToAsyn…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/icetique/what-it-takes-to-build-a-high-performing-team-3n4h"
+                        open
+                      >
+                        <summary class="article-expander__title">What It Takes to Build a High-Performing Team</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/icetique/what-it-takes-to-build-a-high-performing-team-3n4h">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft80d8uyfw5amdkvt9r5j.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Trust, perfectionism, vision, partnership, autonomy, and purpose - what it takes to move from boss to leader and build a team that performs.
+Usually, the relationship between employer and employee starts like this:
+&quot;I pay you, so you do what I want.&quot;
+While it works for small teams, there is a point of no return - when you are no longer able to oversee every team member personally, nor give enough attention to each individual.
+Money is no longer the only contract between you and your employee.
+This is when your internal self reveals itself - whether your ego is satisfied, or whether it needs constant validation. Whether you are a leader or just a boss.
+If you do not trust your team, chances are you will be very miserable.
+Since you cannot watch everyone all the time, you will subconsciously…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/techresolve/solved-fresher-self-studying-linuxdevops-feeling-stuck-even-after-lots-of-effort-need-guidance-282j"
+                        open
+                      >
+                        <summary class="article-expander__title">Solved: Fresher self-studying Linux/DevOps, feeling stuck even after lots of effort need guidance</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/techresolve/solved-fresher-self-studying-linuxdevops-feeling-stuck-even-after-lots-of-effort-need-guidance-282j">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fimages.unsplash.com%2Fphoto-1718593381499-cd7d1b467128%3Fw%3D1600%26h%3D480%26fit%3Dcrop%26crop%3Dentropy" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>🚀 Executive Summary
+
+
+TL;DR: Many freshers studying Linux/DevOps get stuck in ‘tutorial hell,’ memorizing commands without the ability to apply them to real-world problems. To overcome this, focus on building complete, end-to-end projects, adopt a problem-first learning approach, and escape isolation by engaging with communities and documenting your journey.
+Break ‘tutorial hell’ by building a single, small, but complete end-to-end project, forcing connection between learned tools.
+Adopt a ‘problem-first’ mindset by starting with a realistic business problem and then finding the right tool to solve it, rather than learning a tool in a vacuum.
+Escape isolation by joining DevOps communities, documenting your learning journey (including errors), and contributing to open-source projects to ga…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/amit_kumar_7db8e36a64dd45/-provisioning-an-aws-s3-bucket-using-hcp-terraform-1mjc"
+                        open
+                      >
+                        <summary class="article-expander__title">-&gt;&gt; Provisioning an AWS S3 Bucket using HCP Terraform</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/amit_kumar_7db8e36a64dd45/-provisioning-an-aws-s3-bucket-using-hcp-terraform-1mjc">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4wl1xzjane43e3w37y1v.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>In this blog, I implemented a cloud-based Terraform workflow using HCP Terraform integrated with Github to provision an AWS S3 in a prodcution style setup.
+The goal was to:
+Define AWS infrastructure using Terraform
+Store and version control the code in Github
+Execute Terraform runs a remotely using HCP Terraform
+Implement a VCS- driven automated workflow
+Manage state securely in the cloud
+Isolate environments using Projects and Workspaces
+The deployment workflow follows this structure:
+
+Developer -&gt; Github -&gt; HCP -&gt; Terraform -&gt; AWS -&gt; S3 Bucket
+
+Execution Flow
+Write Terraform configuration for S3 bucket.
+Push the code to GitHub.
+HCP Terraform detects the change.
+Automatically runs terraform init and terraform plan.
+Review the plan in the UI.
+Confirm and apply the changes.
+AWS provisions t…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/tonny-o/sql-joins-and-window-functions-334h"
+                        open
+                      >
+                        <summary class="article-expander__title">SQL JOINS AND WINDOW FUNCTIONS</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/tonny-o/sql-joins-and-window-functions-334h">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fauz0uclwfpve8aas68i5.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>SQL Joins and Window Functions
+
+
+SQL joins allows you to collate/add two or more tables together using a common identifier e.g. a foreign key. Due to normalization, one may not get all the required columns in a single table in order to reduce data redundancies. 
+
+
+
+student_id
+name
+course_id
+
+
+
+
+1
+Willis Kip
+001
+
+
+2
+Edwin Sifuna
+002
+
+
+3
+Tonny Oti
+NULL
+
+
+
+
+
+
+course_id
+course_name
+
+
+
+
+001
+Botany
+
+
+002
+Political_sci
+
+
+004
+English
+
+
+
+Returns only the rows that exist in both tables.
+
+SELECT name, course_name
+FROM Student
+INNER JOIN Course
+ON Student.course_id &#x3D; Course.course_id;
+
+
+
+
+Name
+Course_name
+
+
+
+
+Willis Kip
+Botany
+
+
+Edwin Sifuna
+Political_sci
+
+
+
+Returns all rows from the left table and matching rows from the right table.
+
+SELECT name, course_name
+FROM Student
+LEFT JOIN Course
+ON Student.c…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;4
                                   min&hairsp;)</span>
                             </span>
@@ -312,68 +429,27 @@ So I created an Institution Members feature that acts as the eligibility sour…
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/shameel/how-javascript-works-part-2-execution-context-call-stack-explained-in-simple-words-2j26"
+                        data-accordion-key="https://dev.to/custodiaadmin/how-to-add-browser-automation-to-any-mcp-server-using-pagebolt-3m06"
                         open
                       >
-                        <summary class="article-expander__title">How JavaScript Works (Part 2) – Execution Context &amp; Call Stack Explained in Simple Words</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/shameel/how-javascript-works-part-2-execution-context-call-stack-explained-in-simple-words-2j26">
+                        <summary class="article-expander__title">How to add browser automation to any MCP server using PageBolt</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/custodiaadmin/how-to-add-browser-automation-to-any-mcp-server-using-pagebolt-3m06">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fuxzjvhd2i7nxitmjz4gl.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy99i4d8d1wk0pow3o3zh.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>In Part 1, we explored how JavaScript runs under the hood and discussed the JavaScript engine and runtime environment.
-In this part, we’re going deeper.
-We will understand:
-What is Execution Context?
-What are the different phases and types of an Execution Context?
-What is the Call Stack?
-How functions are executed internally?
-And most importantly we’ll visualise everything with a simple code example.
-Let’s begin.
-Whenever JavaScript runs your code, it creates a special environment called an Execution Context.
-Think of it as a container where JavaScript keeps everything needed to execute your code.
-Each execution context goes through two phases:
-Before executing your code, JavaScript:
-Scans the code
-Allocates memory for variables
-Stores function definitions in memory
-Important behavior:
-Var…</span>
+                              <span>How to add browser automation to any MCP server using PageBolt
+
+
+You&#x27;re building an AI agent with Claude. Your agent needs to interact with the web — take screenshots, generate PDFs, record demo videos, inspect page structure.
+You could:
+Write Python scripts to call Puppeteer (fragile, maintenance burden)
+Manage your own headless browser pool (infrastructure overhead)
+Use PageBolt&#x27;s MCP server (tool call, done)
+Option 3 takes 5 minutes.
+PageBolt provides an open MCP server that gives Claude, Cursor, and Windsurf native access to browser automation tools. Your agent calls take_screenshot() directly. No Python. No subprocess management. No infrastructure.
+MCP (Model Context Protocol) is a standard for AI agents to call external tools. PageBolt implements the MCP spec so AI agents can:
+Take s…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/sazid_ahmed_bappi/university-voting-system-blockchain-based-1k8j"
-                        open
-                      >
-                        <summary class="article-expander__title">University Voting System (Blockchain Based)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sazid_ahmed_bappi/university-voting-system-blockchain-based-1k8j">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1000,height&#x3D;500,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbrzcritlccht135a1uve.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I’m excited to start sharing my project updates, beginning with the overall application I’ve been building: a blockchain-based voting system designed for secure, transparent, and privacy-focused digital elections.
-a voter-facing frontend
-a backend API for election and user management
-a custom blockchain node for vote record integrity
-an admin panel for managing elections
-an institution API for identity-related workflows
-monitoring tools for system health and observability
-The goal of this project is not just to create an online voting app, but to build a system that addresses the bigger challenges of digital voting:
-voter authentication
-ballot privacy
-vote integrity
-double-vote prevention
-auditability
-verifiability
-So far, the application supports the core voting flow, including registration, login, election creation, vote casting, and result viewing. It also includes cryptographic protections, audit logging, Docker-based deployment, and monitoring support.
-What makes this project especially interesting to me is that it sits at the intersection of software engineering, cybersecurity, cryptography, and system design. It’s been a strong learning experience in building something that needs to be functional, secure, and trustworthy at the same time.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -394,6 +470,46 @@ What makes this project especially interesting to me is that it sits at the inte
                   <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="63b40bdb-0bc4-4f11-be80-fbc96f842a66"
+                        open
+                      >
+                        <summary class="article-expander__title">Battered bitcoin could find solace in war-led &#x27;debasement&#x27; trade</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/daybook-us/2026/03/02/battered-bitcoin-could-find-solace-in-war-led-debasement-trade">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/07d1efb78a229d51032adf9e70bbac298d7a3162-1500x928.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Your day-ahead look for March 2, 2026</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;40
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="e84c9684-1a89-49e2-a865-8ce4a717244d"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin outperforms equities in risk-off session as Iran conflict enters third day</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/03/02/bitcoin-outperforms-equities-in-risk-off-session-as-iran-conflict-enters-third-day">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/e7e3e2e4418fb6b84f4eacd27659c861b1f0ee09-1918x1080.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Bitcoin rebounded to $66,500 after weekend strikes on Iran triggered $300 million in liquidations. Oil jumped, equities slid and select DeFi tokens outperformed.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;38
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -552,6 +668,46 @@ What makes this project especially interesting to me is that it sits at the inte
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="https://webaudio.studio/"
+                        open
+                      >
+                        <summary class="article-expander__title">Show HN: Web Audio Studio – A Visual Debugger for Web Audio API Graphs</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://webaudio.studio/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://webaudio.studio/og-image.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;2
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://karanbansal.in/blog/claude-code-lsp/"
+                        open
+                      >
+                        <summary class="article-expander__title">Claude Code LSP</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://karanbansal.in/blog/claude-code-lsp/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://karanbansal.in/og-image.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;13
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.windowslatest.com/2026/03/02/microsoft-gets-tired-of-microslop-bans-the-word-on-its-discord-then-locks-the-server-after-backlash/"
                         open
                       >
@@ -561,7 +717,7 @@ What makes this project especially interesting to me is that it sits at the inte
                               <img src="https://www.windowslatest.com/wp-content/uploads/2026/03/Copilots-official-Discord-channel-was-locked-down-after-users-went-haywire-with-unflattering-nicknames-targetted-at-Microsoft.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;15
+                                &ensp;<span class="article-reading-time">(&hairsp;14
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -634,7 +790,7 @@ What makes this project especially interesting to me is that it sits at the inte
                         <summary class="article-expander__title">Show HN: Omni – Open-source workplace search and chat, built on Postgres</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/getomnico/omni">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/e3f9d74d7a8c2c2ef233f4c438db22fadccb6f2c3338661ac39c81a654f16afa/getomnico/omni" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/e0c26377dad4dfd6a3f40989fd55b6a94c209fe7f3b9021b2e08fc031cbf515e/getomnico/omni" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
@@ -811,7 +967,7 @@ What makes this project especially interesting to me is that it sits at the inte
                         <summary class="article-expander__title">Show HN: Timber – Ollama for classical ML models, 336x faster than Python</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/kossisoroyce/timber">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/ee31911dcd64c92cf17fde299e7c5eea2de3bfa309088f62b51bccf6db9ec0a4/kossisoroyce/timber" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/9e28752311e3cc485c46fcc8f513860bbb27ef6e85006b6fe1a6211199d82438/kossisoroyce/timber" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;13
@@ -831,7 +987,7 @@ What makes this project especially interesting to me is that it sits at the inte
                         <summary class="article-expander__title">If AI writes code, should the session be part of the commit?</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/mandel-macaque/memento">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/7ff4c2322c7230b7deeeabbbd6a0b4ca96532d6c538dc3a31321be765f4c3cfb/mandel-macaque/memento" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/8b41570780c7419bb81626af146c1509e1897f4dc4e288bde13d46c4a0165a84/mandel-macaque/memento" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;17
@@ -855,6 +1011,27 @@ What makes this project especially interesting to me is that it sits at the inte
                   <a class="source-heading__link" href="https://www.lowyat.net/">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.lowyat.net/?p&#x3D;384885"
+                        open
+                      >
+                        <summary class="article-expander__title">Intel Arrow Lake Refresh Rumoured To Be Announced On 11 March</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.lowyat.net/2026/384885/intel-arrow-lake-refresh-rumoured-to-be-announced-on-11-march/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://www.lowyat.net/wp-content/uploads/2024/10/Intel-Core-Ultra-9-285K-1.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Sources close to the leakster site, Videocardz, have told the online portal that Intel plans on launching its Arrow Lake Refresh on 11 March. That’s a little more than a week out, and Videocardz claims that it has also gotten a second NDA that ends on 23 March. This is likely to include the Core […]
+The post Intel Arrow Lake Refresh Rumoured To Be Announced On 11 March appeared first on Lowyat.NET.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;36
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -1044,27 +1221,6 @@ The post 2026 Toyota Harrier HEV Arrives In Malaysia From RM289,000 appeared fir
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.lowyat.net/?p&#x3D;384749"
-                        open
-                      >
-                        <summary class="article-expander__title">vivo To Showcase X300 Ultra At MWC 2026</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.lowyat.net/2026/384749/vivo-to-showcase-x300-ultra-at-mwc-2026/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://www.lowyat.net/wp-content/uploads/2026/03/vivo-To-Showcase-X300-Ultra-At-MWC-2026.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>It has been some time since we’ve heard anything new from vivo when it comes to its flagship products. If you may recall, the most recent premium device to come from the company was the X300 series, which comprises the base and Pro versions. However, if you’ve been keeping tabs on the series, you’ll know […]
-The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;37
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -1103,7 +1259,7 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                         <summary class="article-expander__title">Right-sizes LLM models to your system&#x27;s RAM, CPU, and GPU</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/AlexsJones/llmfit">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/964c0c4a2d5938b48240f0a7cf25b0cd160912744fe5e787419a8e2ecec36def/AlexsJones/llmfit" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/a189928afa486bdbafca0e3848bd4329fe242550f4951b817f02929d62696a20/AlexsJones/llmfit" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;37
@@ -1176,25 +1332,6 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://ejholmes.github.io/2026/02/28/mcp-is-dead-long-live-the-cli.html"
-                        open
-                      >
-                        <summary class="article-expander__title">When does MCP make sense vs CLI?</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://ejholmes.github.io/2026/02/28/mcp-is-dead-long-live-the-cli.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://ghostty.org/docs"
                         open
                       >
@@ -1205,26 +1342,6 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;3
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://growingswe.com/blog/microgpt"
-                        open
-                      >
-                        <summary class="article-expander__title">Microgpt explained interactively</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://growingswe.com/blog/microgpt">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://growingswe.com/blog/microgpt/opengraph-image?16ed498263341a16" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;18
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1613,46 +1730,6 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="cf0552c3-cae2-42ff-93a8-61024e32e1a6"
-                        open
-                      >
-                        <summary class="article-expander__title">XRP tumbles 9% as break below $1.36 wipes out relief rally</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/02/28/xrp-tumbles-9-as-break-below-usd1-36-wipes-out-relief-rally">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/26d257363cf7812e9fb42bd189fc7135018a74b4-1196x728.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Traders are watching $1.30 as immediate support after heavy-volume selling confirmed a bearish shift.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;36
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="9d0b5483-907a-445e-8089-558ab5067948"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin&#x27;s five-month slide: why BTC is set for worst losing streak since 2018</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/02/27/bitcoin-set-for-worst-5-month-streak-since-2018-as-usd3-8-billion-etf-outflows-mount">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/b273414872129a3419dff0dfba2d9724370afbdd-1920x1080.jpg?auto&#x3D;format" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>With BTC down nearly 50% from its peak, analysts are sparring over whether the slump marks early repricing or signals more pain to come.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;40
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -1799,7 +1876,7 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                         <summary class="article-expander__title">Neocaml – Rubocop Creator&#x27;s New OCaml Mode for Emacs</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/bbatsov/neocaml">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/5732d410a93d340934fba41c69c1f73c6aa6d60746bab8f0a8d5bda23e6d0aac/bbatsov/neocaml" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/20ea965f3a448ff65ee06d63996da96530d5dc012fba8b3a554f3c6cdd1d1f23/bbatsov/neocaml" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;25
@@ -1823,26 +1900,6 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://atempleton.bearblog.dev/how-next-gen-spacecraft-are-overwhelming-our-communication-networks/"
-                        open
-                      >
-                        <summary class="article-expander__title">Next-gen spacecraft are overwhelming communication networks</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://atempleton.bearblog.dev/how-next-gen-spacecraft-are-overwhelming-our-communication-networks/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://bear-images.sfo2.cdn.digitaloceanspaces.com/herman-1683556668-0.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1881,6 +1938,26 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.lrb.co.uk/the-paper/v48/n03/seamus-perry/pluralism-and-the-modern-poet"
+                        open
+                      >
+                        <summary class="article-expander__title">Pluralism and the Modern Poet</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.lrb.co.uk/the-paper/v48/n03/seamus-perry/pluralism-and-the-modern-poet">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://www.lrb.co.uk/storage/social_image/images/1/6/4/7/31047461-1-eng-GB/3d54f9274b6b-perry_hp.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;40
+                                  min&hairsp;)</span>
                             </span>
                           </div>
                         </a>
@@ -2140,15 +2217,16 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://jacquesmattheij.com/long-range-ebike/"
+                        data-accordion-key="https://www.dbos.dev/blog/how-we-built-golang-native-durable-execution"
                         open
                       >
-                        <summary class="article-expander__title">Long Range E-Bike (2021)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://jacquesmattheij.com/long-range-ebike/">
+                        <summary class="article-expander__title">Go-Native Durable Execution</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.dbos.dev/blog/how-we-built-golang-native-durable-execution">
                           <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.prod.website-files.com/672411cbf038560468c9e68f/6948b3cd3629e5cfd0d30c45_Native-durable-execution-golang.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;17
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2533,8 +2611,8 @@ The post vivo To Showcase X300 Ultra At MWC 2026 appeared first on Lowyat.NET.</
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/22573963937">
-        <time id="build-timestamp" datetime="2026-03-02T11:28:56.065Z">2026-03-02T11:28:56.065Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/22576680302">
+        <time id="build-timestamp" datetime="2026-03-02T12:48:00.258Z">2026-03-02T12:48:00.258Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
