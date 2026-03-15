@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-03-15 datetime="2026-03-15T20:10:15.000Z">2026-03-15</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-03-15 datetime="2026-03-15T20:10:15.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-03-15 datetime="2026-03-15T21:02:12.000Z">2026-03-15</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-03-15 datetime="2026-03-15T21:02:12.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -42,21 +42,68 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/wedgemethoddev/how-i-structure-every-ai-consulting-engagement-the-5-phase-framework-13f8"
+                        data-accordion-key="https://dev.to/ramon_galego/what-to-tell-claude-code-to-test-and-what-to-skip-3foo"
                         open
                       >
-                        <summary class="article-expander__title">How I Structure Every AI Consulting Engagement (The 5-Phase Framework)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/wedgemethoddev/how-i-structure-every-ai-consulting-engagement-the-5-phase-framework-13f8">
+                        <summary class="article-expander__title">What to Tell Claude Code to Test (and What to Skip)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ramon_galego/what-to-tell-claude-code-to-test-and-what-to-skip-3foo">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb355xx9nxh2o0li7u3jc.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6lmn6c11d1qeq3hxwnpj.webp" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>How I Structure Every AI Consulting Engagement (The 5-Phase Framework)
+                              <span>If you&#x27;re using Claude Code to build apps, you&#x27;ve probably noticed it loves writing tests. Ask it to build a feature and it&#x27;ll offer to test it. Ask it to fix a bug and it&#x27;ll suggest adding coverage. Left to its own devices, it will happily generate hundreds of tests for your application.
+Most of them won&#x27;t matter.
+Here&#x27;s the filter I use before writing any test: if this breaks silently, what happens?
+If the answer is &quot;nothing for a while&quot; or &quot;a user gets a slightly wrong result,&quot; skip it. If the answer is &quot;data gets corrupted,&quot; &quot;someone gets charged incorrectly,&quot; or &quot;the failure is invisible until it&#x27;s too late,&quot; write the test.
+That&#x27;s the whole framework. Everything below is just applying it.
+One important caveat: this is a strategy for the build phase. If you&#x27;re shipping an MVP or a sid…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/nebulagg/how-to-add-tools-to-a-pydanticai-agent-in-10-min-2d41"
+                        open
+                      >
+                        <summary class="article-expander__title">How to Add Tools to a PydanticAI Agent in 10 Min</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nebulagg/how-to-add-tools-to-a-pydanticai-agent-in-10-min-2d41">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmakkopm6gil82n1ihsza.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Your AI agent can answer questions, but it can&#x27;t do anything. It can&#x27;t check the weather, look up a user, or query a database. Without tools, it&#x27;s just an expensive autocomplete.
+PydanticAI fixes this with one decorator. Here&#x27;s how to give your agent two working tools in under 10 minutes.
+import httpx
+from dataclasses import dataclass
+from pydantic import BaseModel
+from pydantic_ai import Agent, RunContext
 
 
-The fastest way to undermine a consulting engagement is to start without a framework. You end up doing ad hoc research, making scope commitments you cannot price accurately, and delivering work that lacks a coherent throughline.
-I learned this the hard way in my first year of AI consulting. Projects ran long. Scope crept constantly. Clients were not sure what they were getting until they got it.
-The fix was building a repeatable 5-phase engagement structure — and then using AI to accelerate every phase. Here is exactly how I run every engagement now.
-AI consulting has a unique credibility problem. Clients have been burned by overpromised automation projects that delivered nothing. They are skeptical. A clear, document…</span>
+@dataclass
+class Deps:
+    http_client: httpx.Client
+
+
+class CityWeather(BaseModel):
+    city: str
+    temperature_f: float
+    summary: str
+    recommendation: str
+
+
+agent &#x3D; Agent(
+    &quot;openai:gpt-4o-mini&quot;,
+    deps_type&#x3D;Deps,
+    output_type&#x3D;CityWeather,
+    instructions&#x3D;&quot;You help users check weather conditions. Use the tools provided to fetch real data before answering.&quot;,
+)
+
+
+@agent…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
                                   min&hairsp;)</span>
                             </span>
@@ -68,20 +115,54 @@ AI consulting has a unique credibility problem. Clients have been burned by over
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/sahand1987/ayat-saadati-complete-guide-311j"
+                        data-accordion-key="https://dev.to/krisying/harness-engineering-why-the-model-is-a-commodity-and-the-infrastructure-is-your-moat-398a"
                         open
                       >
-                        <summary class="article-expander__title">ayat saadati — Complete Guide</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sahand1987/ayat-saadati-complete-guide-311j">
+                        <summary class="article-expander__title">Harness Engineering: Why the Model Is a Commodity and the Infrastructure Is Your Moat</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/krisying/harness-engineering-why-the-model-is-a-commodity-and-the-infrastructure-is-your-moat-398a">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2kl95xh3kxdt7xwideqt.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fq1sm1yr9rf2jw25oqzyn.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Saadati Principles for Robust Web Development
+                              <span>Everyone is chasing the next model upgrade. GPT-5, Claude 4, Gemini Ultra — surely that will be the one that makes our AI agents work properly.
+I&#x27;ve been running AI agents in production for months. Here&#x27;s what I&#x27;ve learned: the model doesn&#x27;t matter nearly as much as what you put around it.
+Two teams use the same Claude model. One gets mediocre results. The other builds a system that runs 24/7, learns from its mistakes, and gets measurably better every week.
+The difference isn&#x27;t the model. It&#x27;s the harness.
+Harness Engineering is the discipline of building infrastructure that wraps, constrains, and amplifies AI models.
+Traditional thinking: Better Model → Better Results
+Harness Engineering: Same Model + Better Harness → Dramatically Better Results
 
-
-Hey there, fellow developers! Let&#x27;s talk about building web applications that don&#x27;t just work, but thrive. We&#x27;re all striving for codebases that are a joy to work with, perform like a dream, and can stand the test of time and scale. That&#x27;s precisely what the &quot;Saadati Principles&quot; are all about.
-Inspired by the insightful contributions and practical approaches often discussed by Ayat Saadat (you can find some brilliant stuff over at dev.to/ayat_saadat), these principles aren&#x27;t a single library or a magic bullet. Instead, think of them as a philosophy and a collection of battle-tested patterns for architecting modern web applications, particularly within the React and Next.js ecosystem.
-My goal here is to document a structured way of thinking an…</span>
+Think of it like Formula 1. The engine mat…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/krisying/i-built-a-control-plane-for-my-ai-agent-because-it-kept-making-the-same-mistakes-5hf2"
+                        open
+                      >
+                        <summary class="article-expander__title">I Built a Control Plane for My AI Agent — Because It Kept Making the Same Mistakes</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/krisying/i-built-a-control-plane-for-my-ai-agent-because-it-kept-making-the-same-mistakes-5hf2">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Flpzfejqzh6kh7dqem0g9.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I run a Claude agent 24/7. It writes code, deploys services, manages my side projects. Sounds cool, right?
+Except it kept doing dumb things. And I&#x27;d only find out after the damage was done.
+When you let an AI agent run autonomously, you quickly hit three walls:
+1. You have no idea what it&#x27;s doing.
+2. It repeats the same mistakes.
+pkill -f and crashed my system. I told it not to. Next session? Same mistake. Every conversation starts from zero.
+3. When it does something wrong, you find out too late.
+I built Evolve — a control plane for autonomous AI agents.
+The key insight: don&#x27;t monitor the agent from outside. Make it monitor itself.
+# The agent reports: &quot;I&#x27;m coding, 40% done&quot;
+curl -X POST $EVOLVE_URL/api/agent/heartbeat \
+  -d &#x27;{&quot;activity&quot;:&quot;coding&quot;,&quot;description&quot;:&quot;implementing auth module&quot;,…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
@@ -93,23 +174,25 @@ My goal here is to document a structured way of thinking an…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/wedgemethoddev/the-ai-consulting-tech-stack-that-replaced-17-tools-and-cost-less-1egj"
+                        data-accordion-key="https://dev.to/motodiariesfun/im-building-a-meme-coin-alone-with-zero-budget-heres-what-i-learned-3efd"
                         open
                       >
-                        <summary class="article-expander__title">The AI Consulting Tech Stack That Replaced 17 Tools (And Cost Less)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/wedgemethoddev/the-ai-consulting-tech-stack-that-replaced-17-tools-and-cost-less-1egj">
+                        <summary class="article-expander__title">I&#x27;m Building a Meme Coin Alone With Zero Budget. Here&#x27;s What I Learned.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/motodiariesfun/im-building-a-meme-coin-alone-with-zero-budget-heres-what-i-learned-3efd">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1eqm5n65tcdptq0t3zub.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>The AI Consulting Tech Stack That Replaced 17 Tools (And Cost Less)
+                              <span>I&#x27;m Building a Meme Coin Alone With Zero Budget. Here&#x27;s What I Learned.
 
 
-A year ago, my consulting business ran on chaos. I had separate subscriptions for CRM, proposal building, research, copywriting, invoicing, scheduling, project management, social media, email sequences, document storage, client onboarding, time tracking, reporting, meeting notes, competitive intelligence, contract management, and knowledge base. Seventeen tools. Seventeen logins. Seventeen monthly charges.
-Then I burned it down and rebuilt everything around AI.
-Here is what I learned, what I replaced, and why the new stack costs a fraction of what I was paying.
-The overhead was the real cost — not the subscription fees. Every new tool meant onboarding, API integrations that broke, context-switching, and data siloed in pl…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
+I&#x27;m not a developer by trade. I&#x27;m a 45-year-old guy who had a ridiculous idea one night after breaking his nose falling off a scooter (yes, not even a real motorcycle).
+The idea? Build a meme coin project called Motorcycle Diaries ($MOTO) on Solana.
+But here&#x27;s the thing — I had zero budget. No team. No investors. No connections in crypto. Just stubbornness and a lot of late nights.
+This post isn&#x27;t about shilling a token. It&#x27;s about what I learned building an entire web project from scratch as a non-developer.
+Here&#x27;s everything I built, mostly by trial and error:
+Static HTML/CSS/JS hosted on shared hosting
+Cloudflare CDN for performance and DDoS protection
+Custom responsive design (no frameworks)
+SEO: JSON-LD structur…</span>
                             </span>
                           </div>
                         </a>
@@ -119,90 +202,24 @@ The overhead was the real cost — not the subscription fees. Every new tool mea
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/ash_dubai/all-in-one-seo-vs-yoast-choosing-the-best-plugin-in-2026-3ib8"
+                        data-accordion-key="https://dev.to/luisdoingdev/the-little-singleton-that-could-2a2j"
                         open
                       >
-                        <summary class="article-expander__title">All in One SEO vs Yoast: Choosing the Best Plugin in 2026</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ash_dubai/all-in-one-seo-vs-yoast-choosing-the-best-plugin-in-2026-3ib8">
+                        <summary class="article-expander__title">The Little Singleton That Could</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/luisdoingdev/the-little-singleton-that-could-2a2j">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fassets.code-park.com%2Fpseo%2Fmo-ashraf-work%2Fi-ash%2Farticles%2F1773605323660-all-in-one-seo-vs-yoast-choosing-the-bes.webp" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F62mrd5k55htzsas8dyjz.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>All in One SEO vs Yoast: Choosing the Best Plugin in 2026
+                              <span>&quot;I can handle the connections,&quot; it said. &quot;I am one. I am shared. I am efficient,&quot; it said.
+And for a while — it could.
+The Singleton lived in settings.py.
+Not a glamorous address. Nobody visits settings.py to admire the architecture. You go there to set a database password, flip a flag, move on. It&#x27;s the utility drawer of a Django application — full of things that need to exist somewhere, and settings.py is where they ended up.
+But the Singleton didn&#x27;t mind. It had a job, and the job was simple: connect to Consul once, at startup, before the first request ever arrived. Then wait. When someone needed a service address, a config value, a secret — it was already there. Already connected. Already warm.
+# settings.py
+CONSUL_CLIENT &#x3D; consul.connect()
 
-
-Are you tired of guessing which SEO plugin actually helps your site rank? I&#x27;ve spent over seven years building enterprise systems for global names like IKEA and DIOR. In my time, deciding between all in one seo vs yoast is one of the first big hurdles for any WordPress project. As of March 2026, the landscape has changed quite a bit with new AI features and faster code.
-At the brand, I focus on building high-speed web apps that actually convert. I&#x27;ve seen how the right tools can make or break your search rankings in a crowded market. Choosing between all in one seo vs yoast isn&#x27;t just about checkboxes. It&#x27;s about how these tools fit into your daily workflow and your server&#x27;s speed. the brand enables you to focus on your content wh…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/ash_dubai/what-is-nestjs-and-why-you-should-use-it-in-2026-22o2"
-                        open
-                      >
-                        <summary class="article-expander__title">What is NestJS and Why You Should Use It in 2026</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ash_dubai/what-is-nestjs-and-why-you-should-use-it-in-2026-22o2">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fassets.code-park.com%2Fpseo%2Fmo-ashraf-work%2Fi-ash%2Farticles%2F1773605306290-what-is-nestjs-and-why-you-should-use-it.webp" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>What is NestJS and Why You Should Use It in 2026
-
-
-Have you ever looked at a Node. js project and felt fully lost? You open the folder and see files scattered everywhere. There is no clear structure. One dev wrote code their way, and another did something totally different. This is a common pain point in software coding today. I have seen this happen on big projects for brands like IKEA and M&amp;S. It makes scaling very hard.
-In 2026, we need better ways to build backends. You need a system that stays organized as it grows. That is where knowing what is nestjs becomes a lifesaver. I have spent over seven years building enterprise systems. I have learned that a good framework saves you months of headaches. At my engineering blog, I focus on sharing these real-world lessons to help you build be…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/nebulagg/context-engineering-for-ai-agents-a-practical-guide-5989"
-                        open
-                      >
-                        <summary class="article-expander__title">Context Engineering for AI Agents: A Practical Guide</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/nebulagg/context-engineering-for-ai-agents-a-practical-guide-5989">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Flfqspe2ug11emt1r2ua0.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Your AI agent works perfectly in demos. Then you deploy it to production, hand it a real workflow with 30 conversation turns, 15 tool definitions, and a pile of retrieved documents -- and it starts hallucinating, ignoring instructions, and picking the wrong tools.
-The model didn&#x27;t get dumber. Your context engineering failed.
-Context engineering is the practice of curating everything an LLM sees before it responds -- not just the prompt, but the system instructions, tool definitions, conversation history, retrieved documents, and previous step results. While prompt engineering focuses on crafting the right instruction, context engineering decides what information makes it into the context window and what gets left out.
-This matters because in production agent systems, the context window is …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/ddebajyati/so-you-know-what-i-just-wasted-3-months-of-my-life-16e1"
-                        open
-                      >
-                        <summary class="article-expander__title">So, you know what? I just wasted 3 months of my life</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ddebajyati/so-you-know-what-i-just-wasted-3-months-of-my-life-16e1">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fyxj3zpj96y21jufm7zyk.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hey bros and sisters and other fellow developers. I am a human man. And I am sharing my personal experience and frustrations regarding uploading datasets.
-I am dumb and may don&#x27;t know a lot of stuff and that is why I just happen to try a lot of things, differently maybe and fail severly. Haha, what a tragedy...
-So, it happens as I needed to my tune some CNNs or ViTs or both which are pretrained on &#x27;imagenet&#x27; or &#x27;LVD-1689M&#x27;, so that I can use them for feature extraction in my preferred dataset domain (detection of deepfakes - It is my final year project that I am working on).
-The dataset I preferred for fine-tuning the set of deep learning models is Wild Deepfake - 
-Because it is a diverse and real world deepfake dataset that has data sourced from in the wild deepfakes available on the inte…</span>
+One line. That&#x27;s all it took to exist.
+And t…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;8
                                   min&hairsp;)</span>
                             </span>
@@ -214,77 +231,60 @@ Because it is a diverse and real world deepfake dataset that has data sourced fr
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/programmingcentral/beyond-single-agents-how-to-build-collaborative-ai-workflows-with-langgraph-cpf"
+                        data-accordion-key="https://dev.to/automatewithai/the-5month-ai-automation-stack-n8n-gpt-4o-mini-vps-269j"
                         open
                       >
-                        <summary class="article-expander__title">Beyond Single Agents: How to Build Collaborative AI Workflows with LangGraph</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/programmingcentral/beyond-single-agents-how-to-build-collaborative-ai-workflows-with-langgraph-cpf">
+                        <summary class="article-expander__title">The $5/Month AI Automation Stack: n8n + GPT-4o-mini + VPS</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/automatewithai/the-5month-ai-automation-stack-n8n-gpt-4o-mini-vps-269j">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6mzeliv1hzio9q2lodwm.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fitryvc07m8zrsxey17hj.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>In the race to build AI applications, the early wins came from single, monolithic agents. You give an AI a task, it performs it. But as complexity grows, this approach hits a wall. A single agent trying to research, write, and edit simultaneously is like a full-stack developer trying to build an entire enterprise application alone—it becomes unfocused, error-prone, and brittle.
-The future of robust AI systems isn&#x27;t about building smarter single agents; it&#x27;s about orchestrating teams of specialized agents that collaborate, iterate, and refine their work just like a high-performing human team.
-This guide explores the architecture of Collaborative Agent Orchestration, using the classic Researcher-Writer example. We&#x27;ll break down the theory, visualize the workflows, and provide a complete, run…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/younann/stop-waiting-for-claude-code-get-notified-when-your-prompt-finishes-4b4a"
-                        open
-                      >
-                        <summary class="article-expander__title">Stop Waiting for Claude Code — Get Notified When Your Prompt Finishes</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/younann/stop-waiting-for-claude-code-get-notified-when-your-prompt-finishes-4b4a">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9r1wpdfz83vx4c3n64hb.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>When working with Claude Code, I noticed something that kept slowing down my workflow.
-Sometimes prompts take a while to finish.
-I often found myself just staring at the terminal, waiting to see when Claude would finish running the prompt.
-Another situation happened even more often.
-I had multiple Claude sessions open.
-I would switch between them, working on different prompts, and later realize that one of the sessions had been waiting for my command the whole time — and I didn&#x27;t notice.
-It was a small friction, but it happened often enough to become annoying.
-So I built a small solution.
-NotifyMe for Claude Code
-NotifyMe is a lightweight plugin that sends you a notification when Claude finishes running your prompt.
-GitHub:
-https://github.com/younann/notifyme-claude
-The goal is simple: don&#x27;t wait in the terminal anymore.
-Why I Built It
-When using AI coding tools, prompts can take time to run, especially when:
-generating larger pieces of code
-running agent workflows
-iterating on complex prompts
-Instead of waiting, I wanted the ability to:
-run a prompt
-switch to another task
-get notified when the result is ready
-What It Helps With
-NotifyMe improves the workflow when using Claude Code by allowing you to:
-run long prompts without waiting
-step away while Claude works
-manage multiple Claude sessions more easily
-get notified immediately when the result is ready
-It’s intentionally simple and lightweight.
-Example Workflow
-Typical flow with NotifyMe:
-Run a prompt in Claude Code
-Continue working on something else
-Receive a notification when Claude finishes
-Return to the terminal and review the output
-This small change removes a lot of unnecessary waiting.
-GitHub Repository
-You can check the project here:
-https://github.com/younann/notifyme-claude
-Feedback, suggestions, and contributions are welcome.
-If you are using Claude Code heavily or experimenting with AI agents, this might make your workflow a bit smoother.</span>
+                              <span>The $5/Month AI Automation Stack: n8n + GPT-4o-mini + VPS
+
+
+You do not need expensive SaaS subscriptions to automate your business with AI. Here is the exact stack I run for under $5/month that handles social media, lead generation, email outreach, and content repurposing — all automated.
+
+
+
+Component
+Cost
+Purpose
+
+
+
+
+Hetzner CX22 VPS
+$4.35/month
+Hosts everything
+
+
+n8n (self-hosted)
+$0
+Workflow automation engine
+
+
+GPT-4o-mini API
+~$0.50/month
+AI processing
+
+
+Caddy (reverse proxy)
+$0
+HTTPS + routing
+
+
+Total
+~$4.85/month
+
+
+
+
+Compare this to Zapier Pro ($49) + ChatGPT Plus ($20) + Make.com ($9) &#x3D; $78/month for less functionality.
+Auto-post to Twitter/X from RSS feeds
+Repurpose blog posts into LinkedIn carousels
+Schedule Instagram content from a Google Sheet
+Monitor Reddit for brand mentions
+G…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;4
                                   min&hairsp;)</span>
                             </span>
@@ -296,71 +296,119 @@ If you are using Claude Code heavily or experimenting with AI agents, this might
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/dhis_is_jj/the-classroom-taught-me-to-think-the-blockchain-taught-me-to-build-2oo2"
+                        data-accordion-key="https://dev.to/geraldm/connecting-power-bi-to-postgresql-database-3eif"
                         open
                       >
-                        <summary class="article-expander__title">The Classroom Taught Me to Think. The Blockchain Taught Me to Build.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dhis_is_jj/the-classroom-taught-me-to-think-the-blockchain-taught-me-to-build-2oo2">
+                        <summary class="article-expander__title">Connecting Power BI to PostgreSQL Database</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/geraldm/connecting-power-bi-to-postgresql-database-3eif">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F5radn3cvbi2cfa8h0ly7.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbk579kwvyyptu0ekbvf4.PNG" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>I&#x27;m a computer science student in Nigeria who writes smart contracts for fun and the longer I do both, the more I realize my university and my terminal are living in different decades.
-It is 7:48am on a Tuesday. The harmattan dust is already in the air. Somewhere on campus, a generator coughs to life. I am sitting in a lecture hall that fits two hundred people, watching a lecturer write pseudocode on a whiteboard, a pseudocode for a linked list implementation that was first taught in this exact format in 1987.
-I do not say this with contempt. I say it with the specific frustration of someone who went home the night before, opened his laptop, and debugged a smart contract that, if deployed wrong, could drain thousands of dollars from real users in under a minute. Two different worlds. Same …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/dvoraj75/why-postgresql-row-level-security-is-the-right-approach-to-django-multitenancy-3e1m"
-                        open
-                      >
-                        <summary class="article-expander__title">Why PostgreSQL Row-Level Security Is the Right Approach to Django Multitenancy</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dvoraj75/why-postgresql-row-level-security-is-the-right-approach-to-django-multitenancy-3e1m">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqqyftzxeviqz1wt04ya8.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Every SaaS application is a promise: &quot;Your data is yours, and only yours.&quot;
-Every Django developer who&#x27;s built a multi-tenant app knows how fragile that promise actually is.
-I&#x27;ll be honest about how I got here: I was building a Django application and I was, let&#x27;s say, a bit overambitious. Instead of shipping an MVP first and worrying about multitenancy later, I convinced myself that thousands of customers were right around the corner and I needed to solve tenant isolation now. Classic over-engineering move. I know.
-But that premature optimization turned into a genuine education. I started evaluating the options, and each one gave me a different kind of anxiety:
-Separate databases per tenant? Terrible. Connection management alone would be a nightmare.
-Schema-per-tenant? Better, but I kept re…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;13
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/serifcolakel/building-a-cost-efficient-generative-ui-architecture-in-react-native-2d58"
-                        open
-                      >
-                        <summary class="article-expander__title">Building a Cost-Efficient Generative UI Architecture in React Native</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/serifcolakel/building-a-cost-efficient-generative-ui-architecture-in-react-native-2d58">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fhulj5hno6f5xrm31ozt7.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>In this article, I want to share the architecture we built for Generative UI in the Fonyx mobile application. This system is designed to deliver premium native UI experiences while keeping LLM costs extremely low.
-Generative UI (GenUI) is emerging as one of the most powerful patterns for AI-native applications. Instead of returning plain text responses, Large Language Models can dynamically orchestrate real UI components inside applications.
-However, many early Generative UI systems face serious production challenges:
-extremely high token costs
-slow response times
-hallucinated datasets
-unpredictable UI outputs
-In the Fonyx mobile application, we implemented a different architecture designed to deliver premium native UI experiences while keeping LLM costs extremely low.
-The key idea behind …</span>
+                              <span>Introduction
+
+
+Power BI is a business intelligence and data visualization tool developed by Microsoft that allows user to connect to multiple data sources, transform and model data, and create reports and dashboards.
+Power BI is used to perform data analysis and provide business intelligence by allowing analysts to import data from various sources such as databases, clean and transform the data, create relationships using the data and perform calculations using DAX(data analysis expressions).
+Why do organizations connect Power BI to databases?
+Databases store large volumes of data efficiently and connecting Power BI to these databases allows analysts to work with enterprise scale data.
+Connecting Power BI to a database provides data consistency ensuring that everyone in the organization wo…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/chemicoder/-how-i-built-silentear-a-real-time-ai-accessibility-agent-for-deaf-users-with-gemini-live-api-3fe7"
+                        open
+                      >
+                        <summary class="article-expander__title">How I Built SilentEar — A Real-Time AI Accessibility Agent for Deaf Users with Gemini Live API</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/chemicoder/-how-i-built-silentear-a-real-time-ai-accessibility-agent-for-deaf-users-with-gemini-live-api-3fe7">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsf8562a5v97em8h2d4io.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>This blog post was created for the purposes of entering the Gemini Live Agent Challenge hackathon.
+#GeminiLiveAgentChallenge
+This project is deeply personal to me. My son is profoundly deaf by birth, and as he began learning Pakistan Sign Language (PSL) at school, I joined basic training to learn alongside him. During this ongoing journey, I observed firsthand how challenging daily life can be for the Deaf community and their families. Often, deaf individuals feel irrelevant or isolated in gatherings, struggle to communicate smoothly with hearing people, or face physical danger because they cannot hear critical environmental alerts.
+While we&#x27;ve seen incredible advancements in AI, accessibility tools have largely stagnated around simple speech-to-text transcription. I realized that transcri…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/samar_shetye/breaking-the-language-barrier-when-truth-matters-most-5b5o"
+                        open
+                      >
+                        <summary class="article-expander__title">Breaking the Language Barrier When Truth Matters Most</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/samar_shetye/breaking-the-language-barrier-when-truth-matters-most-5b5o">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Far2ka4ac8gtsnqhxes8w.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>When global conflicts ignite, the first casualty is often the truth. Local propaganda machines spin narratives, external news sites are blocked, and critical updates from international journalists remain trapped behind a massive barrier: language.
+Before I started coding LingualNews, my &quot;blank canvas&quot; was shaped by this massive information asymmetry. I needed to build a solution using a fast frontend (React/Vite) wrapped around a tight set of APIs (Lingo.dev and Groq) with one core mission: What if anyone, anywhere, could paste a URL from any global news outlet and instantly read—or listen to it—in their native tongue?
+The problem I am solving is access to unfiltered reality. LingualNews makes the world a better place by ensuring that truth is never paywalled by your geographic location or…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/ji_ai/turning-105-session-logs-into-build-logs-a-claude-code-automation-pipeline-30lg"
+                        open
+                      >
+                        <summary class="article-expander__title">Turning 105 Session Logs into Build Logs: A Claude Code Automation Pipeline</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ji_ai/turning-105-session-logs-into-build-logs-a-claude-code-automation-pipeline-30lg">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjr2jv2pvd0ytsazj4mz4.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I had 105 Claude Code session logs sitting in .jsonl files. Writing build logs meant opening each one, extracting the interesting parts, and assembling them into coherent posts. I never got around to it. So I built an automation pipeline instead. It handles session parsing, build log generation via Claude CLI, git push, and Cloudflare deployment in one pass.
+TL;DR: I built a pipeline that parses Claude Code .jsonl sessions and auto-generates build logs using the Claude CLI. The raw material was always there -- the reason I never wrote those posts was laziness, not lack of content.
+.jsonl Files
+
+
+Claude Code stores project sessions under ~/.claude/projects/ as .jsonl files. Each line contains a single message as JSON: user prompts, Claude&#x27;s responses, tool call results, and timestamps.
+Pars…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/ji_ai/building-an-ai-trading-bot-with-claude-code-14-sessions-961-tool-calls-4o0n"
+                        open
+                      >
+                        <summary class="article-expander__title">Building an AI Trading Bot with Claude Code: 14 Sessions, 961 Tool Calls</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ji_ai/building-an-ai-trading-bot-with-claude-code-14-sessions-961-tool-calls-4o0n">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdxmcxly25eo79zkcsu2e.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I wrote leverage ratios, stop-loss ranges, symbol lists, and timeframes into CLAUDE.md at specification level, then said &quot;build the entire bot based on this CLAUDE.md.&quot; Two hours and 48 minutes later, 27 files appeared. Over 14 sessions and 961 tool calls, this is the full record of building an AI trading bot with Claude Code.
+TL;DR: CLAUDE.md quality determines code quality. Bug fix prompts should include the error code, a hypothesis for the cause, and a numbered list of requirements -- that is what gets the right result in one shot. A 5-agent review panel discovered that a 60% win rate was hiding net losses due to structural risk/reward problems.
+The first prompt in session 1:
+Build the entire bot based on this CLAUDE.md
+
+2 hours 48 minutes, 104 tool calls. Out came bot.py, exchange.py, …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -687,7 +735,7 @@ The key idea behind …</span>
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;29
+                                &ensp;<span class="article-reading-time">(&hairsp;60
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -957,67 +1005,10 @@ The key idea behind …</span>
                         <summary class="article-expander__title">$96 3D-printed rocket that recalculates its mid-air trajectory using a $5 sensor</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/novatic14/MANPADS-System-Launcher-and-Rocket">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/a6d198e20c73bc4aab0fa96c2f27f3bdacdb6dba5a2f4e77a00907f06ce55e0b/novatic14/MANPADS-System-Launcher-and-Rocket" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/b319ef2a1981dc97907d5f4864cac4dc22208187c3a115dec92612d838d2bcdd/novatic14/MANPADS-System-Launcher-and-Rocket" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://sa.lj.am/rack-mount-hydroponics/"
-                        open
-                      >
-                        <summary class="article-expander__title">Rack-mount hydroponics</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://sa.lj.am/rack-mount-hydroponics/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://robertsdotpm.github.io/cryptography/tcp_hole_punching.html"
-                        open
-                      >
-                        <summary class="article-expander__title">A most elegant TCP hole punching algorithm</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://robertsdotpm.github.io/cryptography/tcp_hole_punching.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;4
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://s4dbrd.github.io/posts/how-kernel-anti-cheats-work/"
-                        open
-                      >
-                        <summary class="article-expander__title">How kernel anti-cheats work</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://s4dbrd.github.io/posts/how-kernel-anti-cheats-work/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;37
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2132,6 +2123,57 @@ The post Jetour T2 Officially Launches In Malaysia For RM156,800 appeared first 
                 </section>
               </section>
             </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.science.org/doi/10.1126/sciadv.adz2240"
+                        open
+                      >
+                        <summary class="article-expander__title">Human Organ Atlas</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.science.org/doi/10.1126/sciadv.adz2240">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.denizcemonduygu.com/2017/05/measure-of-justice/"
+                        open
+                      >
+                        <summary class="article-expander__title">Measure of Justice: Covering the Cerîde-I Adliye Covers (2017)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.denizcemonduygu.com/2017/05/measure-of-justice/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://www.denizcemonduygu.com/wp-content/uploads/2017/05/A31A0012.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
         </ul>
       </section>
       <section class="daily-content js-toggle-accordions-scope">
@@ -2242,6 +2284,25 @@ The post Jetour T2 Officially Launches In Malaysia For RM156,800 appeared first 
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://jvns.ca/blog/2026/03/10/examples-for-the-tcpdump-and-dig-man-pages/"
+                        open
+                      >
+                        <summary class="article-expander__title">Examples for the tcpdump and dig man pages</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://jvns.ca/blog/2026/03/10/examples-for-the-tcpdump-and-dig-man-pages/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2585,8 +2646,8 @@ Over</span>
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/23118549285">
-        <time id="build-timestamp" datetime="2026-03-15T20:23:02.968Z">2026-03-15T20:23:02.968Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/23119641379">
+        <time id="build-timestamp" datetime="2026-03-15T21:23:54.901Z">2026-03-15T21:23:54.901Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
