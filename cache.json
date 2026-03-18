@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/codewithishwar/how-to-solve-any-coding-problem-a-simple-7-step-framework-ign",
-          "author": "CodeWithIshwar",
-          "description": "Most developers struggle with coding problems not because they are hard…\n…but because they don’t have a clear approach.\nI’ve been there—reading a problem once and jumping straight into coding.\nThat usually leads to confusion and getting stuck.\nOver time, I started following a simple framework that works consistently.\n🚀 The 7-Step Framework\n1. Understand the Problem\nRead the problem carefully.\nDon’t rush into coding.\n2. Identify Input & Output\nClarify:\nWhat you are given\nWhat you need to return\nThis step removes ambiguity.\n3. Start with Brute Force\nAlways begin with the simplest solution.\nFocus on correctness first.\n4. Optimize Step-by-Step\nOnce your brute force works, improve it.\nCommon patterns:\nHashMap\nTwo Pointers\nStack\nSliding Window\n5. Write Clean Code\nReadable code is better than clever code.\nKeep it simple and maintainable.\n6. Dry Run Your Solution\nTest your logic with sample inputs.\nWalk through each step.\n7. Debug Logically\nIf something breaks:\nDon’t panic\nTrace step-by-step\nFix the root cause\n💡 Where This Helps\nThis approach works for:\nLeetCode problems\nCoding interviews\nReal-world debugging\n🔥 Key Takeaway\nStrong developers don’t guess.\n✍️ Final Thoughts\nIf you’re stuck, don’t just solve more problems.\nImprove your approach to solving them.\nThat’s what makes the difference.\n👨‍💻 About the Author\nIshwar Chandra Tiwari\nSharing insights on:\nProblem Solving\nDSA\nSystem Design\nDeveloper Growth\n⭐ If You Found This Helpful\nLeave a ❤️ on the post\nFollow for more developer content",
-          "link": "https://dev.to/codewithishwar/how-to-solve-any-coding-problem-a-simple-7-step-framework-ign",
-          "publishedOn": "2026-03-18T17:56:35.000Z",
-          "wordCount": 1031,
-          "title": "How to Solve Any Coding Problem: A Simple 7-Step Framework",
-          "imageUrl": "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg"
+          "id": "https://dev.to/yash_step2dev/the-devops-metrics-that-actually-matter-and-how-to-track-them-3123",
+          "author": "Yash",
+          "description": "The DevOps metrics that actually matter (and how to track them)\n\n\n\n  \n  \n  The 4 DORA metrics\n\n\n\n\n\nDeployment Frequency    Elite: Multiple/day    Low: < once/month\nLead Time for Changes   Elite: < 1 hour        Low: > 1 month\nChange Failure Rate     Elite: 0-5%            Low: 15-30%\nMTTR                    Elite: < 1 hour        Low: > 1 week\n\n- name: Record deployment metric\n  if: success()\n  run: |\n    aws cloudwatch put-metric-data       --namespace \"DevOps/Deployments\" --metric-name \"DeploymentCount\" --value 1       --dimensions Service=${{ env.SERVICE_NAME }},Environment=production\n\n- name: Record lead time\n  if: success()\n  run: |\n    COMMIT_TIME=$(git show -s --format=%ct ${{ github.sha }})\n    LEAD_TIME=$(($(date +%s) - COMMIT_TIME))\n    aws cloudwatch put-metric-data       --namespace \"DevOps/Deployments\" --metric-name \"LeadTimeSeconds\"       --value $LEAD_TIME --dimensions Service=${{ env.SERVICE_NAME }}\n\ndef handler(event, context):\n    alarm = event['detail']['alarmName']\n    state = event['detail']['state']['value']\n    ts    = datetime.fromisoformat(event['time'].replace('Z', '+00:00'))\n\n    if state == 'ALARM':\n        ssm.put_parameter(Name=f'/incidents/{alarm}/start',\n                          Value=ts.isoformat(), Type='String', Overwrite=True)\n    elif state == 'OK':\n        start = ssm.get_parameter(Name=f'/incidents/{alarm}/start')\n        mttr  = (ts - datetime.fromisoformat(start['Parameter']['Value'])).total_seconds()\n        cw.put_metric_data(Namespace='DevOps/Incidents',\n                           MetricData=[{'MetricName':'MTTR','Value':mttr,'Unit':'Seconds'}])\n\nAlert fatigue rate — rising = signal quality degrading\nDeployment size — larger = higher failure rate\nTest coverage trend — declining = more future failures\nStep2Dev includes deployment metrics instrumentation in the workflow it generates.\n👉 step2dev.com",
+          "link": "https://dev.to/yash_step2dev/the-devops-metrics-that-actually-matter-and-how-to-track-them-3123",
+          "publishedOn": "2026-03-18T19:07:22.000Z",
+          "wordCount": 987,
+          "title": "The DevOps metrics that actually matter (and how to track them)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7xxkhkdk00fgt3ki2fcv.png"
         },
         {
-          "id": "https://dev.to/winnie_wambui/step-by-step-guide-to-setting-up-terraform-aws-cli-and-your-aws-environment-2f6n",
-          "author": "Winnie Wambui",
-          "description": "Introduction\n\n\nSetting up your environment correctly is the foundation of working with Terraform. In this guide, I’ll walk through how I installed Terraform, configured the AWS CLI, and connected everything to AWS.\n1. Setting Up AWS\n\n\n\nCreated an AWS account\n\nEnabled MFA for security\n\nCreated an IAM user with programmatic access\n\nAttached necessary permissions\n\n\n\n\n\n\n\n  \n  \n  2. Installing AWS CLI\n\n\nInstalled AWS CLI and configured it:\n\n3. Installing Terraform\n\n\nDownloaded and installed Terraform, then verified:\n\n4. Connecting Terraform to AWS\n\n\nTerraform automatically uses AWS CLI credentials.\nTested connection using:\n\nVSCode Extensions\nI installed the following extensions in Visual Studio Code:\nHashiCorp Terraform\nAWS Toolkit\nConclusion\nBy completing this setup, I now have a fully working environment ready to deploy infrastructure using Terraform.",
-          "link": "https://dev.to/winnie_wambui/step-by-step-guide-to-setting-up-terraform-aws-cli-and-your-aws-environment-2f6n",
-          "publishedOn": "2026-03-18T17:56:18.000Z",
-          "wordCount": 881,
-          "title": "Step-by-Step Guide to Setting Up Terraform, AWS CLI, and Your AWS Environment",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fj2hi2ewe3z6ini28t98u.png"
+          "id": "https://dev.to/busyagents/the-4-security-bugs-your-ai-copilot-writes-every-single-time-35e1",
+          "author": "BusyAgents",
+          "description": "TL;DR\nAI editors produce syntactically clean code that is semantically insecure\nThe same 4 vulnerability patterns show up across almost every AI-generated codebase\nThey're all fixable in minutes, if you know what to look for\nI scanned a production app last week. Clean TypeScript, well-organized folders, decent test coverage. The kind of repo that looks like a senior dev wrote it.\nAlso: a hardcoded Stripe API key on line 8 of config.ts. A SQL query built from raw string concatenation. An auth endpoint with zero rate limiting. And a password hash using MD5.\nThe whole thing was built with an AI editor. And none of this is unusual.\nI've been scanning AI-generated codebases for a while now. The same patterns keep showing up, almost without exception. Not because the developers are bad. they're …",
+          "link": "https://dev.to/busyagents/the-4-security-bugs-your-ai-copilot-writes-every-single-time-35e1",
+          "publishedOn": "2026-03-18T19:07:11.000Z",
+          "wordCount": 1691,
+          "title": "The 4 Security Bugs Your AI Copilot Writes Every Single Time",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpyiqh4otensrkclpkdcn.png"
         },
         {
-          "id": "https://dev.to/froala_e3824d66439393cbce/5-questions-every-cto-should-ask-when-evaluating-a-rich-text-editor-vendor-2kfn",
-          "author": "Froala",
-          "description": "A rich text editor is not a UI accessory. It is a core, user-facing infrastructure component.\nIf you run a CMS, LMS, CRM, knowledge base, documentation portal, or internal platform, your editor directly shapes user experience, data integrity, performance, and even regulatory exposure. A weak vendor choice doesn’t just frustrate users, it creates security vulnerabilities, scaling bottlenecks, developer toil, and unpredictable costs.\nThat’s why rich text editor vendor evaluation should never be treated as a feature comparison exercise. At the executive level, this is a risk assessment and long-term partnership decision.\nThis guide is written specifically for CTOs, VPs of Engineering, and technical leaders navigating enterprise rich text editor selection criteria. It provides a strategic fram…",
-          "link": "https://dev.to/froala_e3824d66439393cbce/5-questions-every-cto-should-ask-when-evaluating-a-rich-text-editor-vendor-2kfn",
-          "publishedOn": "2026-03-18T17:55:54.000Z",
-          "wordCount": 2259,
-          "title": "5 Questions Every CTO Should Ask When Evaluating a Rich Text Editor Vendor",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7rqmre1zh0z8ytpmp6ha.jpg"
+          "id": "https://dev.to/alichherawalla/how-to-use-lm-studio-from-your-iphone-in-2026-no-cloud-no-subscription-4i3f",
+          "author": "Mohammed Ali Chherawalla",
+          "description": "LM Studio turned your Mac into an AI workstation. You downloaded models, you chatted with them, you ran a local server. But LM Studio does not have a mobile app. When you walk away from your Mac, you walk away from your AI.\nYour Mac is still running. The model is still loaded. You just cannot reach it from your pocket.\nOff Grid solves this. It auto-discovers LM Studio servers on your network and gives you a full-featured AI interface on your iPhone - connected to the same models running on your Mac.\n\nOpen LM Studio on your Mac. Click the Developer tab. Load a model (Qwen 3.5 9B is the recommendation if you have 16GB+ RAM). Start the server. Check \"Serve on Local Network.\"\nThat is one checkbox. No terminal. No environment variables. No firewall configuration.\nDownload Off Grid from the App …",
+          "link": "https://dev.to/alichherawalla/how-to-use-lm-studio-from-your-iphone-in-2026-no-cloud-no-subscription-4i3f",
+          "publishedOn": "2026-03-18T19:06:35.000Z",
+          "wordCount": 1552,
+          "title": "How to Use LM Studio From Your iPhone in 2026 (No Cloud, No Subscription)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4uvgggwv88xxi8216ua0.png"
         },
         {
-          "id": "https://dev.to/nbomber/nbomber-studio-062-28al",
-          "author": "Anton Moldovan",
-          "description": "The new 0.6.2 release introduces several powerful features: Compare Runs, Trend Analysis, Download HTML Report, and Stop Session.\nWith these additions, NBomber Studio is evolving beyond being just a UI for NBomber metrics into a full-fledged load testing platform. We are also working on the upcoming Load Testing in Kubernetes feature, which we expect to release in April.\nTo read the full blog post, please follow this link.",
-          "link": "https://dev.to/nbomber/nbomber-studio-062-28al",
-          "publishedOn": "2026-03-18T17:54:52.000Z",
-          "wordCount": 774,
-          "title": "NBomber Studio 0.6.2",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F3esr5vxmb2yoiuq758vw.jpg"
+          "id": "https://dev.to/yash_gandhi_b0979f0105433/julius-caesar-a-character-study-in-contradictions-3cp3",
+          "author": "Yash Gandhi",
+          "description": "Most people learn about Caesar like he's a statue — marble-white, frozen in one pose, arm raised, toga draped.\nBut the real Caesar? He was a walking contradiction. Arrogant enough to lecture his own kidnappers. Humble enough to weep at a statue. Brilliant enough to conquer a continent. Blind enough to walk into a room full of men holding knives.\nYou don't understand Caesar by listing what he did. You understand him by tracking what each moment revealed about who he was.\nSo here's his life — not as a timeline, but as a character sheet that kept updating.\nIt starts with a choice that most teenagers never have to make.\nRome was tearing itself apart in a civil war between two factions — the populists led by Gaius Marius (Caesar's uncle by marriage), and the conservatives led by Sulla, a ruthle…",
+          "link": "https://dev.to/yash_gandhi_b0979f0105433/julius-caesar-a-character-study-in-contradictions-3cp3",
+          "publishedOn": "2026-03-18T19:06:11.000Z",
+          "wordCount": 3760,
+          "title": "Julius Caesar — A Character Study in Contradictions",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fz68faezxkgc66q8ml9pp.png"
         },
         {
-          "id": "https://dev.to/arthur_kirby_f66568779ac5/why-my-script-only-worked-halfway-and-how-i-finally-fixed-it-4i7m",
-          "author": "Arthur Kirby",
-          "description": "Let me tell you a story about confidence.\nNot the good kind.\nThe dangerous kind.\nThe kind where you write a script, test it once, see it working… and immediately think:\n“Yeah, I’m basically a genius.”\n🚀 The Beginning: “It Works!”\nI had built what I thought was a beautiful automation script.\nClean logic ✅\n\n\nNo errors (at least… none visible) ✅\n\n\nRan perfectly on my machine ✅\n\n\n\nI tested it once.\nThen twice.\nThen I proudly shipped it.\nAnd for a brief, glorious moment, everything worked.\n😈 The Problem: “It… kinda works?”\nThen the reports started coming in:\n“It didn’t run on my machine.”\n\n\n“Only part of it worked.”\n\n\n“It stopped halfway.”\n\n\n“Nothing happened.”\n\n\n\nWhich is developer language for:\n👉 “Your script is broken.”\nBut here’s the weird part:\nIt wasn’t completely broken.\nIt worked…\n👉…",
-          "link": "https://dev.to/arthur_kirby_f66568779ac5/why-my-script-only-worked-halfway-and-how-i-finally-fixed-it-4i7m",
-          "publishedOn": "2026-03-18T17:53:55.000Z",
-          "wordCount": 1409,
-          "title": "Why My Script Only Worked Halfway (And How I Finally Fixed It)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy23v235gcwyc3zffjzi2.png"
+          "id": "https://dev.to/alichherawalla/how-to-use-ollama-from-your-android-phone-in-2026-auto-discovery-zero-setup-35li",
+          "author": "Mohammed Ali Chherawalla",
+          "description": "Every other guide for accessing Ollama from your phone starts the same way: open a terminal, set environment variables, find your IP address, configure your firewall. By the time you are done, you have spent more time on setup than you will spend chatting with the model.\nYour Android phone and your Ollama server are on the same network. They should just be able to talk to each other.\nOff Grid makes that happen. It auto-discovers Ollama servers on your local network, pulls the model list, and lets you start chatting. No IP addresses, no port numbers, no configuration files on your phone.\n\nA computer running Ollama with at least one model\nAn Android phone (6GB+ RAM recommended) on the same WiFi network\nOff Grid installed from GitHub Releases\n\n\n\n\n  \n  \n  Step 1: Open Ollama to your network\n\n\n…",
+          "link": "https://dev.to/alichherawalla/how-to-use-ollama-from-your-android-phone-in-2026-auto-discovery-zero-setup-35li",
+          "publishedOn": "2026-03-18T19:05:48.000Z",
+          "wordCount": 1613,
+          "title": "How to Use Ollama From Your Android Phone in 2026 (Auto-Discovery, Zero Setup)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fl6jekx3z3mw6l5v74wiu.png"
         },
         {
-          "id": "https://dev.to/just_panth/gig-workers-having-trouble-no-issue-insurance-is-here-24pm",
-          "author": "Panthadeep Majumder",
-          "description": "Building AI-Powered Insurance at Guidewire DevTrails 2026\n\n\n1. Our Journey Begins\nWe are excited and confident to be part of the Guidewire DevTrails 2026 Hackathon, a platform that challenges us to solve real-world problems using technology. The problem statement itself is both meaningful and complex—reimagining insurance for India’s growing gig economy.\nFrom the very beginning, this journey has pushed us to think beyond conventional solutions and explore how AI can be used to create tangible impact.\n2. Our Project — QuickShield\nThe Problem We're Solving:\nIndia’s platform-based delivery partners (Zomato, Swiggy, Zepto, Amazon, Dunzo etc.) are the backbone of our fast-paced digital economy. However, external disruptions such as extreme weather, pollution, and natural disasters can reduce th…",
-          "link": "https://dev.to/just_panth/gig-workers-having-trouble-no-issue-insurance-is-here-24pm",
-          "publishedOn": "2026-03-18T17:53:24.000Z",
-          "wordCount": 1312,
-          "title": "Gig-Workers having trouble? No issue Insurance is here!",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkouljgkvxzh4f0xgc09t.png"
+          "id": "https://dev.to/agenthustler/web-scraping-infrastructure-guide-apis-vs-proxies-vs-headless-browsers-2026-4gj",
+          "author": "agenthustler",
+          "description": "Every web scraping project starts with the same question: what infrastructure do I actually need?\nYou have three fundamental approaches — scraping APIs, proxy networks, and headless browsers — and choosing wrong means either overpaying by 10x or fighting a losing battle against anti-bot systems. I've built scraping pipelines using all three approaches across dozens of targets, and the right choice depends entirely on your specific situation.\nThis guide gives you the decision framework. No fluff, just the practical analysis.\n\n\n\nFactor\nScraping APIs\nProxy + HTTP Client\nHeadless Browser\n\n\n\n\nWhat you manage\nJust your parsing logic\nProxy rotation, headers, retries, CAPTCHAs\nBrowser instances, fingerprints, resource usage\n\n\nCost per 1K requests\n$1–5\n$0.10–2 (bandwidth-based)\n$0.50–5 (compute-hea…",
+          "link": "https://dev.to/agenthustler/web-scraping-infrastructure-guide-apis-vs-proxies-vs-headless-browsers-2026-4gj",
+          "publishedOn": "2026-03-18T19:04:33.000Z",
+          "wordCount": 2329,
+          "title": "Web Scraping Infrastructure Guide: APIs vs Proxies vs Headless Browsers (2026)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftv0t252n6nxhbmyuhzs8.png"
         },
         {
-          "id": "https://dev.to/jfuze/automagically-handling-auth-dependencies-in-playwright-4el3",
-          "author": "James Fuston",
-          "description": "Authenticating test users in Playwright\n\n\nIf you've worked with Playwright at scale, you know that test user management is super important and a common source of flaky tests, failures, or maintenance headaches. I recently spent some time working on a Playwright project with tightly coupled project dependencies and adapted it to log in users only when necessary. Here's a little bit of that journey.\nThe framework was build using well-established patterns to handle test user dependencies. It had:\nSetup \"tests\" (in name only) that created storageState auth files before the real tests ran.\nProject dependencies that called those setup tests at the start of each run.\nUser fixtures that loaded auth files into the Playwright page context for real tests to use.\nMany test projects using a mixture of …",
-          "link": "https://dev.to/jfuze/automagically-handling-auth-dependencies-in-playwright-4el3",
-          "publishedOn": "2026-03-18T17:53:08.000Z",
-          "wordCount": 2684,
-          "title": "Automagically handling auth dependencies in Playwright",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fh6fq04cxo5c9ug9e8kuf.png"
+          "id": "https://dev.to/agenthustler/bright-data-vs-oxylabs-vs-smartproxy-which-proxy-provider-should-you-choose-in-2026-2bk5",
+          "author": "agenthustler",
+          "description": "If you're shopping for a residential proxy provider in 2026, you've already narrowed it down to three names: Bright Data, Oxylabs, and Smartproxy. They dominate every \"best proxies\" list, they sponsor every scraping conference, and they all claim to be the best.\nBut they're not interchangeable. I've run production scraping jobs on all three — millions of requests across e-commerce, search engines, real estate, and social media targets. The differences are real, and picking the wrong one can cost you thousands in wasted bandwidth.\nHere's the honest breakdown so you can stop reading marketing pages and start scraping.\nProxy pricing is confusing by design. Every provider structures plans differently. Here's what you'll actually pay at different scales.\n\n\n\nProvider\nPlan\nCost\nEffective $/GB\n\n\n\n…",
+          "link": "https://dev.to/agenthustler/bright-data-vs-oxylabs-vs-smartproxy-which-proxy-provider-should-you-choose-in-2026-2bk5",
+          "publishedOn": "2026-03-18T19:04:17.000Z",
+          "wordCount": 1274,
+          "title": "Bright Data vs Oxylabs vs Smartproxy: Which Proxy Provider Should You Choose in 2026?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Foan6jf4jszy0xfmpdiur.png"
         },
         {
-          "id": "https://dev.to/vladimirm/how-to-reduce-the-size-of-an-executable-file-written-in-c-2p6j",
-          "author": "VladimirM",
-          "description": "Hello. I'd like to describe the basic methods for optimizing the size of a C++ executable file on UNIX systems. This short article also includes a video about the process of optimizing binary file size.\n  \n  \n\n\nTo begin with, our main tool will be objdump, with which we will get information about the declared functions.\nThe main command looks like this:\nobjdump  -t YOUR_BINARY_FILE |\\\nc++filt |\\\ngrep \"[0-9a-z]\\+\\s*[a-zA-Z]\\+\\s\\+[a-zA-Z]\\+[.a-zA-Z_]\\+[0-9a-f]\\+\" |\\\nsed -n -E \"s/([0-9a-f]+)[^0]+([0-9a-f]+)\\s+(.+)/\\2 \\3/p\" |\\\nsort -r |\\\nless\n\nAs a result, you will get two columns: the size of the function in hexadecimal notation and the name of the function itself.\n000000000006e2fa FcfTest::BasisTest::staticVectorTest()\n000000000001d4bb FcfTest::BasisTest::staticVectorPushTest()\n0000000000019…",
-          "link": "https://dev.to/vladimirm/how-to-reduce-the-size-of-an-executable-file-written-in-c-2p6j",
-          "publishedOn": "2026-03-18T17:52:41.000Z",
-          "wordCount": 1070,
-          "title": "How to reduce the size of an executable file written in C++",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgubmz9bj84dp1frt60xk.png"
+          "id": "https://dev.to/brandi_kitchens_developer/i-didnt-quit-i-built-an-ai-instead-59il",
+          "author": "Brandi",
+          "description": "This is a submission for the 2026 WeCoded Challenge: Echoes of Experience",
+          "link": "https://dev.to/brandi_kitchens_developer/i-didnt-quit-i-built-an-ai-instead-59il",
+          "publishedOn": "2026-03-18T19:04:17.000Z",
+          "wordCount": 790,
+          "title": "I Didn’t Quit… I Built an AI Instead 💻",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft6qwddqt8yvfxzbwucov.png"
         },
         {
-          "id": "https://dev.to/puppet/ubuntu-2404-support-comes-to-puppet-sce-for-linux-3omb",
-          "author": "Jason St-Cyr",
-          "description": "The latest 2.6.0 version of Puppet Security Compliance Enforcement (SCE) for Linux is now available. This release adds support for Ubuntu 24.04 LTS and includes a few operational improvements aimed at making SCE easier to run and troubleshoot in day‑to‑day Puppet environments.\nBelow is a quick overview of what’s new.\nOne of the main additions in this release is support for Ubuntu 24.04 LTS. SCE for Linux now allows you to enforce the CIS benchmarks v1.0.0 on Ubuntu 24.04 systems. Both Level 1 and Level 2 CIS profiles are supported.\nThis release also includes some changes intended to improve visibility and troubleshooting.\nMost SCE logs are now written to the Puppet agent run log. This means you can get more insight into SCE behavior by running the Puppet agent in debug mode, rather than checking separate log locations.\nThe custom fact sce_mount_info has been updated to report information about all mounted file systems, providing a more complete view of the system during enforcement.\nSCE for Linux now supports the latest versions of puppet/systemd, puppet/logrotate, and puppetlabs/augeas_core.\nPuppet runs no longer fail on systems where the rsyslog package is not installed. This helps avoid unnecessary failures on minimal or customized Linux images.\n\n\nUnnecessary PAM_POSITION_ALIASES warning messages related to the augeasproviders_pam module should no longer display.\n\n\n\n\n\n\n\n  \n  \n  More details\n\n\nFor the full list of changes and additional details, see the official release notes:\nhttps://help.puppet.com/sce/current/linux/scel_relnotes_260.htm",
-          "link": "https://dev.to/puppet/ubuntu-2404-support-comes-to-puppet-sce-for-linux-3omb",
-          "publishedOn": "2026-03-18T17:52:28.000Z",
-          "wordCount": 1034,
-          "title": "Ubuntu 24.04 support comes to Puppet SCE for Linux",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fujcy7fulbduhkr6j08av.png"
+          "id": "https://dev.to/dave_odell_1f178f9096f58/licenses-without-lift-the-100k-ai-tool-problem-nobody-talks-about-54j8",
+          "author": "Dave O'Dell",
+          "description": "Here's the math nobody does before buying AI tools.\n50 engineers × $40/month per seat × 12 months = $24,000 in licensing. Add enterprise SSO, compliance review, security audit, and the \"AI transformation initiative\" that took three months of leadership time to approve. You're well past $100K in total cost before a single line of AI-assisted code ships to production.\nNow check your dashboard. 15% utilization. Maybe 20% on a good week.\nThe 5-8 engineers who were already tinkering with AI? They're flying. Everyone else went back to their old workflow within two weeks.\nThis is the most common pattern we see. Not failed rollouts — successful purchases with failed adoption.\nIt's Not a Training Problem\nMost companies respond by scheduling more training sessions. Lunch-and-learns. Internal wikis. …",
+          "link": "https://dev.to/dave_odell_1f178f9096f58/licenses-without-lift-the-100k-ai-tool-problem-nobody-talks-about-54j8",
+          "publishedOn": "2026-03-18T19:01:32.000Z",
+          "wordCount": 1308,
+          "title": "Licenses Without Lift: The $100K AI Tool Problem Nobody Talks About",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiwxorfmb2q9zzrmrop83.png"
         },
         {
-          "id": "https://dev.to/0xke/how-to-extract-youtube-transcripts-for-your-ai-app-no-api-key-needed-1al5",
-          "author": "Kelvin",
-          "description": "If you're building an AI app that needs to process video content — RAG pipelines, summarizers, content analyzers — you've probably hit the same wall I did: getting transcripts from YouTube is way harder than it should be.\nYouTube's official Data API requires OAuth setup, has strict quota limits (10,000 units/day), and doesn't even return transcripts directly. You'd need to chain multiple endpoints together just to get subtitle text. For a simple \"give me the transcript\" use case, that's overkill.\nI built a lightweight API that solves this in one request.\nThe YouTube Transcript API extracts transcripts from any YouTube video — no YouTube API key, no OAuth, no quota headaches. It works with both manual captions and auto-generated subtitles.\nSeven endpoints, one API key:\n/transcript — Timesta…",
-          "link": "https://dev.to/0xke/how-to-extract-youtube-transcripts-for-your-ai-app-no-api-key-needed-1al5",
-          "publishedOn": "2026-03-18T17:50:42.000Z",
-          "wordCount": 1371,
-          "title": "How to Extract YouTube Transcripts for Your AI App (No API Key Needed)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7eelhhhioxb3k6vh3rcc.png"
+          "id": "https://dev.to/ryancwynar/one-vps-ten-projects-docker-traefik-cloudflare-for-indie-hackers-5hai",
+          "author": "RyanCwynar",
+          "description": "If you are running multiple side projects and paying for separate hosting on each one, stop. A single $10/month VPS can host all of them with automatic HTTPS, zero-downtime deploys, and a reverse proxy that routes traffic by domain name. Here is the exact stack I use.\nEvery indie hacker hits this wall. You have a Next.js blog on Vercel, an API on Railway, a workflow tool on some other platform, and a static site on Netlify. Each one is cheap individually, but the costs add up. Worse, you are scattered across five dashboards with five different deploy workflows.\nI consolidated everything onto one Hostinger VPS. One machine. One docker-compose.yml. Ten services.\nTraefik sits at the front as a reverse proxy. It listens on ports 80 and 443, terminates TLS with automatic Let us Encrypt certific…",
+          "link": "https://dev.to/ryancwynar/one-vps-ten-projects-docker-traefik-cloudflare-for-indie-hackers-5hai",
+          "publishedOn": "2026-03-18T19:01:15.000Z",
+          "wordCount": 1491,
+          "title": "One VPS, Ten Projects: Docker + Traefik + Cloudflare for Indie Hackers",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F29m41y873xd3j72ftqrw.png"
         },
         {
-          "id": "https://dev.to/jonoherrington/golden-handcuffs-dont-feel-like-handcuffs-2cdi",
-          "author": "Jono Herrington",
-          "description": "I was sitting in my home office on a Tuesday afternoon with a blank editor open and nothing in my head.\nNot nothing as in \"I'm stuck on a hard problem.\" Nothing as in the well was dry. The thing that used to make me lean forward at my desk, the puzzle of figuring out how systems fit together, how teams could move faster, how the architecture should evolve ... it wasn't there. I wasn't frustrated. I wasn't angry. I was just empty.\nAnd I felt terrible about it. Because the job was good.\nThe pay was great. The team was talented. The work was interesting on paper. The company treated people well. I had autonomy, flexibility, and the kind of role most engineers would look at from the outside and think \"what's the problem?\"\nThat's exactly what made it so hard to name.\nI've had bad jobs. Most eng…",
-          "link": "https://dev.to/jonoherrington/golden-handcuffs-dont-feel-like-handcuffs-2cdi",
-          "publishedOn": "2026-03-18T17:49:34.000Z",
-          "wordCount": 2337,
-          "title": "Golden Handcuffs Don't Feel Like Handcuffs",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fwww.jonoherrington.com%2Fimages%2Fposts%2Fgolden-handcuffs.png"
+          "id": "https://dev.to/midas126/beyond-the-hype-a-developers-guide-to-building-with-ai-not-just-for-it-294e",
+          "author": "Midas126",
+          "description": "The AI Tsunami is Here. Grab Your Surfboard.\n\n\nAnother day, another headline proclaiming that AI will replace developers. The latest viral take suggests 90% of code will be AI-generated. It’s a provocative thought, but it misses the point entirely. The real question isn't if AI will write code—it already does—but what kind of developer thrives in this new paradigm.\nThe shift isn't from \"coder\" to \"unemployed.\" It's from \"syntax specialist\" to \"architect, strategist, and quality enforcer.\" The value is moving up the stack. This guide is your map to that higher ground. We'll move past the fear and into the practical, technical skills you need to build with AI as your most powerful collaborator.\nForget the old \"write, compile, test, debug\" cycle. The modern, AI-augmented loop looks more like …",
+          "link": "https://dev.to/midas126/beyond-the-hype-a-developers-guide-to-building-with-ai-not-just-for-it-294e",
+          "publishedOn": "2026-03-18T19:01:02.000Z",
+          "wordCount": 1938,
+          "title": "Beyond the Hype: A Developer's Guide to Building *With* AI, Not Just For It",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7gtlc5e9fcjjxfcd8xaz.png"
         },
         {
-          "id": "https://dev.to/metadevdigital/signature-replay-attacks-in-solidity-why-your-metatransactions-are-vulnerable-by-default-3l52",
-          "author": "metadevdigital",
-          "description": "Signature Replay Attacks in Solidity: Why Your Metatransactions Are Vulnerable by Default\n\n\n\nIf you've ever built a REST API in Java or Go, you know about idempotency keys. You append a unique identifier to a request so that if a client accidentally sends it twice (network hiccup, retry logic gone wrong), your server processes it exactly once. The database rejects the duplicate. Problem solved.\nThen you move to Web3 and realize: there is no database rejecting your duplicate. And worse, anyone can replay your transaction.\nThis is the signature replay attack, and it's been responsible for real money losses. The MEV crisis that hit protocols throughout 2021-2023 included replay vulnerabilities. Curve Finance's governance vote in 2023 highlighted this exact problem when signatures were replaye…",
-          "link": "https://dev.to/metadevdigital/signature-replay-attacks-in-solidity-why-your-metatransactions-are-vulnerable-by-default-3l52",
-          "publishedOn": "2026-03-18T17:48:45.000Z",
-          "wordCount": 1608,
-          "title": "Signature Replay Attacks in Solidity: Why Your Metatransactions Are Vulnerable by Default",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F526jg422s6k8cufz6u6u.png"
+          "id": "https://dev.to/harshilshah99/fed-up-with-clunky-image-editors-i-built-ihateimgin-free-fast-no-signup-needed-5g63",
+          "author": "Harshil shah",
+          "description": "I built a free image tool that lets you chain multiple edits in one go — no login, no BS\nIf you've ever had to compress an image, then crop it, then add a watermark... you know the pain. Open three different websites, re-upload every single time, lose quality with every step.\nSo I built ihateimg.in — a free, no-login image toolkit that handles it all.\n🗜️ Compress — shrink file sizes without killing quality\n\n✂️ Crop — trim exactly what you need\n\n📐 Resize — set custom dimensions instantly\n\n💧 Watermark — protect your images with text or logo\n\n🔄 Rotate & Flip — straighten or mirror in one click\n\n🔧 ...and more tools being added  \nInstead of visiting 5 tools separately, you can:\nAdd multiple tools in sequence (e.g. Crop → Resize → Watermark)\n\nUpload your image once\nHit execute — done.\nOne image. One upload. Everything applied at once.\n✅ 100% Free\n\n✅ No login required\n\n✅ No watermarks forced on you\n\n✅ Works right in your browser  \nWould love your feedback — especially if something is broken or a tool you wish existed. Drop a comment or try it out 👇\n🔗 ihateimg.in",
+          "link": "https://dev.to/harshilshah99/fed-up-with-clunky-image-editors-i-built-ihateimgin-free-fast-no-signup-needed-5g63",
+          "publishedOn": "2026-03-18T19:00:13.000Z",
+          "wordCount": 958,
+          "title": "Fed up with clunky image editors? I built ihateimg.in — free, fast, no signup needed",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkluqe1w5t9ivvd3xaoj4.png"
         }
       ]
     },
@@ -252,23 +252,23 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://tmux.thijsverreck.com/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://tmux.thijsverreck.com/",
+          "publishedOn": "2026-03-18T17:46:25.000Z",
+          "wordCount": 996,
+          "title": "Show HN: Tmux-IDE, OSS agent-first terminal IDE",
+          "imageUrl": "https://tmux.thijsverreck.com/og-image.png"
+        },
+        {
           "id": "https://news.ycombinator.com/item?id=47428650",
           "author": null,
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=47428650",
           "publishedOn": "2026-03-18T17:29:21.000Z",
-          "wordCount": 932,
+          "wordCount": 2917,
           "title": "Show HN: Will my flight have Starlink?",
-          "imageUrl": null
-        },
-        {
-          "id": "https://www.nytimes.com/2026/03/18/world/middleeast/israel-strikes-south-pars-gas-oil-prices.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.nytimes.com/2026/03/18/world/middleeast/israel-strikes-south-pars-gas-oil-prices.html",
-          "publishedOn": "2026-03-18T17:27:11.000Z",
-          "wordCount": null,
-          "title": "Iran's South Pars Gas Field Is Attacked by Israel, Sending Energy Prices Soaring",
           "imageUrl": null
         },
         {
@@ -278,8 +278,18 @@
           "link": "https://notes.visaint.space/ai-coding-is-gambling/",
           "publishedOn": "2026-03-18T17:22:02.000Z",
           "wordCount": 2503,
-          "title": "AI Coding Is Gambling",
+          "title": "AI coding is gambling",
           "imageUrl": "/static/og-image.png"
+        },
+        {
+          "id": "https://news.ycombinator.com/item?id=47428391",
+          "author": null,
+          "description": "Comments",
+          "link": "https://news.ycombinator.com/item?id=47428391",
+          "publishedOn": "2026-03-18T17:11:30.000Z",
+          "wordCount": 733,
+          "title": "Spotify playing ads for paid subscribers",
+          "imageUrl": null
         },
         {
           "id": "https://www.phoronix.com/news/Sashiko-Linux-AI-Code-Review",
@@ -287,18 +297,8 @@
           "description": "Comments",
           "link": "https://www.phoronix.com/news/Sashiko-Linux-AI-Code-Review",
           "publishedOn": "2026-03-18T16:17:44.000Z",
-          "wordCount": 1880,
+          "wordCount": 1869,
           "title": "Google Engineers Launch \"Sashiko\" for Agentic AI Code Review of the Linux Kernel",
-          "imageUrl": null
-        },
-        {
-          "id": "https://www.politico.com/news/2026/03/11/data-centers-ai-electricity-virginia-00815219",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.politico.com/news/2026/03/11/data-centers-ai-electricity-virginia-00815219",
-          "publishedOn": "2026-03-18T16:07:54.000Z",
-          "wordCount": null,
-          "title": "A data center opened next door. Then came the high-pitched whine",
           "imageUrl": null
         },
         {
@@ -307,19 +307,9 @@
           "description": "Comments",
           "link": "https://www.theregister.com/2026/03/18/researchers_lift_the_lid_on/",
           "publishedOn": "2026-03-18T15:59:58.000Z",
-          "wordCount": 1486,
+          "wordCount": 1489,
           "title": "North Korean's 100k fake IT workers net $500M a year for Kim",
           "imageUrl": "https://regmedia.co.uk/2026/03/18/northk.jpg"
-        },
-        {
-          "id": "https://codeberg.org/susam/wander",
-          "author": null,
-          "description": "Comments",
-          "link": "https://codeberg.org/susam/wander",
-          "publishedOn": "2026-03-18T15:57:48.000Z",
-          "wordCount": 1192,
-          "title": "A tiny, decentralised tool to explore the small web",
-          "imageUrl": "https://codeberg.org/susam/wander/-/summary-card"
         },
         {
           "id": "https://susam.net/wander/",
@@ -330,16 +320,6 @@
           "wordCount": 710,
           "title": "Wander – A tiny, decentralised tool (just 2 files) to explore the small web",
           "imageUrl": null
-        },
-        {
-          "id": "https://www.engadget.com/ar-vr/meta-will-shut-down-vr-horizon-worlds-access-in-june-222028919.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.engadget.com/ar-vr/meta-will-shut-down-vr-horizon-worlds-access-in-june-222028919.html",
-          "publishedOn": "2026-03-18T15:43:38.000Z",
-          "wordCount": 5073,
-          "title": "Meta will shut down VR Horizon Worlds access June 15",
-          "imageUrl": "https://s.yimg.com/ny/api/res/1.2/hAU9N6duIX3RPslgegk9CA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD03NjY-/https://s.yimg.com/os/creatr-uploaded-images/2022-10/218ee0a0-4bbc-11ed-9efb-e452db07058a"
         },
         {
           "id": "https://blog.qualys.com/vulnerabilities-threat-research/2026/03/17/cve-2026-3888-important-snap-flaw-enables-local-privilege-escalation-to-root",
@@ -357,9 +337,9 @@
           "description": "Comments",
           "link": "https://github.com/NVIDIA/NemoClaw",
           "publishedOn": "2026-03-18T15:31:07.000Z",
-          "wordCount": 4535,
+          "wordCount": 4746,
           "title": "Nvidia NemoClaw",
-          "imageUrl": "https://opengraph.githubassets.com/8a2d7fce370732dfb71497f45e2424e0574874ed27798d5f49a9b3a4936492d1/NVIDIA/NemoClaw"
+          "imageUrl": "https://opengraph.githubassets.com/f761ff7467676b48838c0d8d1ed0af0f87509bad787b79ef725add85345fb664/NVIDIA/NemoClaw"
         },
         {
           "id": "https://www.promptarmor.com/resources/snowflake-ai-escapes-sandbox-and-executes-malware",
@@ -402,6 +382,16 @@
           "imageUrl": "https://www.propublica.org/wp-content/uploads/2025/12/20260225-Gordon-fed-ramp-tech-project-social_maxHeight_3000_maxWidth_3000.jpg?resize=2000,1050"
         },
         {
+          "id": "https://github.com/joaoh82/rustunnel",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/joaoh82/rustunnel",
+          "publishedOn": "2026-03-18T14:00:43.000Z",
+          "wordCount": 14317,
+          "title": "A ngrok-style secure tunnel server written in Rust and Open Source",
+          "imageUrl": "https://opengraph.githubassets.com/e8879e5bf7419eeb6c67edaaf7fdabac9bfb386aee2be7134eeb30b2c337f3c6/joaoh82/rustunnel"
+        },
+        {
           "id": "https://awards.acm.org/about/2025-turing",
           "author": null,
           "description": "Comments",
@@ -430,6 +420,16 @@
           "wordCount": 375,
           "title": "Nightingale – open-source karaoke app that works with any song on your computer",
           "imageUrl": "https://nightingale.cafe/og-image.png"
+        },
+        {
+          "id": "https://susam.net/wander/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://susam.net/wander/",
+          "publishedOn": "2026-03-18T07:43:13.000Z",
+          "wordCount": 710,
+          "title": "Wanter – A tiny, decentralised tool to explore the small web",
+          "imageUrl": null
         },
         {
           "id": "https://ndea.com/jobs/search-guidance",
@@ -462,24 +462,14 @@
           "imageUrl": "https://substackcdn.com/image/fetch/$s_!nTbf!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F66467e13-77e6-4667-b7f3-4778b53a2928_1206x688.jpeg"
         },
         {
-          "id": "https://mistral.ai/news/forge",
+          "id": "https://github.com/gsd-build/get-shit-done",
           "author": null,
           "description": "Comments",
-          "link": "https://mistral.ai/news/forge",
-          "publishedOn": "2026-03-17T21:04:26.000Z",
-          "wordCount": 5300,
-          "title": "Mistral AI Releases Forge",
-          "imageUrl": "https://mistral.ai/img/mistral-cover.png"
-        },
-        {
-          "id": "https://terathon.com/blog/decade-slug.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://terathon.com/blog/decade-slug.html",
-          "publishedOn": "2026-03-17T18:59:50.000Z",
-          "wordCount": 2070,
-          "title": "A Decade of Slug",
-          "imageUrl": null
+          "link": "https://github.com/gsd-build/get-shit-done",
+          "publishedOn": "2026-03-17T20:23:39.000Z",
+          "wordCount": 12281,
+          "title": "Get Shit Done: A meta-prompting, context engineering and spec-driven dev system",
+          "imageUrl": "https://opengraph.githubassets.com/b624fd3ff39ba62aa0e87a85df9b5fdc33aae5cc6efffb2b217064aa3e0d4f19/gsd-build/get-shit-done"
         },
         {
           "id": "https://bernsteinbear.com/blog/toy-fuzzer/",
@@ -542,12 +532,22 @@
           "imageUrl": "https://cdn-thumbnails.huggingface.co/social-thumbnails/datasets/open-index/hacker-news.png"
         },
         {
+          "id": "https://danieltemkin.com/DitherStudies",
+          "author": null,
+          "description": "Comments",
+          "link": "https://danieltemkin.com/DitherStudies",
+          "publishedOn": "2026-03-14T16:53:03.000Z",
+          "wordCount": 180,
+          "title": "A dither generator for triangular and hexagonal pixels (2025)",
+          "imageUrl": null
+        },
+        {
           "id": "https://www.bl.uk/stories/blogs/posts/restoring-the-first-recording-of-computer-music",
           "author": null,
           "description": "Comments",
           "link": "https://www.bl.uk/stories/blogs/posts/restoring-the-first-recording-of-computer-music",
           "publishedOn": "2026-03-14T08:28:16.000Z",
-          "wordCount": 4787,
+          "wordCount": 4774,
           "title": "Restoring the first recording of computer music (2018)",
           "imageUrl": "https://www.bl.uk/images/v5dwkion/production/8b2ab9c1cc5ce2b937f33ca026cad1b91649c51f-580x434.png/turing-(right)-at-the-console-of-the-mark-ii-computer-(courtesy-of-the-university-of-manchester-school-of-computer-science).png?rect=0,65,580,305&w=1200&h=630&auto=format"
         }
@@ -779,12 +779,42 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "2f8a11e2-f8d7-4cc3-942e-df4c0ed85cbd",
+          "author": "Olivier Acuna",
+          "description": "The trust handling the bankruptcy proceedings detailed how much will be distributed to creditors and claimants at the end of March.",
+          "link": "https://www.coindesk.com/business/2026/03/18/sam-bankman-fried-s-bankrupt-exchange-ftx-set-to-repay-creditors-usd2-2-billion-this-month",
+          "publishedOn": "2026-03-18T19:06:59.000Z",
+          "wordCount": 11545,
+          "title": "Sam Bankman-Fried's bankrupt exchange FTX set to repay creditors $2.2 billion this month",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/804743f33acd4331ed052e5d88feb158ec5525d4-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "4b165459-b748-4207-b6f9-7a2f107e40d1",
+          "author": "Francisco Rodrigues",
+          "description": "Arizona has filed 20 criminal counts against Kalshi, a prediction market platform, accusing it of operating an illegal gambling business and offering election wagering in the state.",
+          "link": "https://www.coindesk.com/policy/2026/03/18/kalshi-co-founder-fights-back-against-arizona-s-overstep-in-what-a-lawyer-calls-a-federal-state-turf-war",
+          "publishedOn": "2026-03-18T18:19:24.000Z",
+          "wordCount": 11671,
+          "title": "Kalshi co-founder fights back against Arizona’s ‘overstep’ in what a lawyer calls a federal-state turf war",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/26f0c0c37ce53e6d90e480d858306300933af4ef-6960x4640.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "79ad68dd-b839-4ec6-aced-784cd939eba2",
+          "author": "James Van Straten",
+          "description": "Bitcoin remained sharply lower for the session following the expected decision by the U.S. central bank.",
+          "link": "https://www.coindesk.com/markets/2026/03/18/federal-reserve-holds-policy-steady-as-it-balances-growth-and-inflation-concerns",
+          "publishedOn": "2026-03-18T17:59:47.000Z",
+          "wordCount": 11109,
+          "title": "Federal Reserve holds policy steady as Iran war adds to growth and inflation concerns",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9ecacaf4387e12d297a6ba633f1162677b4dce8c-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
           "id": "e0fc9f55-a45e-48f7-a535-c3bbe16d1851",
           "author": "Omkar Godbole",
           "description": "The Iran war is creating a permanent inflation floor that could end the era of cheap money and expose the fragility of global energy markets.",
           "link": "https://www.coindesk.com/markets/2026/03/18/the-era-of-cheap-money-is-over-as-the-iran-war-creates-a-permanent-inflation-floor",
           "publishedOn": "2026-03-18T17:09:02.000Z",
-          "wordCount": 12015,
+          "wordCount": 11898,
           "title": "The era of cheap money is over as the Iran war creates a permanent 'inflation floor'",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/990b034c30394c748494366df1b52165ef9c876e-1500x824.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -794,7 +824,7 @@
           "description": "In this week’s Crypto Long & Short Newsletter, Ruchir Gupta writes on how we’re moving toward a true fixed-income market for crypto-native yield. Then, Clara García Prieto on bitcoin becoming mainstream collateral, but most are not prepared for its risks.",
           "link": "https://www.coindesk.com/coindesk-indices/2026/03/18/crypto-long-and-short-when-price-stops-working-yield-starts-mattering",
           "publishedOn": "2026-03-18T16:17:13.000Z",
-          "wordCount": 14938,
+          "wordCount": 14939,
           "title": "Crypto Long & Short: When price stops working, yield starts mattering",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/51bfc965359af20bbe043f97c3d032ff0b4191b8-7008x4672.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -804,7 +834,7 @@
           "description": "Also: World’s AgentKit, Visa and Coinbase on AI agents, and prediction markets + AI.",
           "link": "https://www.coindesk.com/tech/2026/03/18/the-protocol-ethereum-community-debates-foundation-s-new-mandate-document",
           "publishedOn": "2026-03-18T15:52:37.000Z",
-          "wordCount": 13804,
+          "wordCount": 13835,
           "title": "The Protocol: Ethereum community debates foundation’s new mandate document",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/068a9cfe6c20aa6677d64104024485326a2f2aa2-1920x1080.jpg?auto=format"
         },
@@ -814,7 +844,7 @@
           "description": "The founder of the world's largest exchange distanced himself from reports about Binance activity that reports had recently suggested aided terrorism.",
           "link": "https://www.coindesk.com/policy/2026/03/18/former-binance-ceo-cz-waves-off-accusations-on-iran-terror-ties",
           "publishedOn": "2026-03-18T15:48:29.000Z",
-          "wordCount": 11332,
+          "wordCount": 11306,
           "title": "Former Binance CEO CZ waves off accusations on Iran, terror ties",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/669d5953ba94e54358c2e6bdcdf2a680c429a20a-1920x1080.jpg?auto=format"
         },
@@ -824,7 +854,7 @@
           "description": "American Bitcoin (ABTC) has climbed to become the 16th-largest bitcoin holder, with 6,899 BTC, as firms compete to build bitcoin treasuries.",
           "link": "https://www.coindesk.com/business/2026/03/18/trump-linked-american-bitcoin-just-overtook-mike-novogratz-s-galaxy-digital-in-the-bitcoin-rankings",
           "publishedOn": "2026-03-18T15:44:32.000Z",
-          "wordCount": 11145,
+          "wordCount": 11164,
           "title": "Trump-linked American Bitcoin's BTC holdings overtake Mike Novogratz’s Galaxy Digital",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3f3374dda3bf33d4918369d54c7a8dcb363f1235-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -834,7 +864,7 @@
           "description": "Kraken's parent company filed a draft S-1 registration statement with the SEC in November regarding the proposed initial public offering of its common stock.",
           "link": "https://www.coindesk.com/business/2026/03/17/crypto-exchange-kraken-freezes-multibillion-dollar-ipo-plan-due-to-difficult-market-conditions",
           "publishedOn": "2026-03-18T15:14:18.000Z",
-          "wordCount": 11742,
+          "wordCount": 11805,
           "title": "Crypto exchange Kraken freezes multibillion-dollar IPO plan due to difficult market conditions",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/350e51e2451b87ad30e2ee3a500adb4910c3274e-1920x1079.jpg?auto=format"
         },
@@ -844,7 +874,7 @@
           "description": "S&P Dow Jones Indices licenses its flagship index for crypto trading on Hyperliquid, as perpetual futures gain traction beyond traditional markets.",
           "link": "https://www.coindesk.com/markets/2026/03/18/traders-can-now-bet-on-the-s-and-p-500-around-the-clock-without-ever-touching-a-traditional-stock-exchange",
           "publishedOn": "2026-03-18T15:13:09.000Z",
-          "wordCount": 11908,
+          "wordCount": 11791,
           "title": "Traders can now bet on the S&P 500 around the clock without ever touching a traditional stock exchange",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c1f01f2cc402eecba18b387bae11f9dc7403fd7a-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -854,7 +884,7 @@
           "description": "Senator Cynthia Lummis, at the center of legislative talks, said the discussion is down to nuance and the bill will finally emerge from her committee in April.",
           "link": "https://www.coindesk.com/policy/2026/03/18/key-u-s-senator-on-crypto-market-structure-bill-negotiation-we-think-we-ve-got-it",
           "publishedOn": "2026-03-18T15:10:40.000Z",
-          "wordCount": 11984,
+          "wordCount": 12005,
           "title": "Key U.S. senator on crypto market structure bill negotiation: 'We think we've got it'",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e3591183f12e34a5a144345e711282f05514f28c-1920x1080.jpg?auto=format"
         },
@@ -864,7 +894,7 @@
           "description": "A falling hash rate and the resultant pressure on miners could signal another potential capitulation phase, which could push prices down further",
           "link": "https://www.coindesk.com/markets/2026/03/18/bitcoin-hash-rate-is-tumbling-as-iran-war-lifts-energy-prices",
           "publishedOn": "2026-03-18T14:53:08.000Z",
-          "wordCount": 11111,
+          "wordCount": 10974,
           "title": "Bitcoin hash rate is tumbling as Iran war lifts energy prices",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2f8f0af7ccc034c06cbbfaf318c734fc0eb012fe-1069x719.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -874,7 +904,7 @@
           "description": "Korea's central bank and nine commercial lenders started real-world testing of deposit tokens, including subsidy payments and peer-to-peer transfers.",
           "link": "https://www.coindesk.com/business/2026/03/18/bank-of-korea-adds-two-banks-to-digital-won-trials-as-real-world-testing-begins",
           "publishedOn": "2026-03-18T14:19:54.000Z",
-          "wordCount": 11394,
+          "wordCount": 11375,
           "title": "Bank of Korea adds two banks to digital won trials as real-world testing begins",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/97ca8549fdec44f6b82013261f9eda02df376204-1920x1080.jpg?auto=format"
         },
@@ -884,7 +914,7 @@
           "description": "The Stripe-led blockchain targets fast, low-cost digital payments and a new Machine Payments Protocol that allows AI agents pay autonomously.",
           "link": "https://www.coindesk.com/tech/2026/03/18/stripe-led-payments-blockchain-tempo-goes-live-with-protocol-for-ai-agents",
           "publishedOn": "2026-03-18T14:05:28.000Z",
-          "wordCount": 11145,
+          "wordCount": 11137,
           "title": "Stripe-led payments blockchain Tempo goes live with protocol for AI agents",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a007fde3a1c8e455b277b9299f53f7c16f0b7d97-1600x1067.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -894,7 +924,7 @@
           "description": "Uniswap (UNI) declined 4.9% and Aave (AAVE) dropped 4.4%, leading the index lower.",
           "link": "https://www.coindesk.com/coindesk-indices/2026/03/18/coindesk-20-performance-update-index-falls-3-1-as-all-constituents-trade-lower",
           "publishedOn": "2026-03-18T14:01:26.000Z",
-          "wordCount": 10247,
+          "wordCount": 10228,
           "title": "CoinDesk 20 performance update: index falls 3.1% as all constituents trade lower",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/7f5d559f8f6dedff02d8817588aa7c3f9b451a3b-480x360.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -904,7 +934,7 @@
           "description": "Most institutional investors plan to increase allocations even as concerns around regulation and risk management continue to grow.",
           "link": "https://www.coindesk.com/business/2026/03/18/large-investors-are-doubling-down-on-crypto-but-getting-a-lot-pickier-about-risk",
           "publishedOn": "2026-03-18T14:00:00.000Z",
-          "wordCount": 11860,
+          "wordCount": 11841,
           "title": "Large investors are doubling down on crypto, but getting a lot pickier about risk",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/de82d84087440c8b22943a46a1ca0fdab7936e0f-6870x4100.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -914,7 +944,7 @@
           "description": "The company's internal strain, including reports of required long working hours, is overshadowing its push for a U.S. listing.",
           "link": "https://www.coindesk.com/business/2026/03/18/redotpay-executive-turnover-clouds-crypto-payments-firm-s-usd4-billion-u-s-ipo-ambition",
           "publishedOn": "2026-03-18T13:01:14.000Z",
-          "wordCount": 10905,
+          "wordCount": 10886,
           "title": "RedotPay executive turnover clouds crypto payments firm's $4 billion U.S. IPO ambition",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f91bacc010cf1d52a834a104e243abf3c8ba7ab1-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -924,7 +954,7 @@
           "description": "The price of oil moved higher after reported attacks against Iran's South Pars gas field.",
           "link": "https://www.coindesk.com/markets/2026/03/18/bitcoin-quickly-pulls-back-to-usd72-300-as-iran-fears-team-up-with-poor-u-s-inflation-data",
           "publishedOn": "2026-03-18T12:50:43.000Z",
-          "wordCount": 11194,
+          "wordCount": 11077,
           "title": "Bitcoin quickly pulls back to $71,000 as Iran fears team up with poor U.S. inflation data",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4f7f8f967899363d388509489464c569a917f260-2091x1176.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -934,7 +964,7 @@
           "description": "The committee highlighted that the fast payment traits of crypto, along with tools like mixers, tumblers, and AI-assisted splitting of payments below the £500 reporting threshold.",
           "link": "https://www.coindesk.com/policy/2026/03/18/uk-lawmakers-urge-immediate-moratorium-on-crypto-political-donations",
           "publishedOn": "2026-03-18T11:57:12.000Z",
-          "wordCount": 11284,
+          "wordCount": 11300,
           "title": "UK lawmakers urge ‘immediate moratorium’ on crypto political donations",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/156449bf3dc6baae5e3a9a15c0aae52f810006eb-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -944,7 +974,7 @@
           "description": "Your day-ahead look for March 18, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/03/18/powell-s-comments-on-oil-inflation-are-likely-to-guide-bitcoin-traders",
           "publishedOn": "2026-03-18T11:25:38.000Z",
-          "wordCount": 12744,
+          "wordCount": 12786,
           "title": "Powell's comments on oil, inflation are likely to guide bitcoin traders",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e9ee962467f74ce9dc5b997b63054bd87e37bff4-1920x1080.jpg?auto=format"
         },
@@ -954,7 +984,7 @@
           "description": "Two Prime data shows post-meeting weakness dominates, even as markets price a Fed hold and limited rate cuts ahead.",
           "link": "https://www.coindesk.com/markets/2026/03/18/bitcoin-s-rally-runs-into-sell-the-news-risk-ahead-of-fed-decision",
           "publishedOn": "2026-03-18T10:40:00.000Z",
-          "wordCount": 11212,
+          "wordCount": 11099,
           "title": "Bitcoin’s rally runs into 'sell the news' risk ahead of Fed decision",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/72da5dbcfe1152ea463626ce23e3d925d856cc76-5832x3281.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -964,7 +994,7 @@
           "description": "BTC consolidated with subdued volatility, while derivatives positioning and macro uncertainty signaled cautious market sentiment.",
           "link": "https://www.coindesk.com/markets/2026/03/18/bitcoin-holds-steady-at-usd74-000-as-traders-turn-cautious-before-fed-meeting",
           "publishedOn": "2026-03-18T10:37:04.000Z",
-          "wordCount": 12064,
+          "wordCount": 11927,
           "title": "Bitcoin holds steady at $74,000 as traders turn cautious before Fed meeting",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6bfef4c7854a877a8b965788027d34a49f265930-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -974,7 +1004,7 @@
           "description": "Bitcoin remains stuck near key resistance around $75,000, leaving the broader market in limbo.",
           "link": "https://www.coindesk.com/markets/2026/03/18/bitcoin-s-progress-above-usd75-000-elusive-after-sec-cftc-crypto-guidance",
           "publishedOn": "2026-03-18T09:29:00.000Z",
-          "wordCount": 11499,
+          "wordCount": 11373,
           "title": "Bitcoin is stuck below $75,000 even after landmark SEC, CFTC crypto rules",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/189c82fe52c9ec0f1c12177569dd2b8dd6d6a5af-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -984,7 +1014,7 @@
           "description": "Bitrefill will cover the losses from operational capital.",
           "link": "https://www.coindesk.com/markets/2026/03/18/bitrefill-accuses-north-korea-linked-lazarus-hacker-group-for-compromising-18-500-purchase-records",
           "publishedOn": "2026-03-18T07:17:53.000Z",
-          "wordCount": 11757,
+          "wordCount": 11620,
           "title": "Bitrefill accuses North Korea-linked Lazarus hacker group for compromising 18,500 purchase records",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/71a0ed456470eda07e70c0505f537f85cdd80d1e-1280x853.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -994,39 +1024,9 @@
           "description": "XRP is trading around $1.50, just above a key options cluster at $1.40 on Deribit.",
           "link": "https://www.coindesk.com/markets/2026/03/18/xrp-hovers-near-usd14-million-options-battleground-that-could-sway-trading",
           "publishedOn": "2026-03-18T05:58:28.000Z",
-          "wordCount": 11375,
+          "wordCount": 11249,
           "title": "XRP hovers near $14 million options battleground that could sway trading",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d7b8341e1de22050b0149c1ba460b0c25f3bc13a-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "33e17c03-61af-41f1-8c39-2c076d2d577a",
-          "author": "Nikhilesh De",
-          "description": "Lieutenant Governor Juliana Stratton is now likely to be the next Senator from Illinois, after defeating Rep. Raja Krishnamoorthi, who enjoyed major backing from crypto PAC Fairshake.",
-          "link": "https://www.coindesk.com/policy/2026/03/17/stratton-wins-illinois-senate-primary-defeating-crypto-backed-krishnamoorthi",
-          "publishedOn": "2026-03-18T03:03:07.000Z",
-          "wordCount": 11432,
-          "title": "Stratton wins Illinois Senate primary, defeating crypto-backed Krishnamoorthi",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e0b7416adc881962e4820020f86abd07afd27530-8192x5464.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "55d6a0c1-0c00-438a-becc-df0918e1186e",
-          "author": "Nikhilesh De",
-          "description": "The South Carolina Republican said he might see a draft of stablecoin yield language as soon as this week, and other issues continue to be negotiated.",
-          "link": "https://www.coindesk.com/policy/2026/03/17/senator-tim-scott-says-market-structure-negotiations-are-advancing",
-          "publishedOn": "2026-03-17T21:26:57.000Z",
-          "wordCount": 11170,
-          "title": "Senator Tim Scott says market structure negotiations are advancing",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/fb26b99b9a6cb8c47eae00cead1ead7cd1d93bb0-6000x3376.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "008b8451-8a40-48a6-8755-648d5307fca9",
-          "author": "Krisztian Sandor",
-          "description": "Hot PPI inflation data in the morning and hawkish remarks by Powell in the afternoon would be the most damaging combination for risk assets, including crypto, Bitfinex analysts said.",
-          "link": "https://www.coindesk.com/markets/2026/03/17/bitcoin-s-rally-faces-key-hurdle-with-wednesday-s-fed-meeting",
-          "publishedOn": "2026-03-17T20:30:27.000Z",
-          "wordCount": 11311,
-          "title": "Bitcoin's rally faces key hurdle with Wednesday's Fed meeting",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2e9857b13c6e67977295c6f2afb342173cda61f6-3240x2159.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
       ]
     },
