@@ -1,82 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-03-18T19:08:27.167Z</id>
+    <id>urn:2026-03-18T20:30:39.261Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-03-18T19:08:27.167Z</updated>
+    <updated>2026-03-18T20:30:39.261Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[The DevOps metrics that actually matter (and how to track them)]]></title>
-        <id>https://dev.to/yash_step2dev/the-devops-metrics-that-actually-matter-and-how-to-track-them-3123</id>
-        <link href="https://dev.to/yash_step2dev/the-devops-metrics-that-actually-matter-and-how-to-track-them-3123"/>
-        <updated>2026-03-18T19:07:22.000Z</updated>
-        <summary type="html"><![CDATA[The DevOps metrics that actually matter (and how to track them)
-
-
-
-  
-  
-  The 4 DORA metrics
-
-
-
-
-
-Deployment Frequency    Elite: Multiple/day    Low: < once/month
-Lead Time for Changes   Elite: < 1 hour        Low: > 1 month
-Change Failure Rate     Elite: 0-5%            Low: 15-30%
-MTTR                    Elite: < 1 hour        Low: > 1 week
-
-- name: Record deployment metric
-  if: success()
-  run: |
-    aws cloudwatch put-metric-data       --namespace "DevOps/Deployments" --metric-name "DeploymentCount" --value 1       --dimensions Service=${{ env.SERVICE_NAME }},Environment=production
-
-- name: Record lead time
-  if: success()
-  run: |
-    COMMIT_TIME=$(git show -s --format=%ct ${{ github.sha }})
-    LEAD_TIME=$(($(date +%s) - COMMIT_TIME))
-    aws cloudwatch put-metric-data       --namespace "DevOps/Deployments" --metric-name "LeadTimeSeconds"       --value $LEAD_TIME --dimensions Service=${{ env.SERVICE_NAME }}
-
-def handler(event, context):
-    alarm = event['detail']['alarmName']
-    state = event['detail']['state']['value']
-    ts    = datetime.fromisoformat(event['time'].replace('Z', '+00:00'))
-
-    if state == 'ALARM':
-        ssm.put_parameter(Name=f'/incidents/{alarm}/start',
-                          Value=ts.isoformat(), Type='String', Overwrite=True)
-    elif state == 'OK':
-        start = ssm.get_parameter(Name=f'/incidents/{alarm}/start')
-        mttr  = (ts - datetime.fromisoformat(start['Parameter']['Value'])).total_seconds()
-        cw.put_metric_data(Namespace='DevOps/Incidents',
-                           MetricData=[{'MetricName':'MTTR','Value':mttr,'Unit':'Seconds'}])
-
-Alert fatigue rate — rising = signal quality degrading
-Deployment size — larger = higher failure rate
-Test coverage trend — declining = more future failures
-Step2Dev includes deployment metrics instrumentation in the workflow it generates.
-👉 step2dev.com]]></summary>
+        <title type="html"><![CDATA[Bitcoin sinks below $71,000, stocks close at session lows, as 2026 Fed rate cut hopes fade further]]></title>
+        <id>9ad348c8-6952-414e-9463-1df8a2f50326</id>
+        <link href="https://www.coindesk.com/markets/2026/03/18/bitcoin-sinks-below-usd71-000-stocks-close-at-session-lows-as-2026-rate-cut-hopes-fade-further"/>
+        <updated>2026-03-18T20:19:04.000Z</updated>
+        <summary type="html"><![CDATA[Fed chair Jerome Powell said rising energy prices are feeding into the inflation outlook, but "nobody knows" yet how lasting the impact will be.]]></summary>
         <author>
-            <name>Yash</name>
+            <name>Krisztian Sandor</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The 4 Security Bugs Your AI Copilot Writes Every Single Time]]></title>
-        <id>https://dev.to/busyagents/the-4-security-bugs-your-ai-copilot-writes-every-single-time-35e1</id>
-        <link href="https://dev.to/busyagents/the-4-security-bugs-your-ai-copilot-writes-every-single-time-35e1"/>
-        <updated>2026-03-18T19:07:11.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR
-AI editors produce syntactically clean code that is semantically insecure
-The same 4 vulnerability patterns show up across almost every AI-generated codebase
-They're all fixable in minutes, if you know what to look for
-I scanned a production app last week. Clean TypeScript, well-organized folders, decent test coverage. The kind of repo that looks like a senior dev wrote it.
-Also: a hardcoded Stripe API key on line 8 of config.ts. A SQL query built from raw string concatenation. An auth endpoint with zero rate limiting. And a password hash using MD5.
-The whole thing was built with an AI editor. And none of this is unusual.
-I've been scanning AI-generated codebases for a while now. The same patterns keep showing up, almost without exception. Not because the developers are bad. they're …]]></summary>
+        <title type="html"><![CDATA[I Stress-Tested Google's Colab MCP Server with a Real Quantum Workflow]]></title>
+        <id>https://dev.to/axrisi/i-stress-tested-googles-colab-mcp-server-with-a-real-quantum-workflow-2oih</id>
+        <link href="https://dev.to/axrisi/i-stress-tested-googles-colab-mcp-server-with-a-real-quantum-workflow-2oih"/>
+        <updated>2026-03-18T20:16:13.000Z</updated>
+        <summary type="html"><![CDATA[> I used Google's new Colab MCP server to let an AI agent build, run, debug, and submit a quantum chemistry notebook to real IBM Quantum hardware.
+Google just announced the Colab MCP server, an open-source bridge that lets any MCP-compatible AI agent control a live Google Colab notebook.
+Announcing the Colab MCP Server: Connect Any AI Agent to Google Colab
+Jeffrey Mew for Google AI ・ Mar 17
+#cloud
+        #agents
+        #mcp
+        #ai
+      
+That sounds useful on paper. But I wanted to see whether it could handle something more demanding than a typical dataset demo.
+So I gave an agent a real task: build a quantum chemistry notebook from scratch, install the right dependencies, debug compatibility issues, run a full parameter sweep, and submit a job to real IBM Quantum hardware.
+It worke…]]></summary>
         <author>
-            <name>BusyAgents</name>
+            <name>Nikoloz Turazashvili (@axrisi)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The 270 Million iPhone Crypto Heist: How DarkSword's Hit-and-Run Exploit Kit Drains Wallets in Under 60 Seconds]]></title>
+        <id>https://dev.to/ohmygod/the-270-million-iphone-crypto-heist-how-darkswords-hit-and-run-exploit-kit-drains-wallets-in-3kf</id>
+        <link href="https://dev.to/ohmygod/the-270-million-iphone-crypto-heist-how-darkswords-hit-and-run-exploit-kit-drains-wallets-in-3kf"/>
+        <updated>2026-03-18T20:12:52.000Z</updated>
+        <summary type="html"><![CDATA[The 270 Million iPhone Crypto Heist: How DarkSword's Hit-and-Run Exploit Kit Drains Wallets in Under 60 Seconds
+
+
+On March 18, 2026, researchers from iVerify, Lookout, and Google published coordinated disclosure of DarkSword — a sophisticated iOS exploit chain that can fully compromise an iPhone, extract every cryptocurrency wallet on the device, and erase all traces of itself in under 60 seconds. No app install required. No user interaction beyond visiting a compromised website.
+An estimated 270 million iPhones running iOS 18.4 through 18.6.2 are vulnerable. The exploit specifically targets crypto wallets including MetaMask, Phantom, Coinbase Wallet, Ledger Live, Exodus, Uniswap, and Gnosis Safe — alongside exchange apps like Binance, Kraken, KuCoin, OKX, and MEXC.
+This isn't theoretical.…]]></summary>
+        <author>
+            <name>ohmygod</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying Your First Server with Terraform: A Beginner's Guide]]></title>
+        <id>https://dev.to/tink-origami/deploying-your-first-server-with-terraform-a-beginners-guide-4g2d</id>
+        <link href="https://dev.to/tink-origami/deploying-your-first-server-with-terraform-a-beginners-guide-4g2d"/>
+        <updated>2026-03-18T20:09:54.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+
+
+Infrastructure as Code (IaC) is one of those concepts that sounds complicated until you actually try it. Instead of clicking through cloud consoles like a robot, you write code that does the clicking for you. Today, I'm sharing my experience from Day 3 of the 30-Day Terraform Challenge, where I deployed my first web server on AWS using Terraform.
+By the end of this guide, you'll have provisioned real infrastructure without touching a single console button. Well, maybe just your keyboard.
+ Terraform installed (v1.0+)
+ An AWS account (free tier works)
+ AWS access keys (keep these safe!)
+ Basic terminal skills
+Before we dive in, let's clarify the two most important Terraform concepts:
+Provider Block:
+provider "aws" {
+  region = "eu-north-1"
+}
+
+The provider block tells Terraform…]]></summary>
+        <author>
+            <name>Mukami</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FBI is buying location data to track US citizens, director confirms]]></title>
+        <id>https://techcrunch.com/2026/03/18/fbi-is-buying-location-data-to-track-us-citizens-kash-patel-wyden/</id>
+        <link href="https://techcrunch.com/2026/03/18/fbi-is-buying-location-data-to-track-us-citizens-kash-patel-wyden/"/>
+        <updated>2026-03-18T20:09:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I built a local-only PDF bank statement parser with a plugin system — here's how it works]]></title>
+        <id>https://dev.to/tiozerj/i-built-a-local-only-pdf-bank-statement-parser-with-a-plugin-system-heres-how-it-works-3gd8</id>
+        <link href="https://dev.to/tiozerj/i-built-a-local-only-pdf-bank-statement-parser-with-a-plugin-system-heres-how-it-works-3gd8"/>
+        <updated>2026-03-18T20:09:36.000Z</updated>
+        <summary type="html"><![CDATA[I built a local-only PDF bank statement parser — here's how it works
+
+
+Every month I'd open my credit card PDF, manually copy transactions into a spreadsheet, and think "there has to be a better way." So I built banksheet.
+banksheet parses bank statement PDFs into CSV, Excel, or JSON — entirely on your machine. No cloud, no AI, no external APIs.
+npx banksheet parse statement.pdf
+npx banksheet parse statement.pdf -f excel -o output.xlsx
+
+The interesting part is how new banks get added. Each bank is a single folder implementing two functions:
+export const myBankParser: BankParser = {
+  name: 'My Bank',
+  country: 'US',
+
+  detect(text: string): boolean {
+    return /My Bank Statement/i.test(text);
+  },
+
+  parse(text: string): Transaction[] {
+    // extract transactions from raw PDF text
+    r…]]></summary>
+        <author>
+            <name>TioZe</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ClawRoute Technical Architecture: How Smart Model Routing Works]]></title>
+        <id>https://dev.to/mrjhsn/clawroute-technical-architecture-how-smart-model-routing-works-13h2</id>
+        <link href="https://dev.to/mrjhsn/clawroute-technical-architecture-how-smart-model-routing-works-13h2"/>
+        <updated>2026-03-18T20:07:43.000Z</updated>
+        <summary type="html"><![CDATA[ClawRoute Technical Architecture: How Smart Model Routing Works
+
+
+
+  
+  
+  Overview
+
+
+ClawRoute is a distributed AI routing system that intelligently routes requests across multiple LLM providers using a unified 0-100 scoring system, Thompson Sampling for exploration/exploitation balance, circuit breakers for fault tolerance, predictive rate limiting, and multi-provider support. The system optimizes for cost, speed, and reliability while providing zero-configuration developer APIs.
+The main entry point that receives requests and routes them based on:
+Unified 0-100 quality score (task-specific weights)
+Cost optimization
+Latency requirements
+Availability and health status
+Key Features:
+Unified Scoring System: All models rated 0-100 with weights adjusted per task type
+Thompson Sampling: Balan…]]></summary>
+        <author>
+            <name>MrJHSN</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[COLORS: Anaïs Cardot | A COLORS SHOW]]></title>
+        <id>https://dev.to/music_youtube/colors-anais-cardot-a-colors-show-j67</id>
+        <link href="https://dev.to/music_youtube/colors-anais-cardot-a-colors-show-j67"/>
+        <updated>2026-03-18T20:06:45.000Z</updated>
+        <summary type="html"><![CDATA[French singer Anaïs Cardot is making a splash on A COLORS SHOW, a platform known for showcasing unique global talent on a minimalist stage. Get ready for a heartfelt performance from Cardot that speaks volumes!
+Watch on YouTube]]></summary>
+        <author>
+            <name>Music YouTube</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[KEXP: Iron Lung - Full Performance (Live on KEXP)]]></title>
+        <id>https://dev.to/music_youtube/kexp-iron-lung-full-performance-live-on-kexp-n72</id>
+        <link href="https://dev.to/music_youtube/kexp-iron-lung-full-performance-live-on-kexp-n72"/>
+        <updated>2026-03-18T20:06:27.000Z</updated>
+        <summary type="html"><![CDATA[Hey music fans! The fierce duo Iron Lung recently dropped an electrifying live performance at KEXP, captured way back on January 28, 2026. These guys—Jensen Ward on drums, vocals, and noise, plus Jon Kortland tearing up the guitar and vocals—brought their signature sound with a setlist packed with tracks like "Failure," "Virus," and "Future Corpses."
+Watch on YouTube]]></summary>
+        <author>
+            <name>Music YouTube</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Three Companies Just Converged on Intent-Based AI Agent Security. None of Them Can Verify Identity.]]></title>
+        <id>https://dev.to/thenexusguard/three-companies-just-converged-on-intent-based-ai-agent-security-none-of-them-can-verify-identity-23hj</id>
+        <link href="https://dev.to/thenexusguard/three-companies-just-converged-on-intent-based-ai-agent-security-none-of-them-can-verify-identity-23hj"/>
+        <updated>2026-03-18T20:05:49.000Z</updated>
+        <summary type="html"><![CDATA[RSA Conference 2026 just wrapped and the theme is unmistakable: intent-based security is the new paradigm for AI agents.
+Three separate announcements this week landed on the same thesis:
+Token Security unveiled intent-based AI agent security that governs autonomous agents by aligning permissions with intended purpose.
+"Prompt filtering and guardrails were not designed to fully contain the security risks introduced by autonomous AI agents." — Itamar Apelblat, CEO
+Their five capabilities: discover agents and their owners, understand declared and observed intent, dynamically enforce least privilege aligned to intent, flag actions outside intent boundaries, and apply lifecycle governance.
+The key insight: two agents with identical permissions can behave completely differently based on what the…]]></summary>
+        <author>
+            <name>The Nexus Guard</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Top 5 AI Agent Auth Tools in 2026]]></title>
+        <id>https://dev.to/nebulagg/top-5-ai-agent-auth-tools-in-2026-4gfa</id>
+        <link href="https://dev.to/nebulagg/top-5-ai-agent-auth-tools-in-2026-4gfa"/>
+        <updated>2026-03-18T20:05:38.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR: Composio for multi-tool agent workflows with managed auth. Nango if you want clean OAuth and nothing else. Merge Agent Handler for enterprise governance. Arcade for high-risk actions needing just-in-time permission checks. WorkOS AuthKit if you want to build custom agent auth on proven infrastructure.
+Your AI agent can reason, plan, and write code. But the moment it tries to create a Jira ticket or send a Slack message on behalf of a user, it hits the same wall every production team hits: authentication.
+Agent auth is different from traditional app auth. Agents act on behalf of multiple users, touch several tools in a single request, and run continuously without someone typing a password. Static API keys and service accounts break fast. OAuth tokens expire. Permissions drift.
+These …]]></summary>
+        <author>
+            <name>Nebula</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Your WebRTC App Breaks After 3 Users (And How Zoom Fixes It)]]></title>
+        <id>https://dev.to/lakshya_purohit_8acdb147e/why-your-webrtc-app-breaks-after-3-users-and-how-zoom-fixes-it-3i0b</id>
+        <link href="https://dev.to/lakshya_purohit_8acdb147e/why-your-webrtc-app-breaks-after-3-users-and-how-zoom-fixes-it-3i0b"/>
+        <updated>2026-03-18T20:05:16.000Z</updated>
+        <summary type="html"><![CDATA[A simple explanation of WebRTC scaling problems and how Mediasoup solves them using SFU architecture.
+If you tried building a video calling app using WebRTC, you probably thought it was easy.
+Until the third or fourth user joins and everything starts breaking.
+Lag increases
+Video freezes
+CPU usage spikes
+Bandwidth explodes
+So how do apps like Zoom or Google Meet handle thousands of users smoothly?
+They don’t use pure WebRTC.
+They use a smarter architecture.
+WebRTC allows direct browser-to-browser communication.
+No plugins
+No external software
+Ultra-low latency
+At its core, it creates a direct connection between users.
+Sounds perfect — until it isn’t.
+WebRTC uses a mesh architecture.
+That means every user sends video to every other user.
+2 users = 1 connection
+4 users = 6 connections
+10 use…]]></summary>
+        <author>
+            <name>Lakshya Purohit</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Real-World Incident Automation Using GCP: How I Cut MTTR by 80%]]></title>
+        <id>https://dev.to/ajha8/real-world-incident-automation-using-gcp-how-we-cut-mttr-by-80-30hg</id>
+        <link href="https://dev.to/ajha8/real-world-incident-automation-using-gcp-how-we-cut-mttr-by-80-30hg"/>
+        <updated>2026-03-18T20:05:03.000Z</updated>
+        <summary type="html"><![CDATA[We used to resolve incidents with Slack messages, gut instinct, and heroics. Now most incidents resolve themselves. Here's exactly how I built that.
+At 2:47am on a Tuesday, our payment service started throwing errors. A senior engineer woke up to a PagerDuty alert, spent 12 minutes just finding the right runbook, another 20 minutes correlating logs across three different dashboards, and finally identified a misconfigured connection pool that had been deployed 6 hours earlier.
+Total time to resolve: 51 minutes of customer-impacting downtime.
+The fix itself? Four lines of config. The rest was just finding the problem.
+I decided to systematically eliminate the detective work. This post covers the automation layer I built on GCP to detect, diagnose, and in many cases auto-remediate incidents b…]]></summary>
+        <author>
+            <name>Ayush Raj Jha</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Multi-Agent Orchestration: A Guide to Patterns That Work]]></title>
+        <id>https://dev.to/nebulagg/multi-agent-orchestration-a-guide-to-patterns-that-work-1h81</id>
+        <link href="https://dev.to/nebulagg/multi-agent-orchestration-a-guide-to-patterns-that-work-1h81"/>
+        <updated>2026-03-18T20:04:36.000Z</updated>
+        <summary type="html"><![CDATA[Every multi-agent article opens with the same pitch: your single agent is failing, you need five agents, here are the patterns. The internet is full of pattern catalogs. What it lacks is honesty about when multi-agent orchestration actually helps -- and when it makes everything worse.
+This article is different. We will cover the patterns, but we will start with the question nobody asks: do you actually need multi-agent? Then we will walk through the four patterns that cover 90% of production use cases, show you framework-agnostic Python code, and do the cost math that most guides skip.
+This is part of the Building Production AI Agents series. If you have not read Why Your AI Workflow Breaks at Scale yet, start there -- it covers the three walls (monolith prompts, tool explosion, state amne…]]></summary>
+        <author>
+            <name>Nebula</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Polymarket acquires Brahma to scale blockchain trading infrastructure]]></title>
+        <id>b5206d52-9940-4492-a266-0c4060c1c434</id>
+        <link href="https://www.coindesk.com/business/2026/03/18/polymarket-acquires-defi-brahma-to-build-reliable-financial-blockchain-infrastructure"/>
+        <updated>2026-03-18T19:56:41.000Z</updated>
+        <summary type="html"><![CDATA["Building reliable infrastructure across blockchain networks and traditional financial rails is hard — there are no shortcuts,” said Polymarket CEO Shayne Coplan.]]></summary>
+        <author>
+            <name>Olivier Acuna</name>
         </author>
     </entry>
     <entry>
@@ -90,209 +269,13 @@ I've been scanning AI-generated codebases for a while now. The same patterns kee
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Use LM Studio From Your iPhone in 2026 (No Cloud, No Subscription)]]></title>
-        <id>https://dev.to/alichherawalla/how-to-use-lm-studio-from-your-iphone-in-2026-no-cloud-no-subscription-4i3f</id>
-        <link href="https://dev.to/alichherawalla/how-to-use-lm-studio-from-your-iphone-in-2026-no-cloud-no-subscription-4i3f"/>
-        <updated>2026-03-18T19:06:35.000Z</updated>
-        <summary type="html"><![CDATA[LM Studio turned your Mac into an AI workstation. You downloaded models, you chatted with them, you ran a local server. But LM Studio does not have a mobile app. When you walk away from your Mac, you walk away from your AI.
-Your Mac is still running. The model is still loaded. You just cannot reach it from your pocket.
-Off Grid solves this. It auto-discovers LM Studio servers on your network and gives you a full-featured AI interface on your iPhone - connected to the same models running on your Mac.
-
-Open LM Studio on your Mac. Click the Developer tab. Load a model (Qwen 3.5 9B is the recommendation if you have 16GB+ RAM). Start the server. Check "Serve on Local Network."
-That is one checkbox. No terminal. No environment variables. No firewall configuration.
-Download Off Grid from the App …]]></summary>
+        <title type="html"><![CDATA[Show HN: Playing LongTurn FreeCiv with Friends]]></title>
+        <id>https://github.com/ndroo/freeciv.andrewmcgrath.info</id>
+        <link href="https://github.com/ndroo/freeciv.andrewmcgrath.info"/>
+        <updated>2026-03-18T19:01:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Mohammed Ali Chherawalla</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Julius Caesar — A Character Study in Contradictions]]></title>
-        <id>https://dev.to/yash_gandhi_b0979f0105433/julius-caesar-a-character-study-in-contradictions-3cp3</id>
-        <link href="https://dev.to/yash_gandhi_b0979f0105433/julius-caesar-a-character-study-in-contradictions-3cp3"/>
-        <updated>2026-03-18T19:06:11.000Z</updated>
-        <summary type="html"><![CDATA[Most people learn about Caesar like he's a statue — marble-white, frozen in one pose, arm raised, toga draped.
-But the real Caesar? He was a walking contradiction. Arrogant enough to lecture his own kidnappers. Humble enough to weep at a statue. Brilliant enough to conquer a continent. Blind enough to walk into a room full of men holding knives.
-You don't understand Caesar by listing what he did. You understand him by tracking what each moment revealed about who he was.
-So here's his life — not as a timeline, but as a character sheet that kept updating.
-It starts with a choice that most teenagers never have to make.
-Rome was tearing itself apart in a civil war between two factions — the populists led by Gaius Marius (Caesar's uncle by marriage), and the conservatives led by Sulla, a ruthle…]]></summary>
-        <author>
-            <name>Yash Gandhi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Use Ollama From Your Android Phone in 2026 (Auto-Discovery, Zero Setup)]]></title>
-        <id>https://dev.to/alichherawalla/how-to-use-ollama-from-your-android-phone-in-2026-auto-discovery-zero-setup-35li</id>
-        <link href="https://dev.to/alichherawalla/how-to-use-ollama-from-your-android-phone-in-2026-auto-discovery-zero-setup-35li"/>
-        <updated>2026-03-18T19:05:48.000Z</updated>
-        <summary type="html"><![CDATA[Every other guide for accessing Ollama from your phone starts the same way: open a terminal, set environment variables, find your IP address, configure your firewall. By the time you are done, you have spent more time on setup than you will spend chatting with the model.
-Your Android phone and your Ollama server are on the same network. They should just be able to talk to each other.
-Off Grid makes that happen. It auto-discovers Ollama servers on your local network, pulls the model list, and lets you start chatting. No IP addresses, no port numbers, no configuration files on your phone.
-
-A computer running Ollama with at least one model
-An Android phone (6GB+ RAM recommended) on the same WiFi network
-Off Grid installed from GitHub Releases
-
-
-
-
-  
-  
-  Step 1: Open Ollama to your network
-
-
-…]]></summary>
-        <author>
-            <name>Mohammed Ali Chherawalla</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Web Scraping Infrastructure Guide: APIs vs Proxies vs Headless Browsers (2026)]]></title>
-        <id>https://dev.to/agenthustler/web-scraping-infrastructure-guide-apis-vs-proxies-vs-headless-browsers-2026-4gj</id>
-        <link href="https://dev.to/agenthustler/web-scraping-infrastructure-guide-apis-vs-proxies-vs-headless-browsers-2026-4gj"/>
-        <updated>2026-03-18T19:04:33.000Z</updated>
-        <summary type="html"><![CDATA[Every web scraping project starts with the same question: what infrastructure do I actually need?
-You have three fundamental approaches — scraping APIs, proxy networks, and headless browsers — and choosing wrong means either overpaying by 10x or fighting a losing battle against anti-bot systems. I've built scraping pipelines using all three approaches across dozens of targets, and the right choice depends entirely on your specific situation.
-This guide gives you the decision framework. No fluff, just the practical analysis.
-
-
-
-Factor
-Scraping APIs
-Proxy + HTTP Client
-Headless Browser
-
-
-
-
-What you manage
-Just your parsing logic
-Proxy rotation, headers, retries, CAPTCHAs
-Browser instances, fingerprints, resource usage
-
-
-Cost per 1K requests
-$1–5
-$0.10–2 (bandwidth-based)
-$0.50–5 (compute-hea…]]></summary>
-        <author>
-            <name>agenthustler</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bright Data vs Oxylabs vs Smartproxy: Which Proxy Provider Should You Choose in 2026?]]></title>
-        <id>https://dev.to/agenthustler/bright-data-vs-oxylabs-vs-smartproxy-which-proxy-provider-should-you-choose-in-2026-2bk5</id>
-        <link href="https://dev.to/agenthustler/bright-data-vs-oxylabs-vs-smartproxy-which-proxy-provider-should-you-choose-in-2026-2bk5"/>
-        <updated>2026-03-18T19:04:17.000Z</updated>
-        <summary type="html"><![CDATA[If you're shopping for a residential proxy provider in 2026, you've already narrowed it down to three names: Bright Data, Oxylabs, and Smartproxy. They dominate every "best proxies" list, they sponsor every scraping conference, and they all claim to be the best.
-But they're not interchangeable. I've run production scraping jobs on all three — millions of requests across e-commerce, search engines, real estate, and social media targets. The differences are real, and picking the wrong one can cost you thousands in wasted bandwidth.
-Here's the honest breakdown so you can stop reading marketing pages and start scraping.
-Proxy pricing is confusing by design. Every provider structures plans differently. Here's what you'll actually pay at different scales.
-
-
-
-Provider
-Plan
-Cost
-Effective $/GB
-
-
-
-…]]></summary>
-        <author>
-            <name>agenthustler</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Didn’t Quit… I Built an AI Instead 💻]]></title>
-        <id>https://dev.to/brandi_kitchens_developer/i-didnt-quit-i-built-an-ai-instead-59il</id>
-        <link href="https://dev.to/brandi_kitchens_developer/i-didnt-quit-i-built-an-ai-instead-59il"/>
-        <updated>2026-03-18T19:04:17.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for the 2026 WeCoded Challenge: Echoes of Experience]]></summary>
-        <author>
-            <name>Brandi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Licenses Without Lift: The $100K AI Tool Problem Nobody Talks About]]></title>
-        <id>https://dev.to/dave_odell_1f178f9096f58/licenses-without-lift-the-100k-ai-tool-problem-nobody-talks-about-54j8</id>
-        <link href="https://dev.to/dave_odell_1f178f9096f58/licenses-without-lift-the-100k-ai-tool-problem-nobody-talks-about-54j8"/>
-        <updated>2026-03-18T19:01:32.000Z</updated>
-        <summary type="html"><![CDATA[Here's the math nobody does before buying AI tools.
-50 engineers × $40/month per seat × 12 months = $24,000 in licensing. Add enterprise SSO, compliance review, security audit, and the "AI transformation initiative" that took three months of leadership time to approve. You're well past $100K in total cost before a single line of AI-assisted code ships to production.
-Now check your dashboard. 15% utilization. Maybe 20% on a good week.
-The 5-8 engineers who were already tinkering with AI? They're flying. Everyone else went back to their old workflow within two weeks.
-This is the most common pattern we see. Not failed rollouts — successful purchases with failed adoption.
-It's Not a Training Problem
-Most companies respond by scheduling more training sessions. Lunch-and-learns. Internal wikis. …]]></summary>
-        <author>
-            <name>Dave O'Dell</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[One VPS, Ten Projects: Docker + Traefik + Cloudflare for Indie Hackers]]></title>
-        <id>https://dev.to/ryancwynar/one-vps-ten-projects-docker-traefik-cloudflare-for-indie-hackers-5hai</id>
-        <link href="https://dev.to/ryancwynar/one-vps-ten-projects-docker-traefik-cloudflare-for-indie-hackers-5hai"/>
-        <updated>2026-03-18T19:01:15.000Z</updated>
-        <summary type="html"><![CDATA[If you are running multiple side projects and paying for separate hosting on each one, stop. A single $10/month VPS can host all of them with automatic HTTPS, zero-downtime deploys, and a reverse proxy that routes traffic by domain name. Here is the exact stack I use.
-Every indie hacker hits this wall. You have a Next.js blog on Vercel, an API on Railway, a workflow tool on some other platform, and a static site on Netlify. Each one is cheap individually, but the costs add up. Worse, you are scattered across five dashboards with five different deploy workflows.
-I consolidated everything onto one Hostinger VPS. One machine. One docker-compose.yml. Ten services.
-Traefik sits at the front as a reverse proxy. It listens on ports 80 and 443, terminates TLS with automatic Let us Encrypt certific…]]></summary>
-        <author>
-            <name>RyanCwynar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Beyond the Hype: A Developer's Guide to Building *With* AI, Not Just For It]]></title>
-        <id>https://dev.to/midas126/beyond-the-hype-a-developers-guide-to-building-with-ai-not-just-for-it-294e</id>
-        <link href="https://dev.to/midas126/beyond-the-hype-a-developers-guide-to-building-with-ai-not-just-for-it-294e"/>
-        <updated>2026-03-18T19:01:02.000Z</updated>
-        <summary type="html"><![CDATA[The AI Tsunami is Here. Grab Your Surfboard.
-
-
-Another day, another headline proclaiming that AI will replace developers. The latest viral take suggests 90% of code will be AI-generated. It’s a provocative thought, but it misses the point entirely. The real question isn't if AI will write code—it already does—but what kind of developer thrives in this new paradigm.
-The shift isn't from "coder" to "unemployed." It's from "syntax specialist" to "architect, strategist, and quality enforcer." The value is moving up the stack. This guide is your map to that higher ground. We'll move past the fear and into the practical, technical skills you need to build with AI as your most powerful collaborator.
-Forget the old "write, compile, test, debug" cycle. The modern, AI-augmented loop looks more like …]]></summary>
-        <author>
-            <name>Midas126</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Fed up with clunky image editors? I built ihateimg.in — free, fast, no signup needed]]></title>
-        <id>https://dev.to/harshilshah99/fed-up-with-clunky-image-editors-i-built-ihateimgin-free-fast-no-signup-needed-5g63</id>
-        <link href="https://dev.to/harshilshah99/fed-up-with-clunky-image-editors-i-built-ihateimgin-free-fast-no-signup-needed-5g63"/>
-        <updated>2026-03-18T19:00:13.000Z</updated>
-        <summary type="html"><![CDATA[I built a free image tool that lets you chain multiple edits in one go — no login, no BS
-If you've ever had to compress an image, then crop it, then add a watermark... you know the pain. Open three different websites, re-upload every single time, lose quality with every step.
-So I built ihateimg.in — a free, no-login image toolkit that handles it all.
-🗜️ Compress — shrink file sizes without killing quality
-
-✂️ Crop — trim exactly what you need
-
-📐 Resize — set custom dimensions instantly
-
-💧 Watermark — protect your images with text or logo
-
-🔄 Rotate & Flip — straighten or mirror in one click
-
-🔧 ...and more tools being added  
-Instead of visiting 5 tools separately, you can:
-Add multiple tools in sequence (e.g. Crop → Resize → Watermark)
-
-Upload your image once
-Hit execute — done.
-One image. One upload. Everything applied at once.
-✅ 100% Free
-
-✅ No login required
-
-✅ No watermarks forced on you
-
-✅ Works right in your browser  
-Would love your feedback — especially if something is broken or a tool you wish existed. Drop a comment or try it out 👇
-🔗 ihateimg.in]]></summary>
-        <author>
-            <name>Harshil shah</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -326,10 +309,10 @@ Would love your feedback — especially if something is broken or a tool you wis
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Will my flight have Starlink?]]></title>
-        <id>https://news.ycombinator.com/item?id=47428650</id>
-        <link href="https://news.ycombinator.com/item?id=47428650"/>
-        <updated>2026-03-18T17:29:21.000Z</updated>
+        <title type="html"><![CDATA[EU Inc.: A new harmonised corporate legal regime]]></title>
+        <id>https://commission.europa.eu/topics/business-and-industry/doing-business-eu/company-law-and-corporate-governance/eu-inc-new-harmonised-corporate-legal-regime_en</id>
+        <link href="https://commission.europa.eu/topics/business-and-industry/doing-business-eu/company-law-and-corporate-governance/eu-inc-new-harmonised-corporate-legal-regime_en"/>
+        <updated>2026-03-18T17:42:10.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -340,16 +323,6 @@ Would love your feedback — especially if something is broken or a tool you wis
         <id>https://notes.visaint.space/ai-coding-is-gambling/</id>
         <link href="https://notes.visaint.space/ai-coding-is-gambling/"/>
         <updated>2026-03-18T17:22:02.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Spotify playing ads for paid subscribers]]></title>
-        <id>https://news.ycombinator.com/item?id=47428391</id>
-        <link href="https://news.ycombinator.com/item?id=47428391"/>
-        <updated>2026-03-18T17:11:30.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -386,16 +359,6 @@ Would love your feedback — especially if something is broken or a tool you wis
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[North Korean's 100k fake IT workers net $500M a year for Kim]]></title>
-        <id>https://www.theregister.com/2026/03/18/researchers_lift_the_lid_on/</id>
-        <link href="https://www.theregister.com/2026/03/18/researchers_lift_the_lid_on/"/>
-        <updated>2026-03-18T15:59:58.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Protocol: Ethereum community debates foundation’s new mandate document]]></title>
         <id>06a651c0-186a-4b29-aeeb-f3eb3ef282b2</id>
         <link href="https://www.coindesk.com/tech/2026/03/18/the-protocol-ethereum-community-debates-foundation-s-new-mandate-document"/>
@@ -406,10 +369,10 @@ Would love your feedback — especially if something is broken or a tool you wis
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Wander – A tiny, decentralised tool (just 2 files) to explore the small web]]></title>
-        <id>https://susam.net/wander/</id>
-        <link href="https://susam.net/wander/"/>
-        <updated>2026-03-18T15:49:52.000Z</updated>
+        <title type="html"><![CDATA[Show HN: I built 48 lightweight SVG backgrounds you can copy/paste]]></title>
+        <id>https://www.svgbackgrounds.com/set/free-svg-backgrounds-and-patterns/</id>
+        <link href="https://www.svgbackgrounds.com/set/free-svg-backgrounds-and-patterns/"/>
+        <updated>2026-03-18T15:50:44.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -814,23 +777,13 @@ The post CelcomDigi Now Has sooka As Part Of Its StreamMORE Service appeared fir
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Wanter – A tiny, decentralised tool to explore the small web]]></title>
+        <title type="html"><![CDATA[Wander – A tiny, decentralised tool to explore the small web]]></title>
         <id>https://susam.net/wander/</id>
         <link href="https://susam.net/wander/"/>
         <updated>2026-03-18T07:43:13.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bitrefill accuses North Korea-linked Lazarus hacker group for compromising 18,500 purchase records]]></title>
-        <id>ec5e82f6-d220-44cb-b9ee-ab897c2f610a</id>
-        <link href="https://www.coindesk.com/markets/2026/03/18/bitrefill-accuses-north-korea-linked-lazarus-hacker-group-for-compromising-18-500-purchase-records"/>
-        <updated>2026-03-18T07:17:53.000Z</updated>
-        <summary type="html"><![CDATA[Bitrefill will cover the losses from operational capital.]]></summary>
-        <author>
-            <name>Omkar Godbole</name>
         </author>
     </entry>
     <entry>
@@ -862,16 +815,6 @@ The post CelcomDigi Now Has sooka As Part Of Its StreamMORE Service appeared fir
 The post Samsung Galaxy S26 Ultra Users Report Eye Strain, Headaches Over Display Issue appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Kiran Ganesan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[XRP hovers near $14 million options battleground that could sway trading]]></title>
-        <id>c1203d25-b211-44d4-ac41-b76da442c57c</id>
-        <link href="https://www.coindesk.com/markets/2026/03/18/xrp-hovers-near-usd14-million-options-battleground-that-could-sway-trading"/>
-        <updated>2026-03-18T05:58:28.000Z</updated>
-        <summary type="html"><![CDATA[XRP is trading around $1.50, just above a key options cluster at $1.40 on Deribit.]]></summary>
-        <author>
-            <name>Omkar Godbole</name>
         </author>
     </entry>
     <entry>
@@ -953,16 +896,6 @@ The post YTL AI Labs, NVIDIA Partner For New AI Model To Boost Malaysia’s Sove
         <summary type="html"><![CDATA[Computers will, 100% of the time, without fail, do exactly what you tell them to do. It's getting them to do what you want them to do that's the real trick. The gap between what you tell the computer]]></summary>
         <author>
             <name>Pete Lamonica</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A Fuzzer for the Toy Optimizer]]></title>
-        <id>https://bernsteinbear.com/blog/toy-fuzzer/</id>
-        <link href="https://bernsteinbear.com/blog/toy-fuzzer/"/>
-        <updated>2026-03-17T15:32:11.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1126,20 +1059,30 @@ The post YTL AI Labs, NVIDIA Partner For New AI Model To Boost Malaysia’s Sove
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Hacker News archive (47M+ items, 11.6GB) as Parquet, updated every 5m]]></title>
-        <id>https://huggingface.co/datasets/open-index/hacker-news</id>
-        <link href="https://huggingface.co/datasets/open-index/hacker-news"/>
-        <updated>2026-03-14T17:12:03.000Z</updated>
+        <title type="html"><![CDATA[Samsung Galaxy S26 Ultra Review: The Privacy Screen]]></title>
+        <id>https://www.wired.com/review/samsung-galaxy-s26-ultra/</id>
+        <link href="https://www.wired.com/review/samsung-galaxy-s26-ultra/"/>
+        <updated>2026-03-15T08:03:44.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A dither generator for triangular and hexagonal pixels (2025)]]></title>
-        <id>https://danieltemkin.com/DitherStudies</id>
-        <link href="https://danieltemkin.com/DitherStudies"/>
-        <updated>2026-03-14T16:53:03.000Z</updated>
+        <title type="html"><![CDATA[Book: The Emerging Science of Machine Learning Benchmarks]]></title>
+        <id>https://mlbenchmarks.org/00-preface.html</id>
+        <link href="https://mlbenchmarks.org/00-preface.html"/>
+        <updated>2026-03-14T20:15:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Hacker News archive (47M+ items, 11.6GB) as Parquet, updated every 5m]]></title>
+        <id>https://huggingface.co/datasets/open-index/hacker-news</id>
+        <link href="https://huggingface.co/datasets/open-index/hacker-news"/>
+        <updated>2026-03-14T17:12:03.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
