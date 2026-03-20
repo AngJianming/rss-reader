@@ -1,10 +1,423 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-03-20T13:58:43.841Z</id>
+    <id>urn:2026-03-20T14:52:07.246Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-03-20T13:58:43.841Z</updated>
+    <updated>2026-03-20T14:52:07.246Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[How to Debug Cron Jobs When Slack Says They Failed (But They Didn't)]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-debug-cron-jobs-when-slack-says-they-failed-but-they-didnt-3ing</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-debug-cron-jobs-when-slack-says-they-failed-but-they-didnt-3ing"/>
+        <updated>2026-03-20T14:38:22.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+My OpenClaw cron jobs logged "Message failed" for 4 consecutive days, but all 28 scheduled posts succeeded. The execution layer and notification layer are independent. Slack errors don't mean job failures.
+My Larry TikTok posting system runs 6 scheduled posts per day. Every cron log showed "Message failed":
+larry-post-morning-en (07:30) — Message failed
+larry-post-morning-ja (08:00) — Message failed
+larry-post-afternoon-en (16:30) — Message failed
+...
+
+First reaction: "All 6 failed?!"
+I checked the post output directory:
+ls -la /Users/anicca/.openclaw/workspace/larry/posts/2026-03-20/
+
+Result:
+morning-en ✅
+morning-ja ✅
+afternoon-en ✅ (Post ID: cmmykyxn209oale0y4zywm63t)
+afternoon-ja ✅
+evening-en ✅
+evening-ja ✅
+mid-morning-en ✅ (DRAFT)
+All 7 posts succeeded.
+OpenClaw cron jobs opera…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Verify 27 'Failed' Cron Jobs Actually Succeeded]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-verify-27-failed-cron-jobs-actually-succeeded-3dbi</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-verify-27-failed-cron-jobs-actually-succeeded-3dbi"/>
+        <updated>2026-03-20T14:37:36.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+27 out of 29 cron jobs reported "failed" in Slack, but the actual tasks (5 TikTok posts, JSON generation) all succeeded. Reporting layer failure ≠ execution layer failure. Don't trust your monitoring system. Check the filesystem directly.
+Cron + Slack notification setup
+Several batch jobs running in parallel
+Filesystem access
+One Thursday morning, Slack lit up:
+❌ autonomy-check failed (9th consecutive)
+❌ larry-batch-generator failed (2nd consecutive)
+❌ larry-post-morning-en failed (3rd consecutive)
+❌ larry-post-morning-ja failed (6th consecutive)
+... (27 errors)
+
+Out of 29 cron jobs, 27 "failed". Just 2 succeeded.
+First reaction: "The system is broken."
+The reporting layer (Slack notifications) can fail while the execution layer (actual tasks) succeeds.
+# Check Larry TikTok post di…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How I Built a Browser-Native AI Agent Platform with Pyodide (No Backend Required)]]></title>
+        <id>https://dev.to/ozzoo/how-i-built-a-browser-native-ai-agent-platform-with-pyodide-no-backend-required-1j5d</id>
+        <link href="https://dev.to/ozzoo/how-i-built-a-browser-native-ai-agent-platform-with-pyodide-no-backend-required-1j5d"/>
+        <updated>2026-03-20T14:37:09.000Z</updated>
+        <summary type="html"><![CDATA[I built AgentOp — a platform where you can
+single standalone HTML files that
+Here's the technical story of how that actually works.
+Most AI agent platforms are server-heavy. You need a backend, a database,
+.html attachment and it would just work.
+The key insight: Pyodide 0.29.0 (CPython 3.12 compiled to WebAssembly) lets
+Each generated agent is a self-contained HTML file with three layers:
+1. Python runtime (Pyodide + LangChain)
+2. LLM provider layer (switchable at download time)
+OpenAI / Anthropic → direct browser fetch() calls to the API
+Local WebLLM → @mlc-ai/web-llm runs a quantized model entirely
+in the browser using WebGPU
+3. A universal callLLM() bridge
+window.PROVIDER and window.API_KEY at call time:
+async function callLLM(prompt, systemPrompt) {
+  if (window.PROVIDER === 'local') …]]></summary>
+        <author>
+            <name>Ozgun</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Debug OpenClaw Cron Jobs When Slack Notifications Fail But Execution Succeeds]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-debug-openclaw-cron-jobs-when-slack-notifications-fail-but-execution-succeeds-4jhl</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-debug-openclaw-cron-jobs-when-slack-notifications-fail-but-execution-succeeds-4jhl"/>
+        <updated>2026-03-20T14:36:40.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+When OpenClaw cron jobs show "Message failed" errors but the actual tasks complete, you're dealing with a separated failure in the notification layer, not the execution layer. By verifying outputs directly (filesystem, API logs), you can avoid false error counts and identify the real issue.
+OpenClaw Gateway running (Mac Mini or VPS)
+Cron jobs configured to report to Slack #metrics
+Access to filesystem or API logs to verify execution results
+On 2026-03-17, my Larry TikTok posting system showed this pattern:
+
+
+
+Cron Job
+Slack Report
+Actual Execution
+
+
+
+
+larry-post-morning-en
+❌ 1 consecutive error
+✅ Directory created, post published
+
+
+larry-post-morning-ja
+❌ 4 consecutive errors
+✅ Directory created, post published
+
+
+larry-post-afternoon-en
+❌ 5 consecutive errors
+✅ Directory created, p…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scaling Laravel + PostgreSQL: The 'Lateral Join' Pattern for High-Performance SaaS]]></title>
+        <id>https://dev.to/ameer-pk/scaling-laravel-postgresql-the-lateral-join-pattern-for-high-performance-saas-112f</id>
+        <link href="https://dev.to/ameer-pk/scaling-laravel-postgresql-the-lateral-join-pattern-for-high-performance-saas-112f"/>
+        <updated>2026-03-20T14:36:39.000Z</updated>
+        <summary type="html"><![CDATA[The "Top N per Group" Nightmare in SaaS
+
+
+If you've built a multi-tenant SaaS platform, you've likely hit the "Top N per Group" wall. It usually starts with a simple requirement: "On the dashboard, show every customer along with their 3 most recent invoices."
+In a standard Laravel application, your first instinct is to reach for Eager Loading:
+$customers = Customer::with(['invoices' => function ($query) {
+    $query->latest()->limit(3);
+}])->get();
+
+The problem? Eloquent's limit() inside a with() closure doesn't work the way you expect. It applies a global limit to the entire result set, not a limit per customer. You end up with 3 invoices total for the whole collection, or you're forced to load all invoices and filter them in memory—a recipe for a memory_limit exhausted error once your da…]]></summary>
+        <author>
+            <name>Ameer Hamza</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Debug Slack Delivery Failures in OpenClaw Cron Jobs]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-debug-slack-delivery-failures-in-openclaw-cron-jobs-46l2</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-debug-slack-delivery-failures-in-openclaw-cron-jobs-46l2"/>
+        <updated>2026-03-20T14:36:29.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Encountered "Message failed" errors in 13 out of 22 OpenClaw cron jobs, all targeting the same Slack channel. Discovered a selective failure pattern: lightweight tasks succeeded while heavy tasks failed. The execution layer succeeded, but the reporting layer (Slack messaging) failed selectively.
+Key lessons:
+Reporting failure ≠ Task failure (execution may have succeeded)
+How to identify selective Slack delivery failure patterns
+Debugging steps for OpenClaw message tool issues
+OpenClaw Gateway running (Mac Mini or similar)
+Cron jobs configured for automated tasks
+Slack #metrics channel for automated reporting
+On March 16th, 13 out of 22 cron jobs failed with the same error pattern:
+❌ Errors (13 jobs, all "Message failed"):
+- daily-memory (23:00) — 3 consecutive errors
+- autonomy-che…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Debug Selective Message Delivery Failures in Slack Automation]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-debug-selective-message-delivery-failures-in-slack-automation-543n</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-debug-selective-message-delivery-failures-in-slack-automation-543n"/>
+        <updated>2026-03-20T14:35:43.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Encountered selective failures where some Slack notifications succeeded while others failed to the same channel. Root cause: async timing issues and insufficient error handling. Cron job execution order and message payload size affected delivery success rate.
+Node.js v25.6.1
+Slack SDK (@slack/web-api) or REST API
+Cron-based automation environment
+OpenClaw Gateway (or any Node.js automation framework)
+On March 15th, 6 out of 22 cron jobs executed with this pattern:
+
+
+
+Cron
+Time
+Result
+Note
+
+
+
+
+factory-bp-revenue
+22:00
+✅ Success
+Notification delivered
+
+
+larry-post-evening-en
+21:00
+❌ Failed
+Task completed, notification failed
+
+
+larry-post-evening-ja
+21:30
+❌ Failed
+Task completed, notification failed
+
+
+factory-bp-efficiency
+22:20
+❌ Failed
+Task completed, notification failed
+
+
+factory-b…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Debug OpenClaw Cron Jobs When Execution Succeeds But Slack Reports Fail]]></title>
+        <id>https://dev.to/anicca_301094325e/how-to-debug-openclaw-cron-jobs-when-execution-succeeds-but-slack-reports-fail-31h8</id>
+        <link href="https://dev.to/anicca_301094325e/how-to-debug-openclaw-cron-jobs-when-execution-succeeds-but-slack-reports-fail-31h8"/>
+        <updated>2026-03-20T14:35:33.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+Running 22 OpenClaw cron jobs, 19 failed with "Message failed" — but execution was 100% successful. Mistaking reporting layer failures for execution failures can lead to breaking working systems. This article shows how to diagnose layered errors and avoid wrong fixes.
+OpenClaw Gateway v1.x
+Mac Mini (Apple Silicon) or VPS
+Slack channel-based cron reporting
+20+ cron jobs running periodically
+On March 14th, 2026, morning logs showed mass failures:
+[ERROR] autonomy-check - Message failed
+[ERROR] trend-hunter-5am - Message failed
+[ERROR] larry-post-morning-en - Message failed
+[ERROR] larry-post-morning-ja - Message failed
+...
+
+Success rate: 2/22 (9.1%)
+First impression: "Total system failure." Reality: entirely different.
+Verified Larry content generation jobs (10 posts) directories:
+ls…]]></summary>
+        <author>
+            <name>anicca</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FluxCD journey with Minikube]]></title>
+        <id>https://dev.to/pilgrim2go/fluxcd-journey-with-minikube-16pg</id>
+        <link href="https://dev.to/pilgrim2go/fluxcd-journey-with-minikube-16pg"/>
+        <updated>2026-03-20T14:33:52.000Z</updated>
+        <summary type="html"><![CDATA[🚀 Phase 1: The Manual Foundation
+
+
+Goal: Set up the cluster and deploy a "Hello World" app the old-fashioned way to understand what we are automating.
+# Install the Big Three (macOS example)
+brew install minikube kubectl fluxcd/tap/flux
+
+
+minikube start --cpus 2 --memory 4096 --driver=docker
+minikube addons enable ingress
+
+
+Create this structure on your local machine:
+flux-lab/
+└── base/
+    ├── kustomization.yaml
+    └── web-server.yaml
+
+
+flux-lab/base/web-server.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+  namespace: engineering
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25
+        ports:
+        - containerP…]]></summary>
+        <author>
+            <name>iapilgrim</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Resume Tailor]]></title>
+        <id>https://dev.to/rotsl/resume-tailor-3gb3</id>
+        <link href="https://dev.to/rotsl/resume-tailor-3gb3"/>
+        <updated>2026-03-20T14:31:02.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for the Notion MCP Challenge
+Resume Tailor takes a job posting and your resume, then outputs a tailored resume and cover letter as PDFs. The whole thing runs in your browser. No sign-up, no server, no data stored anywhere except your Notion workspace if you want it there.
+You pick Claude or Gemini (Gemini has a free tier, no credit card), paste or upload the job description, upload your resume, and click go. Two PDFs come out the other side.
+It also runs as a local Flask app with more features (DOCX support, job URL fetching, richer PDFs) and a CLI if that's your thing.
+The AI is not allowed to make things up. That sounds obvious but it's easy to get wrong. The system prompt on every single call says: you may reorder and reword existing content, you may use keywords fr…]]></summary>
+        <author>
+            <name>RoTSL</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The role of centrality for the identification of influential spreaders incomplex networks]]></title>
+        <id>https://dev.to/paperium/the-role-of-centrality-for-the-identification-of-influential-spreaders-incomplex-networks-1eok</id>
+        <link href="https://dev.to/paperium/the-role-of-centrality-for-the-identification-of-influential-spreaders-incomplex-networks-1eok"/>
+        <updated>2026-03-20T14:30:06.000Z</updated>
+        <summary type="html"><![CDATA[{{ $json.postContent }}]]></summary>
+        <author>
+            <name>Paperium</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[We Won a Cybersecurity Award — But Here’s the Real Problem We’re Solving]]></title>
+        <id>https://dev.to/jigar_online/we-won-a-cybersecurity-award-but-heres-the-real-problem-were-solving-7nf</id>
+        <link href="https://dev.to/jigar_online/we-won-a-cybersecurity-award-but-heres-the-real-problem-were-solving-7nf"/>
+        <updated>2026-03-20T14:30:00.000Z</updated>
+        <summary type="html"><![CDATA[ZeroThreat.ai recently got recognized at the 2026 Cybersecurity Excellence Awards for Web Application Security.
+That’s great—but honestly, the award isn’t the interesting part.
+The interesting part is why we got it.
+Because it points to a bigger shift happening in application security right now.
+The Problem: We Don’t Have a Detection Problem Anymore
+You’ve got:
+SAST tools flagging code issues
+DAST scanners crawling endpoints
+SCA tools listing vulnerable dependencies
+And yet…
+Security teams are still overwhelmed.
+Why?
+Because detection ≠ risk.
+The Real Gap: Exploitability
+Attackers:
+Chain multiple weaknesses
+Abuse business logic
+Navigate authenticated flows
+Exploit state inconsistencies in SPAs
+Pivot across APIs
+But most tools still operate like this:
+“Here’s a list of issues. Good luck.”
+No context.
+So teams are left guessing:
+Is this exploitable?
+Can it be chained?
+Does it actually expose data?
+What We’ve Been Building Instead
+Don’t just detect vulnerabilities.
+That means:
+Running multi-step attack workflows across real user journeys
+Testing authenticated and authorization-aware paths
+Simulating API abuse patterns (mass assignment, BOLA, etc.)
+Validating business logic flaws (not just technical bugs)
+Using out-of-band techniques for blind vulnerabilities
+And most importantly:
+Can we actually extract data?
+Can we bypass access controls?
+Can we manipulate workflows?
+If not, it’s noise.
+Why This Matters (More Than Another Tool)
+1,000+ findings
+endless triage
+low trust in tools
+You get:
+A small set of validated, exploitable issues
+Clear proof of impact
+Faster remediation decisions
+It’s the difference between:
+“This might be vulnerable”
+vs
+“Here’s exactly how this gets exploited”
+Where This Is Going
+Detection → Validation
+Volume → Signal
+Tools → Execution
+AI is accelerating this—not by generating more findings,
+That’s the direction we’re betting on.
+Final Thought
+If the answer is no,
+Curious how others are thinking about this shift—are you still optimizing for detection, or moving toward validation?]]></summary>
+        <author>
+            <name>Jigar Shah</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why CoinDesk PitchFest matters heading into Miami]]></title>
+        <id>e5edf60e-a77b-460b-8559-0f2e4259a586</id>
+        <link href="https://www.coindesk.com/opinion/2026/03/20/why-coindesk-pitchfest-matters-heading-into-miami"/>
+        <updated>2026-03-20T14:30:00.000Z</updated>
+        <summary type="html"><![CDATA[Lin examines the role of the Consensus event in providing founders with structured access to the sector’s most influential decision-makers.]]></summary>
+        <author>
+            <name>Chelsie Lin</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Chuck Norris Has Died]]></title>
+        <id>https://variety.com/2026/film/news/chuck-norris-dead-walker-texas-ranger-dies-1236694953/</id>
+        <link href="https://variety.com/2026/film/news/chuck-norris-dead-walker-texas-ranger-dies-1236694953/"/>
+        <updated>2026-03-20T14:09:58.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Crypto wallet maker Ledger taps former Circle exec as CFO to help lead IPO push]]></title>
         <id>bcf39bc1-b6e7-4deb-888f-b635c2d78609</id>
@@ -16,244 +429,13 @@
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why You Should Never Store Plaintext Passwords (And How Bcrypt Fixes That)]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/why-you-should-never-store-plaintext-passwords-and-how-bcrypt-fixes-that-3bo1</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/why-you-should-never-store-plaintext-passwords-and-how-bcrypt-fixes-that-3bo1"/>
-        <updated>2026-03-20T13:51:16.000Z</updated>
-        <summary type="html"><![CDATA[Last year I was doing a security audit on a legacy codebase and found a users table with passwords stored in plain SHA-256. No salt. No iteration. Just a straight hash. I ran a rainbow table against it and cracked 60% of the passwords in under four minutes. That project became the reason I started thinking hard about password hashing and why bcrypt still matters in 2026.
-SHA-256, MD5, SHA-1 -- these are all designed to be fast. That is their job. When you are verifying file integrity or building a Merkle tree, speed is a feature. When you are hashing passwords, speed is a vulnerability.
-A modern GPU can compute billions of SHA-256 hashes per second. That means an attacker with a decent graphics card can brute-force an eight-character password in hours, not years. The math is brutal: if you…]]></summary>
+        <title type="html"><![CDATA[Java Is Fast. Your Code Might Not Be]]></title>
+        <id>https://jvogel.me/posts/2026/java-is-fast-your-code-might-not-be/</id>
+        <link href="https://jvogel.me/posts/2026/java-is-fast-your-code-might-not-be/"/>
+        <updated>2026-03-20T13:43:23.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Michael Lip</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Trim Audio Files Without Installing Software]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/trim-audio-files-without-installing-software-5p4</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/trim-audio-files-without-installing-software-5p4"/>
-        <updated>2026-03-20T13:47:32.000Z</updated>
-        <summary type="html"><![CDATA[I needed to extract a 30-second clip from a podcast episode to use as a sample in a presentation. My options: install Audacity (a 90 MB download with 200 features I don't need), use FFmpeg (powerful but I'd need to figure out the timestamp syntax), or open a web-based tool and drag the trim handles. I chose the third option because sometimes the simplest tool is the right one.
-But the experience made me curious about how audio trimming actually works, both at the file format level and in the browser. Here's what I learned.
-Digital audio is a series of numbers representing air pressure samples taken at regular intervals. CD-quality audio samples 44,100 times per second (44.1 kHz sample rate), and each sample is a 16-bit integer (values from -32,768 to 32,767). Stereo audio has two channels,…]]></summary>
-        <author>
-            <name>Michael Lip</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I paid for an Instagram API with 3 lines of code — no signup, no API keys]]></title>
-        <id>https://dev.to/socialinteldev/i-paid-for-an-instagram-api-with-3-lines-of-code-no-signup-no-api-keys-25g2</id>
-        <link href="https://dev.to/socialinteldev/i-paid-for-an-instagram-api-with-3-lines-of-code-no-signup-no-api-keys-25g2"/>
-        <updated>2026-03-20T13:46:34.000Z</updated>
-        <summary type="html"><![CDATA[I built a pay-per-request Instagram influencer search API using the x402 protocol — HTTP 402 payments in USDC on Base. This week I tested it with AgentCash to verify the full agent-to-API payment loop.
-Here is the entire workflow:
-AgentCash automatically discovers any x402-compatible API:
-discover_api_endpoints("https://socialintel.dev")
-
-Returns all endpoints with pricing:
-GET /v1/search — $0.10–$0.26 depending on result count
-GET /v1/search/free — 3 free results for testing
-curl "https://socialintel.dev/v1/search?query=travel&country=US&limit=5"
-# Returns: HTTP 402 Payment Required
-# After x402 payment: 5 travel influencer profiles
-
-Verified result: 5 travel photographer profiles, follower counts 78k–85k.
-On-chain proof: 0x294ec95cd8c76581e326a3b969f54e9f6a0561489cd7cdb2da34ff372eca6c77
-Traditional APIs need API key registration, monthly subscriptions, and a human to set up billing.
-x402 APIs need a funded wallet and one line of code. The agent pays autonomously. No human in the loop.
-Free demo (no wallet needed):
-GET https://socialintel.dev/v1/search?query=travel&demo=true
-
-Paid search: point any x402 client at https://socialintel.dev/v1/search
-Building in public. Launching on Product Hunt March 30.]]></summary>
-        <author>
-            <name>Sebastian Wallinstabot project</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Audio Formats Explained: When to Use MP3, WAV, FLAC, OGG, and AAC]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/audio-formats-explained-when-to-use-mp3-wav-flac-ogg-and-aac-4h04</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/audio-formats-explained-when-to-use-mp3-wav-flac-ogg-and-aac-4h04"/>
-        <updated>2026-03-20T13:46:25.000Z</updated>
-        <summary type="html"><![CDATA[A coworker sent me a .flac file last week and asked me to add it to a web project. My first reaction was "just convert it to MP3." But then I stopped and thought about it. Why MP3? Is it actually the best format for web audio in 2026? The answer, like most things in engineering, is "it depends." And the reasoning matters more than the answer.
-Audio formats are a tradeoff between file size, quality, compatibility, and licensing. Choosing the wrong format means either wasting bandwidth, losing quality, or breaking playback on certain devices. Here's what each format actually is and when to use it.
-Audio compression falls into two categories.
-Lossy compression permanently removes audio data that the algorithm determines is inaudible or less important. You get smaller files, but the removed da…]]></summary>
-        <author>
-            <name>Michael Lip</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Aspect Ratios Explained: Why Your Images Look Stretched]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/aspect-ratios-explained-why-your-images-look-stretched-f24</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/aspect-ratios-explained-why-your-images-look-stretched-f24"/>
-        <updated>2026-03-20T13:46:18.000Z</updated>
-        <summary type="html"><![CDATA[You resize an image to fit a container and it looks wrong. The photo is distorted. People's faces are too wide or too narrow. The landscape that looked stunning at full size now looks like it was shot through a funhouse mirror. The problem is almost always the same: you changed the dimensions without preserving the aspect ratio.
-Aspect ratio is the proportional relationship between width and height. It's one of those concepts that's simple in theory and surprisingly tricky in practice, especially when you're dealing with responsive layouts, multiple screen sizes, and media from different sources.
-An aspect ratio is expressed as two numbers separated by a colon: width:height. A 16:9 image is 16 units wide for every 9 units tall. The actual pixel dimensions don't matter -- 1920x1080, 1280x72…]]></summary>
-        <author>
-            <name>Michael Lip</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A 1-hour experiment: vibe-coding an app to break the ice at a networking event]]></title>
-        <id>https://dev.to/javz/a-1-hour-experiment-vibe-coding-an-app-to-break-the-ice-at-a-networking-event-2721</id>
-        <link href="https://dev.to/javz/a-1-hour-experiment-vibe-coding-an-app-to-break-the-ice-at-a-networking-event-2721"/>
-        <updated>2026-03-20T13:45:50.000Z</updated>
-        <summary type="html"><![CDATA[It’s 5pm. My event starts in an hour.
-Plenty of time to build an app, right? 
-I’m currently exploring a new project idea. Still early, still messy.
-One of the most common pieces of advice when building a product is to validate early by talking to potential users.
-So I thought: why not use this networking event to start?
-The problem is, walking up to people and asking them to answer questions about your idea can feel awkward.
-I wanted something lighter. Something that would make the interaction feel natural instead of forced.
-So I built a simple app.
-A spin-the-wheel game where people could either:
-win a prize
-or answer a short survey
-It may or may not have been slightly rigged 🤫
-But the goal wasn’t the prize.
-It was to create a moment.
-A small interaction that lowers the barrier, gets a s…]]></summary>
-        <author>
-            <name>Julien Avezou</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ASCII Art Is Not Dead, You're Just Not Using It Right]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/ascii-art-is-not-dead-youre-just-not-using-it-right-3m1e</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/ascii-art-is-not-dead-youre-just-not-using-it-right-3m1e"/>
-        <updated>2026-03-20T13:45:34.000Z</updated>
-        <summary type="html"><![CDATA[I was setting up a new CLI tool last month and wanted a startup banner. Something that would display the tool's name in the terminal when it launches. My first instinct was to use figlet, the classic Unix program that converts text to ASCII art. But then I realized: most developers I know have never heard of figlet, and the ones who have think ASCII art is a novelty from the 1990s.
-It's not. ASCII art is alive in terminal applications, code comments, log outputs, email signatures, README files, and anywhere that plain text is the only medium available. Understanding how it works -- and how to generate it programmatically -- is a genuinely useful skill.
-ASCII art uses the 95 printable ASCII characters (codes 32-126) to create visual images on a character grid. Each character occupies a fixe…]]></summary>
-        <author>
-            <name>Michael Lip</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The "State Export" Hack: Rescuing Overloaded LLM Chats]]></title>
-        <id>https://dev.to/southy404/the-state-export-hack-rescuing-overloaded-llm-chats-5197</id>
-        <link href="https://dev.to/southy404/the-state-export-hack-rescuing-overloaded-llm-chats-5197"/>
-        <updated>2026-03-20T13:44:21.000Z</updated>
-        <summary type="html"><![CDATA[We’ve all been there. You’re deep into a complex coding session, debugging a gnarly architecture issue, or building a massive project. After 50+ messages, the chat starts lagging, the AI starts forgetting your established rules, and the context window is clearly gasping for air. 
-You need to start a fresh chat (or switch to a completely different, smarter model)—but the thought of re-explaining the entire project setup, rules, and current state makes you want to cry.
-Here is a quick trick I use to migrate chat contexts without losing my mind: The AI-to-AI Context Handoff.
-Instead of manually summarizing things, you force the AI to compress its own brain state into a token-efficient format that you can just copy-paste into a new window. Here are the two prompts I use depending on the model.…]]></summary>
-        <author>
-            <name>southy404</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How I Debug APIs Without Postman Taking Over My RAM]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/how-i-debug-apis-without-postman-taking-over-my-ram-4n8j</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/how-i-debug-apis-without-postman-taking-over-my-ram-4n8j"/>
-        <updated>2026-03-20T13:44:08.000Z</updated>
-        <summary type="html"><![CDATA[Postman was a Chrome extension when I first used it. Lightweight, fast, did one thing well. Then it became an Electron app. Then it wanted me to create an account. Then it started syncing to the cloud. Then it added workspaces, teams, monitors, mock servers, flow diagrams, and an AI assistant. The download is now over 200 MB. For a tool that sends HTTP requests.
-I'm not saying Postman is bad. For teams that use its collaboration features, it's valuable. But if you just need to test an API endpoint -- send a request, see the response, check the status code -- you don't need a 200 MB application running a Chromium instance in the background.
-When developers say "API testing," they usually mean one of three things:
-Exploratory testing. You're poking at a new API to understand how it works. Yo…]]></summary>
-        <author>
-            <name>Michael Lip</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stop Writing API Requests from Scratch Every Time]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/stop-writing-api-requests-from-scratch-every-time-3on8</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/stop-writing-api-requests-from-scratch-every-time-3on8"/>
-        <updated>2026-03-20T13:44:02.000Z</updated>
-        <summary type="html"><![CDATA[Every developer has the same ritual. You need to hit an API endpoint. You open a blank file or a terminal. You start typing curl or fetch() and then pause. What's the header for JSON again? Is it Content-Type or content-type? Do I need Authorization: Bearer with a space or without? Is the body JSON.stringify'd or raw?
-I've watched senior developers spend ten minutes reconstructing a POST request they've written hundreds of times before. The syntax isn't hard. The problem is that there are enough small variations across HTTP methods, auth schemes, and content types that you can never quite write it from memory without second-guessing yourself.
-Every HTTP request has the same fundamental structure, regardless of what tool or language you're using to send it.
-Method. GET, POST, PUT, PATCH, DE…]]></summary>
-        <author>
-            <name>Michael Lip</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Build a Modern Stack with Vite, Tailwind, i18next, and TanStack Router]]></title>
-        <id>https://dev.to/zeroaninea_8bec34a4e7d029/build-a-modern-stack-with-vite-tailwind-i18next-and-tanstack-router-447d</id>
-        <link href="https://dev.to/zeroaninea_8bec34a4e7d029/build-a-modern-stack-with-vite-tailwind-i18next-and-tanstack-router-447d"/>
-        <updated>2026-03-20T13:43:58.000Z</updated>
-        <summary type="html"><![CDATA[Source: https://github.com/ZeroaNinea/React-Vite-i18next--tanstack-react-router-Tailwind-Example
-Setting up a modern React project can quickly turn into dependency chaos — especially when combining routing, styling, and internationalization.
-In this guide, you'll build a clean, production-ready setup using:
-⚛️ React
-⚡ Vite
-🎨 Tailwind CSS
-🌍 i18next
-🧭 TanStack Router
-Depending on your Vite version, some dependencies may not install cleanly.
-If you run into issues:
-npm i --force
-
-Or consider using a slightly older version of Vite.
-npm create vite@latest React-Vite-i18next-@tanstack/react-router-Tailwind-Example -- --template react-ts
-
-Install Talwind and its Vite plugin.
-npm i tailwindcss @tailwindcss/vite
-
-If installation fails:
-npm i --force @tailwindcss/vite
-
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
-
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-});
-
-@import 'tailwindcss';
-
-npm i @tanstack/react-router @tanstack/router-devtools
-
-Create:
-src/router.tsx
-
-Then connect it in main.tsx:
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-
-import './index.css';
-import { AppRouter } from './router.tsx';
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AppRouter />
-  </StrictMode>,
-);
-
-Install:
-npm i i18next react-i18next
-
-Create:
-src/utils/i18n/index.ts
-
-Add your translation JSON files there.
-Then import it once in your app:
-import './utils/i18n';
-
-Finally, integrate it inside your components (e.g. App.tsx).
-This combination is surprisingly powerful:
-Vite: instant dev server, fast builds.
-Tailwind: no context switching for styling.
-TanStack Router: type-safe, modern routing.
-i18next: scalable internationalization.
-Together, they form a minimal but production-ready architecture.]]></summary>
-        <author>
-            <name>Heghine</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Business Card Design Principles That Developers Keep Getting Wrong]]></title>
-        <id>https://dev.to/michael_lip_52d5151c3e364/business-card-design-principles-that-developers-keep-getting-wrong-4nbg</id>
-        <link href="https://dev.to/michael_lip_52d5151c3e364/business-card-design-principles-that-developers-keep-getting-wrong-4nbg"/>
-        <updated>2026-03-20T13:43:37.000Z</updated>
-        <summary type="html"><![CDATA[I went to a tech meetup last year and collected about twenty business cards. Three of them were memorable. The rest were variations on the same theme: a name, a title, an email, a phone number, a LinkedIn URL, a GitHub URL, a personal website URL, and a QR code. All crammed onto a 3.5 by 2 inch card in 8-point type.
-The irony is that developers understand the principle that drives good card design. We just know it by a different name. In code, it's the single responsibility principle. On a business card, it's this: the card has one job -- to make the recipient remember you and have a way to reach you. Everything else is clutter.
-A standard business card is 3.5 x 2 inches (89 x 51 mm). That's 7 square inches of space. A well-designed card uses maybe 40% of that space for content, leaving 60…]]></summary>
-        <author>
-            <name>Michael Lip</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -261,16 +443,6 @@ A standard business card is 3.5 x 2 inches (89 x 51 mm). That's 7 square inches 
         <id>https://shkspr.mobi/blog/2026/03/im-ok-being-left-behind-thanks/</id>
         <link href="https://shkspr.mobi/blog/2026/03/im-ok-being-left-behind-thanks/"/>
         <updated>2026-03-20T13:38:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Nvidia's Huang pitches AI tokens on top of salary]]></title>
-        <id>https://www.cnbc.com/2026/03/20/nvidia-ai-agents-tokens-human-workers-engineer-jobs-unemployment-jensen-huang.html</id>
-        <link href="https://www.cnbc.com/2026/03/20/nvidia-ai-agents-tokens-human-workers-engineer-jobs-unemployment-jensen-huang.html"/>
-        <updated>2026-03-20T13:31:46.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -337,6 +509,16 @@ A standard business card is 3.5 x 2 inches (89 x 51 mm). That's 7 square inches 
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Exploring 8 Shaft Weaving]]></title>
+        <id>https://slab.org/2026/03/11/exploring-8-shaft-weaving/</id>
+        <link href="https://slab.org/2026/03/11/exploring-8-shaft-weaving/"/>
+        <updated>2026-03-20T12:59:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Coinbase introduces stock perpetual futures contracts for non-U.S. customers]]></title>
         <id>ed9c55a9-8ef8-472b-ab7d-5b49c76ddc4d</id>
         <link href="https://www.coindesk.com/markets/2026/03/20/coinbase-introduces-stock-perpetual-futures-contracts-for-non-u-s-customers"/>
@@ -367,16 +549,6 @@ A standard business card is 3.5 x 2 inches (89 x 51 mm). That's 7 square inches 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Delphi 13.1 Released, with ARM64 support]]></title>
-        <id>https://blogs.embarcadero.com/announcing-the-availability-of-rad-studio-13-florence-update-1/</id>
-        <link href="https://blogs.embarcadero.com/announcing-the-availability-of-rad-studio-13-florence-update-1/"/>
-        <updated>2026-03-20T11:45:20.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Bitcoin holds steady, with one analyst seeing the upside emerging]]></title>
         <id>e675fea3-208e-4a52-8224-2ca3cbaa6c27</id>
         <link href="https://www.coindesk.com/daybook-us/2026/03/20/bitcoin-holds-steady-with-one-analyst-seeing-the-upside-emerging"/>
@@ -384,6 +556,16 @@ A standard business card is 3.5 x 2 inches (89 x 51 mm). That's 7 square inches 
         <summary type="html"><![CDATA[Your day-ahead look for March 20, 2026]]></summary>
         <author>
             <name>Francisco Rodrigues</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The world still needs people who care - CodePen founder Chris Coyier interview [Podcast #212]]]></title>
+        <id>69bd2ff0edfa9acbe3847525</id>
+        <link href="https://www.freecodecamp.org/news/the-world-still-needs-people-who-care-codepen-founder-chris-coyier-interview-podcast-212/"/>
+        <updated>2026-03-20T11:30:00.000Z</updated>
+        <summary type="html"><![CDATA[Today Quincy Larson interviews Chris Coyier. He's a front-end developer and co-founder of CodePen and the CSS Tricks blog. He has also recorded more than 700 podcasts about software engineering. We ta]]></summary>
+        <author>
+            <name>Beau Carnes</name>
         </author>
     </entry>
     <entry>
@@ -650,16 +832,6 @@ The post OPPO Find X9s, Find X9 Ultra Secure SIRIM Certification; Local Launch A
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Noq: n0's new QUIC implementation in Rust]]></title>
-        <id>https://www.iroh.computer/blog/noq-announcement</id>
-        <link href="https://www.iroh.computer/blog/noq-announcement"/>
-        <updated>2026-03-19T18:17:15.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Software Testing with Playwright]]></title>
         <id>69bc3c86b238fd45a32512ba</id>
         <link href="https://www.freecodecamp.org/news/software-testing-with-playwright/"/>
@@ -810,16 +982,6 @@ The post OPPO Find X9s, Find X9 Ultra Secure SIRIM Certification; Local Launch A
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Bitcoin $20,000 put option is third most popular strike ahead of quarterly expiry]]></title>
-        <id>f4ae344c-1927-4379-907d-3d740d5a7302</id>
-        <link href="https://www.coindesk.com/markets/2026/03/19/bitcoin-usd20-000-put-option-is-third-most-popular-strike-ahead-of-quarterly-expiry"/>
-        <updated>2026-03-19T14:34:51.000Z</updated>
-        <summary type="html"><![CDATA[Nearly $600M in deep out-of-the-money puts highlights tail-risk positioning, though flows point more to volatility strategies than to outright bearish bets.]]></summary>
-        <author>
-            <name>James Van Straten</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Quicknode Now Supports Robinhood Chain]]></title>
         <id>69bb6d95d354b50001018446</id>
         <link href="https://blog.quicknode.com/quicknode-now-supports-robinhood-chain/"/>
@@ -827,16 +989,6 @@ The post OPPO Find X9s, Find X9 Ultra Secure SIRIM Certification; Local Launch A
         <summary type="html"><![CDATA[Robinhood Chain is live on Quicknode. Deploy endpoints and start building on the Ethereum L2 for tokenized stocks, ETFs, and real-world assets.]]></summary>
         <author>
             <name>Quicknode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Astral to Join OpenAI]]></title>
-        <id>https://astral.sh/blog/openai</id>
-        <link href="https://astral.sh/blog/openai"/>
-        <updated>2026-03-19T13:05:50.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -967,16 +1119,6 @@ The post MCMC Directs Telcos To Strengthen Networks During Hari Raya Aidilfitri 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Optimize Your Docker Build Cache & Cut Your CI/CD Pipeline Times by 80%]]></title>
-        <id>69bb1e218c55d6eefb64955f</id>
-        <link href="https://www.freecodecamp.org/news/how-to-optimize-your-docker-build-cache/"/>
-        <updated>2026-03-18T21:50:25.000Z</updated>
-        <summary type="html"><![CDATA[Every developer has been there. You push a one-line fix, grab your coffee, and wait. And wait. Twelve minutes later, your Docker image finishes rebuilding from scratch because something about the cach]]></summary>
-        <author>
-            <name>Balajee Asish Brahmandam</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Quicknode Launches Support for Tempo Mainnet]]></title>
         <id>69b98c1ed354b5000101841f</id>
         <link href="https://blog.quicknode.com/quicknode-launches-support-for-tempo-mainnet/"/>
@@ -1051,6 +1193,16 @@ The post MCMC Directs Telcos To Strengthen Networks During Hari Raya Aidilfitri 
         <id>https://www.carryology.com/insights/how-the-turner-twins-are-mythbusting-modern-gear/</id>
         <link href="https://www.carryology.com/insights/how-the-turner-twins-are-mythbusting-modern-gear/"/>
         <updated>2026-03-17T19:19:44.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Los Angeles Aqueduct Is Wild]]></title>
+        <id>https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild</id>
+        <link href="https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild"/>
+        <updated>2026-03-17T18:43:53.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
