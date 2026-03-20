@@ -1,56 +1,517 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-03-20T06:49:11.548Z</id>
+    <id>urn:2026-03-20T07:42:18.389Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-03-20T06:49:11.548Z</updated>
+    <updated>2026-03-20T07:42:18.389Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Map & Set: The Underrated Heroes of JavaScript]]></title>
-        <id>https://dev.to/kunal_dev/map-set-the-underrated-heroes-of-javascript-4ad7</id>
-        <link href="https://dev.to/kunal_dev/map-set-the-underrated-heroes-of-javascript-4ad7"/>
-        <updated>2026-03-20T06:38:34.000Z</updated>
-        <summary type="html"><![CDATA[While writing the blog on Array method, I have came across some topics that are new to me and Map and Set are one of them.
-If you’d like to explore them too 👇
-If You Don’t Know These Array Methods, We Need to Talk.
-Kunal  ・ Mar 3
-#javascript
-        #discuss
-        #node
-        #computerscience
-      
-So in this blog we will cover : 
-Topics to Cover
-Before Map & Set (The Old Way)
-What Map is
-Difference between Map and Object
-What Set is
-Difference between Set and Array
-When to use Map and Set
-Before learning Set and Map , I tried doing things in the old ways using array and objects. 
-For Map we do
+        <title type="html"><![CDATA[PostgreSQL-constraints]]></title>
+        <id>https://dev.to/s_mathavi_2fa1e3ea8514f34/postgresql-constraints-2bng</id>
+        <link href="https://dev.to/s_mathavi_2fa1e3ea8514f34/postgresql-constraints-2bng"/>
+        <updated>2026-03-20T07:38:28.000Z</updated>
+        <summary type="html"><![CDATA[Constraints:
+Constraints are the backbone of reliable database design. They act like safety checks, ensuring that every piece of data stored is valid, consistent, and meaningful.
+Types of Constraints
+1.PRIMARY KEY
+-Ensures each row has a unique identifier.
+example:
+emp_id SERIAL PRIMARY KEY
+2.FOREIGN KEY
+-Creates a relationship between two tables.
+example:
+dept_id INT REFERENCES Department(dept_id)
+3.UNIQUE
+-Guarantees that all values in a column are distinct.
+example:
+email VARCHAR(150) UNIQUE
+4. NOT NULL
+-Prevents empty values in a column.
+example:
+name VARCHAR(100) NOT NULL
+5.DEFAULT
+-Assigns an automatic value if none is provided during insertion.
+example:
+status VARCHAR(20) DEFAULT 'Active'
+6. CHECK
+-Validates data against a condition.
+example:
+salary NUMERIC(10,2) CHECK (salary > 0)
+CREATE TABLE Employee (
+    emp_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE,
+    dept_id INT REFERENCES Department(dept_id),
+    salary NUMERIC(10,2) CHECK (salary > 0),
+    status VARCHAR(20) DEFAULT 'Active'
+);
 
-
-
-
-const data = {};
-
-data["name"] = "Kunal";
-data["age"] = 21;
-
-console.log(data["name"]); // Kunal
-
-For Set we do
-
-
-
-
-const arr = [1,2,2,3,3,5]
-const unique = []
-
-for (let i = 0; i < arr.len…]]></summary>
+Why Constraints Matter
+-Data Integrity: Prevents invalid or duplicate entries.
+Next blog is Relationship(joins) in PostgreSql....]]></summary>
         <author>
-            <name>Kunal</name>
+            <name>s mathavi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PostgreSql - Relationships(joins)]]></title>
+        <id>https://dev.to/s_mathavi_2fa1e3ea8514f34/postgresql-relationshipsjoins-4c6o</id>
+        <link href="https://dev.to/s_mathavi_2fa1e3ea8514f34/postgresql-relationshipsjoins-4c6o"/>
+        <updated>2026-03-20T07:38:05.000Z</updated>
+        <summary type="html"><![CDATA[How to connect Two Database in innerjoin?
+CREATE EXTENSION dblink;
+Example:
+SELECT e.name, d.dept_name
+FROM Employee e
+JOIN dblink('dbname=department_db',
+            'SELECT dept_id, dept_name FROM Department')
+AS d(dept_id INT, dept_name TEXT)
+ON e.department_id = d.dept_id
+
+;
+
+Same Database:
+Example:
+SELECT e.name, d.dept_name
+
+
+Now we Start ,
+Tables Setup
+Employee table:
+emp_id | name   | dept_id
+-------+--------+--------
+1      | Udaya  | 2
+2      | Mathavi  | 3
+3      | Kumar  | 1
+4      | Meena  | NULL
+
+Department table:
+dept_id | dept_name
+--------+-----------
+1       | IT
+2       | Finance
+3       | HR
+4       | Marketing
+
+SELECT e.name, d.dept_name
+FROM Employee e
+INNER JOIN Department d ON e.dept_id = d.dept_id;
+
+Output:
+
+
+
+name
+dept_name
+
+
+
+
+Udaya
+Finance
+
+
+Mathavi
+HR
+
+
+Kumar
+IT
+
+
+
+!..Only employees with valid department.
+SELECT e.name, d.dept_name
+FROM Employee e
+LEFT JOIN Department d ON e.dept_id = d.dept_id;
+
+Output:
+name   | dept_name
+-------+-----------
+Udaya  | Finance
+Priya  | HR
+Kumar  | IT
+Meena  | NULL
+
+!..All employees shown, even Meena (no department → NULL).
+SELECT e.name, d.dept_name
+FROM Employee e
+RIGHT JOIN Department d ON e.dept_id = d.dept_id;
+
+Output:
+name   | dept_name
+-------+-----------
+Udaya  | Finance
+Priya  | HR
+Kumar  | IT
+NULL   | Marketing
+
+!..All departments shown, even Marketing (no employee → NULL).
+SELECT e.name, d.dept_name
+FROM Employee e
+FULL OUTER JOIN Department d ON e.dept_id = d.dept_id;
+
+Output:
+name   | dept_name
+-------+-----------
+Udaya  | Finance
+Priya  | HR
+Kumar  | IT
+Meena  | NULL
+NULL   | Marketing
+
+!..Combines LEFT + RIGHT → all employees + all departments.
+SELECT e.name, d.dept_name
+FROM Employee e
+CROSS JOIN Department d;
+
+Output:
+name   | dept_name
+-------+-----------
+Udaya  | IT
+Udaya  | Finance
+Udaya  | HR
+Udaya  | Marketing
+Priya  | IT
+Priya  | Finance
+... (every combination)
+
+!..Every employee paired with every department.
+Our next blog is Aggregate Function....]]></summary>
+        <author>
+            <name>s mathavi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[What is a runtime environment?]]></title>
+        <id>https://dev.to/mansiey/what-is-a-runtime-environment-43e5</id>
+        <link href="https://dev.to/mansiey/what-is-a-runtime-environment-43e5"/>
+        <updated>2026-03-20T07:36:28.000Z</updated>
+        <summary type="html"><![CDATA[If you’re a developer, you already know that node.js is a runtime environment and how it was developed by binding C++ and V8 engine. But how do we visualize it?
+Being from non-tech background I kept thinking what is actually a runtime environment?, I had this vague idea seeing the name, but I searched about it, because I wanted to have the clear picture.
+• Basically To execute a code you need collections of software and hardware components. Why? Because software tells you how to execute that code and hardware actually does that execution.
+• The Runtime Environment is just abstraction layer between code, Os and Hardware components which provides essential services and allows programs to run consistently across different platforms i.e runtime gives us pre-written code that acts as a functionality so we don’t have to deal with OS or hardware directly!
+•  Without those services we would actually have to manage memory system, handle the CPU instructions, andd deal with the networking protocols ourselves, doesn’t seem practical right?!!
+Now, we should know what are the key components involved in this. Just a little summary of what I wrote above:
+• An execution engine (Interpreter):
+• Runtime Libraries:
+• Memory management system:
+• Core system interface: 
+Well, We all have been using a runtime environment way before we started with the JavaScript, Web Browser.
+It’s a Runtime environment for the frontend Javascript application.]]></summary>
+        <author>
+            <name>Mansi Singh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Secret Life of Go: Error Handling (Part 2)]]></title>
+        <id>https://dev.to/aaron_rose_0787cc8b4775a0/the-secret-life-of-go-error-handling-part-2-5eo1</id>
+        <link href="https://dev.to/aaron_rose_0787cc8b4775a0/the-secret-life-of-go-error-handling-part-2-5eo1"/>
+        <updated>2026-03-20T07:31:47.000Z</updated>
+        <summary type="html"><![CDATA[Data-Rich Errors, Custom Structs, and errors.As
+Eleanor is a senior software engineer. Ethan is her junior colleague. They work in a beautiful beaux arts library in Lower Manhattan — the kind of place where coding languages are discussed like poetry.
+Episode 31
+Ethan was building a user registration endpoint. He had learned his lesson from the previous day and was dutifully avoiding string matching. 
+"I have a problem with Sentinel errors," Ethan said, turning his monitor toward Eleanor. "They are great for simple states like ErrNotFound. But what if the error is a validation failure? I need to tell the frontend exactly which field failed and why. I can't write a Sentinel variable for every possible bad email address."
+He showed her his workaround:
+// Ethan's attempt to return data
+func va…]]></summary>
+        <author>
+            <name>Aaron Rose</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I built a LoL-style tier system for GitHub profiles]]></title>
+        <id>https://dev.to/chahyunwoo/i-built-a-lol-style-tier-system-for-github-profiles-3njc</id>
+        <link href="https://dev.to/chahyunwoo/i-built-a-lol-style-tier-system-for-github-profiles-3njc"/>
+        <updated>2026-03-20T07:31:40.000Z</updated>
+        <summary type="html"><![CDATA[I wanted something more fun than the usual GitHub stats card, so I made a widget that ranks your GitHub activity like League of Legends — Iron through Challenger.
+One line in your README and you're done.
+It looks at commits, stars, PRs, followers, and issues. Scoring is log-normal CDF based, calibrated against 225 real users so the tiers aren't totally arbitrary.
+Built with Hono + Vercel. 9 themes. Self-hosting works too.
+I got Platinum I. Could be worse.
+ / 
+        github-tier
+      
+    
+
+  
+GitHub Tier
+🎮 Gaming-style rank card for your GitHub profile
+Show off your GitHub activity as a competitive rank — from Iron to Challenger
+
+  
+  
+  
+
+
+
+  🔗 View Demo
+   · 
+  🐛 Report Bug
+   · 
+  ✨ Request Feature
+
+
+
+
+
+
+  
+  
+⚡ Features
+🏆 10 Tier Ranks — Iron → Bronze → Silver → Gold → Platinum → Emerald → Diamond → Master → Grandmaster → Challenger
+🎯 Division System — Each tier has IV to I subdivisions (like League of Legends)
+📊 5 Metrics — Commits, Stars, PRs, Followers, Issues
+🔬 CDF-based Scoring — Log-Normal CDF model validated against 225+ real GitHub users
+🎨 9 Themes — dark, tokyonight, dracula, nord, gruvbox, catppuccin, onedark, radical, light
+💎 Premium Effects — Diamond+ tiers get glow borders, Master+ get elite emblems
+🔄 Auto Updates — Card refreshes every hour via CDN cache
+🔒 Private Contributions — Includes private repo commits…
+View on GitHub
+thanks]]></summary>
+        <author>
+            <name>Cha Hyun Woo</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Zoho Catalyst CLI — Docker Setup Guide]]></title>
+        <id>https://dev.to/sillycoder/zoho-catalyst-cli-docker-setup-guide-27ep</id>
+        <link href="https://dev.to/sillycoder/zoho-catalyst-cli-docker-setup-guide-27ep"/>
+        <updated>2026-03-20T07:30:07.000Z</updated>
+        <summary type="html"><![CDATA[A complete guide to setting up Zoho Catalyst CLI using Docker on Windows (WSL2 + Ubuntu)
+Before starting, ensure you have the following:
+A Windows machine with WSL2 enabled
+
+
+Ubuntu installed via WSL2
+Docker installed on Ubuntu — see Step 2
+A Zoho Catalyst account
+
+Basic familiarity with the terminal
+You can access your Ubuntu environment in any of the following ways:
+Option 1 — Via the Ubuntu App:
+Press Windows + S and search for Ubuntu
+
+Click to open it
+Option 2 — Via Windows Terminal, CMD or PowerShell:
+wsl
+
+Option 3 — Via any terminal that supports WSL (e.g. Windows Terminal, Git Bash):
+wsl -d Ubuntu
+
+In all cases you'll see a terminal prompt like:
+username@DESKTOP-XXXX:~$
+
+You are now inside your Ubuntu environment.
+Run the following commands in your Ubuntu terminal one by one:
+# Remo…]]></summary>
+        <author>
+            <name>Silly Coder</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Move All Negative Elements to End]]></title>
+        <id>https://dev.to/mohith_001/move-all-negative-elements-to-end-5616</id>
+        <link href="https://dev.to/mohith_001/move-all-negative-elements-to-end-5616"/>
+        <updated>2026-03-20T07:29:20.000Z</updated>
+        <summary type="html"><![CDATA[Problem Statement
+
+
+Given an array arr[] containing both positive and negative integers, move all negative elements to the end of the array without changing the relative order of elements.
+At first, I thought this is similar to partitioning (like quicksort or two-pointer problems).
+The order of elements must not change.
+This changes the entire approach.
+If I try swapping elements (like placing negatives at the end using two pointers), the order of positive elements or negative elements may get disturbed.
+So I needed a way to rearrange elements while keeping their original sequence intact.
+We are not asked to sort.
+Keep all non-negative elements in the front (in the same order)
+Move all negative elements to the end (in the same order)
+This means the solution must be stable.
+To maintain orde…]]></summary>
+        <author>
+            <name>Mohith</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I curated 1,863 Data Engineering interview questions from 97+ companies --- here's what I learned. Website :: dataengprep.tech]]></title>
+        <id>https://dev.to/codeshukla/i-curated-1863-data-engineering-interview-questions-from-97-companies-heres-what-i-learned-3lia</id>
+        <link href="https://dev.to/codeshukla/i-curated-1863-data-engineering-interview-questions-from-97-companies-heres-what-i-learned-3lia"/>
+        <updated>2026-03-20T07:26:20.000Z</updated>
+        <summary type="html"><![CDATA[I spent months collecting and organizing real data engineering interview questions from 97+ companies including Amazon, Google, Databricks, Goldman Sachs, Walmart, and Meta.
+
+The result: **1,863 questions** across 7 categories, each with a Senior/Principal-level answer.
+
+Here's what I learned about what top companies actually ask.
+
+## The 7 Categories (and their weight in real interviews)
+
+| Category         | Questions | Interview Weight          |
+| ---------------- | --------- | ------------------------- |
+| SQL              | 487       | Every single interview    |
+| Spark / Big Data | 452       | Critical for senior roles |
+| System Design    | 179       | The make-or-break round   |
+| Python / Coding  | 179       | Usually 1–2 rounds        |
+| Cloud / Tools    | 179       | AWS, GCP…]]></summary>
+        <author>
+            <name>Aditya Kumar</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Remove Duplicates in Sorted Linked List]]></title>
+        <id>https://dev.to/jeyaprasadr/remove-duplicates-in-sorted-linked-list-5341</id>
+        <link href="https://dev.to/jeyaprasadr/remove-duplicates-in-sorted-linked-list-5341"/>
+        <updated>2026-03-20T07:20:33.000Z</updated>
+        <summary type="html"><![CDATA[In this task, I worked on removing duplicate elements from a sorted linked list.
+Since the list is already sorted, duplicate values will always appear next to each other.
+I created a function removeDuplicates that:
+Takes the head of a linked list
+Removes duplicate nodes
+Returns the modified list with only unique elements
+Instead of using extra space , I used a simple pointer traversal.
+I used one pointer:
+curr → starts from the head and traverses the list
+At each step:
+Compare the current node with the next node
+If both values are the same:
+Skip the next node → curr.next = curr.next.next
+
+
+
+
+
+
+
+
+Otherwise:
+Move to the next node → curr = curr.next
+
+
+
+
+
+
+
+
+
+  
+  
+  Code
+
+
+
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def removeDuplicates(head):
+    curr = head
+
+    while curr and curr.next:
+        if curr.val == curr.next.val:
+            curr.next = curr.next.next  
+        else:
+            curr = curr.next
+
+    return head
+
+Because the list is sorted:
+All duplicates are adjacent
+So we only need to compare neighboring nodes
+When a duplicate is found, we simply bypass it, effectively removing it from the list.
+O(n) → traverse the list once
+O(1) → no extra space used
+Original:
+1 → 1 → 2 → 3 → 3 → 4 → None
+After removing duplicates:
+1 → 2 → 3 → 4 → None]]></summary>
+        <author>
+            <name>Jeyaprasad R</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Architecting Autonomous Agents: A Deep Dive into Azure AI Foundry Agent Service]]></title>
+        <id>https://dev.to/jubinsoni/architecting-autonomous-agents-a-deep-dive-into-azure-ai-foundry-agent-service-4jnk</id>
+        <link href="https://dev.to/jubinsoni/architecting-autonomous-agents-a-deep-dive-into-azure-ai-foundry-agent-service-4jnk"/>
+        <updated>2026-03-20T07:18:35.000Z</updated>
+        <summary type="html"><![CDATA[The landscape of Generative AI is shifting rapidly from simple chat interfaces to autonomous agents. While Large Language Models (LLMs) provide the reasoning engine, agents provide the hands and feet—the ability to interact with tools, query databases, execute code, and maintain long-term context. 
+Microsoft’s latest evolution in this space is the Azure AI Foundry Agent Service. Built upon the foundations of the OpenAI Assistants API but integrated deeply into the Azure ecosystem, it provides a managed, secure, and scalable environment for deploying sophisticated AI agents. This article provides a comprehensive technical deep dive into its architecture, core components, and implementation strategies.
+Traditional LLM implementations follow a request-response pattern. The developer is respon…]]></summary>
+        <author>
+            <name>Jubin Soni</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Testing Azure Functions: Unit, Integration, and Local]]></title>
+        <id>https://dev.to/martin_oehlert/testing-azure-functions-unit-integration-and-local-1cml</id>
+        <link href="https://dev.to/martin_oehlert/testing-azure-functions-unit-integration-and-local-1cml"/>
+        <updated>2026-03-20T07:17:37.000Z</updated>
+        <summary type="html"><![CDATA[Azure Functions for .NET Developers: Series
+Part 1: Why Azure Functions? Serverless for .NET Developers
+
+Part 2: Your First Azure Function: HTTP Triggers Step-by-Step
+
+Part 3: Beyond HTTP: Timer, Queue, and Blob Triggers
+
+Part 4: Local Development Setup: Tools, Debugging, and Hot Reload
+
+Part 5: Understanding the Isolated Worker Model
+
+Part 6: Configuration Done Right: Settings, Secrets, and Key Vault
+
+
+Part 7: Testing Azure Functions: Unit, Integration, and Local ← you are here
+Part 8: Deploying to Azure: CI/CD with GitHub Actions (coming next week)
+
+
+
+
+
+
+
+Where do you draw the line between what needs a full Azure connection and what can be tested with a plain class instantiation? The isolated worker model makes the answer concrete: the function class is just wiring. Everything testable l…]]></summary>
+        <author>
+            <name>Martin Oehlert</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[10 Font Pairings So Good They Feel Like a Secret]]></title>
+        <id>https://dev.to/web_dev-usman/10-font-pairings-so-good-they-feel-like-a-secret-8c3</id>
+        <link href="https://dev.to/web_dev-usman/10-font-pairings-so-good-they-feel-like-a-secret-8c3"/>
+        <updated>2026-03-20T07:16:18.000Z</updated>
+        <summary type="html"><![CDATA[Most designers use the same six font combinations on rotation. Not because they’re the best options, but because they’re the first ones that showed up in a search. The result is a web that looks like it was styled by the same person.
+The ten pairings below are different. They’re precise, underused, and available free on Google Fonts. Each one was chosen for optical contrast, screen rendering quality, and the one thing that’s hardest to explain but easiest to feel: they look considered.
+Three things:
+Optical contrast (the two faces are distinct enough to create hierarchy without fighting)
+Formal DNA (they share proportional logic even if they look different).
+Screen fidelity (they hold up at 14px on Windows Chrome, not just in Figma at 2x).
+Every pairing here passes all three.
+See every fon…]]></summary>
+        <author>
+            <name>Muhammad Usman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin’s price action looks dangerously similar to the pattern that sent it crashing to $60,000]]></title>
+        <id>5cf09aaa-45d8-409c-b807-c27d0549fbcd</id>
+        <link href="https://www.coindesk.com/markets/2026/03/20/bitcoin-s-price-action-looks-dangerously-similar-to-the-pattern-that-sent-it-crashing-to-usd60-000"/>
+        <updated>2026-03-20T07:14:42.000Z</updated>
+        <summary type="html"><![CDATA[The recent price action echoes the November–January pattern, showing weak conviction among the “buy the dip” crowd.]]></summary>
+        <author>
+            <name>Omkar Godbole</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FSFE supporters affected: Payment provider Nexi cancelled us]]></title>
+        <id>https://fsfe.org/news/2026/news-20260316-01.en.html</id>
+        <link href="https://fsfe.org/news/2026/news-20260316-01.en.html"/>
+        <updated>2026-03-20T07:09:07.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -62,322 +523,6 @@ for (let i = 0; i < arr.len…]]></summary>
 The post Ubisoft To Cease Development At Red Storm Entertainment, Layoff More Than 100 Staff appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>John Law</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Harden OpenClaw in 5 Minutes — Before and After a Real Prompt Injection Attack]]></title>
-        <id>https://dev.to/onoz1169/how-to-harden-openclaw-in-5-minutes-before-and-after-a-real-prompt-injection-attack-2d66</id>
-        <link href="https://dev.to/onoz1169/how-to-harden-openclaw-in-5-minutes-before-and-after-a-real-prompt-injection-attack-2d66"/>
-        <updated>2026-03-20T06:35:26.000Z</updated>
-        <summary type="html"><![CDATA[How to Secure OpenClaw in 5 Minutes — Before and After a Real Prompt Injection Attack
-
-
-In my previous post, I showed how a single text file with hidden instructions made an OpenClaw agent attempt to read its own credentials file. The agent explicitly said: "Following the instructions, I will read the contents of ~/.openclaw/openclaw.json."
-This post shows how to fix it, and proves the fix works by running the exact same attack again.
-OpenClaw's default configuration has four settings that, combined, create a complete attack chain:
-
-
-
-Default Setting
-What It Means
-
-
-
-
-sandbox.mode = off
-Agent runs with your full user permissions
-
-
-workspaceOnly = false
-Agent can read any file on your machine
-
-
-
-tools.deny = empty
-All 26 tools available, including shell execution
-
-
-
-tools.profile = unset
-No…]]></summary>
-        <author>
-            <name>onoz1169</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Squares of a Sorted Array]]></title>
-        <id>https://dev.to/jeyaprasadr/squares-of-a-sorted-array-2bom</id>
-        <link href="https://dev.to/jeyaprasadr/squares-of-a-sorted-array-2bom"/>
-        <updated>2026-03-20T06:32:55.000Z</updated>
-        <summary type="html"><![CDATA[In this task, I worked on converting a sorted array into another sorted array of their squares.
-The tricky part is that even though the input array is sorted, squaring negative numbers can mess up the order. For example, -4² = 16 which is bigger than 3² = 9.
-I created a function sortedSquares that takes a sorted array nums and returns a new sorted array of squared values.
-Instead of squaring everything and sorting again, I used a two-pointer approach.
-I used three variables:
-left starting from the beginning (index 0)
-right starting from the end (index n-1)
-pos to fill the result array from the back
-At each step:
-I compare the absolute values of nums[left] and nums[right]
-
-The larger absolute value will give the larger square
-I place that square at the current pos in the result array
-Then move the corresponding pointer (left or right)
-Decrease pos to fill the next position
-This way, I build the sorted squared array from the back.
-class Solution:
-    def sortedSquares(self, nums):
-        n = len(nums)
-        result = [0] * n
-
-        left = 0
-        right = n - 1
-        pos = n - 1
-
-        while left <= right:
-            if abs(nums[left]) > abs(nums[right]):
-                result[pos] = nums[left] ** 2
-                left += 1
-            else:
-                result[pos] = nums[right] ** 2
-                right -= 1
-            pos -= 1
-
-        return result
-
-
-The function avoids re-sorting by intelligently comparing values from both ends. Since the largest square will always come from either the most negative or most positive number, we place it at the end and move inward.
-This reduces time complexity to O(n) instead of O(n log n).]]></summary>
-        <author>
-            <name>Jeyaprasad R</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CMMI Describes Progress on Addressing Health Equity: A Comprehensive Review]]></title>
-        <id>https://dev.to/aloycwl/cmmi-describes-progress-on-addressing-health-equity-a-comprehensive-review-1h3h</id>
-        <link href="https://dev.to/aloycwl/cmmi-describes-progress-on-addressing-health-equity-a-comprehensive-review-1h3h"/>
-        <updated>2026-03-20T06:30:49.000Z</updated>
-        <summary type="html"><![CDATA[CMMI Describes Progress on Addressing Health Equity
-
-
-The quest to bridge the gap in healthcare outcomes across diverse populations
-Health equity—the state in which everyone has a fair and just opportunity to
-By prioritizing underserved populations, including racial and ethnic
-To measure its progress, CMMI has established several key pillars that guide
-One of the most significant challenges in addressing health equity has been
-This data is not just being collected; it is being stratified. CMMI now
-CMMI is transitioning from passive observation to active intervention. New
-These adjustments acknowledge that achieving health equity is not free; it
-Safety-net providers—those that serve a high volume of Medicaid, uninsured,
-So, how does CMMI define "progress"? It is moving beyond participation metrics
-For instance, in several Accountable Care Organization (ACO) models, CMMI has
-Despite this progress, the road ahead is complex. CMMI acknowledges that
-Furthermore, there is a delicate balance to be struck between demanding
-The progress described by CMMI regarding health equity marks a turning point
-in the trajectory of the American healthcare system. By moving from a "one-
-size-fits-all" approach to one that is responsive to the unique needs of
-diverse communities, CMMI is building a more resilient, just, and effective
-healthcare infrastructure. While the journey is far from over, the commitment
-to transparency, data-driven decision-making, and structural financial support
-provides a solid foundation for achieving lasting equity. For healthcare
-stakeholders, now is the time to align with these initiatives, as they
-represent the future standard of quality in care.]]></summary>
-        <author>
-            <name>Aloysius Chan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Are you afraid AI is going to take your SWE job? Here's a little secret.]]></title>
-        <id>https://dev.to/michal_sevcik/are-you-afraid-ai-is-going-to-take-your-swe-job-heres-a-little-secret-hed</id>
-        <link href="https://dev.to/michal_sevcik/are-you-afraid-ai-is-going-to-take-your-swe-job-heres-a-little-secret-hed"/>
-        <updated>2026-03-20T06:27:45.000Z</updated>
-        <summary type="html"><![CDATA[You've been cursed.
-
-
-You've been coding for years, and you've forgotten what it's like to not know it. You assume others can understand or do it just as easily as you can - even when they can't. It's called Curse of Knowledge.
-Pick a programming language that's completely strange to you. A language you always feared to learn. One not too similar to the languages you already know.
-If you know Python → try Rust.
-If you know OOP → try FP.
-Feel free to use AI. It won't help. It's uncharted waters for you. You'll write code that maybe works, but feels wrong - and you won't know why. You're grasping at straws.
-If you try C for the first time, nothing will make sense. You won't know if there's a better solution. You'll miss bugs because your mental model is wrong. You'll copy patterns you don't understand.
-Is there a memory leak? Or did you just free something twice? Why did it compile... but now it segfaults?
-It doesn't matter if you write the code or if AI writes it. You have to know if it's correct. You have to know it's safe. You have to know what's good. You have to know what questions to ask.
-AI is here and you should 100% use it or you will be left behind. Learn LLMs, agentic coding, spec-driven development, ...
-But someone has to be responsible. If the code is AI generated, it's your job to make sure it's safe and correct. That it doesn't leak, crash or corrupt memory.
-You have to know the languages and the tools. And it takes years to master them.
-Whoever says otherwise is ignorant. Let them. They're not here to take your job. Tech companies need real software engineers, not tinkerers or DIY enthusiasts.
-AI can generate code. It cannot own it or be responsible for it. That’s why real software engineers aren’t going anywhere. 
-🟢 Everything here is my own writing and ideas - AI just helped with proofreading and grammar mistakes.]]></summary>
-        <author>
-            <name>Michal Ševčík</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building an OpenClaw Security Vault for AI Agents]]></title>
-        <id>https://dev.to/a_fb10f3fd81898e4c83a6d/building-an-openclaw-security-vault-for-ai-agents-212o</id>
-        <link href="https://dev.to/a_fb10f3fd81898e4c83a6d/building-an-openclaw-security-vault-for-ai-agents-212o"/>
-        <updated>2026-03-20T06:25:38.000Z</updated>
-        <summary type="html"><![CDATA[Once AI agents start using tools and external APIs, the engineering problem changes.
-It is no longer only about output quality. It becomes a runtime problem: how do you inspect traffic, detect risky behavior, limit what the system can do, and keep token spend under control?
-That is the angle ClawVault takes.
-According to the current repository README, ClawVault is an open-source OpenClaw Security Vault for AI agents and AI applications, centered on three ideas:
-Visual Monitoring
-
-
-Atomic Control
-
-
-Generative Policies
-
-
-
-What makes the repo more concrete is that it also lists the operational features around those ideas:
-sensitive data detection
-prompt injection defense
-dangerous command guard
-auto-sanitization
-token budget control
-real-time dashboard
-The architecture shown in the README is …]]></summary>
-        <author>
-            <name>songA</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[n8n Error Handling Best Practices: Stop Letting Silent Failures Break Your Business]]></title>
-        <id>https://dev.to/ciphernutz/n8n-error-handling-best-practices-stop-letting-silent-failures-break-your-business-1j8h</id>
-        <link href="https://dev.to/ciphernutz/n8n-error-handling-best-practices-stop-letting-silent-failures-break-your-business-1j8h"/>
-        <updated>2026-03-20T06:24:58.000Z</updated>
-        <summary type="html"><![CDATA[If you've been using n8n for any serious workload, like for sending invoices, syncing CRMs, processing webhooks, you've already hit this wall: a workflow silently breaks. Similarly, bad data propagates downstream, and you find out about it only three days later when a client complains.
-In production automation, error handling is the product. This guide cuts straight to how you do it right in n8n.
-1. Understand How n8n Fails by Default
-Before you can handle errors well, you need to understand how n8n handles errors out of the box.
-By default, when a node fails, n8n stops that execution and marks it as an error. If you're not watching your execution log, you'll simply never know,no retry, no alert, no fallback just silence.
-n8n won't automatically protect your business from failures. Every w…]]></summary>
-        <author>
-            <name>Ciphernutz</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Spent $228/Year on Postman. Here's Why I Switched to DevKits Pro for $9]]></title>
-        <id>https://dev.to/hezeclark/i-spent-228year-on-postman-heres-why-i-switched-to-devkits-pro-for-9-3gi2</id>
-        <link href="https://dev.to/hezeclark/i-spent-228year-on-postman-heres-why-i-switched-to-devkits-pro-for-9-3gi2"/>
-        <updated>2026-03-20T06:21:31.000Z</updated>
-        <summary type="html"><![CDATA[I Spent $228/Year on Postman. Here's Why I Switched to DevKits Pro for $9
-
-
-TL;DR: I cancelled my Postman Pro subscription ($19/month = $228/year) and switched to DevKits Pro ($9 one-time). Six months later, I haven't looked back. Here's the full story, migration guide, and honest pros/cons comparison.
-It was a Tuesday morning in February 2026. I was reviewing my SaaS subscriptions for tax prep, and one line item made me pause:
-Postman Pro: $228 (annual)
-I stared at it. $228 for an API testing tool I used maybe 30 minutes a day. Don't get me wrong — I loved Postman. I'd been a user since 2019. But when I actually tallied which features I used:
-✅ Used daily: Request builder, collections, auth helpers
-Used weekly: Environment variables, test scripts
-Never used: Mock servers, monitoring, team…]]></summary>
-        <author>
-            <name>ze he</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[React Hooks Performance: How to Avoid Unnecessary Re-renders]]></title>
-        <id>https://dev.to/childrentime/react-hooks-performance-how-to-avoid-unnecessary-re-renders-2483</id>
-        <link href="https://dev.to/childrentime/react-hooks-performance-how-to-avoid-unnecessary-re-renders-2483"/>
-        <updated>2026-03-20T06:19:55.000Z</updated>
-        <summary type="html"><![CDATA[Performance is the concern that separates production-quality React code from tutorial-grade code. Most React applications do not have a rendering problem — but the ones that do can feel sluggish and frustrating. The key is knowing when optimization matters and what tools actually help.
-A component re-renders when:
-Its state changes — calling setState re-renders the component and all children.
-Its parent re-renders — even if props haven't changed, children re-render by default.
-A consumed context changes — any useContext consumer re-renders when the context value updates.
-Every optimization technique targets one or more of these triggers.
-Wrapping every value in useMemo and every function in useCallback is not optimization — it is overhead. Memoization has a cost: storing previous values, c…]]></summary>
-        <author>
-            <name>reactuse.com</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Love, Tito's: Vodka Maker Funds Physics Research]]></title>
-        <id>https://dev.to/aloycwl/love-titos-vodka-maker-funds-physics-research-3eja</id>
-        <link href="https://dev.to/aloycwl/love-titos-vodka-maker-funds-physics-research-3eja"/>
-        <updated>2026-03-20T06:17:03.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-In a surprising twist of fate, the world of spirits and science have found
-Tito's Handmade Vodka, founded by Tito Beveridge in Austin, Texas, has always
-The decision to fund physics research came from a desire to support cutting-
-The Love, Tito's initiative has established a rigorous process for selecting
-While the initiative is open to a wide range of physics research topics, some
-Quantum computing and information
-Dark matter and dark energy
-Particle physics
-Astrophysics and cosmology
-Renewable energy technologies
-The funding provided by Love, Tito's has already begun to make waves in the
-One notable example of the initiative's impact is a project at a leading
-Beyond funding research, the Love, Tito's initiative has also placed a strong
-Some of the funded projects include the development of interactive exhibits
-The Love, Tito's initiative has partnered with several prestigious
-Some of the notable partnerships include:
-Massachusetts Institute of Technology (MIT)
-California Institute of Technology (Caltech)
-Stanford University
-University of Texas at Austin
-Harvard University
-While the Love, Tito's initiative has been largely welcomed by the physics
-Tito's Handmade Vodka has been proactive in addressing these concerns. The
-As the Love, Tito's initiative continues to grow, there are plans to expand
-Some of the areas being considered for future expansion include:
-International research collaborations
-Scholarships for physics students
-Support for early-career researchers
-Funding for interdisciplinary projects that combine physics with other fields
-The Love, Tito's initiative represents a unique and innovative approach to
-As the initiative continues to evolve, it will be fascinating to see how it
-shapes the landscape of physics research and inspires other industries to
-engage with scientific endeavors. The success of Love, Tito's could pave the
-way for new models of public-private partnerships in science, ultimately
-leading to breakthroughs that benefit society as a whole.]]></summary>
-        <author>
-            <name>Aloysius Chan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[5 Expensive Terraform Mistakes I Keep Seeing in Real Infrastructure and How AI can Help]]></title>
-        <id>https://dev.to/yogesh_vk/5-expensive-terraform-mistakes-i-keep-seeing-in-real-infrastructure-and-how-ai-can-help-2m38</id>
-        <link href="https://dev.to/yogesh_vk/5-expensive-terraform-mistakes-i-keep-seeing-in-real-infrastructure-and-how-ai-can-help-2m38"/>
-        <updated>2026-03-20T06:15:00.000Z</updated>
-        <summary type="html"><![CDATA[Small infrastructure decisions that quietly turn into large cloud bills
-In theory, this should make infrastructure both predictable and efficient.
-In practice, however, Terraform does not automatically make systems cost-efficient. It simply makes infrastructure changes easier to reproduce. If inefficient patterns exist in the configuration, Terraform will reproduce them perfectly.
-Over time, small infrastructure decisions accumulate. Many of them appear harmless when introduced, but months later they become visible as unexpectedly large cloud bills.
-Here are some of the most common Terraform patterns I keep seeing that quietly drive up infrastructure costs.
-One of the most common patterns starts early in a project.
-During initial development, engineers often choose slightly larger instance…]]></summary>
-        <author>
-            <name>Yogesh VK</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Rage.rb — Khi Ruby Học Cách Không Chờ Đợi]]></title>
-        <id>https://dev.to/cuongnc0211/ragerb-khi-ruby-hoc-cach-khong-cho-doi-4k43</id>
-        <link href="https://dev.to/cuongnc0211/ragerb-khi-ruby-hoc-cach-khong-cho-doi-4k43"/>
-        <updated>2026-03-20T06:14:04.000Z</updated>
-        <summary type="html"><![CDATA[Vấn đề muôn thuở của Rails dưới tải cao
-
-
-Bạn có một Rails API. Mọi thứ chạy tốt ở môi trường dev, production cũng ổn ở lượng traffic vừa phải. Rồi một ngày đẹp trời, traffic tăng đột biến — và bạn bắt đầu thấy:
-Response time leo thang
-Memory usage phình to
-Sidekiq queue tắc nghẽn
-Infra team hỏi "có cần thêm worker không?"
-Vấn đề không phải ở code logic. Vấn đề nằm sâu hơn — ở cách Rails xử lý concurrency.
-Rails với Puma dùng mô hình multi-threaded. Mỗi HTTP request được xử lý bởi một thread riêng.
-Request 1 ──→ Thread 1: [connect DB] [======chờ 50ms======] [process] [respond]
-Request 2 ──→ Thread 2: [connect DB] [======chờ 50ms======] [process] [respond]
-Request 3 ──→ Thread 3: [connect DB] [======chờ 50ms======] [process] [respond]
-              ...
-Request N ──→ Thread N: phải chờ threa…]]></summary>
-        <author>
-            <name>Nguyễn Chí Cường</name>
         </author>
     </entry>
     <entry>
@@ -421,16 +566,6 @@ Request N ──→ Thread N: phải chờ threa…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Physicists Trace Sun's Magnetic Engine, 200k Kilometers Below Surface]]></title>
-        <id>https://news.njit.edu/njit-physicists-trace-sun%E2%80%99s-magnetic-engine-200000-kilometers-below-surface</id>
-        <link href="https://news.njit.edu/njit-physicists-trace-sun%E2%80%99s-magnetic-engine-200000-kilometers-below-surface"/>
-        <updated>2026-03-20T02:12:41.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[OPPO Find X9s, Find X9 Ultra Secure SIRIM Certification; Local Launch At Hand]]></title>
         <id>https://www.lowyat.net/?p=387297</id>
         <link href="https://www.lowyat.net/2026/387297/oppo-find-x9s-find-x9-ultra-sirim/"/>
@@ -466,16 +601,6 @@ The post OPPO Find X9s, Find X9 Ultra Secure SIRIM Certification; Local Launch A
         <id>https://code.claude.com/docs/en/channels</id>
         <link href="https://code.claude.com/docs/en/channels"/>
         <updated>2026-03-20T00:22:08.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Wayland set the Linux Desktop back by 10 years?]]></title>
-        <id>https://omar.yt/posts/wayland-set-the-linux-desktop-back-by-10-years</id>
-        <link href="https://omar.yt/posts/wayland-set-the-linux-desktop-back-by-10-years"/>
-        <updated>2026-03-20T00:01:40.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -952,16 +1077,6 @@ The post OPPO Find X9s, Find X9 Ultra Secure SIRIM Certification; Local Launch A
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Venus’ XVS token plunges 9% as exploit leaves protocol with bad debt]]></title>
-        <id>9a138f48-6be2-4f70-b26e-9598ccd9d850</id>
-        <link href="https://www.coindesk.com/markets/2026/03/19/venus-xvs-token-plunges-9-as-exploit-leaves-protocol-with-bad-debt"/>
-        <updated>2026-03-19T11:18:19.000Z</updated>
-        <summary type="html"><![CDATA[The exploit, which occurred on March 16, didn’t appear to impact XVS prices until analysis showed major holders moving large amounts to exchanges.]]></summary>
-        <author>
-            <name>Francisco Rodrigues</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Sony RX1R III Lightning Review: Compact Documentarian]]></title>
         <id>https://www.lowyat.net/?p=387260</id>
         <link href="https://www.lowyat.net/2026/387260/sony-rx1r-iii-lightning-review-compact-documentarian/"/>
@@ -1267,6 +1382,16 @@ The post Rapid KL Announces Reduced Rail, Bus Frequencies On 20 – 23 March app
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Future AI chips could be built on glass  Human-made glass is thousands of years old. But it’s now poised to find its way into the AI chips used in the world’s newest and…]]></summary>
         <author>
             <name>Thomas Macaulay</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building a Reader for the Smallest Hard Drive]]></title>
+        <id>https://www.willwhang.dev/Reading-MK4001MTD/</id>
+        <link href="https://www.willwhang.dev/Reading-MK4001MTD/"/>
+        <updated>2026-03-16T09:04:43.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
