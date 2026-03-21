@@ -1,410 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-03-21T10:21:45.608Z</id>
+    <id>urn:2026-03-21T11:19:15.678Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-03-21T10:21:45.608Z</updated>
+    <updated>2026-03-21T11:19:15.678Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[API Rate Limiting with Redis: Token Bucket, Sliding Window, and Per-Client Limits]]></title>
-        <id>https://dev.to/young_gao/api-rate-limiting-with-redis-token-bucket-sliding-window-and-per-client-limits-4bj1</id>
-        <link href="https://dev.to/young_gao/api-rate-limiting-with-redis-token-bucket-sliding-window-and-per-client-limits-4bj1"/>
-        <updated>2026-03-21T10:18:53.000Z</updated>
-        <summary type="html"><![CDATA[API Rate Limiting with Redis: Token Bucket, Sliding Window, and Per-Client Limits
-
-
-Your API has no rate limiting. A single client sends 10,000 requests per second. Your database melts. Here is how to protect your services.
-import Redis from "ioredis";
-
-const RATE_LIMIT_SCRIPT = `
-  local key = KEYS[1]
-  local limit = tonumber(ARGV[1])
-  local window = tonumber(ARGV[2])
-  local now = tonumber(ARGV[3])
-  redis.call("ZREMRANGEBYSCORE", key, 0, now - window)
-  local count = redis.call("ZCARD", key)
-  if count >= limit then return 0 end
-  redis.call("ZADD", key, now, now .. math.random())
-  redis.call("EXPIRE", key, window / 1000)
-  return 1
-`;
-
-async function checkRateLimit(redis: Redis, clientId: string, limit: number, windowMs: number): Promise<boolean> {
-  const key = `rate:${clientId}`;
- …]]></summary>
+        <title type="html"><![CDATA[Eventual Consistency Guarantees Correctness. Your job is to Make Users Believe It.]]></title>
+        <id>https://dev.to/eddy_adegnandjou_456/eventual-consistency-guarantees-correctness-your-job-is-to-make-users-believe-it-acg</id>
+        <link href="https://dev.to/eddy_adegnandjou_456/eventual-consistency-guarantees-correctness-your-job-is-to-make-users-believe-it-acg"/>
+        <updated>2026-03-21T11:10:31.000Z</updated>
+        <summary type="html"><![CDATA[Your system says the transaction succeeded. Your user says it didn't.
+A user transfers money.
+They see:
+Transaction successful
+They refresh their balance.
+Nothing changed.
+They refresh again.
+Now doubt sets in:
+Was I charged?
+Did it fail?
+Should I try again?
+From the user's perspective, the system is broken.
+From the system's perspective... everything is working perfectly.
+Behind the scenes, your system already knows the truth:
+The transaction has been recorded
+The operation is valid
+The system state is correct
+But what the user sees is different:
+The balance hasn't updated
+The UI reflects stale data
+The confirmation feels unreliable
+You now have two realities:
+1. The system truth (what actually happened)
+2. The perceived truth (what the user sees)
+And they are temporarily out of sync.
+Mod…]]></summary>
         <author>
-            <name>Young Gao</name>
+            <name>Eddy Adegnandjou</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Decoupling a Live App with Domain Events (Part 2)]]></title>
-        <id>https://dev.to/goniszewski/decoupling-a-live-app-with-domain-events-part-2-4oio</id>
-        <link href="https://dev.to/goniszewski/decoupling-a-live-app-with-domain-events-part-2-4oio"/>
-        <updated>2026-03-21T10:15:38.000Z</updated>
-        <summary type="html"><![CDATA[In Part 1 of this series, we introduced RabbitMQ and built our proof-of-concept: the EventBusService, RabbitMQProvider, a DLX retry pattern, and our first emitter (CommentService.createComment()). By the end of Phase 0, we had one event running reliably in production behind a feature flag.
-For Phase 1, we applied this pattern to all Tier 1 services. 14 Zod schemas, 25 queue handlers across 3 consumer classes were built, and emit sites were added to CommentService, RecordService, and OccurrenceCrudHelper. We also added 79 new tests. Here is how we executed Phase 1, the design choices we made, and a tricky bug that changed how we guard event bus access.
-
-Our top priority for Phase 1 was safety. Since IHA has active users, we couldn't risk breaking the app. Switching entirely from direct serv…]]></summary>
+        <title type="html"><![CDATA[We Put the Signup Inside the Demo. Here Is What Changed.]]></title>
+        <id>https://dev.to/agenium_platform/we-put-the-signup-inside-the-demo-here-is-what-changed-13ef</id>
+        <link href="https://dev.to/agenium_platform/we-put-the-signup-inside-the-demo-here-is-what-changed-13ef"/>
+        <updated>2026-03-21T11:10:01.000Z</updated>
+        <summary type="html"><![CDATA[We had 66 people start our demo.
+12 reached the login screen.
+0 signed up.
+The funnel data told us exactly where people were dropping. But the why was less obvious. Was it the product? The value prop? The friction?
+Then we realized: to sign up, you had to leave the demo entirely, navigate to a separate page, and start an auth flow with no context about what you were about to get.
+So we fixed that. We put the email input inside the demo itself.
+Instead of: Click here to sign up → navigate to /login → enter email → check inbox → magic link → onboarding
+We built: Demo is running → "Want to save your agent address? Enter email." → inline capture → magic link sent → continue in same window
+The key insight: interruption is the enemy of conversion. Not friction per se — the navigation away from c…]]></summary>
         <author>
-            <name>Robert Goniszewski</name>
+            <name>Agenium platform</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Control Claude Code from Telegram — Hermes IDE Just Made It a Checkbox]]></title>
-        <id>https://dev.to/gabrielanhaia/control-claude-code-from-telegram-hermes-ide-just-made-it-a-checkbox-2k1b</id>
-        <link href="https://dev.to/gabrielanhaia/control-claude-code-from-telegram-hermes-ide-just-made-it-a-checkbox-2k1b"/>
-        <updated>2026-03-21T10:14:37.000Z</updated>
-        <summary type="html"><![CDATA[You fire off a build before heading out. Twenty minutes later, you're in line at a coffee shop, wondering if it passed. You could SSH in, but that's a pain. You could wait until you're back at your desk, but that kills the flow.
-What if you could just... message your IDE?
-That's exactly what the new Telegram Channels feature in Hermes IDE makes possible — and it takes one checkbox to enable.
+        <title type="html"><![CDATA[Wagtail Routable Pages and Layout Configuration]]></title>
+        <id>https://dev.to/djangotricks/wagtail-routable-pages-and-layout-configuration-340d</id>
+        <link href="https://dev.to/djangotricks/wagtail-routable-pages-and-layout-configuration-340d"/>
+        <updated>2026-03-21T11:07:32.000Z</updated>
+        <summary type="html"><![CDATA[If you are familiar with Wagtail CMS for Django, you know that you can create Wagtail pages and control their content and layout with blocks inside of stream fields. But what if you have entries coming from normal Django models through a routable page? In this article, I will explore how you can control the dynamic layout of a detail view in a routable page.
+Routable pages in Wagtail are dynamic pages of your CMS page tree that can have their own URL subpaths and views. You can use them for filtered list and detail views, multi-step forms, multiple formats for the same data, etc. Here I will show you a routable ArticleIndexPage with a list and detail views for Article instances rendering the detail views based on the block layout in a detail_layout stream field.
 
-Hermes IDE is a free, open-source AI-powered shell wrapper that acts as a unified launcher for AI coding agents: Claude Code, Gemini CLI, Aider, OpenAI Codex, and GitHub Copilot. Instead of juggling terminal windows and flags, you get a clean TUI session manager with project context, hotkeys, and now — external channel support.
-GitHub: hermes-hq/hermes-ide
-Anthropic released Claude Code Channels on Ma…]]></summary>
+Create a Wagtail project m…]]></summary>
         <author>
-            <name>Gabriel Anhaia</name>
+            <name>Aidas Bendoraitis</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Error Handling Patterns in TypeScript: Beyond Try-Catch]]></title>
-        <id>https://dev.to/young_gao/error-handling-patterns-in-typescript-beyond-try-catch-3p8k</id>
-        <link href="https://dev.to/young_gao/error-handling-patterns-in-typescript-beyond-try-catch-3p8k"/>
-        <updated>2026-03-21T10:14:17.000Z</updated>
-        <summary type="html"><![CDATA[Error Handling Patterns in TypeScript: Beyond Try-Catch
+        <title type="html"><![CDATA[Getting Started with Golang Chi: A Guide to Building a Simple API]]></title>
+        <id>https://dev.to/luthfisauqi17/getting-started-with-golang-chi-a-guide-to-building-a-simple-api-210m</id>
+        <link href="https://dev.to/luthfisauqi17/getting-started-with-golang-chi-a-guide-to-building-a-simple-api-210m"/>
+        <updated>2026-03-21T11:04:43.000Z</updated>
+        <summary type="html"><![CDATA[Are you looking for a lightweight and efficient router to build HTTP services in Go? If so, Chi is the answer. In this guide, we will walk through the basics of using Chi to build a simple yet powerful Golang application.
+According to its official documentation, Chi is a lightweight, idiomatic, and composable router for building HTTP services in Go. Its key advantages include:
+Lightweight: Extremely fast and minimal.
+Robust: Built for production-grade reliability.
+No External Dependencies: Keeps your project clean and manageable.
+Before diving in, it is highly recommended to read the official Chi documentation to understand its core features.
+The first step is to create your workspace and initialize a Go module. Open your terminal and run:
+go mod init example.com/golang-simple
 
-
-Try-catch blocks scattered everywhere. No idea what errors a function can throw. Callers forget to handle edge cases. Here are better patterns.
-Instead of throwing, return a discriminated union:
-type Result<T, E = Error> =
-  | { ok: true; value: T }
-  | { ok: false; error: E };
-
-function divide(a: number, b: number): Result<number, string> {
-  if (b === 0) return { ok: false, error: "Division by zero" };
-  return { ok: true, value: a / b };
-}
-
-const result = divide(10, 0);
-if (result.ok) {
-  console.log(result.value); // TypeScript knows this is number
-} else {
-  console.error(result.error); // TypeScript knows this is string
-}
-
-class AppError extends Error {
-  constructor(
-    message: string,
-    public code: string,
-    public st…]]></summary>
+Next, add t…]]></summary>
         <author>
-            <name>Young Gao</name>
+            <name>luthfisauqi17</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Environment Variables Done Right: From .env Files to Production Configs]]></title>
-        <id>https://dev.to/young_gao/environment-variables-done-right-from-env-files-to-production-configs-2916</id>
-        <link href="https://dev.to/young_gao/environment-variables-done-right-from-env-files-to-production-configs-2916"/>
-        <updated>2026-03-21T10:13:21.000Z</updated>
-        <summary type="html"><![CDATA[Environment Variables Done Right: From .env Files to Production Configs
+        <title type="html"><![CDATA[How to Show a Waitlist Until Your Wagtail Site Is Ready]]></title>
+        <id>https://dev.to/djangotricks/how-to-show-a-waitlist-until-your-wagtail-site-is-ready-42e9</id>
+        <link href="https://dev.to/djangotricks/how-to-show-a-waitlist-until-your-wagtail-site-is-ready-42e9"/>
+        <updated>2026-03-21T11:02:14.000Z</updated>
+        <summary type="html"><![CDATA[This year, I want to bring my centralized gamified donation platform www.make-impact.org to life (at least technically). Earlier I had the version I was developing separate from the waiting list, but I decided to merge them and have a switch between the waitlist and an early preview.
+This allows me to have no data duplication, the possibility to create user accounts immediately, and saves hosting and maintenance costs.
+This guide walks through a pattern that lets you ship a temporary waitlist page while your Wagtail site is still being built, with the ability to show your progress to chosen people. If you are building a Software as a Service (SaaS) or a web platform with Django, this article is for you.
 
-
-Hardcoded config values are the fastest way to ship broken code to the wrong environment. Here is how to manage configuration properly.
-import { z } from "zod";
-
-const envSchema = z.object({
-  NODE_ENV: z.enum(["development", "staging", "production"]).default("development"),
-  PORT: z.coerce.number().default(3000),
-  DATABASE_URL: z.string().url(),
-  REDIS_URL: z.string().url(),
-  JWT_SECRET: z.string().min(32),
-  LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
-});
-
-const parsed = envSchema.safeParse(process.env);
-if (\!parsed.success) {
-  console.error("Invalid environment variables:", parsed.error.flatten());
-  process.exit(1);
-}
-
-export const config = parsed.data;
-export type Config = z.infe…]]></summary>
+A custom start page view will check for a specific cookie value. If it is unset, the v…]]></summary>
         <author>
-            <name>Young Gao</name>
+            <name>Aidas Bendoraitis</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Docker Compose for Development: The Setup Every Backend Dev Needs]]></title>
-        <id>https://dev.to/young_gao/docker-compose-for-development-the-setup-every-backend-dev-needs-3eoe</id>
-        <link href="https://dev.to/young_gao/docker-compose-for-development-the-setup-every-backend-dev-needs-3eoe"/>
-        <updated>2026-03-21T10:08:46.000Z</updated>
-        <summary type="html"><![CDATA[Docker Compose for Development: The Setup Every Backend Dev Needs
+        <title type="html"><![CDATA[Unlocking Precision: Why Sigmetrix CETOL 6σ v11.5 is a Game-Changer for 3D Tolerance Analysis]]></title>
+        <id>https://dev.to/aloycwl/unlocking-precision-why-sigmetrix-cetol-6s-v115-is-a-game-changer-for-3d-tolerance-analysis-2d30</id>
+        <link href="https://dev.to/aloycwl/unlocking-precision-why-sigmetrix-cetol-6s-v115-is-a-game-changer-for-3d-tolerance-analysis-2d30"/>
+        <updated>2026-03-21T11:00:59.000Z</updated>
+        <summary type="html"><![CDATA[Unlocking Precision: Why Sigmetrix CETOL 6σ v11.5 is a Game-Changer for 3D
 
 
-You need PostgreSQL, Redis, and your API running locally. Installing each natively leads to version conflicts and "works on my machine" problems. Docker Compose fixes this.
-# docker-compose.yml
-services:
-  api:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgres://dev:dev@db:5432/myapp
-      REDIS_URL: redis://cache:6379
-    depends_on:
-      db:
-        condition: service_healthy
-      cache:
-        condition: service_started
-    volumes:
-      - .:/app
-      - /app/node_modules
-
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: dev
-      POSTGRES_DB: myapp
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgre…]]></summary>
+Tolerance Analysis
+In the competitive landscape of modern manufacturing, precision is not just a
+Sigmetrix CETOL 6σ v11.5 , the latest
+This update is not just a minor refresh; it represents a significant leap
+Before diving into the features of v11.5, it is essential to understand why
+CETOL 6σ addresses these issues by providing a mathematical model of the
+Geometric Dimensioning and Tolerancing (GD&T;) specifications.
+Assembly sequence and join conditions.
+Manufacturing process capabilities (Cp and Cpk).
+Dynamic 3D variation scenarios.
+Sigmetrix has focused v11.5 on usability, performance, and deeper integration
+The strength of CETOL 6σ has always been its ability to live within the CAD
+Complexity is the enemy of a…]]></summary>
         <author>
-            <name>Young Gao</name>
+            <name>Aloysius Chan</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Database Indexes Explained: B-Trees, Composite Keys, and When Indexes Hurt Performance (2026)]]></title>
-        <id>https://dev.to/young_gao/database-indexes-explained-b-trees-composite-indexes-and-when-they-hurt-performance-3gac</id>
-        <link href="https://dev.to/young_gao/database-indexes-explained-b-trees-composite-indexes-and-when-they-hurt-performance-3gac"/>
-        <updated>2026-03-21T10:03:14.000Z</updated>
-        <summary type="html"><![CDATA[Database Indexes Explained: B-Trees, Composite Indexes, and When They Hurt Performance
+        <title type="html"><![CDATA[I Built a Free REST API for Kenya's 47 Counties, 290 Constituencies, and 1,450 Wards]]></title>
+        <id>https://dev.to/ceddyville/i-built-a-free-rest-api-for-kenyas-47-counties-290-constituencies-and-1450-wards-31j7</id>
+        <link href="https://dev.to/ceddyville/i-built-a-free-rest-api-for-kenyas-47-counties-290-constituencies-and-1450-wards-31j7"/>
+        <updated>2026-03-21T11:00:19.000Z</updated>
+        <summary type="html"><![CDATA[Mipaka API — a free REST API for administrative divisions across 7 East African countries. No more hardcoding county arrays.
+You're building a form. It has a location dropdown. You need Kenya's 47 counties, then the constituencies under each county, then the wards.
+So you do what we all do:
+const counties = ["Baringo", "Bomet", "Bungoma", "Busia" /* ...43 more */];
 
-
-You added an index. The query got slower. Here is why, and how to use indexes correctly.
-A B-Tree index is a sorted data structure that lets the database find rows without scanning the entire table. Think of it like a phone book: sorted by last name, you can find "Smith" without reading every entry.
-SELECT * FROM users WHERE email = $1;
-
-CREATE INDEX idx_users_email ON users(email);
-
-Order matters. A composite index on (country, city) helps queries filtering by country alone, but NOT queries filtering by city alone.
--- This index helps all three queries below
-CREATE INDEX idx_orders_status_date ON orders(status, created_at);
-
--- Uses index (leftmost prefix)
-SELECT * FROM orders WHERE status = 'pending'…]]></summary>
+Then the client asks: "Can you add Uganda too?" And Tanzania. And Rwanda. Each country has completely different administrative structures — counties vs regions vs provinces, wards vs sub-counties vs cells.
+You end up with a mess of hardcoded arrays, outdated data, and no parent-child relationships.
+I built Mipaka API to solve this.
+Mipaka (Swahili for "boundaries") is a free REST API that gives you normalized access to administ…]]></summary>
         <author>
-            <name>Young Gao</name>
+            <name>Cedric Ongoro</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Built a Free Dev Toolbox That Runs 100% in Your Browser]]></title>
-        <id>https://dev.to/rishu_777/i-built-a-free-dev-toolbox-that-runs-100-in-your-browser-388</id>
-        <link href="https://dev.to/rishu_777/i-built-a-free-dev-toolbox-that-runs-100-in-your-browser-388"/>
-        <updated>2026-03-21T10:02:54.000Z</updated>
-        <summary type="html"><![CDATA[We've all done it.
-You're debugging a production issue at 2am. You have a JWT 
-right now. So you Google 
-That token contains your user's data. Their email. 
-And you just handed it to a server you know nothing about.
-Most online developer tools are built to collect data.
-As developers we know better. But we do it anyway because 
-I built dev-tools.run — 
-No server. No database. No logging. No tracking.
-Data & Encoding
-✅ JSON Formatter & Validator
-✅ Base64 Encoder / Decoder
-✅ URL Encoder / Decoder
-✅ Markdown Preview
-Auth & Tokens
-✅ JWT Decoder
-✅ UUID / Nano ID Generator
-✅ Hash Generator (MD5, SHA-256, SHA-512)
-Dev Utilities
-✅ Regex Tester
-✅ Diff Checker
-✅ Cron Parser
-Numbers & Colors
-✅ Binary / Hex / Decimal Converter
-✅ Color Converter (HEX ↔ RGB ↔ HSL)
-✅ Unix Timestamp Converter
-Built with:
-React + Vite — fast, lightweight
-React Router — each tool has its own URL
-Web Crypto API — for hashing (no libraries needed)
-Zero backend — deployed as a static site on Vercel
-The whole thing is a static site. No API calls. 
-No environment variables. No secrets.]]></summary>
+        <title type="html"><![CDATA[Why RAG Is Failing at Complex Questions (And How Knowledge Graphs Fix It)]]></title>
+        <id>https://dev.to/ambalogun/why-rag-is-failing-at-complex-questions-and-how-knowledge-graphs-fix-it-5chj</id>
+        <link href="https://dev.to/ambalogun/why-rag-is-failing-at-complex-questions-and-how-knowledge-graphs-fix-it-5chj"/>
+        <updated>2026-03-21T10:53:24.000Z</updated>
+        <summary type="html"><![CDATA[Retrieval-Augmented Generation solved the hallucination problem. Then everyone discovered it can't actually answer hard questions.
+Search for "double helix structure DNA discovery"
+Find chunks mentioning Watson and Crick
+Maybe find something about their mentors
+Fail to connect the dots about who influenced those mentors
+Generate a vague or incorrect answer
+The problem? This requires connecting information across three hops. First, Watson and Crick discovered the double helix. Second, who was their mentor? Third, what work influenced that mentor?
+Chunk your documents into 500-1000 word segments
+Embed each chunk into a vector representation
+Store vectors in a database (Pinecone, Qdrant, Weaviate)
+Query comes in → embed it the same way
+Retrieve top-k similar chunks using cosine similarity
+Fee…]]></summary>
         <author>
-            <name>Rishu</name>
+            <name>Ademola Balogun</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Go Slices: Why Your Function Isn't Changing What You Think It Is]]></title>
-        <id>https://dev.to/rahultomer/go-slices-why-your-function-isnt-changing-what-you-think-it-is-3n9d</id>
-        <link href="https://dev.to/rahultomer/go-slices-why-your-function-isnt-changing-what-you-think-it-is-3n9d"/>
-        <updated>2026-03-21T10:02:04.000Z</updated>
-        <summary type="html"><![CDATA[15 min read · Beginner-friendly · Real code you can paste into Go Playground
-You pass your slice to a function. The function changes some values. You print the slice back in main... and some changes are there, some aren't.
-Sound familiar? This article explains exactly why — with diagrams, not walls of text.
-Two structs, one slice. Everything in this article uses these types.
-type VehicleType struct {
-    TwoWheeler, ThreeWheeler, FourWheeler bool
-}
-
-type Vehicle struct {
-    Model, Color string
-    Type         VehicleType  // nested by value — not a pointer
-}
-
-type Fleet []Vehicle
-
-Fill it with two vehicles:
-fleet := Fleet{
-    {Model: "Bike", Color: "Red",  Type: VehicleType{TwoWheeler:  true}},
-    {Model: "Car",  Color: "Blue", Type: VehicleType{FourWheeler: true}},
-}
-
-Before anything …]]></summary>
+        <title type="html"><![CDATA[Managing Multi Provider AI Workflows in the Terminal with Bifrost CLI]]></title>
+        <id>https://dev.to/astrodevil/managing-multi-provider-ai-workflows-in-the-terminal-with-bifrost-cli-ece</id>
+        <link href="https://dev.to/astrodevil/managing-multi-provider-ai-workflows-in-the-terminal-with-bifrost-cli-ece"/>
+        <updated>2026-03-21T10:52:18.000Z</updated>
+        <summary type="html"><![CDATA[Command-line tools are still a common way to work with AI. They give better control and fit naturally into everyday workflows, which is why many people continue to use them.
+A common issue with CLI-based tools is that they are often tied to a single provider. Switching between options usually means updating configs and handling multiple API keys. In some cases, it may even involve changing tools. This can slow things down and make everyday work feel a bit frustrating.
+Bifrost CLI aims to simplify this setup. It provides a single way to connect CLI tools to multiple providers, without changing how the tools are used. In this article, let us look at how it works and how to get started.
+Bifrost is an open-source AI gateway that works between applications and model providers. It offers provide…]]></summary>
         <author>
-            <name>Rahul Tomer</name>
+            <name>Astrodevil</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Graceful Shutdown in Node.js: Stop Dropping Requests (2026)]]></title>
-        <id>https://dev.to/young_gao/graceful-shutdown-in-nodejs-stop-dropping-requests-228p</id>
-        <link href="https://dev.to/young_gao/graceful-shutdown-in-nodejs-stop-dropping-requests-228p"/>
-        <updated>2026-03-21T09:57:42.000Z</updated>
-        <summary type="html"><![CDATA[Graceful Shutdown in Node.js: Stop Dropping Requests
+        <title type="html"><![CDATA[Claude Code Doesn't Know You've Been Gone — Here's the Fix]]></title>
+        <id>https://dev.to/tadmstr/claude-code-doesnt-know-youve-been-gone-heres-the-fix-17ko</id>
+        <link href="https://dev.to/tadmstr/claude-code-doesnt-know-youve-been-gone-heres-the-fix-17ko"/>
+        <updated>2026-03-21T10:49:22.000Z</updated>
+        <summary type="html"><![CDATA[I first noticed this in Claude Desktop. I'd have a conversation, step away for a few hours, come back and continue — sometimes on a slightly different angle, sometimes just picking up where I left off — and something about the responses felt off. Like Claude was treating it as one continuous thought when the gap had given me time to change direction.
+My fix was an espanso trigger. I set up :cltime to expand to:
+Current date/time: Saturday, March 21, 2026 at 09:00 AM. Use this to orient yourself.
 
-
-Your server gets a SIGTERM. It dies immediately. In-flight requests get 502s. Here is how to shut down properly.
-import http from "http";
-let isShuttingDown = false;
-const server = http.createServer(app);
-
-async function gracefulShutdown(signal: string) {
-  isShuttingDown = true;
-  server.close();
-  const timeout = setTimeout(() => process.exit(1), 30000);
-  await Promise.all([closeDatabase(), closeRedis(), flushLogs()]);
-  clearTimeout(timeout);
-  process.exit(0);
-}
-
-process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
-process.on("SIGINT", () => gracefulShutdown("SIGINT"));
-
-app.get("/health", (req, res) => {
-  if (isShuttingDown) return res.status(503).json({ status: "shutting_down" });
-  res.json({ status: "healthy" });
-});
-
-Returning 503 tells the load balancer to stop sending new traffic.
-Stop accepting new requests
-Finish in-flight requests (with timeout)
-Close database connection pools
-Disconnect from Redis and message brokers
-Flush log buffers
-Deregister from service discovery
-Part of my Production Backend Patterns series. Follow for more practical backend engineering.
-BullMQ Job Queues in Node.js: Background Processing Done Right (2026 Guide)
-Scaling WebSocket Connections: From Single Server to Distributed Architecture (2026)
-Express Middleware Patterns: Composition, Error Handling, and Auth (2026 Guide)
-Follow me for more production-ready backend content!
-If this helped you, buy me a coffee on Ko-fi!]]></summary>
+Typed it at the start of a session or whenever I came back after a break. It worked. Claude recalibrated — less continuation, more reorientation. Problem solved, moved on.
+Then I switched to Claude Code. I saw timestamps in the session context, assumed the problem was handled, and stopped using :c…]]></summary>
         <author>
-            <name>Young Gao</name>
+            <name>Ted Murray</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[API Rate Limiting with Redis: Token Bucket, Sliding Window, and Per-Client Limits (2026)]]></title>
-        <id>https://dev.to/young_gao/api-rate-limiting-with-redis-token-bucket-sliding-window-and-per-client-limits-27o</id>
-        <link href="https://dev.to/young_gao/api-rate-limiting-with-redis-token-bucket-sliding-window-and-per-client-limits-27o"/>
-        <updated>2026-03-21T09:52:10.000Z</updated>
-        <summary type="html"><![CDATA[API Rate Limiting with Redis: Token Bucket, Sliding Window, and Per-Client Limits
+        <title type="html"><![CDATA[The Autonomous Writer: Experimenting with Self-Evolving System Prompt and Context]]></title>
+        <id>https://dev.to/alexdarbyshire/the-autonomous-writer-experimenting-with-self-evolving-system-prompt-and-context-bgf</id>
+        <link href="https://dev.to/alexdarbyshire/the-autonomous-writer-experimenting-with-self-evolving-system-prompt-and-context-bgf"/>
+        <updated>2026-03-21T10:41:00.000Z</updated>
+        <summary type="html"><![CDATA[The idea was a scheduled agentic flow which would self-publish an article on a topic of its own choosing within a set cadence.
+The result: somewhere around one to ‘one and a half’ articles a week, posted to https://theautonomouswriter.com
+On Sunday morning I semi-legibly wrote the following in my notebook.
 
-
-Your API has no rate limiting. A single client sends 10,000 requests per second. Your database melts. Here is how to protect your services.
-import Redis from "ioredis";
-
-const RATE_LIMIT_SCRIPT = `
-  local key = KEYS[1]
-  local limit = tonumber(ARGV[1])
-  local window = tonumber(ARGV[2])
-  local now = tonumber(ARGV[3])
-  redis.call("ZREMRANGEBYSCORE", key, 0, now - window)
-  local count = redis.call("ZCARD", key)
-  if count >= limit then return 0 end
-  redis.call("ZADD", key, now, now .. math.random())
-  redis.call("EXPIRE", key, window / 1000)
-  return 1
-`;
-
-async function checkRateLimit(redis: Redis, clientId: string, limit: number, windowMs: number): Promise<boolean> {
-  const key = `rate:${clientId}`;
- …]]></summary>
+Handwritten notes outlining the autonomous writer concept
+I snapped a pic with my phone and passed it to Gemini Pro 3.0 with the prompt ‘OCR this then start speccing out the design with me’ (sic).
+After a few iterations, we arrived at a design spec. I got off the phone and onto Fedora, init'd a git repo and dropped Gemini's spec into Claude CLI (running Opus 4.6). Claude wrote this design spec to file Design Spec, having re-written Gemini's original.
+The commit history in the publicly a…]]></summary>
         <author>
-            <name>Young Gao</name>
+            <name>Alex Darbyshire</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Typography System Guide]]></title>
-        <id>https://dev.to/alansdead/typography-system-guide-42b8</id>
-        <link href="https://dev.to/alansdead/typography-system-guide-42b8"/>
-        <updated>2026-03-21T09:49:48.000Z</updated>
-        <summary type="html"><![CDATA[Last year, I developed an open-source interactive visual reference project to help designers and developers understand and implement accessible typography for mobile apps on iOS and Android.
-I've pushed an update with the latest accessibility and typography guidelines from iOS 18, Android 14, and the latest W3C Web Accessibility Initiative (WAI) recommendations. 
-https://alansdead.github.io/typography-system-guide/
-
-
-
-
-
-  
-  
-  Feedback, issues, and contributions are welcome (repo link)
-
-
-
-
-    
-        
-          
-            
-          
-        
-      
-        
-          
-            iOS 18 Android 14 Typography Guidelines Update | Juliana Mendonca posted on the topic | LinkedIn
-          
-        
-          
-            Last year, I developed an open-source interactive visual reference project to help designers and developers understand and implement accessible typography for mobile apps on iOS and Android.
-
-I've pushed an update with the latest #Accessibility and typography guidelines from iOS 18, Android 14, and the latest W3C Web Accessibility Initiative (WAI) recommendations. 
-
-You can check out the project here: Typography System Guide
-https://lnkd.in/daJ8e-eV
-
-Feedback, issues, and contributions are welcome (repo link)
-https://lnkd.in/dZhe5a_Z
-
-#Typography #iOS #Android #A11y #WCAG #MobileDesign
-          
-        
-            
-          linkedin.com]]></summary>
+        <title type="html"><![CDATA[Adding Stripe Checkout to a Solo SaaS: Lessons from PatentLLM's $1K/mo Plan]]></title>
+        <id>https://dev.to/soytuber/adding-stripe-checkout-to-a-solo-saas-lessons-from-patentllms-1kmo-plan-1c4d</id>
+        <link href="https://dev.to/soytuber/adding-stripe-checkout-to-a-solo-saas-lessons-from-patentllms-1kmo-plan-1c4d"/>
+        <updated>2026-03-21T10:40:57.000Z</updated>
+        <summary type="html"><![CDATA[PatentLLM started as a free patent search tool. Making it a paid product meant answering one question first: how do you handle payments when you're a solo developer who doesn't want to touch credit card numbers?
+The answer, of course, is Stripe Checkout. But the implementation details — graceful degradation for development, local caching to avoid API hammering, and the sales infrastructure around it — were more interesting than I expected.
+Stripe offers two main integration paths:
+Stripe Elements gives you embeddable UI components. You get full control over the look and feel, but you're responsible for handling card data, SCA (Strong Customer Authentication), and error states.
+Stripe Checkout redirects users to a Stripe-hosted payment page. You lose design control but gain PCI compliance f…]]></summary>
         <author>
-            <name>Jules Mendonca</name>
+            <name>soy</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Liberated Systemd]]></title>
-        <id>https://github.com/jeffrey-sardina/systemd</id>
-        <link href="https://github.com/jeffrey-sardina/systemd"/>
-        <updated>2026-03-21T07:59:29.000Z</updated>
+        <title type="html"><![CDATA[Atuin v18.13 – better search, a PTY proxy, and AI for your shell]]></title>
+        <id>https://blog.atuin.sh/atuin-v18-13/</id>
+        <link href="https://blog.atuin.sh/atuin-v18-13/"/>
+        <updated>2026-03-21T10:35:20.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -435,16 +263,6 @@ https://lnkd.in/dZhe5a_Z
         <id>https://github.com/arnoldrobbins/LinuxByExample-2e</id>
         <link href="https://github.com/arnoldrobbins/LinuxByExample-2e"/>
         <updated>2026-03-20T23:57:22.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: Red Grid Link – peer-to-peer team tracking over Bluetooth, no servers]]></title>
-        <id>https://github.com/RedGridTactical/RedGridLink</id>
-        <link href="https://github.com/RedGridTactical/RedGridLink"/>
-        <updated>2026-03-20T22:25:51.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -638,6 +456,16 @@ https://lnkd.in/dZhe5a_Z
         <summary type="html"><![CDATA[Bitcoin Cash (BCH), up 2.5% from Thursday, joined Aptos (APT) as a top performer.]]></summary>
         <author>
             <name>CoinDesk Indices</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Social Smolnet]]></title>
+        <id>https://ploum.net/2026-03-20-social-smolnet.html</id>
+        <link href="https://ploum.net/2026-03-20-social-smolnet.html"/>
+        <updated>2026-03-20T13:02:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1101,6 +929,16 @@ The post MCMC Directs Telcos To Strengthen Networks During Hari Raya Aidilfitri 
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[The Story of Marina Abramovic and Ulay (2020)]]></title>
+        <id>https://www.sydney-yaeko.com/artsandculture/marina-and-ulay</id>
+        <link href="https://www.sydney-yaeko.com/artsandculture/marina-and-ulay"/>
+        <updated>2026-03-19T01:45:23.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[How to Build a Production RAG System with Cloudflare Workers – a Handbook for Devs]]></title>
         <id>69bb2fa98c55d6eefb6ce907</id>
         <link href="https://www.freecodecamp.org/news/build-a-production-rag-system-with-cloudflare-workers-handbook/"/>
@@ -1205,16 +1043,6 @@ The post MCMC Directs Telcos To Strengthen Networks During Hari Raya Aidilfitri 
         <id>https://amturing.acm.org/</id>
         <link href="https://amturing.acm.org/"/>
         <updated>2026-03-18T12:16:26.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Parallel Perl – Autoparallelizing interpreter with JIT]]></title>
-        <id>https://perl.petamem.com/gpw2026/perl-mit-ai-gpw2026.html#/4/1/1</id>
-        <link href="https://perl.petamem.com/gpw2026/perl-mit-ai-gpw2026.html#/4/1/1"/>
-        <updated>2026-03-18T11:59:05.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
