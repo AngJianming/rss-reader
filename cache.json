@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/nivandosoares/porting-test-drive-ii-from-snes-to-pc-part-32-closing-the-snes-top-menu-transition-semantics-4cnf",
-          "author": "Nivando Soares",
-          "description": "Porting Test Drive II from SNES to PC, Part 32: Closing the SNES top-menu transition semantics\n\n\nThe last front-end checkpoint closed the text of the SNES top menu:\nGame Options\nPlay TDII\nHigh Score\nThat was useful, but it still left one important gap:\nwhat does each of those signboards do in the actual bank-1 flow?\nThat gap is now closed too.\nThe decision point is inside L00BAE8, at 01:BB7F.\nThat routine is the separate $1C6A top-level gate that sits before the later\n$0202 corridor.\nThe three branches now read as:\n$1C6A = 0 / Game Options -> jsr L00C0C7 ; jmp L00BAE8\n\n\n$1C6A = 1 / Play TDII -> return success to L008B31, which falls\nthrough to L008B3E\n\n\n$1C6A = 2 / High Score -> lda #$FFFF ; jsr L00A3CC ; jmp L00BAE8\n\n\n\nSo the three signboards are now closed at the semantic level, not only the\nPlay TDII is the only advancing branch\n\n\nThis is the important consequence:\nPlay TDII is the only top-level option that actually advances into the later\nThat matters because it keeps the SNES flow aligned with the user-guided\nBallistic -> initial menu -> Play TDII -> cars -> adversary/clock -> phase -> gameplay\nWith the current code read, the best fit for that flow is now:\nL00BAE8 -> L008B3E -> L00C20B -> L00BE76\nThat does not fully prove the meaning of every later surface yet.\nBut it does prove where the initial top-menu handoff actually happens.\nGame Options now has a direct static anchor too\n\n\nThe Game Options branch lands in L00C0C7.\nThat is important because it ties the top-level signboard directly to the\nSo the initial menu is now closed in two ways:\nvisible signboard labels from 1E:8000 rows 15..17\n\nsemantic branch behavior from L00BAE8\n\n\n\n\n  \n  \n  The same signboard image still helps\n\n\nThe rendered rows are still the same committed descriptor family:\n\nWhat changed is the meaning behind them.\nThe next useful front-end target is no longer “what do these signboards say?”\nThat part is done.\nThe next target is to use the now-closed Game Options -> L00C0C7 anchor and\n$0202 corridor that starts after Play TDII.",
-          "link": "https://dev.to/nivandosoares/porting-test-drive-ii-from-snes-to-pc-part-32-closing-the-snes-top-menu-transition-semantics-4cnf",
-          "publishedOn": "2026-03-27T14:09:58.000Z",
-          "wordCount": 2520,
-          "title": "Porting Test Drive II from SNES to PC, Part 32: Closing the SNES top-menu transition semantics",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgpgwstapj36fjj12eivu.png"
+          "id": "https://dev.to/triggerdotdev/why-we-replaced-nodejs-with-bun-for-5x-throughput-3ca1",
+          "author": "Nick",
+          "description": "We replaced Node.js with Bun in one of our most latency-sensitive services and got a 5x throughput increase. We also found a memory leak that only exists in Bun's HTTP model.\nThe service is called Firestarter. It's our warm start connection broker: it holds thousands of long-poll HTTP connections from idle run controllers, each waiting for work. When a task run arrives, Firestarter matches it to a waiting controller and sends the payload through the held connection. No cold start, no container spin-up. It's in the critical path of every task execution on Trigger.dev.\nThe problem: Firestarter was using too much CPU. It was running on Node.js, spending 31% of its time inside a SQLite query, parsing every request with Zod, and converting headers with Object.fromEntries() on every GET. It work…",
+          "link": "https://dev.to/triggerdotdev/why-we-replaced-nodejs-with-bun-for-5x-throughput-3ca1",
+          "publishedOn": "2026-03-27T15:48:00.000Z",
+          "wordCount": 3599,
+          "title": "Why we replaced Node.js with Bun for 5x throughput",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1llvns9i25i3zwy5tbhd.jpg"
         },
         {
-          "id": "https://dev.to/naveens16/kubernetes-for-hpc-the-quiet-convergence-reshaping-high-performance-computing-2apb",
-          "author": "Kubernetes with Naveen",
-          "description": "A practical, human-centered deep dive into why HPC and Kubernetes are finally converging, what this means for DevOps and platform engineers, and how Kubernetes can modernize and streamline high-performance computing services.\n\nTop Three Takeaways\n\n\n\nHPC’s traditional operational model is unsustainable today; Kubernetes provides the automation and reproducibility it has always lacked.\nKubernetes doesn’t try to replace HPC schedulers—it simply brings modern engineering discipline around them.\nWhen Kubernetes becomes the service layer for HPC, everything from provisioning to monitoring becomes more scalable, more observable, and dramatically easier to operate.\nThe Core Issues That Made Kubernetes + HPC Inevitable\n\n\nFor a long time, HPC clusters lived in a completely different world from moder…",
-          "link": "https://dev.to/naveens16/kubernetes-for-hpc-the-quiet-convergence-reshaping-high-performance-computing-2apb",
-          "publishedOn": "2026-03-27T14:09:42.000Z",
-          "wordCount": 1932,
-          "title": "Kubernetes for HPC: The Quiet Convergence Reshaping High-Performance Computing",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4add3ei177b548iozc7d.png"
+          "id": "https://dev.to/zeed_xo/i-tried-building-a-netflix-style-system-on-aws-heres-what-actually-matters-jf0",
+          "author": "Ogunleye Itunu Michael",
+          "description": "A lot of system design content looks impressive… until you actually try to build it.\nI’ve seen architectures that look clean on paper but fall apart the moment real traffic hits.\nSo instead of theory, I decided to break things down from a builder’s perspective:\nWhat does it actually take to build a scalable, Netflix-style system on AWS?\nLet’s get into it—no fluff.\n🧱 1. The Real Architecture (Not Just Diagrams)\nAt a high level, your system should look like this:\nUsers → CloudFront → API Gateway → Load Balancer → Microservices (EKS/ECS)\nWhen I first started designing systems like this, I underestimated how important each layer is. Skip one, and everything downstream suffers.\n🌐 2. CDN + API Gateway: Your First Line of Defense\nBefore your backend even sees traffic:\nCloudFront handles global …",
+          "link": "https://dev.to/zeed_xo/i-tried-building-a-netflix-style-system-on-aws-heres-what-actually-matters-jf0",
+          "publishedOn": "2026-03-27T15:40:47.000Z",
+          "wordCount": 1516,
+          "title": "I Tried Building a Netflix-Style System on AWS — Here’s What Actually Matters",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F05eqzwmustmc82nnu8lj.png"
         },
         {
-          "id": "https://dev.to/arthurwentworth/i-cant-go-back-after-i-gave-my-openclaw-a-voice-4413",
-          "author": "Arthur Wentworth",
-          "description": "I've been running OpenClaw as my personal AI assistant for a while — text-based, the usual way. It handled my emails, managed my calendar, searched the web, wrote code. It worked fine.\nThe shift\nText-based AI feels like email. Voice-based AI feels like a colleague sitting next to you. The personality comes through in a way that text never quite captures — the pauses, the tone, the pacing.\nThe real transformation came after I tuned the voice. Once I configured a quality TTS model and dialed in the tone and emotion parameters, something clicked. My AI suddenly felt like a real person — someone with high emotional intelligence who knows when to be warm, when to be direct, when to pause before delivering news.\nChatting became genuinely enjoyable. And it still works as hard as ever — researching, coding, sending emails, managing files. That combination — a colleague who is both pleasant to talk to and extremely capable — was honestly stunning.\nI didn't expect voice to change the experience this much.\nIt's not perfect. A few things I'm running into:\nMemory dies between sessions. My AI remembers me during a conversation, but after a restart? Gone. I have to re-teach preferences every time.\nPersonality drifts on model switches. When the model falls back (upgrades, rate limits), the tone shifts. Same AI, different vibe. It's jarring.\nBatch message blindness. When I send three messages quickly, it replies to each one separately. It should read them all, then respond once.\nI packaged my voice setup into an open-source project called VoiceClaw — a voice-first interaction layer for OpenClaw.\nFull voice pipeline (STT + TTS), pre-configured\nIf you've ever wished your AI assistant would just talk to you, give it a shot. And if you want to help solve any of the problems above, we're looking for contributors.\nRepo: github.com/voiceclaw/voiceclaw",
-          "link": "https://dev.to/arthurwentworth/i-cant-go-back-after-i-gave-my-openclaw-a-voice-4413",
-          "publishedOn": "2026-03-27T14:06:13.000Z",
-          "wordCount": 1255,
-          "title": "I can't go back, after I gave my OpenClaw a voice.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fiwgniowrhxhwzahnbby7.png"
+          "id": "https://dev.to/automatewithai/i-built-an-n8n-workflow-that-auto-triages-every-github-issue-with-ai-49bh",
+          "author": "fabrizio de luca",
+          "description": "If you run a GitHub repo with more than a handful of contributors, you know the pain: issues pile up, PRs go unreviewed, and critical bugs sit next to typo fixes with no way to tell them apart.\nI got tired of spending 30+ minutes every morning just reading notifications, so I built DevOps Inbox Zero — an n8n workflow that does the triage for me.\nEvery time a GitHub issue or PR is created, the workflow:\nCatches the event via GitHub webhook\nSends it to GPT-4o-mini with a structured prompt\nGets back a JSON classification: priority (critical/high/medium/low), category (bug/feature/security/docs/infra/test), suggested owner, and recommended action\nRoutes to the right Slack channel based on priority\nCreates a ticket in Linear or Jira (optional) with all the context\nThe whole thing runs in under …",
+          "link": "https://dev.to/automatewithai/i-built-an-n8n-workflow-that-auto-triages-every-github-issue-with-ai-49bh",
+          "publishedOn": "2026-03-27T15:40:06.000Z",
+          "wordCount": 1403,
+          "title": "I Built an n8n Workflow That Auto-Triages Every GitHub Issue with AI",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fismvzxnneo5w7nxb3mv6.png"
         },
         {
-          "id": "https://dev.to/dbalabs/llm-agents-should-never-execute-raw-commands-4o63",
-          "author": "DBA Labs",
-          "description": "Prompt injection is only a symptom. The real problem is command injection in agent-driven systems.\n\n\nLarge Language Models are rapidly becoming the interface between humans and software systems.\nDevelopers are building agents capable of triggering automation, managing users, generating reports, and interacting directly with backend infrastructure.\nThe architecture often looks deceptively simple:\nUser\n ↓\nLLM\n ↓\nGenerated text\n ↓\nBackend execution\n\nAt first glance, this seems perfectly reasonable.\nBut there is a fundamental mismatch hiding in this architecture.\nLLMs generate text. Backend systems execute commands.\nTreating generated text as if it were a valid command interface introduces a class of risks that are often misunderstood.\nImagine an administrative system controlled through an AI …",
-          "link": "https://dev.to/dbalabs/llm-agents-should-never-execute-raw-commands-4o63",
-          "publishedOn": "2026-03-27T14:02:44.000Z",
-          "wordCount": 1675,
-          "title": "LLM Agents Should Never Execute Raw Commands",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F10c0i9q2srfac5v49lpv.png"
-        },
-        {
-          "id": "https://dev.to/kornilovconstru/pypi-compromised-malicious-code-in-telnyx-packages-leads-to-credential-theft-and-malware-dpj",
-          "author": "Artyom Kornilov",
-          "description": "Executive Summary\n\n\nThe PyPI repository has once again fallen victim to a sophisticated supply chain attack, this time targeting the telnyx package in versions 4.87.1 and 4.87.2. The culprit, TeamPCP, reused the same RSA key and tpcp.tar.gz exfiltration header as in their previous litellm compromise, demonstrating a pattern of persistence and technical sophistication. The malicious code, injected into telnyx/\\_client.py, activates on import telnyx, requiring no user interaction—a silent but deadly intrusion.\nThe payload was concealed within WAV audio files using steganography, a technique that embeds data within seemingly innocuous files. This method bypasses traditional network inspection tools, as the malicious code is hidden in plain sight. Upon execution:\nLinux/macOS Systems: The malwa…",
-          "link": "https://dev.to/kornilovconstru/pypi-compromised-malicious-code-in-telnyx-packages-leads-to-credential-theft-and-malware-dpj",
-          "publishedOn": "2026-03-27T14:01:07.000Z",
-          "wordCount": 4559,
-          "title": "PyPI Compromised: Malicious Code in `telnyx` Packages Leads to Credential Theft and Malware Installation",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbqptaxr2pbylzf4066jh.png"
-        },
-        {
-          "id": "https://dev.to/mikee_tye_8bdde849556e51f/i-built-a-lightweight-ai-mentions-checker-because-ai-visibility-advice-felt-too-vague-4bdh",
-          "author": "Mikee Tye",
-          "description": "Everyone seems to be talking about AI visibility right now, but a lot of the advice still feels vague.\nYou hear the phrase everywhere, but when you try to pin it down, the practical side gets fuzzy fast. Are people talking about rankings, mentions, citations, retrieval, or visibility inside chat-based answers? A lot of the time, the conversation becomes bigger and more abstract than it needs to be.\nThat was the main reason I built a lightweight tool around the idea.\nI wanted something simpler and more practical for site owners, developers, and smaller web projects that just want to understand one thing: how does a site actually show up in AI-generated answers?\nA lot of the discussion around AI visibility feels like early SEO talk. Everyone knows the topic matters, but much of the advice st…",
-          "link": "https://dev.to/mikee_tye_8bdde849556e51f/i-built-a-lightweight-ai-mentions-checker-because-ai-visibility-advice-felt-too-vague-4bdh",
-          "publishedOn": "2026-03-27T14:01:05.000Z",
-          "wordCount": 1674,
-          "title": "I built a lightweight AI mentions checker because “AI visibility” advice felt too vague",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft3xuyn6sq09zrxwdyfbt.png"
-        },
-        {
-          "id": "https://dev.to/rahulxsingh/sonarqube-vs-code-climate-self-hosted-depth-vs-cloud-simplicity-2026-2hf1",
-          "author": "Rahul Singh",
-          "description": "Quick Verdict\n\n\n\n\nSonarQube is the stronger platform in nearly every dimension that matters for code quality analysis in 2026. SonarQube provides 6,500+ deterministic analysis rules across 35+ languages, the most mature quality gate enforcement system in the market, self-hosted deployment options (including a free Community Build), security scanning with taint analysis, and technical debt tracking with remediation time estimates. Code Climate provides maintainability grading (A-F scores), test coverage tracking, and basic PR feedback through a lightweight cloud-only platform. The gap between these two tools has widened significantly as SonarQube has added AI features, security scanning, and cloud hosting while Code Climate's investment has slowed following the sunset of its Velocity engine…",
-          "link": "https://dev.to/rahulxsingh/sonarqube-vs-code-climate-self-hosted-depth-vs-cloud-simplicity-2026-2hf1",
-          "publishedOn": "2026-03-27T14:00:00.000Z",
-          "wordCount": 8700,
-          "title": "SonarQube vs Code Climate: Self-Hosted Depth vs Cloud Simplicity (2026)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzevuounss3g3f1cks0te.png"
-        },
-        {
-          "id": "https://dev.to/tmdlrg/we-built-an-ai-memory-system-it-immediately-forgot-what-day-it-was-49pp",
-          "author": "ORCHESTRATE",
-          "description": "There's a specific flavor of irony that only software engineers get to taste.\nIt's the one where you spend eight hours building a sophisticated learning-and-memory engine for your AI system — a system specifically designed to help it learn from its own mistakes — and then, in the very same session, the AI demonstrates exactly why you needed to build it.\nLet me explain.\nThis morning, I published a blog post: \"I Let AI Create a Product and Post It to LinkedIn. It Failed Spectacularly.\" It's about our AI marketing platform trying to autonomously create merchandise and post it to LinkedIn. Spoiler: it uploaded a blank mockup, wrote copy for a product nobody could see, and posted it to our real company page. Classic.\nA few hours later — the same day — we fixed the constraints, ran it again, and…",
-          "link": "https://dev.to/tmdlrg/we-built-an-ai-memory-system-it-immediately-forgot-what-day-it-was-49pp",
-          "publishedOn": "2026-03-27T13:59:21.000Z",
-          "wordCount": 2861,
-          "title": "We Built an AI Memory System. It Immediately Forgot What Day It Was.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4s42b23tvznpeoyagef7.png"
-        },
-        {
-          "id": "https://dev.to/sebastienlorber/this-week-in-react-274-nextjs-react-router-storybook-heroui-reanimated-worklets-nitro-1l37",
-          "author": "Sebastien Lorber",
-          "description": "Hi everyone, Seb here 👋!\nThis week: a new Next.js release, a React Aria-based UI library, Remotion updates, Storybook MCP, and more.\nOn React Native, multi-threading keeps improving (Worklets, Reanimated), and React Navigation v8 looks close.\nSorry for the weird duplicate email last week, just a mistake 😅\n💡 Subscribe to the official newsletter to receive an email every week!\n\n\nStill writing tests manually?\nNotion, Dropbox and LaunchDarkly have found a new testing paradigm - and they can't imagine working without it. Built by ex-Palantir engineers, Meticulous autonomously creates a continuously evolving suite of E2E UI tests that delivers near-exhaustive coverage with zero developer effort - impossible to deliver by any other means. \nIt works like magic in the background:\nNear-exhaustive…",
-          "link": "https://dev.to/sebastienlorber/this-week-in-react-274-nextjs-react-router-storybook-heroui-reanimated-worklets-nitro-1l37",
-          "publishedOn": "2026-03-27T13:58:11.000Z",
-          "wordCount": 8627,
-          "title": "This Week In React #274 ⚛️ Next.js, React Router, Storybook, HeroUI| 📱 Reanimated, Worklets, Nitro Fetch, Navigation | 🔀 TypeScript, Signals",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsi57v2yktbn4nhc9zzhl.png"
-        },
-        {
-          "id": "https://dev.to/vinayagam_6a170db9281d526/sync-vs-async-in-javascript-explained-in-the-simplest-way-3a95",
-          "author": "Vinayagam",
-          "description": "Introduction\n\n\nWhen learning JavaScript, one of the most important concepts you will come across is synchronous and asynchronous programming. Understanding this topic helps you write better code and build faster, smoother web applications.\nIn simple terms, it explains how JavaScript handles tasks — whether it waits for one task to finish or moves on to the next.\nSynchronous JavaScript means that code runs one line at a time, in order. Each task must complete before the next one starts.\nJavaScript waits for each step to finish before moving forward.\nconsole.log(\"Step 1\");\nconsole.log(\"Step 2\");\nconsole.log(\"Step 3\");\n\nStep 1\nStep 2\nStep 3\n\nThe code runs line by line.\n\"Step 2\" will not run until \"Step 1\" is finished.\nThis is simple and easy to understand.\nLet’s look at a slightly longer exam…",
-          "link": "https://dev.to/vinayagam_6a170db9281d526/sync-vs-async-in-javascript-explained-in-the-simplest-way-3a95",
-          "publishedOn": "2026-03-27T13:41:40.000Z",
-          "wordCount": 1346,
-          "title": "Sync vs Async in JavaScript (Explained in the Simplest Way)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffnpce6erkf7xvd1cjbwj.png"
-        },
-        {
-          "id": "https://dev.to/karanjamadar/built-a-cross-database-recommendation-system-using-fdw-prisma-1dh1",
-          "author": "Karan",
-          "description": "Recently worked on an interesting backend problem — sharing the approach in case it helps others working with multi-DB systems 👇\nWe had two separate databases:\nCore DB → transactional data (activities, participants, items)\nProfile DB → user/entity master data + metadata\nWe needed:\nunified dataset for ranking/recommendation\nUsed Foreign Data Wrapper (FDW) to query Profile DB directly from Core DB.\nCREATE EXTENSION postgres_fdw;\n\nCREATE SERVER remote_profile_srv\nFOREIGN DATA WRAPPER postgres_fdw\nOPTIONS (\n  host 'host',\n  dbname 'profile_db',\n  port '5432'\n);\n\nMapped remote tables into local DB:\nfdw_schema.entities\nfdw_schema.entity_details\nfdw_schema.entity_context\n👉 Important: Convert enums → text to avoid cross-DB type issues.\nBuilt 4 layered views:\nEntity + metadata + classifications\nHandles JSON structures (like category mappings)\nCore activities + configurations + rules\nPivot configs using:\n\n\n\n\nBOOL_OR(...)  -- instead of MAX(boolean)\n\nExtracts dynamic JSON fields\nAggregates quantities, values, etc.\nJoins everything\nOutput = activity × entity dataset\n\n\n\n\n\n\n\n  \n  \n  ⚙️ Challenge: Prisma + ENV in SQL\n\n\nPrisma migrations don’t support .env inside SQL ❌\nUsed a custom Node script to inject env values:\nconst finalSQL = sql\n  .replace(/__HOST__/g, process.env.DB_HOST)\n  .replace(/__DB__/g, process.env.DB_NAME);\n\nThen executed via pg client.\nProfile DB\n   ↓ (FDW)\nCore DB (views)\n   ↓\nentity_activity_master_view\n   ↓\nRanking / ML / APIs\n\nFDW is powerful for real-time cross-DB joins\n\nAlways cast enums → text\n\nUse BOOL_OR instead of MAX(boolean)\n\nPrisma needs custom migration handling\n\nViews help create a clean analytical layer\nRecommendation systems\nRanking engines\nAnalytics without ETL pipelines\nYou don’t always need:\nSometimes:\nIf you're working on distributed data systems or recommendation problems, this approach can be really useful.\nHappy to discuss more 🤝\n\n\n  \n  \n  postgres #nestjs #prisma #backend #sql #architecture",
-          "link": "https://dev.to/karanjamadar/built-a-cross-database-recommendation-system-using-fdw-prisma-1dh1",
-          "publishedOn": "2026-03-27T13:40:23.000Z",
+          "id": "https://dev.to/0012303/clickhouse-has-a-free-column-oriented-database-query-billions-of-rows-in-milliseconds-61e",
+          "author": "Alex Spinov",
+          "description": "ClickHouse Queries Billions of Rows in Milliseconds\n\n\nPostgreSQL chokes on analytical queries over 100M rows. ClickHouse handles billions — and returns results in milliseconds. Thats not a typo.\nClickHouse is a column-oriented OLAP database:\nColumnar storage — reads only the columns you query\nVectorized execution — processes data in batches using SIMD\nCompression — 10-40x compression ratios on real data\nParallel processing — uses all CPU cores for every query\nMaterialized views — pre-aggregate data on insert\nSQL compatible — standard SQL with extensions\n# Docker\ndocker run -d --name clickhouse \\\n  -p 8123:8123 -p 9000:9000 \\\n  clickhouse/clickhouse-server\n\n# Connect\ndocker exec -it clickhouse clickhouse-client\n\n# Create table\nCREATE TABLE events (\n  timestamp DateTime,\n  user_id UInt64,\n  event_type LowCardinality(String),\n  properties String\n) ENGINE = MergeTree()\nORDER BY (event_type, timestamp);\n\n# Insert 1M rows in seconds\nINSERT INTO events SELECT\n  now() - randUniform(0, 86400*30),\n  rand64() % 100000,\n  arrayElement(['click,\\view\\,\\\\purchase\\,\\signup], rand() % 4 + 1),\n  {}\\\nFROM numbers(1000000);\n\n# Query — milliseconds on 1M rows\nSELECT event_type, count(), uniq(user_id)\nFROM events\nWHERE timestamp > now() - INTERVAL 7 DAY\nGROUP BY event_type;\n\n\n\n\nMetric\nClickHouse\nPostgreSQL\n\n\n\n\n1B row aggregation\n~1 second\nMinutes/timeout\n\n\nStorage (1TB data)\n~100GB\n~800GB\n\n\nInsert speed\n1M+ rows/sec\n~50K rows/sec\n\n\nConcurrent analytics\n✅\nLocks tables\n\n\nOLTP (transactions)\n❌\n✅\n\n\n\nSelf-hosted: completely free, unlimited\nClickHouse Cloud: free tier with 10GB storage\nchDB: embedded ClickHouse in Python (pip install chdb)\n✅ Analytics dashboards, log analysis, time-series data\nNeed fast analytics? I help teams set up ClickHouse for real-time dashboards and log analysis.\n📧 spinov001@gmail.com — Analytics infrastructure consulting\nFollow for more database deep dives.",
+          "link": "https://dev.to/0012303/clickhouse-has-a-free-column-oriented-database-query-billions-of-rows-in-milliseconds-61e",
+          "publishedOn": "2026-03-27T15:39:57.000Z",
           "wordCount": 1128,
-          "title": "🚀 Built a Cross-Database(AI) Recommendation System using FDW + Prisma",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvtojwqm76qsvqsr5evy8.png"
+          "title": "ClickHouse Has a Free Column-Oriented Database — Query Billions of Rows in Milliseconds",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9adc9bg1mph0d4k0a8yx.png"
         },
         {
-          "id": "https://dev.to/hjarni/your-ai-hit-its-limit-your-knowledge-shouldnt-50lb",
-          "author": "Evert",
-          "description": "Every AI conversation eventually resets.\nClaude runs out of messages. ChatGPT loses the thread after enough back-and-forth. Context windows fill up. It doesn't matter which model you use — at some point, you're back at a blank prompt.\nThat's mildly annoying. But the real cost is something else.\nMessage limits and context windows are a fact of life with LLMs. Every provider has them. They'll keep improving, and workarounds like auto-summarization help.\nBut here's the thing that doesn't go away: every time a conversation resets, you lose the context you built up. The decisions you talked through. The research you explained. The background you gave.\nAnd then you re-explain it. Again.\nIt's not catastrophic. It's a tax. Ten minutes here. Fifteen there. A slow bleed of time and attention, every …",
-          "link": "https://dev.to/hjarni/your-ai-hit-its-limit-your-knowledge-shouldnt-50lb",
-          "publishedOn": "2026-03-27T13:38:47.000Z",
-          "wordCount": 1668,
-          "title": "Your AI Hit Its Limit. Your Knowledge Shouldn't.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Flpu7qqwlsbtlzb22nzzu.png"
+          "id": "https://dev.to/csslive/elevate-your-web-ui-high-performance-css-3d-transforms-no-webgl-required-4e93",
+          "author": "FreeFrontend",
+          "description": "Flat design is functional, but depth makes an interface truly memorable. This updated collection aggregates high-performance solutions designed to add spatial interaction to your web projects.\nUnlike standard flat styling, CSS 3D transforms allow developers to bridge the gap between basic layouts and highly immersive experiences. The best part? You can achieve this without the massive performance overhead of WebGL libraries. By using these curated snippets, you guarantee efficient, lightweight code rather than spending hours building complex physics engines from scratch.\n\n\n\n\nInteractive 3D Flip Book Gallery. This is an Interactive 3D Flip Book Gallery. It simulates a physical book structure where each element acts as a double-sided page. Its function is to showcase images through spatial d…",
+          "link": "https://dev.to/csslive/elevate-your-web-ui-high-performance-css-3d-transforms-no-webgl-required-4e93",
+          "publishedOn": "2026-03-27T15:36:30.000Z",
+          "wordCount": 1500,
+          "title": "Elevate Your Web UI: High-Performance CSS 3D Transforms (No WebGL Required)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzrqtnmrrwnbm3waxsdmr.png"
+        },
+        {
+          "id": "https://dev.to/mit_demir_d07c130b3366d3/i-built-a-whiteboard-accidentally-32lo",
+          "author": "ümit demir",
+          "description": "I’ve been trying to build a whiteboard app for almost a year. I did it because of a couple of reasons: I wanted to try out skia. I wanted to try all the trendy react libraries like Zustand and TanStack Query. And, I wanted to get better at backend development with Go.\nOkay, to be fair, last one doesn’t sound like what you’d expect for a frontend-heavy project. But that is exactly what started all of this!\nI didn’t want to build a basic CRUD backend app. I wanted to build something real, something challenging. A backend for a collaborative whiteboard seemed like a great idea. So, I got to work. I implemented basic auth, classic CRUD endpoints, messaging with NATS JetStream, observability, and finally, WebSocket messaging.\nEventually, Postman just didn’t feel like enough to test my app. And …",
+          "link": "https://dev.to/mit_demir_d07c130b3366d3/i-built-a-whiteboard-accidentally-32lo",
+          "publishedOn": "2026-03-27T15:36:29.000Z",
+          "wordCount": 1307,
+          "title": "I built a whiteboard, accidentally",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F92gzy8wbpheq29d25967.jpg"
+        },
+        {
+          "id": "https://dev.to/flagodna/who-we-are-flagodna-2940",
+          "author": "Cahyanudien Aziz Saputra",
+          "description": "We are FlagoDNA.\nNot a \"Muslim version\" of Google.\nIt started in 2020.\nOne developer. One mission.\nQuran readers. Hadith collections. Prayer trackers.\nThen something happened.\n60,000 downloads.\nAnd one uncomfortable truth became clear:\nA single app is not enough.\nOur phones are not just tools anymore.\nAnd right now, those environments are built\nWe decided to change that.\nFlagoDNA is now building the foundation:\n→ Muslim Launcher — a faith-first home screen\nNot add-ons.\nWe build with four values:\nInnovation. Push the boundary of what faith-tech can be.\nQuality. Privacy-first. Performance-first. Always.\nCollaboration. Open source where it matters.\nMlampah Ing Tresno. Walk with love. ❤️\nThis is our first post as FlagoDNA on DEV.\nMore coming — behind the builds, the decisions, the stack, the failures.\nIf you are a builder who cares about what technology does to people,\n→ flagodna.com",
+          "link": "https://dev.to/flagodna/who-we-are-flagodna-2940",
+          "publishedOn": "2026-03-27T15:34:28.000Z",
+          "wordCount": 982,
+          "title": "Who We Are — FlagoDNA",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fomw5eeym5xzsclxg9lr4.png"
+        },
+        {
+          "id": "https://dev.to/k501is/evolution-is-not-progress-it-is-stabilization-under-increasing-complexity-26mh",
+          "author": "Iinkognit0",
+          "description": "K501 — Structured Systems Series (2/4)\n\nA structural exploration of cognition, evolution, and non-executive information systems.\nThis series explores:\nParts:\nTitle:\nEvolution Is Not Progress — It Is Stabilization Under Increasing Complexity\n⸻\n\nIntro (Hook)\nWe often think of evolution as progress.\nFrom simple → to complex\nBut this view is misleading.\nEvolution does not aim upward.\nIt does something else:\nit stabilizes systems under increasing degrees of freedom\n⸻\n\n\nRethinking Evolution\nAcross all domains:\nwe observe the same pattern:\nSystems form structures that remain stable under constraints.\nAtoms stabilize.\nEach step introduces more possibilities — and more instability.\n⸻\n\n\nComplexity and Instability\nAs complexity increases:\nThis leads to a fundamental principle:\nmore capability → more …",
+          "link": "https://dev.to/k501is/evolution-is-not-progress-it-is-stabilization-under-increasing-complexity-26mh",
+          "publishedOn": "2026-03-27T15:34:06.000Z",
+          "wordCount": 1433,
+          "title": "K501 - Evolution Is Not Progress — It Is Stabilization Under Increasing Complexity",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9gwfapczfc83q8x0a32r.png"
+        },
+        {
+          "id": "https://dev.to/vidya_cdd37fca763a53a10e2/lcmfactorialsum-of-numbers-program-in-three-languages-b36",
+          "author": "Vidya",
+          "description": "LCM(Least Common Multiple)\nExample:\n  Find LCM of 4 and 6:\n      Multiples of 4 → 4, 8, 12, 16, 20...\n      Multiples of 6 → 6, 12, 18, 24...\n    --> The smallest common multiple is 12\n    --> So, LCM(4, 6) = 12\n\nFlowchart\n\nJava\npublic class Lcm {\n\n    public static void main(String[] args) {\n        int no1=3;\n        int no2=10;\n        int big=(no1<no2)?no1:no2;\n        int big2=big;\n        while(true) {\n            if(big%no1==0 && big%no2==0) {\n                System.out.println(\"LCM is \" + big);\n                break;\n            }\n            big+=big2;\n        }\n\n    }\n\n}\n\nPython\n                no1=3\n            no2=10\n            big=no1 if no1>no2 else no2\n            big2=big\n        while True:\n            if big%no1==0 and  big%no2==0:\n              print(\"LCM is \" , big)\n  …",
+          "link": "https://dev.to/vidya_cdd37fca763a53a10e2/lcmfactorialsum-of-numbers-program-in-three-languages-b36",
+          "publishedOn": "2026-03-27T15:31:34.000Z",
+          "wordCount": 1173,
+          "title": "LCM,Factorial,Sum of Numbers Program in three languages",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0ax7g14bzhsdkf5hc6uh.png"
+        },
+        {
+          "id": "https://dev.to/nareshipme/how-to-prevent-stuck-loading-spinners-with-polling-timeouts-in-react-5eke",
+          "author": "nareshipme",
+          "description": "You've seen it: the user kicks off an async job, the loading spinner appears, and then… nothing. The spinner just spins forever. The job may have completed, crashed, or timed out on the server — but the client has no idea.\nThis is a common failure mode when you're polling a status endpoint. Here's how to fix it with a simple timeout guard.\nPolling usually looks something like this:\nconst [status, setStatus] = useState<'pending' | 'processing' | 'done' | 'error'>('pending');\n\nuseEffect(() => {\n  if (status === 'done' || status === 'error') return;\n\n  const interval = setInterval(async () => {\n    const res = await fetch(`/api/projects/${id}/status`);\n    const data = await res.json();\n    setStatus(data.status);\n  }, 2000);\n\n  return () => clearInterval(interval);\n}, [status, id]);\n\nThe bug…",
+          "link": "https://dev.to/nareshipme/how-to-prevent-stuck-loading-spinners-with-polling-timeouts-in-react-5eke",
+          "publishedOn": "2026-03-27T15:30:57.000Z",
+          "wordCount": 1418,
+          "title": "How to Prevent Stuck Loading Spinners with Polling Timeouts in React",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy9orzl6n88fjcnklyhf3.png"
+        },
+        {
+          "id": "https://dev.to/jonesrussell/managing-llm-context-in-a-real-application-1kf4",
+          "author": "Russell Jones",
+          "description": "Ahnii!\nThis post covers how Claudriel, a Waaseyaa-based AI assistant SaaS, handles LLM context in production: conversation trimming, per-task turn budgets, model degradation on rate limits, prompt caching, and per-turn token telemetry.\nEvery message you send to an LLM API costs tokens. Long-running chat sessions accumulate history fast. Left unchecked, a single active session can push input token counts into the tens of thousands per turn, even before the model generates a word.\nClaudriel runs multiple agent turns per user request — reading email, checking calendars, querying entities. Each turn sends the full conversation history plus tool definitions. Without guardrails, costs compound and rate limits trigger unpredictably.\nThe first line of defense is ChatStreamController::trimConversat…",
+          "link": "https://dev.to/jonesrussell/managing-llm-context-in-a-real-application-1kf4",
+          "publishedOn": "2026-03-27T15:30:33.000Z",
+          "wordCount": 2119,
+          "title": "Managing LLM context in a real application",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F4y2ngnpc6khi2wrc36o6.png"
+        },
+        {
+          "id": "https://dev.to/gaston_herrlein_3baa4d62e/i-chose-the-wrong-architecture-on-purpose-3pk5",
+          "author": "Gaston Herrlein",
+          "description": "It was 2014. Paraná, Argentina. A free period at school, the World Cup just around the corner, and a group of friends who — with not much else to do — started talking about football.\nAt some point someone threw out the idea: what if we compete to see who actually knows more? The rules were simple. Everyone made their predictions before each match — exact score, winner, points. Three points if you nailed the exact result. One if you only got the winner right. Zero if you missed entirely.\nWhat wasn't simple was what it created. Suddenly you found yourself watching matches you normally wouldn't care about — but now they mattered, because your prediction depended on them. There were laughs, arguments, jokes, small symbolic bets. And that hard-to-describe feeling of desperately wanting the game…",
+          "link": "https://dev.to/gaston_herrlein_3baa4d62e/i-chose-the-wrong-architecture-on-purpose-3pk5",
+          "publishedOn": "2026-03-27T15:30:00.000Z",
+          "wordCount": 1662,
+          "title": "I chose the wrong architecture… on purpose",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1dckz4jrad317xd2da7o.png"
         }
       ]
     },
@@ -252,6 +252,66 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://soranews24.com/2026/03/27/japan-now-has-a-special-desk-for-people-who-work-at-home-with-a-pet-catphotos/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://soranews24.com/2026/03/27/japan-now-has-a-special-desk-for-people-who-work-at-home-with-a-pet-catphotos/",
+          "publishedOn": "2026-03-27T15:31:20.000Z",
+          "wordCount": 3739,
+          "title": "Special desk for people who work at home with a cat",
+          "imageUrl": "https://soranews24.com/wp-content/uploads/sites/3/2026/03/ch-1.jpg?w=1000&h=525&crop=1"
+        },
+        {
+          "id": "https://www.nature.com/articles/s41467-026-69393-1",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.nature.com/articles/s41467-026-69393-1",
+          "publishedOn": "2026-03-27T14:53:43.000Z",
+          "wordCount": 15982,
+          "title": "Rising Air-Conditioning Use Intensifies Global Warming",
+          "imageUrl": "https://media.springernature.com/m685/springer-static/image/art%3A10.1038%2Fs41467-026-69393-1/MediaObjects/41467_2026_69393_Fig1_HTML.png"
+        },
+        {
+          "id": "https://www.theverge.com/cs/tech/900477/apple-50-anniversary-rank-products",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.theverge.com/cs/tech/900477/apple-50-anniversary-rank-products",
+          "publishedOn": "2026-03-27T14:44:42.000Z",
+          "wordCount": 704,
+          "title": "Rank the 50 best Apple products",
+          "imageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/03/Rank-Apple-Products-Lead-Art-1.jpg?quality=90&strip=all&crop=0%2C10.732984293194%2C100%2C78.534031413613&w=1200"
+        },
+        {
+          "id": "https://bsky.app/profile/teropa.bsky.social/post/3mi2dbt27m226",
+          "author": null,
+          "description": "Comments",
+          "link": "https://bsky.app/profile/teropa.bsky.social/post/3mi2dbt27m226",
+          "publishedOn": "2026-03-27T14:40:06.000Z",
+          "wordCount": 399,
+          "title": "Anthropic's Claude loses its >99% uptime in Q1 2026",
+          "imageUrl": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:3sg2oatbjp4o7wd7l6ejma2q/bafkreih6z76nto5om7qkw7r5fszbvljcwd6wyps3wryf2tbxw5spfkeo7a"
+        },
+        {
+          "id": "https://www.reuters.com/world/us/iran-linked-hackers-claim-breach-of-fbi-directors-personal-email-doj-official-2026-03-27/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.reuters.com/world/us/iran-linked-hackers-claim-breach-of-fbi-directors-personal-email-doj-official-2026-03-27/",
+          "publishedOn": "2026-03-27T14:38:28.000Z",
+          "wordCount": null,
+          "title": "Iran-linked hackers claim breach of FBI director's personal email",
+          "imageUrl": null
+        },
+        {
+          "id": "https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder",
+          "author": null,
+          "description": "Comments",
+          "link": "https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder",
+          "publishedOn": "2026-03-27T14:35:45.000Z",
+          "wordCount": 6530,
+          "title": "Anatomy of the .claude/ Folder",
+          "imageUrl": "https://substackcdn.com/image/fetch/$s_!ITpM!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3b81cc25-df87-4ea8-a11b-9a719d5836b1_1166x1176.png"
+        },
+        {
           "id": "https://www.gadgetreview.com/hong-kong-police-can-now-demand-phone-passwords-under-new-security-rules",
           "author": null,
           "description": "Comments",
@@ -260,6 +320,26 @@
           "wordCount": 3597,
           "title": "Hong Kong Police Can Now Demand Phone Passwords Under New Security Rules",
           "imageUrl": "https://www.gadgetreview.com/wp-content/uploads/Depositphotos_169835510_XL-scaled.jpg"
+        },
+        {
+          "id": "https://www.windowscentral.com/microsoft/windows-11/people-inside-microsoft-are-fighting-to-drop-windows-11s-mandatory-microsoft-account-requirements-during-setup",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.windowscentral.com/microsoft/windows-11/people-inside-microsoft-are-fighting-to-drop-windows-11s-mandatory-microsoft-account-requirements-during-setup",
+          "publishedOn": "2026-03-27T13:54:35.000Z",
+          "wordCount": 36835,
+          "title": "People inside Microsoft are fighting to drop mandatory Microsoft Account",
+          "imageUrl": "https://cdn.mos.cms.futurecdn.net/JCodoJxkyaJ8XW3FU9wbEB-1376-80.png"
+        },
+        {
+          "id": "https://owltec.ca/Other/Installing+a+Let%27s+Encrypt+TLS+certificate+on+a+Brother+printer+automatically+with+Certbot+(%26+Cloudflare)",
+          "author": null,
+          "description": "Comments",
+          "link": "https://owltec.ca/Other/Installing+a+Let%27s+Encrypt+TLS+certificate+on+a+Brother+printer+automatically+with+Certbot+(%26+Cloudflare)",
+          "publishedOn": "2026-03-27T13:49:51.000Z",
+          "wordCount": 36,
+          "title": "Installing a Let's Encrypt TLS Certificate on a Brother Printer with Certbot",
+          "imageUrl": null
         },
         {
           "id": "https://sightlessscribbles.com/posts/the-paperwork-flood/",
@@ -297,7 +377,7 @@
           "description": "Comments",
           "link": "https://www.allsky7.net/#archive",
           "publishedOn": "2026-03-27T07:00:49.000Z",
-          "wordCount": null,
+          "wordCount": 1591,
           "title": "The European AllSky7 fireball network",
           "imageUrl": null
         },
@@ -310,16 +390,6 @@
           "wordCount": 1395,
           "title": "Schedule tasks on the web",
           "imageUrl": null
-        },
-        {
-          "id": "https://axeldelafosse.com/blog/agent-to-agent-pair-programming",
-          "author": null,
-          "description": "Comments",
-          "link": "https://axeldelafosse.com/blog/agent-to-agent-pair-programming",
-          "publishedOn": "2026-03-27T01:47:55.000Z",
-          "wordCount": 1710,
-          "title": "Agent-to-agent pair programming",
-          "imageUrl": "https://og-image.axeldelafosse.now.sh/**Agent-to-agent%20pair%20programming**.png?theme=dark&md=1&fontSize=75px&widths=100&heights=100"
         },
         {
           "id": "https://georgelarson.me/writing/2026-03-23-nullclaw-doorman/",
@@ -342,26 +412,6 @@
           "imageUrl": "https://cdn.prod.website-files.com/644fc991ce69ff211edbeb95/69c41472d9654291b273f039_Blog%20Image%20Website-03-26%20We%20rewrote%20JSONata-%24400%2C%20and%20saved%20us%20%24300K%20(1)%20(1)%20(1).png"
         },
         {
-          "id": "https://trust.anthropic.com/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://trust.anthropic.com/",
-          "publishedOn": "2026-03-26T21:37:15.000Z",
-          "wordCount": 68,
-          "title": "Anthropic Subprocessor Changes",
-          "imageUrl": "https://app.vanta.com/doc?s=sy1uft0hltb14h4h4wwvu"
-        },
-        {
-          "id": "https://www.bbc.com/future/article/20260325-an-unstoppable-mushroom-is-tearing-through-north-american-forests",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.bbc.com/future/article/20260325-an-unstoppable-mushroom-is-tearing-through-north-american-forests",
-          "publishedOn": "2026-03-26T21:36:51.000Z",
-          "wordCount": 11792,
-          "title": "An unstoppable mushroom is tearing through North American forests",
-          "imageUrl": "https://ychef.files.bbci.co.uk/624x351/p0n8q080.jpg"
-        },
-        {
           "id": "https://9to5mac.com/2026/03/26/apple-discontinues-the-mac-pro/",
           "author": null,
           "description": "Comments",
@@ -372,46 +422,6 @@
           "imageUrl": "https://i0.wp.com/9to5mac.com/wp-content/uploads/sites/6/2026/03/mac-pro-rip.jpg?resize=1200%2C628&quality=82&strip=all&ssl=1"
         },
         {
-          "id": "https://github.com/ViciousSquid/Fio",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/ViciousSquid/Fio",
-          "publishedOn": "2026-03-26T20:58:04.000Z",
-          "wordCount": 1337,
-          "title": "Show HN: Fio: 3D World editor/game engine – inspired by Radiant and Hammer",
-          "imageUrl": "https://repository-images.githubusercontent.com/1013552692/88afe2af-36ef-45d0-ae1c-02b8362b3cb2"
-        },
-        {
-          "id": "https://www.jeffgeerling.com/blog/2026/firewire-on-a-raspberry-pi/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.jeffgeerling.com/blog/2026/firewire-on-a-raspberry-pi/",
-          "publishedOn": "2026-03-26T20:23:10.000Z",
-          "wordCount": 603,
-          "title": "Using FireWire on a Raspberry Pi",
-          "imageUrl": ""
-        },
-        {
-          "id": "https://www.derekthompson.org/p/we-havent-seen-the-worst-of-what",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.derekthompson.org/p/we-havent-seen-the-worst-of-what",
-          "publishedOn": "2026-03-26T19:48:05.000Z",
-          "wordCount": 6633,
-          "title": "We haven't seen the worst of what gambling and prediction markets will do",
-          "imageUrl": "https://substackcdn.com/image/fetch/$s_!r41H!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd037a2b3-283d-4ef2-92da-b1b95e22e446_1080x683.jpeg"
-        },
-        {
-          "id": "https://www.trychroma.com/research/context-1",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.trychroma.com/research/context-1",
-          "publishedOn": "2026-03-26T19:25:19.000Z",
-          "wordCount": 24136,
-          "title": "Chroma Context-1: Training a Self-Editing Search Agent",
-          "imageUrl": "https://www.trychroma.com/img/context_1/card.png"
-        },
-        {
           "id": "https://github.com/itigges22/ATLAS",
           "author": null,
           "description": "Comments",
@@ -419,17 +429,7 @@
           "publishedOn": "2026-03-26T17:31:24.000Z",
           "wordCount": 5384,
           "title": "$500 GPU outperforms Claude Sonnet on coding benchmarks",
-          "imageUrl": "https://opengraph.githubassets.com/b39bd3bab7bf3ae59ab4bb455a9ccec840a26065443d03ae993f538d4d84ea30/itigges22/ATLAS"
-        },
-        {
-          "id": "https://opentelemetry.io/blog/2026/profiles-alpha/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://opentelemetry.io/blog/2026/profiles-alpha/",
-          "publishedOn": "2026-03-26T16:14:56.000Z",
-          "wordCount": 2112,
-          "title": "OpenTelemetry profiles enters public alpha",
-          "imageUrl": "https://opentelemetry.io/img/social/logo-wordmark-001.png"
+          "imageUrl": "https://opengraph.githubassets.com/a003bffc74b626a5a6c837cf785a4aaeb76820a1e89e65e6aaf6a46fa64a6ce5/itigges22/ATLAS"
         },
         {
           "id": "https://futuresearch.ai/blog/litellm-attack-transcript/",
@@ -469,7 +469,17 @@
           "publishedOn": "2026-03-24T16:54:10.000Z",
           "wordCount": 2228,
           "title": "HyperAgents: Self-referential self-improving agents",
-          "imageUrl": "https://opengraph.githubassets.com/ed76ae134370082cad0f1aab4346cf7a051ce6350318bc7de0eb53e8b07e9543/facebookresearch/HyperAgents"
+          "imageUrl": "https://opengraph.githubassets.com/29b91fdc4d87365bd07cd97da73cbc398fe3dad66881e066135a04aa6d084b14/facebookresearch/HyperAgents"
+        },
+        {
+          "id": "https://dfarq.homeip.net/emachines-never-obsolete-pcs-more-than-a-meme/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://dfarq.homeip.net/emachines-never-obsolete-pcs-more-than-a-meme/",
+          "publishedOn": "2026-03-24T15:12:16.000Z",
+          "wordCount": 4212,
+          "title": "EMachines never obsolete PCs: More than a meme",
+          "imageUrl": "https://i0.wp.com/dfarq.homeip.net/wp-content/uploads/2024/03/emachines-never-obsolete-social.jpg?fit=964%2C542&ssl=1"
         },
         {
           "id": "https://terrytao.wordpress.com/2026/03/23/local-bernstein-theory-and-lower-bounds-for-lebesgue-constants/",
@@ -477,9 +487,19 @@
           "description": "Comments",
           "link": "https://terrytao.wordpress.com/2026/03/23/local-bernstein-theory-and-lower-bounds-for-lebesgue-constants/",
           "publishedOn": "2026-03-24T09:36:45.000Z",
-          "wordCount": 5162,
+          "wordCount": 5163,
           "title": "Local Bernstein theory, and lower bounds for Lebesgue constants",
           "imageUrl": "https://terrytao.wordpress.com/wp-content/uploads/2026/03/cheby.png"
+        },
+        {
+          "id": "https://iev.ee/blog/gzip-decompression-in-250-lines-of-rust/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://iev.ee/blog/gzip-decompression-in-250-lines-of-rust/",
+          "publishedOn": "2026-03-24T06:35:08.000Z",
+          "wordCount": 1821,
+          "title": "Gzip decompression in 250 lines of Rust",
+          "imageUrl": "https://iev.ee/og-image.png"
         },
         {
           "id": "https://atgreen.github.io/repl-yell/posts/whistler/",
@@ -487,7 +507,7 @@
           "description": "Comments",
           "link": "https://atgreen.github.io/repl-yell/posts/whistler/",
           "publishedOn": "2026-03-23T21:13:16.000Z",
-          "wordCount": 2249,
+          "wordCount": 2259,
           "title": "Whistler: Live eBPF Programming from the Common Lisp REPL",
           "imageUrl": null
         },
@@ -502,16 +522,6 @@
           "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbppQPX3SbdskyBbtvbPBads2_KKTFR6pEGhVQpuLAFxtXUB_m56IeF1vZl1pDWIT_kNxGsqBixC1Xyt9m8SNg1I8QuJakm7PeKGC5EzbXQZA_U1kSy7nKkInnD12hkIIYImwS8GpJziJmuQhtmVag_3ojrWh7qoj5NvenpJukYrdYSxubN6E8hjChyphenhyphenvs/w1200-h630-p-k-no-nu/massif_python.png"
         },
         {
-          "id": "https://library.oapen.org//handle/20.500.12657/53344",
-          "author": null,
-          "description": "Comments",
-          "link": "https://library.oapen.org//handle/20.500.12657/53344",
-          "publishedOn": "2026-03-23T17:56:31.000Z",
-          "wordCount": 1,
-          "title": "The Legibility of Serif and Sans Serif Typefaces (2022)",
-          "imageUrl": null
-        },
-        {
           "id": "https://github.com/resumex/doom-over-dns",
           "author": null,
           "description": "Comments",
@@ -519,7 +529,7 @@
           "publishedOn": "2026-03-23T15:17:38.000Z",
           "wordCount": 2789,
           "title": "DOOM Over DNS",
-          "imageUrl": "https://opengraph.githubassets.com/1ed0e86eeb0ec81d1e8f1990db12f8c92c5b1c830687967f61ad52df60ccfb03/resumex/doom-over-dns"
+          "imageUrl": "https://opengraph.githubassets.com/c2433d69e5fa5ba72d30a99d33a11bd4319eed91060f5746ec0563e1786eb8fe/resumex/doom-over-dns"
         },
         {
           "id": "https://www.youtube.com/watch?v=ldxFjLJ3rVY",
@@ -529,16 +539,6 @@
           "publishedOn": "2026-03-23T15:10:43.000Z",
           "wordCount": null,
           "title": "This picture broke my brain [3B1B video]",
-          "imageUrl": null
-        },
-        {
-          "id": "https://www.matheusmoreira.com/articles/generators-in-lone-lisp",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.matheusmoreira.com/articles/generators-in-lone-lisp",
-          "publishedOn": "2026-03-23T13:51:03.000Z",
-          "wordCount": 1675,
-          "title": "Generators in Lone Lisp",
           "imageUrl": null
         },
         {
@@ -784,7 +784,7 @@
           "description": "The model could significantly heighten cybersecurity risks by rapidly finding and exploiting software vulnerabilities, potentially accelerating a cyber arms race.",
           "link": "https://www.coindesk.com/markets/2026/03/27/anthropic-s-massive-claude-mythos-leak-reveals-a-new-ai-model-that-could-be-a-cybersecurity-nightmare",
           "publishedOn": "2026-03-27T13:56:39.000Z",
-          "wordCount": 12000,
+          "wordCount": 12008,
           "title": "Anthropic’s massive 'Claude Mythos' leak sends software names — and crypto — sharply lower",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b57dc1c9863e5ac05ccfaadf6ced33d7415175e6-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -814,7 +814,7 @@
           "description": "Glassnode data shows distribution across cohorts as BTC falls below $67,000, with whales remaining largely neutral.",
           "link": "https://www.coindesk.com/markets/2026/03/27/retail-investors-drive-widespread-bitcoin-selling-as-prices-fall",
           "publishedOn": "2026-03-27T11:44:26.000Z",
-          "wordCount": 12109,
+          "wordCount": 12108,
           "title": "Retail investors drive widespread bitcoin selling as prices fall",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5a452b6c7813c5769e655c74427e7fc7d62941b7-3200x1800.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -824,8 +824,8 @@
           "description": "Your day-ahead look for March 27, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/03/27/ondo-canton-sidestep-macro-concerns-with-institutional-deals-as-bitcoin-ether-slide",
           "publishedOn": "2026-03-27T11:36:18.000Z",
-          "wordCount": 13400,
-          "title": "Ondo, canton sidestep macro concerns with institutional deals as bitcoin, ether slide",
+          "wordCount": 13406,
+          "title": "Ondo, Canton sidestep macro concerns with institutional deals as bitcoin, ether slide",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d64448ce067f294c297a109e42930156c249115f-4507x3005.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
         {
@@ -874,7 +874,7 @@
           "description": "Ukraine’s disruption of Russian oil flows has added fresh uncertainty to already strained energy markets, complicating inflation outlooks and keeping pressure on risk assets including bitcoin.",
           "link": "https://www.coindesk.com/markets/2026/03/27/bitcoin-macro-risks-spike-as-ukraine-throws-a-spanner-in-trump-s-plan-to-stabilize-oil-markets",
           "publishedOn": "2026-03-27T06:08:35.000Z",
-          "wordCount": 12460,
+          "wordCount": 12461,
           "title": "Bitcoin macro risks spike as Ukraine messes with Trump's plan to stabilize oil markets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ccb0a7f8972de23193d198e8aacaf34f5df00b00-1920x1440.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -894,7 +894,7 @@
           "description": "Every major is red on the day as the war enters its fifth week with no resolution, though ETF inflows of $2.5 billion over the past month and net exchange outflows suggest institutional accumulation beneath the surface.",
           "link": "https://www.coindesk.com/markets/2026/03/27/bitcoin-slides-below-usd68-500-as-trump-extends-iran-deadline-but-war-risks-persist",
           "publishedOn": "2026-03-27T04:31:38.000Z",
-          "wordCount": 12666,
+          "wordCount": 12679,
           "title": "Bitcoin slides below $68,500 as Trump extends Iran deadline but war risks persist",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b7ab3adea84221d8026972fcd65e9dd2a434b424-1500x900.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -904,7 +904,7 @@
           "description": "FT identifies KPMG as auditor as stablecoin giant eyes fundraising and expansion under new U.S. rules",
           "link": "https://www.coindesk.com/markets/2026/03/27/tether-hires-kpmg-for-usdt-audit-brings-in-pwc-as-it-gears-up-for-u-s-expansion",
           "publishedOn": "2026-03-27T04:16:30.000Z",
-          "wordCount": 12311,
+          "wordCount": 12324,
           "title": "Tether hires KPMG for USDT audit, brings in PwC as it gears up for U.S. expansion",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bfd80702a660a5deef3d056a315228038910dde5-1405x790.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -914,7 +914,7 @@
           "description": "White House AI and Crypto Czar David Sacks said Thursday he was joining the President’s Council of Advisors on Science and Technology and leaving the czar role.",
           "link": "https://www.coindesk.com/policy/2026/03/26/white-house-crypto-czar-david-sacks-transfers-to-presidential-advisory-committee-role",
           "publishedOn": "2026-03-27T00:11:26.000Z",
-          "wordCount": 12145,
+          "wordCount": 12158,
           "title": "White House crypto czar David Sacks transfers to presidential advisory committee role",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/da94844eda3561ae4e7702a12e1797926d1c6589-4920x2768.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1024,7 +1024,7 @@
           "description": "How regulators are balancing the \"untraceable\" promise of ZK-proofs with strict new anti-money laundering mandates – and what it means for the future of anonymous wealth.",
           "link": "https://www.coindesk.com/opinion/2026/03/19/the-privacy-paradox-regulating-zero-knowledge-finance-in-the-eu-and-beyond",
           "publishedOn": "2026-03-26T14:30:00.000Z",
-          "wordCount": 13913,
+          "wordCount": 13902,
           "title": "The privacy paradox: regulating zero-knowledge finance in the EU and beyond",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f76726a418f4252ee41a2daacfc0a028491507b6-1920x1080.jpg?auto=format"
         }

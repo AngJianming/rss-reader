@@ -1,230 +1,417 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-03-27T14:12:14.497Z</id>
+    <id>urn:2026-03-27T15:48:18.863Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-03-27T14:12:14.497Z</updated>
+    <updated>2026-03-27T15:48:18.863Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Porting Test Drive II from SNES to PC, Part 32: Closing the SNES top-menu transition semantics]]></title>
-        <id>https://dev.to/nivandosoares/porting-test-drive-ii-from-snes-to-pc-part-32-closing-the-snes-top-menu-transition-semantics-4cnf</id>
-        <link href="https://dev.to/nivandosoares/porting-test-drive-ii-from-snes-to-pc-part-32-closing-the-snes-top-menu-transition-semantics-4cnf"/>
-        <updated>2026-03-27T14:09:58.000Z</updated>
-        <summary type="html"><![CDATA[Porting Test Drive II from SNES to PC, Part 32: Closing the SNES top-menu transition semantics
-
-
-The last front-end checkpoint closed the text of the SNES top menu:
-Game Options
-Play TDII
-High Score
-That was useful, but it still left one important gap:
-what does each of those signboards do in the actual bank-1 flow?
-That gap is now closed too.
-The decision point is inside L00BAE8, at 01:BB7F.
-That routine is the separate $1C6A top-level gate that sits before the later
-$0202 corridor.
-The three branches now read as:
-$1C6A = 0 / Game Options -> jsr L00C0C7 ; jmp L00BAE8
-
-
-$1C6A = 1 / Play TDII -> return success to L008B31, which falls
-through to L008B3E
-
-
-$1C6A = 2 / High Score -> lda #$FFFF ; jsr L00A3CC ; jmp L00BAE8
-
-
-
-So the three signboards are now closed at the semantic level, not only the
-Play TDII is the only advancing branch
-
-
-This is the important consequence:
-Play TDII is the only top-level option that actually advances into the later
-That matters because it keeps the SNES flow aligned with the user-guided
-Ballistic -> initial menu -> Play TDII -> cars -> adversary/clock -> phase -> gameplay
-With the current code read, the best fit for that flow is now:
-L00BAE8 -> L008B3E -> L00C20B -> L00BE76
-That does not fully prove the meaning of every later surface yet.
-But it does prove where the initial top-menu handoff actually happens.
-Game Options now has a direct static anchor too
-
-
-The Game Options branch lands in L00C0C7.
-That is important because it ties the top-level signboard directly to the
-So the initial menu is now closed in two ways:
-visible signboard labels from 1E:8000 rows 15..17
-
-semantic branch behavior from L00BAE8
-
-
-
-
-  
-  
-  The same signboard image still helps
-
-
-The rendered rows are still the same committed descriptor family:
-
-What changed is the meaning behind them.
-The next useful front-end target is no longer “what do these signboards say?”
-That part is done.
-The next target is to use the now-closed Game Options -> L00C0C7 anchor and
-$0202 corridor that starts after Play TDII.]]></summary>
+        <title type="html"><![CDATA[Why we replaced Node.js with Bun for 5x throughput]]></title>
+        <id>https://dev.to/triggerdotdev/why-we-replaced-nodejs-with-bun-for-5x-throughput-3ca1</id>
+        <link href="https://dev.to/triggerdotdev/why-we-replaced-nodejs-with-bun-for-5x-throughput-3ca1"/>
+        <updated>2026-03-27T15:48:00.000Z</updated>
+        <summary type="html"><![CDATA[We replaced Node.js with Bun in one of our most latency-sensitive services and got a 5x throughput increase. We also found a memory leak that only exists in Bun's HTTP model.
+The service is called Firestarter. It's our warm start connection broker: it holds thousands of long-poll HTTP connections from idle run controllers, each waiting for work. When a task run arrives, Firestarter matches it to a waiting controller and sends the payload through the held connection. No cold start, no container spin-up. It's in the critical path of every task execution on Trigger.dev.
+The problem: Firestarter was using too much CPU. It was running on Node.js, spending 31% of its time inside a SQLite query, parsing every request with Zod, and converting headers with Object.fromEntries() on every GET. It work…]]></summary>
         <author>
-            <name>Nivando Soares</name>
+            <name>Nick</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Kubernetes for HPC: The Quiet Convergence Reshaping High-Performance Computing]]></title>
-        <id>https://dev.to/naveens16/kubernetes-for-hpc-the-quiet-convergence-reshaping-high-performance-computing-2apb</id>
-        <link href="https://dev.to/naveens16/kubernetes-for-hpc-the-quiet-convergence-reshaping-high-performance-computing-2apb"/>
-        <updated>2026-03-27T14:09:42.000Z</updated>
-        <summary type="html"><![CDATA[A practical, human-centered deep dive into why HPC and Kubernetes are finally converging, what this means for DevOps and platform engineers, and how Kubernetes can modernize and streamline high-performance computing services.
-
-Top Three Takeaways
-
-
-
-HPC’s traditional operational model is unsustainable today; Kubernetes provides the automation and reproducibility it has always lacked.
-Kubernetes doesn’t try to replace HPC schedulers—it simply brings modern engineering discipline around them.
-When Kubernetes becomes the service layer for HPC, everything from provisioning to monitoring becomes more scalable, more observable, and dramatically easier to operate.
-The Core Issues That Made Kubernetes + HPC Inevitable
-
-
-For a long time, HPC clusters lived in a completely different world from moder…]]></summary>
+        <title type="html"><![CDATA[I Tried Building a Netflix-Style System on AWS — Here’s What Actually Matters]]></title>
+        <id>https://dev.to/zeed_xo/i-tried-building-a-netflix-style-system-on-aws-heres-what-actually-matters-jf0</id>
+        <link href="https://dev.to/zeed_xo/i-tried-building-a-netflix-style-system-on-aws-heres-what-actually-matters-jf0"/>
+        <updated>2026-03-27T15:40:47.000Z</updated>
+        <summary type="html"><![CDATA[A lot of system design content looks impressive… until you actually try to build it.
+I’ve seen architectures that look clean on paper but fall apart the moment real traffic hits.
+So instead of theory, I decided to break things down from a builder’s perspective:
+What does it actually take to build a scalable, Netflix-style system on AWS?
+Let’s get into it—no fluff.
+🧱 1. The Real Architecture (Not Just Diagrams)
+At a high level, your system should look like this:
+Users → CloudFront → API Gateway → Load Balancer → Microservices (EKS/ECS)
+When I first started designing systems like this, I underestimated how important each layer is. Skip one, and everything downstream suffers.
+🌐 2. CDN + API Gateway: Your First Line of Defense
+Before your backend even sees traffic:
+CloudFront handles global …]]></summary>
         <author>
-            <name>Kubernetes with Naveen</name>
+            <name>Ogunleye Itunu Michael</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I can't go back, after I gave my OpenClaw a voice.]]></title>
-        <id>https://dev.to/arthurwentworth/i-cant-go-back-after-i-gave-my-openclaw-a-voice-4413</id>
-        <link href="https://dev.to/arthurwentworth/i-cant-go-back-after-i-gave-my-openclaw-a-voice-4413"/>
-        <updated>2026-03-27T14:06:13.000Z</updated>
-        <summary type="html"><![CDATA[I've been running OpenClaw as my personal AI assistant for a while — text-based, the usual way. It handled my emails, managed my calendar, searched the web, wrote code. It worked fine.
-The shift
-Text-based AI feels like email. Voice-based AI feels like a colleague sitting next to you. The personality comes through in a way that text never quite captures — the pauses, the tone, the pacing.
-The real transformation came after I tuned the voice. Once I configured a quality TTS model and dialed in the tone and emotion parameters, something clicked. My AI suddenly felt like a real person — someone with high emotional intelligence who knows when to be warm, when to be direct, when to pause before delivering news.
-Chatting became genuinely enjoyable. And it still works as hard as ever — researching, coding, sending emails, managing files. That combination — a colleague who is both pleasant to talk to and extremely capable — was honestly stunning.
-I didn't expect voice to change the experience this much.
-It's not perfect. A few things I'm running into:
-Memory dies between sessions. My AI remembers me during a conversation, but after a restart? Gone. I have to re-teach preferences every time.
-Personality drifts on model switches. When the model falls back (upgrades, rate limits), the tone shifts. Same AI, different vibe. It's jarring.
-Batch message blindness. When I send three messages quickly, it replies to each one separately. It should read them all, then respond once.
-I packaged my voice setup into an open-source project called VoiceClaw — a voice-first interaction layer for OpenClaw.
-Full voice pipeline (STT + TTS), pre-configured
-If you've ever wished your AI assistant would just talk to you, give it a shot. And if you want to help solve any of the problems above, we're looking for contributors.
-Repo: github.com/voiceclaw/voiceclaw]]></summary>
+        <title type="html"><![CDATA[I Built an n8n Workflow That Auto-Triages Every GitHub Issue with AI]]></title>
+        <id>https://dev.to/automatewithai/i-built-an-n8n-workflow-that-auto-triages-every-github-issue-with-ai-49bh</id>
+        <link href="https://dev.to/automatewithai/i-built-an-n8n-workflow-that-auto-triages-every-github-issue-with-ai-49bh"/>
+        <updated>2026-03-27T15:40:06.000Z</updated>
+        <summary type="html"><![CDATA[If you run a GitHub repo with more than a handful of contributors, you know the pain: issues pile up, PRs go unreviewed, and critical bugs sit next to typo fixes with no way to tell them apart.
+I got tired of spending 30+ minutes every morning just reading notifications, so I built DevOps Inbox Zero — an n8n workflow that does the triage for me.
+Every time a GitHub issue or PR is created, the workflow:
+Catches the event via GitHub webhook
+Sends it to GPT-4o-mini with a structured prompt
+Gets back a JSON classification: priority (critical/high/medium/low), category (bug/feature/security/docs/infra/test), suggested owner, and recommended action
+Routes to the right Slack channel based on priority
+Creates a ticket in Linear or Jira (optional) with all the context
+The whole thing runs in under …]]></summary>
         <author>
-            <name>Arthur Wentworth</name>
+            <name>fabrizio de luca</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[LLM Agents Should Never Execute Raw Commands]]></title>
-        <id>https://dev.to/dbalabs/llm-agents-should-never-execute-raw-commands-4o63</id>
-        <link href="https://dev.to/dbalabs/llm-agents-should-never-execute-raw-commands-4o63"/>
-        <updated>2026-03-27T14:02:44.000Z</updated>
-        <summary type="html"><![CDATA[Prompt injection is only a symptom. The real problem is command injection in agent-driven systems.
+        <title type="html"><![CDATA[ClickHouse Has a Free Column-Oriented Database — Query Billions of Rows in Milliseconds]]></title>
+        <id>https://dev.to/0012303/clickhouse-has-a-free-column-oriented-database-query-billions-of-rows-in-milliseconds-61e</id>
+        <link href="https://dev.to/0012303/clickhouse-has-a-free-column-oriented-database-query-billions-of-rows-in-milliseconds-61e"/>
+        <updated>2026-03-27T15:39:57.000Z</updated>
+        <summary type="html"><![CDATA[ClickHouse Queries Billions of Rows in Milliseconds
 
 
-Large Language Models are rapidly becoming the interface between humans and software systems.
-Developers are building agents capable of triggering automation, managing users, generating reports, and interacting directly with backend infrastructure.
-The architecture often looks deceptively simple:
-User
- ↓
-LLM
- ↓
-Generated text
- ↓
-Backend execution
+PostgreSQL chokes on analytical queries over 100M rows. ClickHouse handles billions — and returns results in milliseconds. Thats not a typo.
+ClickHouse is a column-oriented OLAP database:
+Columnar storage — reads only the columns you query
+Vectorized execution — processes data in batches using SIMD
+Compression — 10-40x compression ratios on real data
+Parallel processing — uses all CPU cores for every query
+Materialized views — pre-aggregate data on insert
+SQL compatible — standard SQL with extensions
+# Docker
+docker run -d --name clickhouse \
+  -p 8123:8123 -p 9000:9000 \
+  clickhouse/clickhouse-server
 
-At first glance, this seems perfectly reasonable.
-But there is a fundamental mismatch hiding in this architecture.
-LLMs generate text. Backend systems execute commands.
-Treating generated text as if it were a valid command interface introduces a class of risks that are often misunderstood.
-Imagine an administrative system controlled through an AI …]]></summary>
+# Connect
+docker exec -it clickhouse clickhouse-client
+
+# Create table
+CREATE TABLE events (
+  timestamp DateTime,
+  user_id UInt64,
+  event_type LowCardinality(String),
+  properties String
+) ENGINE = MergeTree()
+ORDER BY (event_type, timestamp);
+
+# Insert 1M rows in seconds
+INSERT INTO events SELECT
+  now() - randUniform(0, 86400*30),
+  rand64() % 100000,
+  arrayElement(['click,\view\,\\purchase\,\signup], rand() % 4 + 1),
+  {}\
+FROM numbers(1000000);
+
+# Query — milliseconds on 1M rows
+SELECT event_type, count(), uniq(user_id)
+FROM events
+WHERE timestamp > now() - INTERVAL 7 DAY
+GROUP BY event_type;
+
+
+
+
+Metric
+ClickHouse
+PostgreSQL
+
+
+
+
+1B row aggregation
+~1 second
+Minutes/timeout
+
+
+Storage (1TB data)
+~100GB
+~800GB
+
+
+Insert speed
+1M+ rows/sec
+~50K rows/sec
+
+
+Concurrent analytics
+✅
+Locks tables
+
+
+OLTP (transactions)
+❌
+✅
+
+
+
+Self-hosted: completely free, unlimited
+ClickHouse Cloud: free tier with 10GB storage
+chDB: embedded ClickHouse in Python (pip install chdb)
+✅ Analytics dashboards, log analysis, time-series data
+Need fast analytics? I help teams set up ClickHouse for real-time dashboards and log analysis.
+📧 spinov001@gmail.com — Analytics infrastructure consulting
+Follow for more database deep dives.]]></summary>
         <author>
-            <name>DBA Labs</name>
+            <name>Alex Spinov</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[PyPI Compromised: Malicious Code in `telnyx` Packages Leads to Credential Theft and Malware Installation]]></title>
-        <id>https://dev.to/kornilovconstru/pypi-compromised-malicious-code-in-telnyx-packages-leads-to-credential-theft-and-malware-dpj</id>
-        <link href="https://dev.to/kornilovconstru/pypi-compromised-malicious-code-in-telnyx-packages-leads-to-credential-theft-and-malware-dpj"/>
-        <updated>2026-03-27T14:01:07.000Z</updated>
-        <summary type="html"><![CDATA[Executive Summary
+        <title type="html"><![CDATA[Elevate Your Web UI: High-Performance CSS 3D Transforms (No WebGL Required)]]></title>
+        <id>https://dev.to/csslive/elevate-your-web-ui-high-performance-css-3d-transforms-no-webgl-required-4e93</id>
+        <link href="https://dev.to/csslive/elevate-your-web-ui-high-performance-css-3d-transforms-no-webgl-required-4e93"/>
+        <updated>2026-03-27T15:36:30.000Z</updated>
+        <summary type="html"><![CDATA[Flat design is functional, but depth makes an interface truly memorable. This updated collection aggregates high-performance solutions designed to add spatial interaction to your web projects.
+Unlike standard flat styling, CSS 3D transforms allow developers to bridge the gap between basic layouts and highly immersive experiences. The best part? You can achieve this without the massive performance overhead of WebGL libraries. By using these curated snippets, you guarantee efficient, lightweight code rather than spending hours building complex physics engines from scratch.
 
 
-The PyPI repository has once again fallen victim to a sophisticated supply chain attack, this time targeting the telnyx package in versions 4.87.1 and 4.87.2. The culprit, TeamPCP, reused the same RSA key and tpcp.tar.gz exfiltration header as in their previous litellm compromise, demonstrating a pattern of persistence and technical sophistication. The malicious code, injected into telnyx/\_client.py, activates on import telnyx, requiring no user interaction—a silent but deadly intrusion.
-The payload was concealed within WAV audio files using steganography, a technique that embeds data within seemingly innocuous files. This method bypasses traditional network inspection tools, as the malicious code is hidden in plain sight. Upon execution:
-Linux/macOS Systems: The malwa…]]></summary>
+
+
+Interactive 3D Flip Book Gallery. This is an Interactive 3D Flip Book Gallery. It simulates a physical book structure where each element acts as a double-sided page. Its function is to showcase images through spatial d…]]></summary>
         <author>
-            <name>Artyom Kornilov</name>
+            <name>FreeFrontend</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I built a lightweight AI mentions checker because “AI visibility” advice felt too vague]]></title>
-        <id>https://dev.to/mikee_tye_8bdde849556e51f/i-built-a-lightweight-ai-mentions-checker-because-ai-visibility-advice-felt-too-vague-4bdh</id>
-        <link href="https://dev.to/mikee_tye_8bdde849556e51f/i-built-a-lightweight-ai-mentions-checker-because-ai-visibility-advice-felt-too-vague-4bdh"/>
-        <updated>2026-03-27T14:01:05.000Z</updated>
-        <summary type="html"><![CDATA[Everyone seems to be talking about AI visibility right now, but a lot of the advice still feels vague.
-You hear the phrase everywhere, but when you try to pin it down, the practical side gets fuzzy fast. Are people talking about rankings, mentions, citations, retrieval, or visibility inside chat-based answers? A lot of the time, the conversation becomes bigger and more abstract than it needs to be.
-That was the main reason I built a lightweight tool around the idea.
-I wanted something simpler and more practical for site owners, developers, and smaller web projects that just want to understand one thing: how does a site actually show up in AI-generated answers?
-A lot of the discussion around AI visibility feels like early SEO talk. Everyone knows the topic matters, but much of the advice st…]]></summary>
+        <title type="html"><![CDATA[I built a whiteboard, accidentally]]></title>
+        <id>https://dev.to/mit_demir_d07c130b3366d3/i-built-a-whiteboard-accidentally-32lo</id>
+        <link href="https://dev.to/mit_demir_d07c130b3366d3/i-built-a-whiteboard-accidentally-32lo"/>
+        <updated>2026-03-27T15:36:29.000Z</updated>
+        <summary type="html"><![CDATA[I’ve been trying to build a whiteboard app for almost a year. I did it because of a couple of reasons: I wanted to try out skia. I wanted to try all the trendy react libraries like Zustand and TanStack Query. And, I wanted to get better at backend development with Go.
+Okay, to be fair, last one doesn’t sound like what you’d expect for a frontend-heavy project. But that is exactly what started all of this!
+I didn’t want to build a basic CRUD backend app. I wanted to build something real, something challenging. A backend for a collaborative whiteboard seemed like a great idea. So, I got to work. I implemented basic auth, classic CRUD endpoints, messaging with NATS JetStream, observability, and finally, WebSocket messaging.
+Eventually, Postman just didn’t feel like enough to test my app. And …]]></summary>
         <author>
-            <name>Mikee Tye</name>
+            <name>ümit demir</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[SonarQube vs Code Climate: Self-Hosted Depth vs Cloud Simplicity (2026)]]></title>
-        <id>https://dev.to/rahulxsingh/sonarqube-vs-code-climate-self-hosted-depth-vs-cloud-simplicity-2026-2hf1</id>
-        <link href="https://dev.to/rahulxsingh/sonarqube-vs-code-climate-self-hosted-depth-vs-cloud-simplicity-2026-2hf1"/>
-        <updated>2026-03-27T14:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Quick Verdict
-
-
-
-
-SonarQube is the stronger platform in nearly every dimension that matters for code quality analysis in 2026. SonarQube provides 6,500+ deterministic analysis rules across 35+ languages, the most mature quality gate enforcement system in the market, self-hosted deployment options (including a free Community Build), security scanning with taint analysis, and technical debt tracking with remediation time estimates. Code Climate provides maintainability grading (A-F scores), test coverage tracking, and basic PR feedback through a lightweight cloud-only platform. The gap between these two tools has widened significantly as SonarQube has added AI features, security scanning, and cloud hosting while Code Climate's investment has slowed following the sunset of its Velocity engine…]]></summary>
+        <title type="html"><![CDATA[Who We Are — FlagoDNA]]></title>
+        <id>https://dev.to/flagodna/who-we-are-flagodna-2940</id>
+        <link href="https://dev.to/flagodna/who-we-are-flagodna-2940"/>
+        <updated>2026-03-27T15:34:28.000Z</updated>
+        <summary type="html"><![CDATA[We are FlagoDNA.
+Not a "Muslim version" of Google.
+It started in 2020.
+One developer. One mission.
+Quran readers. Hadith collections. Prayer trackers.
+Then something happened.
+60,000 downloads.
+And one uncomfortable truth became clear:
+A single app is not enough.
+Our phones are not just tools anymore.
+And right now, those environments are built
+We decided to change that.
+FlagoDNA is now building the foundation:
+→ Muslim Launcher — a faith-first home screen
+Not add-ons.
+We build with four values:
+Innovation. Push the boundary of what faith-tech can be.
+Quality. Privacy-first. Performance-first. Always.
+Collaboration. Open source where it matters.
+Mlampah Ing Tresno. Walk with love. ❤️
+This is our first post as FlagoDNA on DEV.
+More coming — behind the builds, the decisions, the stack, the failures.
+If you are a builder who cares about what technology does to people,
+→ flagodna.com]]></summary>
         <author>
-            <name>Rahul Singh</name>
+            <name>Cahyanudien Aziz Saputra</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[We Built an AI Memory System. It Immediately Forgot What Day It Was.]]></title>
-        <id>https://dev.to/tmdlrg/we-built-an-ai-memory-system-it-immediately-forgot-what-day-it-was-49pp</id>
-        <link href="https://dev.to/tmdlrg/we-built-an-ai-memory-system-it-immediately-forgot-what-day-it-was-49pp"/>
-        <updated>2026-03-27T13:59:21.000Z</updated>
-        <summary type="html"><![CDATA[There's a specific flavor of irony that only software engineers get to taste.
-It's the one where you spend eight hours building a sophisticated learning-and-memory engine for your AI system — a system specifically designed to help it learn from its own mistakes — and then, in the very same session, the AI demonstrates exactly why you needed to build it.
-Let me explain.
-This morning, I published a blog post: "I Let AI Create a Product and Post It to LinkedIn. It Failed Spectacularly." It's about our AI marketing platform trying to autonomously create merchandise and post it to LinkedIn. Spoiler: it uploaded a blank mockup, wrote copy for a product nobody could see, and posted it to our real company page. Classic.
-A few hours later — the same day — we fixed the constraints, ran it again, and…]]></summary>
+        <title type="html"><![CDATA[K501 - Evolution Is Not Progress — It Is Stabilization Under Increasing Complexity]]></title>
+        <id>https://dev.to/k501is/evolution-is-not-progress-it-is-stabilization-under-increasing-complexity-26mh</id>
+        <link href="https://dev.to/k501is/evolution-is-not-progress-it-is-stabilization-under-increasing-complexity-26mh"/>
+        <updated>2026-03-27T15:34:06.000Z</updated>
+        <summary type="html"><![CDATA[K501 — Structured Systems Series (2/4)
+
+A structural exploration of cognition, evolution, and non-executive information systems.
+This series explores:
+Parts:
+Title:
+Evolution Is Not Progress — It Is Stabilization Under Increasing Complexity
+⸻
+
+Intro (Hook)
+We often think of evolution as progress.
+From simple → to complex
+But this view is misleading.
+Evolution does not aim upward.
+It does something else:
+it stabilizes systems under increasing degrees of freedom
+⸻
+
+
+Rethinking Evolution
+Across all domains:
+we observe the same pattern:
+Systems form structures that remain stable under constraints.
+Atoms stabilize.
+Each step introduces more possibilities — and more instability.
+⸻
+
+
+Complexity and Instability
+As complexity increases:
+This leads to a fundamental principle:
+more capability → more …]]></summary>
         <author>
-            <name>ORCHESTRATE</name>
+            <name>Iinkognit0</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[This Week In React #274 ⚛️ Next.js, React Router, Storybook, HeroUI| 📱 Reanimated, Worklets, Nitro Fetch, Navigation | 🔀 TypeScript, Signals]]></title>
-        <id>https://dev.to/sebastienlorber/this-week-in-react-274-nextjs-react-router-storybook-heroui-reanimated-worklets-nitro-1l37</id>
-        <link href="https://dev.to/sebastienlorber/this-week-in-react-274-nextjs-react-router-storybook-heroui-reanimated-worklets-nitro-1l37"/>
-        <updated>2026-03-27T13:58:11.000Z</updated>
-        <summary type="html"><![CDATA[Hi everyone, Seb here 👋!
-This week: a new Next.js release, a React Aria-based UI library, Remotion updates, Storybook MCP, and more.
-On React Native, multi-threading keeps improving (Worklets, Reanimated), and React Navigation v8 looks close.
-Sorry for the weird duplicate email last week, just a mistake 😅
-💡 Subscribe to the official newsletter to receive an email every week!
+        <title type="html"><![CDATA[LCM,Factorial,Sum of Numbers Program in three languages]]></title>
+        <id>https://dev.to/vidya_cdd37fca763a53a10e2/lcmfactorialsum-of-numbers-program-in-three-languages-b36</id>
+        <link href="https://dev.to/vidya_cdd37fca763a53a10e2/lcmfactorialsum-of-numbers-program-in-three-languages-b36"/>
+        <updated>2026-03-27T15:31:34.000Z</updated>
+        <summary type="html"><![CDATA[LCM(Least Common Multiple)
+Example:
+  Find LCM of 4 and 6:
+      Multiples of 4 → 4, 8, 12, 16, 20...
+      Multiples of 6 → 6, 12, 18, 24...
+    --> The smallest common multiple is 12
+    --> So, LCM(4, 6) = 12
 
+Flowchart
 
-Still writing tests manually?
-Notion, Dropbox and LaunchDarkly have found a new testing paradigm - and they can't imagine working without it. Built by ex-Palantir engineers, Meticulous autonomously creates a continuously evolving suite of E2E UI tests that delivers near-exhaustive coverage with zero developer effort - impossible to deliver by any other means. 
-It works like magic in the background:
-Near-exhaustive…]]></summary>
+Java
+public class Lcm {
+
+    public static void main(String[] args) {
+        int no1=3;
+        int no2=10;
+        int big=(no1<no2)?no1:no2;
+        int big2=big;
+        while(true) {
+            if(big%no1==0 && big%no2==0) {
+                System.out.println("LCM is " + big);
+                break;
+            }
+            big+=big2;
+        }
+
+    }
+
+}
+
+Python
+                no1=3
+            no2=10
+            big=no1 if no1>no2 else no2
+            big2=big
+        while True:
+            if big%no1==0 and  big%no2==0:
+              print("LCM is " , big)
+  …]]></summary>
         <author>
-            <name>Sebastien Lorber</name>
+            <name>Vidya</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Special desk for people who work at home with a cat]]></title>
+        <id>https://soranews24.com/2026/03/27/japan-now-has-a-special-desk-for-people-who-work-at-home-with-a-pet-catphotos/</id>
+        <link href="https://soranews24.com/2026/03/27/japan-now-has-a-special-desk-for-people-who-work-at-home-with-a-pet-catphotos/"/>
+        <updated>2026-03-27T15:31:20.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Prevent Stuck Loading Spinners with Polling Timeouts in React]]></title>
+        <id>https://dev.to/nareshipme/how-to-prevent-stuck-loading-spinners-with-polling-timeouts-in-react-5eke</id>
+        <link href="https://dev.to/nareshipme/how-to-prevent-stuck-loading-spinners-with-polling-timeouts-in-react-5eke"/>
+        <updated>2026-03-27T15:30:57.000Z</updated>
+        <summary type="html"><![CDATA[You've seen it: the user kicks off an async job, the loading spinner appears, and then… nothing. The spinner just spins forever. The job may have completed, crashed, or timed out on the server — but the client has no idea.
+This is a common failure mode when you're polling a status endpoint. Here's how to fix it with a simple timeout guard.
+Polling usually looks something like this:
+const [status, setStatus] = useState<'pending' | 'processing' | 'done' | 'error'>('pending');
+
+useEffect(() => {
+  if (status === 'done' || status === 'error') return;
+
+  const interval = setInterval(async () => {
+    const res = await fetch(`/api/projects/${id}/status`);
+    const data = await res.json();
+    setStatus(data.status);
+  }, 2000);
+
+  return () => clearInterval(interval);
+}, [status, id]);
+
+The bug…]]></summary>
+        <author>
+            <name>nareshipme</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Managing LLM context in a real application]]></title>
+        <id>https://dev.to/jonesrussell/managing-llm-context-in-a-real-application-1kf4</id>
+        <link href="https://dev.to/jonesrussell/managing-llm-context-in-a-real-application-1kf4"/>
+        <updated>2026-03-27T15:30:33.000Z</updated>
+        <summary type="html"><![CDATA[Ahnii!
+This post covers how Claudriel, a Waaseyaa-based AI assistant SaaS, handles LLM context in production: conversation trimming, per-task turn budgets, model degradation on rate limits, prompt caching, and per-turn token telemetry.
+Every message you send to an LLM API costs tokens. Long-running chat sessions accumulate history fast. Left unchecked, a single active session can push input token counts into the tens of thousands per turn, even before the model generates a word.
+Claudriel runs multiple agent turns per user request — reading email, checking calendars, querying entities. Each turn sends the full conversation history plus tool definitions. Without guardrails, costs compound and rate limits trigger unpredictably.
+The first line of defense is ChatStreamController::trimConversat…]]></summary>
+        <author>
+            <name>Russell Jones</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I chose the wrong architecture… on purpose]]></title>
+        <id>https://dev.to/gaston_herrlein_3baa4d62e/i-chose-the-wrong-architecture-on-purpose-3pk5</id>
+        <link href="https://dev.to/gaston_herrlein_3baa4d62e/i-chose-the-wrong-architecture-on-purpose-3pk5"/>
+        <updated>2026-03-27T15:30:00.000Z</updated>
+        <summary type="html"><![CDATA[It was 2014. Paraná, Argentina. A free period at school, the World Cup just around the corner, and a group of friends who — with not much else to do — started talking about football.
+At some point someone threw out the idea: what if we compete to see who actually knows more? The rules were simple. Everyone made their predictions before each match — exact score, winner, points. Three points if you nailed the exact result. One if you only got the winner right. Zero if you missed entirely.
+What wasn't simple was what it created. Suddenly you found yourself watching matches you normally wouldn't care about — but now they mattered, because your prediction depended on them. There were laughs, arguments, jokes, small symbolic bets. And that hard-to-describe feeling of desperately wanting the game…]]></summary>
+        <author>
+            <name>Gaston Herrlein</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rising Air-Conditioning Use Intensifies Global Warming]]></title>
+        <id>https://www.nature.com/articles/s41467-026-69393-1</id>
+        <link href="https://www.nature.com/articles/s41467-026-69393-1"/>
+        <updated>2026-03-27T14:53:43.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rank the 50 best Apple products]]></title>
+        <id>https://www.theverge.com/cs/tech/900477/apple-50-anniversary-rank-products</id>
+        <link href="https://www.theverge.com/cs/tech/900477/apple-50-anniversary-rank-products"/>
+        <updated>2026-03-27T14:44:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Anthropic's Claude loses its >99% uptime in Q1 2026]]></title>
+        <id>https://bsky.app/profile/teropa.bsky.social/post/3mi2dbt27m226</id>
+        <link href="https://bsky.app/profile/teropa.bsky.social/post/3mi2dbt27m226"/>
+        <updated>2026-03-27T14:40:06.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Iran-linked hackers claim breach of FBI director's personal email]]></title>
+        <id>https://www.reuters.com/world/us/iran-linked-hackers-claim-breach-of-fbi-directors-personal-email-doj-official-2026-03-27/</id>
+        <link href="https://www.reuters.com/world/us/iran-linked-hackers-claim-breach-of-fbi-directors-personal-email-doj-official-2026-03-27/"/>
+        <updated>2026-03-27T14:38:28.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Anatomy of the .claude/ Folder]]></title>
+        <id>https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder</id>
+        <link href="https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder"/>
+        <updated>2026-03-27T14:35:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -248,141 +435,23 @@ Near-exhaustive…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Sync vs Async in JavaScript (Explained in the Simplest Way)]]></title>
-        <id>https://dev.to/vinayagam_6a170db9281d526/sync-vs-async-in-javascript-explained-in-the-simplest-way-3a95</id>
-        <link href="https://dev.to/vinayagam_6a170db9281d526/sync-vs-async-in-javascript-explained-in-the-simplest-way-3a95"/>
-        <updated>2026-03-27T13:41:40.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-When learning JavaScript, one of the most important concepts you will come across is synchronous and asynchronous programming. Understanding this topic helps you write better code and build faster, smoother web applications.
-In simple terms, it explains how JavaScript handles tasks — whether it waits for one task to finish or moves on to the next.
-Synchronous JavaScript means that code runs one line at a time, in order. Each task must complete before the next one starts.
-JavaScript waits for each step to finish before moving forward.
-console.log("Step 1");
-console.log("Step 2");
-console.log("Step 3");
-
-Step 1
-Step 2
-Step 3
-
-The code runs line by line.
-"Step 2" will not run until "Step 1" is finished.
-This is simple and easy to understand.
-Let’s look at a slightly longer exam…]]></summary>
+        <title type="html"><![CDATA[People inside Microsoft are fighting to drop mandatory Microsoft Account]]></title>
+        <id>https://www.windowscentral.com/microsoft/windows-11/people-inside-microsoft-are-fighting-to-drop-windows-11s-mandatory-microsoft-account-requirements-during-setup</id>
+        <link href="https://www.windowscentral.com/microsoft/windows-11/people-inside-microsoft-are-fighting-to-drop-windows-11s-mandatory-microsoft-account-requirements-during-setup"/>
+        <updated>2026-03-27T13:54:35.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Vinayagam</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[🚀 Built a Cross-Database(AI) Recommendation System using FDW + Prisma]]></title>
-        <id>https://dev.to/karanjamadar/built-a-cross-database-recommendation-system-using-fdw-prisma-1dh1</id>
-        <link href="https://dev.to/karanjamadar/built-a-cross-database-recommendation-system-using-fdw-prisma-1dh1"/>
-        <updated>2026-03-27T13:40:23.000Z</updated>
-        <summary type="html"><![CDATA[Recently worked on an interesting backend problem — sharing the approach in case it helps others working with multi-DB systems 👇
-We had two separate databases:
-Core DB → transactional data (activities, participants, items)
-Profile DB → user/entity master data + metadata
-We needed:
-unified dataset for ranking/recommendation
-Used Foreign Data Wrapper (FDW) to query Profile DB directly from Core DB.
-CREATE EXTENSION postgres_fdw;
-
-CREATE SERVER remote_profile_srv
-FOREIGN DATA WRAPPER postgres_fdw
-OPTIONS (
-  host 'host',
-  dbname 'profile_db',
-  port '5432'
-);
-
-Mapped remote tables into local DB:
-fdw_schema.entities
-fdw_schema.entity_details
-fdw_schema.entity_context
-👉 Important: Convert enums → text to avoid cross-DB type issues.
-Built 4 layered views:
-Entity + metadata + classifications
-Handles JSON structures (like category mappings)
-Core activities + configurations + rules
-Pivot configs using:
-
-
-
-
-BOOL_OR(...)  -- instead of MAX(boolean)
-
-Extracts dynamic JSON fields
-Aggregates quantities, values, etc.
-Joins everything
-Output = activity × entity dataset
-
-
-
-
-
-
-
-  
-  
-  ⚙️ Challenge: Prisma + ENV in SQL
-
-
-Prisma migrations don’t support .env inside SQL ❌
-Used a custom Node script to inject env values:
-const finalSQL = sql
-  .replace(/__HOST__/g, process.env.DB_HOST)
-  .replace(/__DB__/g, process.env.DB_NAME);
-
-Then executed via pg client.
-Profile DB
-   ↓ (FDW)
-Core DB (views)
-   ↓
-entity_activity_master_view
-   ↓
-Ranking / ML / APIs
-
-FDW is powerful for real-time cross-DB joins
-
-Always cast enums → text
-
-Use BOOL_OR instead of MAX(boolean)
-
-Prisma needs custom migration handling
-
-Views help create a clean analytical layer
-Recommendation systems
-Ranking engines
-Analytics without ETL pipelines
-You don’t always need:
-Sometimes:
-If you're working on distributed data systems or recommendation problems, this approach can be really useful.
-Happy to discuss more 🤝
-
-
-  
-  
-  postgres #nestjs #prisma #backend #sql #architecture]]></summary>
+        <title type="html"><![CDATA[Installing a Let's Encrypt TLS Certificate on a Brother Printer with Certbot]]></title>
+        <id>https://owltec.ca/Other/Installing+a+Let%27s+Encrypt+TLS+certificate+on+a+Brother+printer+automatically+with+Certbot+(%26+Cloudflare)</id>
+        <link href="https://owltec.ca/Other/Installing+a+Let%27s+Encrypt+TLS+certificate+on+a+Brother+printer+automatically+with+Certbot+(%26+Cloudflare)"/>
+        <updated>2026-03-27T13:49:51.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Karan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Your AI Hit Its Limit. Your Knowledge Shouldn't.]]></title>
-        <id>https://dev.to/hjarni/your-ai-hit-its-limit-your-knowledge-shouldnt-50lb</id>
-        <link href="https://dev.to/hjarni/your-ai-hit-its-limit-your-knowledge-shouldnt-50lb"/>
-        <updated>2026-03-27T13:38:47.000Z</updated>
-        <summary type="html"><![CDATA[Every AI conversation eventually resets.
-Claude runs out of messages. ChatGPT loses the thread after enough back-and-forth. Context windows fill up. It doesn't matter which model you use — at some point, you're back at a blank prompt.
-That's mildly annoying. But the real cost is something else.
-Message limits and context windows are a fact of life with LLMs. Every provider has them. They'll keep improving, and workarounds like auto-summarization help.
-But here's the thing that doesn't go away: every time a conversation resets, you lose the context you built up. The decisions you talked through. The research you explained. The background you gave.
-And then you re-explain it. Again.
-It's not catastrophic. It's a tax. Ten minutes here. Fifteen there. A slow bleed of time and attention, every …]]></summary>
-        <author>
-            <name>Evert</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -436,7 +505,7 @@ It's not catastrophic. It's a tax. Ten minutes here. Fifteen there. A slow bleed
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Ondo, canton sidestep macro concerns with institutional deals as bitcoin, ether slide]]></title>
+        <title type="html"><![CDATA[Ondo, Canton sidestep macro concerns with institutional deals as bitcoin, ether slide]]></title>
         <id>3306158c-b4a5-4953-ad16-9f2cf623baa8</id>
         <link href="https://www.coindesk.com/daybook-us/2026/03/27/ondo-canton-sidestep-macro-concerns-with-institutional-deals-as-bitcoin-ether-slide"/>
         <updated>2026-03-27T11:36:18.000Z</updated>
@@ -685,16 +754,6 @@ The post realme 16 Pro Series To Arrive In Malaysia Soon; Pre-Orders Now Open ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Agent-to-agent pair programming]]></title>
-        <id>https://axeldelafosse.com/blog/agent-to-agent-pair-programming</id>
-        <link href="https://axeldelafosse.com/blog/agent-to-agent-pair-programming"/>
-        <updated>2026-03-27T01:47:55.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[White House crypto czar David Sacks transfers to presidential advisory committee role]]></title>
         <id>63cbb891-0167-407a-9dd5-c328e3489de6</id>
         <link href="https://www.coindesk.com/policy/2026/03/26/white-house-crypto-czar-david-sacks-transfers-to-presidential-advisory-committee-role"/>
@@ -732,26 +791,6 @@ The post realme 16 Pro Series To Arrive In Malaysia Soon; Pre-Orders Now Open ap
         <summary type="html"><![CDATA[Maxine Waters, who would likely take the House Financial Services Committee gavel again if Democrats win the House, sent a letter to the Kansas City Fed.]]></summary>
         <author>
             <name>Jesse Hamilton</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Anthropic Subprocessor Changes]]></title>
-        <id>https://trust.anthropic.com/</id>
-        <link href="https://trust.anthropic.com/"/>
-        <updated>2026-03-26T21:37:15.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[An unstoppable mushroom is tearing through North American forests]]></title>
-        <id>https://www.bbc.com/future/article/20260325-an-unstoppable-mushroom-is-tearing-through-north-american-forests</id>
-        <link href="https://www.bbc.com/future/article/20260325-an-unstoppable-mushroom-is-tearing-through-north-american-forests"/>
-        <updated>2026-03-26T21:36:51.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -795,26 +834,6 @@ The post realme 16 Pro Series To Arrive In Malaysia Soon; Pre-Orders Now Open ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Fio: 3D World editor/game engine – inspired by Radiant and Hammer]]></title>
-        <id>https://github.com/ViciousSquid/Fio</id>
-        <link href="https://github.com/ViciousSquid/Fio"/>
-        <updated>2026-03-26T20:58:04.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Using FireWire on a Raspberry Pi]]></title>
-        <id>https://www.jeffgeerling.com/blog/2026/firewire-on-a-raspberry-pi/</id>
-        <link href="https://www.jeffgeerling.com/blog/2026/firewire-on-a-raspberry-pi/"/>
-        <updated>2026-03-26T20:23:10.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[GameStop turned its $368 million bitcoin stash into an options income play]]></title>
         <id>5e272f52-41a7-42f4-b8a4-88648d7d6478</id>
         <link href="https://www.coindesk.com/business/2026/03/26/gamestop-turned-its-usd368-million-bitcoin-stash-into-an-options-income-play"/>
@@ -825,16 +844,6 @@ The post realme 16 Pro Series To Arrive In Malaysia Soon; Pre-Orders Now Open ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[We haven't seen the worst of what gambling and prediction markets will do]]></title>
-        <id>https://www.derekthompson.org/p/we-havent-seen-the-worst-of-what</id>
-        <link href="https://www.derekthompson.org/p/we-havent-seen-the-worst-of-what"/>
-        <updated>2026-03-26T19:48:05.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[OKX won’t rush IPO as exec warns poor listings hurt crypto industry]]></title>
         <id>a9a74e33-7b25-4f84-b1f8-532976722682</id>
         <link href="https://www.coindesk.com/business/2026/03/26/okx-says-it-won-t-go-public-until-it-can-deliver-returns-to-investors"/>
@@ -842,16 +851,6 @@ The post realme 16 Pro Series To Arrive In Malaysia Soon; Pre-Orders Now Open ap
         <summary type="html"><![CDATA[OKX aims to deliver consistent shareholder returns, even after a $25 billion valuation tied to its deal with Intercontinental Exchange, the parent company of the New York Stock Exchange.]]></summary>
         <author>
             <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Chroma Context-1: Training a Self-Editing Search Agent]]></title>
-        <id>https://www.trychroma.com/research/context-1</id>
-        <link href="https://www.trychroma.com/research/context-1"/>
-        <updated>2026-03-26T19:25:19.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -892,16 +891,6 @@ The post realme 16 Pro Series To Arrive In Malaysia Soon; Pre-Orders Now Open ap
         <summary type="html"><![CDATA[Crypto prices and risk assets remain at the mercy of macro headlines for now, one analyst said.]]></summary>
         <author>
             <name>Krisztian Sandor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[OpenTelemetry profiles enters public alpha]]></title>
-        <id>https://opentelemetry.io/blog/2026/profiles-alpha/</id>
-        <link href="https://opentelemetry.io/blog/2026/profiles-alpha/"/>
-        <updated>2026-03-26T16:14:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1166,6 +1155,16 @@ The post BUDI95 Monthly Quota Temporarily Adjusted To 200 Litres Starting 1 Apri
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[EMachines never obsolete PCs: More than a meme]]></title>
+        <id>https://dfarq.homeip.net/emachines-never-obsolete-pcs-more-than-a-meme/</id>
+        <link href="https://dfarq.homeip.net/emachines-never-obsolete-pcs-more-than-a-meme/"/>
+        <updated>2026-03-24T15:12:16.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Quicknode Joins Solana Developer Platform as Blockchain Infrastructure Partner]]></title>
         <id>69c145ecd354b500010184bd</id>
         <link href="https://blog.quicknode.com/quicknode-solana-developer-platform-sdp/"/>
@@ -1180,6 +1179,16 @@ The post BUDI95 Monthly Quota Temporarily Adjusted To 200 Litres Starting 1 Apri
         <id>https://terrytao.wordpress.com/2026/03/23/local-bernstein-theory-and-lower-bounds-for-lebesgue-constants/</id>
         <link href="https://terrytao.wordpress.com/2026/03/23/local-bernstein-theory-and-lower-bounds-for-lebesgue-constants/"/>
         <updated>2026-03-24T09:36:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Gzip decompression in 250 lines of Rust]]></title>
+        <id>https://iev.ee/blog/gzip-decompression-in-250-lines-of-rust/</id>
+        <link href="https://iev.ee/blog/gzip-decompression-in-250-lines-of-rust/"/>
+        <updated>2026-03-24T06:35:08.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1206,16 +1215,6 @@ The post BUDI95 Monthly Quota Temporarily Adjusted To 200 Litres Starting 1 Apri
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Legibility of Serif and Sans Serif Typefaces (2022)]]></title>
-        <id>https://library.oapen.org//handle/20.500.12657/53344</id>
-        <link href="https://library.oapen.org//handle/20.500.12657/53344"/>
-        <updated>2026-03-23T17:56:31.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[DOOM Over DNS]]></title>
         <id>https://github.com/resumex/doom-over-dns</id>
         <link href="https://github.com/resumex/doom-over-dns"/>
@@ -1230,16 +1229,6 @@ The post BUDI95 Monthly Quota Temporarily Adjusted To 200 Litres Starting 1 Apri
         <id>https://www.youtube.com/watch?v=ldxFjLJ3rVY</id>
         <link href="https://www.youtube.com/watch?v=ldxFjLJ3rVY"/>
         <updated>2026-03-23T15:10:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Generators in Lone Lisp]]></title>
-        <id>https://www.matheusmoreira.com/articles/generators-in-lone-lisp</id>
-        <link href="https://www.matheusmoreira.com/articles/generators-in-lone-lisp"/>
-        <updated>2026-03-23T13:51:03.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
