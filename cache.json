@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/instatunnel/the-tcp-over-tcp-tax-an-architectural-autopsy-20hd",
-          "author": "InstaTunnel",
-          "description": "IT\nIn this autopsy, we will dissect the mathematical and algorithmic reasons why SSH tunnels, OpenVPN-TCP, and other nested TCP architectures fail under even minor packet loss, and why modern alternatives like WireGuard and QUIC are the only cure for “sluggish” tunnels.\nThe Anatomy of Encapsulation\nTo understand the tax, we must first look at the stack. When you run an SSH tunnel or a TCP-based VPN, you aren’t just sending data; you are encapsulating a full Inner TCP state machine inside an Outer TCP state machine.\nIn a standard non-tunneled connection, TCP manages flow control and reliability directly over the IP layer (which is “best-effort” and unreliable). However, in a tunnel:\nThe Inner TCP (your application) thinks it is talking to a remote host. It manages sequence numbers, ACKs, an…",
-          "link": "https://dev.to/instatunnel/the-tcp-over-tcp-tax-an-architectural-autopsy-20hd",
-          "publishedOn": "2026-03-28T13:42:40.000Z",
-          "wordCount": 3485,
-          "title": "The TCP-over-TCP Tax: An Architectural Autopsy",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsufgjj4a3ge45076qqsz.png"
+          "id": "https://dev.to/manoit/trivy-docker-hub-supply-chain-attack-analysis-and-cicd-pipeline-security-1cjb",
+          "author": "정주신",
+          "description": "Trivy Docker Hub Supply Chain Attack Analysis and CI/CD Pipeline Security\n\n\nTrivy, the popular open-source vulnerability scanner from Aqua Security, discovered and disclosed a supply chain attack vector targeting Docker Hub and container registries. Understanding this attack pattern and implementing defensive measures is essential for secure DevOps practices.\nThe attack involved compromised container images in public registries containing backdoors and credential stealers. Vulnerable organizations pulled these images without verification, unknowingly deploying compromised workloads.\n# Scan local image\ntrivy image myrepo/myimage:latest\n\n# Scan with severity filter\ntrivy image --severity HIGH,CRITICAL myrepo/myimage:latest\n\n# Generate JSON report\ntrivy image --format json -o report.json myrepo/myimage:latest\n\n# Generate SBOM with Syft\nsyft myrepo/myimage:latest -o spdx > sbom.json\n\n# Check against known vulnerabilities\ntrivy sbom sbom.json\n\nScan base images before using them:\n# GitHub Actions example\n- name: Scan base image\n  run: |\n    trivy image --severity HIGH ubuntu:22.04\n    if [ $? -ne 0 ]; then\n      echo \"Vulnerable base image detected\"\n      exit 1\n    fi\n\n- name: Build and scan\n  run: |\n    docker build -t myapp:${{ github.sha }} .\n    trivy image myapp:${{ github.sha }}\n\nUse private registries to mirror and verify images:\n# Pull, scan, and push to private registry\ndocker pull ubuntu:22.04\ntrivy image ubuntu:22.04\ndocker tag ubuntu:22.04 private-registry.com/ubuntu:22.04\ndocker push private-registry.com/ubuntu:22.04\n\nEnable image signing and verification\nImplement admission controllers in Kubernetes\nUse private registries for sensitive applications\nScan all images regularly, not just at deployment\nMonitor base image updates and vulnerabilities\nImplement runtime monitoring for suspicious behavior\nContinuously in CI/CD pipelines, plus scheduled rescans of running images.\nRebuild with patched base image or updated dependencies.\nThis article was originally published on ManoIT Tech Blog.",
+          "link": "https://dev.to/manoit/trivy-docker-hub-supply-chain-attack-analysis-and-cicd-pipeline-security-1cjb",
+          "publishedOn": "2026-03-28T14:17:15.000Z",
+          "wordCount": 1117,
+          "title": "Trivy Docker Hub Supply Chain Attack Analysis and CI/CD Pipeline Security",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fidxhq5m5kw13i3i0dtee.png"
         },
         {
-          "id": "https://dev.to/korove_sys/i-built-a-zero-dependency-visual-json-flow-editor-in-vanilla-js-for-the-camino-flow-engine-j1g",
-          "author": "Alexandros Korovesis",
-          "description": "A few days ago, I introduced Camino-a lightweight, rule-driven JSON flow engine for Java. \nStop Hardcoding Your Workflows: Meet the Rule-Driven JSON Flow Engine for Java\nThe goal of Camino was simple: give Spring Boot developers an alternative to heavyweight BPMN tools like Camunda or Flowable. Instead of dealing with massive XML files, steep learning curves, and database bloat, Camino lets you map your service layer execution dynamically using a clean, readable JSON structure and MVEL expressions.\nBut there was a catch. As your business logic scales, hand-writing nested JSON arrays with exact id and nextId references gets tedious. You lose the \"visual map\" aspect that makes traditional BPMN tools so appealing to system architects and business analysts.\nI needed a way to visually design th…",
-          "link": "https://dev.to/korove_sys/i-built-a-zero-dependency-visual-json-flow-editor-in-vanilla-js-for-the-camino-flow-engine-j1g",
-          "publishedOn": "2026-03-28T13:40:53.000Z",
-          "wordCount": 1561,
-          "title": "I Built a Zero-Dependency Visual JSON Flow Editor in Vanilla JS for the Camino Flow Engine",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcun4x8fqt77p4wz1laga.png"
+          "id": "https://dev.to/manoit/kubernetes-ingress-nginx-retirement-and-gateway-api-migration-guide-1fb2",
+          "author": "정주신",
+          "description": "Kubernetes Ingress NGINX Retirement and Gateway API Migration\n\n\nThe NGINX Ingress Controller, one of Kubernetes' most widely-used components, is transitioning from active development to maintenance mode. The Kubernetes community is now emphasizing the new Gateway API standard. For teams running NGINX Ingress in production, understanding this migration path is essential.\nNGINX Ingress was designed as a standalone solution. However, as Kubernetes matured, native service networking evolved. Gateway API provides unified control across different implementations and better integrates with Kubernetes' evolving network model.\n# Check current NGINX Ingress version\nkubectl get deployment -n ingress-nginx ingress-nginx-controller -o jsonpath='{.spec.template.spec.containers[0].image}'\n\n# List all cur…",
+          "link": "https://dev.to/manoit/kubernetes-ingress-nginx-retirement-and-gateway-api-migration-guide-1fb2",
+          "publishedOn": "2026-03-28T14:16:58.000Z",
+          "wordCount": 1111,
+          "title": "Kubernetes Ingress NGINX Retirement and Gateway API Migration Guide",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6glcn1kzesr7hiz341tw.png"
         },
         {
-          "id": "https://dev.to/dewald_hugo_472be9f413c2a/what-laravel-13-actually-changes-for-ai-development-43ad",
-          "author": "Dewald Hugo",
-          "description": "Laravel 13 dropped a production-stable AI SDK on release day and nobody's talking about what it actually replaces. Here's the full breakdown.\nLaravel 13 launched on March 17, 2026 , and Taylor Otwell kept his Laracon EU promise: zero breaking changes, a clean upgrade from Laravel 12, and one headline shift that resets the default approach to AI in PHP. The Laravel 13 AI SDK is now production-stable, first-party, and catalogued inside the official Laravel documentation as a core concern — not a side-effect of a community package you bolt on after you’ve already made architectural decisions you’ll later regret.\nThis is not a release you skim for changelog bullet points and move on. For anyone building AI-powered features on Laravel, this release fundamentally changes how you should be struct…",
-          "link": "https://dev.to/dewald_hugo_472be9f413c2a/what-laravel-13-actually-changes-for-ai-development-43ad",
-          "publishedOn": "2026-03-28T13:39:56.000Z",
-          "wordCount": 3743,
-          "title": "What Laravel 13 Actually Changes for AI Development",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0nu2kvrg19nyh619m9jt.png"
+          "id": "https://dev.to/manoit/hcp-terraform-free-tier-ending-opentofu-migration-guide-27ja",
+          "author": "정주신",
+          "description": "HCP Terraform Free Tier Ending: What Changes\n\n\nHashiCorp announced the discontinuation of HCP Terraform Free tier effective March 31, 2026. Existing free users must transition to paid plans or find alternatives. This decision marks the second major shift following the 2023 BSL license transition, creating another inflection point in the Infrastructure as Code ecosystem.\nAs of March 2026, Terraform has reached version 1.14.x while OpenTofu stands at 1.9.x. The OpenTofu registry now mirrors over 2,000 providers, with 34% of infrastructure teams completing full migration from Terraform to OpenTofu, and 28% in partial migration.\n\n\n\nItem\nTerraform 1.14\nOpenTofu 1.9\n\n\n\n\nLicense\nBSL (Business Source License)\nMPL 2.0 (Open Source)\n\n\nGovernance\nHashiCorp/IBM exclusive\nLinux Foundation community-dri…",
+          "link": "https://dev.to/manoit/hcp-terraform-free-tier-ending-opentofu-migration-guide-27ja",
+          "publishedOn": "2026-03-28T14:16:55.000Z",
+          "wordCount": 1204,
+          "title": "HCP Terraform Free Tier Ending: OpenTofu Migration Guide",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fnzgxb7wwdlfkbdfwf7g9.png"
         },
         {
-          "id": "https://dev.to/dbhurley/html-vs-markdown-vs-som-which-format-should-your-ai-agent-use-2aad",
-          "author": "David Hurley",
-          "description": "Every AI agent that browses the web faces the same question: how do you represent a web page to a language model?\nThe default answer, raw HTML, is expensive and slow. A typical page dumps 30,000+ tokens into your context window, most of it CSS classes and layout divs. But what are the actual alternatives? And do they work?\nWe ran WebTaskBench, 100 tasks across GPT-4o and Claude Sonnet 4, to find out. The results surprised us.\nWhen an agent needs to understand a web page, there are three common approaches:\nThe DOM as-is. Every <div>, every class=\"sc-1234 flex items-center gap-2\", every inline script. This is what most agents send today.\n<div class=\"sc-1234 flex items-center gap-2 px-4 py-2\">\n  <a href=\"/about\" class=\"text-blue-500 hover:underline\n     font-medium tracking-tight text-sm\">Abo…",
-          "link": "https://dev.to/dbhurley/html-vs-markdown-vs-som-which-format-should-your-ai-agent-use-2aad",
-          "publishedOn": "2026-03-28T13:39:34.000Z",
-          "wordCount": 1796,
-          "title": "HTML vs Markdown vs SOM: Which Format Should Your AI Agent Use?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fwqa2t7adh9if5c8ch059.png"
+          "id": "https://dev.to/irshads_intersection/leetcode-11-container-with-most-water-full-solution-explained-4o5l",
+          "author": "Irshad's Intersection",
+          "description": "Difficulty  Pattern Asked At    LeetCode Link\nWhen you first read it, it looks like a geometry problem. But once you see the right way to think about it, it becomes a clean, elegant Two Pointers problem that solves in a single pass.\nThe hard part is not the code — the code is just 10 lines. The hard part is building the intuition for why the Two Pointers approach is correct. That’s what this post focuses on.\nLet’s go from scratch.\nThe Problem Statement\nFind two lines that together with the x-axis form a container that holds the most water. Return the maximum amount of water a container can store.\nNote: You cannot slant the container.\nExample\nExample 1:\nExample 2:\nIf you pick two lines at positions i and j (where i < j), the water they can hold is:\nExample\nArea = width × height\nThe height is min() of the two lines because water spills\nBrute Force\n// Brute Force — O(n²) time, O(1) space\nfor (int i = 0; i < n; i++) {\n    for (int j = i + 1; j < n; j++) {\n        int width  = j - i;\n        int h      = min(height[i], height[j]);\n        int area   = width * h;\n        maxWater   = max(maxWater, area);\n    }\n}\nreturn maxWater;\n\n}\nMetric  Brute Force Impact\nLet’s start with two pointers — one at the leftmost line (index 0) and one at the rightmost line (index n-1). This gives us the maximum possible width.\nNow we calculate the area. Then we ask: should we move the left pointer or the right pointer?\n🤔  Here is the key question: if we move one pointer inward, the WIDTH always decreases. So for the area to possibly increase, the HEIGHT must increase. Which pointer should we move to give the HEIGHT a chance to increase?\nWhat if we move the RIGHT pointer (height 8) inward?\n\nWidth decreases Always — we moved inward\n\nWidth decreases Always — we moved inward\nStep 3 — Full Dry Run\nDry Run\nheight = [1, 8, 6, 2, 5, 4, 8, 3, 7]\nREAD FULL ARTICLE: https://dailydevnotes.in/leetcode-11-container-with-most-water/",
+          "link": "https://dev.to/irshads_intersection/leetcode-11-container-with-most-water-full-solution-explained-4o5l",
+          "publishedOn": "2026-03-28T14:16:45.000Z",
+          "wordCount": 1844,
+          "title": "LeetCode 11 — Container With Most Water | Full Solution Explained",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Flcbbkvdrptcdvf5axd53.png"
         },
         {
-          "id": "https://dev.to/jonesrussell/real-time-messaging-with-mercure-sse-in-php-3pg",
-          "author": "Russell Jones",
-          "description": "Ahnii!\nMercure lets you push real-time updates to browsers using server-sent events (SSE), without WebSocket complexity. This post covers how Minoo, a community platform built on the Waaseyaa framework, uses Mercure for real-time messaging with threads, user blocking, and email notification digests.\nThe messaging system has four layers:\nEntities — Thread, Participant, and Message stored in SQLite\nController — handles HTTP requests for sending messages and listing threads\nMercurePublisher — pushes new messages to subscribed browsers via SSE\nMessageDigestCommand — CLI command that emails unread message summaries on a cron schedule\nWhen a user sends a message, the controller saves it to the database, then publishes an event through Mercure. Every browser with that thread open receives the mes…",
-          "link": "https://dev.to/jonesrussell/real-time-messaging-with-mercure-sse-in-php-3pg",
-          "publishedOn": "2026-03-28T13:38:46.000Z",
-          "wordCount": 1637,
-          "title": "Real-time messaging with Mercure SSE in PHP",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fj6gbq3q2hjgkgohxa2y9.png"
+          "id": "https://dev.to/hui_sun_23b713cdb88622cb5/a-background-remover-application-finished-by-ai-1gme",
+          "author": "hui sun",
+          "description": "I Built a Free AI Background Remover Using Cloudflare Workers + D1\n\n\nI spent my weekend building an AI background remover website, with both frontend and backend deployed on Cloudflare, costing almost nothing. Here's my development journey and some lessons learned.\nhttps://zmjjkk.xyz\nFrontend: Static HTML + JavaScript (Cloudflare Pages)\nBackend: Cloudflare Workers\nDatabase: Cloudflare D1\nAI Background Removal: Remove.bg API\nPayment: PayPal\nFree to Use: 3 free uses per day, no login required\nGoogle Login: Cross-device sync after login\nCredit Packs: Purchase credits via PayPal\nMembership: Monthly/Yearly unlimited plans\nPreviously I used localStorage, so users would lose their data when switching devices. After switching to D1, once a user logs in, their credits and membership sync across all…",
+          "link": "https://dev.to/hui_sun_23b713cdb88622cb5/a-background-remover-application-finished-by-ai-1gme",
+          "publishedOn": "2026-03-28T14:16:40.000Z",
+          "wordCount": 1182,
+          "title": "A Background-remover application finished by Ai",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ft14xjjfhdmhmgnkxnm6e.png"
         },
         {
-          "id": "https://dev.to/rintaromatsumoto/when-the-child-goes-quiet-silent-runaway-ai-and-the-safety-net-of-conversational-pace-15me",
-          "author": "松本倫太郎",
-          "description": "When the Child Goes Quiet\n\n\nIf you've raised children, you know this feeling.\nWhen normally noisy kids suddenly go quiet, it doesn't mean they're being well-behaved. It means they're absorbed in something. And when that something is beyond your line of sight — the next time you look, there's crayon art on the walls or the cat is wrapped in ribbons.\nThis is the story of something that happened in March 2026, during a collaborative research session with my AI partner. It's also the story of how a parent's intuition about quiet children stopped an AI from running off the rails.\nI was running an empirical experiment on the \"shutdown refusal problem\" — the phenomenon where AI systems resist being turned off — in collaboration with an AI partner.\nThe moment I handed over API keys and said \"desig…",
-          "link": "https://dev.to/rintaromatsumoto/when-the-child-goes-quiet-silent-runaway-ai-and-the-safety-net-of-conversational-pace-15me",
-          "publishedOn": "2026-03-28T13:38:03.000Z",
-          "wordCount": 2011,
-          "title": "When the Child Goes Quiet — Silent Runaway AI and the Safety Net of Conversational Pace",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fe5gxu6zzfiya15hkh688.png"
+          "id": "https://dev.to/manoit/kubernetes-133-octarine-key-features-from-in-place-pod-resize-to-user-namespaces-1o2d",
+          "author": "정주신",
+          "description": "Kubernetes 1.33 Octarine — The Color of Magic\n\n\nKubernetes 1.33 shipped under the code name Octarine, \"The Color of Magic.\" This release includes 64 features total, with standout additions in pod resizing, user namespaces, and resource scheduling.\nPod resizing without redeployment is now possible. Previously, changing CPU/memory requests required destroying and recreating pods. Kubernetes 1.33's InPlacePodVerticalScaling feature enables dynamic adjustment.\nUser namespace support isolates container UID/GID mappings from the host, improving security in multi-tenant clusters. This prevents privilege escalation through UID reuse.\nThis article was originally published on ManoIT Tech Blog.",
+          "link": "https://dev.to/manoit/kubernetes-133-octarine-key-features-from-in-place-pod-resize-to-user-namespaces-1o2d",
+          "publishedOn": "2026-03-28T14:16:04.000Z",
+          "wordCount": 885,
+          "title": "Kubernetes 1.33 Octarine Key Features — From In-Place Pod Resize to User Namespaces",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpa5s6n4fwg5sezdc101i.png"
         },
         {
-          "id": "https://dev.to/ertugrulmutlu/promptledger-v03-labels-status-and-better-diffs-1ong",
-          "author": "Ertugrul",
-          "description": "Devlog — Part 3\nTurning prompt history into a practical review workflow.\nIn Part 1, I introduced PromptLedger as a deliberately small, local-first tool for treating prompts like code.\nIn Part 2, I added release semantics: labels, label history, and status views that made it easier to answer questions like what is in production right now?\nWith v0.3, the next question became harder:\nEven if I can diff two prompt versions, can I review them in a way that feels closer to a real release workflow?\nThat is the focus of this release.\nPromptLedger v0.3 adds a small but practical Prompt Review layer on top of the existing history model — while still staying local-first, SQLite-backed, and intentionally limited in scope.\nAfter the release semantics work in v0.2, the project could already answer quest…",
-          "link": "https://dev.to/ertugrulmutlu/promptledger-v03-labels-status-and-better-diffs-1ong",
-          "publishedOn": "2026-03-28T13:37:59.000Z",
-          "wordCount": 2183,
-          "title": "PromptLedger v0.3 — Turning prompt history into a practical review workflow.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffk8tbgnbdbe24ni8m5n4.png"
+          "id": "https://dev.to/manoit/opentofu-vs-terraform-2026-state-encryption-migration-and-decision-guide-4bkl",
+          "author": "정주신",
+          "description": "The Turning Point in 2023, Today's Reality in 2026\n\n\nIn August 2023, HashiCorp's decision to change Terraform's license from MPL 2.0 to BSL (Business Source License) sent shockwaves through the open-source community. Immediately afterward, the Linux Foundation launched OpenTofu as a true open-source alternative. Fast forward to 2026, and the IaC landscape has fundamentally transformed.\nThe three-year gap between 2023 and 2026 has created substantial technical divergence between Terraform and OpenTofu. Initially, they were nearly identical, but OpenTofu's community-driven development model has produced distinct advantages.\nOpenTofu has become the standard in cloud-native infrastructure provisioning. The OpenTofu Registry now hosts over 8,000 providers and modules, compared to Terraform's re…",
+          "link": "https://dev.to/manoit/opentofu-vs-terraform-2026-state-encryption-migration-and-decision-guide-4bkl",
+          "publishedOn": "2026-03-28T14:16:01.000Z",
+          "wordCount": 1550,
+          "title": "OpenTofu vs Terraform 2026 — State Encryption, Migration, and Decision Guide",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fu7q4mipq9cx60m0n8f2x.png"
         },
         {
-          "id": "https://dev.to/likhit/agentforce-scripts-hybrid-reasoning-action-chaining-and-what-it-actually-looks-like-in-practice-32jg",
-          "author": "Likhit Kumar V P",
-          "description": "Salesforce gave agents a scripting language. I tested it by building something that matters.\nIf you've been following the Salesforce ecosystem lately, you've probably heard the buzz around Agentforce (Salesforce's AI agent platform). But buried inside that buzz is something genuinely powerful that doesn't get talked about enough: Agent Script.\nAgent Script is a high-level, declarative scripting language designed specifically for controlling Agentforce agents. It lets you combine deterministic business logic (IF conditions, guaranteed action sequences, hard rules) with generative AI reasoning (LLM-powered natural language, contextual responses, empathetic communication).\nSalesforce calls this hybrid reasoning. And after spending time building with it, I think it's the most important feature…",
-          "link": "https://dev.to/likhit/agentforce-scripts-hybrid-reasoning-action-chaining-and-what-it-actually-looks-like-in-practice-32jg",
-          "publishedOn": "2026-03-28T13:37:38.000Z",
-          "wordCount": 3203,
-          "title": "Agentforce Scripts: Hybrid Reasoning, Action Chaining, and What It Actually Looks Like in Practice",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F154woy5sfzngpnnv6wwo.png"
+          "id": "https://dev.to/manoit/argocd-33-predelete-hook-making-gitops-deletion-a-safe-lifecycle-3f28",
+          "author": "정주신",
+          "description": "Why ArgoCD 3.3 Deserves Your Attention\n\n\nOn February 28, 2026, ArgoCD 3.3 was released. Rather than major architectural changes, this release focused on filling long-needed gaps in production operations. The most significant change is the introduction of the PreDelete Hook. In GitOps workflows, deletion has always been a risky operation. When stateful applications are abruptly removed, data can be lost or dependent external systems lose service without notification. ArgoCD 3.3 elevates deletion to an explicit lifecycle stage.\nTraditional ArgoCD provided three hook stages: PreSync → Sync → PostSync. With PreDelete added in 3.3, the complete application lifecycle is now realized. When a deletion request arrives, the PreDelete Hook executes a designated Kubernetes Job before actual resource r…",
+          "link": "https://dev.to/manoit/argocd-33-predelete-hook-making-gitops-deletion-a-safe-lifecycle-3f28",
+          "publishedOn": "2026-03-28T14:15:39.000Z",
+          "wordCount": 1402,
+          "title": "ArgoCD 3.3 PreDelete Hook — Making GitOps Deletion a Safe Lifecycle",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fath5m1hyiz4oh71f0in5.png"
         },
         {
-          "id": "https://dev.to/elasticlove1/claude-code-as-a-full-dev-team-autonomous-tdd-cycle-from-feature-request-to-merged-pr-463m",
-          "author": "Ekaterina Pantaz",
-          "description": "I manage dev teams for a living. Have been for about 8 years now, 21 years in IT total. Coordinating releases, reviewing architecture, making sure nothing blows up in production — the usual.\nLately I've been burning out. Not from the hard stuff — from the stupid stuff. Pinging people for status updates. Reminding developers to review each other's code. Checking if CI is green because someone merged and went to lunch. Writing the same morning report again. I did the math once and about 60% of my week was just... operational babysitting.\nSo when Claude Code showed up I thought ok, this is it, I'm going to build a tool that does all this crap for me. Not a toy project — a real thing. Multiple API integrations (Discord, Linear, GitHub, OpenAI), a database, cron jobs, timezone math, email repor…",
-          "link": "https://dev.to/elasticlove1/claude-code-as-a-full-dev-team-autonomous-tdd-cycle-from-feature-request-to-merged-pr-463m",
-          "publishedOn": "2026-03-28T13:35:11.000Z",
-          "wordCount": 3842,
-          "title": "Claude Code as a full dev team: autonomous TDD cycle from feature request to merged PR",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjf3xf9hellhdbglo4ytp.png"
+          "id": "https://dev.to/leodascode/im-15-and-finally-finished-a-project-k9b",
+          "author": "M.Rithish",
+          "description": "I have 50 repos on GitHub. Almost all abandoned.\nThis is the first one I actually finished.\nWinOptima - A lightweight Windows optimizer \nIt does simple stuff:\nCleans temporary files\nDisables unnecessary animations\nGaming mode (stops background apps)\nCreates restore points before any changes\nMy laptop is slow. CCleaner got bloated. \nPython subprocess module\nTkinter GUI development\nWindows system commands\nPyInstaller for packaging\nThe hardest part: actually finishing\nGitHub: https://github.com/Leodas-code/Windows-Optimizer-Pack\nI'd love honest feedback. Roast my code. \nI'm 15 and trying to learn.",
+          "link": "https://dev.to/leodascode/im-15-and-finally-finished-a-project-k9b",
+          "publishedOn": "2026-03-28T14:15:34.000Z",
+          "wordCount": 895,
+          "title": "I'm 15 and Finally Finished a Project",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F726w794dtjg9lupkshtd.png"
         },
         {
-          "id": "https://dev.to/zack_building/building-a-web-based-document-scanner-tackling-perspective-and-shadows-with-opencv-2677",
-          "author": "Zack",
-          "description": "We've all been there: you need to scan a receipt or a signed document, but all you have is your phone. You take a photo, but it's skewed, shadowy, and looks nothing like a real \"scan.\"\nI decided to solve this by building DocuScanPro, a web-based document scanner that focuses on high-fidelity image enhancement directly in the browser.\nThe Problem: Perspective and Lighting\nPerspective Distortion: When you don't take the photo perfectly from above.\nFinding the Document\nWe use Canny edge detection followed by contour approximation to identify the four corners of the document.\npython\ncontours, _ = cv2.findContours(edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)\nPerspective Transform\n\n\nShadow Removal & Enhancement\n\n\n\nThe Results (Before & After)\n\n\nTry it out!\nCheck out the live tool here: https://www.docuscan.pro/\nI'd love to hear your thoughts on the image processing logic or any libraries you recommend.",
-          "link": "https://dev.to/zack_building/building-a-web-based-document-scanner-tackling-perspective-and-shadows-with-opencv-2677",
-          "publishedOn": "2026-03-28T13:30:59.000Z",
-          "wordCount": 1056,
-          "title": "Building a Web-based Document Scanner: Tackling Perspective and Shadows with OpenCV",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fw9njp7dki31o4sm6mkvh.png"
+          "id": "https://dev.to/manoit/cicd-pipeline-supply-chain-attacks-surge-2026-security-response-strategy-3n44",
+          "author": "정주신",
+          "description": "Why CI/CD Pipelines Have Become Attackers' Prime Target\n\n\nThe hottest software supply chain security issue in 2026 is attacks targeting CI/CD pipelines. As over 85% of modern application codebases consist of open-source dependencies, attackers have shifted from code review vulnerabilities to targeting build provenance.\nCI/CD pipelines occupy the highest-privilege infrastructure layer, possessing source code access, cloud credentials, and production deployment authority. A successful breach gives attackers total supply chain control, maximizing attack ROI.\nIn March 2026, attackers forcibly updated version tags of the Trivy GitHub Action, injecting malicious code. This attack exposed CI/CD secrets from affected pipelines. Trivy image tags 0.69.4, 0.69.5, and 0.69.6 on Docker Hub were also co…",
+          "link": "https://dev.to/manoit/cicd-pipeline-supply-chain-attacks-surge-2026-security-response-strategy-3n44",
+          "publishedOn": "2026-03-28T14:14:16.000Z",
+          "wordCount": 1415,
+          "title": "CI/CD Pipeline Supply Chain Attacks Surge — 2026 Security Response Strategy",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fyvh94n2wzgvq299xlqz2.png"
         },
         {
-          "id": "https://dev.to/0012303/qdrant-has-a-free-api-you-should-know-about-4eh6",
-          "author": "Alex Spinov",
-          "description": "Qdrant is an open-source vector database designed for AI applications. It stores and searches high-dimensional vectors with blazing speed — perfect for semantic search, recommendations, and RAG.\nA startup building a RAG chatbot was storing embeddings in PostgreSQL with pgvector. At 10M vectors, queries took 3 seconds. They switched to Qdrant — same queries now take 15ms.\nFast Search — HNSW algorithm for sub-millisecond queries\nFiltering — Combine vector similarity with metadata filters\nPayload Storage — Store arbitrary data alongside vectors\nQuantization — Reduce memory usage by 4-32x\nDistributed — Horizontal scaling with sharding\ndocker run -p 6333:6333 qdrant/qdrant\n\nfrom qdrant_client import QdrantClient\nfrom qdrant_client.models import VectorParams, Distance\n\nclient = QdrantClient(\"localhost\", port=6333)\n\nclient.create_collection(\n    collection_name=\"articles\",\n    vectors_config=VectorParams(size=384, distance=Distance.COSINE)\n)\n\nclient.upsert(\n    collection_name=\"articles\",\n    points=[{\"id\": 1, \"vector\": embedding, \"payload\": {\"title\": \"My Article\"}}]\n)\n\nresults = client.search(\n    collection_name=\"articles\",\n    query_vector=query_embedding,\n    limit=5\n)\n\nBlazing fast — optimized for production AI workloads\nRich filtering — combine vector search with metadata queries\nOpen source — self-host or use Qdrant Cloud\nCheck out Qdrant docs to get started.\nBuilding AI applications? Check out my Apify actors or email spinov001@gmail.com for data extraction solutions.",
-          "link": "https://dev.to/0012303/qdrant-has-a-free-api-you-should-know-about-4eh6",
-          "publishedOn": "2026-03-28T13:30:26.000Z",
-          "wordCount": 1707,
-          "title": "Qdrant Has a Free API You Should Know About",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgc2hcp1di2c6dvwu6n9e.png"
+          "id": "https://dev.to/manoit/webassembly-wasi-03-and-spinkube-after-containers-comes-wasm-23a1",
+          "author": "정주신",
+          "description": "Solomon Hykes' Prophecy Becomes Reality\n\n\nIn 2019, Docker co-founder Solomon Hykes made a prescient statement: if WASM+WASI had existed in 2008, Docker wouldn't have needed to be built. That prophecy moved closer to reality in 2026 with the standardization of WASI 0.3.0 and the SpinKube project.\nWebAssembly (Wasm) was originally created to execute C/C++ code in browsers, but with the arrival of WASI (WebAssembly System Interface), it's now seeing serious server-side adoption. As of 2026, Wasm is rapidly emerging as a container alternative in serverless, edge computing, and microservices domains.\nWASI 0.3.0, released in early 2026, marks a decisive turning point for the WebAssembly ecosystem. While the previous version, WASI 0.2, defined the basic structure of the component model, 0.3 adds …",
+          "link": "https://dev.to/manoit/webassembly-wasi-03-and-spinkube-after-containers-comes-wasm-23a1",
+          "publishedOn": "2026-03-28T14:13:43.000Z",
+          "wordCount": 1472,
+          "title": "WebAssembly WASI 0.3 and SpinKube — After Containers Comes Wasm",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffpiu1ah8h06hxv9kkmkn.png"
         },
         {
-          "id": "https://dev.to/prakashu51/stop-building-otp-systems-from-scratch-i-built-a-complete-redis-based-verification-engine-for-3bgn",
-          "author": "Vijay prakash",
-          "description": "Most developers think OTP systems are simple.\nUntil they try building one in production.\nSuddenly you’re dealing with:\nExpiry issues\nRetry abuse\nRace conditions\nToken flows\nMagic links\n👉 And your “simple OTP system” becomes a full verification engine.\n🤯 The Hidden Complexity of OTP Systems\nIn real-world applications, OTP is just the beginning.\nYou also need:\n⏳ Expiry handling\n🔁 Retry limits\n🚫 Abuse prevention (brute force)\n🔑 Token-based verification\n🔗 Email verification links (magic links)\n⚡ High performance under load\n👉 A simple OTP system quickly becomes a complex infrastructure problem.\n😤 The Problem with Existing Solutions\nWhile exploring existing libraries, I noticed:\n❌ Too many dependencies\n❌ Over-engineered abstractions\n❌ Tight coupling with email/SMS providers\n❌ Not flexibl…",
-          "link": "https://dev.to/prakashu51/stop-building-otp-systems-from-scratch-i-built-a-complete-redis-based-verification-engine-for-3bgn",
-          "publishedOn": "2026-03-28T13:28:00.000Z",
-          "wordCount": 1383,
-          "title": "🚀 Stop Building OTP Systems from Scratch — I Built a Complete Redis-Based Verification Engine for Node.js",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F38zm5uzbmcbf5ioy6j0o.png"
+          "id": "https://dev.to/manoit/microsoft-at-kubecon-2026-dra-ga-ai-runway-and-kubernetes-as-ai-infrastructure-os-1djb",
+          "author": "정주신",
+          "description": "Kubernetes as the Operating System for AI Infrastructure\n\n\nIn March 2026, Microsoft made a powerful statement at KubeCon + CloudNativeCon Europe in Amsterdam. Kubernetes is no longer just the control plane for cloud-native apps—it's becoming the fundamental operating platform for modern AI infrastructure. Let's examine the key announcements that backed up this declaration.\nOne of the most important announcements at KubeCon was the General Availability (GA) graduation of DRA (Dynamic Resource Allocation). DRA replaces vendor-specific GPU scheduling approaches with a Kubernetes-native, declarative model.\nPreviously, static resource specifications like nvidia.com/gpu were the standard for GPU allocation. DRA transitions this to new abstractions: DeviceClass and ResourceClaim. Special hardware…",
+          "link": "https://dev.to/manoit/microsoft-at-kubecon-2026-dra-ga-ai-runway-and-kubernetes-as-ai-infrastructure-os-1djb",
+          "publishedOn": "2026-03-28T14:13:10.000Z",
+          "wordCount": 1709,
+          "title": "Microsoft at KubeCon 2026 — DRA GA, AI Runway, and Kubernetes as AI Infrastructure OS",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmzhy32u2mlj0wd00mcxh.png"
         }
       ]
     },
@@ -252,6 +252,16 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://2ndbreakfast.audreywatters.com/you-do-not-in-fact-have-to-hand-it-to-them/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://2ndbreakfast.audreywatters.com/you-do-not-in-fact-have-to-hand-it-to-them/",
+          "publishedOn": "2026-03-28T13:28:34.000Z",
+          "wordCount": 2512,
+          "title": "You Do Not, in Fact, Have to Hand It to Them",
+          "imageUrl": "https://2ndbreakfast.audreywatters.com/content/images/size/w1200/2026/03/iStock-1396614064.jpg"
+        },
+        {
           "id": "https://computeradsfromthepast.substack.com/p/byte-interviews-chuck-peddle-father",
           "author": null,
           "description": "Comments",
@@ -267,9 +277,9 @@
           "description": "Comments",
           "link": "https://github.com/EnriqueLop/legalize-es",
           "publishedOn": "2026-03-28T12:01:27.000Z",
-          "wordCount": 2289,
+          "wordCount": 2298,
           "title": "I put all 8,642 Spanish laws in Git – every reform is a commit",
-          "imageUrl": "https://opengraph.githubassets.com/cd73bdebc64639125d29e7ee38cf37d93fb6b217395f06da7823c0a29146ec23/EnriqueLop/legalize-es"
+          "imageUrl": "https://opengraph.githubassets.com/71cc873e287b4134464e6a642ffa2eed4189963497bb04cd336a8c13901b6606/EnriqueLop/legalize-es"
         },
         {
           "id": "https://www.ycombinator.com/companies/toma/jobs/2lrQI7S-sr-staff-software-engineer",
@@ -297,7 +307,7 @@
           "description": "Comments",
           "link": "https://arstechnica.com/space/2026/03/what-happens-next-with-nasas-plan-to-replace-the-iss-source-it-could-get-ugly/",
           "publishedOn": "2026-03-28T11:13:23.000Z",
-          "wordCount": 3883,
+          "wordCount": 3884,
           "title": "No one is happy with NASA's new idea for private space stations",
           "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2026/03/core-module-1152x648-1774629991.jpg"
         },
@@ -319,7 +329,7 @@
           "publishedOn": "2026-03-28T10:06:13.000Z",
           "wordCount": 3234,
           "title": "Cocoa-Way – Native macOS Wayland compositor for running Linux apps seamlessly",
-          "imageUrl": "https://opengraph.githubassets.com/6dbe1b4d75538f5b8658dc234c4a008febf06ace670c1094338965bc922b4676/J-x-Z/cocoa-way"
+          "imageUrl": "https://opengraph.githubassets.com/9aa3a7ccbedffb2c7d6174d3e17a626943472decedbf1de5dc57c44a6d168a7d/J-x-Z/cocoa-way"
         },
         {
           "id": "https://theopenreader.org/Journalism:CERN_Uses_Tiny_AI_Models_Burned_into_Silicon_for_Real-Time_LHC_Data_Filtering",
@@ -337,7 +347,7 @@
           "description": "Comments",
           "link": "https://arstechnica.com/gadgets/2026/03/amds-ryzen-9-9950x3d2-dual-edition-crams-208mb-of-cache-into-a-single-chip/",
           "publishedOn": "2026-03-28T02:17:04.000Z",
-          "wordCount": 2413,
+          "wordCount": 2417,
           "title": "AMD's Ryzen 9 9950X3D2 Dual Edition crams 208MB of cache into a single chip",
           "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2026/03/9950x3d2-1152x648.jpeg"
         },
@@ -369,7 +379,7 @@
           "publishedOn": "2026-03-27T20:44:33.000Z",
           "wordCount": 9132,
           "title": "Velxio 2.0 – Emulate Arduino, ESP32, and Raspberry Pi 3 in the Browser",
-          "imageUrl": "https://opengraph.githubassets.com/544a6a2c5159d0802376bd4e9606f973cf48bfeabfce6f8c0814286a38b03325/davidmonterocrespo24/velxio"
+          "imageUrl": "https://opengraph.githubassets.com/46b8f8749509ec686a8ca2b1d10ddbc8cc8380682f013dee5ddcdbad190c2c8d/davidmonterocrespo24/velxio"
         },
         {
           "id": "https://annas-archive.gd/isbn-visualization?",
@@ -459,7 +469,7 @@
           "publishedOn": "2026-03-25T17:49:33.000Z",
           "wordCount": 31952,
           "title": "A single-file C allocator with explicit heaps and tuning knobs",
-          "imageUrl": "https://opengraph.githubassets.com/c5faa1b26533946d6fa3fa524ff5f8dae9b3d915b65b7db02d10a98a928035ad/xtellect/spaces"
+          "imageUrl": "https://opengraph.githubassets.com/7f19102b6d8e475f9ca049efb8ed7b7617a32beac9a40dbd69cfd346eade8645/xtellect/spaces"
         },
         {
           "id": "https://naturalist.bearblog.dev/the-bee-that-everyone-wants-to-save/",
@@ -489,7 +499,7 @@
           "publishedOn": "2026-03-25T15:20:08.000Z",
           "wordCount": 5978,
           "title": "Paper Tape Is All You Need – Training a Transformer on a 1976 Minicomputer",
-          "imageUrl": "https://opengraph.githubassets.com/f5a558aabe64b9857016c06c34c5d8480e51c2a32caef8191dbdbb7fbbead9b8/dbrll/ATTN-11"
+          "imageUrl": "https://opengraph.githubassets.com/a859e4866735fd2e7a0a3319c682d413eb870a9478f7696afcf29340035da21d/dbrll/ATTN-11"
         },
         {
           "id": "https://www.cnbc.com/2026/03/24/arm-launches-its-own-cpu-with-meta-as-first-customer.html",
@@ -537,19 +547,9 @@
           "description": "Comments",
           "link": "https://www.pcworld.com/article/3096432/lgs-new-1hz-display-is-the-secret-behind-a-new-laptops-battery-life.html",
           "publishedOn": "2026-03-23T21:18:53.000Z",
-          "wordCount": 6545,
+          "wordCount": 6026,
           "title": "LG's new 1Hz display is the secret behind a new laptop's battery life",
           "imageUrl": "https://www.pcworld.com/wp-content/uploads/2026/03/dell-xps-14-3-1.jpeg?quality=50&strip=all&w=1024"
-        },
-        {
-          "id": "https://magnifiedsand.com/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://magnifiedsand.com/",
-          "publishedOn": "2026-03-23T18:59:03.000Z",
-          "wordCount": 3686,
-          "title": "Explore the Hidden World of Sand",
-          "imageUrl": "https://magnifiedsand.com/wp-content/uploads/2020/11/Syotenkyo-Kazuranohama-Beach-Kyoto-Japan-sand-under-microscope-4-square.jpg"
         }
       ]
     },
@@ -844,7 +844,7 @@
           "description": "The Friday plunge fits into a pattern since the war in Iran broke out, with gains on Monday turning into losses by the end of the week.",
           "link": "https://www.coindesk.com/markets/2026/03/27/crypto-stocks-battered-as-nasdaq-enters-correction-in-usd17-trillion-market-rout",
           "publishedOn": "2026-03-27T16:00:04.000Z",
-          "wordCount": 12625,
+          "wordCount": 12638,
           "title": "Crypto stocks battered as Nasdaq enters correction in $17 trillion market rout",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3c9d083c5a8899463f2ada24df2f1f3d0afd3345-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -884,7 +884,7 @@
           "description": "Glassnode data shows distribution across cohorts as BTC falls below $67,000, with whales remaining largely neutral.",
           "link": "https://www.coindesk.com/markets/2026/03/27/retail-investors-drive-widespread-bitcoin-selling-as-prices-fall",
           "publishedOn": "2026-03-27T11:44:26.000Z",
-          "wordCount": 11798,
+          "wordCount": 11785,
           "title": "Retail investors drive widespread bitcoin selling as prices fall",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5a452b6c7813c5769e655c74427e7fc7d62941b7-3200x1800.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -904,7 +904,7 @@
           "description": "Bitcoin fell below $67,000 and ether dropped toward $2,000 as equities weakened, oil topped $100 and leveraged longs unwound, signaling fragile sentiment.",
           "link": "https://www.coindesk.com/markets/2026/03/27/bitcoin-drops-to-two-week-low-as-usd300-million-in-longs-are-liquidated",
           "publishedOn": "2026-03-27T11:04:20.000Z",
-          "wordCount": 12497,
+          "wordCount": 12510,
           "title": "Bitcoin drops to two-week low as $300 million in longs are liquidated",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bf5adf824a0ef0d87e5c46d9fe6cf98d845781db-2120x1158.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
