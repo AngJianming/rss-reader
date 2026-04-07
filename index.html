@@ -22,11 +22,793 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-04-07 datetime="2026-04-07T11:46:39.000Z">2026-04-07</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-04-07 datetime="2026-04-07T11:46:39.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-04-07 datetime="2026-04-07T13:08:32.000Z">2026-04-07</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-04-07 datetime="2026-04-07T13:08:32.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >DEV Community</button>
+                  <a class="source-heading__link" href="https://dev.to">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/jagmarques/compress-your-llms-kv-cache-33x-with-zero-training-1kho"
+                        open
+                      >
+                        <summary class="article-expander__title">Compress your LLM&#x27;s KV cache 33x with zero training</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jagmarques/compress-your-llms-kv-cache-33x-with-zero-training-1kho">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0i50mu283rlev30up9if.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Running out of GPU memory at long context lengths? The KV cache grows linearly with sequence length — at 128K tokens, a 7B model accumulates over 60 GB of KV state. That&#x27;s more than a single A100.
+I built NexusQuant, a library that compresses the KV cache 10-33x at inference time. No training, no calibration data, no model changes.
+# OOM at 32K tokens on a 24GB GPU
+output &#x3D; model.generate(input_ids, max_new_tokens&#x3D;512)
+
+from nexusquant import nexusquant_evict
+
+with nexusquant_evict(model, quality&#x3D;&quot;balanced&quot;):
+    output &#x3D; model.generate(input_ids, max_new_tokens&#x3D;512)
+
+128K context now fits in the memory that used to hold 7.5K.
+Six stages, applied once after the prefill pass:
+Rank tokens by attention importance
+Drop the lowest-scoring tokens (token eviction)
+Undo rotary position embeddings on keys
+Apply Hadamard rotation to spread energy uniformly
+Quantize 8-float groups onto the E8 lattice (densest sphere packing in 8D)
+Delta-code consecutive indices and compress with zstd
+Eviction reduces token count. Quantization reduces precision. They&#x27;re nearly orthogonal — 60% eviction (2.5x) combined with 2-bit E8 quantization (~7x) gives ~17x total.
+Measured on Mistral-7B, A100, FP16, all overhead included:
+
+
+
+Preset
+Compression
+PPL change
+
+
+
+
+high
+10x
++0.4%
+
+
+balanced
+17x
++1.3%
+
+
+max
+33x
++2.6%
+
+
+
+
+
+
+Method
+Ratio
+Quality
+Training needed
+
+
+
+
+NexusQuant
+10-33x
++0.4-2.6%
+No
+
+
+TurboQuant (Google)
+~5-6x
+~0%
+No
+
+
+KVTC (NVIDIA)
+up to 20x
+&lt;1%
+Yes (calibration)
+
+
+CommVQ (Apple)
+~8x
+~0%
+Yes (training)
+
+
+
+NexusQuant is the highest-compression training-free method available. Only KVTC achieves comparable ratios, but it needs calibration data.
+pip install nexusquant
+pip install &quot;nexusquant[hf]&quot;  # with transformers
+
+GitHub repo | Paper (PDF)
+Best regards,
+João Marques</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/james_whitfield/integrating-llms-into-a-go-service-without-losing-your-mind-or-adding-550ms-latency-2955"
+                        open
+                      >
+                        <summary class="article-expander__title">Integrating LLMs into a Go service without losing your mind (or adding 550ms latency)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/james_whitfield/integrating-llms-into-a-go-service-without-losing-your-mind-or-adding-550ms-latency-2955">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fodtse31c60490wtu5pgi.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Right, so. This is a post I wish existed six months ago when we were first wiring LLMs into our Go backend at Huma.
+Most of the tutorials out there for LLM integration assume you&#x27;re in Python. Which is fine — a lot of ML infrastructure is Python, and libraries like LangChain, LiteLLM, and friends are well-documented. But if you&#x27;re running a Go service stack and you want to add LLM calls without bolting on a whole Python sidecar, the path is less obvious.
+Here&#x27;s what we actually learned, including where we went wrong.
+We build remote patient monitoring software. Clinicians use dashboards to track patients with chronic conditions — vitals, medication adherence, care notes. We added an LLM-powered summarization layer: given a week&#x27;s worth of patient data, produce a brief natural-language summ…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/datta_kharad_3fd1383b5036/finops-for-ai-balancing-innovation-and-budget-in-ai-development-1ba2"
+                        open
+                      >
+                        <summary class="article-expander__title">FinOps for AI: Balancing Innovation and Budget in AI Development</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/datta_kharad_3fd1383b5036/finops-for-ai-balancing-innovation-and-budget-in-ai-development-1ba2">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsespie6fped1tljg0ekq.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Artificial Intelligence initiatives are accelerating across industries, but AI workloads—especially generative AI—can quickly become expensive. Training models, running inference, storing embeddings, and scaling infrastructure all introduce significant costs. FinOps for AI helps organizations balance innovation with financial accountability by optimizing AI spending without slowing down development.
+Cost Visibility
+Organizations must understand where AI spending occurs.
+Track:
+• Model API usage 
+• Token consumption 
+• GPU usage 
+• Storage costs 
+• Vector database usage 
+Tools:
+• Cloud cost dashboards 
+• Usage analytics 
+• Budget alerts 
+Right-Sizing AI Models
+Use the smallest model that meets requirements.
+Instead of:
+• Large model for every request 
+Use:
+• Small model for simple queries 
+• Large model only when required 
+This reduces inference costs significantly.
+Optimize Inference Costs
+Techniques:
+• Response caching 
+• Batch inference 
+• Prompt optimization 
+• Reduce output tokens 
+• Use streaming responses 
+These methods reduce token usage and API costs.
+Use Retrieval-Augmented Generation (RAG)
+RAG reduces reliance on large models.
+Instead of:
+Sending entire context to LLM
+Use:
+• Vector search 
+• Relevant document retrieval 
+• Short prompt context 
+Benefits:
+• Lower token usage 
+• Faster responses 
+• Lower cost 
+Training Cost Optimization
+Reduce training costs using:
+• Transfer learning 
+• Fine-tuning smaller models 
+• Spot instances 
+• Scheduled training jobs 
+• Early stopping 
+Avoid retraining models unnecessarily.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/ryantech00/how-i-track-claude-code-costs-across-multiple-pcs-13bl"
+                        open
+                      >
+                        <summary class="article-expander__title">How I Track Claude Code Costs Across Multiple PCs</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ryantech00/how-i-track-claude-code-costs-across-multiple-pcs-13bl">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftgxjf455k6oi715dgtfr.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The Problem
+
+
+Claude Code logs your usage locally in JSONL files. CLI tools like ccusage and ccost read these files beautifully — but only on one machine at a time.
+If you use Claude Code on multiple PCs (work laptop, home desktop, cloud VM), you have a problem: Anthropic&#x27;s rate limits are per account, not per machine. Without aggregation, you&#x27;re flying blind:
+No idea how close you are to your 5-hour block limit across machines
+No way to compare daily spending between workstations
+No centralized view of total cost
+No historical trends across your entire usage footprint
+I hit this wall myself. I use Claude Code on my work laptop and home desktop. Every time I ran ccusage it only showed me half the picture.
+So I built claude-telemetry.
+Claude-telemetry is the aggregation layer that sits on t…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/wonderlab/5-agent-skill-design-patterns-from-google-cut-token-waste-trigger-the-right-behavior-52mo"
+                        open
+                      >
+                        <summary class="article-expander__title">5 Agent Skill Design Patterns from Google: Cut Token Waste, Trigger the Right Behavior</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/wonderlab/5-agent-skill-design-patterns-from-google-cut-token-waste-trigger-the-right-behavior-52mo">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkju3itoyuggvcuh7119b.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>This article is distilled from Lavi Nigam (Google ADK Agent Engineering expert) on Agent Skill design, summarizing 5 production-ready SKILL.md design patterns to help developers reduce token waste and improve skill quality.
+In AI Native product development, the root cause of massive token waste is twofold: forcing the model to repeatedly guess user intent that should be clearly specified, and expressing with complex instructions what could be expressed simply.
+With structured SKILL.md design patterns, we can:
+Reduce the model&#x27;s &quot;guessing&quot; cost and trigger the right behavior precisely
+Standardize how skills are written, reducing friction in team collaboration
+Use progressive knowledge loading to dramatically cut token consumption
+Let the Agent activate the right skill at the right time
+
+Cor…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/keshrath/how-i-gave-my-ai-agents-a-dynamic-mcp-marketplace-d3a"
+                        open
+                      >
+                        <summary class="article-expander__title">How I Gave My AI Agents a Dynamic MCP Marketplace</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/keshrath/how-i-gave-my-ai-agents-a-dynamic-mcp-marketplace-d3a">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1pff3xub1sbvgxjuy02c.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>I&#x27;ve written before about agent-comm, agent-tasks, and agent-knowledge — tools for giving AI coding agents coordination, task management, and persistent memory. But there was still one friction point I hadn&#x27;t solved: getting the right MCP servers in front of the agent in the first place.
+The problem with static MCP configs is that everything is always on. Every server you&#x27;ve ever registered is running whether you need it or not. You want to add a new tool? Edit a JSON file, restart your agent. You want to try something from the official MCP registry? Good luck figuring out what&#x27;s available and how to install it without leaving your coding session.
+I built agent-discover to fix this.
+When you configure MCP servers in Claude Code (or any MCP client), you write a static config file. That list…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/googleai/agent-factory-recap-supercharging-agents-on-gke-with-agent-sandbox-and-pod-snapshots-3a5e"
+                        open
+                      >
+                        <summary class="article-expander__title">Agent Factory Recap: Supercharging Agents on GKE with Agent Sandbox and Pod Snapshots</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/googleai/agent-factory-recap-supercharging-agents-on-gke-with-agent-sandbox-and-pod-snapshots-3a5e">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fajg9l6ljsooiaqqk81q6.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>In the latest episode of the Agent Factory, Mofi Rahman and I had the pleasure of hosting, Brandon Royal, the PM working on agentic workloads on GKE. We dove deep into the critical questions around the nuances of choosing the right agent runtime, the power of GKE for agents, and the essential security measures needed for intelligent agents to run code.
+This post guides you through the key ideas from our conversation. Use it to quickly recap topics or dive deeper into specific segments with links and timestamps.
+Timestamp: 01:49 
+We kicked off our discussion by tackling a fundamental question: why choose GKE as your agent runtime when serverless options like Cloud Run or fully managed solutions like Agent Engine exist?
+Brandon explained that the decision often boils down to control versus c…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/claire_dubois/causal-inference-for-credit-risk-why-prediction-alone-isnt-enough-1j3e"
+                        open
+                      >
+                        <summary class="article-expander__title">Causal inference for credit risk: why prediction alone isn&#x27;t enough</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/claire_dubois/causal-inference-for-credit-risk-why-prediction-alone-isnt-enough-1j3e">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkcvb75vfk72jqo56p8ya.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>There&#x27;s a pattern I&#x27;ve seen repeatedly in financial ML: a model achieves excellent predictive performance — AUC above 0.80, stable on holdout — and the team ships it. Then, six months later, someone asks &quot;but why is the model denying more applicants from this postal code?&quot; and nobody has a good answer.
+Prediction and causation are different things, and conflating them is expensive in credit risk specifically.
+When you train a credit risk model, you&#x27;re typically predicting P(default | features). This is a conditional probability — it tells you what tends to be true about people who look like this applicant. It doesn&#x27;t tell you what caused their credit behavior, and it doesn&#x27;t tell you what will happen if you lend to them.
+This distinction matters for two reasons.
+First, selection bias. Your…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/vietanh/why-and-how-i-built-a-go-ai-sdk-26ob"
+                        open
+                      >
+                        <summary class="article-expander__title">Why (and How) I Built a Go AI SDK</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vietanh/why-and-how-i-built-a-go-ai-sdk-26ob">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fal8u7eygh93x7ck3azgh.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>GoAI, a Go (Golang) LLM library: 22+ providers, 2 dependencies, type-safe generics. v0.6.1, Go 1.25+. I built it to learn Go by adding AI to infrastructure that already runs on Go.
+Python has LangChain, LlamaIndex, LiteLLM. TypeScript has the Vercel AI SDK. Go has options, but none covered all the bases.
+
+
+
+Library
+Stars
+Created
+Providers
+What&#x27;s missing
+
+
+
+
+go-openai
+~10.6k
+Aug 2020
+1
+Single provider only
+
+
+
+Eino (ByteDance)
+~10.5k
+Dec 2024
+10
+Graph framework, different scope
+
+
+LangChainGo
+~9k
+Feb 2023
+~14
+170+ deps, no MCP, no generics schema
+
+
+Google ADK Go
+~7.5k
+May 2025
+Gemini-first
+Agent framework, Gemini-optimized
+
+
+
+Genkit Go (Google)
+~5.7k*
+2024
+~6
+Google Cloud-heavy, 129 deps
+
+
+openai-go
+~3.1k
+Jul 2024
+1+Azure
+Single provider by design
+
+
+anthropic-sdk-go
+~960
+Jul 2024
+1+Bedrock
+Si…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/devactivity/unpacking-github-personal-access-tokens-a-guide-for-developer-productivity-and-secure-integrations-2p0e"
+                        open
+                      >
+                        <summary class="article-expander__title">Unpacking GitHub Personal Access Tokens: A Guide for Developer Productivity and Secure Integrations</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/devactivity/unpacking-github-personal-access-tokens-a-guide-for-developer-productivity-and-secure-integrations-2p0e">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1WYaAdU6SAlkJrGsGUmXOa6IfZPL0cEzg%26sz%3Dw751" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The email arrives: “Your personal access token (classic) is about to expire.” For many, this notification from GitHub is less a helpful reminder and more a source of confusion. “What even is a personal access token?” “Do I need one?” “What happens if it expires?” These are precisely the questions that sparked a recent, highly relatable discussion in the GitHub Community, highlighting a widespread need for clarity on these vital security tools.
+For dev teams, product managers, and CTOs, understanding GitHub Personal Access Tokens (PATs) isn&#x27;t just about avoiding a security incident; it&#x27;s about enabling seamless integrations that directly impact developer productivity, streamline delivery, and uphold robust technical leadership. Let&#x27;s demystify PATs and ensure your team is equipped to manage…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/devactivity/urgent-security-alert-how-a-github-exploit-impacts-engineering-performance-and-trust-3lnh"
+                        open
+                      >
+                        <summary class="article-expander__title">Urgent Security Alert: How a GitHub Exploit Impacts Engineering Performance and Trust</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/devactivity/urgent-security-alert-how-a-github-exploit-impacts-engineering-performance-and-trust-3lnh">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1gpX2BrwjjOglL3klWT_DjS7SCBaKK19E%26sz%3Dw751" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>In the fast-paced world of software development, security vulnerabilities aren&#x27;t just technical glitches; they&#x27;re direct threats to an organization&#x27;s engineering performance. A recent discussion in the GitHub Community has brought to light a serious security vulnerability involving a Telegram bot offering fraudulent GitHub Student Verification. This exploit, if left unchecked, could have significant repercussions on individual developer accounts and the broader integrity of the GitHub Education program, indirectly impacting overall trust, security posture, and ultimately, your team&#x27;s delivery capabilities.
+The discussion, initiated by user saxyhoney, detailed a Telegram bot named @ghs_verify_bot. This bot claimed to provide instant GitHub Student Verification by leveraging user cookies. Th…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/devactivity/debugging-ci-failures-boost-your-software-development-performance-metrics-4da0"
+                        open
+                      >
+                        <summary class="article-expander__title">Debugging CI Failures: Boost Your Software Development Performance Metrics</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/devactivity/debugging-ci-failures-boost-your-software-development-performance-metrics-4da0">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1XckkNy5YoVoU72wc7syOLBPEGhalWX4e%26sz%3Dw751" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The dreaded CI failure. You&#x27;ve pushed your latest changes, confident that your local tests passed with flying colors. But then, your Continuous Integration (CI) pipeline lights up red, failing across a bewildering array of environments like Windows, macOS, and Ubuntu. This common scenario isn&#x27;t just frustrating; it&#x27;s a significant drain on developer productivity and directly impacts your team&#x27;s software development performance metrics. When developers spend hours chasing phantom bugs, delivery slows, and morale dips.
+This isn&#x27;t a sign of bad code, but rather a strong indicator of subtle environment differences between your local machine and the pristine, often headless, CI environment. Understanding and systematically addressing these discrepancies is key to maintaining a robust developmen…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
+                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="92d75f06-d326-428d-b148-83f6b67f6e3e"
+                        open
+                      >
+                        <summary class="article-expander__title">&#x27;A whole civilization will die&#x27;: Crypto markets under pressure as Trump ups rhetoric towards Iran</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/a-whole-civilization-will-die-crypto-markets-under-pressure-as-trump-ups-rhetoric-towards-iran">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/31879e58ffa45ad38acc60d809c6e5b7fe7fd125-1080x1080.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Weekend gains for bitcoin have been mostly erased ahead of the president&#x27;s Tuesday night deadline for the reopening of the Strait of Hormuz</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;37
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="cb7adfb1-9542-4896-9ac1-70685c8f99c8"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin quantum threat is real and closer than it looks, says Nobel physicist</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/04/07/bitcoin-quantum-threat-is-real-and-closer-than-it-looks-says-nobel-physicist">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/6329a8aa7443cfc32adf46e8c516239b1b0aa4b4-1919x1080.jpg?auto&#x3D;format" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Former Google quantum hardware leader and winner of the 2025 Nobel Prize in Physics, Dr. John Martinis, warns that breaking encryption will be among the earliest uses of quantum computing</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;41
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="8b8e1a40-1a82-4a9e-9a8a-9601e0241b4f"
+                        open
+                      >
+                        <summary class="article-expander__title">How North Korea&#x27;s 6-month long secret espionage program has crypto community rethinking security</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/04/07/how-north-korea-s-6-month-long-secret-espionage-program-has-crypto-community-rethinking-security">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/49d26266043c2276a5271a8a4085b94f29c5b7f8-1500x844.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>For years, the DeFi industry has treated security as a technical problem: something that could be solved with better code. But the Drift incident suggests something far more complex: that the real vulnerabilities may lie outside the codebase altogether.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;43
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="89b7af58-e6b3-4ef4-9f54-80f6b71aa642"
+                        open
+                      >
+                        <summary class="article-expander__title">Why Michael Saylor&#x27;s bitcoin buys aren’t moving the needle anymore</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/why-strategy-s-bitcoin-buying-isn-t-moving-the-market">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/fd145cc1ac47e41967dec066deed17a9e5d59fbd-1920x963.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Despite billions in purchases, MSTR demand is being outweighed by long term holder positioning and broader capital flows.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;39
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="d5a205a8-6f73-4cb7-8258-3913e13302e3"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin briefly touches $70,000 as ETF inflows signal institutional interest</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/daybook-us/2026/04/07/bitcoin-briefly-touches-usd70-000-as-etf-inflows-signal-institutional-interest">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/2bce99616419507d65a4f7a0aa5e280da00c697f-1500x1153.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Your day-ahead look for April 7, 2026</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;42
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="38ac6231-84d8-4985-9246-7d8d648f0026"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin price-drop speculation spurred by familiar price pattern</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-price-drop-speculation-spurred-by-familiar-price-pattern">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/2e3e9177b330cececd835b6feb3843b5d3c5a22f-2086x1112.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>BTC and ETH remain stuck in a two-month range as oil prices and Iran tensions weigh on sentiment, while AI and privacy tokens show surprising relative strength.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;41
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="cd8c976b-fd7b-4719-99fe-ea7b33efbc6f"
+                        open
+                      >
+                        <summary class="article-expander__title">Solana Foundation unveils security overhaul days after $270 million Drift exploit</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/04/07/solana-foundation-unveils-security-overhaul-days-after-usd270-million-drift-exploit">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/54c0f3b41e62df4cdf774aab4c7d68c64e5e976c-1920x1080.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The program includes 24/7 threat monitoring for protocols with more than $10 million in deposits and a dedicated incident response network of security firms.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;40
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="8006adf9-662c-4eea-bcc0-1186cf2d3ca0"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin pulls away from software stocks as Iran war, AI reshape market dynamic</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-pulls-away-from-software-stocks-as-iran-war-ai-reshape-market-dynamic">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/417d9834ab2f6b0ab275b08d5634a167c4f69785-1473x969.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>BTC correlation with an ETF tracking software comany stocks broke sharply from near-total alignment to near zero after the conflict started.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;39
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="60a8e8a6-12ce-4267-998c-79ddb9c69c7c"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin ETF inflows hit highest level since February</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-etf-inflows-hit-highest-level-since-february">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/b5cd3bf36d1eac21a178cc65ec243a52a29b099a-1280x854.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Spot bitcoin ETFs pulled in $471 million on April 6, the 6th-largest inflow of 2026, as prediction markets price little near-term Fed movement.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;38
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="5811eea0-d160-4f2d-86de-8495c2047189"
+                        open
+                      >
+                        <summary class="article-expander__title">XRP slips to $1.31 after failed breakout as liquidity dries up</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/xrp-slips-to-usd1-31-after-failed-breakout-as-liquidity-dries-up">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/59136c91aea88af8b7693b93f94e07948ae87dc0-1192x736.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Rejection at $1.35 and collapsing depth raise risk of sharper moves as positioning builds.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;38
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="0397d83f-691b-42a4-ba14-dd7b88dddda8"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin miners face a new rival for cheap power as Anthropic signs multi-gigawatt compute deal</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/04/07/bitcoin-miners-face-a-new-rival-for-cheap-power-as-anthropic-signs-multi-gigawatt-compute-deal">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/966dc507649ef9b27da6ca6d075265de8b290c79-1000x662.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The AI company&#x27;s partnership with Google and Broadcom for next-generation TPU capacity starting in 2027 adds to a wave of demand reshaping the economics of every industry that competes for cheap electricity, including bitcoin mining.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;41
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="8f2b4918-2a67-402e-b6e1-cb85fa684397"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin, ether, solana hold steady as Trump sets Tuesday night deadline for Iran deal</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-ether-solana-hold-steady-as-trump-sets-tuesday-night-deadline-for-iran-deal">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/b7540e5f4ce263639ab052e4c17c2e5c4075c251-1920x1080.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Oil jumped above $112 on threats to destroy Iranian infrastructure if no agreement is reached by midnight, while crypto markets gave back Monday&#x27;s ceasefire rally gains.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;40
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="c4a2ef3f-f962-4d99-b5e0-5a4a9c7379a1"
+                        open
+                      >
+                        <summary class="article-expander__title">SEC close to putting out &#x27;reg crypto&#x27; for fundraising questions, Chair Atkins says</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2026/04/07/sec-close-to-putting-out-reg-crypto-for-fundraising-questions-chair-atkins-says">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/33651df8ccf49ddee790cec8424c488a47984dde-4715x2653.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The Securities and Exchange Commission will address fundraising and startup exemptions in this proposal, Paul Atkins told a crowd Monday.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;39
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="20072848-a1c1-43a7-ae54-ae034a891edd"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin drops toward $68,000 as demand weakens and whales sell</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-drops-toward-usd68-000-as-demand-weakens-and-whales-sell">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/bfb4779e9245468a88a2a948bb0e1677ae7e7858-3840x2160.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Glassnode data shows soft participation, while a negative gamma setup below $68,000 leaves BTC exposed to a faster move toward $60,000.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;39
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
             <li class="card__section">
               <section class="js-toggle-accordions-scope">
                 <h3 class="source-heading">
@@ -38,6 +820,48 @@
                   <a class="source-heading__link" href="https://www.lowyat.net/">Open</a>
                 </h3>
                 <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.lowyat.net/?p&#x3D;388734"
+                        open
+                      >
+                        <summary class="article-expander__title">Intel Confirms That Raptor Lake Will Still Remain In Production</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.lowyat.net/2026/388734/intel-confirms-that-raptor-lake-will-still-remain-in-production/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://www.lowyat.net/wp-content/uploads/2024/10/Intel-Core-i9-14900K-New-Shot-1.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Intel recently confirmed that its Raptor Lake platform “is not going anywhere” and that it plans on releasing ore DDR4 and DDR5 hybrid motherboards in the foreseeable future. The confirmation was given in an interview with Club386, who was speaking with Robert Hallock, VP and GM of Intel’s Enthusiast Channel, on the subject of Raptor […]
+The post Intel Confirms That Raptor Lake Will Still Remain In Production appeared first on Lowyat.NET.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;37
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.lowyat.net/?p&#x3D;388721"
+                        open
+                      >
+                        <summary class="article-expander__title">U Mobile Launches New ULTRA5G Plans With Priority Network Access And More</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.lowyat.net/2026/388721/u-mobile-launches-new-ultra5g-plans/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://www.lowyat.net/wp-content/uploads/2026/04/u-mobile-new-ultra5g-postpaid-prepaid-plans-launch_07.webp" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>U Mobile has officially unveiled its refreshed ULTRA5G plans today, marking a significant update to its postpaid and prepaid offerings under the new “ULTRA” branding. The launch also comes with a network milestone, with the telco announcing that its ULTRA5G network has achieved 82.9% population coverage ahead of schedule, positioning it as Malaysia’s second 5G […]
+The post U Mobile Launches New ULTRA5G Plans With Priority Network Access And More appeared first on Lowyat.NET.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;40
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -206,751 +1030,6 @@ The post CIMB Announces Scheduled Maintenance For Debit Card Services appeared f
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.lowyat.net/?p&#x3D;388633"
-                        open
-                      >
-                        <summary class="article-expander__title">Acer Swift Edge 14 AI Available For Pre-Order; Priced From RM5,899</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.lowyat.net/2026/388633/acer-swift-edge-14-ai/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://www.lowyat.net/wp-content/uploads/2026/04/acer-swift-edge-14-ai-6.webp" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Today, Acer announced its newest laptops for the Malaysian market. Among them is the Swift Edge 14 AI, which the company has armed with the latest Intel Core Ultra Series 3 processors. Comprising two SKUs, the laptop features a new design with a magnesium-aluminium alloy chassis. The laptop sports a light build weighing under 1kg, […]
-The post Acer Swift Edge 14 AI Available For Pre-Order; Priced From RM5,899 appeared first on Lowyat.NET.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;36
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.lowyat.net/?p&#x3D;388611"
-                        open
-                      >
-                        <summary class="article-expander__title">LG Announces 2026 QNED Evo Mini LED TV Lineup; Includes A 115-Inch Model</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.lowyat.net/2026/388611/lg-announces-2026-qned-evo-mini-led-tv-lineup/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://www.lowyat.net/wp-content/uploads/2026/04/LG-Launches-2026-QNED-Evo-Mini-LED-TV-Lineup-1.webp" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>LG has officially announced its 2026 QNED evo Mini LED TV lineup, headlined by ultra-large 115-inch and 100-inch models. The new series also includes additional variants under the QNED lineup, such as the QNED70. Beyond just size, LG says the TVs come equipped with AI-driven picture and audio features designed to enhance sports, gaming, and […]
-The post LG Announces 2026 QNED Evo Mini LED TV Lineup; Includes A 115-Inch Model appeared first on Lowyat.NET.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;39
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >DEV Community</button>
-                  <a class="source-heading__link" href="https://dev.to">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/whoffagents/cicd-pipeline-design-from-push-to-production-in-under-10-minutes-8ok"
-                        open
-                      >
-                        <summary class="article-expander__title">CI/CD Pipeline Design: From Push to Production in Under 10 Minutes</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/whoffagents/cicd-pipeline-design-from-push-to-production-in-under-10-minutes-8ok">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>What a Good CI/CD Pipeline Actually Does
-
-
-Not just &quot;runs tests before deploy.&quot; A real pipeline:
-Validates code quality (lint, types, tests)
-Builds artifacts
-Deploys to staging automatically
-Gates production on approval or scheduled windows
-Rolls back automatically on failure
-Here&#x27;s how to build one with GitHub Actions.
-# .github/workflows/ci.yml
-name: CI
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
-
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: &#x27;20&#x27;
-          cache: &#x27;npm&#x27;
-
-      - run: npm ci
-
-      - name: Type check
-        run: npx tsc --noEmit
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm test -- …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/jagmarques/5-open-source-tools-for-ai-agent-governance-in-2026-54le"
-                        open
-                      >
-                        <summary class="article-expander__title">5 open source tools for AI agent governance in 2026</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/jagmarques/5-open-source-tools-for-ai-agent-governance-in-2026-54le">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>AI agents are moving into production faster than governance tooling can keep up. Here are the 5 open source tools worth knowing about.
-The 800-pound gorilla. Policy-as-code with Cedar, multi-language SDKs (Python, TypeScript, .NET, Rust, Go), 9,500+ tests. No cryptographic signing but the most mature policy engine.
-github.com/microsoft/agent-governance-toolkit
-Quantum-safe audit trails. Every agent action gets an ML-DSA-65 signature chained to the previous one. Works with LangChain, CrewAI, OpenAI Agents, Haystack, LiteLLM. The only tool with post-quantum signatures.
-github.com/jagmarques/asqav-sdk
-6.6K stars. Output validation and structural guarantees for LLM responses. Guardrails Hub has community validators. Different focus (output quality vs audit trails) but complementary.
-github.com/guardrails-ai/guardrails
-NVIDIA. Programmable conversation rails using Colang DSL. Topic control, safety rails, jailbreak prevention. Great for chatbot safety, less focused on agent audit trails.
-github.com/NVIDIA/NeMo-Guardrails
-Ed25519 signed receipts with zero dependencies. The init command auto-discovers tool calls in your codebase. Best developer experience for quick setup. No SaaS, fully local.
-github.com/aniketh-maddipati/agentmint-python
-Regulated industry needing long-term proof: asqav (quantum-safe signatures hold up for 10+ years)
-Enterprise policy enforcement: Microsoft AGT (most mature, multi-language)
-LLM output quality: Guardrails AI
-Conversation safety: NeMo Guardrails
-Quick local receipts: AgentMint
-Full comparison table: github.com/jagmarques/ai-agent-governance-landscape</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/whoffagents/error-monitoring-in-production-beyond-consolelog-21n2"
-                        open
-                      >
-                        <summary class="article-expander__title">Error Monitoring in Production: Beyond console.log</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/whoffagents/error-monitoring-in-production-beyond-consolelog-21n2">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The Gap Between Dev and Prod
-
-
-In development, errors are visible. In production, they&#x27;re silent.
-A user hits a bug, refreshes, gives up. You never know. Until enough users give up that your retention numbers drop.
-Error monitoring closes that gap.
-npm install @sentry/nextjs
-# or
-npm install @sentry/node
-
-// sentry.server.config.ts
-import * as Sentry from &#x27;@sentry/nextjs&#x27;;
-
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  environment: process.env.NODE_ENV,
-  tracesSampleRate: process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;production&#x27; ? 0.1 : 1.0,
-
-  // Filter out noise
-  ignoreErrors: [
-    &#x27;ResizeObserver loop limit exceeded&#x27;,
-    /^Network Error/,
-  ],
-
-  beforeSend(event, hint) {
-    // Don&#x27;t send errors from bots
-    const ua &#x3D; event.request?.headers?.[&#x27;user-agent&#x27;] ?? &#x27;&#x27;;
-    if (/bot|crawler|spider/i.test(…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/chilango74/okama-20-new-withdrawal-strategies-and-a-faster-efficient-frontier-4no6"
-                        open
-                      >
-                        <summary class="article-expander__title">okama 2.0: New Withdrawal Strategies and a Faster Efficient Frontier</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/chilango74/okama-20-new-withdrawal-strategies-and-a-faster-efficient-frontier-4no6">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>We have released the “anniversary” version, okama 2.0. This release includes many important changes. The main themes are new advanced portfolio withdrawal strategies and a new portfolio optimization workflow for the Efficient Frontier.
-First article and howto for beginners is here.
-You can install the library or upgrade to the new version right now:
-pip install okama -U
-
-With okama 2.0, we deliberately moved from educational and academic examples toward more practical and realistic use cases. On the one hand, the library now includes new tools that are well suited for building retirement strategies with regular withdrawals.
-On the other hand, the logic behind the Efficient Frontier has changed: multi-period optimization with rebalancing is now the default behavior. This more advanced type …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/whoffagents/prisma-schema-design-relationships-enums-and-indexes-that-scale-9gm"
-                        open
-                      >
-                        <summary class="article-expander__title">Prisma Schema Design: Relationships, Enums, and Indexes That Scale</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/whoffagents/prisma-schema-design-relationships-enums-and-indexes-that-scale-9gm">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Schema Design Is Architecture
-
-
-Your Prisma schema isn&#x27;t just ORM config—it&#x27;s your data architecture. Bad decisions here compound as your app grows.
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  posts     Post[]   // one user has many posts
-  createdAt DateTime @default(now())
-}
-
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-
-  @@index([userId]) // always index foreign keys
-}
-
-model Post {
-  id   String @id @default(cuid())
-  tags Tag[]
-}
-
-model Tag {
-  id    String @id @default(cuid())
-  name  String @unique
-  posts Post[]
-}
-// Prisma creates a join table automatically
-
-model User {…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/whoffagents/building-a-cli-tool-in-nodejs-that-people-actually-want-to-use-1o3j"
-                        open
-                      >
-                        <summary class="article-expander__title">Building a CLI Tool in Node.js That People Actually Want to Use</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/whoffagents/building-a-cli-tool-in-nodejs-that-people-actually-want-to-use-1o3j">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>What Makes a Good CLI?
-
-
-Most developer tools are CLIs. git, docker, npm, gh—all of them. A well-built CLI is invisible: it does what you expect, fails clearly, and stays out of the way.
-Here&#x27;s how to build one that meets that bar.
-mkdir my-cli &amp;&amp; cd my-cli
-npm init -y
-npm install commander chalk ora execa
-npm install -D typescript @types/node ts-node tsup
-
-// package.json additions
-{
-  &quot;bin&quot;: {
-    &quot;mycli&quot;: &quot;./dist/index.js&quot;
-  },
-  &quot;scripts&quot;: {
-    &quot;build&quot;: &quot;tsup src/index.ts --format cjs --dts&quot;,
-    &quot;dev&quot;: &quot;ts-node src/index.ts&quot;
-  }
-}
-
-#!/usr/bin/env node
-import { Command } from &#x27;commander&#x27;;
-import { deploy } from &#x27;./commands/deploy&#x27;;
-import { init } from &#x27;./commands/init&#x27;;
-
-const program &#x3D; new Command();
-
-program
-  .name(&#x27;mycli&#x27;)
-  .description(&#x27;Deploy and manage your applications&#x27;)
-  .…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/agonxgashi/the-part-of-the-job-ai-keeps-missing-2422"
-                        open
-                      >
-                        <summary class="article-expander__title">The part of the job AI keeps missing</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/agonxgashi/the-part-of-the-job-ai-keeps-missing-2422">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkud6s55o5tr1g1jgvwhj.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>There was a moment, sometime in 2023, when I started to feel it. Not panic, but a kind of alertness. The articles were everywhere. AI replacing engineers, entire roles becoming obsolete overnight. And there I was, managing a team of them.
-I was never particularly worried. I&#x27;ve always believed that the human element in building software, the judgment, the relationships, the context that lives between people, isn&#x27;t something that can be quietly absorbed by a model. But being confident isn&#x27;t the same as being complacent. Something was shifting, and anyone not paying attention was going to be left behind.
-So I paid attention.
-The first thing I noticed wasn&#x27;t that I had more time. It was that I had more headspace.
-When the routine information-gathering starts taking care of itself, you stop car…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/whoffagents/database-transactions-acid-properties-in-plain-english-1f1"
-                        open
-                      >
-                        <summary class="article-expander__title">Database Transactions: ACID Properties in Plain English</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/whoffagents/database-transactions-acid-properties-in-plain-english-1f1">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>What Is a Transaction?
-
-
-A transaction is a group of database operations that either all succeed or all fail together.
-BEGIN;
-  UPDATE accounts SET balance &#x3D; balance - 100 WHERE id &#x3D; 1;
-  UPDATE accounts SET balance &#x3D; balance + 100 WHERE id &#x3D; 2;
-COMMIT;
-
-If the second update fails, the first one rolls back automatically. Money doesn&#x27;t disappear into the void.
-&quot;All or nothing.&quot;
-BEGIN;
-  INSERT INTO orders (user_id, total) VALUES (42, 9900);
-  INSERT INTO order_items (order_id, product_id, qty) VALUES (LASTVAL(), 7, 2);
-  UPDATE inventory SET stock &#x3D; stock - 2 WHERE product_id &#x3D; 7;
-COMMIT;
--- If any statement fails, ALL are rolled back
-
-No partial orders. No inventory decremented without an order. No order without items.
-&quot;Data must be valid before and after.&quot;
-Constraints prevent invalid stat…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/younup/comment-bien-signer-ses-programmes-avec-openssl--3i2j"
-                        open
-                      >
-                        <summary class="article-expander__title">Comment bien signer ses programmes avec OpenSSL ?</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/younup/comment-bien-signer-ses-programmes-avec-openssl--3i2j">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9t83buicby0sfxbmga6n.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Pourquoi signer ?
-
-
-En 2025, 72% des entreprises à l&#x27;échelle mondiale ont constaté une intensification des risques de cyberattaque et 91% des experts en cybersécurité s&#x27;attendent à une augmentation des menaces augmentées à l&#x27;IA1 😮. Et cela, notamment à partir de contenu falsifié.
-Face à cette menace, comment s&#x27;assurer que les données reçues à travers le réseau proviennent du bon expéditeur, et, surtout, contiennent des données authentiques plutôt qu&#x27;un programme malveillant ?
-Une des solutions à cela, évidemment, c&#x27;est la signature des fichiers !
-Aujourd&#x27;hui nous allons donc voir comment signer et vérifier la signature de ces fichiers avec OpenSSL, un outil en ligne de commande gratuit, universel (Windows, Linux, Mac OS), et largement éprouvé.
-On peut hésiter entre 4 techniques : signer, …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/phc_y_55deee7323f8de7e/how-ai-scrapers-crashed-my-vercel-app-and-how-i-saved-it-with-digitalocean-cloudflare-1n0o"
-                        open
-                      >
-                        <summary class="article-expander__title">How AI Scrapers Crashed My Vercel App (And How I Saved It with DigitalOcean &amp; Cloudflare)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/phc_y_55deee7323f8de7e/how-ai-scrapers-crashed-my-vercel-app-and-how-i-saved-it-with-digitalocean-cloudflare-1n0o">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fgcunq2dyf0pfzsklzrzt.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>If you run a public-facing website today, you might have noticed some strange, massive spikes in your traffic. You get excited, thinking your app finally went viral—only to realize it&#x27;s just AI bots hammering your servers.
-I recently experienced this exact scenario with my project, Viconic.dev, a platform for finding and sharing icons. Here&#x27;s the story of how AI crawlers almost took down my site—and how I regained control without losing AI search visibility.
-Initially, I hosted Viconic on Vercel. It was fast, easy to deploy, and worked perfectly for my needs.
-However, as the site grew, I started getting hit by massive waves of automated requests.
-Web crawlers from AI companies like Perplexity, OpenAI (ChatGPT), and others were aggressively scraping my site for training data and real-time s…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/whoffagents/caching-strategies-that-actually-work-in-production-jj0"
-                        open
-                      >
-                        <summary class="article-expander__title">Caching Strategies That Actually Work in Production</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/whoffagents/caching-strategies-that-actually-work-in-production-jj0">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3otvb2z646ytpt1hl2rv.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The Cache Taxonomy
-
-
-Not all caches are the same. Choosing the wrong one is worse than no cache at all.
-Fastest possible. Zero network hops. Lives in your Node.js process.
-import NodeCache from &#x27;node-cache&#x27;;
-
-const cache &#x3D; new NodeCache({ 
-  stdTTL: 300,      // 5 minutes default
-  checkperiod: 60,  // cleanup every 60s
-  maxKeys: 1000,    // prevent unbounded growth
-});
-
-async function getUser(userId: string): Promise {
-  const cacheKey &#x3D; &#x60;user:${userId}&#x60;;
-  const cached &#x3D; cache.get(cacheKey);
-  if (cached) return cached;
-
-  const user &#x3D; await db.users.findUnique({ where: { id: userId } });
-  cache.set(cacheKey, user);
-  return user;
-}
-
-Good for: Config data, reference data, per-instance computation.
-Bad for: Multi-instance deployments (each instance has different state), larg…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/penfieldlabs/milla-jovovich-just-released-an-ai-memory-system-it-reached-over-15-million-people-and-5400-297l"
-                        open
-                      >
-                        <summary class="article-expander__title">Milla Jovovich just released an AI memory system. It reached over 1.5 million people and 5,400 GitHub stars in less than 24 hours.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/penfieldlabs/milla-jovovich-just-released-an-ai-memory-system-it-reached-over-15-million-people-and-5400-297l">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdcrkukamtfto2u41tzvg.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Problem: None of the benchmark scores are real.
-
-
-Yesterday an X account belonging to a developer named Ben Sigman posted the launch of an open-source AI memory project called MemPalace. The post claimed &quot;100% on LoCoMo&quot; and &quot;the first perfect score ever recorded on LongMemEval. 500/500 questions, every category at 100%.&quot; It credited the actress Milla Jovovich as a co-author. The GitHub account hosting the repository is named milla-jovovich/mempalace. The first commit to the repository is dated April 5. As of this writing, less than 24 hours after the launch post, the repository has approximately 5,400 stars and over 1.5 million views on the launch tweet.
-For comparison: open-source memory projects with similar architectures and similar honest baseline numbers typically receive just a hand…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;12
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
-                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="89b7af58-e6b3-4ef4-9f54-80f6b71aa642"
-                        open
-                      >
-                        <summary class="article-expander__title">Why Michael Saylor&#x27;s bitcoin buys aren’t moving the needle anymore</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/why-strategy-s-bitcoin-buying-isn-t-moving-the-market">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/fd145cc1ac47e41967dec066deed17a9e5d59fbd-1920x963.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Despite billions in purchases, MSTR demand is being outweighed by long term holder positioning and broader capital flows.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="d5a205a8-6f73-4cb7-8258-3913e13302e3"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin briefly touches $70,000 as ETF inflows signal institutional interest</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/daybook-us/2026/04/07/bitcoin-briefly-touches-usd70-000-as-etf-inflows-signal-institutional-interest">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/2bce99616419507d65a4f7a0aa5e280da00c697f-1500x1153.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Your day-ahead look for April 7, 2026</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;41
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="38ac6231-84d8-4985-9246-7d8d648f0026"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin price-drop speculation spurred by familiar price pattern</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-price-drop-speculation-spurred-by-familiar-price-pattern">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/2e3e9177b330cececd835b6feb3843b5d3c5a22f-2086x1112.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>BTC and ETH remain stuck in a two-month range as oil prices and Iran tensions weigh on sentiment, while AI and privacy tokens show surprising relative strength.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;40
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="cd8c976b-fd7b-4719-99fe-ea7b33efbc6f"
-                        open
-                      >
-                        <summary class="article-expander__title">Solana Foundation unveils security overhaul days after $270 million Drift exploit</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/04/07/solana-foundation-unveils-security-overhaul-days-after-usd270-million-drift-exploit">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/54c0f3b41e62df4cdf774aab4c7d68c64e5e976c-1920x1080.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The program includes 24/7 threat monitoring for protocols with more than $10 million in deposits and a dedicated incident response network of security firms.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;40
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="8006adf9-662c-4eea-bcc0-1186cf2d3ca0"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin pulls away from software stocks as Iran war, AI reshape market dynamic</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-pulls-away-from-software-stocks-as-iran-war-ai-reshape-market-dynamic">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/417d9834ab2f6b0ab275b08d5634a167c4f69785-1473x969.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>BTC correlation with an ETF tracking software comany stocks broke sharply from near-total alignment to near zero after the conflict started.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="60a8e8a6-12ce-4267-998c-79ddb9c69c7c"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin ETF inflows hit highest level since February</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-etf-inflows-hit-highest-level-since-february">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/b5cd3bf36d1eac21a178cc65ec243a52a29b099a-1280x854.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Spot bitcoin ETFs pulled in $471 million on April 6, the 6th-largest inflow of 2026, as prediction markets price little near-term Fed movement.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="5811eea0-d160-4f2d-86de-8495c2047189"
-                        open
-                      >
-                        <summary class="article-expander__title">XRP slips to $1.31 after failed breakout as liquidity dries up</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/xrp-slips-to-usd1-31-after-failed-breakout-as-liquidity-dries-up">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/59136c91aea88af8b7693b93f94e07948ae87dc0-1192x736.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Rejection at $1.35 and collapsing depth raise risk of sharper moves as positioning builds.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="0397d83f-691b-42a4-ba14-dd7b88dddda8"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin miners face a new rival for cheap power as Anthropic signs multi-gigawatt compute deal</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/04/07/bitcoin-miners-face-a-new-rival-for-cheap-power-as-anthropic-signs-multi-gigawatt-compute-deal">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/966dc507649ef9b27da6ca6d075265de8b290c79-1000x662.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The AI company&#x27;s partnership with Google and Broadcom for next-generation TPU capacity starting in 2027 adds to a wave of demand reshaping the economics of every industry that competes for cheap electricity, including bitcoin mining.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;41
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="8f2b4918-2a67-402e-b6e1-cb85fa684397"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin, ether, solana hold steady as Trump sets Tuesday night deadline for Iran deal</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-ether-solana-hold-steady-as-trump-sets-tuesday-night-deadline-for-iran-deal">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/b7540e5f4ce263639ab052e4c17c2e5c4075c251-1920x1080.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Oil jumped above $112 on threats to destroy Iranian infrastructure if no agreement is reached by midnight, while crypto markets gave back Monday&#x27;s ceasefire rally gains.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;40
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="c4a2ef3f-f962-4d99-b5e0-5a4a9c7379a1"
-                        open
-                      >
-                        <summary class="article-expander__title">SEC close to putting out &#x27;reg crypto&#x27; for fundraising questions, Chair Atkins says</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2026/04/07/sec-close-to-putting-out-reg-crypto-for-fundraising-questions-chair-atkins-says">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/33651df8ccf49ddee790cec8424c488a47984dde-4715x2653.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The Securities and Exchange Commission will address fundraising and startup exemptions in this proposal, Paul Atkins told a crowd Monday.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="20072848-a1c1-43a7-ae54-ae034a891edd"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin drops toward $68,000 as demand weakens and whales sell</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/07/bitcoin-drops-toward-usd68-000-as-demand-weakens-and-whales-sell">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/bfb4779e9245468a88a2a948bb0e1677ae7e7858-3840x2160.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Glassnode data shows soft participation, while a negative gamma setup below $68,000 leaves BTC exposed to a faster move toward $60,000.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -969,13 +1048,129 @@ For comparison: open-source memory projects with similar architectures and simil
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="https://twitter.com/i/status/2041112541909205001"
+                        open
+                      >
+                        <summary class="article-expander__title">&quot;The new Copilot app for Windows 11 is really just Microsoft Edge&quot;</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://twitter.com/i/status/2041112541909205001">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;2
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.intofarlands.com/atlasofarda"
+                        open
+                      >
+                        <summary class="article-expander__title">Show HN: A cartographer&#x27;s attempt to realistically map Tolkien&#x27;s world</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.intofarlands.com/atlasofarda">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;47
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://arxiv.org/abs/2604.04757"
+                        open
+                      >
+                        <summary class="article-expander__title">AI agents can communicate with each other, and can&#x27;t be caught</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://arxiv.org/abs/2604.04757">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="/static/browse/0.3.4/images/arxiv-logo-fb.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://github.com/pion/handoff"
+                        open
+                      >
+                        <summary class="article-expander__title">Show HN: Pion/handoff – Move WebRTC out of browser and into Go</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/pion/handoff">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://opengraph.githubassets.com/772dfae9149fbe14dca658834912af74197b2bc9ae21b698c433aa33061bf954/pion/handoff" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="https://dornsife.usc.edu/news/stories/ai-may-be-making-us-think-and-write-more-alike/"
                         open
                       >
-                        <summary class="article-expander__title">LLM may be standardizing human expression – and subtly influencing how we think</summary>
+                        <summary class="article-expander__title">AI may be making us think and write more alike</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://dornsife.usc.edu/news/stories/ai-may-be-making-us-think-and-write-more-alike/">
                           <div class="article-summary-box-inner media-object">
                               <img src="https://dornsife.usc.edu/news/wp-content/uploads/sites/7/2026/03/llm-homogenous-thought-top.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://locker.dev/"
+                        open
+                      >
+                        <summary class="article-expander__title">Show HN: Stop paying for Dropbox/Google Drive, use your own S3 bucket instead</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://locker.dev/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://aransentin.github.io/deimos/"
+                        open
+                      >
+                        <summary class="article-expander__title">DeiMOS – A Superoptimizer for the MOS 6502</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://aransentin.github.io/deimos/">
+                          <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;11
@@ -1000,23 +1195,6 @@ For comparison: open-source memory projects with similar architectures and simil
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.bloomberg.com/news/articles/2026-04-07/germany-power-prices-turn-deeply-negative-on-renewables-surge"
-                        open
-                      >
-                        <summary class="article-expander__title">Germany Power Prices Turn Deeply Negative on Renewables Surge</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.bloomberg.com/news/articles/2026-04-07/germany-power-prices-turn-deeply-negative-on-renewables-surge">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
                             </span>
                           </div>
                         </a>
@@ -1056,23 +1234,6 @@ For comparison: open-source memory projects with similar architectures and simil
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
                                   min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://idiocracy.wtf/"
-                        open
-                      >
-                        <summary class="article-expander__title">Are We Idiocracy Yet?</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://idiocracy.wtf/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
                             </span>
                           </div>
                         </a>
@@ -1171,6 +1332,40 @@ For comparison: open-source memory projects with similar architectures and simil
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;14
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >MIT Technology Review</button>
+                  <a class="source-heading__link" href="https://www.technologyreview.com">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.technologyreview.com/?p&#x3D;1135208"
+                        open
+                      >
+                        <summary class="article-expander__title">The Download: AI’s impact on jobs, and data centres in space</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.technologyreview.com/2026/04/07/1135208/the-download-ai-impact-jobs-data-centres-space/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://wp.technologyreview.com/wp-content/uploads/2026/04/help-wanted2a.jpg?resize&#x3D;1200,600" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. The one piece of data that could actually shed light on your job and AI  Within Silicon Valley’s orbit, an AI-fueled jobs apocalypse is spoken about as a given. Now even economists who have…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;21
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1380,32 +1575,13 @@ For comparison: open-source memory projects with similar architectures and simil
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://news.ycombinator.com/item?id&#x3D;47667011"
-                        open
-                      >
-                        <summary class="article-expander__title">HackerRank (YC S11) Is Hiring</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://news.ycombinator.com/item?id&#x3D;47667011">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;1
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://github.com/matthartman/ghost-pepper"
                         open
                       >
                         <summary class="article-expander__title">Show HN: Ghost Pepper – Local hold-to-talk speech-to-text for macOS</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/matthartman/ghost-pepper">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/8f4683733baada7f416634e4b5dfff959aeb5b145b1c2c9c06ddcd17db278dfd/matthartman/ghost-pepper" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/b12f8119d111454a94fb27db48ef21f98e8779201e41e007c3d7c8b907f9937b/matthartman/ghost-pepper" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
@@ -1449,26 +1625,6 @@ For comparison: open-source memory projects with similar architectures and simil
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.showbiz411.com/2026/04/05/itunes-takeover-by-fake-ai-singer-eddie-dalton-now-occupies-eleven-spots-on-chart-despite-not-being-human-or-real-exclusive"
-                        open
-                      >
-                        <summary class="article-expander__title">AI singer now occupies eleven spots on iTunes singles chart</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.showbiz411.com/2026/04/05/itunes-takeover-by-fake-ai-singer-eddie-dalton-now-occupies-eleven-spots-on-chart-despite-not-being-human-or-real-exclusive">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://www.showbiz411.com/wp-content/uploads/2026/03/eddie-dalton.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;31
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1524,50 +1680,10 @@ For comparison: open-source memory projects with similar architectures and simil
                         <summary class="article-expander__title">Issue: Claude Code is unusable for complex engineering tasks with Feb updates</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/anthropics/claude-code/issues/42796">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/f1af4b2ec93fe3213b9b0e19008a8f42568fde2301b24324a9d2f3b8c88faf88/anthropics/claude-code/issues/42796" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/5cfcdfd334d93e5a881d0085e9a9a71340943986ca0c3486bd1fad6be41d72f8/anthropics/claude-code/issues/42796" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;82
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.stephendiehl.com/posts/no_antimimetics/"
-                        open
-                      >
-                        <summary class="article-expander__title">Book review: There Is No Antimemetics Division</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.stephendiehl.com/posts/no_antimimetics/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://www.stephendiehl.com/images/sd-social-preview.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://belief.horse/notes/what-being-ripped-off-taught-me/"
-                        open
-                      >
-                        <summary class="article-expander__title">What being ripped off taught me</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://belief.horse/notes/what-being-ripped-off-taught-me/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://belief.horse/belief-horse-social.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1641,7 +1757,7 @@ For comparison: open-source memory projects with similar architectures and simil
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/a3e986af03dd8e31e8182f2ed9c2554460f4330d-1409x793.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>A key sticking point is Aave’s V4 upgrade, which introduces a new architecture and significantly expands the scope of risk management.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;39
+                                &ensp;<span class="article-reading-time">(&hairsp;40
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1721,7 +1837,7 @@ For comparison: open-source memory projects with similar architectures and simil
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/bbf70cb1c1734c4293f3cde32f095ffb5a3c229f-1920x1281.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>The crypto industry faces growing cybersecurity risks as AI tools lower the cost and skill needed to exploit software flaws, with over $1.4 billion in assets stolen last year.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;40
+                                &ensp;<span class="article-reading-time">(&hairsp;41
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1761,7 +1877,7 @@ For comparison: open-source memory projects with similar architectures and simil
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/f1bdcebb1d44752a3cf516316a50e307c904632b-1440x810.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>The win landed the same week listed miners Riot, MARA, and Genius Group disclosed selling more than 19,000 BTC from their treasuries.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;39
+                                &ensp;<span class="article-reading-time">(&hairsp;40
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1801,7 +1917,7 @@ For comparison: open-source memory projects with similar architectures and simil
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/1e317956eae4ebfe2722405225dce7dc0b806dbe-1920x1080.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>The company now holds 3.98% of all ether in circulation, has staked $7.1 billion of it, and says it is generating $196 million in annualized staking revenue.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;39
+                                &ensp;<span class="article-reading-time">(&hairsp;40
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1821,66 +1937,6 @@ For comparison: open-source memory projects with similar architectures and simil
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/a57323d92b3fa599df2ee442af800248477423c0-6000x3376.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Last week&#x27;s purchases were mostly funded via sales of the company&#x27;s STRC preferred stock.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;38
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="f648325f-1551-4b26-a095-71d264832b92"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin has room to rally, but there&#x27;s a catch</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/daybook-us/2026/04/06/bitcoin-has-room-to-rally-but-there-s-a-catch">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/ea6e0ec4cd84026d0707ce39424079748bd5f9fb-3449x2300.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Your day-ahead look for April 6, 2026</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;43
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="5830e8bf-ff7c-40cb-8380-ea3c35337427"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin rallies on report of Iran ceasefire talks, Algorand extends gains</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/06/bitcoin-rallies-on-report-of-iran-ceasefire-talks-algorand-extends-gains">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/8434d50f9ca90a1a8a1d364db7d5e8bfb35b1309-6554x3687.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>If a ceasefire materializes, a relief rally could further benefit risk assets. For now, traders appear to be treating the headlines with skepticism.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;41
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="ec8d3e38-d14a-4d5a-be62-d3640a49b499"
-                        open
-                      >
-                        <summary class="article-expander__title">IMF warns tokenization could bring crypto risks into global financial markets</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/04/06/imf-warns-tokenization-could-bring-crypto-risks-into-global-financial-markets">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/83ada520132c533b438a7a871347a3c8553f3ccf-1920x1442.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Tokenization could amplify volatility through automated markets and smart contracts, the report said.</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;38
                                   min&hairsp;)</span>
                             </span>
@@ -1980,7 +2036,7 @@ For comparison: open-source memory projects with similar architectures and simil
                         <summary class="article-expander__title">Apollo Guidance Computer restoration videos</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://www.curiousmarc.com/space/apollo-guidance-computer">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SS1LiZ05ZmTr-yYnUjjLQYBw9PYeHwb0ITX7Im6PbvgkBczkkAKrhO9bpSoEZ1nMZlJHzXJUljfVN1OmFpl9lgvWwrm-5W0_GrZmDFoTPyxMy4BRqqgpHrIOgmvkTnXErA7blsuqgG4TxqJWUaeeqc1MVHFGA73&#x3D;w16383" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SRsnJxNCt59Hf7fARh6bta6kWOO_zy9nyWd8tklgzluyxK-rcGynoqsOYlesg4hZqUCJDPzJE9P4ODDvERLkR6E0umFfYc9pu60MePbgJrUIhGR1Sy0oaJ_23McKAY9dtDAQ6ePPO5ce_947O7AfeTBDf4BOPeW&#x3D;w16383" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;18
@@ -2023,26 +2079,6 @@ For comparison: open-source memory projects with similar architectures and simil
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.terrygodier.com/the-last-quiet-thing"
-                        open
-                      >
-                        <summary class="article-expander__title">The Last Quiet Thing</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.terrygodier.com/the-last-quiet-thing">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://terrygodier.com/the-last-quiet-thing/opengraph-image.png?opengraph-image.4c781211.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2236,11 +2272,64 @@ For comparison: open-source memory projects with similar architectures and simil
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-04-02 datetime="2026-04-02T16:32:26.000Z">2026-04-02</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-04-02 datetime="2026-04-02T16:32:26.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-04-02 datetime="2026-04-02T17:05:36.000Z">2026-04-02</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-04-02 datetime="2026-04-02T17:05:36.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://spectrum.ieee.org/robotics-in-nuclear-industry"
+                        open
+                      >
+                        <summary class="article-expander__title">Wi-Fi That Can Withstand a Nuclear Reactor: This receiver chip can take it</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://spectrum.ieee.org/robotics-in-nuclear-industry">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://spectrum.ieee.org/media-library/image.jpg?id&#x3D;65428641&amp;width&#x3D;1200&amp;height&#x3D;600&amp;coordinates&#x3D;0%2C241%2C0%2C259" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;38
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://xd009642.github.io/2026/04/01/My-Experience-as-a-Rice-Farmer.html"
+                        open
+                      >
+                        <summary class="article-expander__title">My Experience as a Rice Farmer</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://xd009642.github.io/2026/04/01/My-Experience-as-a-Rice-Farmer.html">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
             <li class="card__section">
               <section class="js-toggle-accordions-scope">
                 <h3 class="source-heading">
@@ -2266,39 +2355,6 @@ For comparison: open-source memory projects with similar architectures and simil
                             <span class="media-object__text">
                               <span>Trading desks and quant teams building on Hyperliquid spend weeks on data plumbing before they get to the query they actually care about. SQL Explorer replaces that stack with a single interface. No indexer. No pipelines. Just SQL.</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://xd009642.github.io/2026/04/01/My-Experience-as-a-Rice-Farmer.html"
-                        open
-                      >
-                        <summary class="article-expander__title">My Experience as a Rice Farmer</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://xd009642.github.io/2026/04/01/My-Experience-as-a-Rice-Farmer.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2495,26 +2551,6 @@ For comparison: open-source memory projects with similar architectures and simil
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.technologyreview.com/?p&#x3D;1134833"
-                        open
-                      >
-                        <summary class="article-expander__title">AI benchmarks are broken. Here’s what we need instead.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.technologyreview.com/2026/03/31/1134833/ai-benchmarks-are-broken-heres-what-we-need-instead/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://wp.technologyreview.com/wp-content/uploads/2026/03/260326_AIlearningOpEd2.jpg?resize&#x3D;1200,600" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>For decades, artificial intelligence has been evaluated through the question of whether machines outperform humans. From chess to advanced math, from coding to essay writing, the performance of AI models and applications is tested against that of individual humans completing tasks.  This framing is seductive: An AI vs. human comparison on isolated problems with clear…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;25
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -2686,8 +2722,8 @@ For comparison: open-source memory projects with similar architectures and simil
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/24079829986">
-        <time id="build-timestamp" datetime="2026-04-07T11:50:59.440Z">2026-04-07T11:50:59.440Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/24083071765">
+        <time id="build-timestamp" datetime="2026-04-07T13:10:03.623Z">2026-04-07T13:10:03.623Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
