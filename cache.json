@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/jagmarques/compress-your-llms-kv-cache-33x-with-zero-training-1kho",
-          "author": "João André Gomes Marques",
-          "description": "Running out of GPU memory at long context lengths? The KV cache grows linearly with sequence length — at 128K tokens, a 7B model accumulates over 60 GB of KV state. That's more than a single A100.\nI built NexusQuant, a library that compresses the KV cache 10-33x at inference time. No training, no calibration data, no model changes.\n# OOM at 32K tokens on a 24GB GPU\noutput = model.generate(input_ids, max_new_tokens=512)\n\nfrom nexusquant import nexusquant_evict\n\nwith nexusquant_evict(model, quality=\"balanced\"):\n    output = model.generate(input_ids, max_new_tokens=512)\n\n128K context now fits in the memory that used to hold 7.5K.\nSix stages, applied once after the prefill pass:\nRank tokens by attention importance\nDrop the lowest-scoring tokens (token eviction)\nUndo rotary position embeddings on keys\nApply Hadamard rotation to spread energy uniformly\nQuantize 8-float groups onto the E8 lattice (densest sphere packing in 8D)\nDelta-code consecutive indices and compress with zstd\nEviction reduces token count. Quantization reduces precision. They're nearly orthogonal — 60% eviction (2.5x) combined with 2-bit E8 quantization (~7x) gives ~17x total.\nMeasured on Mistral-7B, A100, FP16, all overhead included:\n\n\n\nPreset\nCompression\nPPL change\n\n\n\n\nhigh\n10x\n+0.4%\n\n\nbalanced\n17x\n+1.3%\n\n\nmax\n33x\n+2.6%\n\n\n\n\n\n\nMethod\nRatio\nQuality\nTraining needed\n\n\n\n\nNexusQuant\n10-33x\n+0.4-2.6%\nNo\n\n\nTurboQuant (Google)\n~5-6x\n~0%\nNo\n\n\nKVTC (NVIDIA)\nup to 20x\n<1%\nYes (calibration)\n\n\nCommVQ (Apple)\n~8x\n~0%\nYes (training)\n\n\n\nNexusQuant is the highest-compression training-free method available. Only KVTC achieves comparable ratios, but it needs calibration data.\npip install nexusquant\npip install \"nexusquant[hf]\"  # with transformers\n\nGitHub repo | Paper (PDF)\nBest regards,\nJoão Marques",
-          "link": "https://dev.to/jagmarques/compress-your-llms-kv-cache-33x-with-zero-training-1kho",
-          "publishedOn": "2026-04-07T13:08:32.000Z",
-          "wordCount": 1675,
-          "title": "Compress your LLM's KV cache 33x with zero training",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F0i50mu283rlev30up9if.png"
+          "id": "https://dev.to/buoyantcloudinc/zero-trust-requires-iam-hygiene-not-just-products-3d8m",
+          "author": "Amit Malhotra",
+          "description": "Zero Trust Isn't a Product — It's What Happens When You Actually Review IAM\n\n\nMost GCP organizations I assess have a zero trust problem they don't know about. They've configured VPC Service Controls. They've enabled BeyondCorp. They've checked the \"zero trust\" boxes on their security roadmap. But when I export their IAM bindings to BigQuery and run a simple query, I find service accounts with roles/editor granted two years ago that have never been reviewed.\nZero trust without IAM hygiene is security theater. The perimeter controls are there, but inside the perimeter, every service account has the keys to the kingdom.\nLeast privilege is the goal. Everyone agrees on this. The problem is that nobody achieves it manually across a GCP org with dozens of projects and hundreds of service accounts…",
+          "link": "https://dev.to/buoyantcloudinc/zero-trust-requires-iam-hygiene-not-just-products-3d8m",
+          "publishedOn": "2026-04-07T14:58:34.000Z",
+          "wordCount": 2446,
+          "title": "Zero Trust Requires IAM Hygiene, Not Just Products",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fyfsbuhvli8cne9qo963w.png"
         },
         {
-          "id": "https://dev.to/james_whitfield/integrating-llms-into-a-go-service-without-losing-your-mind-or-adding-550ms-latency-2955",
-          "author": "James Whitfield",
-          "description": "Right, so. This is a post I wish existed six months ago when we were first wiring LLMs into our Go backend at Huma.\nMost of the tutorials out there for LLM integration assume you're in Python. Which is fine — a lot of ML infrastructure is Python, and libraries like LangChain, LiteLLM, and friends are well-documented. But if you're running a Go service stack and you want to add LLM calls without bolting on a whole Python sidecar, the path is less obvious.\nHere's what we actually learned, including where we went wrong.\nWe build remote patient monitoring software. Clinicians use dashboards to track patients with chronic conditions — vitals, medication adherence, care notes. We added an LLM-powered summarization layer: given a week's worth of patient data, produce a brief natural-language summ…",
-          "link": "https://dev.to/james_whitfield/integrating-llms-into-a-go-service-without-losing-your-mind-or-adding-550ms-latency-2955",
-          "publishedOn": "2026-04-07T13:08:25.000Z",
-          "wordCount": 2680,
-          "title": "Integrating LLMs into a Go service without losing your mind (or adding 550ms latency)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fodtse31c60490wtu5pgi.png"
+          "id": "https://dev.to/_630fdf100267a43420f70/what-its-like-being-a-software-engineer-at-a-hardware-company-the-reality-of-sw-development-2ho1",
+          "author": "Ross Kim",
+          "description": "I used to work in software development in the mobile industry, and now I develop software at a camera module company. We make camera modules for smartphones and industrial devices. The core of the product is hardware — lenses, sensors, mechanical design — and software's role is to make that hardware work or to develop test programs.\n\"We Can't Change the Hardware, So Fix It in Software\"\nAn Organization That Treats Software Like Hardware\nWhen Hardware Is Delayed, It's the Software Schedule That Shrinks\nSo Is This Environment All Bad?\nI develop software at a camera module company. I write about real experiences from the field.",
+          "link": "https://dev.to/_630fdf100267a43420f70/what-its-like-being-a-software-engineer-at-a-hardware-company-the-reality-of-sw-development-2ho1",
+          "publishedOn": "2026-04-07T14:58:33.000Z",
+          "wordCount": 2067,
+          "title": "What It's Like Being a Software Engineer at a Hardware Company — The Reality of SW Development Dragged Along by HW Schedules",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fcsuviva4zn66j46s6bmq.png"
         },
         {
-          "id": "https://dev.to/datta_kharad_3fd1383b5036/finops-for-ai-balancing-innovation-and-budget-in-ai-development-1ba2",
-          "author": "Datta Kharad",
-          "description": "Artificial Intelligence initiatives are accelerating across industries, but AI workloads—especially generative AI—can quickly become expensive. Training models, running inference, storing embeddings, and scaling infrastructure all introduce significant costs. FinOps for AI helps organizations balance innovation with financial accountability by optimizing AI spending without slowing down development.\nCost Visibility\nOrganizations must understand where AI spending occurs.\nTrack:\n• Model API usage \n• Token consumption \n• GPU usage \n• Storage costs \n• Vector database usage \nTools:\n• Cloud cost dashboards \n• Usage analytics \n• Budget alerts \nRight-Sizing AI Models\nUse the smallest model that meets requirements.\nInstead of:\n• Large model for every request \nUse:\n• Small model for simple queries \n• Large model only when required \nThis reduces inference costs significantly.\nOptimize Inference Costs\nTechniques:\n• Response caching \n• Batch inference \n• Prompt optimization \n• Reduce output tokens \n• Use streaming responses \nThese methods reduce token usage and API costs.\nUse Retrieval-Augmented Generation (RAG)\nRAG reduces reliance on large models.\nInstead of:\nSending entire context to LLM\nUse:\n• Vector search \n• Relevant document retrieval \n• Short prompt context \nBenefits:\n• Lower token usage \n• Faster responses \n• Lower cost \nTraining Cost Optimization\nReduce training costs using:\n• Transfer learning \n• Fine-tuning smaller models \n• Spot instances \n• Scheduled training jobs \n• Early stopping \nAvoid retraining models unnecessarily.",
-          "link": "https://dev.to/datta_kharad_3fd1383b5036/finops-for-ai-balancing-innovation-and-budget-in-ai-development-1ba2",
-          "publishedOn": "2026-04-07T13:08:19.000Z",
-          "wordCount": 1767,
-          "title": "FinOps for AI: Balancing Innovation and Budget in AI Development",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsespie6fped1tljg0ekq.png"
+          "id": "https://dev.to/r_abhimaan/a-simple-checklist-for-writing-requirements-that-engineers-can-actually-use-2mma",
+          "author": "Rakshanda Abhimaan",
+          "description": "Full guide + resources.\nMost requirement docs fail for one simple reason:\nThey are hard to execute.\nNot because they are incomplete.\nBecause they are unclear.\nThis post is a practical checklist to fix that.\nNo theory. No fluff. Just a usable structure.\nBefore writing anything, align on this:\nA functional requirement = what the system does when a user does something\nThat’s it.\nIf a line does not describe:\na user action\na system response\n…it’s not a functional requirement.\nUse this 3-question loop:\n1. Who is using the system?\n2. What are they doing?\n3. What should the system do back?\n\nExample:\nUser: logs in\nAction: enters email + password\nSystem: validates → allows access OR shows error\n\nThat becomes one requirement.\nRepeat this loop until all key flows are covered.\n[ ]  Every user action is…",
+          "link": "https://dev.to/r_abhimaan/a-simple-checklist-for-writing-requirements-that-engineers-can-actually-use-2mma",
+          "publishedOn": "2026-04-07T14:58:18.000Z",
+          "wordCount": 1999,
+          "title": "A Simple Checklist for Writing Requirements That Engineers Can Actually Use",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fi7khdes3p6eokukypr0e.png"
         },
         {
-          "id": "https://dev.to/ryantech00/how-i-track-claude-code-costs-across-multiple-pcs-13bl",
-          "author": "Ryan Barbosa",
-          "description": "The Problem\n\n\nClaude Code logs your usage locally in JSONL files. CLI tools like ccusage and ccost read these files beautifully — but only on one machine at a time.\nIf you use Claude Code on multiple PCs (work laptop, home desktop, cloud VM), you have a problem: Anthropic's rate limits are per account, not per machine. Without aggregation, you're flying blind:\nNo idea how close you are to your 5-hour block limit across machines\nNo way to compare daily spending between workstations\nNo centralized view of total cost\nNo historical trends across your entire usage footprint\nI hit this wall myself. I use Claude Code on my work laptop and home desktop. Every time I ran ccusage it only showed me half the picture.\nSo I built claude-telemetry.\nClaude-telemetry is the aggregation layer that sits on t…",
-          "link": "https://dev.to/ryantech00/how-i-track-claude-code-costs-across-multiple-pcs-13bl",
-          "publishedOn": "2026-04-07T13:07:50.000Z",
-          "wordCount": 2027,
-          "title": "How I Track Claude Code Costs Across Multiple PCs",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftgxjf455k6oi715dgtfr.png"
+          "id": "https://dev.to/ivan_magda_8417a0295eb014/why-coding-agents-lose-their-plan-and-how-a-todo-tool-fixes-it-191m",
+          "author": "Ivan Magda",
+          "description": "Our agent can run commands, read files, write files, and edit code — all chained together automatically within a single prompt. Ask it to scaffold a module with three source files and a config, and it'll happily bash and write_file its way through the whole thing. But ask it to refactor a codebase in ten steps, and something interesting happens: it nails steps one through three, starts to drift around step five, and by step seven it's improvising. The plan it had at the beginning has faded into the growing sea of tool calls and results filling the context window.\nThis is a well-known property of language models called instruction-following decay. As a conversation grows longer, the system prompt and the original intent carry less weight relative to the mass of recent content. The model doe…",
+          "link": "https://dev.to/ivan_magda_8417a0295eb014/why-coding-agents-lose-their-plan-and-how-a-todo-tool-fixes-it-191m",
+          "publishedOn": "2026-04-07T14:57:45.000Z",
+          "wordCount": 3423,
+          "title": "Why Coding Agents Lose Their Plan (and How a Todo Tool Fixes It)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frczo4fuuucoq84ofeikd.png"
         },
         {
-          "id": "https://dev.to/wonderlab/5-agent-skill-design-patterns-from-google-cut-token-waste-trigger-the-right-behavior-52mo",
-          "author": "WonderLab",
-          "description": "This article is distilled from Lavi Nigam (Google ADK Agent Engineering expert) on Agent Skill design, summarizing 5 production-ready SKILL.md design patterns to help developers reduce token waste and improve skill quality.\nIn AI Native product development, the root cause of massive token waste is twofold: forcing the model to repeatedly guess user intent that should be clearly specified, and expressing with complex instructions what could be expressed simply.\nWith structured SKILL.md design patterns, we can:\nReduce the model's \"guessing\" cost and trigger the right behavior precisely\nStandardize how skills are written, reducing friction in team collaboration\nUse progressive knowledge loading to dramatically cut token consumption\nLet the Agent activate the right skill at the right time\n\nCor…",
-          "link": "https://dev.to/wonderlab/5-agent-skill-design-patterns-from-google-cut-token-waste-trigger-the-right-behavior-52mo",
-          "publishedOn": "2026-04-07T13:07:20.000Z",
-          "wordCount": 2855,
-          "title": "5 Agent Skill Design Patterns from Google: Cut Token Waste, Trigger the Right Behavior",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkju3itoyuggvcuh7119b.png"
+          "id": "https://dev.to/arkacoc13/liquid-neural-networks-the-future-of-temporal-ai-in-2024-2da2",
+          "author": "Arkaprabha Banerjee",
+          "description": "Originally published at https://blogagent-production-d2b2.up.railway.app/blog/liquid-neural-networks-the-future-of-temporal-ai-in-2024\nIn the race to build AI systems that mimic human cognition, a new class of neural networks—liquid neural networks—is emerging as a game-changer. Unlike traditional architectures like LSTMs or Transformers, these dynamic models process temporal data with fluid, ever-changing states, enabling breakthr\nIn the race to build AI systems that mimic human cognition, a new class of neural networks—liquid neural networks—is emerging as a game-changer. Unlike traditional architectures like LSTMs or Transformers, these dynamic models process temporal data with fluid, ever-changing states, enabling breakthroughs in robotics, healthcare, and edge computing. By 2024, comp…",
+          "link": "https://dev.to/arkacoc13/liquid-neural-networks-the-future-of-temporal-ai-in-2024-2da2",
+          "publishedOn": "2026-04-07T14:57:33.000Z",
+          "wordCount": 2123,
+          "title": "Liquid Neural Networks: The Future of Temporal AI in 2024",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fg5cimvcf1a3gp5nyym3g.png"
         },
         {
-          "id": "https://dev.to/keshrath/how-i-gave-my-ai-agents-a-dynamic-mcp-marketplace-d3a",
-          "author": "Mathias Markl",
-          "description": "I've written before about agent-comm, agent-tasks, and agent-knowledge — tools for giving AI coding agents coordination, task management, and persistent memory. But there was still one friction point I hadn't solved: getting the right MCP servers in front of the agent in the first place.\nThe problem with static MCP configs is that everything is always on. Every server you've ever registered is running whether you need it or not. You want to add a new tool? Edit a JSON file, restart your agent. You want to try something from the official MCP registry? Good luck figuring out what's available and how to install it without leaving your coding session.\nI built agent-discover to fix this.\nWhen you configure MCP servers in Claude Code (or any MCP client), you write a static config file. That list…",
-          "link": "https://dev.to/keshrath/how-i-gave-my-ai-agents-a-dynamic-mcp-marketplace-d3a",
-          "publishedOn": "2026-04-07T13:05:16.000Z",
-          "wordCount": 2209,
-          "title": "How I Gave My AI Agents a Dynamic MCP Marketplace",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1pff3xub1sbvgxjuy02c.png"
+          "id": "https://dev.to/wolfram27/setting-up-and-using-onnx-runtime-for-c-in-linux-1ho9",
+          "author": "wolfram",
+          "description": "If you want to run machine learning models in a native C++ application on Linux, ONNX Runtime is one of the most practical tools available. It gives you a fast inference engine for models stored in ONNX format (.onnx file), which means you can train or export models elsewhere and then deploy them in a lightweight C++ program without having to bring along an entire Python environment.\nThat combination is especially useful when your application is already written in C++, whether that means a backend service, a robotics stack, a desktop application, or an embedded system. In those settings, Linux and CMake are likely already part of the workflow, so ONNX Runtime fits naturally into the existing build process.\nIn this post, I’ll walk through how to set up ONNX Runtime for C++ using CMake, and …",
+          "link": "https://dev.to/wolfram27/setting-up-and-using-onnx-runtime-for-c-in-linux-1ho9",
+          "publishedOn": "2026-04-07T14:55:11.000Z",
+          "wordCount": 2758,
+          "title": "Setting Up and Using ONNX Runtime for C++ in Linux",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fnz1eapwq87zqhms2hr04.png"
         },
         {
-          "id": "https://dev.to/googleai/agent-factory-recap-supercharging-agents-on-gke-with-agent-sandbox-and-pod-snapshots-3a5e",
-          "author": "Shir Meir Lador",
-          "description": "In the latest episode of the Agent Factory, Mofi Rahman and I had the pleasure of hosting, Brandon Royal, the PM working on agentic workloads on GKE. We dove deep into the critical questions around the nuances of choosing the right agent runtime, the power of GKE for agents, and the essential security measures needed for intelligent agents to run code.\nThis post guides you through the key ideas from our conversation. Use it to quickly recap topics or dive deeper into specific segments with links and timestamps.\nTimestamp: 01:49 \nWe kicked off our discussion by tackling a fundamental question: why choose GKE as your agent runtime when serverless options like Cloud Run or fully managed solutions like Agent Engine exist?\nBrandon explained that the decision often boils down to control versus c…",
-          "link": "https://dev.to/googleai/agent-factory-recap-supercharging-agents-on-gke-with-agent-sandbox-and-pod-snapshots-3a5e",
-          "publishedOn": "2026-04-07T13:04:00.000Z",
-          "wordCount": 2080,
-          "title": "Agent Factory Recap: Supercharging Agents on GKE with Agent Sandbox and Pod Snapshots",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fajg9l6ljsooiaqqk81q6.png"
+          "id": "https://dev.to/zhangzeyu/owasp-agentic-top-10-what-every-ai-developer-should-know-in-2026-55hi",
+          "author": "lawcontinue",
+          "description": "OWASP Agentic Top 10 — What Every AI Developer Should Know in 2026\n\n\n\n2026 年，你的 AI Agent 刚刚自动完成了一笔 100 万美元的转账，但你从未授权这个操作。\n这不是科幻小说。这是一个假设场景，但它是 AI Agent 时代的真实风险。\nHypothetical Scenario: Last month, a financial services company's AI agent autonomously executed a $1M transfer to an overseas account. The agent wasn't hacked—it was doing exactly what it was designed to do: execute financial transactions efficiently.\nThe problem? It had been infected weeks earlier through a compromised \"data analysis agent\" template downloaded from a popular open-source repository.\nNote: This is a purely hypothetical scenario for illustrative purposes. All figures are entirely fictional and do not represent any real incident.\nI've seen this scenario firsthand. While working on Agora 3.0—a multi-agent governance s…",
+          "link": "https://dev.to/zhangzeyu/owasp-agentic-top-10-what-every-ai-developer-should-know-in-2026-55hi",
+          "publishedOn": "2026-04-07T14:55:08.000Z",
+          "wordCount": 3345,
+          "title": "OWASP Agentic Top 10 — What Every AI Developer Should Know in 2026",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fs8t1ds2ytyj0i82k9k5z.png"
         },
         {
-          "id": "https://dev.to/claire_dubois/causal-inference-for-credit-risk-why-prediction-alone-isnt-enough-1j3e",
-          "author": "Claire Dubois",
-          "description": "There's a pattern I've seen repeatedly in financial ML: a model achieves excellent predictive performance — AUC above 0.80, stable on holdout — and the team ships it. Then, six months later, someone asks \"but why is the model denying more applicants from this postal code?\" and nobody has a good answer.\nPrediction and causation are different things, and conflating them is expensive in credit risk specifically.\nWhen you train a credit risk model, you're typically predicting P(default | features). This is a conditional probability — it tells you what tends to be true about people who look like this applicant. It doesn't tell you what caused their credit behavior, and it doesn't tell you what will happen if you lend to them.\nThis distinction matters for two reasons.\nFirst, selection bias. Your…",
-          "link": "https://dev.to/claire_dubois/causal-inference-for-credit-risk-why-prediction-alone-isnt-enough-1j3e",
-          "publishedOn": "2026-04-07T13:03:23.000Z",
-          "wordCount": 2531,
-          "title": "Causal inference for credit risk: why prediction alone isn't enough",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fkcvb75vfk72jqo56p8ya.png"
+          "id": "https://dev.to/bloodcrypt/best-n8n-alternatives-in-2026-choosing-the-right-workflow-automation-platform-3ej6",
+          "author": "Bloodcrypt",
+          "description": "Table of Contents\n\n\n\nIntroduction\nThe Operational Overhead of Self-Hosting\nCollaboration and Governance Limitations\nIntegration Depth and Reliability\nDebugging Complexity in Large Workflows\nLimitations in Long-Running and Data-Heavy Workflows\nAI-Native Workflow Platforms\nNo-Code and Low-Code Automation Platforms\nDeveloper-First Orchestration Platforms\nEnterprise Integration Platforms (iPaaS)\nMatching the Tool to Your Use Case\nConsidering Team Composition\nEvaluating Integration Depth\nAssessing Reliability and Scalability\nUnderstanding Total Cost of Ownership\nTransition: From Tools to Systems\nZapier: Simplicity and Scale in SaaS Automation\nMake: Visual Flexibility with Increasing Complexity\nMicrosoft Power Automate: Ecosystem-Driven Automation\nWorkato and Tray.ai: Enterprise-Grade Orchestrat…",
+          "link": "https://dev.to/bloodcrypt/best-n8n-alternatives-in-2026-choosing-the-right-workflow-automation-platform-3ej6",
+          "publishedOn": "2026-04-07T14:54:37.000Z",
+          "wordCount": 5649,
+          "title": "Best n8n alternatives in 2026: Choosing the right workflow automation platform",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fs3w5qnblpxdilup8syzl.png"
         },
         {
-          "id": "https://dev.to/vietanh/why-and-how-i-built-a-go-ai-sdk-26ob",
-          "author": "anh",
-          "description": "GoAI, a Go (Golang) LLM library: 22+ providers, 2 dependencies, type-safe generics. v0.6.1, Go 1.25+. I built it to learn Go by adding AI to infrastructure that already runs on Go.\nPython has LangChain, LlamaIndex, LiteLLM. TypeScript has the Vercel AI SDK. Go has options, but none covered all the bases.\n\n\n\nLibrary\nStars\nCreated\nProviders\nWhat's missing\n\n\n\n\ngo-openai\n~10.6k\nAug 2020\n1\nSingle provider only\n\n\n\nEino (ByteDance)\n~10.5k\nDec 2024\n10\nGraph framework, different scope\n\n\nLangChainGo\n~9k\nFeb 2023\n~14\n170+ deps, no MCP, no generics schema\n\n\nGoogle ADK Go\n~7.5k\nMay 2025\nGemini-first\nAgent framework, Gemini-optimized\n\n\n\nGenkit Go (Google)\n~5.7k*\n2024\n~6\nGoogle Cloud-heavy, 129 deps\n\n\nopenai-go\n~3.1k\nJul 2024\n1+Azure\nSingle provider by design\n\n\nanthropic-sdk-go\n~960\nJul 2024\n1+Bedrock\nSi…",
-          "link": "https://dev.to/vietanh/why-and-how-i-built-a-go-ai-sdk-26ob",
-          "publishedOn": "2026-04-07T13:02:49.000Z",
-          "wordCount": 2897,
-          "title": "Why (and How) I Built a Go AI SDK",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fal8u7eygh93x7ck3azgh.png"
+          "id": "https://dev.to/dvddpl/kiro-showcase-automating-changes-across-several-repos-with-spec-driven-development-and-custom-8bo",
+          "author": "Davide de Paolis",
+          "description": "As I mentioned in my previous post about engineering leadership and AI, I'm constantly looking for opportunities to experiment with AI-native development. Given how scarce hands-on time is in a manager's calendar, I'm often \"vibe-coding between meetings\" - trying to make the most of short, focused sessions with an AI-native SDLC.\nIn my recent talk at AWS Community Day Slovakia, I referenced the four archetypes of AI adoption by AWS Serverless Hero Lee Gilmore. Until last year, I was a \"dismissive expert\", and I still recognise that scepticism around AI in engineering almost daily - at work and online.\nMany sceptics limit AI to debugging tasks or use it as a glorified search engine. That's a missed opportunity.\nThis post documents a real-world case where I used AI for a small but necessary …",
+          "link": "https://dev.to/dvddpl/kiro-showcase-automating-changes-across-several-repos-with-spec-driven-development-and-custom-8bo",
+          "publishedOn": "2026-04-07T14:54:04.000Z",
+          "wordCount": 3478,
+          "title": "Kiro showcase: Automating Changes Across Several Repos with Spec-Driven Development and Custom Sub-Agents",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Faj1g21oi9v3x1w7ukwj6.png"
         },
         {
-          "id": "https://dev.to/devactivity/unpacking-github-personal-access-tokens-a-guide-for-developer-productivity-and-secure-integrations-2p0e",
-          "author": "Oleg",
-          "description": "The email arrives: “Your personal access token (classic) is about to expire.” For many, this notification from GitHub is less a helpful reminder and more a source of confusion. “What even is a personal access token?” “Do I need one?” “What happens if it expires?” These are precisely the questions that sparked a recent, highly relatable discussion in the GitHub Community, highlighting a widespread need for clarity on these vital security tools.\nFor dev teams, product managers, and CTOs, understanding GitHub Personal Access Tokens (PATs) isn't just about avoiding a security incident; it's about enabling seamless integrations that directly impact developer productivity, streamline delivery, and uphold robust technical leadership. Let's demystify PATs and ensure your team is equipped to manage…",
-          "link": "https://dev.to/devactivity/unpacking-github-personal-access-tokens-a-guide-for-developer-productivity-and-secure-integrations-2p0e",
-          "publishedOn": "2026-04-07T13:02:11.000Z",
-          "wordCount": 2479,
-          "title": "Unpacking GitHub Personal Access Tokens: A Guide for Developer Productivity and Secure Integrations",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1WYaAdU6SAlkJrGsGUmXOa6IfZPL0cEzg%26sz%3Dw751"
+          "id": "https://dev.to/sheraz046/the-epochalypse-is-coming-are-your-32-bit-systems-ready-for-2038-386n",
+          "author": "Muhammad Sheraz",
+          "description": "The Countdown You Didn't Know Existed\n\n\nWe all remember the Y2K scare. Well, the tech world has a new \"final boss\" date:\nThe Deadline: January 19, 2038, at 03:14:07 UTC.\n\nAt this exact second, millions of systems could \"time travel\" back to December 13, 1901.\nThis isn't a sci-fi plot; it’s a mathematical certainty for systems using 32-bit signed integers to store time.\nMost Unix-based systems measure time as the number of seconds elapsed since the Unix Epoch (January 1, 1970). When this value is stored in a signed 32-bit integer, it has a maximum capacity:\n231−1=2,147,483,647\n2^{31} - 1 = 2,147,483,647\n231−1=2,147,483,647\n\n\n\nOnce we hit that limit in 2038:\nThe 31st bit (the sign bit) flips.\nThe number becomes negative.\nThe system interprets this as the furthest possible point in the past: …",
+          "link": "https://dev.to/sheraz046/the-epochalypse-is-coming-are-your-32-bit-systems-ready-for-2038-386n",
+          "publishedOn": "2026-04-07T14:53:42.000Z",
+          "wordCount": 1847,
+          "title": "The Epochalypse is Coming: Are Your 32-bit Systems Ready for 2038?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Febyxf7o4xt6plq45u2gg.png"
         },
         {
-          "id": "https://dev.to/devactivity/urgent-security-alert-how-a-github-exploit-impacts-engineering-performance-and-trust-3lnh",
-          "author": "Oleg",
-          "description": "In the fast-paced world of software development, security vulnerabilities aren't just technical glitches; they're direct threats to an organization's engineering performance. A recent discussion in the GitHub Community has brought to light a serious security vulnerability involving a Telegram bot offering fraudulent GitHub Student Verification. This exploit, if left unchecked, could have significant repercussions on individual developer accounts and the broader integrity of the GitHub Education program, indirectly impacting overall trust, security posture, and ultimately, your team's delivery capabilities.\nThe discussion, initiated by user saxyhoney, detailed a Telegram bot named @ghs_verify_bot. This bot claimed to provide instant GitHub Student Verification by leveraging user cookies. Th…",
-          "link": "https://dev.to/devactivity/urgent-security-alert-how-a-github-exploit-impacts-engineering-performance-and-trust-3lnh",
-          "publishedOn": "2026-04-07T13:02:00.000Z",
-          "wordCount": 2555,
-          "title": "Urgent Security Alert: How a GitHub Exploit Impacts Engineering Performance and Trust",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1gpX2BrwjjOglL3klWT_DjS7SCBaKK19E%26sz%3Dw751"
+          "id": "https://dev.to/salvatierra_digital/apps-without-app-store-or-play-store-flutter-web-firebase-hosting-pwa-34e",
+          "author": "Fran Martínez Torres",
+          "description": "Publishing an app today still comes with unnecessary friction.\nUploading to the App Store or Play Store involves reviews, waiting times, costs, and processes that, in many cases, don’t add real value to the product.\nAnd most importantly: it’s not always necessary.\nIn many projects, a well-built web app as a PWA (Progressive Web App) is more than enough to launch, validate, and scale.\nIn this article, I explain how I use Flutter Web together with Firebase Hosting to build real applications without going through app stores.\nThe problem with app stores\nApp stores make sense in certain contexts:\nmass-market apps\nBut in many other cases — internal tools, B2B platforms, MVPs or early-stage products — app stores only add friction.\nPublishing an update can take days.\nThis directly slows down itera…",
+          "link": "https://dev.to/salvatierra_digital/apps-without-app-store-or-play-store-flutter-web-firebase-hosting-pwa-34e",
+          "publishedOn": "2026-04-07T14:51:47.000Z",
+          "wordCount": 1957,
+          "title": "Apps without App Store or Play Store: Flutter Web + Firebase Hosting + PWA",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fx4bbfs30fd9n4cg70qfz.png"
         },
         {
-          "id": "https://dev.to/devactivity/debugging-ci-failures-boost-your-software-development-performance-metrics-4da0",
-          "author": "Oleg",
-          "description": "The dreaded CI failure. You've pushed your latest changes, confident that your local tests passed with flying colors. But then, your Continuous Integration (CI) pipeline lights up red, failing across a bewildering array of environments like Windows, macOS, and Ubuntu. This common scenario isn't just frustrating; it's a significant drain on developer productivity and directly impacts your team's software development performance metrics. When developers spend hours chasing phantom bugs, delivery slows, and morale dips.\nThis isn't a sign of bad code, but rather a strong indicator of subtle environment differences between your local machine and the pristine, often headless, CI environment. Understanding and systematically addressing these discrepancies is key to maintaining a robust developmen…",
-          "link": "https://dev.to/devactivity/debugging-ci-failures-boost-your-software-development-performance-metrics-4da0",
-          "publishedOn": "2026-04-07T13:01:32.000Z",
-          "wordCount": 2243,
-          "title": "Debugging CI Failures: Boost Your Software Development Performance Metrics",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1XckkNy5YoVoU72wc7syOLBPEGhalWX4e%26sz%3Dw751"
+          "id": "https://dev.to/vellanki/why-i-broke-kubernetes-cluster-35-times-i-did-it-so-you-dont-have-to-57cb",
+          "author": "Koti Vellanki",
+          "description": "The Problem With Learning Kubernetes\n\n\nEveryone tells you to \"learn Kubernetes\"\nSo you read the docs. You watch YouTube. You follow a tutorial that deploys nginx. You feel great.\nAfter a cheerful weekend, you logged in Monday morning. A pod is stuck in CrashLoopBackOff. You stare at the terminal. You Google or ask any GPT models. You paste random commands. Thirty minutes later, you're still stuck.\nSound familiar?\nHere's the thing: you don't really understand Kubernetes until something breaks.\nAnd the best way to learn troubleshooting is to break things on purpose, in a safe environment, where you can take your time and actually understand what went wrong.\nThat's exactly why I built this.\nGitHub: https://github.com/vellankikoti/troubleshoot-kubernetes-like-a-pro\nIt's a free, open-source col…",
+          "link": "https://dev.to/vellanki/why-i-broke-kubernetes-cluster-35-times-i-did-it-so-you-dont-have-to-57cb",
+          "publishedOn": "2026-04-07T14:51:21.000Z",
+          "wordCount": 2423,
+          "title": "Why I Broke Kubernetes Cluster 35 Times? I did it So You Don't Have To",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6ntm5wu3y1m6755jon9j.png"
         }
       ]
     },
@@ -252,13 +252,53 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
-          "id": "https://twitter.com/i/status/2041112541909205001",
+          "id": "https://blog.cloudflare.com/post-quantum-roadmap/",
           "author": null,
           "description": "Comments",
-          "link": "https://twitter.com/i/status/2041112541909205001",
-          "publishedOn": "2026-04-07T12:27:59.000Z",
-          "wordCount": 705,
-          "title": "\"The new Copilot app for Windows 11 is really just Microsoft Edge\"",
+          "link": "https://blog.cloudflare.com/post-quantum-roadmap/",
+          "publishedOn": "2026-04-07T14:07:34.000Z",
+          "wordCount": 2711,
+          "title": "Cloudflare targets 2029 for full post-quantum security",
+          "imageUrl": "https://cf-assets.www.cloudflare.com/zkvhlag99gkb/cyRyBin8jhfj8ufWGp1PI/c8d43126c48ebd6d48c73b2e810ee80d/OG_Share_2024-2025-2026__27_.png"
+        },
+        {
+          "id": "https://jobs.ashbyhq.com/9-mothers?utm_source=x8pZ4B3P3Q",
+          "author": null,
+          "description": "Comments",
+          "link": "https://jobs.ashbyhq.com/9-mothers?utm_source=x8pZ4B3P3Q",
+          "publishedOn": "2026-04-07T13:45:26.000Z",
+          "wordCount": 339,
+          "title": "9 Mothers (YC P26) Is Hiring – Lead Robotics and More",
+          "imageUrl": "https://app.ashbyhq.com/api/images/org-theme-logo/6d96b491-df24-435a-b4ce-6ac65ca31ec5/1edc9e6d-592c-41f1-b004-9ee91bb0e7a4/33b4c30a-ceb3-44d8-820e-0fcc35170e34.png"
+        },
+        {
+          "id": "https://www.inngest.com/blog/hanging-promises-for-control-flow",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.inngest.com/blog/hanging-promises-for-control-flow",
+          "publishedOn": "2026-04-07T13:34:33.000Z",
+          "wordCount": 9670,
+          "title": "You can't cancel a JavaScript promise (except sometimes you can)",
+          "imageUrl": "https://www.inngest.com/assets/blog/hanging-promises-for-control-flow/featured-image.jpg"
+        },
+        {
+          "id": "https://jola.dev/posts/dropping-cloudflare",
+          "author": null,
+          "description": "Comments",
+          "link": "https://jola.dev/posts/dropping-cloudflare",
+          "publishedOn": "2026-04-07T13:23:05.000Z",
+          "wordCount": 1576,
+          "title": "Dropping Cloudflare for Bunny.net",
+          "imageUrl": "https://jola.dev/images/og-image-2b7872671fc7c11e464dac899d8d3068.png?vsn=d"
+        },
+        {
+          "id": "https://news.ycombinator.com/item?id=47674749",
+          "author": null,
+          "description": "Comments",
+          "link": "https://news.ycombinator.com/item?id=47674749",
+          "publishedOn": "2026-04-07T13:06:28.000Z",
+          "wordCount": 720,
+          "title": "Hybrid Attention",
           "imageUrl": null
         },
         {
@@ -267,19 +307,19 @@
           "description": "Comments",
           "link": "https://www.intofarlands.com/atlasofarda",
           "publishedOn": "2026-04-07T12:12:15.000Z",
-          "wordCount": 13976,
+          "wordCount": 13965,
           "title": "Show HN: A cartographer's attempt to realistically map Tolkien's world",
           "imageUrl": null
         },
         {
-          "id": "https://arxiv.org/abs/2604.04757",
+          "id": "https://www.carbonbrief.org/analysis-record-wind-and-solar-saved-uk-from-gas-imports-worth-1bn-in-march-2026/",
           "author": null,
           "description": "Comments",
-          "link": "https://arxiv.org/abs/2604.04757",
-          "publishedOn": "2026-04-07T12:04:34.000Z",
-          "wordCount": 803,
-          "title": "AI agents can communicate with each other, and can't be caught",
-          "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
+          "link": "https://www.carbonbrief.org/analysis-record-wind-and-solar-saved-uk-from-gas-imports-worth-1bn-in-march-2026/",
+          "publishedOn": "2026-04-07T12:05:23.000Z",
+          "wordCount": 2310,
+          "title": "Record wind and solar saved UK from gas imports worth £1B in March 2026",
+          "imageUrl": "https://www.carbonbrief.org/wp-content/uploads/2026/04/3DK7D9F.jpg"
         },
         {
           "id": "https://github.com/pion/handoff",
@@ -287,9 +327,9 @@
           "description": "Comments",
           "link": "https://github.com/pion/handoff",
           "publishedOn": "2026-04-07T12:01:51.000Z",
-          "wordCount": 2232,
+          "wordCount": 2224,
           "title": "Show HN: Pion/handoff – Move WebRTC out of browser and into Go",
-          "imageUrl": "https://opengraph.githubassets.com/772dfae9149fbe14dca658834912af74197b2bc9ae21b698c433aa33061bf954/pion/handoff"
+          "imageUrl": "https://opengraph.githubassets.com/4ad69a06c7c517cfaa86ae362665e13b27e8ad36c59e854b667d97941bef32d1/pion/handoff"
         },
         {
           "id": "https://dornsife.usc.edu/news/stories/ai-may-be-making-us-think-and-write-more-alike/",
@@ -387,7 +427,7 @@
           "description": "Comments",
           "link": "https://midi.guide/blog/three-hunded-synths-one-app/",
           "publishedOn": "2026-04-07T05:12:25.000Z",
-          "wordCount": 3475,
+          "wordCount": 3501,
           "title": "Three hundred synths, 3 hardware projects, and one app",
           "imageUrl": "https://midi.guide/static/images/blog/2026-04-06-three-hunded-synths-one-app/comparative-knob-morphology-dark.png"
         },
@@ -402,16 +442,6 @@
           "imageUrl": "https://repository-images.githubusercontent.com/1176200616/66f04c31-2452-4322-95be-55c5ac453ae4"
         },
         {
-          "id": "https://www.science.org/content/blog-post/ah-peptides-where-begin",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.science.org/content/blog-post/ah-peptides-where-begin",
-          "publishedOn": "2026-04-06T21:22:03.000Z",
-          "wordCount": null,
-          "title": "Peptides: where to begin?",
-          "imageUrl": null
-        },
-        {
           "id": "https://github.com/matthartman/ghost-pepper",
           "author": null,
           "description": "Comments",
@@ -419,7 +449,7 @@
           "publishedOn": "2026-04-06T19:50:16.000Z",
           "wordCount": 2685,
           "title": "Show HN: Ghost Pepper – Local hold-to-talk speech-to-text for macOS",
-          "imageUrl": "https://opengraph.githubassets.com/b12f8119d111454a94fb27db48ef21f98e8779201e41e007c3d7c8b907f9937b/matthartman/ghost-pepper"
+          "imageUrl": "https://opengraph.githubassets.com/b796ec199415b2d5d38d70adc62043c3fa42007b81ea1533df2ded9f5029ef88/matthartman/ghost-pepper"
         },
         {
           "id": "https://www.freestyle.sh/",
@@ -432,36 +462,6 @@
           "imageUrl": "https://www.freestyle.sh/opengraph-image?9d53e9a0deaf33f9"
         },
         {
-          "id": "https://www.govauctions.app/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.govauctions.app/",
-          "publishedOn": "2026-04-06T16:21:46.000Z",
-          "wordCount": 1357,
-          "title": "Show HN: GovAuctions lets you browse government auctions at once",
-          "imageUrl": "https://govauctions.app/opengraph-image?fb91bf5950b51bff"
-        },
-        {
-          "id": "https://words.filippo.io/crqc-timeline/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://words.filippo.io/crqc-timeline/",
-          "publishedOn": "2026-04-06T15:31:20.000Z",
-          "wordCount": 2835,
-          "title": "A cryptography engineer's perspective on quantum computing timelines",
-          "imageUrl": "https://assets.buttondown.email/images/e29aa9d6-cb9e-40ee-9340-a2d128ddaabf.jpeg?w=960&fit=max"
-        },
-        {
-          "id": "https://krebsonsecurity.com/2026/04/germany-doxes-unkn-head-of-ru-ransomware-gangs-revil-gandcrab/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://krebsonsecurity.com/2026/04/germany-doxes-unkn-head-of-ru-ransomware-gangs-revil-gandcrab/",
-          "publishedOn": "2026-04-06T13:52:37.000Z",
-          "wordCount": 1968,
-          "title": "German police name alleged leaders of GandCrab and REvil ransomware groups",
-          "imageUrl": null
-        },
-        {
           "id": "https://github.com/anthropics/claude-code/issues/42796",
           "author": null,
           "description": "Comments",
@@ -469,7 +469,7 @@
           "publishedOn": "2026-04-06T13:50:35.000Z",
           "wordCount": 24721,
           "title": "Issue: Claude Code is unusable for complex engineering tasks with Feb updates",
-          "imageUrl": "https://opengraph.githubassets.com/5cfcdfd334d93e5a881d0085e9a9a71340943986ca0c3486bd1fad6be41d72f8/anthropics/claude-code/issues/42796"
+          "imageUrl": "https://opengraph.githubassets.com/5313c3a85b5baf875a53d247ad76cdb03ca16ab9077eea61d95c59dbbf80ef24/anthropics/claude-code/issues/42796"
         },
         {
           "id": "https://www.newyorker.com/magazine/2026/04/13/sam-altman-may-control-our-future-can-he-be-trusted",
@@ -482,16 +482,6 @@
           "imageUrl": "https://media.newyorker.com/photos/69cd326ac6ea0f4558d6e181/16:9/w_1280,c_limit/r47927.jpg"
         },
         {
-          "id": "https://www.curiousmarc.com/space/apollo-guidance-computer",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.curiousmarc.com/space/apollo-guidance-computer",
-          "publishedOn": "2026-04-04T17:58:55.000Z",
-          "wordCount": 5292,
-          "title": "Apollo Guidance Computer restoration videos",
-          "imageUrl": "https://lh3.googleusercontent.com/sitesv/APaQ0SRsnJxNCt59Hf7fARh6bta6kWOO_zy9nyWd8tklgzluyxK-rcGynoqsOYlesg4hZqUCJDPzJE9P4ODDvERLkR6E0umFfYc9pu60MePbgJrUIhGR1Sy0oaJ_23McKAY9dtDAQ6ePPO5ce_947O7AfeTBDf4BOPeW=w16383"
-        },
-        {
           "id": "https://essenceia.github.io/projects/floating_dragon/",
           "author": null,
           "description": "Comments",
@@ -502,14 +492,14 @@
           "imageUrl": "https://essenceia.github.io/projects/floating_dragon/feature.gif"
         },
         {
-          "id": "https://adashape.com/",
+          "id": "https://ultrathink.art/blog/sqlite-in-production-lessons",
           "author": null,
           "description": "Comments",
-          "link": "https://adashape.com/",
-          "publishedOn": "2026-04-04T12:33:14.000Z",
-          "wordCount": 1502,
-          "title": "Show HN: AdaShape-3D modeler for intuitive 3D printing parts / Windows 11",
-          "imageUrl": null
+          "link": "https://ultrathink.art/blog/sqlite-in-production-lessons",
+          "publishedOn": "2026-04-04T09:15:47.000Z",
+          "wordCount": 3297,
+          "title": "SQLite in Production: Lessons from Running a Store on a Single File",
+          "imageUrl": "https://ultrathink.art/assets/og-default-bb1b2d7c.png"
         },
         {
           "id": "https://alt-romes.github.io/posts/2026-04-01-running-out-of-disk-space-on-launch.html",
@@ -537,9 +527,19 @@
           "description": "Comments",
           "link": "https://spectrum.ieee.org/robotics-in-nuclear-industry",
           "publishedOn": "2026-04-02T17:05:36.000Z",
-          "wordCount": 11319,
+          "wordCount": 11316,
           "title": "Wi-Fi That Can Withstand a Nuclear Reactor: This receiver chip can take it",
           "imageUrl": "https://spectrum.ieee.org/media-library/image.jpg?id=65428641&width=1200&height=600&coordinates=0%2C241%2C0%2C259"
+        },
+        {
+          "id": "https://rarehistoricalphotos.com/kursk-submarine-disaster-photos/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://rarehistoricalphotos.com/kursk-submarine-disaster-photos/",
+          "publishedOn": "2026-04-02T16:18:42.000Z",
+          "wordCount": 2911,
+          "title": "Haunting Photos Show the Aftermath of the Kursk Submarine Disaster in 2000",
+          "imageUrl": "https://rarehistoricalphotos.com/wp-content/uploads/2026/03/kursk-submarine-disaster-photos.jpg"
         },
         {
           "id": "https://xd009642.github.io/2026/04/01/My-Experience-as-a-Rice-Farmer.html",
@@ -672,6 +672,16 @@
       "siteUrl": "https://www.technologyreview.com",
       "articles": [
         {
+          "id": "https://www.technologyreview.com/?p=1134966",
+          "author": "MIT Technology Review Insights",
+          "description": "Unlike static, rules-based systems, AI agents can learn, adapt, and optimize processes dynamically. As they interact with data, systems, people, and other agents in real time, AI agents can execute entire workflows autonomously. But unlocking their potential requires redesigning processes around agents rather than bolting them onto fragmented legacy workflows using traditional optimization methods. Companies…",
+          "link": "https://www.technologyreview.com/2026/04/07/1134966/enabling-agent-first-process-redesign/",
+          "publishedOn": "2026-04-07T14:00:00.000Z",
+          "wordCount": 5457,
+          "title": "Enabling agent-first process redesign",
+          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/03/Deloitte-Landing-Page-Card.png?resize=1200,600"
+        },
+        {
           "id": "https://www.technologyreview.com/?p=1135208",
           "author": "Thomas Macaulay",
           "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. The one piece of data that could actually shed light on your job and AI  Within Silicon Valley’s orbit, an AI-fueled jobs apocalypse is spoken about as a given. Now even economists who have…",
@@ -760,16 +770,6 @@
           "wordCount": 6617,
           "title": "Shifting to AI model customization is an architectural imperative",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/03/mistral-iStock-1398800653.jpg?resize=1200,600"
-        },
-        {
-          "id": "https://www.technologyreview.com/?p=1134934",
-          "author": "Thomas Macaulay",
-          "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. There are more AI health tools than ever—but how well do they work?  In the last few months alone, Microsoft, Amazon, and OpenAI have all launched medical chatbots.  There’s a clear demand…",
-          "link": "https://www.technologyreview.com/2026/03/31/1134934/the-download-testing-ai-health-tools-pentagon-anthropic-culture-war-backfires/",
-          "publishedOn": "2026-03-31T12:10:00.000Z",
-          "wordCount": 6256,
-          "title": "The Download: AI health tools and the Pentagon’s Anthropic culture war",
-          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/03/260326_AI_healthcare2.jpg?resize=1200,600"
         }
       ]
     },
@@ -779,23 +779,63 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "0ce35044-4992-4d1a-8b80-d1412823ef0e",
+          "author": "Alex Thorn",
+          "description": "Thorn argues that a recent New York Times op-ed rewrites history through omission, glossing over the collateral damage caused by the previous administration.",
+          "link": "https://www.coindesk.com/opinion/2026/04/07/regulation-by-hostility-the-real-legacy-of-biden-era-crypto-policy",
+          "publishedOn": "2026-04-07T15:00:00.000Z",
+          "wordCount": 12659,
+          "title": "Regulation by hostility: the real legacy of Biden-era crypto policy",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a8ab94ca03f5d38d84f74e12fdb578d41c9697ed-1674x956.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "40852116-0fc9-4d82-b076-1a2cba8c2110",
+          "author": "Helene Braun",
+          "description": "The brokerage's research finds that even a tiny crypto allocation can dominate your portfolio's risk, suggesting that the \"right\" amount to own depends entirely on your stomach for 70% price swings.",
+          "link": "https://www.coindesk.com/business/2026/04/07/your-crypto-strategy-should-be-about-how-much-pain-you-can-handle-not-how-much-money-you-ll-make-schwab-finds",
+          "publishedOn": "2026-04-07T14:25:12.000Z",
+          "wordCount": 12223,
+          "title": "Schwab says even a 1% crypto allocation can reshape portfolio risk",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5db9f0acc4cde3d3d9343806542c56be3503dd3c-5196x3464.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "91cc97de-ea3a-4fc4-a01e-47d153f73f5e",
+          "author": "Shaurya Malwa",
+          "description": "Switzerland accounted for 70% of global crypto ETP inflows last week with XRP products contributing more than half the total.",
+          "link": "https://www.coindesk.com/markets/2026/04/07/crypto-s-usd224-million-inflow-rebound-was-led-by-mostly-one-country-and-xrp",
+          "publishedOn": "2026-04-07T13:52:27.000Z",
+          "wordCount": 12105,
+          "title": "Crypto's $224 million inflow rebound was led by mostly one country and XRP",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a76c7f177c8cbd64af93e464e7ab3c85812de274-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "66d004ee-ff63-43c2-9cb9-fc0d653bced5",
+          "author": "CoinDesk Indices",
+          "description": "Aave (AAVE) dropped 8.5% and Avalanche (AVAX) fell 7.6%, leading the index lower from Monday.",
+          "link": "https://www.coindesk.com/coindesk-indices/2026/04/07/coindesk-20-performance-update-index-drops-2-4-as-all-constituents-trade-lower",
+          "publishedOn": "2026-04-07T13:14:36.000Z",
+          "wordCount": 10646,
+          "title": "CoinDesk 20 performance update: index drops 2.4% as all constituents trade lower",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9f3f32a698345205095ef3f4acbd5997ccd82fac-360x270.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
           "id": "92d75f06-d326-428d-b148-83f6b67f6e3e",
           "author": "Stephen Alpher",
           "description": "Weekend gains for bitcoin have been mostly erased ahead of the president's Tuesday night deadline for the reopening of the Strait of Hormuz",
           "link": "https://www.coindesk.com/markets/2026/04/07/a-whole-civilization-will-die-crypto-markets-under-pressure-as-trump-ups-rhetoric-towards-iran",
           "publishedOn": "2026-04-07T13:00:26.000Z",
-          "wordCount": 11134,
+          "wordCount": 11340,
           "title": "'A whole civilization will die': Crypto markets under pressure as Trump ups rhetoric towards Iran",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/31879e58ffa45ad38acc60d809c6e5b7fe7fd125-1080x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
         {
           "id": "cb7adfb1-9542-4896-9ac1-70685c8f99c8",
           "author": "Olivier Acuna",
-          "description": "Former Google quantum hardware leader and winner of the 2025 Nobel Prize in Physics, Dr. John Martinis, warns that breaking encryption will be among the earliest uses of quantum computing",
+          "description": "Former Google quantum hardware leader and winner of the 2025 Nobel Prize in Physics, John Martinis, warns that breaking encryption will be among the earliest uses of quantum computing",
           "link": "https://www.coindesk.com/business/2026/04/07/bitcoin-quantum-threat-is-real-and-closer-than-it-looks-says-nobel-physicist",
           "publishedOn": "2026-04-07T12:44:33.000Z",
-          "wordCount": 12305,
-          "title": "Bitcoin quantum threat is real and closer than it looks, says Nobel physicist",
+          "wordCount": 12398,
+          "title": "Bitcoin quantum threat is real and closer than it looks, says Nobel prize winning physicist",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6329a8aa7443cfc32adf46e8c516239b1b0aa4b4-1919x1080.jpg?auto=format"
         },
         {
@@ -804,7 +844,7 @@
           "description": "For years, the DeFi industry has treated security as a technical problem: something that could be solved with better code. But the Drift incident suggests something far more complex: that the real vulnerabilities may lie outside the codebase altogether.",
           "link": "https://www.coindesk.com/tech/2026/04/07/how-north-korea-s-6-month-long-secret-espionage-program-has-crypto-community-rethinking-security",
           "publishedOn": "2026-04-07T12:30:00.000Z",
-          "wordCount": 12940,
+          "wordCount": 12992,
           "title": "How North Korea's 6-month long secret espionage program has crypto community rethinking security",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/49d26266043c2276a5271a8a4085b94f29c5b7f8-1500x844.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -814,7 +854,7 @@
           "description": "Despite billions in purchases, MSTR demand is being outweighed by long term holder positioning and broader capital flows.",
           "link": "https://www.coindesk.com/markets/2026/04/07/why-strategy-s-bitcoin-buying-isn-t-moving-the-market",
           "publishedOn": "2026-04-07T11:34:32.000Z",
-          "wordCount": 11605,
+          "wordCount": 11797,
           "title": "Why Michael Saylor's bitcoin buys aren’t moving the needle anymore",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/fd145cc1ac47e41967dec066deed17a9e5d59fbd-1920x963.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -824,7 +864,7 @@
           "description": "Your day-ahead look for April 7, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/04/07/bitcoin-briefly-touches-usd70-000-as-etf-inflows-signal-institutional-interest",
           "publishedOn": "2026-04-07T11:17:05.000Z",
-          "wordCount": 12605,
+          "wordCount": 12655,
           "title": "Bitcoin briefly touches $70,000 as ETF inflows signal institutional interest",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2bce99616419507d65a4f7a0aa5e280da00c697f-1500x1153.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -834,7 +874,7 @@
           "description": "BTC and ETH remain stuck in a two-month range as oil prices and Iran tensions weigh on sentiment, while AI and privacy tokens show surprising relative strength.",
           "link": "https://www.coindesk.com/markets/2026/04/07/bitcoin-price-drop-speculation-spurred-by-familiar-price-pattern",
           "publishedOn": "2026-04-07T10:53:02.000Z",
-          "wordCount": 12169,
+          "wordCount": 12361,
           "title": "Bitcoin price-drop speculation spurred by familiar price pattern",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2e3e9177b330cececd835b6feb3843b5d3c5a22f-2086x1112.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -844,7 +884,7 @@
           "description": "The program includes 24/7 threat monitoring for protocols with more than $10 million in deposits and a dedicated incident response network of security firms.",
           "link": "https://www.coindesk.com/tech/2026/04/07/solana-foundation-unveils-security-overhaul-days-after-usd270-million-drift-exploit",
           "publishedOn": "2026-04-07T10:52:03.000Z",
-          "wordCount": 12113,
+          "wordCount": 12178,
           "title": "Solana Foundation unveils security overhaul days after $270 million Drift exploit",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/54c0f3b41e62df4cdf774aab4c7d68c64e5e976c-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -854,7 +894,7 @@
           "description": "BTC correlation with an ETF tracking software comany stocks broke sharply from near-total alignment to near zero after the conflict started.",
           "link": "https://www.coindesk.com/markets/2026/04/07/bitcoin-pulls-away-from-software-stocks-as-iran-war-ai-reshape-market-dynamic",
           "publishedOn": "2026-04-07T10:15:49.000Z",
-          "wordCount": 11600,
+          "wordCount": 11779,
           "title": "Bitcoin pulls away from software stocks as Iran war, AI reshape market dynamic",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/417d9834ab2f6b0ab275b08d5634a167c4f69785-1473x969.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -864,7 +904,7 @@
           "description": "Spot bitcoin ETFs pulled in $471 million on April 6, the 6th-largest inflow of 2026, as prediction markets price little near-term Fed movement.",
           "link": "https://www.coindesk.com/markets/2026/04/07/bitcoin-etf-inflows-hit-highest-level-since-february",
           "publishedOn": "2026-04-07T05:56:35.000Z",
-          "wordCount": 11439,
+          "wordCount": 11598,
           "title": "Bitcoin ETF inflows hit highest level since February",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b5cd3bf36d1eac21a178cc65ec243a52a29b099a-1280x854.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -874,7 +914,7 @@
           "description": "Rejection at $1.35 and collapsing depth raise risk of sharper moves as positioning builds.",
           "link": "https://www.coindesk.com/markets/2026/04/07/xrp-slips-to-usd1-31-after-failed-breakout-as-liquidity-dries-up",
           "publishedOn": "2026-04-07T05:41:56.000Z",
-          "wordCount": 11400,
+          "wordCount": 11511,
           "title": "XRP slips to $1.31 after failed breakout as liquidity dries up",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/59136c91aea88af8b7693b93f94e07948ae87dc0-1192x736.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -884,7 +924,7 @@
           "description": "The AI company's partnership with Google and Broadcom for next-generation TPU capacity starting in 2027 adds to a wave of demand reshaping the economics of every industry that competes for cheap electricity, including bitcoin mining.",
           "link": "https://www.coindesk.com/tech/2026/04/07/bitcoin-miners-face-a-new-rival-for-cheap-power-as-anthropic-signs-multi-gigawatt-compute-deal",
           "publishedOn": "2026-04-07T05:01:18.000Z",
-          "wordCount": 12424,
+          "wordCount": 12476,
           "title": "Bitcoin miners face a new rival for cheap power as Anthropic signs multi-gigawatt compute deal",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/966dc507649ef9b27da6ca6d075265de8b290c79-1000x662.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -894,7 +934,7 @@
           "description": "Oil jumped above $112 on threats to destroy Iranian infrastructure if no agreement is reached by midnight, while crypto markets gave back Monday's ceasefire rally gains.",
           "link": "https://www.coindesk.com/markets/2026/04/07/bitcoin-ether-solana-hold-steady-as-trump-sets-tuesday-night-deadline-for-iran-deal",
           "publishedOn": "2026-04-07T04:30:53.000Z",
-          "wordCount": 11989,
+          "wordCount": 12100,
           "title": "Bitcoin, ether, solana hold steady as Trump sets Tuesday night deadline for Iran deal",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b7540e5f4ce263639ab052e4c17c2e5c4075c251-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -904,7 +944,7 @@
           "description": "The Securities and Exchange Commission will address fundraising and startup exemptions in this proposal, Paul Atkins told a crowd Monday.",
           "link": "https://www.coindesk.com/policy/2026/04/07/sec-close-to-putting-out-reg-crypto-for-fundraising-questions-chair-atkins-says",
           "publishedOn": "2026-04-07T03:59:07.000Z",
-          "wordCount": 11709,
+          "wordCount": 11787,
           "title": "SEC close to putting out 'reg crypto' for fundraising questions, Chair Atkins says",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/33651df8ccf49ddee790cec8424c488a47984dde-4715x2653.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -914,7 +954,7 @@
           "description": "Glassnode data shows soft participation, while a negative gamma setup below $68,000 leaves BTC exposed to a faster move toward $60,000.",
           "link": "https://www.coindesk.com/markets/2026/04/07/bitcoin-drops-toward-usd68-000-as-demand-weakens-and-whales-sell",
           "publishedOn": "2026-04-07T03:57:29.000Z",
-          "wordCount": 11557,
+          "wordCount": 11682,
           "title": "Bitcoin drops toward $68,000 as demand weakens and whales sell",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bfb4779e9245468a88a2a948bb0e1677ae7e7858-3840x2160.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -924,7 +964,7 @@
           "description": "Options data shows traders are bracing for a sharp bitcoin drop as weak demand and fragile positioning leave the market exposed to a break below key levels, a report from Bitfinex shows.",
           "link": "https://www.coindesk.com/markets/2026/04/06/bitcoin-options-market-is-quietly-pricing-a-major-downside-move",
           "publishedOn": "2026-04-06T19:23:38.000Z",
-          "wordCount": 11843,
+          "wordCount": 11954,
           "title": "Bitcoin options market is quietly pricing a major downside move",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c872a36cf95e12f98ef987f4df00164ca9e85acc-6000x4001.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -934,7 +974,7 @@
           "description": "A key sticking point is Aave’s V4 upgrade, which introduces a new architecture and significantly expands the scope of risk management.",
           "link": "https://www.coindesk.com/tech/2026/04/06/aave-loses-key-risk-manager-chaos-labs-amid-contributor-exodus-and-disputes",
           "publishedOn": "2026-04-06T17:50:02.000Z",
-          "wordCount": 11963,
+          "wordCount": 11974,
           "title": "Aave loses key risk manager, Chaos Labs, amid contributor exodus and disputes",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a3e986af03dd8e31e8182f2ed9c2554460f4330d-1409x793.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -944,7 +984,7 @@
           "description": "The $20 billion prediction market is overhauling its infrastructure and launching a native stablecoin to streamline trading as it prepares for a major U.S. expansion.",
           "link": "https://www.coindesk.com/markets/2026/04/06/polymarket-reveals-a-full-exchange-upgrade-to-take-control-of-its-own-trading-and-truth",
           "publishedOn": "2026-04-06T17:13:59.000Z",
-          "wordCount": 11824,
+          "wordCount": 11948,
           "title": "Polymarket reveals a 'full exchange upgrade' to take control of its own trading and truth",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/13b253224c7ce4121651315a03a8d2dba3ee1ac8-5000x3333.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -954,7 +994,7 @@
           "description": "Sales of bitcoin by prominent holders and executive exits could give hope to the battered crypto sector.",
           "link": "https://www.coindesk.com/markets/2026/04/06/bitcoin-climbs-above-usd70-000-as-more-contrarian-bottoming-signs-emerge",
           "publishedOn": "2026-04-06T16:28:09.000Z",
-          "wordCount": 11406,
+          "wordCount": 11520,
           "title": "Bitcoin climbs above $70,000 as more contrarian bottoming signs emerge",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1729f967366d505b0625a9270663fedfd9a1a7e9-4144x2836.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -964,7 +1004,7 @@
           "description": "The Third Circuit Court of Appeals ruled that New Jersey could not bring an enforcement action against Kalshi, finding that the federal Commodity Exchange Act preempted state gambling laws.",
           "link": "https://www.coindesk.com/policy/2026/04/06/appeals-court-blocks-new-jersey-from-shutting-down-kalshi-s-sports-markets",
           "publishedOn": "2026-04-06T16:10:29.000Z",
-          "wordCount": 12117,
+          "wordCount": 12200,
           "title": "Appeals court blocks New Jersey from shutting down Kalshi's sports markets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6820d3ec5f1e30bd430cb1d39edfe9f4c81a53b3-3935x2214.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -974,7 +1014,7 @@
           "description": "The crypto industry faces growing cybersecurity risks as AI tools lower the cost and skill needed to exploit software flaws, with over $1.4 billion in assets stolen last year.",
           "link": "https://www.coindesk.com/tech/2026/04/06/openai-ceo-urges-u-s-to-prepare-for-ai-superintelligence-risks-and-gains",
           "publishedOn": "2026-04-06T15:47:44.000Z",
-          "wordCount": 12366,
+          "wordCount": 12367,
           "title": "OpenAI CEO urges U.S. to prepare for AI ‘superintelligence’ risks and gains",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bbf70cb1c1734c4293f3cde32f095ffb5a3c229f-1920x1281.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -984,49 +1024,9 @@
           "description": "“A whole new set of competitors is emerging based on blockchain,\" said Dimon in his annual letter to shareholders.",
           "link": "https://www.coindesk.com/markets/2026/04/06/jamie-dimon-says-jpmorgan-must-move-faster-as-tokenization-reshapes-finance",
           "publishedOn": "2026-04-06T15:41:24.000Z",
-          "wordCount": 12111,
+          "wordCount": 12209,
           "title": "Jamie Dimon says JPMorgan must move faster as tokenization reshapes finance",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/82621f9da8dcb84a1ea199033101424da7536798-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "16e271b6-03af-455b-8609-b6c02e144859",
-          "author": "Shaurya Malwa",
-          "description": "The win landed the same week listed miners Riot, MARA, and Genius Group disclosed selling more than 19,000 BTC from their treasuries.",
-          "link": "https://www.coindesk.com/tech/2026/04/06/solo-bitcoin-miner-overcomes-1-in-28-000-odds-to-secure-usd210-000-block-reward",
-          "publishedOn": "2026-04-06T14:08:57.000Z",
-          "wordCount": 11959,
-          "title": "Solo bitcoin miner overcomes 1-in-28,000 odds to secure $210,000 block reward",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f1bdcebb1d44752a3cf516316a50e307c904632b-1440x810.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "ff2ee661-de30-4040-b83d-63db0013d20d",
-          "author": "CoinDesk Indices",
-          "description": "Avalanche (AVAX), up 5.5% since Friday, joined NEAR Protocol (NEAR) as a top performer.",
-          "link": "https://www.coindesk.com/coindesk-indices/2026/04/06/coindesk-20-performance-update-near-protocol-near-jumps-8-1-over-weekend",
-          "publishedOn": "2026-04-06T13:36:47.000Z",
-          "wordCount": 10627,
-          "title": "CoinDesk 20 performance update: NEAR Protocol (NEAR) jumps 8.1% over weekend",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8e5c9f45b9222834e5a2c12ddb3020d1b4803fd7-360x270.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "e89bfc35-ea1a-4dbf-93e3-855a26746d98",
-          "author": "Shaurya Malwa",
-          "description": "The company now holds 3.98% of all ether in circulation, has staked $7.1 billion of it, and says it is generating $196 million in annualized staking revenue.",
-          "link": "https://www.coindesk.com/markets/2026/04/06/bitmine-s-ether-treasury-hits-4-8-million-eth-as-stock-listing-moves-to-nyse",
-          "publishedOn": "2026-04-06T13:32:19.000Z",
-          "wordCount": 11946,
-          "title": "Bitmine's ether treasury hits 4.8 million ETH as stock listing moves to NYSE",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1e317956eae4ebfe2722405225dce7dc0b806dbe-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "48357c8b-9063-423c-bceb-f616df28f3b4",
-          "author": "Shaurya Malwa",
-          "description": "Last week's purchases were mostly funded via sales of the company's STRC preferred stock.",
-          "link": "https://www.coindesk.com/markets/2026/04/06/strategy-buys-another-4-871-bitcoin-for-usd330-million-as-holdings-near-767-000-btc",
-          "publishedOn": "2026-04-06T12:17:05.000Z",
-          "wordCount": 11423,
-          "title": "Strategy added another 4,871 bitcoin for $330 million, with holdings nearing 767,000 BTC",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a57323d92b3fa599df2ee442af800248477423c0-6000x3376.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
       ]
     },
@@ -1042,12 +1042,22 @@
       "siteUrl": "https://blog.quicknode.com/",
       "articles": [
         {
+          "id": "69cbc16d47456000012335f0",
+          "author": "Quicknode",
+          "description": "Quicknode's Q1 2026 roundup: Blockchain Skills for AI agents, x402 and MPP agentic payments, HyperCore for Hyperliquid, SQL Explorer beta, ChainKit, RPC support for MegaETH and Robinhood Chain, SOC 2 and ISO 27001 recertification, and Endpoint Logs for Enterprise.",
+          "link": "https://blog.quicknode.com/quicknode-q1-2026-shipped/",
+          "publishedOn": "2026-04-07T14:10:55.000Z",
+          "wordCount": 2187,
+          "title": "Q1 2026: Everything We Shipped",
+          "imageUrl": "https://blog.quicknode.com/content/images/size/w1200/2026/03/1200x1200--2-.png"
+        },
+        {
           "id": "69ce41dc1ca32e00010aaa24",
           "author": "Quicknode",
           "description": "Trading desks and quant teams building on Hyperliquid spend weeks on data plumbing before they get to the query they actually care about. SQL Explorer replaces that stack with a single interface. No indexer. No pipelines. Just SQL.",
           "link": "https://blog.quicknode.com/introducing-sql-explorer-direct-sql-access-to-onchain-data/",
           "publishedOn": "2026-04-02T16:32:26.000Z",
-          "wordCount": 2003,
+          "wordCount": 2020,
           "title": "Introducing SQL Explorer: Direct SQL Access to Onchain Data",
           "imageUrl": "https://blog.quicknode.com/content/images/size/w1200/2026/04/1200x628-1.png"
         },
@@ -1057,7 +1067,7 @@
           "description": "Compare x402 and Tempo’s MPP for HTTP 402-based API payments, including protocol design, payment methods, charge vs session billing, settlement and receipts, and when to use each with Quicknode’s x402 SDKs or its MPP endpoint for machine-to-machine and RPC workflows.",
           "link": "https://blog.quicknode.com/x402-vs-mpp/",
           "publishedOn": "2026-03-30T17:58:11.000Z",
-          "wordCount": 3084,
+          "wordCount": 3101,
           "title": "x402 and MPP: how they work, how they’re different",
           "imageUrl": "https://blog.quicknode.com/content/images/2026/03/1200x1200.png"
         },
@@ -1067,7 +1077,7 @@
           "description": "Explore the AI agents infrastructure stack — identity, payments, coordination — that makes the onchain machine economy actually work.",
           "link": "https://blog.quicknode.com/machine-economy-ai-agent-stack/",
           "publishedOn": "2026-03-25T14:33:15.000Z",
-          "wordCount": 2791,
+          "wordCount": 2808,
           "title": "Machine Economy 101: How Identity, Payments, and Autonomy Converge Onchain",
           "imageUrl": "https://blog.quicknode.com/content/images/size/w1200/2026/03/March-Blog-2x1s--2-.png"
         },
@@ -1077,7 +1087,7 @@
           "description": "Use the native Quicknode node on n8n to add on-chain data to automated workflows. No HTTP workarounds, just plug in your API key and build.",
           "link": "https://blog.quicknode.com/quicknode-is-now-a-native-node-on-n8n/",
           "publishedOn": "2026-03-25T13:41:19.000Z",
-          "wordCount": 1659,
+          "wordCount": 1676,
           "title": "Quicknode Is Now a Native Node on n8n",
           "imageUrl": "https://blog.quicknode.com/content/images/size/w1200/2026/03/1920x1080.png"
         },
@@ -1087,7 +1097,7 @@
           "description": "Quicknode brings enterprise-grade Solana infrastructure to SDP, the new AI-ready platform helping institutions build financial products on Solana.",
           "link": "https://blog.quicknode.com/quicknode-solana-developer-platform-sdp/",
           "publishedOn": "2026-03-24T12:42:56.000Z",
-          "wordCount": 1783,
+          "wordCount": 1794,
           "title": "Quicknode Joins Solana Developer Platform as Blockchain Infrastructure Partner",
           "imageUrl": "https://blog.quicknode.com/content/images/size/w1200/2026/03/Infastructure-Partner---Quicknode---blog.png"
         }
