@@ -1,147 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-04-12T09:41:05.113Z</id>
+    <id>urn:2026-04-12T10:34:25.515Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-04-12T09:41:05.113Z</updated>
+    <updated>2026-04-12T10:34:25.515Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Reliability Patterns for Asynchronous APIs in Fintech: A Migration Guide]]></title>
-        <id>https://dev.to/kitkeen_55/reliability-patterns-for-asynchronous-apis-in-fintech-a-migration-guide-2k21</id>
-        <link href="https://dev.to/kitkeen_55/reliability-patterns-for-asynchronous-apis-in-fintech-a-migration-guide-2k21"/>
-        <updated>2026-04-12T09:37:05.000Z</updated>
-        <summary type="html"><![CDATA[Disclaimer: The views and opinions expressed in this article are strictly my own and do not reflect the official policy or position of my employer. The architecture, system designs, and workflows discussed have been abstracted, generalized, and simplified for educational purposes. All metrics, timelines, and numbers are approximate or illustrative and do not represent actual company data. No confidential, proprietary, or sensitive business information is disclosed in this post.
-Our core banking provider, NexusBank, sent us a notice: their synchronous account-opening API was being deprecated. The deadline was strict- if we didn't migrate to their new asynchronous webhook-based flow within two weeks, new customer KYC in Belgium and Netherlands would stop completely.
-If you work in fintech, y…]]></summary>
+        <title type="html"><![CDATA[512MiB 512MB — the silent trtexec bug]]></title>
+        <id>https://dev.to/tushar365/512mib-512mb-the-silent-trtexec-bug-4p1</id>
+        <link href="https://dev.to/tushar365/512mib-512mb-the-silent-trtexec-bug-4p1"/>
+        <updated>2026-04-12T10:31:15.000Z</updated>
+        <summary type="html"><![CDATA[512MiB ≠ 512MB — the silent trtexec bug
+
+
+This is a short one. But it cost me a full day, so.
+Building a TensorRT FP16 engine on a Jetson Orin Nano. The device has a 512 MB NvMap CMA ceiling — a hard kernel memory limit. The FP16 build needed 606 MB. Everything failed.
+After some research I found that limiting the TRT workspace might help. So I tried:
+trtexec \
+  --onnx=benchmarks/prithvi_4f.onnx \
+  --saveEngine=benchmarks/prithvi_fp16.trt \
+  --fp16 \
+  --memPoolSize=workspace:512MiB
+
+It built. No errors. Engine saved. 591 MB on disk. Inference ran.
+I thought I'd fixed it. I hadn't.
+The --memPoolSize flag has a strict set of valid suffixes: B, K, M, G.
+MiB is not one of them.
+When trtexec sees an unrecognized suffix it doesn't error. It doesn't warn. It silently strips the iB part and fa…]]></summary>
         <author>
-            <name>KitKeen</name>
+            <name>Tushar Thokdar</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Migration of YouTube from SQL to NoSQL: A Component-Wise Analysis]]></title>
-        <id>https://dev.to/alextom/migration-of-youtube-from-sql-to-nosql-a-component-wise-analysis-1mhe</id>
-        <link href="https://dev.to/alextom/migration-of-youtube-from-sql-to-nosql-a-component-wise-analysis-1mhe"/>
-        <updated>2026-04-12T09:37:03.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-Initially, large-scale platforms like YouTube relied on traditional Relational Database Management Systems (RDBMS) such as MySQL. However, as user growth exploded (billions of users, petabytes of data), SQL systems faced scalability and performance bottlenecks.
-To overcome these challenges, YouTube gradually migrated several backend components to NoSQL systems, especially Google Bigtable.
-Why SQL Was Not Enough
-
-
-Component-Wise Migration
-
-
-
-Before (SQL):
-Stored in MySQL tables
-Problems:
-Frequent reads/writes
-After (NoSQL – Bigtable):
-Metadata stored in Bigtable as key-value pairs
-Impact:
-Faster lookups using row keys
-3.2 User Activity & Analytics
-Before (SQL):
-Logs and analytics stored in relational tables
-Problems:
-Huge volume of data (views, likes, watch time)
-After (NoSQL):
-Stored in Bigtable / distributed systems
-Impact:
-Real-time analytics possible
-3.3 Video Recommendation System
-Before (SQL):
-Relational joins for user preferences and history
-Problems:
-Joins became extremely expensive
-After (NoSQL):
-Precomputed recommendation data stored in NoSQL
-Impact:
-Reduced latency
-3.4 Comments System
-Before (SQL):
-Stored in relational tables with relationships
-Problems:
-High write load (millions of comments)
-After (NoSQL):
-Distributed storage in Bigtable-like systems
-Impact:
-High write throughput
-3.5 Video Statistics (Views, Likes)
-Before (SQL):
-Counters updated in relational tables
-Problems:
-Frequent updates caused contention
-After (NoSQL):
-Distributed counters in Bigtable
-Impact:
-Efficient real-time updates
-Technologies Used in Migration
-
-
-Architecture Shift
-
-
-Key Insights]]></summary>
+        <title type="html"><![CDATA[You Don't Need a Free PDF Compressor Website Anymore]]></title>
+        <id>https://dev.to/igorgridel/you-dont-need-a-free-pdf-compressor-website-anymore-1o8j</id>
+        <link href="https://dev.to/igorgridel/you-dont-need-a-free-pdf-compressor-website-anymore-1o8j"/>
+        <updated>2026-04-12T10:24:52.000Z</updated>
+        <summary type="html"><![CDATA[There is a specific feeling that comes with uploading a PDF to a free compressor website. You land on a page plastered with ads, you drag your file into a dotted rectangle, a progress bar crawls, and somewhere between "processing" and "download your file," you remember what's in that document. A client contract. A tax return. Your kid's medical records.
+You just sent that to a server you know nothing about.
+I kept doing it for years. Everybody does. You google "free PDF compressor," you pick whatever ranks first, you upload, you download, you move on with your day. The file gets smaller, the task gets done, and you try not to think about the fact that ilovepdf.com just processed your entire document on their infrastructure. They say they delete it within two hours. Maybe they do.
+But here'…]]></summary>
         <author>
-            <name>Alex</name>
+            <name>Igor Gridel</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Can AI Review Physics? Yes — That Is Why We Built SPAR]]></title>
-        <id>https://dev.to/flamehaven01/can-ai-review-physics-yes-that-is-why-we-built-spar-1ojk</id>
-        <link href="https://dev.to/flamehaven01/can-ai-review-physics-yes-that-is-why-we-built-spar-1ojk"/>
-        <updated>2026-04-12T09:34:43.000Z</updated>
-        <summary type="html"><![CDATA[A standalone review framework for checking whether outputs deserve the claims attached to them.
-Most review systems answer a familiar question:
-Did the system still produce the expected output?
-SPAR is built for a narrower and more dangerous one:
-Does the output still deserve the claim attached to it?
-That is the split. Not reliability alone, but admissibility.
-In practical terms, admissibility means claim-worthiness: whether a result justifies the interpretation, governance status, or scientific statement built on top of it.
-A system can be reliable and inadmissible at the same time.
-A physics engine can compute beta_G_norm, return zero, pass regression, and stay green across the whole pipeline. The report can still say the background is admissible. But if the function producing beta_G_no…]]></summary>
+        <title type="html"><![CDATA[I Got Badges 1, 2, and 4 on DEV.to — Badge #3 Is Currently in Witness Protection]]></title>
+        <id>https://dev.to/freerave/i-got-badges-1-2-and-4-on-devto-badge-3-is-currently-in-witness-protection-he4</id>
+        <link href="https://dev.to/freerave/i-got-badges-1-2-and-4-on-devto-badge-3-is-currently-in-witness-protection-he4"/>
+        <updated>2026-04-12T10:23:45.000Z</updated>
+        <summary type="html"><![CDATA[I debug production systems for fun.
+I've traced memory leaks at 2am. I've stared into the void of a segfault and the void stared back. I once spent 6 hours chasing a bug that turned out to be a missing semicolon — and I still consider that a good day.
+Nothing prepared me for this.
+I opened my DEV.to profile expecting the warm dopamine hit of a clean badge row. Instead, I got:
+🏆 1
+🏆 2
+👻 (??)
+🏆 4
+I did what any reasonable developer does in a crisis. I refreshed the page.
+Still gone.
+I cleared the cache. Hard refreshed. Opened incognito. Checked on my phone. Filed a mental ticket titled "skill issue or cosmic injustice?" and assigned it P0.
+My first theory: off-by-one error. Classic. DEV.to's badge system probably starts counting from 0 internally and someone forgot to add 1. Badge #3 is …]]></summary>
         <author>
-            <name>Kwansub Yun</name>
+            <name>freerave</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Transactional SMS Setup with Africa's Talking SDK For Single and Bulk messages]]></title>
-        <id>https://dev.to/supamodo/transactional-sms-setup-with-africas-talking-sdk-for-single-and-bulk-messages-16fg</id>
-        <link href="https://dev.to/supamodo/transactional-sms-setup-with-africas-talking-sdk-for-single-and-bulk-messages-16fg"/>
-        <updated>2026-04-12T09:29:23.000Z</updated>
-        <summary type="html"><![CDATA[A hands-on guide to working with Africa's Talking SDK to send transactional messages and a controlled bulk batch flow.
-By the end of this guide, you’ll understand the full SMS delivery flow from your application to a real mobile phone.
-You will:
-Set up a minimal but production-relevant TypeScript backend
-Connect it to Africa’s Talking SMS API using their official SDK
-Build a POST /send-one endpoint (for transactional messages like OTPs)
-Build a POST /send-bulk endpoint (for campaigns or notifications)
-Learn how to safely move from sandbox testing to real production sending
-a) Africa’s Talking Account.
-Go to: https://account.africastalking.com/
-
-Sign up using your email and verify your account
-Once logged in, you’ll see a dashboard with products like SMS, Voice, Airtime, etc.
-b) Sandbox API…]]></summary>
+        <title type="html"><![CDATA[Why Your AI Agent Can't Browse the Web (And How to Fix It in 3 Lines of Python)]]></title>
+        <id>https://dev.to/proxyclaw/why-your-ai-agent-cant-browse-the-web-and-how-to-fix-it-in-3-lines-of-python-14he</id>
+        <link href="https://dev.to/proxyclaw/why-your-ai-agent-cant-browse-the-web-and-how-to-fix-it-in-3-lines-of-python-14he"/>
+        <updated>2026-04-12T10:23:37.000Z</updated>
+        <summary type="html"><![CDATA[You've built a LangChain agent. It can reason, plan, and use tools. Then you try to give it access to the web — and it immediately hits a wall.
+CAPTCHAs. IP bans. Cloudflare challenges. JavaScript-heavy pages that return blank HTML. Sites that detect non-browser traffic and block it instantly.
+The web was built for humans. And it actively fights back against anything that looks like a bot.
+This post explains exactly why this happens — and shows you how to fix it in 3 lines of Python.
+When your AI agent tries to fetch a webpage, here's what actually happens:
+1. No browser fingerprint
+Real browsers send hundreds of signals: user-agent strings, TLS fingerprints, canvas/WebGL data, screen resolution, installed fonts, timing patterns. Sites like Cloudflare, Akamai, and Datadome analyze all of t…]]></summary>
         <author>
-            <name>Eddy Odhiambo</name>
+            <name>PROXYCLAW</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Getting Leap Years Right, and Listing All 27 Leap Seconds Ever Inserted]]></title>
-        <id>https://dev.to/sendotltd/getting-leap-years-right-and-listing-all-27-leap-seconds-ever-inserted-3f1h</id>
-        <link href="https://dev.to/sendotltd/getting-leap-years-right-and-listing-all-27-leap-seconds-ever-inserted-3f1h"/>
-        <updated>2026-04-12T09:18:18.000Z</updated>
-        <summary type="html"><![CDATA[Getting Leap Years Right, and Listing All 27 Leap Seconds Ever Inserted
-
-
-
-"Every four years" is the leap year rule most developers remember. It's wrong on century boundaries. 1900 was not a leap year, 2000 was, 2100 won't be. Writing a tiny tool to check this led me to a nearby rabbit hole: leap seconds — a completely separate concept, and a historical curiosity with exactly 27 entries.
-Everyone thinks they know the leap year rule. "Every four years." Then we discover 2100 isn't a leap year and 2000 is, and remember the Y2K-era discussions dimly. The actual rule is short, well-defined, and easy to test — and while I was writing it, I fell into the adjacent topic of leap seconds, which are a historical curiosity with a hard stop coming in 2035.
-🔗 Live demo: https://sen.ltd/portfolio/leap-…]]></summary>
+        <title type="html"><![CDATA[How to Build Sprite Sheets for 2D Games — A Practical Guide for Indie Devs]]></title>
+        <id>https://dev.to/code280fox/how-to-build-sprite-sheets-for-2d-games-a-practical-guide-for-indie-devs-46ib</id>
+        <link href="https://dev.to/code280fox/how-to-build-sprite-sheets-for-2d-games-a-practical-guide-for-indie-devs-46ib"/>
+        <updated>2026-04-12T10:23:04.000Z</updated>
+        <summary type="html"><![CDATA[If you're building a 2D game — whether it's a platformer, a top-down RPG, or a Friday Night Funkin' mod — you'll eventually hit a point where managing individual image files becomes a bottleneck. That's where sprite sheets come in.
+A sprite sheet combines multiple images (character frames, tiles, UI elements) into a single texture file. Your game engine loads one image instead of hundreds, which means faster load times, fewer draw calls, and smoother performance.
+In this post, I'll walk through the full workflow: why sprite sheets matter, how to create them, and how to export metadata that actually works with your engine.
+Even with modern hardware, sprite sheets remain the standard for 2D game assets. Here's why:
+Fewer HTTP requests — Loading one packed texture is faster than fetching 60 s…]]></summary>
         <author>
-            <name>SEN LLC</name>
+            <name>CodeFox</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How I Built an OCR-Based Defense Against Prompt Injection for Local LLM Search]]></title>
+        <id>https://dev.to/morfasco/how-i-built-an-ocr-based-defense-against-prompt-injection-for-local-llm-search-1mnl</id>
+        <link href="https://dev.to/morfasco/how-i-built-an-ocr-based-defense-against-prompt-injection-for-local-llm-search-1mnl"/>
+        <updated>2026-04-12T10:23:00.000Z</updated>
+        <summary type="html"><![CDATA[When you plug a local LLM into a web search tool, every fetched page becomes an attack surface. I found this out the hard way — my Ollama setup was pulling web content that contained invisible Unicode injection, fake system prompts, and markdown image tags designed to exfiltrate data through URL parameters.
+I went looking for a solution and found that Google DeepMind's own research showed their best model-level defenses fail 53.6% of the time against adaptive attacks. The "Attacker Moves Second" paper demonstrated that all 12 published defenses were bypassed at >90% success rates. The UK's National Cyber Security Centre formally characterized LLMs as "inherently confusable deputies."
+So I stopped trying to make the model resist injection and started removing the attack text before the mode…]]></summary>
+        <author>
+            <name>Morfasco</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Add Text to Video with FFmpeg (CLI and API)]]></title>
+        <id>https://dev.to/javidjamae/how-to-add-text-to-video-with-ffmpeg-cli-and-api-2bfh</id>
+        <link href="https://dev.to/javidjamae/how-to-add-text-to-video-with-ffmpeg-cli-and-api-2bfh"/>
+        <updated>2026-04-12T10:20:59.000Z</updated>
+        <summary type="html"><![CDATA[Originally published at ffmpeg-micro.com
+You want to burn text into a video. Maybe it's a caption, a title card, or a watermark. FFmpeg can do it, but the drawtext filter syntax is notoriously painful to get right.
+This post covers two approaches: raw FFmpeg CLI for when you need full control, and the FFmpeg Micro API for when you want to skip the hassle.
+FFmpeg's drawtext filter is the standard way to add text to video from the command line. A basic example:
+ffmpeg -i input.mp4 \
+  -vf "drawtext=text='Hello World':fontsize=48:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2" \
+  -c:a copy output.mp4
+
+This centers "Hello World" on every frame of the video. The x and y parameters use FFmpeg expressions where w is video width, h is video height, and text_w/text_h are the rendered text dimension…]]></summary>
+        <author>
+            <name>Javid Jamae</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Aadi-Tech Vault: Personal Security Reimagined]]></title>
+        <id>https://dev.to/aditya_rai_2f211fe3d3a90f/aadi-tech-vault-personal-security-reimagined-6ke</id>
+        <link href="https://dev.to/aditya_rai_2f211fe3d3a90f/aadi-tech-vault-personal-security-reimagined-6ke"/>
+        <updated>2026-04-12T10:11:08.000Z</updated>
+        <summary type="html"><![CDATA[Aadi-Tech Vault is the brainchild of Aditya Rai, who designed, coded, and architected the entire encryption system from scratch. Built on a budget PC, this project is a bold statement that true digital privacy doesn't need a massive budget—just a strong vision.
+
+
+​Project Governance:
+Aditya Rai remains the Sole Lead and Primary Developer of Aadi-Tech Systems. The involvement of Aditya Raj was limited to secondary support roles to help speed up the documentation process. The project continues to be driven by Aditya Rai’s mission to provide unbreakable security to everyone.
+​Built by Aditya Rai. Supported by Aadi-Tech Systems.]]></summary>
+        <author>
+            <name>Aditya Rai</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AI Agents Are Your Enterprise's Newest Security Blind Spot]]></title>
+        <id>https://dev.to/dividebyzerogt/ai-agents-are-your-enterprises-newest-security-blind-spot-1od3</id>
+        <link href="https://dev.to/dividebyzerogt/ai-agents-are-your-enterprises-newest-security-blind-spot-1od3"/>
+        <updated>2026-04-12T10:05:17.000Z</updated>
+        <summary type="html"><![CDATA[Originally published on Truthlocks Blog
+Your security operations center monitors every human login. Your SIEM correlates events across every server, endpoint, and network device. Your EDR watches every process on every workstation. Your DLP scans every file that leaves the perimeter. You have spent millions building visibility into what happens inside your enterprise.
+But right now, somewhere in your environment, an AI agent is accessing a customer database, calling an external API, or making a decision that affects your business. And your security team probably has no idea it is happening.
+AI agents are the fastest growing category of unmonitored actors in enterprise environments. They are not endpoints, so EDR does not see them. They are not humans, so identity governance does not cover …]]></summary>
+        <author>
+            <name>Nnaa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Built 29 ASO & Security Tools for Mobile Developers — Here's Why]]></title>
+        <id>https://dev.to/theappsfirm/i-built-29-free-aso-security-tools-for-mobile-developers-heres-why-5fn5</id>
+        <link href="https://dev.to/theappsfirm/i-built-29-free-aso-security-tools-for-mobile-developers-heres-why-5fn5"/>
+        <updated>2026-04-12T10:03:34.000Z</updated>
+        <summary type="html"><![CDATA[The Problem
+
+
+I've spent 10+ years building mobile apps — including Dubai Now (2M+ users) and UAE PASS for government clients. Throughout that time, I kept paying $100-300/mo for ASO tools that gave me data I could get myself.
+Sensor Tower, AppTweak, data.ai — great tools, but expensive for indie developers and small studios. Most of us just need keyword research, competitor tracking, and some basic analytics.
+So I built my own platform and made it free.
+The Apps Firm ASO Studio — 29 tools for mobile developers, organized into categories:
+App Analyzer — Full breakdown of any Play Store or App Store app
+Keyword Planner — Research keywords with difficulty and relevancy scores
+Competitor Tracker — Monitor competitor apps side by side
+Visual Compare — Side-by-side app comparison
+Top Charts & M…]]></summary>
+        <author>
+            <name>TheAppsFirm</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why North Korea keeps stealing billions in crypto — out in the open]]></title>
+        <id>c066f7ff-0f2c-42d4-95b9-966499630256</id>
+        <link href="https://www.coindesk.com/tech/2026/04/12/why-north-korea-keeps-stealing-billions-in-crypto-out-in-the-open"/>
+        <updated>2026-04-12T10:00:00.000Z</updated>
+        <summary type="html"><![CDATA[As North Korea's infiltration tactics grow more sophisticated, security experts say the crypto industry needs to understand what sets the regime apart from every other state-backed hacker — and why that difference makes it a dangerous threat to the ecosystem.]]></summary>
+        <author>
+            <name>Margaux Nijkerk</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hack Anything in 1 Click]]></title>
+        <id>https://dev.to/hacker_5d10757914148b7ab1/hack-anything-in-1-click-5305</id>
+        <link href="https://dev.to/hacker_5d10757914148b7ab1/hack-anything-in-1-click-5305"/>
+        <updated>2026-04-12T09:55:00.000Z</updated>
+        <summary type="html"><![CDATA[****This is a submission for the DEV April Fools Challenge
+I built a fun and completely useless “one-click hacking tool” that claims to hack any Instagram ID or username instantly.
+The project allows users to enter any username, click the “Hack” button, and watch a series of dramatic hacking steps like bypassing security, accessing data, and injecting exploits. In just a few seconds, it displays a successful “hack” message along with over-the-top results like “Your system is hacked.”
+Of course, everything in this project is entirely fake and designed purely for entertainment. The goal was to create something that looks powerful and convincing at first glance, but ultimately makes people laugh and realize it’s all part of the joke.
+This project embraces the April Fools spirit by showing how easily people can be fooled by flashy interfaces and bold claims like “hack anything in one click.” 😄
+video of my project is https://youtu.be/gA9FjEHkJ6Q
+<!DOCTYPE html>
+Hack Anything Insta ID 😎
+
+  Hack
+<br>
+    function hack() {<br>
+      var target = document.getElementById(&quot;target&quot;).value;<br>
+      var output = document.getElementById(&quot;output&quot;);</p>
+<div class="highlight"><pre class="highlight plaintext"><code>  if(target === "") {
+    output.innerHTML = "⚠️ Please enter a username!";
+    return;
+  }
+
+  output.innerHTML = "Initializing hack on " + target + "...\n";
+
+  setTimeout(function() {
+    output.innerHTML += "Bypassing security...\n";
+  }, 1000);
+
+  setTimeout(function() {
+    output.innerHTML += "Accessing data...\n";
+  }, 2000);
+
+  setTimeout(function() {
+    output.innerHTML += "Injecting exploit...\n";
+  }, 3000);
+
+  setTimeout(function() {
+    output.innerHTML += "\n🔥 SUCCESS!\n";
+    output.innerHTML += "💀 Your system is hacked!";
+  }, 4000);
+}
+</code></pre></div>
+<p>
+i used simple html,css or javascript
+I am submitting this project for Community Favourite because it is easy to use and helpful for users.]]></summary>
+        <author>
+            <name>Hacker</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build Your Own JARVIS: A Deep Dive into Memo AI - The Privacy-First Local Voice Agent]]></title>
+        <id>https://dev.to/priyansh_singh_ba65598aeb/build-your-own-jarvis-a-deep-dive-into-memo-ai-the-privacy-first-local-voice-agent-3n74</id>
+        <link href="https://dev.to/priyansh_singh_ba65598aeb/build-your-own-jarvis-a-deep-dive-into-memo-ai-the-privacy-first-local-voice-agent-3n74"/>
+        <updated>2026-04-12T09:54:11.000Z</updated>
+        <summary type="html"><![CDATA[Build Your Own JARVIS: A Deep Dive into Memo AI - The Privacy-First Local Voice Agent
+
+
+How I built a voice-controlled AI that executes system tasks, generates code, and takes notes—all without sending a single byte to the cloud.
+In an era where every voice command to Alexa, Siri, or ChatGPT is logged on a distant server, privacy has become a premium. I wanted to build an agent that was "Privacy-by-Design." My goal was Memo AI: a robust, full-stack application that handles voice transcription, intent detection, and system-level execution entirely on local hardware.
+Building a local agent isn't just about plugging in an LLM. It’s about building a reliable pipeline that can handle messy human speech and turn it into precise system commands.
+The application starts with a reactive UI built usi…]]></summary>
+        <author>
+            <name>Priyansh Singh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rockstar Games Hit By Hacker Group Who Threaten “Pay Or Leak”]]></title>
+        <id>https://www.lowyat.net/?p=389299</id>
+        <link href="https://www.lowyat.net/2026/389299/rockstar-games-hit-by-hacker-group-threaten-pay-or-leak/"/>
+        <updated>2026-04-12T09:41:27.000Z</updated>
+        <summary type="html"><![CDATA[The infamous hacker group ShinyHunters are at it again. Just last year, they have claimed to have hit insurance company Allianz. A more recent target turns out to be Rockstar Games. The group claimed to have gained access to the company’s servers run by Snowflake, a cloud-hosting company and provider. Per a report by Hackread, […]
+The post Rockstar Games Hit By Hacker Group Who Threaten “Pay Or Leak” appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Ian Chee</name>
         </author>
     </entry>
     <entry>
@@ -155,260 +273,20 @@ Everyone thinks they know the leap year rule. "Every four years." Then we discov
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How I Automated a Monitoring Stack on my Dell Latitude using Ansible & Docker]]></title>
-        <id>https://dev.to/muhammadkamrankabeeross/how-i-automated-a-monitoring-stack-on-my-dell-latitude-using-ansible-docker-5b73</id>
-        <link href="https://dev.to/muhammadkamrankabeeross/how-i-automated-a-monitoring-stack-on-my-dell-latitude-using-ansible-docker-5b73"/>
-        <updated>2026-04-12T09:16:23.000Z</updated>
-        <summary type="html"><![CDATA[The Vision
-The Architecture: A Three-Tier Observability Stack
-Generation (Node Exporter): A lightweight Go-based binary that exposes hardware metrics (CPU load, RAM usage, Disk I/O) via a web endpoint.
-Collection (Prometheus): The "brain" of the operation. It's a time-series database that "scrapes" the metrics from the exporter at defined intervals.
-Visualization (Grafana): The "eyes." It queries Prometheus to turn raw numbers into pulsing, real-time graphs.
-The "Aha!" Moment: Solving Networking Hurdles
-The Solution:
-The Bridge: I used the Docker Gateway IP (172.17.0.1) to allow the container to look "outside" to the host hardware.
-The Guard: Xubuntu’s UFW (Uncomplicated Firewall) initially blocked these requests. I had to explicitly allow traffic on port 9100 from the Docker interface.
-The Implementation: Ansible Playbook
-name: Deploy Monitoring Stack
-hosts: localhost
-connection: local
-become: yes
-tasks:
-- name: Run Prometheus (The Brain)
-  community.docker.docker_container:
-    name: prometheus
-    image: prom/prometheus:latest
-    state: started
-    recreate: yes
-    volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-      - "./alert_rules.yml:/etc/prometheus/alert_rules.yml"
-    ports:
-      - "9091:9090"
-
-- name: Run Grafana (The Visuals)
-  community.docker.docker_container:
-    name: grafana
-    image: grafana/grafana:latest
-    state: started
-    ports:
-      - "3000:3000"
-
-Going Pro: Proactive Alerting
-If CPU usage exceeds 85% for more than 2 minutes, fire a CRITICAL alert.
-This moves the lab from "Basic Monitoring" to "Incident Response Readiness."
-Key Takeaways for Students & Peers
-Firewalls Matter: If your data isn't flowing, check your UFW/Iptables first.
-Start Small: I’m doing this on an 8GB RAM Dell laptop. You don't need a cloud budget to learn high-level DevOps.
-Check out the full Source Code:
-https://github.com/muhammadkamrankabeer-oss/Lab2_Monitoring_Automation]]></summary>
-        <author>
-            <name>Muhammad Kamran Kabeer</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Writing a Hepburn Hiragana ↔ Katakana ↔ Rōmaji Converter (With All The Annoying Edge Cases)]]></title>
-        <id>https://dev.to/sendotltd/writing-a-hepburn-hiragana-katakana-romaji-converter-with-all-the-annoying-edge-cases-1bj0</id>
-        <link href="https://dev.to/sendotltd/writing-a-hepburn-hiragana-katakana-romaji-converter-with-all-the-annoying-edge-cases-1bj0"/>
-        <updated>2026-04-12T09:15:34.000Z</updated>
-        <summary type="html"><![CDATA[Writing a Hepburn Hiragana ↔ Katakana ↔ Rōmaji Converter (With All The Annoying Edge Cases)
-
-
-
-"Sanpo" or "sampo"? "Matcha" or "maccha"? Hepburn romanization has rules that naive 1:1 mapping gets wrong, and those are exactly the rules that appear on road signs and passports. I wrote a converter that handles them properly.
-Ask most developers to romanize 「さんぽ」 and you'll get sanpo. Hand a Japanese passport office the same word and they'll write sampo. The difference is Hepburn romanization — the standard used on Japanese signage, passports, and official documents — which has a handful of rules that naive 1:1 character mapping gets wrong. I wanted a converter that handled them.
-🔗 Live demo: https://sen.ltd/portfolio/hiragana-romaji/
-GitHub: https://github.com/sen-ltd/hiragana-romaji
-
-Auto-d…]]></summary>
-        <author>
-            <name>SEN LLC</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building an AI-Assisted React Native UI Kit — Why Tokens Beat Pixels in the Age of Copilot]]></title>
-        <id>https://dev.to/hasansarwer/building-an-ai-assisted-react-native-ui-kit-why-tokens-beat-pixels-in-the-age-of-copilot-1122</id>
-        <link href="https://dev.to/hasansarwer/building-an-ai-assisted-react-native-ui-kit-why-tokens-beat-pixels-in-the-age-of-copilot-1122"/>
-        <updated>2026-04-12T09:14:29.000Z</updated>
-        <summary type="html"><![CDATA[We're in an era where developers write UI with AI. You describe a screen, Claude or Copilot generates the code, and you ship it. But there's a gap nobody talks about:
-AI-generated UI is inconsistent.
-Ask it to build a login screen — it picks padding: 16. Ask it to build a settings screen — it picks padding: 20. Ask it for a card — borderRadius: 8. Another card — borderRadius: 12. Same app, different screens, zero consistency.
-The problem isn't the AI. It's that there's no vocabulary to constrain it.
-This is the idea behind @esaltws/react-native-salt — a React Native UI system where every visual property is a named token from a finite set.
-Instead of:
-<View style={{ padding: 16, borderRadius: 8, gap: 12 }}>
-
-You write:
-<Stack gap="md" style={{ padding: spacing.lg }}>
-
-"md", "lg", "sm" — the…]]></summary>
-        <author>
-            <name>Hasan Sarwer</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Israel Destroys Villages in Lebanon]]></title>
-        <id>https://www.theguardian.com/world/2026/apr/12/how-israeli-offensive-destroyed-entire-villages-in-lebanon</id>
-        <link href="https://www.theguardian.com/world/2026/apr/12/how-israeli-offensive-destroyed-entire-villages-in-lebanon"/>
-        <updated>2026-04-12T09:14:28.000Z</updated>
+        <title type="html"><![CDATA[Apple update looks like Czech mate for locked-out iPhone user]]></title>
+        <id>https://www.theregister.com/2026/04/12/ios_passcode_bug/</id>
+        <link href="https://www.theregister.com/2026/04/12/ios_passcode_bug/"/>
+        <updated>2026-04-12T08:38:56.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A BMI Calculator That Shows Both JASSO and WHO Categories, Because They Disagree]]></title>
-        <id>https://dev.to/sendotltd/a-bmi-calculator-that-shows-both-jasso-and-who-categories-because-they-disagree-4nie</id>
-        <link href="https://dev.to/sendotltd/a-bmi-calculator-that-shows-both-jasso-and-who-categories-because-they-disagree-4nie"/>
-        <updated>2026-04-12T09:12:29.000Z</updated>
-        <summary type="html"><![CDATA[A BMI Calculator That Shows Both JASSO and WHO Categories, Because They Disagree
-
-
-
-BMI 25 is "Overweight" according to the WHO and "Obesity class 1" according to the Japan Society for the Study of Obesity. Same number, very different emotional weight. Most BMI calculators only show one. I built one that shows both side by side — and explains why the difference exists.
-Every online BMI calculator tells you "Your BMI is 24.5 — Normal" or "Your BMI is 25.0 — Obese," in one voice. But BMI interpretation isn't universal. Japan's JASSO (Japan Society for the Study of Obesity) uses stricter thresholds than the WHO, based on epidemiological evidence that Asian populations accumulate visceral fat at lower BMI levels. Showing only one can seriously misrepresent reality.
-🔗 Live demo: https://sen.lt…]]></summary>
-        <author>
-            <name>SEN LLC</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[GitHub Copilot vs Cursor 2026: Where Should You Spend Your Money?]]></title>
-        <id>https://dev.to/jake_kim_bd3065a6816799db/github-copilot-vs-cursor-2026-where-should-you-spend-your-money-k7h</id>
-        <link href="https://dev.to/jake_kim_bd3065a6816799db/github-copilot-vs-cursor-2026-where-should-you-spend-your-money-k7h"/>
-        <updated>2026-04-12T09:12:17.000Z</updated>
-        <summary type="html"><![CDATA[I've been using both GitHub Copilot and Cursor in production for over a year now. In 2026, the AI coding assistant market has evolved significantly — and choosing between these two tools comes down to how you actually work.
-This isn't a spec sheet comparison. It's what I've learned after shipping real features with both.
-GitHub Copilot is an extension that plugs into your existing editor (VS Code, JetBrains, Neovim). It enhances your workflow without disrupting it.
-Cursor is a fork of VS Code built around AI from the ground up. It's not an extension — it's a different editor.
-That distinction matters more than any feature list.
-
-
-
-Plan
-Price
-Best For
-
-
-
-
-Free
-$0/mo
-Students, OSS contributors
-
-
-Pro
-$10/mo
-Individual devs
-
-
-Pro+
-$19/mo
-Power users (GPT-4o, Claude)
-
-
-Business
-$19/user/mo
-Teams
-
-
-Enterprise
-$39/user/mo
-Large orgs
-
-
-
-
-
-
-Plan
-Price
-Best For
-
-
-
-
-Hobby
-$0/mo
-Light use (2000 completions)
-
-
-Pro
-$20/mo
-Full AI features
-
-
-Business
-$40/user/mo
-Teams
-
-
-
-Both cost roughly $20/month for individual power users.
-1. Editor freedom. You can use Copilot in VS Code, Neovim, JetBrains. If your team uses different editors, Copilot is the only option that works everywhere.
-2. GitHub integration. Copilot Workspace, PR summaries, issue-to-code features.
-3. Enterprise trust. SOC2 compliance and IP indemnification.
-1. Codebase-wide context. Cursor's @codebase feature lets you ask questions about your entire repo.
-2. Multi-file edits. Cursor's Composer can refactor across multiple files in one shot.
-3. Model flexibility. Switch between Claude 3.5 Sonnet, GPT-4o, and others on the fly.
-Choose Copilot if: You use JetBrains/Neovim, need enterprise compliance, or live in GitHub.
-Choose Cursor if: You work on large codebases, do lots of refactoring, and want the best AI coding experience.
-Solo developers wanting the best AI experience: Cursor Pro at $20/month.
-Teams needing editor flexibility and GitHub integration: Copilot Business at $19/user/month.
-Full comparison: dev.Jake blog]]></summary>
-        <author>
-            <name>jake kim</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[API Security in India: The Flaw Nobody Is Fixing]]></title>
-        <id>https://dev.to/ceo_shouvik/api-security-in-india-the-flaw-nobody-is-fixing-1a4</id>
-        <link href="https://dev.to/ceo_shouvik/api-security-in-india-the-flaw-nobody-is-fixing-1a4"/>
-        <updated>2026-04-12T09:10:36.000Z</updated>
-        <summary type="html"><![CDATA[By Shouvik Mukherjee — Founder at Bachao.AI, Ex-Principal Engineer
-Indian SaaS is growing fast. The engineering is often excellent. The API security is frequently an afterthought — and that gap is getting exploited.
-This isn't a lecture. This is a technical walkthrough of what's actually broken, why it keeps shipping, and what you can check on your API today.
-The pattern is consistent: small team, aggressive roadmap, product-market fit as the north star. Security review gets pushed to "after launch." Launch happens, users arrive, engineers move to the next feature. The API surface keeps growing. The security review never happens.
-This isn't unique to India, but the scale here is acute. India has tens of thousands of B2B SaaS products shipping at startup pace. Most don't have a dedicated se…]]></summary>
-        <author>
-            <name>Shouvik Mukherjee</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Local Ai Agent]]></title>
-        <id>https://dev.to/rudra_royalmech_d745853a8/local-ai-agent-3hhg</id>
-        <link href="https://dev.to/rudra_royalmech_d745853a8/local-ai-agent-3hhg"/>
-        <updated>2026-04-12T09:09:31.000Z</updated>
-        <summary type="html"><![CDATA[🎙️ Building a Voice AI Agent with Local Execution
-
-
-
-  
-  
-  🚀 Introduction
-
-
-In this project, I built a Voice AI Agent that can understand natural language commands through audio or text and execute tasks locally on a machine. The goal was to simulate a real-world AI assistant that not only understands user intent but also performs meaningful actions like generating code, creating files, and processing text.
-This project combines Speech Recognition, Natural Language Processing, and Automation, making it a practical example of an AI-powered agent system.
-Most AI assistants today are limited to answering questions. I wanted to build a system that goes one step further:
-Understand → Decide → Act
-The agent should:
-Accept voice or text input
-
-Convert speech into text
-
-Detect user intent
-
-Exe…]]></summary>
-        <author>
-            <name>Rudra Royalmech</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Apple update looks like Czech mate for locked-out iPhone user]]></title>
-        <id>https://www.theregister.com/2026/04/12/ios_passcode_bug/</id>
-        <link href="https://www.theregister.com/2026/04/12/ios_passcode_bug/"/>
-        <updated>2026-04-12T08:38:56.000Z</updated>
+        <title type="html"><![CDATA[Phyphox – Physical Experiments Using a Smartphone]]></title>
+        <id>https://phyphox.org/</id>
+        <link href="https://phyphox.org/"/>
+        <updated>2026-04-12T08:38:11.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -432,16 +310,6 @@ Exe…]]></summary>
         <summary type="html"><![CDATA[Sudden selloff triggered liquidation-style move, with weak recovery reinforcing bearish structure despite compressed volatility setup.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Anthropic silently downgraded cache TTL from 1h → 5M on March 6th]]></title>
-        <id>https://github.com/anthropics/claude-code/issues/46829</id>
-        <link href="https://github.com/anthropics/claude-code/issues/46829"/>
-        <updated>2026-04-12T05:45:52.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -656,16 +524,6 @@ The post Huawei To Hop On The Wide Fold Bandwagon With Pura X Max appeared first
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Problem That Built an Industry]]></title>
-        <id>https://ajitem.com/blog/iron-core-part-1-the-problem-that-built-an-industry/</id>
-        <link href="https://ajitem.com/blog/iron-core-part-1-the-problem-that-built-an-industry/"/>
-        <updated>2026-04-11T14:03:03.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Crypto Clarity bill has 30% chance of passing this year, Wintermute’s Hammond says]]></title>
         <id>159573a1-b794-455c-8db4-590d2b105353</id>
         <link href="https://www.coindesk.com/policy/2026/04/11/crypto-clarity-bill-has-30-chance-of-passing-this-year-wintermute-s-hammond-says"/>
@@ -777,6 +635,16 @@ The post ASUS ExpertBook P1 Now Available With Intel Core Ultra 2 Series appeare
         <summary type="html"><![CDATA[Judge Michael Liburdi ordered Arizona not to bring any enforcement actions under state law against Kalshi, at least temporarily.]]></summary>
         <author>
             <name>Nikhilesh De</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Filing the corners off my MacBooks]]></title>
+        <id>https://kentwalters.com/posts/corners/</id>
+        <link href="https://kentwalters.com/posts/corners/"/>
+        <updated>2026-04-10T22:16:40.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -962,16 +830,6 @@ The post OPPO Confirms Find X9 Ultra Camera Specs; Other Details Leaked appeared
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[David Bailey’s bitcoin holder Nakamoto is trying to stay on Nasdaq with a reverse stock split]]></title>
-        <id>e9d98282-1a72-4464-aa03-973085e63ef8</id>
-        <link href="https://www.coindesk.com/markets/2026/04/10/david-bailey-s-nakamoto-is-trying-to-stay-on-nasdaq-and-it-s-turning-to-a-reverse-stock-split"/>
-        <updated>2026-04-10T08:58:48.000Z</updated>
-        <summary type="html"><![CDATA[The stock has plunged roughly 99% from its May 2025 peak as pressure builds on the bitcoin treasury firm.]]></summary>
-        <author>
-            <name>James Van Straten</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[AMD Ryzen 9 9950X3D2 Gets An Official Pricing]]></title>
         <id>https://www.lowyat.net/?p=389216</id>
         <link href="https://www.lowyat.net/2026/389216/amd-ryzen-9-9950x3d2-gets-an-official-pricing/"/>
@@ -991,17 +849,6 @@ The post AMD Ryzen 9 9950X3D2 Gets An Official Pricing appeared first on Lowyat.
 The post Samsung’s “Wide Fold” Could Debut At July Unpacked Event In London appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Nurul Kamil</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Electric Mini JCW Gets A 1965 Victory Edition]]></title>
-        <id>https://www.lowyat.net/?p=389208</id>
-        <link href="https://www.lowyat.net/2026/389208/electric-mini-jcw-1965-victory-edition/"/>
-        <updated>2026-04-10T08:20:16.000Z</updated>
-        <summary type="html"><![CDATA[Mini has started a bit of a streak with launching special editions of its existing EVs. Last month, it was the Paul Smith Edition. This time around, the new entry is called the 1965 Victory Edition, for the electric JCW announced almost a whole year ago. As with the Paul Smith Edition, this too is […]
-The post The Electric Mini JCW Gets A 1965 Victory Edition appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Ian Chee</name>
         </author>
     </entry>
     <entry>
@@ -1192,6 +1039,16 @@ The post The Electric Mini JCW Gets A 1965 Victory Edition appeared first on Low
         <summary type="html"><![CDATA[Unlike static, rules-based systems, AI agents can learn, adapt, and optimize processes dynamically. As they interact with data, systems, people, and other agents in real time, AI agents can execute entire workflows autonomously. But unlocking their potential requires redesigning processes around agents rather than bolting them onto fragmented legacy workflows using traditional optimization methods. Companies…]]></summary>
         <author>
             <name>MIT Technology Review Insights</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Miller Principle]]></title>
+        <id>https://puredanger.github.io/tech.puredanger.com/2007/07/11/miller-principle/</id>
+        <link href="https://puredanger.github.io/tech.puredanger.com/2007/07/11/miller-principle/"/>
+        <updated>2026-04-07T13:16:36.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
