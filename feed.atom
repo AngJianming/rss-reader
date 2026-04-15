@@ -1,291 +1,364 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-04-15T05:19:29.895Z</id>
+    <id>urn:2026-04-15T07:25:15.990Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-04-15T05:19:29.895Z</updated>
+    <updated>2026-04-15T07:25:15.990Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[One Researcher Built a 10,000-Paper AI Reading List So You Don't Have To]]></title>
-        <id>https://dev.to/teum/one-researcher-built-a-10000-paper-ai-reading-list-so-you-dont-have-to-53cf</id>
-        <link href="https://dev.to/teum/one-researcher-built-a-10000-paper-ai-reading-list-so-you-dont-have-to-53cf"/>
-        <updated>2026-04-15T05:11:42.000Z</updated>
-        <summary type="html"><![CDATA[A single GitHub repo summarizing every major AI conference of 2024-2026 — in 5 minutes per paper. · zhaoyang97/Paper-Notes
-Why This Hits Different Right Now
-This isn't a curated "top 10 papers of the year" listicle. This is a systematic, structured attempt to compress the entire frontier of AI research into digestible 5-minute notes, organized by conference and by research domain. With 32 stars at time of writing, almost nobody has found it yet. That's the gap.
-What It Actually Does
-The docs/ directory is organized along two axes simultaneously: by conference (ICLR2026/, CVPR2026/, ACL2025/, NeurIPS2025/, etc.) and by research domain within each conference. So if you want to find everything about LLM reasoning from NeurIPS 2025, you'd navigate to docs/NeurIPS2025/llm_reasoning/. That's a s…]]></summary>
-        <author>
-            <name>teum</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Let Your Claude Code Agents Talk to Each Other: Introducing agent-dispatch 🤖↔️🤖]]></title>
-        <id>https://dev.to/serik_ospanov_c84c8ee2e54/let-your-claude-code-agents-talk-to-each-other-introducing-agent-dispatch--3ik0</id>
-        <link href="https://dev.to/serik_ospanov_c84c8ee2e54/let-your-claude-code-agents-talk-to-each-other-introducing-agent-dispatch--3ik0"/>
-        <updated>2026-04-15T05:09:29.000Z</updated>
-        <summary type="html"><![CDATA[Let Your Claude Code Agents Talk to Each Other: Introducing agent-dispatch 🤖↔️🤖
+        <title type="html"><![CDATA[LightESB AiAgentDemoSrv v1.0.0: Let LLM Operate Order Data with Camel Tools]]></title>
+        <id>https://dev.to/nghxni/lightesb-aiagentdemosrv-v100-let-llm-operate-order-data-with-camel-tools-57g3</id>
+        <link href="https://dev.to/nghxni/lightesb-aiagentdemosrv-v100-let-llm-operate-order-data-with-camel-tools-57g3"/>
+        <updated>2026-04-15T07:21:49.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
 
 
 
-TL;DR: An MCP server that lets Claude Code agents delegate tasks to specialized agents in other project directories. No more context-copying or permission sprawl. GitHub | PyPI
-Working with Claude Code is fantastic until you need to cross project boundaries. If I'm debugging backend/ but need to check infra/ logs or query a staging DB, I'm forced to:
-Copy-paste context → fragile, loses project-specific config.
-Give one agent access to everything → security risk, prompt bloat.
-Switch terminals manually → breaks flow, defeats the AI assistant.
-I wanted specialized agents that collaborate without sharing credentials, configs, or context pollution. So I built agent-dispatch.
-agent-dispatch is an MCP server tha…]]></summary>
-        <author>
-            <name>Serik Ospanov</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Stream AI Responses in Real-Time Using FastAPI and SSE]]></title>
-        <id>https://dev.to/jaydeep_sureliya/how-to-stream-ai-responses-in-real-time-using-fastapi-and-sse-15c5</id>
-        <link href="https://dev.to/jaydeep_sureliya/how-to-stream-ai-responses-in-real-time-using-fastapi-and-sse-15c5"/>
-        <updated>2026-04-15T05:07:06.000Z</updated>
-        <summary type="html"><![CDATA[If your AI application waits for the full response before rendering, you are hurting your UX.
-Streaming responses in real-time is one of the simplest ways to improve perceived performance.
-I implemented this for my project:
-https://mindstashhq.space
-Let’s break it down.
-A streaming AI response system where:
-Tokens arrive in real time
-UI updates instantly
-Tool calls are visible to users
-We use Server-Sent Events (SSE).
-Why SSE?
-Simpler than WebSockets
-Native browser support
-Perfect for server → client streaming
-Example structure:
-Response type: StreamingResponse
 
-Content-Type: text/event-stream
+AiAgentDemoSrv@v1.0.0 exposes one HTTP Listener entry: POST /api/ai/agent/chat.
+The Agent is bound with tags=order-demo and can automatically discover three XML-only tools.
+The tools support listing orders, querying order details, and cancelling orders with reason.
+The route returns both natural-language answer (responseText) and structured tool output (toolData).
+Applicable Version: AiAgentDemoSrv@v1.0.0
 
-
-
-Each event looks like:
-event: text_delta
-data: "Hello"
-
-Event types:
-text_delta
-tool_start
-tool_result
-error
-done
-The backend streams tokens directly from the AI provider and forwards them.
-Use EventSource:
-Open connection in useEffect
-
-Listen for events
-Update state incrementally
-Example behaviors:
-Append text on text_delta
-
-Show loading UI on tool_start
-
-Update data on tool_result
-
-Close connection on done
-
-
-
+Related Service: AiAgentDemoSrv@v1.0.0@ai-agent-demo-route.xml
 
 
 
 
   
   
-  Handling Errors Properly
+  Background and Goal
 
 
-Important rule:
-Never discard partial responses.
-If an error occurs mid-stream:
-Keep existing text
-Show error indicator
-Allow retry if needed
-This significantly improves UX.
-For this use case, SSE wins:
-Less complexity
-No connection management overhead
-Easier to debug
-Use WebSockets only if you need true bidirectional communication.
-Streaming is not optional anymore. It is expected.
-If your AI app feels slow, the issue might not be your model.
-It is your delivery mechanism.]]></summary>
+In many integration scenarios, users do not want to remember exact API paths or payload fields. They want to ask naturally:
+"Show all orders for customer Zhang San"
+"Check details of order ord00xa12"
+"Cancel this order with reason"
+The goal of AiAgentDemoSrv is to prove a production…]]></summary>
         <author>
-            <name>jaydeep sureliya</name>
+            <name>Alone Star</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Best engineers are artists, so I built an git-like art tool for the terminal]]></title>
-        <id>https://dev.to/dooku820721/best-engineers-are-artists-so-i-built-an-git-like-art-tool-for-the-terminal-12bo</id>
-        <link href="https://dev.to/dooku820721/best-engineers-are-artists-so-i-built-an-git-like-art-tool-for-the-terminal-12bo"/>
-        <updated>2026-04-15T05:06:46.000Z</updated>
-        <summary type="html"><![CDATA[The spark
-
-
-I was driving one day listening to Naval Ravikant, and he said something that stuck with me: his best engineers are all artists. But not everyone of us actually create art!
-That hit home. We spend all day building creative things in code, but most of us never touch visual art. Not because we lack interest — because the tools aren't built for how we work. AI image generation is powerful, and most of us already have the API keys. But the interfaces are all web apps and notebooks. Nothing that fits the way engineers actually think and iterate.
-So I built muse — a CLI that brings AI art creation into the terminal, where we already live.
-The design mirrors how we already work: iterate fast, roll back when something breaks, get feedback, try again.
-# Start with a prompt
-muse new "a c…]]></summary>
+        <title type="html"><![CDATA[AI Voice Agent Pricing vs Human Receptionist: What 40+ Deployments Taught Me About True Cost]]></title>
+        <id>https://dev.to/jahanzaibai/ai-voice-agent-pricing-vs-human-receptionist-what-40-deployments-taught-me-about-true-cost-g80</id>
+        <link href="https://dev.to/jahanzaibai/ai-voice-agent-pricing-vs-human-receptionist-what-40-deployments-taught-me-about-true-cost-g80"/>
+        <updated>2026-04-15T07:19:16.000Z</updated>
+        <summary type="html"><![CDATA[The advertised price is almost never what you pay. Vapi says $0.05 per minute. That is true if you ignore the LLM, the transcription engine, the voice synthesis, and the telephony carrier. Add those in and you are at $0.15 to $0.31 per minute before your first call ends.
+I have deployed AI voice agents for over 40 businesses since 2023, across law firms, HVAC companies, healthcare practices, and property management firms. This post is what I wish existed before I spent months figuring out what everything actually costs.
+The short version: AI voice agents are dramatically cheaper than humans at scale. But the path from a $0.07/min headline to a working production system is full of hidden costs that vendors do not lead with.
+Quick Verdict
+Pick AI voice agent if your call volume exceeds 200 c…]]></summary>
         <author>
-            <name>Ming</name>
+            <name>Jahanzaib</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How We Built Aura: A Real-Time AI Interview Coach with Gemini Live, ADK, and Vertex AI]]></title>
-        <id>https://dev.to/sakharam_thorat_26b3a6702/how-we-built-aura-a-real-time-ai-interview-coach-with-gemini-live-adk-and-vertex-ai-1g38</id>
-        <link href="https://dev.to/sakharam_thorat_26b3a6702/how-we-built-aura-a-real-time-ai-interview-coach-with-gemini-live-adk-and-vertex-ai-1g38"/>
-        <updated>2026-04-15T05:03:56.000Z</updated>
-        <summary type="html"><![CDATA[This article was created for the purposes of entering the Gemini Live Agent Challenge. #GeminiLiveAgentChallenge
-🌐 Live Demo: https://aura-sde-interview-agent-ivhauk7c7a-uc.a.run.app
-https://github.com/srthorat/aura-sde-interview-agent
-Many talented candidates get shortlisted for top tech companies, but never reach their full potential in interviews.
-Not because they lack technical ability.
-Because they lack realistic interview practice.
-Mock interviews are expensive, difficult to schedule, and often inaccessible for students outside elite networks or major cities.
-Most preparation resources are text-based.
-People read. Few truly practice.
-We wanted to change that.
-So we built Aura — a real-time AI interview coach powered by Google AI models and Google Cloud.
-No text box. Just an intervie…]]></summary>
+        <title type="html"><![CDATA[My AI-Assisted workflow]]></title>
+        <id>https://dev.to/maiobarbero/my-ai-assisted-workflow-20ke</id>
+        <link href="https://dev.to/maiobarbero/my-ai-assisted-workflow-20ke"/>
+        <updated>2026-04-15T07:17:46.000Z</updated>
+        <summary type="html"><![CDATA[You open a chat, describe what you want, iterate on the output, and ship something that more or less works. It feels fast.
+including me, fully understood what is there. Edge cases nobody thought to handle, architecture that made sense in the moment but didn't survive contact with the next feature. A growing sense that I was building faster and understanding less.
+The problem I kept running into was this: how do you get the speed benefits of AI assistance without losing the clarity and intentionality that makes software maintainable?
+What is AI actually good at? Implementation. What is it genuinely bad at? Figuring out what you actually want, catching the assumptions you forgot to make explicit, and telling you when your mental model of the problem is wrong.
+That's your job. It will always …]]></summary>
         <author>
-            <name>Sakharam Thorat</name>
+            <name>Matteo Barbero</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Filter Data in PowerShell: Where-Object Patterns]]></title>
-        <id>https://dev.to/arnostorg/filter-data-in-powershell-where-object-patterns-1mg7</id>
-        <link href="https://dev.to/arnostorg/filter-data-in-powershell-where-object-patterns-1mg7"/>
-        <updated>2026-04-15T04:58:54.000Z</updated>
-        <summary type="html"><![CDATA[Filter Data in PowerShell: Where-Object Patterns
+        <title type="html"><![CDATA[I built a SaaS landing page in a week to validate my idea — here's what I shipped and learned]]></title>
+        <id>https://dev.to/funky888/i-built-a-saas-landing-page-in-a-week-to-validate-my-idea-heres-what-i-shipped-and-learned-5go</id>
+        <link href="https://dev.to/funky888/i-built-a-saas-landing-page-in-a-week-to-validate-my-idea-heres-what-i-shipped-and-learned-5go"/>
+        <updated>2026-04-15T07:16:40.000Z</updated>
+        <summary type="html"><![CDATA[The Problem with Building First
 
 
-Large result sets are overwhelming. Learn to filter and see only what matters.
-Where-Object lets you write conditions like 'show only files bigger than 1MB' or 'show only .log files'. The pipe (|) sends results to Where-Object, which filters them.
-This transforms overwhelming result sets into focused, useful information.
-# Show only .log files
-Get-ChildItem | Where-Object {$_.Name -like "*.log"}
-
-# $_.Name is the filename
-# -like uses pattern matching
-
-# Show files bigger than 1MB
-Get-ChildItem -File | Where-Object {$_.Length -gt 1MB}
-
-# Show files smaller than 100KB
-Get-ChildItem -File | Where-Object {$_.Length -lt 100KB}
-
-# Files modified in last 7 days
-Get-ChildItem | Where-Object {$_.LastWriteTime -gt (Get-Date).AddDays(-7)}
-
-# Files o…]]></summary>
+I'm a developer. I love building things.
+But I've watched too many indie founders (myself included) spend 
+Have idea
+Get excited
+Build product
+Launch to crickets
+Wonder what went wrong
+This time I tried something different: validate before building.
+A landing page for cos — an AI agent that handles the 
+The angle that makes it different: it connects to your GitHub 
+Live link: cos-landingpage.vercel.app
+I almost charged $29/mo. Then I remembered: solo founders are 
+Final pricing:
+Solo: $19/mo (500 credits)
+Founder: $49/mo (2,000 credits)
+Team: $129/mo (6,000 credits)
+Waitlist gets 50% off first 3 months. After that, full price.
+Why credit-based instead of unlimited? Because LLM APIs cost 
+Margin math: ~85% gross margin at 50 users using multi-model 
+Posted to 3 subreddits last night before bed. Woke up to:
+8 unique visitors
+24 page views (3 pages per visitor — they're scrolling)
+1 signup (12.5% conversion rate)
+1 detailed feedback comment from a 3-year solo founder
+That feedback was worth more than 100 upvotes. They confirmed 
+Today: Post to more communities (DEV.to obviously, HN tonight)
+This week: DM 10 founders directly for deeper feedback
+Day 14: Decide based on data:
+30+ signups + meaningful feedback → build it
+10-30 signups → iterate positioning
+<10 signups → kill it or pivot
+I'll post a follow-up either way. Transparency is the only 
+If you're a solo founder sitting on an idea, scared to build 
+Build a landing page. Ship it. Share it. See if anyone cares. 
+Worst case: you waste a week instead of 6 months.
+If this resonates, I'd love your honest feedback on the 
+cos-landingpage.vercel.app
+Roast it, point out positioning gaps, tell me if the pain 
+Thanks for reading.]]></summary>
         <author>
-            <name>arnostorg</name>
+            <name>Sipapas Jaitaskul</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How I built a resume MCP in an hour]]></title>
-        <id>https://dev.to/david_hyland_08f49962a50f/how-i-built-a-resume-mcp-in-an-hour-3o4m</id>
-        <link href="https://dev.to/david_hyland_08f49962a50f/how-i-built-a-resume-mcp-in-an-hour-3o4m"/>
-        <updated>2026-04-15T04:58:43.000Z</updated>
-        <summary type="html"><![CDATA[How I built a resume MCP in an hour
+        <title type="html"><![CDATA[[Nestia] Well-Designed Backend Fully Automated Frontend Development]]></title>
+        <id>https://dev.to/samchon/nestia-well-designed-backend-fully-automated-frontend-development-45d9</id>
+        <link href="https://dev.to/samchon/nestia-well-designed-backend-fully-automated-frontend-development-45d9"/>
+        <updated>2026-04-15T07:16:11.000Z</updated>
+        <summary type="html"><![CDATA[1. Preface
 
 
-I’ve been wanting to connect Rezi to Claude for a while. Not a chatbot, not a wrapper — an actual MCP server so Claude can read and write resumes that are actually ATS optimized. MCPs have been getting increasingly popular and it felt like the right time to just do it.
-Rezi’s backend is a Go monorepo. Resumes live in Firestore, auth runs through Firebase. I already had services reading and writing resume documents and a [standard data structure for resumes (https://github.com/rezi-io/resume-standard), so the data layer was basically done. The missing piece was an interface Claude (or any other agent) could talk to.
-Go, mark3labs/mcp-go, deployed on Cloud Run behind our existing API gateway. The initial server exposed three tools: list_resumes, read_res…]]></summary>
+Well-designed backend + Nestia-generated SDK = AI fully automates frontend development.
+This project proves the point: with a Nestia-generated SDK and a single frontend prompt (CLAUDE.md), a well-designed backend was enough to produce an enterprise-scale shopping mall frontend in one shot.
+That is why a good SDK is no longer just a developer convenience. When it is generated from a backend with careful design and documentation, it becomes high-quality context engineering for AI.
+Demonstration Repository: https://github.com/samchon/shopping
+
+
+SDK: collection of DTO types, typed fetch functions, and a mockup simulator
+
+
+
+Nestia: SDK generator for NestJS
+Nestia Editor: SDK generation from Swagger/OpenAPI
+You can run the project directly from the repository:
+git clone https://gith…]]></summary>
         <author>
-            <name>David Hyland</name>
+            <name>Jeongho Nam</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Blueprint: JATS Structural Integrity: The XML-First Framework]]></title>
-        <id>https://dev.to/sufyanism/blueprint-jats-structural-integrity-the-xml-first-framework-3l7a</id>
-        <link href="https://dev.to/sufyanism/blueprint-jats-structural-integrity-the-xml-first-framework-3l7a"/>
-        <updated>2026-04-15T04:58:35.000Z</updated>
-        <summary type="html"><![CDATA[Architectural Foundations of JATS-Centric Editorial Systems: A Comprehensive Framework for XML-First Scholarly Production and Machine-Readable Knowledge
-Most of the editorial work still depends on a variety of formats, including Word documents, PDFs, emails, and unstructured XML. These tools are familiar and comfortable, but they cause problems such as inconsistency, duplication of work, and incompatibility. With scholarly publications distributed in various repositories, indexing systems, and digital collections, fragmentation is now a major problem.
-Document-centric models will not work if your workflow includes metadata collection, semantic indexing, cross-platform distribution, and preservation. Plugins and converters that attempt to fix things one by one only make things worse. The re…]]></summary>
+        <title type="html"><![CDATA[Building NEXUS: How I Architected a Multi-Agent AI System on Google Cloud in 48 Hours]]></title>
+        <id>https://dev.to/amulya631/building-nexus-how-i-architected-a-multi-agent-ai-system-on-google-cloud-in-48-hours-13n</id>
+        <link href="https://dev.to/amulya631/building-nexus-how-i-architected-a-multi-agent-ai-system-on-google-cloud-in-48-hours-13n"/>
+        <updated>2026-04-15T07:14:09.000Z</updated>
+        <summary type="html"><![CDATA[`One sentence. Four AI agents. Real results — in under 4 seconds. Here's everything I learned building NEXUS for the Gen AI Academy APAC Edition hackathon.
+How many apps do you open on a typical workday just to stay organized? Calendar. Task manager. Notes app. Each one lives in its own silo, and switching between them adds up to a surprising amount of mental overhead.
+I wanted to build something different — a single conversational interface where you say what you need to do, and the system figures out the rest. Not a chatbot that gives you a list of suggestions. An actual agent that acts.
+That idea became NEXUS.
+NEXUS is a fully deployed multi-agent AI system on Google Cloud Platform. You send one natural language request, and NEXUS automatically coordinates specialized AI agents to compl…]]></summary>
         <author>
-            <name>Sufyan bin Uzayr</name>
+            <name>Batila Amulya</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Your terminal is mass, here are 280+ tools to fix it]]></title>
-        <id>https://dev.to/thegdsks/your-terminal-is-mass-here-are-280-tools-to-fix-it-4bc5</id>
-        <link href="https://dev.to/thegdsks/your-terminal-is-mass-here-are-280-tools-to-fix-it-4bc5"/>
-        <updated>2026-04-15T04:58:17.000Z</updated>
-        <summary type="html"><![CDATA[I mass-replaced every classic Unix tool in my dotfiles. It took a few years of stumbling into alternatives, and at some point I realized the list was absurdly long. So I organized it.
- / 
-        awesome-modern-cli
-      
-    
-Awesome Modern CLI
-A curated list of modern alternatives to classic command-line tools.
-The terminal is having a renaissance. Faster, prettier, smarter tools are replacing the Unix classics you've used for decades. This list helps you find them.
-Contribute
-Highlights
-bat - A cat clone with syntax highlighting and Git integration
+        <title type="html"><![CDATA[Laravel Valet Certificate Showing on analytics.google.com? Root Cause and Fix]]></title>
+        <id>https://dev.to/recca0120/laravel-valet-certificate-showing-on-analyticsgooglecom-root-cause-and-fix-po3</id>
+        <link href="https://dev.to/recca0120/laravel-valet-certificate-showing-on-analyticsgooglecom-root-cause-and-fix-po3"/>
+        <updated>2026-04-15T07:13:46.000Z</updated>
+        <summary type="html"><![CDATA[Originally published at recca0120.github.io
+You open analytics.google.com in Chrome and click the certificate — and see this:
+Subject: filament-scu.test
+Issuer: Laravel Valet CA Self Signed CN
+
+That's not Google's certificate. That's your local Laravel Valet CA leaking onto an external site.
+This isn't a browser bug or a Google problem — it's your local dev environment intercepting traffic it shouldn't.
+Valet builds a local dev stack out of three components:
+dnsmasq: resolves *.test domains to 127.0.0.1
 
 
+nginx: listens on 127.0.0.1, routes requests to local sites by server_name
 
 
-eza - A modern replacement for ls with colors, icons, and git integration
-
-
-
-
-delta - A syntax-highlighting pager for git, diff, and grep output
-
-
-
-
-lazygit - A simple terminal UI for git commands
-
-
-
-
-btop - A resource monitor with beauti…]]></summary>
+Valet CA: signs HTTPS certificates for each .test site
+In a correct setup, /etc/resolver/test scopes only *.test lookups to dnsmasq; external domains go through the system DNS. The two never cross paths.
+But ther…]]></summary>
         <author>
-            <name>GDS K S</name>
+            <name>Recca Tsai</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How I Served 80,000+ Recommendations in Under 50ms]]></title>
-        <id>https://dev.to/mahirr/how-i-served-80000-recommendations-in-under-50ms-1l32</id>
-        <link href="https://dev.to/mahirr/how-i-served-80000-recommendations-in-under-50ms-1l32"/>
-        <updated>2026-04-15T04:53:56.000Z</updated>
-        <summary type="html"><![CDATA[Every recommendation tutorial I found was either a Netflix black box or a 1,000-row Jupyter notebook toy. I wanted something in between — real, deployable, and something I actually understood.
-What "Hybrid" Means
-Content-Based Filtering — works on day one, no user history needed. But it traps users in a bubble.
-A hybrid blends both:
-score_hybrid(i) = α · score_cb(i) + (1 - α) · score_cf(i)
+        <title type="html"><![CDATA[You Vibe-Coded. Now What?]]></title>
+        <id>https://dev.to/srbhr/you-vibe-coded-now-what-42on</id>
+        <link href="https://dev.to/srbhr/you-vibe-coded-now-what-42on"/>
+        <updated>2026-04-15T07:11:51.000Z</updated>
+        <summary type="html"><![CDATA[I was at an AI event a few weeks ago when someone casually mentioned they'd vibe-coded their own CRM. Prompted into existence in a day to support their use-case. It sounded impressive in the moment. But it got me thinking about a question that keeps showing up on X, on LinkedIn, in Slack channels: ~how much building is actually enough?~
+The build-versus-buy debate isn't new. People have been arguing about it (if you’re on X, Reddit, or LinkedIn, it feels like we’ve been arguing for ages). And it has been in different forms, wrappers, it’s just Excel, but with a better UI, and other flavors.
 
-Inkpick defaults α = 0.65 — content-biased for cold-start users, shifting toward collaborative as history grows.
-plaintext
-The Architecture
-Client (Vanilla JS)
-       │
-  FastAPI (Async)
-  ┌────┴────┬──────────┐
-TF-IDF   Latent    Levenshtein
-+ CSR    Factor    Fuzzy Search
-  └────┬────┘
-  Hybrid Layer
-       │
- Service Registry
-(cinema / audio / edu)
-
-Each domain is fully decoupled. Adding a new domain…]]></summary>
+What changed is that AI made the "build" side feel almost free. You can prompt your way to a working prototype in a few hours. The problem is that prototypes and production systems are very different t…]]></summary>
         <author>
-            <name>Mayank Parashar</name>
+            <name>𝚂𝚊𝚞𝚛𝚊𝚋𝚑 𝚁𝚊𝚒</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stop Coding Through Remote Desktop. Use VS Code Remote Tunnels Instead]]></title>
+        <id>https://dev.to/playfulprogramming/stop-coding-through-remote-desktop-use-vs-code-remote-tunnels-instead-37oc</id>
+        <link href="https://dev.to/playfulprogramming/stop-coding-through-remote-desktop-use-vs-code-remote-tunnels-instead-37oc"/>
+        <updated>2026-04-15T07:10:40.000Z</updated>
+        <summary type="html"><![CDATA[There is a pattern I keep seeing with customer environments.
+You get access to a VM for development. The code stays there. The dependencies are already there. The network access is there too. On paper, it looks fine.
+Then reality starts.
+You are expected to work through Remote Desktop, as if software development were the same thing as clicking around a server. It is not. Remote Desktop is tolerable for admin work. For actual coding, it is a bad experience. The editor feels disconnected from your normal workflow. Shortcuts feel wrong. Terminals are awkward. Moving between tools is slower than it should be. You are technically “inside” the environment, but you are not really productive.
+In my case, there was another constraint. I could not even sign into VS Code on the customer VM with my ow…]]></summary>
+        <author>
+            <name>Emanuele Bartolesi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Agentic Enterprise Has an Architecture Now: Micro, Macro, and the Missing Governance Layer]]></title>
+        <id>https://dev.to/itskondrat/the-agentic-enterprise-has-an-architecture-now-micro-macro-and-the-missing-governance-layer-29nj</id>
+        <link href="https://dev.to/itskondrat/the-agentic-enterprise-has-an-architecture-now-micro-macro-and-the-missing-governance-layer-29nj"/>
+        <updated>2026-04-15T07:07:54.000Z</updated>
+        <summary type="html"><![CDATA[CIO published a framework this week that gave the agentic enterprise its first clear architectural diagram. Micro agents execute narrow tasks. Macro agents orchestrate workflows. But the governance layer - who defines outcomes and authorization scope - is unnamed.
+As someone who's been building and governing agent workflows for the past year, I want to walk through what this architecture actually looks like in practice, and why the governance gap matters more than most engineering teams realize.
+The micro/macro split is intuitive if you've built any multi-agent system.
+Micro agents are scoped tight. One tool, one task, one output format. Think: "validate this CSV against the schema," "summarize this PR," "check this deployment status." They're the functions in your agent pipeline.
+Macro ag…]]></summary>
+        <author>
+            <name>Mykola Kondratiuk</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why I Built TokenBar: AI Spend Should Not Be a Monthly Surprise]]></title>
+        <id>https://dev.to/godnick/why-i-built-tokenbar-ai-spend-should-not-be-a-monthly-surprise-56dp</id>
+        <link href="https://dev.to/godnick/why-i-built-tokenbar-ai-spend-should-not-be-a-monthly-surprise-56dp"/>
+        <updated>2026-04-15T07:07:42.000Z</updated>
+        <summary type="html"><![CDATA[A lot of AI cost advice starts too late.
+It tells you to review the bill after the damage is done.
+That never worked for me.
+The real problem is not that AI is expensive. The problem is that the expensive part happens quietly. One more prompt. One more rewrite. One more huge context dump. Then you look up later and realize you spent money on a conversation that had stopped being useful.
+That is why I built TokenBar.
+TokenBar is a macOS menu bar app that keeps token usage and spend visible while I am actually working. Not in a dashboard. Not in a tab I will check later. Right there in the menu bar, where the number can bother me before the bill does.
+That tiny shift changed how I use AI:
+I notice runaway loops faster
+I stop pretending giant context windows are free
+I choose cheaper models when the task does not need the expensive one
+I catch waste while I can still do something about it
+I did not build TokenBar because I wanted another chart.
+If you are shipping with Claude, ChatGPT, Cursor, or any other metered tool, the most useful thing you can do is make the cost visible while you work.
+That is the whole product.]]></summary>
+        <author>
+            <name>Henry Godnick</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building Robust AI Agent Memory Systems in 2026]]></title>
+        <id>https://dev.to/iniyarajan86/building-robust-ai-agent-memory-systems-in-2026-173l</id>
+        <link href="https://dev.to/iniyarajan86/building-robust-ai-agent-memory-systems-in-2026-173l"/>
+        <updated>2026-04-15T07:07:40.000Z</updated>
+        <summary type="html"><![CDATA[Picture this: you've built an AI agent that can handle customer support tickets brilliantly, but it keeps asking the same customer their name and order number in every conversation. Sound familiar? We've all been there — creating agents that work perfectly in isolation but have the memory span of a goldfish.
+The problem isn't your code or your LLM choice. It's that we often focus on the intelligence of our AI agents while overlooking their memory architecture. Without proper memory systems, even the most sophisticated agents become frustrating experiences that users abandon.
+
+Photo by Google DeepMind on Pexels
+Understanding AI Agent Memory Systems
+Types of Memory Every Agent Needs
+Implementing Memory with Vector Databases
+Building Context-Aware Conversations
+Advanced Memory Patterns
+Perfor…]]></summary>
+        <author>
+            <name>Iniyarajan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Peter Steinberger – WhatsApp CLI: sync, search, send]]></title>
+        <id>https://github.com/steipete/wacli</id>
+        <link href="https://github.com/steipete/wacli"/>
+        <updated>2026-04-15T07:04:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MDalgorithms (AI Healthcare) – Hiring Growth Marketer – Remote – $80K-$140K]]></title>
+        <id>https://www.ycombinator.com/companies/mdalgorithms-inc/jobs/LVODKN7-growth-marketer-for-a-rapidly-growing-consumer-ai-healthcare-startup</id>
+        <link href="https://www.ycombinator.com/companies/mdalgorithms-inc/jobs/LVODKN7-growth-marketer-for-a-rapidly-growing-consumer-ai-healthcare-startup"/>
+        <updated>2026-04-15T07:00:18.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[GoPro Announces MISSION 1 Camera Series; Landing In Malaysia Soon]]></title>
+        <id>https://www.lowyat.net/?p=389672</id>
+        <link href="https://www.lowyat.net/2026/389672/gopro-announces-mission-1-camera-series-landing-in-malaysia-soon/"/>
+        <updated>2026-04-15T06:36:21.000Z</updated>
+        <summary type="html"><![CDATA[GoPro has officially introduced an entirely new camera lineup, dubbed the MISSION 1 series. However, rather than being typical action cameras, the company is positioning them as “the world’s smallest, lightest, and most rugged 8K and 4K Open Gate cinema cameras”. The series consists of three models: MISSION 1, MISSION 1 PRO, and MISSION 1 […]
+The post GoPro Announces MISSION 1 Camera Series; Landing In Malaysia Soon appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Kiran Ganesan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ethereum treasury firm Bitmine reports $3.8 billion Q1 loss in latest filing]]></title>
+        <id>3071c271-9288-4250-b7af-ce13c4ff4cd9</id>
+        <link href="https://www.coindesk.com/markets/2026/04/15/ethereum-treasury-firm-bitmine-reports-usd3-8-billion-q1-loss-in-latest-filing"/>
+        <updated>2026-04-15T06:17:57.000Z</updated>
+        <summary type="html"><![CDATA[The largest corporate ether holder posted a $3.8 billion quarterly loss as its pivot from mining to ETH accumulation continues.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sony Adds New Soundbars, Subwoofers, Speakers To Bravia Theatre Lineup]]></title>
+        <id>https://www.lowyat.net/?p=389646</id>
+        <link href="https://www.lowyat.net/2026/389646/sony-new-soundbars-subwoofers-speakers-bravia-theatre/"/>
+        <updated>2026-04-15T06:17:55.000Z</updated>
+        <summary type="html"><![CDATA[Beyond the Bravia 3 II TV, Sony also announced new members to what it calls its Bravia Threatre lineup. These are two new soundbars, two potentially accompanying subwoofers, and a pair of wireless speakers. More specifically, these are the Bravia Theatre Bar 7 and Bar 5, the Bravia Theatre Sub 9 and Sub 8, and the Bravia […]
+The post Sony Adds New Soundbars, Subwoofers, Speakers To Bravia Theatre Lineup appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Ian Chee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin developers are trying to build quantum defenses. Your coins could pay the price.]]></title>
+        <id>af7b9be3-1f9b-4ab6-a953-24d013cb62a4</id>
+        <link href="https://www.coindesk.com/tech/2026/04/15/bitcoin-developers-are-trying-to-build-quantum-defenses-your-coins-could-pay-the-price"/>
+        <updated>2026-04-15T06:05:03.000Z</updated>
+        <summary type="html"><![CDATA[A proposal has been updated on Bitcoin's official repository, calling for freezing of quantum-vulnerable coins.]]></summary>
+        <author>
+            <name>Omkar Godbole</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building trust in the AI era with privacy-led UX]]></title>
+        <id>https://www.technologyreview.com/?p=1135530</id>
+        <link href="https://www.technologyreview.com/2026/04/15/1135530/building-trust-in-the-ai-era-with-privacy-led-ux/"/>
+        <updated>2026-04-15T06:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The practice of privacy-led user experience (UX) is a design philosophy that treats transparency around data collection and usage as an integral part of the customer relationship. An undertapped opportunity in digital marketing, privacy-led UX treats user consent not as a tick-box compliance exercise, but rather as the first overture in an ongoing customer relationship.…]]></summary>
+        <author>
+            <name>MIT Technology Review Insights</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Amazon to acquire Globalstar and expand Amazon Leo satellite network]]></title>
+        <id>https://www.businesswire.com/news/home/20260414237496/en/Amazon-to-Acquire-Globalstar-and-Expand-Amazon-Leo-Satellite-Network</id>
+        <link href="https://www.businesswire.com/news/home/20260414237496/en/Amazon-to-Acquire-Globalstar-and-Expand-Amazon-Leo-Satellite-Network"/>
+        <updated>2026-04-15T05:54:29.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Alienware Launches AW2726DM QD-OLED Gaming Monitor]]></title>
+        <id>https://www.lowyat.net/?p=389666</id>
+        <link href="https://www.lowyat.net/2026/389666/alienware-launches-aw2726dm-qd-oled-gaming-monitor/"/>
+        <updated>2026-04-15T05:49:19.000Z</updated>
+        <summary type="html"><![CDATA[Alienware has launched a new gaming monitor, the AW2726DM. It is considered to be a lower-cost, budget-friendly gaming monitor, although the specs of it suggest it to be a little more than that. Specs-wise, the AW2726DM is a 27-inch QD-OLED gaming monitor that has QHD (2,560 x 1,440) resolution, HDR support, and a high refresh […]
+The post Alienware Launches AW2726DM QD-OLED Gaming Monitor appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>John Law</name>
         </author>
     </entry>
     <entry>
@@ -296,37 +369,6 @@ Each domain is fully decoupled. Adding a new domain…]]></summary>
         <summary type="html"><![CDATA[Breakout backed by institutional flows and whale buying, with Japan adoption adding a fresh demand narrative.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I was tired of sketchy online JSON formatters, so I built a suite of 100+ client-side developer utilities]]></title>
-        <id>https://dev.to/hasanul_58d5368cddadc7dff/i-was-tired-of-sketchy-online-json-formatters-so-i-built-a-suite-of-100-client-side-developer-5cn7</id>
-        <link href="https://dev.to/hasanul_58d5368cddadc7dff/i-was-tired-of-sketchy-online-json-formatters-so-i-built-a-suite-of-100-client-side-developer-5cn7"/>
-        <updated>2026-04-15T04:52:58.000Z</updated>
-        <summary type="html"><![CDATA[As developers, we all have that exact same workflow. You get a massive blob of JSON from an API, or a JWT token from a staging environment, and you instinctively Google "JSON Formatter" or "JWT Decoder".
-You click the first result. The page is plastered with auto-playing video ads, a massive cookie consent banner blocks your screen, and the tool itself looks like it hasn't been updated since 2012.
-Worst of all? You have no idea if the sensitive staging data you just pasted into the textbox is being logged on a random server somewhere.
-Enter FreeToolkit 🛠️
-FreeToolkit.co — a platform containing over 100+ raw, focused developer utilities designed around speed, modern UX, and strict privacy.
-![FreeToolkit homepage dashboard showing available tools
-The Architecture: 100% Client-Side
-privacy by default. When dealing with Base64 Decoders, JWT Decoders, or converting sensitive CSV data, sending payloads back to a Node.js server for processing is a massive security risk. To solve this, every single one of the 100+ tools runs entirely in your browser using client-side JavaScript.
-No API calls are made to process your data.
-Everything computes instantly locally.
-Your data never leaves your machine.
-Built for Speed (Next.js)
-use the global sidebar search to instantly filter through utilities.
-Natively respects your system's Dark/Light mode preferences.
-The Toolkit
-📦 JSON Tools (Formatters, Validators, Minifiers, Diff Checkers)
-🔐 Cryptography (Bcrypt, SHA-256, HMAC Generators, MD5)
-🎨 CSS Tools (Box Shadow Generators, Clip-Path Builders, Minifiers)
-⏱️ Date & Time (Unix Timestamp Converters, ISO Formatters)
-📄 Text Utilities (Case Converters, Slug Generators, Diff tools)
-I would absolutely love to hear feedback from the Dev.to community. If there is a missing utility that you constantly use and want added, let me know in the comments below!
-👉 Check it out here: FreeToolkit.co]]></summary>
-        <author>
-            <name>Hasanul</name>
         </author>
     </entry>
     <entry>
@@ -341,19 +383,17 @@ The post New DJI Lito Drone Lineup To Launch Next Week appeared first on Lowyat.
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Blueprint: Publishing Bloat-Free Flutter Packages to pub.dev]]></title>
-        <id>https://dev.to/sufyanism/blueprint-publishing-bloat-free-flutter-packages-to-pubdev-jp4</id>
-        <link href="https://dev.to/sufyanism/blueprint-publishing-bloat-free-flutter-packages-to-pubdev-jp4"/>
-        <updated>2026-04-15T04:52:32.000Z</updated>
-        <summary type="html"><![CDATA[A Deterministic Engineering Blueprint for Minimal Dependency Surfaces and Optimal Compilation
-There's a lot of misunderstanding about Flutter packages and how they provide lightweight extension solutions; in reality, many are heavyweight and can contain many dependencies that create large file sizes, extended build times, and greatly reduce the likelihood that you will be able to use these tools as a developer. It's common practice for developers to choose packages without regard for engineering principles for building good, consistent, and high-performing software with Flutter.
-When considered in aggregate, these tend to make it more difficult to develop applications with Flutter in a performant manner. Packages that are too large will slow CI/CD processes, delay application startup, and …]]></summary>
+        <title type="html"><![CDATA[Fixing a 20-year-old bug in Enlightenment E16]]></title>
+        <id>https://iczelia.net/posts/e16-20-year-old-bug/</id>
+        <link href="https://iczelia.net/posts/e16-20-year-old-bug/"/>
+        <updated>2026-04-15T04:47:00.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Sufyan bin Uzayr</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Saying Goodbye to Agile]]></title>
+        <title type="html"><![CDATA[Saying goodbye to Agile]]></title>
         <id>https://lewiscampbell.tech/blog/260414.html</id>
         <link href="https://lewiscampbell.tech/blog/260414.html"/>
         <updated>2026-04-15T04:45:37.000Z</updated>
@@ -469,17 +509,6 @@ The post Own A Piece Of The Game With The Merchantrade Money FIFA World Cup 2026
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Booking.com Confirms Data Breach, Says Guest Booking Details Accessed]]></title>
-        <id>https://www.lowyat.net/?p=389603</id>
-        <link href="https://www.lowyat.net/2026/389603/booking-com-confirms-data-breach-april-2026/"/>
-        <updated>2026-04-15T01:58:53.000Z</updated>
-        <summary type="html"><![CDATA[Booking.com has confirmed a data breach involving unauthorised access to customer booking details, following what it described as “suspicious activity” on its platform. Via an email sent to users, which was shared on Reddit, the company said “unauthorised third parties” were able to access “some of our guests’ booking information”, prompting an immediate response to […]
-The post Booking.com Confirms Data Breach, Says Guest Booking Details Accessed appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Heirul Kamel</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Don't feel like exercising? Maybe it's the wrong time of day for you]]></title>
         <id>https://www.bbc.com/news/articles/cd6lzpxwx50o</id>
         <link href="https://www.bbc.com/news/articles/cd6lzpxwx50o"/>
@@ -490,30 +519,10 @@ The post Booking.com Confirms Data Breach, Says Guest Booking Details Accessed a
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Apple App Store threatened to remove Grok over deepfakes: Letter]]></title>
-        <id>https://www.nbcnews.com/tech/tech-news/apple-threat-remove-grok-app-store-deepfake-letter-musk-x-ai-rcna331677</id>
-        <link href="https://www.nbcnews.com/tech/tech-news/apple-threat-remove-grok-app-store-deepfake-letter-musk-x-ai-rcna331677"/>
-        <updated>2026-04-14T23:41:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Stop Flock]]></title>
         <id>https://stopflock.com/</id>
         <link href="https://stopflock.com/"/>
         <updated>2026-04-14T21:56:05.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Free, fast diagnostic tools for DNS, email authentication, and network security]]></title>
-        <id>https://mrdns.com/</id>
-        <link href="https://mrdns.com/"/>
-        <updated>2026-04-14T20:42:21.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -650,16 +659,6 @@ The post Booking.com Confirms Data Breach, Says Guest Booking Details Accessed a
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[OpenSSL 4.0.0]]></title>
-        <id>https://github.com/openssl/openssl/releases/tag/openssl-4.0.0</id>
-        <link href="https://github.com/openssl/openssl/releases/tag/openssl-4.0.0"/>
-        <updated>2026-04-14T17:45:34.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Show HN: Plain – The full-stack Python framework designed for humans and agents]]></title>
         <id>https://github.com/dropseed/plain</id>
         <link href="https://github.com/dropseed/plain"/>
@@ -737,16 +736,6 @@ The post Booking.com Confirms Data Breach, Says Guest Booking Details Accessed a
         <summary type="html"><![CDATA[The announcement comes as an increasing number of companies move into prediction markets, an industry that is estimated to grow to $1 trillion by 2030]]></summary>
         <author>
             <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: LangAlpha – what if Claude Code was built for Wall Street?]]></title>
-        <id>https://github.com/ginlix-ai/langalpha</id>
-        <link href="https://github.com/ginlix-ai/langalpha"/>
-        <updated>2026-04-14T14:48:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -929,16 +918,6 @@ The post Booking.com Confirms Data Breach, Says Guest Booking Details Accessed a
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A fake Ledger app on the Apple App Store drained $9.5 million in crypto]]></title>
-        <id>e793b844-d3b8-4969-abfb-c1df854ef34f</id>
-        <link href="https://www.coindesk.com/business/2026/04/14/a-fake-ledger-app-on-the-apple-app-store-just-drained-usd9-5-million-in-crypto"/>
-        <updated>2026-04-14T11:12:37.000Z</updated>
-        <summary type="html"><![CDATA[A malicious Ledger Live clone slipped onto Apple’s App Store, draining millions from dozens of victims across multiple blockchains in a week-long phishing campaign.]]></summary>
-        <author>
-            <name>Oliver Knight</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Coming soon: 10 Things That Matter in AI Right Now]]></title>
         <id>https://www.technologyreview.com/?p=1135298</id>
         <link href="https://www.technologyreview.com/2026/04/14/1135298/coming-soon-10-things-that-matter-in-ai-right-now/"/>
@@ -946,38 +925,6 @@ The post Booking.com Confirms Data Breach, Says Guest Booking Details Accessed a
         <summary type="html"><![CDATA[Each year we compile our 10 Breakthrough Technologies list, featuring our educated predictions for which technologies will have the biggest impact on how we live and work. This year, however, we had a dilemma. While our final picks encompass all our core coverage areas (energy, AI, and biotech, plus a few more), our 2026 list…]]></summary>
         <author>
             <name>Niall Firth, Amy Nordrum</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ShinyHunters Release Hacked Rockstar Games Data]]></title>
-        <id>https://www.lowyat.net/?p=389571</id>
-        <link href="https://www.lowyat.net/2026/389571/shinyhunters-make-good-threat-releases-rockstar-games-data/"/>
-        <updated>2026-04-14T10:57:24.000Z</updated>
-        <summary type="html"><![CDATA[Over the weekend, loose hacker collective ShunyHunters claim to have, in a pretty roundabout way, hit Rockstar Games. The group threatened the publisher to either pay a ransom, or have their data leaked. In response, the company claims that only “a limited amount of non-material company information was accessed”. In turn, the hacker group decided […]
-The post ShinyHunters Release Hacked Rockstar Games Data appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Ian Chee</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Deutsche Börse takes 1.5% stake in crypto exchange Kraken for $200 million]]></title>
-        <id>12ba86e2-2696-4caa-b35e-22e883d6f36b</id>
-        <link href="https://www.coindesk.com/business/2026/04/14/deutsche-boerse-takes-1-5-stake-in-crypto-exchange-kraken-for-usd200-million"/>
-        <updated>2026-04-14T10:51:02.000Z</updated>
-        <summary type="html"><![CDATA[Deutsche Börse teamed up with Kraken in December to bridge traditional and digital markets and help expedite institutional cryptocurrency adoption in Europe.]]></summary>
-        <author>
-            <name>Jamie Crawley</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Seven Million South Korean Mobile Users To Get Free Unlimited Data After Hitting Monthly Quotas]]></title>
-        <id>https://www.lowyat.net/?p=389581</id>
-        <link href="https://www.lowyat.net/2026/389581/seven-million-south-korean-mobile-users-to-get-free-unlimited-data-after-hitting-monthly-quotas/"/>
-        <updated>2026-04-14T10:15:00.000Z</updated>
-        <summary type="html"><![CDATA[Seven million mobile users in South Korea will be given free unlimited data upon exhausting their monthly data caps. There is just one catch, though: they will be limited to a maximum speed of 400 Kbps. The ruling comes after the South Korean Ministry of Science and ICT concluded that the country’s three major carriers, […]
-The post Seven Million South Korean Mobile Users To Get Free Unlimited Data After Hitting Monthly Quotas appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>John Law</name>
         </author>
     </entry>
     <entry>
@@ -998,36 +945,6 @@ The post Seven Million South Korean Mobile Users To Get Free Unlimited Data Afte
         <summary type="html"><![CDATA[New: One stream. Now it goes everywhere you need it. Dev, staging, and prod. Real-time processing and long-term storage. No duplicate pipelines, no config drift, and no extra cost.]]></summary>
         <author>
             <name>Quicknode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Backblaze has stopped backing up OneDrive and Dropbox folders and maybe others]]></title>
-        <id>https://rareese.com/posts/backblaze/</id>
-        <link href="https://rareese.com/posts/backblaze/"/>
-        <updated>2026-04-14T08:30:27.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Introspective Diffusion Language Models]]></title>
-        <id>https://introspective-diffusion.github.io/</id>
-        <link href="https://introspective-diffusion.github.io/"/>
-        <updated>2026-04-14T07:57:33.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[DaVinci Resolve – Photo]]></title>
-        <id>https://www.blackmagicdesign.com/products/davinciresolve/photo</id>
-        <link href="https://www.blackmagicdesign.com/products/davinciresolve/photo"/>
-        <updated>2026-04-14T02:25:15.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1131,13 +1048,13 @@ The post Seven Million South Korean Mobile Users To Get Free Unlimited Data Afte
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[You have no choice in reading this article—maybe]]></title>
-        <id>https://www.technologyreview.com/?p=1135162</id>
-        <link href="https://www.technologyreview.com/2026/04/13/1135162/uri-maoz-does-free-will-exist/"/>
-        <updated>2026-04-13T10:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Uri Maoz loved doing his human research, back when he was getting his PhD. He was studying a very specific topic in computational neuroscience: how the brain instructs our arms to move and how our gray matter in turn perceives that motion.  Then his professor asked him to deliver an undergrad lecture. Maoz assumed his…]]></summary>
+        <title type="html"><![CDATA[My adventure in designing API keys]]></title>
+        <id>https://vjay15.github.io/blog/apikeys/</id>
+        <link href="https://vjay15.github.io/blog/apikeys/"/>
+        <updated>2026-04-12T13:17:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Sarah Scoles</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1145,6 +1062,16 @@ The post Seven Million South Korean Mobile Users To Get Free Unlimited Data Afte
         <id>https://rozumem.xyz/posts/14</id>
         <link href="https://rozumem.xyz/posts/14"/>
         <updated>2026-04-12T12:40:34.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Founders Need to Be Ruthless When Chasing Deals]]></title>
+        <id>https://steveblank.com/2024/04/16/founders-need-to-be-ruthless-when-chasing-deals/</id>
+        <link href="https://steveblank.com/2024/04/16/founders-need-to-be-ruthless-when-chasing-deals/"/>
+        <updated>2026-04-12T05:09:37.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1161,7 +1088,7 @@ The post Seven Million South Korean Mobile Users To Get Free Unlimited Data Afte
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Picasso's Guernica (Gigapixel)]]></title>
+        <title type="html"><![CDATA[Picasso’s Guernica (Gigapixel)]]></title>
         <id>https://guernica.museoreinasofia.es/gigapixel/#3/63.11/-120.59</id>
         <link href="https://guernica.museoreinasofia.es/gigapixel/#3/63.11/-120.59"/>
         <updated>2026-04-11T08:27:06.000Z</updated>
@@ -1201,6 +1128,16 @@ The post Seven Million South Korean Mobile Users To Get Free Unlimited Data Afte
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[PCBWay sponsorship: full-size SD module for Arduino projects]]></title>
+        <id>https://www.colino.net/wordpress/archives/2026/04/10/pcbway-sponsorship-full-size-sd-module-for-arduino-projects/</id>
+        <link href="https://www.colino.net/wordpress/archives/2026/04/10/pcbway-sponsorship-full-size-sd-module-for-arduino-projects/"/>
+        <updated>2026-04-10T19:41:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Understanding Clojure's Persistent Vectors, pt. 1 (2013)]]></title>
         <id>https://hypirion.com/musings/understanding-persistent-vector-pt-1</id>
         <link href="https://hypirion.com/musings/understanding-persistent-vector-pt-1"/>
@@ -1211,7 +1148,7 @@ The post Seven Million South Korean Mobile Users To Get Free Unlimited Data Afte
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[guide.world: A compendium of travel guides]]></title>
+        <title type="html"><![CDATA[Guide.world: A compendium of travel guides]]></title>
         <id>https://guide.world/</id>
         <link href="https://guide.world/"/>
         <updated>2026-04-09T18:17:32.000Z</updated>
