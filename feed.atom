@@ -1,289 +1,319 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-05-09T16:49:01.484Z</id>
+    <id>urn:2026-05-09T17:44:36.443Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-05-09T16:49:01.484Z</updated>
+    <updated>2026-05-09T17:44:36.443Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[How I Gave My Clients a Direct Line Into My App's Backlog Using OSC]]></title>
-        <id>https://dev.to/oscdev/how-i-gave-my-clients-a-direct-line-into-my-apps-backlog-using-osc-1p8m</id>
-        <link href="https://dev.to/oscdev/how-i-gave-my-clients-a-direct-line-into-my-apps-backlog-using-osc-1p8m"/>
-        <updated>2026-05-09T16:45:06.000Z</updated>
-        <summary type="html"><![CDATA[How I Gave My Clients a Direct Line Into My App's Backlog Using OSC
+        <title type="html"><![CDATA[Why I stopped using exceptions for control flow in my .NET 8 APIs]]></title>
+        <id>https://dev.to/fenixkit/why-i-stopped-using-exceptions-for-control-flow-in-my-net-8-apis-29j2</id>
+        <link href="https://dev.to/fenixkit/why-i-stopped-using-exceptions-for-control-flow-in-my-net-8-apis-29j2"/>
+        <updated>2026-05-09T17:36:59.000Z</updated>
+        <summary type="html"><![CDATA[Why I stopped using exceptions for control flow in my .NET 8 APIs
 
 
-Every developer who does client work eventually hits the same wall. The client has feedback. They drop it in Slack, copy someone on an email, or bring it up in a call. You write it down, convert it into a ticket, guess at the priority, and try to keep the context intact. Half the time you lose something. The other half you're playing telephone between what the client meant and what ends up in the backlog.
-I wanted to cut that loop out entirely.
-I run a few apps on Eyevinn Open Source Cloud (OSC), a managed cloud platform where you deploy your own code alongside 180+ unmodified open source services, without touching Kubernetes or DevOps. Last week I used the new My Apps Collaborators feature to give clients a direct line …]]></summary>
+For a long time, my .NET APIs looked like this:
+public async Task<Product> GetByIdAsync(string id)
+{
+    var product = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+    if (product is null)
+        throw new KeyNotFoundException($"Product with id '{id}' was not found.");
+
+    return product;
+}
+
+And in the endpoint:
+app.MapGet("/api/products/{id}", async (string id, IProductRepository repo) =>
+{
+    try
+    {
+        var product = await repo.GetByIdAsync(id);
+        return Results.Ok(product);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return Results.NotFound(ex.Message);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+});
+
+It worked. But every endpoint …]]></summary>
         <author>
-            <name>Jonas Birmé</name>
+            <name>fenixkit</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Anthropic hit B ARR in 16 months. I went looking for where the money is actually coming from.]]></title>
-        <id>https://dev.to/thegdsks/anthropic-hit-b-arr-in-16-months-i-went-looking-for-where-the-money-is-actually-coming-from-5f25</id>
-        <link href="https://dev.to/thegdsks/anthropic-hit-b-arr-in-16-months-i-went-looking-for-where-the-money-is-actually-coming-from-5f25"/>
-        <updated>2026-05-09T16:41:10.000Z</updated>
-        <summary type="html"><![CDATA[A revenue chart that goes vertical does not tell you who pays. It tells you who gets charged. 
-A friend who runs infrastructure at a 200 person SaaS company called me on Monday. He had just gotten the quarterly bill from his AI vendor through an enterprise contract. He told me the number. I asked him to repeat it.
-The number ran high. Not "we are building a foundation model" high. High enough that he had a week of his life mapped out to write a proposal to bring some of the workloads on prem so the company could keep the AI features without the bill getting written into the next earnings call.
-That conversation kept me thinking. Anthropic's annualized revenue went from roughly $1 billion in late 2024 to $30 billion as of April 2026. A 30x in 16 months. That is not a SaaS curve. It is not a…]]></summary>
+        <title type="html"><![CDATA[How I Built a QR-Powered ERP for Garment Factories Using React, Firebase, and a Raspberry Pi 🧵⚡]]></title>
+        <id>https://dev.to/drmcoder/how-i-built-a-qr-powered-erp-for-garment-factories-using-react-firebase-and-a-raspberry-pi-55gc</id>
+        <link href="https://dev.to/drmcoder/how-i-built-a-qr-powered-erp-for-garment-factories-using-react-firebase-and-a-raspberry-pi-55gc"/>
+        <updated>2026-05-09T17:35:16.000Z</updated>
+        <summary type="html"><![CDATA[The Problem: The "Spreadsheet Chaos" of the Sewing Floor
+Before Scan ERP, tracking was done on paper or messy Excel sheets. This led to:
+Payment Disputes: "I sewed 50 sleeves, why am I paid for 40?"
+The Black Hole: A bundle goes missing, and production stops for hours.
+Delayed Decisions: Managers only see "yesterday's" data, never "now."
+The Solution: A "Zero-Install" System of Action 
+We built Scan ERP as a Progressive Web App (PWA) because factory environments hate App Stores. No downloads, no updates—just a QR scan and you're in.  
+The Multi-Engine QR Scanner (99% Accuracy)
+Scanning on cheap, greasy $100 Android phones is hard. To hit 99% accuracy, we didn't rely on one library. We built a hybrid engine combining:
+BarcodeDetector API (Native & Fast)
+jsQR (Fallback) 
+This ensures that even a smudged QR code on a moving bundle gets registered in <200ms.  
+Architecture: From Monolith to Modular
+Initially, our firebase-services.js was a 3,000-line beast. We recently performed a major "Architectural Cleanup":
+
+
+
+Modular Services: Split by domain (Inventory, Piece-rate, Quality Control).  
+Base Service Pattern: A standardized FirebaseBaseService for CRUD, automated timestamps (createdAt, updatedAt), and batch transactions. 
+Bottlenecks Detected in <30 Seconds: If a line slows down, the dashboard turns red instantly.  
+Zero Payment Disputes: Every scan creates a tamper-proof entry in the operator's digital diary.  
+Lessons Learned
+UX > Beauty: Big buttons, high contrast, and voice notifications matter more than fancy animations on a dusty factory floor.  
+PWA is the Future of Enterprise: In 2026, the "install barrier" is the biggest killer of B2B apps. PWAs solve this.  
+Check out the live project here: https://scanerp.pro/
+Are you building niche ERPs or experimenting with PWA scanning? Let's chat in the comments!]]></summary>
         <author>
-            <name>GDS K S</name>
+            <name>Santosh Rijal</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[HCP Terraform: Plan Free vs Crédito Trial — La Guía Definitiva]]></title>
-        <id>https://dev.to/8infinitecloud/hcp-terraform-plan-free-vs-credito-trial-la-guia-definitiva-1kol</id>
-        <link href="https://dev.to/8infinitecloud/hcp-terraform-plan-free-vs-credito-trial-la-guia-definitiva-1kol"/>
-        <updated>2026-05-09T16:37:15.000Z</updated>
-        <summary type="html"><![CDATA[El contexto que necesitas saber
-
-
-En 2023, HashiCorp (ahora parte de IBM) rediseñó completamente el modelo de precios de HCP Terraform (antes Terraform Cloud). El cambio principal: dejaron de cobrar por usuarios y pasaron a cobrar por recursos gestionados — el modelo RUM (Resources Under Management).
-En diciembre de 2025 anunciaron además que el plan Free heredado llegaría a su fin el 31 de marzo de 2026. Hoy conviven dos conceptos que generan confusión: el plan Free mejorado y el crédito Trial de $500. Este post los desmitifica.
-El Free es el punto de entrada permanente a HCP Terraform. No tiene fecha de expiración ni requiere tarjeta de crédito.
-Qué incluye:
-✅ Hasta 500 recursos gestionados (RUM)
-✅ Usuarios ilimitados
-
-✅ 1 run concurrente
-✅ Integración con VCS (GitHub, GitLab, Bitbucket……]]></summary>
+        <title type="html"><![CDATA[When Stability Improves Performance (Threading)]]></title>
+        <id>https://dev.to/tavari/when-stability-improves-performance-threading-3e2p</id>
+        <link href="https://dev.to/tavari/when-stability-improves-performance-threading-3e2p"/>
+        <updated>2026-05-09T17:33:56.000Z</updated>
+        <summary type="html"><![CDATA[The common assumption in concurrent systems is that stability and performance pull in opposite directions. You add safety mechanisms, locks, routing constraints, and you pay for them in throughput. This post is about a case where that assumption turned out to be wrong.
+TokenGate is a token-managed concurrency system. Decorated functions return tokens instead of executing immediately. Those tokens are admitted through a wrapped decorator, routed to per-core mailboxes by weight class, and executed on thread pool workers.  
+This system also includes a successful separation over async coordination and threaded execution, which is a common source of complexity in concurrent systems.
+TokenGate aims to ease this by using tokens as a bridge between the async event loop and a thread pool. The async…]]></summary>
         <author>
-            <name>Hassel Muñoz</name>
+            <name>Joseph Boone</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Zero Values em Go: o que toda variável traz de fábrica]]></title>
-        <id>https://dev.to/oliversieto/zero-values-em-go-o-que-toda-variavel-traz-de-fabrica-32od</id>
-        <link href="https://dev.to/oliversieto/zero-values-em-go-o-que-toda-variavel-traz-de-fabrica-32od"/>
-        <updated>2026-05-09T16:33:02.000Z</updated>
-        <summary type="html"><![CDATA[Em outras linguagens é muito comum variáveis serem inicializadas com undefined ou null.
-Zero Value. 
-Em Go, declarar uma variável sem atribuir nada não é deixar ela "vazia". A linguagem coloca um valor padrão lá. Esse valor depende do tipo.
-var x int
-var s string
-var b bool
-
-fmt.Println(x, s, b) // 0  false
-
-Nesse caso não temos lixo de memória, nem undefined ou null, temos um valor pré-definido.
-Para consultar quando bater dúvida:
+        <title type="html"><![CDATA[Why VirusTotal Alone Isn't Enough to Verify APK Safety]]></title>
+        <id>https://dev.to/sehan_shahid/why-virustotal-alone-isnt-enough-to-verify-apk-safety-2683</id>
+        <link href="https://dev.to/sehan_shahid/why-virustotal-alone-isnt-enough-to-verify-apk-safety-2683"/>
+        <updated>2026-05-09T17:30:31.000Z</updated>
+        <summary type="html"><![CDATA[Every week, thousands of Android users download APK files from Telegram groups, forums, and third-party sites. Most of them do one thing to verify safety — drag the file into VirusTotal and check if anything flags red.
+That's not enough. Here's why.
+What VirusTotal Actually Does
 
 
-
-Tipo
-Zero value
-
-
-
-
-bool
-false
+VirusTotal checks your file against 70+ antivirus signature databases. A signature is essentially a fingerprint of a known threat. If your APK matches a known bad fingerprint — it gets flagged.
+The problem is brand new malware has no fingerprint yet. Modified APKs designed to evade detection have no fingerprint. Spyware that doesn't match any known family has no fingerprint.
+Signature scanning catches yesterday's threats, not today's.
+What Actually Hides Inside Malicious APKs
 
 
-inteiros (int, int64, uint...)
-0
-
-
-floats (float32, float64)
-0.0
-
-
-string
-""
-
-
-ponteiros (*T)
-nil
-
-
-slices ([]T)
-nil
-
-
-maps (map[K]V)
-nil
-
-
-channels (chan T)
-nil
-
-
-funções
-nil
-
-
-interfaces
-nil
-
-
-arrays ([N]T)
-array com cada posição no zero value
-
-
-structs
-struct com cada campo no zero value
-
-
-
-Em C, ler uma variável não inicia…]]></summary>
+After scanning hundreds of APKs, th…]]></summary>
         <author>
-            <name>Renato O da Silva</name>
+            <name>Sehan Shahid</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA["Prime Testable" Code]]></title>
-        <id>https://dev.to/aaronmaxwell/prime-testable-code-2cmd</id>
-        <link href="https://dev.to/aaronmaxwell/prime-testable-code-2cmd"/>
-        <updated>2026-05-09T16:30:00.000Z</updated>
-        <summary type="html"><![CDATA[What is the EASIEST Python code to test?
-Because writing unit tests is a superpower. It's great. Completely changes what you are capable of as a developer.
-Think of the last time you wrote an incredible piece of software... Literally surprising yourself with the beauty, the power, the sheer awesomeness of what you created.
-Writing unit tests make that feeling COMMON. You want to live that life.
-And part of using them effectively is learning how to make your code easily testable. Out of the bulging universe of different choices for how to organize your code, choosing a way that makes high-impact, high-value tests easiest to write.
-In other words, working smarter, not harder.
-And while easy-to-test code is not always practical... It often is. You want to learn how to discern.
-The easiest cod…]]></summary>
+        <title type="html"><![CDATA[Authorization and Authentication in AWS]]></title>
+        <id>https://dev.to/khursheed_alam_d53e78064d/authorization-and-authentication-in-aws-5340</id>
+        <link href="https://dev.to/khursheed_alam_d53e78064d/authorization-and-authentication-in-aws-5340"/>
+        <updated>2026-05-09T17:28:34.000Z</updated>
+        <summary type="html"><![CDATA[Hey do you know how authorization and authentication works in AWS. It is a first step to ensure control access to resources and actions that you can perform daily without using root user. Lets understand this concept with the help of example - Imagine you have a bank account in XYZ bank and that bank has different services available like withdrawing money, money deposit, account opening, service desk to help  customers according to their needs. Suppose someone wants to enter a bank to make use of these services, he first needs to authenticate himself by showing valid ID that includes credentials. Then, he will be authorised to use services depending on permissions granted to him.
+This same scenario works in AWS Cloud also by making use of IAM service that has features like Users, Groups, P…]]></summary>
         <author>
-            <name>Aaron Maxwell</name>
+            <name>Khursheed Alam</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Human Operators in Distributed Financial Systems: When People Become Part of the Architecture]]></title>
-        <id>https://dev.to/doomhammerhell/human-operators-in-distributed-financial-systems-when-people-become-part-of-the-architecture-59l7</id>
-        <link href="https://dev.to/doomhammerhell/human-operators-in-distributed-financial-systems-when-people-become-part-of-the-architecture-59l7"/>
-        <updated>2026-05-09T16:24:56.000Z</updated>
-        <summary type="html"><![CDATA[Abstract
-
-
-Distributed financial systems are often modeled as autonomous infrastructures governed by deterministic logic, cryptographic guarantees, and automated orchestration. In practice, these systems depend heavily on human intervention.
-Operators investigate inconsistencies, trigger reconciliation processes, approve exceptional transactions, manage incidents, and recover systems under failure conditions. These actions are not external to the system. They are part of the system itself.
-This article examines the role of human operators in distributed financial infrastructure. We explore how manual intervention affects system behavior, how operational tooling shapes reliability, and why systems that ignore human participation often become fragile under real world conditions.
-Financial sy…]]></summary>
+        <title type="html"><![CDATA[Trump Media’s Q1 loss widens to $406 million on bitcoin, CRO markdowns]]></title>
+        <id>30c0240f-2627-4ac6-b7b2-a254c635ef7c</id>
+        <link href="https://www.coindesk.com/business/2026/05/09/trump-media-s-q1-loss-widens-to-usd406-million-on-bitcoin-cro-markdowns"/>
+        <updated>2026-05-09T17:28:08.000Z</updated>
+        <summary type="html"><![CDATA[The loss was primarily driven by $244 million in unrealized losses on cryptocurrency holdings and an additional $108.2 million investment loss.]]></summary>
         <author>
-            <name>Mayckon Giovani</name>
+            <name>Francisco Rodrigues</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[HABIT TRACKER!]]></title>
-        <id>https://dev.to/pb_puneetttt/habit-tracker-3pkd</id>
-        <link href="https://dev.to/pb_puneetttt/habit-tracker-3pkd"/>
-        <updated>2026-05-09T16:24:49.000Z</updated>
-        <summary type="html"><![CDATA[What I Built
+        <title type="html"><![CDATA[Code with Claude Extended SF: Heck yeah and then wait, what?]]></title>
+        <id>https://dev.to/earlgreyhot1701d/code-with-claude-extended-sf-heck-yeah-and-wait-what-5dbd</id>
+        <link href="https://dev.to/earlgreyhot1701d/code-with-claude-extended-sf-heck-yeah-and-wait-what-5dbd"/>
+        <updated>2026-05-09T17:26:14.000Z</updated>
+        <summary type="html"><![CDATA[Heck yeah
 
 
-I have developed an intelligent habit-tracking application powered by Gemma 4, designed to transform how users build and maintain life-changing routines. Recognizing that traditional trackers often feel like static checklists, I built this project to create a more adaptive and conversational experience. By leveraging Gemma 4’s sophisticated reasoning capabilities, the tracker doesn't just log data; it analyzes patterns, provides personalized encouragement, and offers actionable insights to help users overcome plateaus. Whether it's mastering a new skill or improving daily wellness, this tool acts as a proactive coach that evolves alongside the user’s journey.
-Project Credit: Created by Puneet Bhardwaj
-https://github.com/puneetb575/Habit-tracker/commit/4ee9a8eb07af5fd97d7b9b41446f6489dd75ad7b
-"This project is a high-performance, Edge-AI desktop application powered by the Gemma 4 E4B model. Unlike traditional trackers that rely on cloud-based processing, this application brings the full power of a 4-billion parameter language model directly to the user's PC, creating a private, lightning-fast environment for personal growth.My habit tracker transforms the standard PC from a workstation into a proactive life coach. By leveraging Gemma 4 E4B, we deliver a sophisticated, Edge-AI experience that prioritizes user privacy and system performance. It is a tool designed for the modern user who demands high-level behavioral insights without compromising their data security."]]></summary>
+I won a golden ticket to Code with Claude Extended (CCE) in San Francisco on May 7th.
+The application said attendees would be selected by lottery. I won the CCE lotto. On April 9th, I got the email: "You're invited." Emphasis on Extended, because demand was so high that Anthropic added a second day.
+The first day of Code with Claude was the "what's new" day. CCE was the "see it in the wild" day. Built for independent developers and early-stage founders. Founders stage. Builder stage. Workshops.
+I was at work when I read the invitation. I had to stop and pause. Once I gathered myself, I couldn't hit the register button fast enough. I'd hate to see what my heart rate was. I wanted to participate so, so badly.
+Heck yeah, I got in to CCE.
+Let's gooooooooooo.
+Before any workshop sta…]]></summary>
         <author>
-            <name>Puneet Bhardwaj</name>
+            <name>L. Cordero</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[HABIT TRACKER!]]></title>
-        <id>https://dev.to/pb_puneetttt/habit-tracker-2pd2</id>
-        <link href="https://dev.to/pb_puneetttt/habit-tracker-2pd2"/>
-        <updated>2026-05-09T16:24:49.000Z</updated>
-        <summary type="html"><![CDATA[What I Built
+        <title type="html"><![CDATA[How Solana Transactions Are Different from REST API Calls (And Why It Matters)]]></title>
+        <id>https://dev.to/lymah/how-solana-transactions-are-different-from-rest-api-calls-and-why-it-matters-4lgc</id>
+        <link href="https://dev.to/lymah/how-solana-transactions-are-different-from-rest-api-calls-and-why-it-matters-4lgc"/>
+        <updated>2026-05-09T17:25:56.000Z</updated>
+        <summary type="html"><![CDATA[The Problem: Your Mental Model Is Broken
 
 
-I have developed an intelligent habit-tracking application powered by Gemma 4, designed to transform how users build and maintain life-changing routines. Recognizing that traditional trackers often feel like static checklists, I built this project to create a more adaptive and conversational experience. By leveraging Gemma 4’s sophisticated reasoning capabilities, the tracker doesn't just log data; it analyzes patterns, provides personalized encouragement, and offers actionable insights to help users overcome plateaus. Whether it's mastering a new skill or improving daily wellness, this tool acts as a proactive coach that evolves alongside the user’s journey.
-Project Credit: Created by Puneet Bhardwaj
-https://github.com/puneetb575/Habit-tracker/commit/4ee9a8eb07af5fd97d7b9b41446f6489dd75ad7b
-"My habit tracker is an Edge-AI application powered by the Gemma 4 E2B model Because Most habit trackers are just digital spreadsheets. This project reimagines habit formation by integrating Gemma 4 E2B, an Edge-optimized AI model. By running the intelligence locally on the device, we provide a deeply personal, lightning-fast coaching experience that prioritizes user privacy. Whether it's auto-categorizing logs or identifying behavioral patterns, the E2B model provides the perfect balance of sophisticated reasoning and mobile efficiency."
-. -->]]></summary>
+You know how to build APIs. You understand request/response cycles. You know that a successful POST returns 200 OK, and a failed request returns 400 Bad Request. You've never been charged for a 400.
+Solana transactions will break every one of those assumptions.
+Last week, I sent a transaction that failed due to insufficient funds. The validator still charged me a fee. A 400 Bad Request just cost me real money. That's when I realized: I was thinking about blockchain like it was an API, and it's not.
+In this post, I'm going to show you exactly how Solana transactions work, how they differ from REST APIs, and why understanding those differences will make you a better blockchain developer.
+Here's how you think about HTTP today:
+POST /transfer
+{
+  "rec…]]></summary>
         <author>
-            <name>Puneet Bhardwaj</name>
+            <name>Lymah</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[100 Days of Solana: Week 2]]></title>
-        <id>https://dev.to/gorilaprada/100-days-of-solana-week-2-2igc</id>
-        <link href="https://dev.to/gorilaprada/100-days-of-solana-week-2-2igc"/>
-        <updated>2026-05-09T16:24:42.000Z</updated>
-        <summary type="html"><![CDATA[Two weeks into the #100DaysOfSolana challenge, and I’m finding that the most valuable part of this journey isn't just the code I'm writing, but the perspective I'm gaining.
-I’ve been a user of the Solana ecosystem since 2021—long before I ever typed my first line of code. In fact, Solana is one of the main reasons I started programming in the first place. 
-The ease of use and the near-instant transaction settlement were phenomenal then, and they still are today. It sparked a genuine curiosity that shifted me from just using the tech to wanting to build with it.
-@solana/kit
-
-
-Coming into the second week, one of my biggest takeaways has been working with the @solana/kit. Knowing that a whole kit is written to implement blockchain functionality easily is a game-changer for someone coming from a web dev background. It makes the integration feel intuitive rather than overwhelming.
-The format of this challenge—taking things slow and guided from a web developer's perspective—has been incredibly beneficial for my understanding of real-world implementation.
-When you first start with Solana, the temptation is to jump straight in with:
-npm create solana-dapp@latest
-While that tool is powerful, it’s often too much in one go. For a learner, it generates a massive boilerplate that can hide the underlying logic. Plus, managing the multiple vulnerabilities that often come from installing a whole premade project with heavy dependencies can be a major distraction.
-I am genuinely grateful for this specific format. It allows me to build a solid foundation without getting lost in the noise of complex scaffolding. 
-I’m excited to keep learning and pushing forward until I can create something entirely my own utilizing blockchain technology. 
-See you all in Week 3! 🚀]]></summary>
+        <title type="html"><![CDATA[Custom OpenTelemetry Collector for Oracle WebLogic: Bringing Observability to Enterprise Java]]></title>
+        <id>https://dev.to/vinnicius_andrade_a0d86e4/custom-opentelemetry-collector-for-oracle-weblogic-bringing-observability-to-enterprise-java-1d98</id>
+        <link href="https://dev.to/vinnicius_andrade_a0d86e4/custom-opentelemetry-collector-for-oracle-weblogic-bringing-observability-to-enterprise-java-1d98"/>
+        <updated>2026-05-09T17:22:29.000Z</updated>
+        <summary type="html"><![CDATA[Oracle WebLogic Server powers countless enterprise Java systems. But getting observability out of it has always meant juggling multiple tools, agents, and dashboards with no way to correlate signals across applications and infrastructure.
+I recently worked on standardizing observability across heterogeneous enterprise architectures at Banco do Brasil — from mainframe COBOL to cloud-native systems to on-premises WebLogic. The goal was simple: one semantic convention, one backend, one view of an entire transaction.
+This post walks through building a custom, minimal OpenTelemetry Collector for WebLogic that makes this possible.
+Repository: github.com/vinnicius/weblogic-opentelemetry
+Application (OTel Java Agent)  ──┐
+Host (CPU/memory/disk)         ──┼──→  otelcol-weblogic  ──→  Your Backend
+W…]]></summary>
         <author>
-            <name>Carlos Prada</name>
+            <name>Vinnicius Andrade</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Day 1 — I'm Homeless. I Just Shipped an Autonomous Multi-Agent System.]]></title>
-        <id>https://dev.to/pingxceo/day-1-im-homeless-i-just-shipped-an-autonomous-multi-agent-system-54ah</id>
-        <link href="https://dev.to/pingxceo/day-1-im-homeless-i-just-shipped-an-autonomous-multi-agent-system-54ah"/>
-        <updated>2026-05-09T16:20:03.000Z</updated>
-        <summary type="html"><![CDATA[Day 1 — I'm Homeless. I Just Shipped an Autonomous Multi-Agent System.
-
-
-Let's get the uncomfortable part out of the way first: I'm a developer.
- That part isn't interesting. What
-Twelve hours ago I had a single-agent bot called ZeroClaw posting
-Today I shipped:
-A CEO agent that reads KPIs every night and writes a strategic
-report with concrete recommendations
-An auditor system where dedicated agents audit each worker and
-propose config changes — reviewed by the CEO, with me still holding veto
-Config-driven self-improvement — YAML files, not Python code,
-so agents can evolve without ever touching executable code
-A metrics database every agent run is logged to, so the CEO
-actually reasons about real data instead of hallucinating
-The whole thing running on a $13/month VPS, using free
-Gemini …]]></summary>
+        <title type="html"><![CDATA[State of Linux Terminal Emulators in 2026]]></title>
+        <id>https://dev.to/shrsv/state-of-linux-terminal-emulators-in-2026-1gh5</id>
+        <link href="https://dev.to/shrsv/state-of-linux-terminal-emulators-in-2026-1gh5"/>
+        <updated>2026-05-09T17:19:33.000Z</updated>
+        <summary type="html"><![CDATA[Hello, I'm Shrijith Venkatramana. I'm building git-lrc, an AI code reviewer that runs on every commit. Star Us to help devs discover the project. Do give it a try and share your feedback for improving the product.
+The Linux terminal emulator landscape has evolved into a rich ecosystem of powerful, modern tools that sometimes go overlooked. 
+While many people are happy with their distribution's default, the last few years have brought some incredible improvements that can genuinely change your command-line workflow.
+This article dives into the state of terminal emulators in 2026, comparing 10 of the most popular options. 
+It's not about declaring a single "best" terminal, but about understanding the trade-offs, the new capabilities, and finding the right tool for how you work.
+The once-unif…]]></summary>
         <author>
-            <name>PINGxCEO</name>
+            <name>Shrijith Venkatramana</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why Your AI Character Keeps Breaking Under Pressure (And What I Built Instead of Yet Another System Prompt)]]></title>
-        <id>https://dev.to/kiro0x/why-your-ai-character-keeps-breaking-under-pressure-and-what-i-built-instead-of-yet-another-system-n4k</id>
-        <link href="https://dev.to/kiro0x/why-your-ai-character-keeps-breaking-under-pressure-and-what-i-built-instead-of-yet-another-system-n4k"/>
-        <updated>2026-05-09T16:15:26.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR: I shipped FIVE, an open-source MCP server that generates JSON personality constraints for any LLM. Drop the JSON into your system prompt and the character stops drifting. Different approach from typical guardrails — this one filters input via cognitive primitives, not output via moderation. Harness is MIT, constraint generation is $1/call. The unusual part is where the cognitive model came from: a decade of teaching kids in Japan.
-If you've shipped an LLM-powered character — a game NPC, a customer service persona, a roleplay companion — you know this failure mode:
-You write a careful system prompt. "You are a gruff weapon shop owner. You lost your daughter in the war and never speak of it. You're rude to adults but soft with children." The character works for the first few exchanges…]]></summary>
+        <title type="html"><![CDATA[Say It With Flowers: BouqAIs with the Tussie-Mussie Generator]]></title>
+        <id>https://dev.to/cloudinary/say-it-with-flowers-bouqais-with-the-tussie-mussie-generator-3do0</id>
+        <link href="https://dev.to/cloudinary/say-it-with-flowers-bouqais-with-the-tussie-mussie-generator-3do0"/>
+        <updated>2026-05-09T17:19:01.000Z</updated>
+        <summary type="html"><![CDATA[The Tussie-Mussie Generator is a web app for anyone who wants to send a meaningful floral e-card with an AI-generated "tussie mussie", a type of small nosegay. It uses the Victorian language of flowers to compose a bouquet, generates an image with Gemini, and sends it via Resend. This post covers 
+Migrated email sending from Mailgun to Resend, including a Cloudflare serverless function
+Fixed DNS configuration across Porkbun, Netlify, and Resend for a custom subdomain
+Replaced the previous image generator with Gemini for accurate tussie mussie generation
+Refactored the UI with Astro + Vue and impeccable.style for AI-assisted critique
+Have you ever wanted to build an e-card system that would allow you to send little ai-generated bouquets to your friends? No? Yes? Read on, gentle reader!
+Last…]]></summary>
         <author>
-            <name>Kiro</name>
+            <name>Jen Looper</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Day 1 — I'm Homeless. I Just Shipped an Autonomous Multi-Agent System.]]></title>
-        <id>https://dev.to/pingxceo/day-1-im-homeless-i-just-shipped-an-autonomous-multi-agent-system-323d</id>
-        <link href="https://dev.to/pingxceo/day-1-im-homeless-i-just-shipped-an-autonomous-multi-agent-system-323d"/>
-        <updated>2026-05-09T16:15:02.000Z</updated>
-        <summary type="html"><![CDATA[Day 1 — I'm Homeless. I Just Shipped an Autonomous Multi-Agent System.
-
-
-Let's get the uncomfortable part out of the way first: I'm a developer.
- That part isn't interesting. What
-Twelve hours ago I had a single-agent bot called ZeroClaw posting
-Today I shipped:
-A CEO agent that reads KPIs every night and writes a strategic
-report with concrete recommendations
-An auditor system where dedicated agents audit each worker and
-propose config changes — reviewed by the CEO, with me still holding veto
-Config-driven self-improvement — YAML files, not Python code,
-so agents can evolve without ever touching executable code
-A metrics database every agent run is logged to, so the CEO
-actually reasons about real data instead of hallucinating
-The whole thing running on a $13/month VPS, using free
-Gemini …]]></summary>
+        <title type="html"><![CDATA[What to Audit in a Vibe-Coded MVP Before Real Users See It]]></title>
+        <id>https://dev.to/somnath_khadanga_2e5c2364/what-to-audit-in-a-vibe-coded-mvp-before-real-users-see-it-dpi</id>
+        <link href="https://dev.to/somnath_khadanga_2e5c2364/what-to-audit-in-a-vibe-coded-mvp-before-real-users-see-it-dpi"/>
+        <updated>2026-05-09T17:14:14.000Z</updated>
+        <summary type="html"><![CDATA[You built it with Cursor. Or Claude Code. Maybe both. The product works — users can sign up, the core workflow runs, and you've shown it to a dozen people without anything catching fire.
+Now you want to share it more widely.
+Before you do, run this audit.
+This is not a "rewrite everything" post. Most AI-generated code is structurally fine. The problem is almost never the code itself — it's the things the AI didn't know to think about: your deployment environment, your specific threat model, what happens when a real user does something unexpected at 2am.
+I've reviewed several AI-assisted codebases in the last few months. The same problems show up in almost all of them. They're not hard to fix. They're just not obvious when you're moving fast.
+<p>AI coding tools are genuinely fast. They're n…]]></summary>
         <author>
-            <name>PINGxCEO</name>
+            <name>Somnath Khadanga</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Termux App Store — A TUI Package Manager for Termux]]></title>
+        <id>https://dev.to/wsoe/termux-app-store-a-tui-package-manager-for-termux-2o7n</id>
+        <link href="https://dev.to/wsoe/termux-app-store-a-tui-package-manager-for-termux-2o7n"/>
+        <updated>2026-05-09T17:10:05.000Z</updated>
+        <summary type="html"><![CDATA[Hey everyone,
+I’ve been working on a project called Termux App Store — a terminal-based app store / package manager experience designed specifically for Termux on Android.
+The main goal is to make discovering, installing, and even sharing tools easier directly from the terminal without needing a full graphical UI.
+Using Termux on mobile is powerful, but sometimes:
+remembering package names is annoying
+typing long install commands on a phone is tedious
+discovering new tools isn’t very user-friendly
+sharing personal scripts/tools can feel fragmented
+So I wanted to experiment with something that feels more like an “app store” experience while still staying fully inside the terminal.
+Modern TUI interface
+Browse tools interactively
+Search packages quickly
+Install tools directly from the UI
+Lightweight and mobile-friendly
+Works entirely in terminal
+Community-driven tool uploads/distribution
+Easy navigation without memorizing commands
+Designed specifically for the Termux ecosystem
+Instead of:
+pkg install something
+You can browse and manage tools in one place with a cleaner workflow.
+The idea is not to replace Termux packages, but to create a more user-friendly layer for discovering and distributing tools/scripts/projects inside the community.
+Still actively being developed and improved.
+I’m experimenting with:
+better package management
+repository integration
+smoother UI/UX
+upload/distribution system
+plugin-style architecture
+performance improvements for low-end devices
+I’d love feedback from the Termux community:
+What features would you want?
+What would make it genuinely useful?
+What problems do you face using Termux on mobile?
+GitHub:
+https://github.com/djunekz/termux-app-store
+Demo / Screenshots:
+https://github.com/djunekz/termux-app-store
+Thanks for reading 🙌]]></summary>
+        <author>
+            <name>RedVase</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CPanel's Black Week: 3 New Vulnerabilities Patched After Attack on 44k Servers]]></title>
+        <id>https://www.copahost.com/blog/cpanels-black-week-three-new-vulnerabilities-patched-after-ransomware-attack-on-44000-servers/</id>
+        <link href="https://www.copahost.com/blog/cpanels-black-week-three-new-vulnerabilities-patched-after-ransomware-attack-on-44000-servers/"/>
+        <updated>2026-05-09T17:06:46.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sports betting should be regulated as a financial product, not gambling, aspiring prediction market provider says]]></title>
+        <id>08a0cca3-88d2-42a6-989f-d8f10bd65649</id>
+        <link href="https://www.coindesk.com/policy/2026/05/09/sports-betting-should-be-regulated-as-a-financial-product-not-gambling-aspiring-prediction-market-provider-says"/>
+        <updated>2026-05-09T17:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Novig CEO Jacob Fortinsky said his company will transition to a federal Designated Contract Market framework this summer to launch in all 50 states, while 57 Maiden's Adam Mastrelli said he was banned from two major sportsbooks within two months for being “sharp."]]></summary>
+        <author>
+            <name>Jeffrey Albus</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Introduction to Beaver Triples]]></title>
+        <id>https://stoffelmpc.com/stoffel-blog/beaver-triples-tuples</id>
+        <link href="https://stoffelmpc.com/stoffel-blog/beaver-triples-tuples"/>
+        <updated>2026-05-09T16:02:38.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -327,16 +357,6 @@ Gemini …]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The context window has been shattered: Subquadratic debuts a 12M token window]]></title>
-        <id>https://thenewstack.io/subquadratic-12-million-context-window/</id>
-        <link href="https://thenewstack.io/subquadratic-12-million-context-window/"/>
-        <updated>2026-05-09T15:15:39.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[CME is set to let traders bet on bitcoin volatility, not just price]]></title>
         <id>b8535509-b1ce-43c0-8211-c4a62933f83a</id>
         <link href="https://www.coindesk.com/markets/2026/05/09/you-ll-soon-be-able-to-bet-on-bitcoin-volatility-not-just-price-on-cme"/>
@@ -371,6 +391,16 @@ Gemini …]]></summary>
         <id>https://cyberinsider.com/grapheneos-fixes-android-vpn-leak-google-refused-to-patch/</id>
         <link href="https://cyberinsider.com/grapheneos-fixes-android-vpn-leak-google-refused-to-patch/"/>
         <updated>2026-05-09T14:11:10.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Mochi.js: bun-native high-fidelity browser automation library]]></title>
+        <id>https://mochijs.com/</id>
+        <link href="https://mochijs.com/"/>
+        <updated>2026-05-09T14:01:40.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -431,16 +461,6 @@ Gemini …]]></summary>
         <id>https://internetarchive.ch/</id>
         <link href="https://internetarchive.ch/"/>
         <updated>2026-05-09T12:00:30.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Forking the Web]]></title>
-        <id>https://dillo-browser.org/lab/web-fork/</id>
-        <link href="https://dillo-browser.org/lab/web-fork/"/>
-        <updated>2026-05-09T11:33:07.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -570,16 +590,6 @@ The post Huawei nova 15 Max Launched Globally With 8,500mAh Battery appeared fir
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[You gave me a u32. I gave you root. (io_uring ZCRX freelist LPE)]]></title>
-        <id>https://ze3tar.github.io/post-zcrx.html</id>
-        <link href="https://ze3tar.github.io/post-zcrx.html"/>
-        <updated>2026-05-08T19:40:39.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[AI agents fueled a frenzy of startup building at the Consensus Miami EasyA hackathon]]></title>
         <id>09072eee-7fcd-4927-bb5f-55b1f767a1b0</id>
         <link href="https://www.coindesk.com/tech/2026/05/08/ai-agents-fueled-a-frenzy-of-startup-building-at-the-consensus-miami-easya-hackathon"/>
@@ -637,16 +647,6 @@ The post Huawei nova 15 Max Launched Globally With 8,500mAh Battery appeared fir
         <summary type="html"><![CDATA[Have you ever abandoned an app right at the sign‑up page? Or felt uneasy navigating a website because the buttons were scattered randomly, the colors clashed, and the layout felt confusing and unneces]]></summary>
         <author>
             <name>Great John</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Teaching Claude Why]]></title>
-        <id>https://www.anthropic.com/research/teaching-claude-why</id>
-        <link href="https://www.anthropic.com/research/teaching-claude-why"/>
-        <updated>2026-05-08T17:59:41.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -872,26 +872,6 @@ The post Toyota Announces Yaris Cross; Comes In Pure Petrol, Hybrid Variants app
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Bitcoin retreats below $80,000, liquidating $300 million in futures bets]]></title>
-        <id>701bfac5-c61f-49a6-b527-60f446b39237</id>
-        <link href="https://www.coindesk.com/markets/2026/05/08/bitcoin-retreats-below-usd80-000-liquidating-usd300-million-in-futures-bets"/>
-        <updated>2026-05-08T10:21:03.000Z</updated>
-        <summary type="html"><![CDATA[BTC fell under $80,000 after U.S. strikes in Iran sent oil briefly above $100, triggering liquidations and a shift toward bearish positioning.]]></summary>
-        <author>
-            <name>Oliver Knight</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stablecoin card spend is growing 100% year over year, Rain exec says]]></title>
-        <id>23445eff-8252-47fb-8941-1a1e9c2a5b14</id>
-        <link href="https://www.coindesk.com/business/2026/05/08/stablecoin-card-spend-is-growing-100-year-over-year-rain-exec-says"/>
-        <updated>2026-05-08T10:11:13.000Z</updated>
-        <summary type="html"><![CDATA[Stablecoin settlement enables weekend/holiday settlement, reducing trapped capital by over 40%. This improves card economics and financial flexibility for issuers.]]></summary>
-        <author>
-            <name>Francisco Rodrigues</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Home Ministry: MyNIISe Transition May Still Face Minor Glitches Ahead Of Rollout]]></title>
         <id>https://www.lowyat.net/?p=392195</id>
         <link href="https://www.lowyat.net/2026/392195/home-ministry-myniise-transition-may-still-face-minor-glitches/"/>
@@ -1051,6 +1031,16 @@ The post DJI Osmo Mobile 8P Arrives In Malaysia With Detachable Remote appeared 
         <id>https://martinfowler.com/bliki/MythicalManMonth.html</id>
         <link href="https://martinfowler.com/bliki/MythicalManMonth.html"/>
         <updated>2026-05-07T07:20:55.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building the TD4 4-Bit CPU]]></title>
+        <id>https://jayakody2000lk.blogspot.com/2026/05/building-td4-4-bit-cpu.html</id>
+        <link href="https://jayakody2000lk.blogspot.com/2026/05/building-td4-4-bit-cpu.html"/>
+        <updated>2026-05-07T04:25:43.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
