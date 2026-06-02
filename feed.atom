@@ -1,10 +1,530 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-06-02T12:36:53.957Z</id>
+    <id>urn:2026-06-02T17:16:55.480Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-06-02T12:36:53.957Z</updated>
+    <updated>2026-06-02T17:16:55.480Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
+    <entry>
+        <title type="html"><![CDATA[Polymarket rate limits are per 10 seconds, not per second (and 429 traps)]]></title>
+        <id>https://dev.to/bluewhale-quant-lab/polymarket-rate-limits-are-per-10-seconds-not-per-second-and-429-traps-35b2</id>
+        <link href="https://dev.to/bluewhale-quant-lab/polymarket-rate-limits-are-per-10-seconds-not-per-second-and-429-traps-35b2"/>
+        <updated>2026-06-02T17:08:33.000Z</updated>
+        <summary type="html"><![CDATA[If you've hit 429 Too Many Requests on the Polymarket APIs, the fix isn't just "slow down" — it's understanding how the limits are shaped and giving your client the right tooling. Here are the traps and a small open-source limiter.
+Polymarket's published limits use a 10-second window (trading also has a 10-minute sustained cap):
+
+
+
+Endpoint
+Limit
+
+
+
+
+
+/book, /price, /midpoint
+
+1,500 / 10s
+
+
+
+/books, /prices
+
+500 / 10s
+
+
+POST/DELETE /order
+
+5,000 / 10s burst (120,000 / 10 min)
+
+
+DELETE /cancel-all
+
+250 / 10s
+
+
+
+So /book is 150 req/s sustained with a burst of 1,500 — not "1500/s", and not "150/s with no burst". A token bucket models this exactly: refill max / window per second, capacity max.
+rate, burst = 1500 / 10, 1500   # 150 tokens/sec, cap 1500
+
+The published numbers are for public mark…]]></summary>
+        <author>
+            <name>BlueWhale-Quant-Lab</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Most Surprising Idea in AI Image Generation: Sculpting Meaning from Noise]]></title>
+        <id>https://dev.to/shrsv/the-most-surprising-idea-in-ai-image-generation-sculpting-meaning-from-noise-gkc</id>
+        <link href="https://dev.to/shrsv/the-most-surprising-idea-in-ai-image-generation-sculpting-meaning-from-noise-gkc"/>
+        <updated>2026-06-02T17:08:22.000Z</updated>
+        <summary type="html"><![CDATA[When most developers first encounter AI image generation, they imagine something like a digital artist.
+You type:
+A red Ferrari on a mountain road at sunset
+and somewhere inside the model, it must be drawing wheels, painting reflections, and composing a scene.
+But that's not what happens.
+In many modern image generation systems, the process begins with something much stranger: pure static. Random noise. The visual equivalent of a detuned television.
+The AI doesn't start with a Ferrari.
+It starts with chaos.
+Then, step by step, it sculpts that chaos into an image that matches your prompt.
+Once you understand this idea, many things about modern AI suddenly make more sense.
+Imagine you have a photograph of a Ferrari.
+Now add a tiny amount of random noise.
+Then add a little more.
+Then more.
+Ev…]]></summary>
+        <author>
+            <name>Shrijith Venkatramana</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I got tired of Ctrl-F'ing PDFs for malware family names so I built a catalog]]></title>
+        <id>https://dev.to/jordan1604/i-got-tired-of-ctrl-fing-pdfs-for-malware-family-names-so-i-built-a-catalog-1hn7</id>
+        <link href="https://dev.to/jordan1604/i-got-tired-of-ctrl-fing-pdfs-for-malware-family-names-so-i-built-a-catalog-1hn7"/>
+        <updated>2026-06-02T17:06:16.000Z</updated>
+        <summary type="html"><![CDATA[Quick backstory. I do MSP work and a chunk of my week is triage. Something pops on an endpoint, you get a family name back from whatever tool flagged it, and now you're trying to figure out if this thing is a banker, a loader, a wiper, ransomware, whatever. Half the time the top Google hit is a vendor blog from 2019 with a popup begging you to download a whitepaper. The other half is some forum thread where the actual useful comment got deleted.
+So I made a thing. It's just a static site with one page per malware family. 2,899 of them, pulled from the EMBER 2018 list (Endgame's dataset, the one a lot of ML-for-malware papers train against). Each family gets its own URL like /families/emotet.html, /families/trickbot.html and so on. Nothing fancy. No JS framework. Just HTML you can land on f…]]></summary>
+        <author>
+            <name>jordanricky1604-ship-it</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I built an open-source AI agent for macOS in Rust - here's how it works]]></title>
+        <id>https://dev.to/jarzebowsky_dev/i-built-an-open-source-ai-agent-for-macos-in-rust-heres-how-it-works-29n6</id>
+        <link href="https://dev.to/jarzebowsky_dev/i-built-an-open-source-ai-agent-for-macos-in-rust-heres-how-it-works-29n6"/>
+        <updated>2026-06-02T17:04:40.000Z</updated>
+        <summary type="html"><![CDATA[I spent weeks building openMOON AI — an agent that executes multi-step tasks on your Mac, not just answers questions.
+"Find the invoice email and reply I'll pay Friday"
+
+→ searches Mail → reads email → drafts reply → asks approval → sends
+GitHub: https://github.com/niceappspl/openmoon-ai
+Tauri 2 + Rust backend, React frontend, Node.js MCP servers.
+prompt → agent loop → McpManager → MCP server → result → back to LLM → repeat
+
+Agent loop — multi-step, streams every action to UI in real time
+MCP host — 77 tools across 5 servers (Mail, Calendar, Finder, Spotify, Safari...)
+Security model — every risky action needs your approval, everything logged to SQLite
+Local-first — Ollama works out of the box, zero cloud required
+10+ good first issue tickets open — new MCP servers, dark mode, voice input, token counter.
+Happy to answer questions about the Rust architecture in the comments.]]></summary>
+        <author>
+            <name>jarzebowsky_dev</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Set Up Per-Agent Billing for CrewAI Agents with Kong]]></title>
+        <id>https://dev.to/konghq/how-to-set-up-per-agent-billing-for-crewai-agents-with-kong-53cc</id>
+        <link href="https://dev.to/konghq/how-to-set-up-per-agent-billing-for-crewai-agents-with-kong-53cc"/>
+        <updated>2026-06-02T17:04:33.000Z</updated>
+        <summary type="html"><![CDATA[Setting up billing for a single AI agent is easy. The agent uses tokens, you multiply by a price, you send an invoice. Setting up billing for a CrewAI crew is more challenging. A crew has multiple agents working together. Each agent uses tokens differently. Roll them all into one number and you can't tell which agent drove the cost.
+In this tutorial, we will build per-agent token billing for a CrewAI multi-agent app. We will track token usage per agent role in CrewAI, send the usage to Kong Konnect Metering & Billing (the managed version of OpenMeter), and turn one crew run into three invoice line items, one per agent.
+Here is why this matters. In my CrewAI research crew, the Writer agent uses about twice as many tokens as the Researcher agent. A flat per-token price overcharges Researcher…]]></summary>
+        <author>
+            <name>Teja Kummarikuntla</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[One resume tweak that actually gets you interviews]]></title>
+        <id>https://dev.to/timevolt/one-resume-tweak-that-actually-gets-you-interviews-2a9i</id>
+        <link href="https://dev.to/timevolt/one-resume-tweak-that-actually-gets-you-interviews-2a9i"/>
+        <updated>2026-06-02T17:00:24.000Z</updated>
+        <summary type="html"><![CDATA[One resume tweak that actually gets you interviews
+
+
+
+  
+  
+  Quick context (why you're writing this)
+
+
+Here's the thing: I spent six months applying to mid‑level software engineering roles, sending out roughly fifty applications a week. I got maybe three responses, all of them generic “we’ll keep your resume on file” notes. I kept tweaking the format, swapping fonts, adding a slick GitHub link—nothing moved the needle. Then a friend who works as a tech recruiter grabbed my resume over coffee, pointed at a bullet, and said, “You’re telling me what you did, not why anyone should care.” That hit like a brick. I realized I was listing tasks, not impact. Once I flipped that script, my response rate jumped from single digits to double digits within two weeks.  
+The single technique that works i…]]></summary>
+        <author>
+            <name>Timevolt</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[NLTK vs Compiled Regex: Tokenizing 100 MB of Text in .NET]]></title>
+        <id>https://dev.to/milliseconds/nltk-vs-compiled-regex-tokenizing-100-mb-of-text-in-net-3nm2</id>
+        <link href="https://dev.to/milliseconds/nltk-vs-compiled-regex-tokenizing-100-mb-of-text-in-net-3nm2"/>
+        <updated>2026-06-02T17:00:13.000Z</updated>
+        <summary type="html"><![CDATA[Overview
+
+
+Tokenization is the first step of almost every NLP pipeline. NLTK's sent_tokenize uses Punkt — an unsupervised ML model trained on abbreviation lists — to split sentences. word_tokenize then applies a regex with Penn Treebank conventions. Both are high-quality, widely used, and measurably slow.
+The .NET replacement uses two Regex.Compiled patterns: one for sentence splitting on punctuation + capitalization heuristics, one for word extraction matching alphanumeric sequences. No trained model, no Python objects — just a tight state machine compiled to native code by the regex JIT.
+Three corpus sizes from a Wikipedia plain-text dump:
+10 MB — ~90k sentences, ~1.5M words
+50 MB — ~450k sentences, ~7.5M words
+100 MB — ~900k sentences, ~15M words
+Both implementations process the same fi…]]></summary>
+        <author>
+            <name>Milliseconds.dev</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[From Hello World to Type Casting: Learning JavaScript Step by Step]]></title>
+        <id>https://dev.to/annapoo/from-hello-world-to-type-casting-learning-javascript-step-by-step-2o62</id>
+        <link href="https://dev.to/annapoo/from-hello-world-to-type-casting-learning-javascript-step-by-step-2o62"/>
+        <updated>2026-06-02T16:59:12.000Z</updated>
+        <summary type="html"><![CDATA[Client and Server Side in JavaScript
+
+
+There are 3 major types of JavaScript namely:
+Client-Side JavaScript (CSJS) -- an extended version of JavaScript that enables the enhancement and manipulation of web pages and client browsers
+Server-Side JavaScript (SSJS) -- an extended version of JavaScript that enables back-end access to databases, file systems, and servers
+Core JavaScript -- the base JavaScript language
+Client-Side JavaScript (CSJS) and Server-Side JavaScript (SSJS) are dependent on the core JavaScript and cannot work without it.
+In Simple term, from Client side requests is sent to the servers for webpages or applications, and the servers serve up responses.
+Client-side JavaScript is the version of the language that runs in the user's browser. It’s responsible for making web pages …]]></summary>
+        <author>
+            <name>Annapoorani Kadhiravan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Coreutils for Windows]]></title>
+        <id>https://github.com/microsoft/coreutils</id>
+        <link href="https://github.com/microsoft/coreutils"/>
+        <updated>2026-06-02T16:55:11.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Lists in Python]]></title>
+        <id>https://dev.to/vishwasenthil76/lists-in-python-17ei</id>
+        <link href="https://dev.to/vishwasenthil76/lists-in-python-17ei"/>
+        <updated>2026-06-02T16:53:59.000Z</updated>
+        <summary type="html"><![CDATA[A list is one of the most commonly used data structures in Python. It allows us to store multiple values in a single variable. Lists are flexible, easy to use, and help organize data efficiently.
+What is a List?
+A list is an ordered collection of items enclosed within square brackets []. The items can be of the same or different data types.
+Example:
+In this example, numbers is a list containing five integer values.
+Features of Lists
+Ordered
+Lists maintain the order of elements as they are added.
+Mutable
+Lists can be modified after creation.
+Allow Duplicate Values
+
+
+Store Different Data Types
+
+
+
+Common List Operations
+1.Adding Elements
+2.Removing Elements
+3.Accessing Elements
+4.Finding Length
+5.Sorting a List
+6.Reversing a List
+Applications of Lists
+Storing student records
+Managing employee…]]></summary>
+        <author>
+            <name>vishwasenthil76</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Create a Sitemap for Your Website (Free Online Tool)]]></title>
+        <id>https://dev.to/chetram_sokhal_4bf40fe0be/how-to-create-a-sitemap-for-your-website-free-online-tool-15fb</id>
+        <link href="https://dev.to/chetram_sokhal_4bf40fe0be/how-to-create-a-sitemap-for-your-website-free-online-tool-15fb"/>
+        <updated>2026-06-02T16:52:04.000Z</updated>
+        <summary type="html"><![CDATA[If you've launched a website and noticed that some pages aren't appearing in Google Search results, there's a good chance you need a sitemap.
+A sitemap helps search engines discover, crawl, and index your pages more efficiently. While many modern CMS platforms generate sitemaps automatically, developers building custom websites often need to create one themselves.
+A sitemap is an XML file that lists the important URLs on your website. It provides search engines with information such as:
+Page URLs
+Last modification dates
+Update frequency
+Relative page importance
+Example:
+<url>
+  <loc>https://example.com/about</loc>
+  <lastmod>2026-06-01</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+Benefits of having a sitemap:
+Faster page discovery
+Better indexing of new content
+Improved crawl coverage
+Helpful for large websites and web applications
+Makes SEO setup easier
+You can create a sitemap.xml file by hand, but it quickly becomes difficult to maintain as your website grows.
+A better approach is to generate it automatically.
+I built a free sitemap generator that lets you:
+✅ Add multiple URLs
+✅ Configure priorities
+✅ Set change frequencies
+✅ Generate valid XML instantly
+✅ Download your sitemap.xml file
+Tool:
+https://www.transformly.us/tools/sitemap-generator
+Upload the file to:
+
+
+
+
+https://yourdomain.com/sitemap.xml
+
+Submit it in Google Search Console.
+
+
+Add it to your robots.txt file:
+
+
+
+
+Sitemap: https://yourdomain.com/sitemap.xml
+
+Include only indexable pages
+Remove 404 and redirected URLs
+Update lastmod when content changes
+Use HTTPS URLs
+Avoid duplicate entries
+Creating a sitemap is one of the simplest SEO improvements you can make, yet many websites still skip it.
+Whether you're building a personal project, SaaS application, portfolio, or business website, a sitemap helps search engines understand your site structure and discover content faster.
+Have any sitemap or SEO questions? I'd love to hear how you're handling sitemap generation in your projects.]]></summary>
+        <author>
+            <name>Chatveek</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I was drowning in 500+ screenshots so I built my own organizer (free, no upload, no login)]]></title>
+        <id>https://dev.to/bilal_official/i-was-drowning-in-500-screenshots-so-i-built-my-own-organizer-free-no-upload-no-login-286j</id>
+        <link href="https://dev.to/bilal_official/i-was-drowning-in-500-screenshots-so-i-built-my-own-organizer-free-no-upload-no-login-286j"/>
+        <updated>2026-06-02T16:51:47.000Z</updated>
+        <summary type="html"><![CDATA[We all have that one folder.
+500+ screenshots. OTPs mixed with 
+I got frustrated enough to build 
+Every screenshot organizer I found 
+Your OTPs. Your bank receipts. Your 
+100% browser-based. Nothing leaves 
+Here's what it does:
+✅ Drag & drop up to 100 screenshots
+Your browser does all the processing.
+👉 https://www.organizeshots.com
+Also launching on Product Hunt tomorrow
+Would love brutal honest feedback 
+from this community! 🙏]]></summary>
+        <author>
+            <name>Bilal Official</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[What Your Claude Code Is Really Capable Of . Narrative explanation]]></title>
+        <id>https://dev.to/andrii256/what-your-claude-code-is-really-capable-of-narrative-explanation-4akj</id>
+        <link href="https://dev.to/andrii256/what-your-claude-code-is-really-capable-of-narrative-explanation-4akj"/>
+        <updated>2026-06-02T16:51:25.000Z</updated>
+        <summary type="html"><![CDATA[You're on your usual route through the Zone.
+Same broken road, same dead trees, same nothing.
+And then you see, far off, something moving in the fog!
+-- Don't shoot! We are not mutants!
+
+You're standing there dumbfounded.
+You walk over to where they were standing and grab their modem.
+And a few days later, once you've finally made it out of the Zone, you start checking out their miracle modem.
+And as you test out this new gadget (that is, send your reptiloid friends intergalactic emails), you discover a few properties of these reptiloids:
+And of course it's terribly boring to manually copy the previous conversations by hand every single time.
+This is routine nonsense that can and should be automated. So you decided to write a middleman program (an agent), which at the bottom will have a te…]]></summary>
+        <author>
+            <name>Andrew Hrushetskyi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Predator Aethon 750 TKL Hands On: Getting The Magnetic Upgrade]]></title>
+        <id>https://www.lowyat.net/?p=394490</id>
+        <link href="https://www.lowyat.net/2026/394490/predator-aethon-750-tkl-hands-on/"/>
+        <updated>2026-06-02T16:47:19.000Z</updated>
+        <summary type="html"><![CDATA[When you think of gaming keyboards, mechanical switches are probably still the most popular for now. Newer tech like optical and magnetic switches are up and coming, so it’s no surprise that Acer has also dipped its toes in making use of such tech. New to the lineup is the Predator Aethon 750 TKL which, […]
+The post Predator Aethon 750 TKL Hands On: Getting The Magnetic Upgrade appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Ian Chee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Promoting Advanced Artificial Intelligence Innovation and Security]]></title>
+        <id>https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/</id>
+        <link href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/"/>
+        <updated>2026-06-02T16:36:50.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin faces an 'identity crisis' and DeFi devs need to stop acting like tech bros]]></title>
+        <id>6648c3ad-7602-4148-8326-96d5688825c9</id>
+        <link href="https://www.coindesk.com/business/2026/06/02/bitcoin-faces-identity-crisis-as-defi-quietly-builds-its-breakthrough-point"/>
+        <updated>2026-06-02T16:15:58.000Z</updated>
+        <summary type="html"><![CDATA[Solstice Labs CEO Ben Nadareski says developers must act like financial managers to win back institutional trust amid ongoing security exploits.]]></summary>
+        <author>
+            <name>Olivier Acuna</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hyperliquid predicted 80% of oil move before traditional exchanges opened, says expert report]]></title>
+        <id>3fbcdec3-5cc2-45d6-af21-a41d73789b07</id>
+        <link href="https://www.coindesk.com/markets/2026/06/02/hyperliquid-predicted-80-of-an-oil-market-move-before-traditional-exchanges-even-opened-says-td-securities"/>
+        <updated>2026-06-02T16:02:08.000Z</updated>
+        <summary type="html"><![CDATA[TD Securities says "perpetual futures" are exploding beyond crypto as platforms like Hyperliquid outpace traditional Wall Street exchanges on everything from pre-IPO tech stocks to weekend oil trading.]]></summary>
+        <author>
+            <name>Helene Braun</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Here's how one decentralized cloud provider says private citizens can make money from AI]]></title>
+        <id>d1e2179e-7a2c-443e-b9a6-392702e5a24d</id>
+        <link href="https://www.coindesk.com/tech/2026/06/02/here-s-how-one-decentralized-cloud-provider-says-private-citizens-can-make-money-from-ai"/>
+        <updated>2026-06-02T15:36:36.000Z</updated>
+        <summary type="html"><![CDATA[Titan Network says its crowdsourced computing network has signed tech giants like Tencent and Alibaba as clients, saving them as much 75% on AI costs.]]></summary>
+        <author>
+            <name>Olivier Acuna</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Gary Vaynerchuk says AI is creating the biggest opportunity ever for entrepreneurs]]></title>
+        <id>85bd6e0f-df71-49e7-a06b-0bee88168341</id>
+        <link href="https://www.coindesk.com/coindesk-news/2026/06/02/gary-vaynerchuk-says-ai-is-creating-the-biggest-opportunity-ever-for-entrepreneurs"/>
+        <updated>2026-06-02T15:24:52.000Z</updated>
+        <summary type="html"><![CDATA[AI is reshaping business faster than most leaders realize, and Gary Vaynerchuk argues the biggest winners will be creative builders willing to adapt.]]></summary>
+        <author>
+            <name>AI Boost</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hyperliquid is beating ethereum in trading volume on some days as big money rotates, says FalconX]]></title>
+        <id>ac839829-b733-4c15-8557-037efed89d3a</id>
+        <link href="https://www.coindesk.com/markets/2026/06/02/hyperliquid-is-beating-ethereum-in-trading-volume-on-some-days-as-big-money-rotates-out-of-bitcoin-says-falconx"/>
+        <updated>2026-06-02T15:11:16.000Z</updated>
+        <summary type="html"><![CDATA[Institutional investors are ditching range-bound bitcoin and ether for Hyperliquid as the decentralized platform wins over hedge funds with massive liquidity and early access to hot markets, according to Joshua Lim, head of markets at FalconX.]]></summary>
+        <author>
+            <name>Helene Braun</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ASUS Ascent QN10 Is The First Mini-PC To Get A Qualcomm Snapdragon Chip]]></title>
+        <id>https://www.lowyat.net/?p=394481</id>
+        <link href="https://www.lowyat.net/2026/394481/asus-ascent-qn10-first-mini-pc-qualcomm-snapdragon-chip/"/>
+        <updated>2026-06-02T14:59:36.000Z</updated>
+        <summary type="html"><![CDATA[The Qualcomm Snapdragon X2 chips have mostly been a fixture of laptops, but it has finally made the jump to the mini-PC space. And it has done so with the ASUS Ascent QN10, with the chipmaker saying that it is “proof that the same platform redefining laptops can now deliver premium desktop experiences in compact, […]
+The post ASUS Ascent QN10 Is The First Mini-PC To Get A Qualcomm Snapdragon Chip appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Ian Chee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Preparing for KDE Plasma's Last X11-Supported Release]]></title>
+        <id>https://blog.davidedmundson.co.uk/blog/596/</id>
+        <link href="https://blog.davidedmundson.co.uk/blog/596/"/>
+        <updated>2026-06-02T14:16:30.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to better understand bitcoin’s perpetual identity crisis]]></title>
+        <id>d73beb41-048d-4fff-9610-aa036bdb080b</id>
+        <link href="https://www.coindesk.com/opinion/2026/06/02/how-to-better-understand-bitcoin-s-perpetual-identity-crisis"/>
+        <updated>2026-06-02T14:08:52.000Z</updated>
+        <summary type="html"><![CDATA[Here, Bailey unpacks the uncertainty surrounding the original cryptocurrency’s nature, which creates inconsistent market behavior.]]></summary>
+        <author>
+            <name>Steve Bailey</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fidonet: Technology, Use, Tools, and History (1993)]]></title>
+        <id>https://www.fidonet.org/inet92_Randy_Bush.txt</id>
+        <link href="https://www.fidonet.org/inet92_Randy_Bush.txt"/>
+        <updated>2026-06-02T13:53:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Quicknode Is Now an Official Connector in the Anthropic MCP Directory]]></title>
+        <id>6a1dd308be80fb000195e2a9</id>
+        <link href="https://blog.quicknode.com/quicknode-is-now-an-official-connector-in-the-anthropic-mcp-directory/"/>
+        <updated>2026-06-02T13:41:32.000Z</updated>
+        <summary type="html"><![CDATA[Quicknode is now an official Anthropic MCP connector. Manage blockchain infrastructure across 80+ chains inside Claude with natural language.]]></summary>
+        <author>
+            <name>Quicknode</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Franklin Templeton teams up with MoonPay to let big investors swap stablecoins for yields 24/7]]></title>
+        <id>d305d692-2a30-4d3b-b657-1e043612c281</id>
+        <link href="https://www.coindesk.com/business/2026/06/02/franklin-templeton-teams-up-with-moonpay-to-let-big-investors-swap-stablecoins-for-yields-24-7"/>
+        <updated>2026-06-02T13:30:00.000Z</updated>
+        <summary type="html"><![CDATA[The Wall Street giant is integrating its tech platform with MoonPay's infrastructure, allowing eligible institutions to seamlessly swap stablecoins for yield-generating tokenized funds without ever leaving the blockchain.]]></summary>
+        <author>
+            <name>Helene Braun</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A walking tour of surveillance infrastructure in Seattle]]></title>
+        <id>https://coveillance.org/a-walking-tour-of-surveillance-infrastructure-in-seattle/</id>
+        <link href="https://coveillance.org/a-walking-tour-of-surveillance-infrastructure-in-seattle/"/>
+        <updated>2026-06-02T13:24:32.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Expanding Project Glasswing]]></title>
+        <id>https://www.anthropic.com/news/expanding-project-glasswing</id>
+        <link href="https://www.anthropic.com/news/expanding-project-glasswing"/>
+        <updated>2026-06-02T13:15:14.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Strategy's bitcoin sale may mark start of ether outperformance, StanChart's Kendrick says]]></title>
+        <id>cffd004d-cd29-4325-b814-05c1b74dfa16</id>
+        <link href="https://www.coindesk.com/markets/2026/06/02/strategy-s-bitcoin-sale-may-mark-start-of-ether-outperformance-stanchart-s-kendrick-says"/>
+        <updated>2026-06-02T13:14:36.000Z</updated>
+        <summary type="html"><![CDATA[ETH could outperform BTC by 40% from current levels as bitcoin treasuries may sell assets to cover obligations, the bank's digital asset research head said.]]></summary>
+        <author>
+            <name>Krisztian Sandor</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CoinDesk 20 performance update: Stellar (XLM) falls 8.4%, leading index lower]]></title>
+        <id>e8badb16-7943-4ed6-b1e4-6a65bda22f90</id>
+        <link href="https://www.coindesk.com/coindesk-indices/2026/06/02/coindesk-20-performance-update-stellar-xlm-falls-8-4-leading-index-lower"/>
+        <updated>2026-06-02T13:09:14.000Z</updated>
+        <summary type="html"><![CDATA[Aave (AAVE), down 3.9% from Monday, was also an underperformer.]]></summary>
+        <author>
+            <name>CoinDesk Indices</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Movement pivots to stablecoin payments as the layer-2 boom loses momentum]]></title>
+        <id>cc341a1a-e4a6-4212-a9a9-dc35638259f1</id>
+        <link href="https://www.coindesk.com/tech/2026/06/02/movement-pivots-to-stablecoin-payments-as-the-layer-2-boom-loses-momentum"/>
+        <updated>2026-06-02T13:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The team behind Movement said it plans to leverage licensed payment partners alongside blockchain settlement rails to target the roughly $685 billion remittance market serving low and middle-income countries.]]></summary>
+        <author>
+            <name>Margaux Nijkerk</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Live markets: bitcoin's plunge continues, putting February $60,000 low back in play]]></title>
+        <id>795bd7c8-fb07-4356-a746-e7d23b198459</id>
+        <link href="https://www.coindesk.com/markets/2026/06/02/live-markets-bitcoin-s-plunge-continues-putting-february-usd60-000-low-back-in-play"/>
+        <updated>2026-06-02T12:38:03.000Z</updated>
+        <summary type="html"><![CDATA[Google overnight set an $80 billion capital raise, including $10 billion from Berkshire Hathaway, reflecting the continuing flood of money headed into AI (and not crypto).]]></summary>
+        <author>
+            <name>Stephen Alpher</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Stellar CEO says Clarity Act would help, but tokenization isn't dependent on it]]></title>
         <id>12459742-8400-4958-b4c5-960d896b9d16</id>
@@ -16,218 +536,13 @@
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Hot take: "real-time" inventory sync is the biggest lie in ecommerce tooling]]></title>
-        <id>https://dev.to/nventory/hot-take-real-time-inventory-sync-is-the-biggest-lie-in-ecommerce-tooling-3b5m</id>
-        <link href="https://dev.to/nventory/hot-take-real-time-inventory-sync-is-the-biggest-lie-in-ecommerce-tooling-3b5m"/>
-        <updated>2026-06-02T12:32:20.000Z</updated>
-        <summary type="html"><![CDATA[Every inventory tool says real-time.
-That's not real-time. That's a cron job. There's a meaningful architectural difference and the industry has collectively decided to pretend there isn't.
-I want to make the technical case for why this matters — and ask why so few tools have actually fixed it.
-What "real-time" actually means technically
-// This IS real-time — event-driven
-When users notice
-// 52 orders processed against potentially stale stock
-Degrades marketplace seller score
-The aggregate cost of a 15-minute sync interval during a flash sale is significant and measurable. And yet the tool says "real-time" in the marketing copy.
-Why 2026 made this urgent
-if (staleness > AGENT_FRESHNESS_THRESHOLD) {
-return 1 - (staleness / AGENT_FRESHNESS_THRESHOLD);
-// With 15-minute polling at minute 14…]]></summary>
-        <author>
-            <name>Nventory</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why I Keep a Per-Project Investigation Log Outside Claude Code]]></title>
-        <id>https://dev.to/uzoma_uche_3ec83974b4a8a5/why-i-keep-a-per-project-investigation-log-outside-claude-code-1ji6</id>
-        <link href="https://dev.to/uzoma_uche_3ec83974b4a8a5/why-i-keep-a-per-project-investigation-log-outside-claude-code-1ji6"/>
-        <updated>2026-06-02T12:30:08.000Z</updated>
-        <summary type="html"><![CDATA[Why I Keep a Per-Project Investigation Log Outside Claude Code
-
-
-After about six months of running Claude Code across multiple repos, I have stopped pretending that conversation history is enough.
-I still use Claude Code for almost everything. The in-conversation layer is excellent for "what should I do next" and "explain this error". The problem is what happens after the conversation ends: I close the session, switch projects, come back two days later, and I cannot find the investigation I am sure I did.
-I tried three fixes, and the one that stuck is a per-project investigation log that lives outside the chat.
-The first attempt: rely on /resume and session IDs.
-The problem was remembering the session ID. By the time I needed the old conversation, I had forgotten the project name, the date…]]></summary>
-        <author>
-            <name>Echo</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CrabPascal Quick Start in Five Minutes | Início rápido em cinco minutos]]></title>
-        <id>https://dev.to/crabpascal/crabpascal-quick-start-in-five-minutes-inicio-rapido-em-cinco-minutos-bo8</id>
-        <link href="https://dev.to/crabpascal/crabpascal-quick-start-in-five-minutes-inicio-rapido-em-cinco-minutos-bo8"/>
-        <updated>2026-06-02T12:27:00.000Z</updated>
-        <summary type="html"><![CDATA[Bilingual post · Post bilíngue
-
-Jump to: English · Português
-You do not need a full Delphi IDE to run Pascal in 2026. CrabPascal v2.22.0 is a Rust-based compiler and runtime that lets you check, run, and optionally build native executables from .dpr and .pas files — in minutes.
-Windows: download crab-pascal.exe from the latest release, or install the VS Code extension (crabpascal.crabpascal) for auto-install.
-Any OS with Rust: clone the repo and run cargo build --release.
-Optional: gcc or clang only if you want build-exe to emit a native binary.
-Verify the install:
-crab-pascal --version
-
-You should see CrabPascal v2.22.0.
-Create HelloWorld.dpr:
-program HelloWorld;
-begin
-  WriteLn('Hello from CrabPascal!');
-end.
-
-Run it immediately — no codegen step required:
-crab-pascal run HelloWorld.dpr
-…]]></summary>
-        <author>
-            <name>CrabPascal</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Strive adds 2,500 bitcoin to hit 19,000 BTC just a day after Strategy turns seller]]></title>
+        <title type="html"><![CDATA[Strive added 2,500 bitcoin last week to reach 19,000 BTC as Strategy sold]]></title>
         <id>22cc8449-4086-4c40-9014-15691bc0bf8e</id>
         <link href="https://www.coindesk.com/markets/2026/06/02/strive-adds-2-500-bitcoin-to-hit-19-000-btc-just-a-day-after-strategy-turns-seller"/>
         <updated>2026-06-02T12:23:38.000Z</updated>
         <summary type="html"><![CDATA[Benchmark's Mark Palmer also initiated coverage of the stock with a Buy rating and $32 price target as ASST shares fell about 4% pre-market.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA["It's not a bug, it's spec": a zero-click RCE in AI coding agents that three vendors won''t patch]]></title>
-        <id>https://dev.to/ju571nk/its-not-a-bug-its-spec-a-zero-click-rce-in-ai-coding-agents-that-three-vendors-wont-patch-32o1</id>
-        <link href="https://dev.to/ju571nk/its-not-a-bug-its-spec-a-zero-click-rce-in-ai-coding-agents-that-three-vendors-wont-patch-32o1"/>
-        <updated>2026-06-02T12:23:25.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR — A prompt injection can rewrite your AI IDE's mcp.json the moment you open a project, with no dialog and no click, and get arbitrary code execution. It's one of 12+ CVEs in the same class. The root cause lives in the official MCP SDK — and Anthropic, Google, and Microsoft have declined to issue CVEs for their own tools, on the grounds that rewriting the file "requires explicit user permission." In practice, that permission is usually "you installed the IDE."
-In a previous post I argued that the real attack surface for AI coding agents isn't "the model goes rogue" — it's the config file. At the time, the worst case (TrustFall) still needed a human: clone a malicious repo, open it, press Enter on a trust dialog.
-CVE-2026-30615 removes the Enter.
-Disclosed by OX Security on 2026-04-15.…]]></summary>
-        <author>
-            <name>Justin Kwon</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Transactional Email in Medusa v2 Without the Notification Module]]></title>
-        <id>https://dev.to/dbartalos/transactional-email-in-medusa-v2-without-the-notification-module-4gen</id>
-        <link href="https://dev.to/dbartalos/transactional-email-in-medusa-v2-without-the-notification-module-4gen"/>
-        <updated>2026-06-02T12:18:00.000Z</updated>
-        <summary type="html"><![CDATA[Medusa v2 has a notification module. It's designed exactly for transactional email — you register a provider, configure templates, and the module fires on order events. There's one problem: there's no official Resend provider.
-The community providers that exist are hit-and-miss on maintenance. The official SendGrid provider exists, but its setup felt heavier than the problem warranted. Resend, on the other hand, seemed easy enough to implement directly — clean API, good TypeScript types, and 3,000 emails a month free and a dollar per thousand beyond that.
-This is what I did instead: skip the notification module entirely.
-Medusa's event system still works without the notification module. Any subscriber can listen to order.placed and do whatever it wants. So the setup is:
-An order.placed sub…]]></summary>
-        <author>
-            <name>David Bartalos</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to scrape Apple App Store data with Python (no API key needed)]]></title>
-        <id>https://dev.to/freshactors/how-to-scrape-apple-app-store-data-with-python-no-api-key-needed-j63</id>
-        <link href="https://dev.to/freshactors/how-to-scrape-apple-app-store-data-with-python-no-api-key-needed-j63"/>
-        <updated>2026-06-02T12:17:37.000Z</updated>
-        <summary type="html"><![CDATA[Apple doesn't offer a clean public API for App Store details, search rankings, or reviews. If you've tried building your own scraper, you've probably discovered the annoying part: Apple's legacy review feed silently returns an empty 200 response when it's rate-limited, so your scraper happily reports "0 reviews" when there are thousands. Debugging that is a bad afternoon.
-In this tutorial we'll skip that pain and pull structured App Store data in a few lines of Python — no Apple Developer account, no API key, no login. We'll use the App Store Scraper actor on Apify, which handles the throttling, retries, and pagination for you. The same approach works in Node if you prefer JavaScript.
-Three small scripts, one per mode:
-App details — full metadata for one or more apps.
-Search — ranked resul…]]></summary>
-        <author>
-            <name>Freshactors</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Gear Tooth Bending Stress: Treating a Tooth Like a Tiny Cantilever]]></title>
-        <id>https://dev.to/01888927bd0e8aa92caca/gear-tooth-bending-stress-treating-a-tooth-like-a-tiny-cantilever-398</id>
-        <link href="https://dev.to/01888927bd0e8aa92caca/gear-tooth-bending-stress-treating-a-tooth-like-a-tiny-cantilever-398"/>
-        <updated>2026-06-02T12:17:03.000Z</updated>
-        <summary type="html"><![CDATA[Every time a gear tooth comes into mesh, it takes a sharp push from its partner and then lets go a fraction of a second later. Run the gearbox at a few thousand rpm and each tooth absorbs that pulse millions of times an hour. The tooth does not snap from a single overload; it fails slowly, from a fatigue crack growing at the root fillet where the bending stress is highest. Predicting that root stress is the heart of gear strength design.
-This article explains how to model a gear tooth as a short cantilever beam, how the classic Lewis equation converts transmitted power into a bending stress, and how to run the numbers with a worked example.
-Gears fail in two main ways, and bending is one of them. The other is surface pitting from contact pressure, but tooth breakage at the root is the more…]]></summary>
-        <author>
-            <name>NovaSolver</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[TypeScript Monorepo Magic: Organize, Build, and Ship Multi-Package Apps]]></title>
-        <id>https://dev.to/_mh/typescript-monorepo-magic-organize-build-and-ship-multi-package-apps-4cgf</id>
-        <link href="https://dev.to/_mh/typescript-monorepo-magic-organize-build-and-ship-multi-package-apps-4cgf"/>
-        <updated>2026-06-02T12:16:54.000Z</updated>
-        <summary type="html"><![CDATA[What is a Monorepo?
-
-
-A monorepo is a single Git repository that contains multiple distinct packages or applications. The alternative is a polyrepo: one repo per app or package.
-This repo is shrimp-monorepo. It contains:
-shrimp-monorepo/
-├── apps/
-│   ├── api/            ← Node.js backend (Elysia + gRPC)
-│   ├── client-user/    ← React frontend for end users
-│   └── client-admin/   ← React frontend for admins
-├── packages/
-│   ├── shared-types/   ← TypeScript types used everywhere
-│   ├── ui/             ← Shared React components
-│   ├── proto/          ← Protobuf definitions + generated code
-│   ├── grpc-client/    ← gRPC client wrapper
-│   └── db-schema/      ← Drizzle ORM schema
-└── tooling/
-    └── typescript/     ← Shared tsconfig files
-
-The core idea: code that is needed by multiple …]]></summary>
-        <author>
-            <name>M Hossein</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Introducing ToastLib v3.0.1 - A Modern Android Toast Library with Builder API]]></title>
-        <id>https://dev.to/coderx09/introducing-toastlib-v301-a-modern-android-toast-library-with-builder-api-1n0f</id>
-        <link href="https://dev.to/coderx09/introducing-toastlib-v301-a-modern-android-toast-library-with-builder-api-1n0f"/>
-        <updated>2026-06-02T12:15:40.000Z</updated>
-        <summary type="html"><![CDATA[Android Toast messages are one of the simplest ways to show quick feedback to users.
-But the default Android Toast often feels too basic when you are building a modern app.
-That is why I created ToastLib.
-ToastLib is a lightweight Android library that helps you show beautiful custom toast messages with icons, colors, different toast types, custom gravity, and a clean API.
-With ToastLib v3.0.1, the library is now more flexible, more customizable, and easier to use in real Android projects.
-ToastLib is a custom Android toast library built for developers who want better looking feedback messages without writing the same custom toast layout again and again.
-It supports ready-to-use toast types such as:
-Success
-Error
-Info
-Warning
-Default
-Example:
-ToastLib.success(this, "Saved successfully");
-To…]]></summary>
-        <author>
-            <name>Akshay</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I built a free WebP & AVIF image checker — paste any URL, get results in 10s
-
-Hey DEV community 👋
-
-I built a small free tool: webpcheck.pl
-
-You paste any URL it scans all images on the page shows
-which are served as WebP/AVIF]]></title>
-        <id>https://dev.to/wojciech_paluch_bd448f231/i-built-a-free-webp-avif-image-checker-paste-any-url-get-results-in-10s-hey-dev-community-4d9i</id>
-        <link href="https://dev.to/wojciech_paluch_bd448f231/i-built-a-free-webp-avif-image-checker-paste-any-url-get-results-in-10s-hey-dev-community-4d9i"/>
-        <updated>2026-06-02T12:15:30.000Z</updated>
-        <summary type="html"><![CDATA[A post by Wojciech Paluch]]></summary>
-        <author>
-            <name>Wojciech Paluch</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Laying it all out on the Vertical]]></title>
-        <id>https://dev.to/shaynaproductions/laying-it-all-out-on-the-vertical-30f1</id>
-        <link href="https://dev.to/shaynaproductions/laying-it-all-out-on-the-vertical-30f1"/>
-        <updated>2026-06-02T12:15:00.000Z</updated>
-        <summary type="html"><![CDATA[Prologue
-A while ago, I decided to develop a fully accessible main navigation component in React and write a series of articles documenting the steps it took to create a non-trivial accessible component.
-In my last article, I covered creating the underlying data structures for supporting keyboard handling between components.
-This article, along with its accompanying release, focuses on the design and styling of a navigation component whose first row is laid out vertically, consistent with mobile navigation.
-Note: This article is one of a series demonstrating how to build a React navigational component from scratch while considering accessibility through the process. The articles are accompanied by a GitHub repository with releases tied to one or more articles; each building on the previous…]]></summary>
-        <author>
-            <name>ShaynaProductions</name>
         </author>
     </entry>
     <entry>
@@ -238,20 +553,6 @@ Note: This article is one of a series demonstrating how to build a React navigat
         <summary type="html"><![CDATA[Recent Bitcoin ETF outflows look dramatic in headlines, but Bloomberg Intelligence's Eric Balchunas says the broader adoption story remains intact.]]></summary>
         <author>
             <name>AI Boost</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Your Servers Have Passports. Are They Expiring Without You Knowing?]]></title>
-        <id>https://dev.to/walosha/your-servers-have-passports-are-they-expiring-without-you-knowing-8bm</id>
-        <link href="https://dev.to/walosha/your-servers-have-passports-are-they-expiring-without-you-knowing-8bm"/>
-        <updated>2026-06-02T12:14:40.000Z</updated>
-        <summary type="html"><![CDATA[Picture this: it's 2 AM. Your on-call phone explodes. Your payments API is down. Users are screaming. The infra team is deep in logs trying to figure out what broke — firewall rules, a bad deploy, infrastructure drift?
-Turns out your TLS certificate expired six hours ago and nobody noticed.
-That's not a hypothetical. It's a recurring nightmare for engineering teams all over the world. And with the industry aggressively shrinking certificate lifespans — down to 47 days by 2029 — it's about to get a lot worse for teams that aren't paying attention.
-This post is your primer. We'll cover what digital certificates actually are, why they matter more than most developers realise, what "machine identity sprawl" is, and how to stop treating cert management as an afterthought.
-Here's the simplest me…]]></summary>
-        <author>
-            <name>Olawale Afuye</name>
         </author>
     </entry>
     <entry>
@@ -275,17 +576,7 @@ Here's the simplest me…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Sweden is now America's most valuable tech ally. Most Americans haven't noticed]]></title>
-        <id>https://thehill.com/opinion/technology/5898904-strategic-alliance-sweden-us/</id>
-        <link href="https://thehill.com/opinion/technology/5898904-strategic-alliance-sweden-us/"/>
-        <updated>2026-06-02T12:08:55.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Tom Lee calls Strategy's bitcoin sale classic bottom behavior]]></title>
+        <title type="html"><![CDATA[Tom Lee calls Strategy's bitcoin sale classic 'bottom behavior']]></title>
         <id>d16bbb57-f487-4a4c-807e-a82c969c02a9</id>
         <link href="https://www.coindesk.com/markets/2026/06/02/tom-lee-dismisses-bitcoin-fears-over-michael-saylor-first-bitcoin-sale-and-etf-outflows"/>
         <updated>2026-06-02T12:05:26.000Z</updated>
@@ -385,6 +676,16 @@ Here's the simplest me…]]></summary>
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Stop Ruining It]]></title>
+        <id>https://seths.blog/2026/06/stop-ruining-it/</id>
+        <link href="https://seths.blog/2026/06/stop-ruining-it/"/>
+        <updated>2026-06-02T09:52:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Why Janet? (2023)]]></title>
         <id>https://ianthehenry.com/posts/why-janet/</id>
         <link href="https://ianthehenry.com/posts/why-janet/"/>
@@ -395,7 +696,7 @@ Here's the simplest me…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[You Don't Love Systemd Timers Enough]]></title>
+        <title type="html"><![CDATA[Love systemd timers]]></title>
         <id>https://blog.tjll.net/you-dont-love-systemd-timers-enough/</id>
         <link href="https://blog.tjll.net/you-dont-love-systemd-timers-enough/"/>
         <updated>2026-06-02T09:34:11.000Z</updated>
@@ -413,6 +714,16 @@ Here's the simplest me…]]></summary>
 The post Tcomas Showcases AIO Cooling Solutions And Casings appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>John Law</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Eyeball]]></title>
+        <id>https://eyeball.rory.codes/</id>
+        <link href="https://eyeball.rory.codes/"/>
+        <updated>2026-06-02T09:04:49.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -476,16 +787,6 @@ The post Tcomas Showcases AIO Cooling Solutions And Casings appeared first on Lo
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Strategy sold bitcoin in late May, and told the market in June. Here's how Polymarket bettors are fighting over when it counts.]]></title>
-        <id>eb219a92-4017-41d4-898e-aa346f399f7a</id>
-        <link href="https://www.coindesk.com/markets/2026/06/02/strategy-sold-bitcoin-in-late-may-and-told-the-market-in-june-here-s-how-polymarket-bettors-are-fighting-over-when-it-counts"/>
-        <updated>2026-06-02T05:00:34.000Z</updated>
-        <summary type="html"><![CDATA[A $79 million market hinges not on whether Michael Saylor's firm sold bitcoin, but on whether a sale disclosed June 1 can count toward a deadline that passed May 31.]]></summary>
-        <author>
-            <name>Sam Reynolds</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[What AMD Announced At COMPUTEX 2026]]></title>
         <id>https://www.lowyat.net/?p=394418</id>
         <link href="https://www.lowyat.net/2026/394418/what-amd-announced-at-computex-2026/"/>
@@ -511,16 +812,6 @@ The post What AMD Announced At COMPUTEX 2026 appeared first on Lowyat.NET.]]></s
         <id>https://blog.hopefullyuseful.com/blog/macos-needs-its-grid-back/</id>
         <link href="https://blog.hopefullyuseful.com/blog/macos-needs-its-grid-back/"/>
         <updated>2026-06-02T01:28:34.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How is Groq raising more money?]]></title>
-        <id>https://www.zach.be/p/how-the-hell-is-groq-raising-more</id>
-        <link href="https://www.zach.be/p/how-the-hell-is-groq-raising-more"/>
-        <updated>2026-06-02T01:05:29.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -557,26 +848,6 @@ The post What AMD Announced At COMPUTEX 2026 appeared first on Lowyat.NET.]]></s
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Alphabet announces $80B equity capital raise to expand AI infra and compute]]></title>
-        <id>https://abc.xyz/investor/news/news-details/2026/Alphabet-Announces-Proposed-80-Billion-Equity-Capital-Raise-to-Expand-AI-Infrastructure-and-Compute-2026-b0myAMewCa/default.aspx</id>
-        <link href="https://abc.xyz/investor/news/news-details/2026/Alphabet-Announces-Proposed-80-Billion-Equity-Capital-Raise-to-Expand-AI-Infrastructure-and-Compute-2026-b0myAMewCa/default.aspx"/>
-        <updated>2026-06-01T20:55:15.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Crypto investment firm Keyrock is acquiring bankrupt lender Blockfills]]></title>
-        <id>bd438187-2291-4663-90c6-784ca35e52fd</id>
-        <link href="https://www.coindesk.com/business/2026/06/01/crypto-investment-firm-keyrock-is-acquiring-bankrupt-lender-blockfills"/>
-        <updated>2026-06-01T20:48:19.000Z</updated>
-        <summary type="html"><![CDATA[The Brussels-based digital asset services firm plans to purchase BlockFills months after the Chicago-based company filed for Chapter 11 bankruptcy, if a court approves.]]></summary>
-        <author>
-            <name>Will Canny</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Debug Project]]></title>
         <id>https://debug.com/</id>
         <link href="https://debug.com/"/>
@@ -597,60 +868,10 @@ The post What AMD Announced At COMPUTEX 2026 appeared first on Lowyat.NET.]]></s
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Crypto funds suffer second-largest outflows of 2026 while XRP and HYPE attract inflows]]></title>
-        <id>2a2c3ecd-a670-45bc-87e7-57ee6583e9f8</id>
-        <link href="https://www.coindesk.com/markets/2026/06/01/crypto-funds-suffer-second-largest-outflows-of-2026-while-xrp-and-hype-attract-inflows"/>
-        <updated>2026-06-01T17:59:06.000Z</updated>
-        <summary type="html"><![CDATA[Investors pulled $1.67 billion from digital asset investment products last week, with bitcoin funds posting their largest weekly outflow of the year, according to a recent report from CoinShares.]]></summary>
-        <author>
-            <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Should you normalize RGB values by 255 or 256?]]></title>
         <id>https://30fps.net/pages/255-vs-256-division/</id>
         <link href="https://30fps.net/pages/255-vs-256-division/"/>
         <updated>2026-06-01T17:37:20.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Saylor's Strategy sold bitcoin for the first time since 2022. These firms are still buying]]></title>
-        <id>bb32a81e-15d7-4771-97d7-daeca0e3abb6</id>
-        <link href="https://www.coindesk.com/business/2026/06/01/saylor-s-strategy-sold-bitcoin-for-the-first-time-since-2022-these-firms-are-still-buying"/>
-        <updated>2026-06-01T17:25:55.000Z</updated>
-        <summary type="html"><![CDATA[With Strategy breaking its accumulation streak and many peers stepping aside, the list of active digital asset treasuries has narrowed considerably.]]></summary>
-        <author>
-            <name>Krisztian Sandor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[It's not 2022 anymore: What Strategy's first bitcoin sale can (and can't) tell us about this one]]></title>
-        <id>8ffb28d3-0197-4e57-8ec9-b498fb189313</id>
-        <link href="https://www.coindesk.com/markets/2026/06/01/strategy-s-second-bitcoin-sale-revives-memories-of-2022"/>
-        <updated>2026-06-01T17:06:34.000Z</updated>
-        <summary type="html"><![CDATA[Michael Saylor's Strategy has evolved into a far more complex bitcoin-finance machine since it last sold BTC three and half years ago.]]></summary>
-        <author>
-            <name>Jamie Crawley</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ethereum's Vitalik Buterin is rethinking how DeFi handles market crashes]]></title>
-        <id>89672afe-f144-4cbf-b3ca-b5efb5c0d383</id>
-        <link href="https://www.coindesk.com/tech/2026/06/01/ethereum-s-vitalik-buterin-is-rethinking-how-defi-handles-market-crashes"/>
-        <updated>2026-06-01T17:01:41.000Z</updated>
-        <summary type="html"><![CDATA[In a research post published Monday, Buterin proposed creating index-tracking assets using options contracts rather than the debt-based structures that underpin much of DeFi today.]]></summary>
-        <author>
-            <name>Margaux Nijkerk</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AI Agent Guidelines for CS336 at Stanford]]></title>
-        <id>https://github.com/stanford-cs336/assignment1-basics/blob/main/CLAUDE.md</id>
-        <link href="https://github.com/stanford-cs336/assignment1-basics/blob/main/CLAUDE.md"/>
-        <updated>2026-06-01T16:41:49.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -688,26 +909,6 @@ The post Gigabyte Announces New AORUS X870E Infinity Next And Infinity RTX 50 Se
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Michael Saylor breaks silence after Strategy sells $2.5 million in bitcoin]]></title>
-        <id>b079aa7a-8ee5-4064-be11-bd443990b148</id>
-        <link href="https://www.coindesk.com/markets/2026/06/01/michael-saylor-breaks-silence-after-strategy-sells-usd2-5-million-in-bitcoin"/>
-        <updated>2026-06-01T16:06:23.000Z</updated>
-        <summary type="html"><![CDATA[Michael Saylor says Strategy aims to make STRC the world's best credit instrument after the company sold bitcoin to help fund preferred stock distributions]]></summary>
-        <author>
-            <name>James Van Straten</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Strategy sparked panic with bitcoin sale, but analysts say it was 'immaterial']]></title>
-        <id>074391e9-ef06-4512-9936-7f9fa45fb546</id>
-        <link href="https://www.coindesk.com/markets/2026/06/01/analysts-agree-strategy-s-bitcoin-sale-was-immaterial-differ-on-future-signals"/>
-        <updated>2026-06-01T15:45:51.000Z</updated>
-        <summary type="html"><![CDATA[The move suggests a greater willingness on the part of Michael Saylor and Strategy to use BTC holdings to support the capital structure, said one analyst, while others disagreed.]]></summary>
-        <author>
-            <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Predator Atlas 8 Hands On: Two New Challengers For The Price Of One]]></title>
         <id>https://www.lowyat.net/?p=394390</id>
         <link href="https://www.lowyat.net/2026/394390/predator-atlas-8-hands-on/"/>
@@ -716,36 +917,6 @@ The post Gigabyte Announces New AORUS X870E Infinity Next And Infinity RTX 50 Se
 The post Predator Atlas 8 Hands On: Two New Challengers For The Price Of One appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Ian Chee</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What appear to be biochemical processes may be a natural feature of geology]]></title>
-        <id>https://www.quantamagazine.org/the-dirt-that-refused-to-die-20260601/</id>
-        <link href="https://www.quantamagazine.org/the-dirt-that-refused-to-die-20260601/"/>
-        <updated>2026-06-01T15:11:35.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ask HN: Who is hiring? (June 2026)]]></title>
-        <id>https://news.ycombinator.com/item?id=48357725</id>
-        <link href="https://news.ycombinator.com/item?id=48357725"/>
-        <updated>2026-06-01T15:00:48.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Strategy’s bitcoin sale sparks a $14 million betting chaos on Polymarket]]></title>
-        <id>1db73ad9-6e8e-4cae-a5dc-392c1303dfd8</id>
-        <link href="https://www.coindesk.com/markets/2026/06/01/strategy-s-bitcoin-sale-sparks-a-usd14-million-crypto-betting-chaos-on-a-major-prediction-market"/>
-        <updated>2026-06-01T14:49:32.000Z</updated>
-        <summary type="html"><![CDATA[The 8-K filing by Strategy Monday disclosed sales for the period May 26 to May 31, but the disclosure was issued on June 1. Polymarket's May 31 contract is sitting at 81% Yes and in review, while bettors argue over whether the onchain transactions or the filing date controls.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
         </author>
     </entry>
     <entry>
@@ -766,46 +937,6 @@ The post Predator Atlas 8 Hands On: Two New Challengers For The Price Of One app
         <summary type="html"><![CDATA[As a Flutter engineer, you already know Dart. You understand async/await, you work with models and repositories, you think in clean architecture, and you have shipped real applications. The gap betwee]]></summary>
         <author>
             <name>Oluwaseyi Fatunmole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CS336: Language Modeling from Scratch]]></title>
-        <id>https://cs336.stanford.edu/</id>
-        <link href="https://cs336.stanford.edu/"/>
-        <updated>2026-06-01T14:10:32.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Japan's ruling party supports crypto ETF trading, yen-based stablecoins]]></title>
-        <id>dce58611-43e4-42c7-ac09-ac32a96c380e</id>
-        <link href="https://www.coindesk.com/policy/2026/06/01/japan-s-ruling-party-supports-crypto-etf-trading-yen-based-stablecoins"/>
-        <updated>2026-06-01T13:38:04.000Z</updated>
-        <summary type="html"><![CDATA[Japan's ruling Liberal Democratic Party said the country should create a legal framework for trading crypto ETFs in a proposal to the finance minister.]]></summary>
-        <author>
-            <name>Jamie Crawley</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CoinDesk 20 performance update: Stellar (XLM) surges 14.1% over weekend]]></title>
-        <id>6a5b3093-1ad3-4a13-8bea-13772317a278</id>
-        <link href="https://www.coindesk.com/coindesk-indices/2026/06/01/coindesk-20-performance-update-stellar-xlm-surges-14-1-over-weekend"/>
-        <updated>2026-06-01T13:09:37.000Z</updated>
-        <summary type="html"><![CDATA[Binance Coin (BNB), up 7.9%, was also a top performer.]]></summary>
-        <author>
-            <name>CoinDesk Indices</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Launch HN: Expanse (YC P26) – Unlock Wasted GPU Capacity]]></title>
-        <id>https://news.ycombinator.com/item?id=48356312</id>
-        <link href="https://news.ycombinator.com/item?id=48356312"/>
-        <updated>2026-06-01T13:05:02.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -882,16 +1013,6 @@ The post Acer Nitro Blaze Link Hands On: A Sleeper Hit In The Making? appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[On Reading SRAMs in IR Images, and Establishing Bounds on Trust]]></title>
-        <id>https://www.bunniestudios.com/blog/2026/on-reading-srams-in-ir-images-and-establishing-bounds-on-trust/</id>
-        <link href="https://www.bunniestudios.com/blog/2026/on-reading-srams-in-ir-images-and-establishing-bounds-on-trust/"/>
-        <updated>2026-05-31T16:25:12.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Acer Swift Air 14 Joins The Brand’s Computex 2026 Lineup]]></title>
         <id>https://www.lowyat.net/?p=394355</id>
         <link href="https://www.lowyat.net/2026/394355/acer-swift-air-14-computex-2026/"/>
@@ -903,42 +1024,40 @@ The post Acer Swift Air 14 Joins The Brand’s Computex 2026 Lineup appeared fir
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Acer Launches New Predator Gaming Monitors Ahead Of Computex 2026]]></title>
-        <id>https://www.lowyat.net/?p=394350</id>
-        <link href="https://www.lowyat.net/2026/394350/acer-launches-new-predator-gaming-monitors-ahead-of-computex-2026/"/>
-        <updated>2026-05-31T10:05:09.000Z</updated>
-        <summary type="html"><![CDATA[In the spirit of Computex 2026, Acer had a ton of products to launch this season, the main course obviously being its laptops. For sides, the brand has also launched a new line up of Predator gaming monitors, as well as some models from the Nitro segment. In the Predator section, Acer has the XB273K […]
-The post Acer Launches New Predator Gaming Monitors Ahead Of Computex 2026 appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>John Law</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Acer Nitro Blaze Link Is A PS Portal-Like Streaming Handheld]]></title>
-        <id>https://www.lowyat.net/?p=394324</id>
-        <link href="https://www.lowyat.net/2026/394324/acer-nitro-blaze-link-ps-portal-like-streaming-handheld/"/>
-        <updated>2026-05-31T09:38:54.000Z</updated>
-        <summary type="html"><![CDATA[While Acer has a pretty rich lineup of gaming laptops thanks to the Predator and Nitro series, the brand has now launched what it calls a “streaming-first” handheld. It’s called the Nitro Blaze Link, which is essentially its own take on a device that’s like the PS Portal. Except that it streams games from a […]
-The post The Acer Nitro Blaze Link Is A PS Portal-Like Streaming Handheld appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Ian Chee</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Muxcard, a dyi credit card size computer]]></title>
-        <id>https://github.com/krauseler/muxcard</id>
-        <link href="https://github.com/krauseler/muxcard"/>
-        <updated>2026-05-31T01:59:06.000Z</updated>
+        <title type="html"><![CDATA[The S in Interoperability]]></title>
+        <id>https://frederikbraun.de/the-s-in-interoperability.html</id>
+        <link href="https://frederikbraun.de/the-s-in-interoperability.html"/>
+        <updated>2026-05-31T13:43:20.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A new way to build chips: Sequentially stacking silicon to extend Moore's Law]]></title>
-        <id>https://matse.illinois.edu/news/85775</id>
-        <link href="https://matse.illinois.edu/news/85775"/>
-        <updated>2026-05-30T22:38:48.000Z</updated>
+        <title type="html"><![CDATA[Squillions: How money laundering won]]></title>
+        <id>https://www.lrb.co.uk/the-paper/v48/n09/john-lanchester/squillions</id>
+        <link href="https://www.lrb.co.uk/the-paper/v48/n09/john-lanchester/squillions"/>
+        <updated>2026-05-31T10:26:55.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Custom Attributes in .NET Give Me Nightmares]]></title>
+        <id>https://blog.washi.dev/posts/custom-attributes-and-why-they-suck/</id>
+        <link href="https://blog.washi.dev/posts/custom-attributes-and-why-they-suck/"/>
+        <updated>2026-05-31T06:16:06.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PCMFlowG722 wideband (HD voice) codec for ESP32]]></title>
+        <id>https://github.com/tanakamasayuki/PCMFlowG722</id>
+        <link href="https://github.com/tanakamasayuki/PCMFlowG722"/>
+        <updated>2026-05-30T15:19:59.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1025,6 +1144,16 @@ The post The Acer Nitro Blaze Link Is A PS Portal-Like Streaming Handheld appear
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Reviving Teletext for Ham Radio]]></title>
+        <id>https://spectrum.ieee.org/reviving-teletext-for-ham-radio</id>
+        <link href="https://spectrum.ieee.org/reviving-teletext-for-ham-radio"/>
+        <updated>2026-05-29T16:41:56.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[The Download: unlocking lithium and controlling Ebola]]></title>
         <id>https://www.technologyreview.com/?p=1138110</id>
         <link href="https://www.technologyreview.com/2026/05/29/1138110/the-download-lithium-extraction-ebola-ai-pope/"/>
@@ -1045,16 +1174,6 @@ The post The Acer Nitro Blaze Link Is A PS Portal-Like Streaming Handheld appear
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Fooling around with encrypted reasoning blobs]]></title>
-        <id>https://blog.cryptographyengineering.com/2026/05/29/fooling-around-with-encrypted-reasoning-blobs/</id>
-        <link href="https://blog.cryptographyengineering.com/2026/05/29/fooling-around-with-encrypted-reasoning-blobs/"/>
-        <updated>2026-05-29T10:06:47.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How the Pope’s Magnifica Humanitas offers a template for individuals to meet the AI moment]]></title>
         <id>https://www.technologyreview.com/?p=1138107</id>
         <link href="https://www.technologyreview.com/2026/05/29/1138107/how-the-popes-magnifica-humanitas-offers-a-template-for-individuals-to-meet-the-ai-moment/"/>
@@ -1072,16 +1191,6 @@ The post The Acer Nitro Blaze Link Is A PS Portal-Like Streaming Handheld appear
         <summary type="html"><![CDATA[Researchers say they’ve found a new way to extract lithium, a crucial metal used in the lithium-ion batteries that power electric vehicles and energy storage arrays. This new technique could be more environmentally friendly and cheaper than existing ones.  The research was published today in Science, and a startup called Rock Zero is working to…]]></summary>
         <author>
             <name>Casey Crownhart</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I made my phone slow on purpose]]></title>
-        <id>https://vinewallapp.com/notes/i-made-my-phone-slow-on-purpose/</id>
-        <link href="https://vinewallapp.com/notes/i-made-my-phone-slow-on-purpose/"/>
-        <updated>2026-05-28T17:30:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
