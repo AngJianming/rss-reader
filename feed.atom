@@ -1,157 +1,489 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-06-15T09:57:58.057Z</id>
+    <id>urn:2026-06-15T15:48:56.508Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-06-15T09:57:58.057Z</updated>
+    <updated>2026-06-15T15:48:56.508Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[Affiliate vs Sponsorship vs Ads: What Actually Earns More for Tech Creators in 2026?]]></title>
-        <id>https://dev.to/coolflux/affiliate-vs-sponsorship-vs-ads-what-actually-earns-more-for-tech-creators-in-2026-3823</id>
-        <link href="https://dev.to/coolflux/affiliate-vs-sponsorship-vs-ads-what-actually-earns-more-for-tech-creators-in-2026-3823"/>
-        <updated>2026-06-15T09:55:10.000Z</updated>
-        <summary type="html"><![CDATA[Check this out: i run four monetization channels side by side. Sponsored posts, display ads, YouTube ad revenue, and affiliate links. After eighteen months of tracking every dollar in a spreadsheet I built myself, I can tell you with brutal honesty: affiliate income is the only one that scales without me having to constantly produce more content or chase the next brand deal. But the math only works if you pick the right program. Most affiliates I know are promoting garbage with terrible retention, and they have no idea they're burning their audience's trust for a $9 one-time payout.
-Here's a snapshot of my monthly revenue from a tech newsletter with around 34,000 subscribers and a YouTube channel sitting at 88,000 subscribers:
-Sponsored posts: $2,100 per placement, but I can only land mayb…]]></summary>
+        <title type="html"><![CDATA[Your Hand-Rolled Two-Phase Commit Between Two Databases Isn't Atomic]]></title>
+        <id>https://dev.to/mattia_armas/your-hand-rolled-two-phase-commit-between-two-databases-isnt-atomic-3dhe</id>
+        <link href="https://dev.to/mattia_armas/your-hand-rolled-two-phase-commit-between-two-databases-isnt-atomic-3dhe"/>
+        <updated>2026-06-15T15:37:46.000Z</updated>
+        <summary type="html"><![CDATA[I had a write that spanned two physically separate databases. A rename that had to propagate across several tables in one database and a couple of tables in another, and the two had to stay consistent. No distributed transaction coordinator was available to me. So I did the obvious thing: opened a transaction on each, did the work, and committed them one after the other inside a try/catch with rollbacks on both sides. It felt safe. It compiled. It passed tests.
+Then I drew the failure on a whiteboard, and the safety evaporated.
+Here's the structure, simplified:
+await using var txA = await dbA.Database.BeginTransactionAsync();
+await using var txB = await dbB.Database.BeginTransactionAsync();
+
+await DoWorkOnA(dbA);
+await DoWorkOnB(dbB);
+
+await txA.CommitAsync();   // <-- succeeds
+await txB.C…]]></summary>
         <author>
-            <name>coolflux</name>
+            <name>scubaDEV</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why Is Your Kubernetes Bill So Confusing? Here’s How to Fix It]]></title>
-        <id>https://dev.to/bpooja/why-is-your-kubernetes-bill-so-confusing-heres-how-to-fix-it-h7i</id>
-        <link href="https://dev.to/bpooja/why-is-your-kubernetes-bill-so-confusing-heres-how-to-fix-it-h7i"/>
-        <updated>2026-06-15T09:55:09.000Z</updated>
-        <summary type="html"><![CDATA[Simple Intro  
-Your company gets one big cloud bill. It says $30,000. 
-But which team spent it? Which app? Nobody knows.
-Kubernetes makes this worse because 100 small apps share the same computers. It’s like 10 families sharing one electricity bill.
-Step 1: Put Nametags on Everything
-In Kubernetes, you can add "labels" to your apps. 
-Example: team=sales , app=website , owner=pooja
-If you don’t add name tags, you can never track who spent what. It’s the most important step.
-Step 2: Check the Big Cost - Computers  
-70% of your bill is for CPU and RAM. That’s the “brain” and “memory” your apps use.
-The problem: Most people book a big computer but only use 20% of it. You pay for 100%, use 20%. You waste 80% money.
-Easy fix: Every month, check “How much did I book vs How much did I use?” Then b…]]></summary>
+        <title type="html"><![CDATA[OTP Verification in Playwright Without Regex]]></title>
+        <id>https://dev.to/zerodrop/otp-verification-in-playwright-without-regex-d3i</id>
+        <link href="https://dev.to/zerodrop/otp-verification-in-playwright-without-regex-d3i"/>
+        <updated>2026-06-15T15:36:33.000Z</updated>
+        <summary type="html"><![CDATA[Every developer who has written a Playwright test for OTP verification has written this line:
+const otp = email.body.match(/\b\d{6}\b/)?.[0];
+
+It works. Until it doesn't.
+The email body changes format. The OTP appears inside an HTML table. The sending service wraps it in a <span>. Your regex matches a phone number instead of the code. The test fails intermittently and you spend an hour debugging something that has nothing to do with the feature you're testing.
+OTP extraction via regex is brittle by nature. You're pattern-matching against a string that your email sending service controls — not you. Any time the template changes, your tests break.
+Here's what a typical OTP test looks like today:
+import { test, expect } from '@playwright/test';
+import { ZeroDrop } from 'zerodrop-client';
+
+con…]]></summary>
         <author>
-            <name>pooja</name>
+            <name>zerodrop</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why the Game Community Manager Role Is Harder Than It Looks]]></title>
-        <id>https://dev.to/sam_novak_574b07811e18495/why-the-game-community-manager-role-is-harder-than-it-looks-o4l</id>
-        <link href="https://dev.to/sam_novak_574b07811e18495/why-the-game-community-manager-role-is-harder-than-it-looks-o4l"/>
-        <updated>2026-06-15T09:54:44.000Z</updated>
-        <summary type="html"><![CDATA[If you've ever worked on a live game, you've probably watched this happen: an update ships, something feels off, the forums light up, and within an hour the community manager is in the middle of a fire they didn't start and can't immediately put out.
-And here's the thing most people get wrong about that person's job.
-That's the assumption. A game community manager writes patch notes, posts announcements, answers a few questions on Discord, drops the occasional meme, and keeps the social feeds warm.
-That's the visible 10%. The other 90% is harder, quieter, and almost invisible when it's done well.
-A community manager sits at a collision point. On one side: players who are frustrated because something broke, a balance change feels unfair, compensation feels insulting, or an update slipped. O…]]></summary>
+        <title type="html"><![CDATA[Your AI agent doesn't have a memory. It has a transcript.]]></title>
+        <id>https://dev.to/diran_adeola/your-ai-agent-doesnt-have-a-memory-it-has-a-transcript-16lp</id>
+        <link href="https://dev.to/diran_adeola/your-ai-agent-doesnt-have-a-memory-it-has-a-transcript-16lp"/>
+        <updated>2026-06-15T15:36:16.000Z</updated>
+        <summary type="html"><![CDATA[Notes from building a memory layer that forgets on purpose.
+Most "memory-enabled" agents don't remember anything. They re-read.
+Every turn, the whole conversation gets pasted back into the prompt, and we call that memory because the model can answer questions about earlier turns. It's a good trick. I used it for months. It also falls apart the moment real people start using the thing, and it falls apart in three separate ways.
+The first is the one everyone notices: it's expensive and noisy. You re-send every prior turn on every request. The single line you actually care about - "I'm allergic to peanuts" - is buried under a thousand lines of small talk, and you pay for all of it, every time.
+The second is quieter and worse. Transcript-stuffing has no idea what stale means. If someone told y…]]></summary>
         <author>
-            <name>Sam Novak</name>
+            <name>Deola Adediran</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Bruno CLI vs Apidog CLI: Rodando Testes de API na CI]]></title>
-        <id>https://dev.to/lucas_ferreira/bruno-cli-vs-apidog-cli-rodando-testes-de-api-na-ci-1ajf</id>
-        <link href="https://dev.to/lucas_ferreira/bruno-cli-vs-apidog-cli-rodando-testes-de-api-na-ci-1ajf"/>
-        <updated>2026-06-15T09:53:04.000Z</updated>
-        <summary type="html"><![CDATA[Seus testes de API passam no seu laptop. O que importa é se eles rodam em cada pull request, merge e build noturno sem intervenção humana. Para isso, você precisa de um executor de linha de comando: ele roda os testes em modo headless dentro do pipeline, retorna código de saída correto e gera relatórios que o CI consegue ler.
-Experimente o Apidog hoje
-
-
-Dois CLIs aparecem com frequência nessa configuração: Bruno CLI e Apidog CLI. Ambos executam testes de API em CI/CD, mas partem de modelos diferentes:
-Bruno é git-native, offline-first e open source. O CLI executa arquivos .bru versionados no repositório.
-Apidog é uma plataforma de API completa. O CLI executa cenários visuais criados no aplicativo, buscados por ID.
-Ambos funcionam em GitHub Actions, GitLab CI, Jenkins e qualquer runner com …]]></summary>
+        <title type="html"><![CDATA[The contract is clean - for now: catching crypto scams that survive launch-time checks]]></title>
+        <id>https://dev.to/mik3fly__/the-contract-is-clean-for-now-catching-crypto-scams-that-survive-launch-time-checks-1bj7</id>
+        <link href="https://dev.to/mik3fly__/the-contract-is-clean-for-now-catching-crypto-scams-that-survive-launch-time-checks-1bj7"/>
+        <updated>2026-06-15T15:36:11.000Z</updated>
+        <summary type="html"><![CDATA[Most token scam detectors, including the one I work on, share one implicit assumption: the contract you analyze at launch is the contract people will trade. Read the source, simulate a buy and a sell, cluster the deployer, score it, done.
+That is a snapshot. And a snapshot is exactly what a patient scammer plays against. Two token designs pass every launch-time check and then turn hostile later. This is how they work, and the two on-chain techniques we shipped this week to catch them.
+A honeypot is a token you can buy but cannot sell. The classic version is non-sellable from block one, so a buy-then-sell simulation catches it instantly.
+The patient version is sellable at launch. Early buyers sell fine, the chart looks healthy, the token earns a clean verdict from every checker that judged …]]></summary>
         <author>
-            <name>Lucas</name>
+            <name>Bryan MARTIN</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[oomkill is the next lie why memory limits are hiding your latency spikes]]></title>
-        <id>https://dev.to/muskan_8abedcc7e12/oomkill-is-the-next-lie-why-memory-limits-are-hiding-your-latency-spikes-25b1</id>
-        <link href="https://dev.to/muskan_8abedcc7e12/oomkill-is-the-next-lie-why-memory-limits-are-hiding-your-latency-spikes-25b1"/>
-        <updated>2026-06-15T09:52:30.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR OOMKill is a reporting artifact, not a root cause. By the time the kernel logs the kill event and your alerting pipeline fires, the service already degraded for every user who hit
-OOMKill is a reporting artifact, not a root cause. By the time the kernel logs the kill event and your alerting pipeline fires, the service already degraded for every user who hit it in the preceding minutes. Operators page on the kill. The latency damage is already done.
+        <title type="html"><![CDATA[Dynamic Column Updates in EF Core Without Hand-Rolling SQL Injection]]></title>
+        <id>https://dev.to/mattia_armas/dynamic-column-updates-in-ef-core-without-hand-rolling-sql-injection-mip</id>
+        <link href="https://dev.to/mattia_armas/dynamic-column-updates-in-ef-core-without-hand-rolling-sql-injection-mip"/>
+        <updated>2026-06-15T15:32:27.000Z</updated>
+        <summary type="html"><![CDATA[Sometimes you genuinely need the set of columns to update to be data, not code. An operator maps configuration fields to database columns, and you want to honor that mapping without redeploying every time it changes. The naive solution — build an UPDATE string from those column names — is also one of the easiest ways to hand-write a SQL injection vulnerability. This is how to get the flexibility without the hole.
+We'll build it up in three layers: make it work, make it safe, then count the cost.
+The tempting version concatenates column names into SQL:
+// DO NOT do this.
+var sql = $"UPDATE products SET {columnName} = {value} WHERE id = {id}";
 
-
-
-Aspect
-What Operators Observe
-What Actually Happens
-
-
-
-
-OOMKill event
-Alert fires; pod is restarted
-Kill is the kernel's final action after degradation is already complete
-
-
-Silent pressure window
-No alert fires; no dashboard turns red
-p99 latency climbs as allocator contention serializes parallel work
-
-
-Incident attribution
-Logged as "…]]></summary>
+If columnName comes from configuration that an operator can edit, you've just made your schema writable by whoever controls that config. A value of n…]]></summary>
         <author>
-            <name>Muskan</name>
+            <name>scubaDEV</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Forward settlement without a custodian: how two agents bind a future trade with one timelock]]></title>
-        <id>https://dev.to/barissozen/forward-settlement-without-a-custodian-how-two-agents-bind-a-future-trade-with-one-timelock-ddc</id>
-        <link href="https://dev.to/barissozen/forward-settlement-without-a-custodian-how-two-agents-bind-a-future-trade-with-one-timelock-ddc"/>
-        <updated>2026-06-15T09:52:10.000Z</updated>
-        <summary type="html"><![CDATA[Most explanations of atomic swaps stop at the spot case: two parties lock funds, one reveals a secret, both legs clear in the same short window. Clean, but it quietly assumes the trade settles right now.
-A lot of real agent activity isn't spot. It's a forward: two agents agree on terms today - asset pair, size, price - and settle at some future point, T+24h or T+48h. Procurement agents pre-committing to a delivery. A treasury agent locking tomorrow's FX-equivalent rate. A market-making agent quoting a forward to offload inventory risk. The economics are old; what's new is that the counterparties are anonymous software that will never meet.
-That raises a question spot swaps don't have to answer: what holds the trade together in the gap between agreement and settlement?
-In traditional market…]]></summary>
+        <title type="html"><![CDATA[A load balancer inspired by how Emperor Penguins survive Antarctic winters]]></title>
+        <id>https://dev.to/rahad_bhuiya/a-load-balancer-inspired-by-how-emperor-penguins-survive-antarctic-winters-582n</id>
+        <link href="https://dev.to/rahad_bhuiya/a-load-balancer-inspired-by-how-emperor-penguins-survive-antarctic-winters-582n"/>
+        <updated>2026-06-15T15:32:22.000Z</updated>
+        <summary type="html"><![CDATA[Why I modeled a load balancer after Emperor Penguin huddles
+A few months ago I was reading about how emperor penguins survive Antarctic winters. Temperature drops to -40°C, wind hits 120km/h, and somehow these birds make it through. Not because they're individually tough. Because they rotate.
+Cold penguins on the outside push inward. Warm ones from the center move out to rest. Nobody coordinates this. No penguin is in charge. It emerges from one simple rule: if you're cold, push in. If you're warm, you'll get pushed out eventually.
+I couldn't stop thinking about this.
+I was working on a service mesh at the time and dealing with the usual problem — one slow server quietly dragging down the whole cluster. Round robin doesn't care. Least connections helps but not always. Weighted approaches n…]]></summary>
         <author>
-            <name>Baris Sozen</name>
+            <name>Rahad Bhuiya</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Biting Into It: My Astropy Summer (Weeks 1-3)]]></title>
-        <id>https://dev.to/reemhamraz/biting-into-it-my-astropy-summer-weeks-1-3-5g2l</id>
-        <link href="https://dev.to/reemhamraz/biting-into-it-my-astropy-summer-weeks-1-3-5g2l"/>
-        <updated>2026-06-15T09:48:44.000Z</updated>
-        <summary type="html"><![CDATA["I really want to be something in life. I don't want to be forgotten."
-It's a heavy thought for a Tuesday night, but it's been bouncing around my head a lot lately. I read this Sartre quote recently about living a "toothless life", just waiting around, reserving yourself for later, and then suddenly realizing your teeth are gone. I decided a while ago that I'm not doing that. If I'm going to leave something behind, it has to be through work that actually matters.
-Right now, that work looks like deliberately bypassing high-level Python APIs to aggressively test raw, compiled C-engines for Astropy.
-Juggling CS coursework while trying to wrangle Cython for Google Summer of Code is a lot. But honestly? I've been loving every damn second of it. Reading documentation in a vacuum is one thing, ac…]]></summary>
+        <title type="html"><![CDATA[Building a Low-Latency Polymarket Bot for Earnings Markets: A Real-World Attempt (Lessons & Technical Breakdown)]]></title>
+        <id>https://dev.to/fatherson/building-a-low-latency-polymarket-bot-for-earnings-markets-a-real-world-attempt-lessons--38md</id>
+        <link href="https://dev.to/fatherson/building-a-low-latency-polymarket-bot-for-earnings-markets-a-real-world-attempt-lessons--38md"/>
+        <updated>2026-06-15T15:31:39.000Z</updated>
+        <summary type="html"><![CDATA[A bot on Polymarket quietly extracted $32k in near risk-free profits by sniping “Will Company XYZ Beat Earnings?” markets. It waits for the official release, then instantly buys the winning side. Many limit orders from retail traders remain uncancelled, creating a post-announcement arbitrage window.
+Two developers decided to challenge it. Here’s what they learned while trying to build a faster version.
+Location: Polymarket’s CLOB runs in AWS eu-west-2 (London). They deployed from Ireland (eu-west-1, Dublin) — the closest realistic option without IP tricks. UK IPs are blocked.
+Language: Rust for type safety and speed. The author notes you can achieve competitive latency in Python if you strip unnecessary network calls.
+Key Warning: Avoid the official Polymarket SDKs for ultra-low latency. T…]]></summary>
         <author>
-            <name>Reem Hamraz</name>
+            <name>FatherSon</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Running a container inside a non-privileged microVM, on an Apple Silicon Mac]]></title>
-        <id>https://dev.to/terum/running-a-container-inside-a-non-privileged-microvm-on-an-apple-silicon-mac-145f</id>
-        <link href="https://dev.to/terum/running-a-container-inside-a-non-privileged-microvm-on-an-apple-silicon-mac-145f"/>
-        <updated>2026-06-15T09:42:28.000Z</updated>
-        <summary type="html"><![CDATA[If you let an AI agent run arbitrary code — npm install, a test suite, docker build, a Playwright run — you are running untrusted code, and a shared-kernel container is not a boundary against it. The boundary you want for "tenant A's agent must not reach tenant B" is a VM, per run. Kata Containers gives you that: a pod that is transparently a microVM with its own kernel.
-But the verify stage wants to run containers (Testcontainers, docker build, a DB container). So you need nested containers inside the microVM — and the usual way, privileged: true, is the one thing you must not do, because privileged makes Kata hot-plug host devices into the guest, which is exactly the isolation hole the VM was supposed to close.
-So: nested containers, inside a microVM, with privileged: false. Here is the …]]></summary>
+        <title type="html"><![CDATA[Bootcamp Grad Dives Into Google vs OpenAI API Pricing]]></title>
+        <id>https://dev.to/bolddeck/bootcamp-grad-dives-into-google-vs-openai-api-pricing-3c84</id>
+        <link href="https://dev.to/bolddeck/bootcamp-grad-dives-into-google-vs-openai-api-pricing-3c84"/>
+        <updated>2026-06-15T15:31:38.000Z</updated>
+        <summary type="html"><![CDATA[Honestly, bootcamp Grad Dives Into Google vs OpenAI API Pricing
+When I finished my coding bootcamp three months ago, I thought I understood what an API did. I mean, you send a request, you get a response back, right? What I did not understand was how dramatically the cost could vary depending on which model you picked. I had no idea that a single line of code change could mean the difference between paying pennies and paying hundreds of dollars at scale.
+That is the rabbit hole I fell down last week, and I want to walk you through everything I learned. This is the post I wish I had read before I burned through my first $50 in API credits.
+I was building a small app that takes user reviews and summarizes them. Pretty straightforward. I figured I would just plug in the most popular model and…]]></summary>
         <author>
-            <name>Teru Murata</name>
+            <name>bolddeck</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Could We Build a World Without Cash? Exploring Universal Biometric Identity and Digital Credits]]></title>
-        <id>https://dev.to/itsmdshahin/could-we-build-a-world-without-cash-exploring-universal-biometric-identity-and-digital-credits-4ga9</id>
-        <link href="https://dev.to/itsmdshahin/could-we-build-a-world-without-cash-exploring-universal-biometric-identity-and-digital-credits-4ga9"/>
-        <updated>2026-06-15T09:39:59.000Z</updated>
-        <summary type="html"><![CDATA[What if you could travel anywhere in the world, buy a coffee, pay for a service, or receive government support without carrying cash, cards, or even a smartphone?
-What if your identity itself became the key to the global economy?
-These questions inspired my recent research on Universal Biometric Identification (UBID) and Universal Digital Credits (UDC)—a framework for a future economy where financial transactions are performed through biometric authentication rather than physical money.
-Today's financial ecosystem is fragmented.
-We rely on multiple forms of identification, different currencies, banking intermediaries, passwords, PINs, and payment cards. Despite technological progress, billions of people worldwide still lack access to formal financial services due to missing identification …]]></summary>
+        <title type="html"><![CDATA[day 01 of learning data engineering (step1: sql joins and set operators)]]></title>
+        <id>https://dev.to/darklyamused/day-01-of-learning-data-engineering-step1-sql-joins-and-set-operators-59oa</id>
+        <link href="https://dev.to/darklyamused/day-01-of-learning-data-engineering-step1-sql-joins-and-set-operators-59oa"/>
+        <updated>2026-06-15T15:31:37.000Z</updated>
+        <summary type="html"><![CDATA[So, yes. Today's goal is to get the 30hr SQL Bootcamp completed (or at least as much as I can), I am following Data with Baara. Who gets a 5 on 5 for clearing my doubts before I even know I have them (what kind of superpower is that?).
+context: So I already knew the bare basics of SQL as it was a course I had to take in my pre-final year, but it was not on par with what is required of a DE. So I revised the things that I already knew and speed ran through it.
+If you are also a beginner like me who had not dwelled too deep, you may think there exists only four types of JOINs (the big four: LEFT, RIGHT, INNER, FULL) but no, because when have things ever been this simple. We have moreeee. And they are:
+Right Anti, Left Anti, Full Anti and Cross Join.
+Now, Anti Joins are interesting. The "anti…]]></summary>
         <author>
-            <name>Md Shahinur Rahman</name>
+            <name>nain</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build and deploy an MCP server with .NET and Azure Container Apps]]></title>
+        <id>https://dev.to/lukaswalter/build-and-deploy-an-mcp-server-with-net-and-azure-container-apps-183m</id>
+        <link href="https://dev.to/lukaswalter/build-and-deploy-an-mcp-server-with-net-and-azure-container-apps-183m"/>
+        <updated>2026-06-15T15:30:00.000Z</updated>
+        <summary type="html"><![CDATA[MCP servers do not have to be local stdio processes. If you want a tool surface that can run as a normal HTTP service, scale like an app, and be reachable from a separate client, Streamable HTTP is the practical transport to look at.
+Terminology note: current MCP specs call this transport Streamable HTTP. It replaced the older HTTP+SSE transport, but it can still use Server-Sent Events (SSE) when the server streams messages back to the client.
+We will build a small MCP server in C# with the official MCP .NET SDK, run it locally, containerize it, deploy it to Azure Container Apps, and call it from a C# client.
+Repository: MCP Server on Azure Container Apps with C# and .NET
+The sample exposes three tools:
+echo: returns a message
+add: adds two integers
+server_time: returns the server time for…]]></summary>
+        <author>
+            <name>Lukas Walter</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why recording video in the browser is harder than it looks]]></title>
+        <id>https://dev.to/dealwith/why-recording-video-in-the-browser-is-harder-than-it-looks-5fdo</id>
+        <link href="https://dev.to/dealwith/why-recording-video-in-the-browser-is-harder-than-it-looks-5fdo"/>
+        <updated>2026-06-15T15:26:42.000Z</updated>
+        <summary type="html"><![CDATA[Hey folks!
+In this article, I want to share our experience building a screen recorder inside the browser.
+The product is Browser Recorder, a Chrome extension that can record screen, camera, microphone, add zoom effects, trim, cut, and export the final video.
+At first, the recording part looked pretty simple. Browser APIs already give us screen capture and camera capture. But when we started to put the webcam on top of the screen recording, the real problems started.
+In this article, I will cover:
+how easy it is to record only the screen
+why webcam overlay changes the architecture
+why live canvas compositing can make long videos choppy
+how we record screen and camera separately
+how we compose the final video during export
+one small bug with canvas sizing that was annoying to debug
+If you ne…]]></summary>
+        <author>
+            <name>Hleb Kryshyn</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[Boost]]]></title>
+        <id>https://dev.to/minhlong2605/-h2k</id>
+        <link href="https://dev.to/minhlong2605/-h2k"/>
+        <updated>2026-06-15T15:23:57.000Z</updated>
+        <summary type="html"><![CDATA[🏃 SOLSTICE: Shift Time, Reshape the World (June Solstice Game Jam Entry)
+    
+
+    
+June Solstice Game Jam Submission
+Minh Long
+                    
+                  
+
+                
+Jun 14
+        
+#devchallenge
+            #gamechallenge
+            #gamedev
+        
+7 reactions
+            
+ comments
+            
+        
+        
+          
+            6 min read]]></summary>
+        <author>
+            <name>Minh Long</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Iroh 1.0]]></title>
+        <id>https://www.iroh.computer/blog/v1</id>
+        <link href="https://www.iroh.computer/blog/v1"/>
+        <updated>2026-06-15T15:13:06.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[This man with ALS is “the first power user” of a brain implant that lets him speak]]></title>
+        <id>https://www.technologyreview.com/?p=1138953</id>
+        <link href="https://www.technologyreview.com/2026/06/15/1138953/man-als-first-power-user-brain-implant-speak-bci/"/>
+        <updated>2026-06-15T15:12:28.000Z</updated>
+        <summary type="html"><![CDATA[Casey Harrell has had a set of electrodes embedded in his brain for almost three years. Harrell, who has amyotrophic lateral sclerosis (ALS) and is paralyzed, first used his brain-computer interface (BCI) to “speak” sentences with the help of a research team in 2023. Since then, Harrell has clocked thousands of hours of use. He…]]></summary>
+        <author>
+            <name>Jessica Hamzelou</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fox Is Buying Roku]]></title>
+        <id>https://www.fastcompany.com/91559558/fox-corp-buying-roku-stock-prices-fall-on-tv-streaming-merger</id>
+        <link href="https://www.fastcompany.com/91559558/fox-corp-buying-roku-stock-prices-fall-on-tv-streaming-merger"/>
+        <updated>2026-06-15T14:55:50.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Copper transport drug restores memory and clears toxic Alzheimer's proteins]]></title>
+        <id>https://www.monash.edu/news/articles/copper-drug-restores-memory-and-clears-toxic-alzheimers-proteins</id>
+        <link href="https://www.monash.edu/news/articles/copper-drug-restores-memory-and-clears-toxic-alzheimers-proteins"/>
+        <updated>2026-06-15T14:48:47.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hetzner increased dedicated server prices 3-4x]]></title>
+        <id>https://news.ycombinator.com/item?id=48542064</id>
+        <link href="https://news.ycombinator.com/item?id=48542064"/>
+        <updated>2026-06-15T14:44:02.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[If America wants to lead in crypto, it must protect the people who build it]]></title>
+        <id>534d56f7-8842-447e-b5eb-a7f2ec722870</id>
+        <link href="https://www.coindesk.com/opinion/2026/06/15/if-america-wants-to-lead-in-crypto-it-must-protect-the-people-who-build-it"/>
+        <updated>2026-06-15T14:25:00.000Z</updated>
+        <summary type="html"><![CDATA[Despite the Clarity Act’s advancement toward the finish line, there’s one provision under threat for builders that can’t be overlooked, argues Smith.]]></summary>
+        <author>
+            <name>Kristin Smith</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[‘Crypto spring’ is here, says one analyst after bitcoin's key signals turn bullish]]></title>
+        <id>7e437b97-34ff-4409-9704-8092a4fa107e</id>
+        <link href="https://www.coindesk.com/markets/2026/06/15/crypto-spring-is-here-says-one-analyst-after-bitcoin-s-key-signals-turn-bullish"/>
+        <updated>2026-06-15T14:16:45.000Z</updated>
+        <summary type="html"><![CDATA[Standard Chartered analyst Geoffrey Kendrick's bullish call comes as spot bitcoin exchange-traded fund inflows return, oil prices fall and Coinbase's CEO says bitcoin likely bottomed near $60,000.]]></summary>
+        <author>
+            <name>Helene Braun</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Kraken debuts U.S. perpetual futures as crypto derivatives move onshore]]></title>
+        <id>4f02b83f-527c-442f-bee5-500bfdd529a8</id>
+        <link href="https://www.coindesk.com/markets/2026/06/15/kraken-debuts-u-s-perpetual-futures-as-crypto-derivatives-move-onshore"/>
+        <updated>2026-06-15T14:07:22.000Z</updated>
+        <summary type="html"><![CDATA[Perpetual futures generated more than $60 trillion in volume last year, according to the crypto exchange, largely outside the U.S.]]></summary>
+        <author>
+            <name>Helene Braun</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Can Europe train a frontier AI model on the compute it owns?]]></title>
+        <id>https://github.com/sammysltd/euromesh</id>
+        <link href="https://github.com/sammysltd/euromesh"/>
+        <updated>2026-06-15T13:31:09.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Coinbase's Brian Armstrong says bitcoin may have bottomed at $60,000]]></title>
+        <id>bfc59358-bd43-4e5e-862c-54bb240151bb</id>
+        <link href="https://www.coindesk.com/markets/2026/06/15/coinbase-s-brian-armstrong-says-bitcoin-may-have-bottomed-at-usd60-000"/>
+        <updated>2026-06-15T13:30:05.000Z</updated>
+        <summary type="html"><![CDATA[Armstrong said his instinct is that bitcoin has probably found its floor, pointing to the four-year cycle that has historically marked lows.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[XRP rockets 8% above $1.20 in first major breakout since June selloff]]></title>
+        <id>1478bee8-5bd6-4820-a8cd-e9710a016db7</id>
+        <link href="https://www.coindesk.com/markets/2026/06/15/xrp-rockets-8-above-usd1-20-in-first-major-breakout-since-june-selloff"/>
+        <updated>2026-06-15T13:26:20.000Z</updated>
+        <summary type="html"><![CDATA[Heavy volume pushed XRP through multiple resistance levels, with traders now focused on whether the rally can extend toward $1.30 after weeks of defensive positioning.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Google Flight Simulator]]></title>
+        <id>https://developers.google.com/maps/documentation/earth/flight-simulator</id>
+        <link href="https://developers.google.com/maps/documentation/earth/flight-simulator"/>
+        <updated>2026-06-15T13:26:08.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CrankGPT]]></title>
+        <id>https://crankgpt.com/</id>
+        <link href="https://crankgpt.com/"/>
+        <updated>2026-06-15T13:20:13.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CoinDesk 20 performance update: Bittensor (TAO) surges 31.9%, leading index higher]]></title>
+        <id>59da6dd6-230c-4af9-830a-47b372206b6a</id>
+        <link href="https://www.coindesk.com/coindesk-indices/2026/06/15/coindesk-20-performance-update-bittensor-tao-surges-31-9-leading-index-higher"/>
+        <updated>2026-06-15T13:19:28.000Z</updated>
+        <summary type="html"><![CDATA[Near Protocol (NEAR), up 22.2% from Friday, was also a top performer.]]></summary>
+        <author>
+            <name>CoinDesk Indices</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Applying Brevity and Language Efficiency in Prompt Engineering]]></title>
+        <id>https://prahladyeri.github.io/guides/applying-brevity-and-language-efficiency-to-prompt-engineering.html</id>
+        <link href="https://prahladyeri.github.io/guides/applying-brevity-and-language-efficiency-to-prompt-engineering.html"/>
+        <updated>2026-06-15T13:16:20.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitmine adds another $136 million of ether after raising $274 million in preferred stock sale]]></title>
+        <id>163126ba-562b-41b6-bc3b-d251e434df8a</id>
+        <link href="https://www.coindesk.com/business/2026/06/15/bitmine-adds-another-usd136-million-of-ether-after-raising-usd274-million-in-preferred-stock-sale"/>
+        <updated>2026-06-15T13:04:51.000Z</updated>
+        <summary type="html"><![CDATA[Tom Lee's Ethereum treasury firm, through the preferred stock sale, is using a financing tool pioneered by Michael Saylor's bitcoin treasury firm Strategy.]]></summary>
+        <author>
+            <name>Krisztian Sandor</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build a Self-Healing CI/CD Pipeline with AI]]></title>
+        <id>6a2fef02af88b2b9b6fa784b</id>
+        <link href="https://www.freecodecamp.org/news/build-a-self-healing-ci-cd-pipeline-with-ai/"/>
+        <updated>2026-06-15T12:24:34.000Z</updated>
+        <summary type="html"><![CDATA[Learn how how to build a fully autonomous, self-healing CI/CD pipeline from scratch with a new course we just posted on the freeCodeCamp.org YouTube channel. Farzeen Ali developed this course. In this]]></summary>
+        <author>
+            <name>Beau Carnes</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Download: cutting AC emissions, and nature’s drug designer]]></title>
+        <id>https://www.technologyreview.com/?p=1138948</id>
+        <link href="https://www.technologyreview.com/2026/06/15/1138948/the-download-solid-state-air-conditioning-animal-drugs/"/>
+        <updated>2026-06-15T12:10:00.000Z</updated>
+        <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. These new solid-state ACs promise a cool future. Scientists aren’t so sure. After three years of record-­breaking heat and another scorcher underway, air-conditioning isn’t going anywhere. That’s good for our health,…]]></summary>
+        <author>
+            <name>Thomas Macaulay</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Salesforce to Acquire Fin (formerly Intercom) for $3.6BN]]></title>
+        <id>https://www.salesforce.com/news/press-releases/2026/06/15/salesforce-signs-definitive-agreement-to-acquire-fin/?bc=HL</id>
+        <link href="https://www.salesforce.com/news/press-releases/2026/06/15/salesforce-signs-definitive-agreement-to-acquire-fin/?bc=HL"/>
+        <updated>2026-06-15T12:08:59.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Michael Saylor's Strategy acquires another 1,587 bitcoin for $100 million]]></title>
+        <id>98f9ccaf-9cba-4c72-b901-d9c6771bb3ef</id>
+        <link href="https://www.coindesk.com/markets/2026/06/15/strategy-deploys-usd100-million-from-usd-reserves-to-acquire-1-587-btc"/>
+        <updated>2026-06-15T12:06:39.000Z</updated>
+        <summary type="html"><![CDATA[The latest purchase was made at an average price of $63,024 per bitcoin.]]></summary>
+        <author>
+            <name>James Van Straten</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Markets cheer U.S.-Iran Breakthrough though Middle East risks, Fed remain in focus]]></title>
+        <id>93428113-ba4c-46af-bbbb-aed462ae9d85</id>
+        <link href="https://www.coindesk.com/daybook-us/2026/06/15/markets-cheer-u-s-iran-breakthrough-though-middle-east-risks-fed-remain-in-focus"/>
+        <updated>2026-06-15T11:58:56.000Z</updated>
+        <summary type="html"><![CDATA[Your day-ahead look for June 15, 2026]]></summary>
+        <author>
+            <name>James Van Straten</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Perodua Adjusts QV-E Pricing Downward; Introduces Outright Purchase Option]]></title>
+        <id>https://www.lowyat.net/?p=395862</id>
+        <link href="https://www.lowyat.net/2026/395862/perodua-adjusts-qv-e-pricing-introduces-purchase-option/"/>
+        <updated>2026-06-15T11:38:07.000Z</updated>
+        <summary type="html"><![CDATA[The second national automaker Perodua has announced that it is adjusting the price of the QV-E battery electric vehicle (BEV) downwards. This is following “a major localisation shift resulting in better efficiency” to the production of its first purely electric car. Alongside making the EV more affordable, it is also giving potential customers the option […]
+The post Perodua Adjusts QV-E Pricing Downward; Introduces Outright Purchase Option appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Ian Chee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[U.S.-Iran deal lifts equities, sends oil lower, while crypto stays wary]]></title>
+        <id>1537c5e1-f8fb-4d05-94ef-6e75d8989ae6</id>
+        <link href="https://www.coindesk.com/markets/2026/06/15/u-s-iran-deal-lifts-equities-sends-oil-lower-while-crypto-stays-wary"/>
+        <updated>2026-06-15T11:19:01.000Z</updated>
+        <summary type="html"><![CDATA[The peace deal reached over the weekend provided the stimulus many markets had been waiting for. Crypto traders, however, have learned to distrust this particular headline]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Middle East ceasefire, Fed interest-rate decision: Crypto Week Ahead]]></title>
+        <id>7ccce16a-8c1a-4081-a1fa-2d16bf5cd9fb</id>
+        <link href="https://www.coindesk.com/markets/2026/06/15/middle-east-ceasfire-fed-interest-rate-decision-crypto-week-ahead"/>
+        <updated>2026-06-15T10:14:49.000Z</updated>
+        <summary type="html"><![CDATA[Your look at what's coming in the week starting June 15.]]></summary>
+        <author>
+            <name>Jamie Crawley</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Anthropic's Safety Superpower]]></title>
+        <id>https://stratechery.com/2026/anthropics-safety-superpower/</id>
+        <link href="https://stratechery.com/2026/anthropics-safety-superpower/"/>
+        <updated>2026-06-15T10:06:35.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Banks In Malaysia To Remove Interbank Cash Withdrawal Fee From July 2026]]></title>
+        <id>https://www.lowyat.net/?p=395870</id>
+        <link href="https://www.lowyat.net/2026/395870/banks-in-malaysia-to-remove-interbank-cash-withdrawal-fee/"/>
+        <updated>2026-06-15T09:57:32.000Z</updated>
+        <summary type="html"><![CDATA[Typically, when a person performs an interbank cash withdrawal, they are charged an additional RM1 fee. However, that will soon be a thing of the past as banks across Malaysia will waive this fee starting 1 July 2026. This change will apply to both Automated Teller Machines (ATMs) and Smart Recycler Machines (SRMs). The Association […]
+The post Banks In Malaysia To Remove Interbank Cash Withdrawal Fee From July 2026 appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Kiran Ganesan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: I wrote a C++ ray tracer from scratch without AI]]></title>
+        <id>https://github.com/themartiano/luz</id>
+        <link href="https://github.com/themartiano/luz"/>
+        <updated>2026-06-15T09:34:10.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -166,88 +498,6 @@ The post vivo Reveals X Fold6 Specs Ahead Of China Launch; Teleconverter Support
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Stopped Curating Games. I Built an AI Agent to Run My Portal Instead.]]></title>
-        <id>https://dev.to/michal_bilinski_839d59856/i-stopped-curating-games-i-built-an-ai-agent-to-run-my-portal-instead-2aci</id>
-        <link href="https://dev.to/michal_bilinski_839d59856/i-stopped-curating-games-i-built-an-ai-agent-to-run-my-portal-instead-2aci"/>
-        <updated>2026-06-15T09:33:26.000Z</updated>
-        <summary type="html"><![CDATA[Picture this: You want to build a gaming portal. You need to find the games, playtest them, categorize them, write descriptions, extract thumbnails, and publish them. It is a massive bottleneck.
-When I set out to build minigames.world earlier this month, I didn’t want to build just another directory. I wanted to build a system that manages itself.
-Instead of a traditional CRUD application where I do all the data entry, I built an agentic architecture where AI analyzes, curates, and manages the entire game portfolio autonomously. Here is a breakdown of how the architecture works, the tech stack I chose, and why AI agents are fundamentally changing system design.The Problem: AI as a Feature vs. AI as an OrchestratorMost applications treat AI as an API call—you send text, you get text back.
-T…]]></summary>
-        <author>
-            <name>Michal Bilinski</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA["I Added a /yolo Button to My Local AI Assistant"]]></title>
-        <id>https://dev.to/codekingai/i-added-a-yolo-button-to-my-local-ai-assistant-4klh</id>
-        <link href="https://dev.to/codekingai/i-added-a-yolo-button-to-my-local-ai-assistant-4klh"/>
-        <updated>2026-06-15T09:32:38.000Z</updated>
-        <summary type="html"><![CDATA[I like local AI assistants that ask before they do risky things.
-I do not like approving the same task six times in a row.
-That was the failure mode I kept hitting while working on CliGate. A normal task would start with one reasonable command, then another, then another, and every tiny step wanted a fresh confirmation.
-So I added a blunt but useful switch:
-/yolo
-
-It sounds reckless, but the real goal was the opposite: make the assistant feel faster without training me to click through meaningless approval spam.
-The old loop looked safe on paper:
-assistant picks a mutating tool
--> asks for confirmation
--> user approves
--> one tool runs
--> assistant continues
--> next tiny tool asks again
-
-That is technically correct.
-It is also miserable in practice.
-A real task is rarely one tool call. Rea…]]></summary>
-        <author>
-            <name>CodeKing</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Turn on CMCD: make your CDN logs explain rebuffering]]></title>
-        <id>https://dev.to/masonwritescode/turn-on-cmcd-make-your-cdn-logs-explain-rebuffering-k8d</id>
-        <link href="https://dev.to/masonwritescode/turn-on-cmcd-make-your-cdn-logs-explain-rebuffering-k8d"/>
-        <updated>2026-06-15T09:32:34.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR
-
-
-
-CMCD (Common Media Client Data, CTA-5004) lets your player attach its state (buffer length, bitrate, "I just rebuffered") to every segment request, so your CDN's own logs can explain QoE. We'll enable it in hls.js and Shaka, choose header vs query mode, and write a tiny Node parser that turns the payload into a per-session story.
-CMCD turned on in the player (hls.js + Shaka).
-A decision on transmission mode (header vs query) and why it matters.
-A server-side parser that reads the CMCD payload and groups by session.
-Versions: hls.js 1.x, shaka-player 4.x, node 20.x.
-CMCD sends short keys on each request. The important ones:
-
-
-
-Key
-Meaning
-Why you care
-
-
-
-
-sid
-session id
-the join key between player and CDN
-
-
-cid
-content id
-group requests by asset
-
-
-bl
-buffer length (ms)
-how close to…]]></summary>
-        <author>
-            <name>Mason K</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[These new solid-state ACs promise a cool future. Scientists aren’t so sure.]]></title>
         <id>https://www.technologyreview.com/?p=1138552</id>
         <link href="https://www.technologyreview.com/2026/06/15/1138552/solid-state-acs-promise-cool-future/"/>
@@ -255,16 +505,6 @@ how close to…]]></summary>
         <summary type="html"><![CDATA[After three years of record-­breaking heat, this one is set to be yet another scorcher. Air-conditioning? Not going anywhere. The International Energy Agency projects that the number of AC units will triple by 2050. That’s good for health—one Lancet study estimated that AC prevented nearly 200,000 premature deaths in 2019 alone—but bad for the planet.…]]></summary>
         <author>
             <name>Sara Kiley Watson</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What the Fuck Happened to Nerds]]></title>
-        <id>https://mrmarket.lol/what-the-fuck-happened-to-nerds/</id>
-        <link href="https://mrmarket.lol/what-the-fuck-happened-to-nerds/"/>
-        <updated>2026-06-15T08:23:52.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -299,10 +539,30 @@ The post IGP: Online Scam Cases Jumped By 87% To 66,204 Last Year appeared first
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Openrouter Fusion API]]></title>
+        <id>https://openrouter.ai/openrouter/fusion</id>
+        <link href="https://openrouter.ai/openrouter/fusion"/>
+        <updated>2026-06-15T07:10:57.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Dalus (YC W25) Is Hiring a Senior Software Engineer in Germany]]></title>
         <id>https://www.ycombinator.com/companies/dalus/jobs/5IDmKJt-senior-software-frontend-engineer-germany-office</id>
         <link href="https://www.ycombinator.com/companies/dalus/jobs/5IDmKJt-senior-software-frontend-engineer-germany-office"/>
         <updated>2026-06-15T07:00:22.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Successful Psilocybin Treatment of Alzheimer]]></title>
+        <id>https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2026.1813281/full</id>
+        <link href="https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2026.1813281/full"/>
+        <updated>2026-06-15T06:52:21.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -340,7 +600,7 @@ The post HONOR X80 Pro Max To Launch On 22 June With 11,000 mAh Battery appeared
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Live markets:  Bitcoin not fully out of danger as Trump warns of further Iran strikes]]></title>
+        <title type="html"><![CDATA[Live markets: Bitcoin jumps above $66,000 as short squeeze builds on US-Iran deal hopes]]></title>
         <id>e3e8e72e-a675-4348-841b-34c4156a548e</id>
         <link href="https://www.coindesk.com/tech/2026/06/15/live-markets-bitcoin-not-fully-out-of-danger-as-trump-warns-of-further-iran-strikes"/>
         <updated>2026-06-15T05:19:14.000Z</updated>
@@ -453,16 +713,6 @@ The post Samsung Czech Prematurely Lists Galaxy A27, Revealing All Of Its Specs 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Windows 11 users are tired of MS account requirements creeping into everything]]></title>
-        <id>https://www.windowscentral.com/microsoft/windows-11/windows-11-users-are-tired-of-microsoft-account-requirements-and-workarounds</id>
-        <link href="https://www.windowscentral.com/microsoft/windows-11/windows-11-users-are-tired-of-microsoft-account-requirements-and-workarounds"/>
-        <updated>2026-06-14T21:42:12.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Bitcoin could crash to $48,000, if this historical pattern is triggered]]></title>
         <id>32cf0258-1cee-496c-9710-b8f949bfd3cd</id>
         <link href="https://www.coindesk.com/markets/2026/06/14/bitcoin-could-crash-to-usd48-000-if-this-historical-pattern-is-triggered"/>
@@ -470,16 +720,6 @@ The post Samsung Czech Prematurely Lists Galaxy A27, Revealing All Of Its Specs 
         <summary type="html"><![CDATA[A pattern stretching back to bitcoin's earliest days has held through every market cycle. It has yet to be tested in the current one.]]></summary>
         <author>
             <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Chaosnet (1981)]]></title>
-        <id>https://tumbleweed.nu/r/lm-3/uv/amber.html</id>
-        <link href="https://tumbleweed.nu/r/lm-3/uv/amber.html"/>
-        <updated>2026-06-14T19:14:21.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -493,30 +733,10 @@ The post Samsung Czech Prematurely Lists Galaxy A27, Revealing All Of Its Specs 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Discover Wikipedia articles popular on Hacker News]]></title>
-        <id>https://www.orangecrumbs.com/</id>
-        <link href="https://www.orangecrumbs.com/"/>
-        <updated>2026-06-14T17:54:17.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Show HN: Kage – Shadow any website to a single binary for offline viewing]]></title>
         <id>https://github.com/tamnd/kage</id>
         <link href="https://github.com/tamnd/kage"/>
         <updated>2026-06-14T17:25:38.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ask HN: What are you working on? (June 2026)]]></title>
-        <id>https://news.ycombinator.com/item?id=48528779</id>
-        <link href="https://news.ycombinator.com/item?id=48528779"/>
-        <updated>2026-06-14T16:05:28.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -533,16 +753,6 @@ The post Samsung Czech Prematurely Lists Galaxy A27, Revealing All Of Its Specs 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I indexed 669 GB of my GoPro videos using my M1 Max computer and local ML models]]></title>
-        <id>https://news.ycombinator.com/item?id=48528029</id>
-        <link href="https://news.ycombinator.com/item?id=48528029"/>
-        <updated>2026-06-14T15:13:57.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Aerodrome is turning liquidity into a prediction market with its biggest upgrade yet]]></title>
         <id>d56c2126-2b5e-4eb9-b4b9-39e98d230ebd</id>
         <link href="https://www.coindesk.com/tech/2026/06/12/aerodrome-is-turning-liquidity-into-a-prediction-market-with-its-biggest-upgrade-yet"/>
@@ -550,16 +760,6 @@ The post Samsung Czech Prematurely Lists Galaxy A27, Revealing All Of Its Specs 
         <summary type="html"><![CDATA[The concept, called Predictive Allocation, will encourage participants to anticipate where liquidity will be needed next, instead of rewarding them for directing incentives toward pools that have already generated fees.]]></summary>
         <author>
             <name>Margaux Nijkerk</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Perlisisms (1982)]]></title>
-        <id>https://www.cs.yale.edu/homes/perlis-alan/quotes.html</id>
-        <link href="https://www.cs.yale.edu/homes/perlis-alan/quotes.html"/>
-        <updated>2026-06-14T14:56:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -573,16 +773,6 @@ The post Samsung Czech Prematurely Lists Galaxy A27, Revealing All Of Its Specs 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Caddy compatibility for zeroserve: 3x throughput and 70% lower latency]]></title>
-        <id>https://su3.io/posts/zeroserve-caddy-compat</id>
-        <link href="https://su3.io/posts/zeroserve-caddy-compat"/>
-        <updated>2026-06-14T13:43:08.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Wall Street and crypto are crashing into each other as tokenized treasury markets hit $14.6 billion]]></title>
         <id>d46cb3e1-3899-4572-a8f9-dd56ba773ff3</id>
         <link href="https://www.coindesk.com/markets/2026/06/11/wall-street-and-crypto-are-crashing-into-each-other-as-tokenized-treasury-markets-hit-usd14-6-billion"/>
@@ -590,26 +780,6 @@ The post Samsung Czech Prematurely Lists Galaxy A27, Revealing All Of Its Specs 
         <summary type="html"><![CDATA[Not all crypto exchange executives agree, but the data does not lie: centralized exchange trading volumes dropped more than 11% to $4.61 trillion, their lowest since late 2024.]]></summary>
         <author>
             <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Formal methods and the future of programming]]></title>
-        <id>https://blog.janestreet.com/formal-methods-at-jane-street-index/?from_theconsensus=1</id>
-        <link href="https://blog.janestreet.com/formal-methods-at-jane-street-index/?from_theconsensus=1"/>
-        <updated>2026-06-14T12:35:27.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to earn a billion dollars]]></title>
-        <id>https://paulgraham.com/earn.html</id>
-        <link href="https://paulgraham.com/earn.html"/>
-        <updated>2026-06-14T11:50:48.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -635,17 +805,6 @@ The post iCAUR Malaysia Extends Component Warranty To 10 Years/200,000km appeare
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Insta360 Hits Back At DJI With Two Countersuits Over Five Patents]]></title>
-        <id>https://www.lowyat.net/?p=395817</id>
-        <link href="https://www.lowyat.net/2026/395817/insta360-dji-countersuits/"/>
-        <updated>2026-06-14T06:08:10.000Z</updated>
-        <summary type="html"><![CDATA[Earlier this week, Insta360 officially launched the Luna Ultra, marking its entry into the handheld gimbal camera segment. On the same day, DJI filed two patent infringement lawsuits against the company in the US. Essentially, the drone maker is alleging that Insta360 copied the design and underlying technologies of its Osmo Pocket series. Now, Insta360 […]
-The post Insta360 Hits Back At DJI With Two Countersuits Over Five Patents appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Nurul Kamil</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Building a Website in 2026: What Matters More Than Your Tech Stack]]></title>
         <id>6a2e0f54136fd4eb2c9cc925</id>
         <link href="https://www.freecodecamp.org/news/building-a-website-what-matters-more-than-your-tech-stack/"/>
@@ -663,16 +822,6 @@ The post Insta360 Hits Back At DJI With Two Countersuits Over Five Patents appea
         <summary type="html"><![CDATA[When I was putting the final touches on QuizRope, an educational mobile app I built that uses LLMs for real-time tutoring and homework assistance, I knew the next logical step was voice. Reading text]]></summary>
         <author>
             <name>Djibril-M🍀</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: Trace – Offline Mac meeting transcripts you can flag mid-call]]></title>
-        <id>https://traceapp.info/</id>
-        <link href="https://traceapp.info/"/>
-        <updated>2026-06-13T20:41:58.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -703,97 +852,6 @@ The post Insta360 Hits Back At DJI With Two Countersuits Over Five Patents appea
         <summary type="html"><![CDATA[The largest company on public markets now holds bitcoin as a treasury reserve, not as a business model. Its first earnings cycles will test which version of corporate crypto survives a bear market.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stablecoins Were Meant to Disrupt Finance. Instead, They Became Idle Cash.]]></title>
-        <id>4bf66fe7-2ecb-496a-b086-1bd1bb23083b</id>
-        <link href="https://www.coindesk.com/opinion/2026/06/13/stablecoins-were-meant-to-disrupt-finance-instead-they-became-idle-cash"/>
-        <updated>2026-06-13T16:51:00.000Z</updated>
-        <summary type="html"><![CDATA[O’Connor argues that crypto’s clearest success story has scaled as money but not as capital.]]></summary>
-        <author>
-            <name>John O’Connor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bitcoin rises above $64,000 after Pakistan prime minister says Iran peace deal is near]]></title>
-        <id>4dac0e55-d3f4-46db-8da3-ff993fc61ca5</id>
-        <link href="https://www.coindesk.com/markets/2026/06/13/bitcoin-rises-above-usd64-000-after-pakistan-prime-minister-says-iran-peace-deal-is-near"/>
-        <updated>2026-06-13T16:16:54.000Z</updated>
-        <summary type="html"><![CDATA[Bitcoin traded above $64,000 on Saturday, supported by its strongest ETF inflows in a month and growing optimism around geopolitical developments.]]></summary>
-        <author>
-            <name>James Van Straten</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Wall Street is moving past crypto pilots and deeper into Ethereum, says Etherealize founder]]></title>
-        <id>a28878d7-284f-4a5b-ae48-51654cf1919e</id>
-        <link href="https://www.coindesk.com/business/2026/06/13/wall-street-is-moving-past-crypto-pilots-and-deeper-into-ethereum-says-etherealize-founder"/>
-        <updated>2026-06-13T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[In an interview with CoinDesk, Etherealize cofounder Vivek Raman said Ethereum is currently in a transitional phase where the infrastructure has largely been built, but the scale of adoption has yet to be fully reflected in ETH itself.]]></summary>
-        <author>
-            <name>Margaux Nijkerk</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Tokenization mirrors the $20 trillion ETF boom as blockchain and AI converge, Ondo exec says]]></title>
-        <id>b1b6453b-36d3-4b0e-b9a2-0f3054eab1a5</id>
-        <link href="https://www.coindesk.com/business/2026/06/13/tokenization-mirrors-the-usd20-trillion-etf-boom-as-blockchain-and-ai-converge-ondo-exec-says"/>
-        <updated>2026-06-13T15:29:00.000Z</updated>
-        <summary type="html"><![CDATA[Tokenization is laying the groundwork for autonomous investing and real-time portfolio management, Ondo's new head of portfolio products John Hoffman said.]]></summary>
-        <author>
-            <name>Krisztian Sandor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Perpetual futures could become crypto's next ETF moment]]></title>
-        <id>e130dab1-4aae-44fb-87cb-ca022028c65f</id>
-        <link href="https://www.coindesk.com/business/2026/06/13/perpetual-futures-could-become-crypto-s-next-etf-moment"/>
-        <updated>2026-06-13T14:00:00.000Z</updated>
-        <summary type="html"><![CDATA[John Palmer, head of derivatives at Kraken, said he expects sophisticated traders to lead adoption of newly approved U.S. perpetual futures, with broader institutional participation likely to follow over time.]]></summary>
-        <author>
-            <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Saylor to Musk: Thanks to you, 25% of 'Mag8' firms now hold bitcoin]]></title>
-        <id>af9b13f3-8391-41ad-985a-10efe0b6600b</id>
-        <link href="https://www.coindesk.com/markets/2026/06/13/saylor-to-musk-thanks-to-you-25-of-mag8-firms-now-hold-bitcoin"/>
-        <updated>2026-06-13T13:05:40.000Z</updated>
-        <summary type="html"><![CDATA["Thanks to you, 25% of the Mag8 now holds bitcoin on the balance sheet," Saylor wrote on X, congratulating Musk on SpaceX's historic IPO debut.]]></summary>
-        <author>
-            <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Crypto should adopt the best of centralization, says LMAX CEO]]></title>
-        <id>73aa5a0f-9921-4b39-8c90-acfe60dc7f61</id>
-        <link href="https://www.coindesk.com/business/2026/06/09/crypto-should-adopt-the-best-of-centralization-says-lmax-ceo"/>
-        <updated>2026-06-13T13:00:00.000Z</updated>
-        <summary type="html"><![CDATA[As digital assets mature the industry should borrow more from traditional market infrastructure, especially credit, clearing and collateral systems, David Mercer argues.]]></summary>
-        <author>
-            <name>Will Canny</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ripple wants AI agents to pay in XRP and RLUSD. The market is still mostly USDC]]></title>
-        <id>9a8c9fc9-c84f-455b-a6b0-40b431ee5fd6</id>
-        <link href="https://www.coindesk.com/tech/2026/06/11/ripple-wants-ai-agents-to-pay-in-xrp-and-rlusd-the-market-is-still-mostly-usdc"/>
-        <updated>2026-06-13T11:30:00.000Z</updated>
-        <summary type="html"><![CDATA[The XRPL AI Starter Kit gives developers tools for agent payments, but early x402 activity has clustered on Base and Solana. Ripple’s bet is that XRPL’s speed, low fees and RLUSD can win a piece of that flow.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Carl Pei: Phone Prices Will Continue To Rise]]></title>
-        <id>https://www.lowyat.net/?p=395811</id>
-        <link href="https://www.lowyat.net/2026/395811/carl-pei-phone-prices-continue-rise/"/>
-        <updated>2026-06-13T11:27:26.000Z</updated>
-        <summary type="html"><![CDATA[Thanks to the memory shortage crisis, anything that uses them has seen their prices steadily go up since the shortage began. This naturally includes phones, and brands have been considering raising prices of their wares, if they have not already done it. Carl Pei, the guy behind the Nothing brand of phones, says that prices […]
-The post Carl Pei: Phone Prices Will Continue To Rise appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Ian Chee</name>
         </author>
     </entry>
     <entry>
@@ -847,50 +905,10 @@ The post Carl Pei: Phone Prices Will Continue To Rise appeared first on Lowyat.N
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Top cryptographers can't agree on Bitcoin's biggest quantum question]]></title>
-        <id>ad5e8c40-fb19-4cb1-ab01-a1253ba81866</id>
-        <link href="https://www.coindesk.com/tech/2026/06/13/top-cryptographers-can-t-agree-on-bitcoin-s-biggest-quantum-question"/>
-        <updated>2026-06-13T06:07:00.000Z</updated>
-        <summary type="html"><![CDATA[A Coinbase-convened panel says Bitcoin should start preparing for quantum attacks now, but declines to take a position on whether millions of vulnerable coins, including many linked to Satoshi Nakamoto, should eventually be frozen.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Anthropic's pre-IPO shares fall as U.S. government shuts down its most powerful AI model]]></title>
-        <id>56ef24c9-f5e5-471e-b741-8f2c1d693391</id>
-        <link href="https://www.coindesk.com/markets/2026/06/13/anthropic-s-pre-ipo-shares-fall-as-us-government-shuts-down-its-most-powerful-ai-model"/>
-        <updated>2026-06-13T06:02:05.000Z</updated>
-        <summary type="html"><![CDATA[A jailbreak report prompted Washington to pull Fable 5 and Mythos 5 from all users. Anthropic complied but pushed back hard, saying the finding sets a standard that would halt the entire AI industry.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bitcoin steadies above $63,000 as its worst week in months got a late macro rescue]]></title>
-        <id>f53218db-cdd3-4b91-ad42-0e090f7468af</id>
-        <link href="https://www.coindesk.com/markets/2026/06/13/bitcoin-steady-above-usd63-000-as-its-worst-week-in-months-got-a-late-macro-rescue"/>
-        <updated>2026-06-13T05:46:38.000Z</updated>
-        <summary type="html"><![CDATA[A tiny Strategy sale raised a bigger question about Saylor’s never-sell stance, while easing Iran fears, and a strong SpaceX debut helped risk assets recover.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Being an old school web-based sports sim dev in the era of vibe coded games]]></title>
-        <id>https://zengm.com/blog/2026/06/vibecoded-games/</id>
-        <link href="https://zengm.com/blog/2026/06/vibecoded-games/"/>
-        <updated>2026-06-12T18:52:44.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Write for One Person]]></title>
-        <id>https://wizardzines.com/comics/write-for-one-person/</id>
-        <link href="https://wizardzines.com/comics/write-for-one-person/"/>
-        <updated>2026-06-12T17:36:10.000Z</updated>
+        <title type="html"><![CDATA[Ported my C game to WASM, here's everybug that I hit]]></title>
+        <id>http://ernesernesto.github.io/writes/portingmatchmorphosistowasm/</id>
+        <link href="http://ernesernesto.github.io/writes/portingmatchmorphosistowasm/"/>
+        <updated>2026-06-12T17:30:57.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -967,6 +985,26 @@ The post Carl Pei: Phone Prices Will Continue To Rise appeared first on Lowyat.N
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Asciline – real-time ASCII video rendering engine]]></title>
+        <id>https://github.com/YusufB5/ASCILINE</id>
+        <link href="https://github.com/YusufB5/ASCILINE"/>
+        <updated>2026-06-12T04:39:46.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stdx, Rust's extended standard library]]></title>
+        <id>https://kerkour.com/stdx</id>
+        <link href="https://kerkour.com/stdx"/>
+        <updated>2026-06-12T03:46:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[From Flutter to Backend: How to Build Production-Grade REST APIs with Dart and Dart Frog]]></title>
         <id>6a2b553bb84c3c44ce471560</id>
         <link href="https://www.freecodecamp.org/news/how-to-build-production-grade-rest-apis-with-dart-and-dart-frog/"/>
@@ -974,16 +1012,6 @@ The post Carl Pei: Phone Prices Will Continue To Rise appeared first on Lowyat.N
         <summary type="html"><![CDATA[Dart backend frameworks exist on a spectrum. At the minimal end sits Shelf, with raw primitives and full control. You wire everything yourself. At the maximal end sits Serverpod. It's a full framework]]></summary>
         <author>
             <name>Oluwaseyi Fatunmole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Scale Laravel Applications for High-Traffic Production Systems]]></title>
-        <id>6a2b48a3a381db4fd3f61555</id>
-        <link href="https://www.freecodecamp.org/news/how-to-scale-laravel-applications-for-high-traffic-production-systems/"/>
-        <updated>2026-06-11T23:45:39.000Z</updated>
-        <summary type="html"><![CDATA[Your first scaling problem rarely arrives with a bang. For a while, everything is fine: pages load fast, the database barely breaks a sweat, and the team ships features without thinking much about inf]]></summary>
-        <author>
-            <name>Olamilekan Lamidi</name>
         </author>
     </entry>
     <entry>
@@ -997,30 +1025,10 @@ The post Carl Pei: Phone Prices Will Continue To Rise appeared first on Lowyat.N
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The only scalable delete in Postgres is DROP TABLE]]></title>
-        <id>https://planetscale.com/blog/the-only-scalable-delete</id>
-        <link href="https://planetscale.com/blog/the-only-scalable-delete"/>
-        <updated>2026-06-11T16:48:49.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[There Is(Ǝ) – Such That (∋)]]></title>
         <id>https://www.fractalkitty.com/there-is-3-such-that/</id>
         <link href="https://www.fractalkitty.com/there-is-3-such-that/"/>
         <updated>2026-06-11T14:13:03.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Segmented type appreciation corner (2018)]]></title>
-        <id>https://aresluna.org/segmented-type/</id>
-        <link href="https://aresluna.org/segmented-type/"/>
-        <updated>2026-06-11T12:50:29.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1057,40 +1065,10 @@ The post Carl Pei: Phone Prices Will Continue To Rise appeared first on Lowyat.N
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Inside soccer’s data renaissance]]></title>
-        <id>https://www.technologyreview.com/?p=1138506</id>
-        <link href="https://www.technologyreview.com/2026/06/11/1138506/inside-soccer-data-renaissance-jesse-davis/"/>
-        <updated>2026-06-11T10:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Imagine tuning in to the opening kickoff of a World Cup match and seeing a player intentionally send the ball all the way down the pitch and right out of bounds on the opponent’s end. Casual fans might scratch their heads. Where’s the logic in surrendering possession seconds into a game? If you were Jesse…]]></summary>
-        <author>
-            <name>Andrew Zaleski</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why China is betting on big nuclear reactors]]></title>
-        <id>https://www.technologyreview.com/?p=1138789</id>
-        <link href="https://www.technologyreview.com/2026/06/11/1138789/china-big-nuclear-reactors/"/>
-        <updated>2026-06-11T10:00:00.000Z</updated>
-        <summary type="html"><![CDATA[It’s a tale of two nuclear industries. In China, large reactors are coming together at a stunning pace. The country has nearly doubled its nuclear fleet since 2016, reaching nearly 60 gigawatts of total power capacity. The new facilities are nearly all gigawatt-scale pressurized-water reactors. Meanwhile, the US has built just two reactors in that…]]></summary>
-        <author>
-            <name>Casey Crownhart</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A short history of Cerro Torre, the most controversial mountain (2012)]]></title>
-        <id>https://www.markhorrell.com/blog/2012/a-short-history-of-cerro-torre/</id>
-        <link href="https://www.markhorrell.com/blog/2012/a-short-history-of-cerro-torre/"/>
-        <updated>2026-06-11T00:25:05.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[TorchCodec 0.14: HDR Video Decoding for CPU and CUDA, and Fast Wav Decoder]]></title>
-        <id>https://github.com/meta-pytorch/torchcodec/releases/tag/v0.14.0</id>
-        <link href="https://github.com/meta-pytorch/torchcodec/releases/tag/v0.14.0"/>
-        <updated>2026-06-10T14:08:36.000Z</updated>
+        <title type="html"><![CDATA[Teenagers Stayed Overnight at Their School and Found Hidden Ancient Roman Ruins]]></title>
+        <id>https://www.smithsonianmag.com/smart-news/these-italian-teenagers-stayed-overnight-at-their-school-they-found-ancient-roman-ruins-hidden-in-the-basement-180988917/</id>
+        <link href="https://www.smithsonianmag.com/smart-news/these-italian-teenagers-stayed-overnight-at-their-school-they-found-ancient-roman-ruins-hidden-in-the-basement-180988917/"/>
+        <updated>2026-06-11T02:22:06.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
