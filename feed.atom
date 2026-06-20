@@ -1,246 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-06-20T00:05:43.003Z</id>
+    <id>urn:2026-06-20T05:09:05.112Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-06-20T00:05:43.003Z</updated>
+    <updated>2026-06-20T05:09:05.112Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
-        <title type="html"><![CDATA[I automated everything except the code, and that's where Claude Code actually paid off]]></title>
-        <id>https://dev.to/rapls/i-automated-everything-except-the-code-and-thats-where-claude-code-actually-paid-off-51oh</id>
-        <link href="https://dev.to/rapls/i-automated-everything-except-the-code-and-thats-where-claude-code-actually-paid-off-51oh"/>
-        <updated>2026-06-19T23:54:19.000Z</updated>
-        <summary type="html"><![CDATA[I build WordPress plugins on my own, and I started using Claude Code for the obvious reason: to write code faster. Six months later, the part it actually saved me wasn't the code at all. It was everything around the code.
-Every release, I ran the same small gauntlet. Bump the version, update the readme, write the changelog, check the translation files for gaps, draft the announcement. None of it is hard. All of it is fiddly, and every one of those chores pulled me out of the part of my brain that was actually building the thing. By the time I'd finished the release ritual and came back to code, I had to reload the whole mental context I'd just dropped.
-That reload is the real cost, and it took me a while to see it. The chores don't just eat their own time. They evict the code from your hea…]]></summary>
+        <title type="html"><![CDATA[The Rust Performance Trap I Hit While Sorting Small Network Datasets]]></title>
+        <id>https://dev.to/amirsefati/the-rust-performance-trap-i-hit-while-sorting-small-network-datasets-2gj5</id>
+        <link href="https://dev.to/amirsefati/the-rust-performance-trap-i-hit-while-sorting-small-network-datasets-2gj5"/>
+        <updated>2026-06-20T04:58:26.000Z</updated>
+        <summary type="html"><![CDATA[The Rust Performance Trap I Hit While Sorting Small Network Datasets
+
+
+I recently ran into one of those performance problems that looks completely obvious in hindsight, but was surprisingly hard to notice while I was inside the code.
+I was working on a deep search and ranking part of a Rust project that processed network-related data.
+The system had to evaluate many small groups of candidates repeatedly. You can think of these candidates as possible network paths, intermediate nodes, route-like records, latency candidates, or weighted decisions inside a search tree.
+At each step, I had a small list of candidates.
+Not thousands of items.
+Usually something like 10, 20, maybe 40 or 50.
+Each candidate needed to be scored and ordered before the search could continue.
+The first version of the co…]]></summary>
         <author>
-            <name>Rapls</name>
+            <name>amir</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[One command for 13 AI coding-assistant context files]]></title>
-        <id>https://dev.to/horiamc_75e5ef599d3eba906/one-command-for-13-ai-coding-assistant-context-files-211d</id>
-        <link href="https://dev.to/horiamc_75e5ef599d3eba906/one-command-for-13-ai-coding-assistant-context-files-211d"/>
-        <updated>2026-06-19T23:52:59.000Z</updated>
-        <summary type="html"><![CDATA[Every AI coding tool wants a file describing your project. Claude Code reads CLAUDE.md. Cursor reads .cursor/rules. Then there's AGENTS.md, GEMINI.md, Copilot instructions, Aider's CONVENTIONS.md, Windsurf, Cline, Continue, Kilo Code, Trae, Junie, Warp...
-Same content, a dozen names and formats. Maintaining them by hand is busywork, and the second your stack changes they're stale.
-npx @horiastanxd/claude-init
-
-It analyzes the repo once - language, framework, package manager, scripts, file tree, env vars from .env.example, conventions (strict mode, linter, formatter), git info - and writes all 13 files.
-No API key, no network. 100% local.
-check
+        <title type="html"><![CDATA[GB10 實測 DiffusionGemma 26B 挑戰 32K 極限]]></title>
+        <id>https://dev.to/jh5_pulse/gb10-shi-ce-diffusiongemma-26b-tiao-zhan-32k-ji-xian-43gj</id>
+        <link href="https://dev.to/jh5_pulse/gb10-shi-ce-diffusiongemma-26b-tiao-zhan-32k-ji-xian-43gj"/>
+        <updated>2026-06-20T04:54:12.000Z</updated>
+        <summary type="html"><![CDATA[作為三平台評測的最終章（前兩篇為 M2 Max 96GB MLX 與 GH200 vLLM），本篇將完整測試一下 GB10 的吞吐量表現、32K 長 Context 的速度代價、以及在 Podman 部署時讓人抓狂的 OOM 踩坑紀錄。
+在數據的結果來看，155 tok/s，比 M2 Max 快了整整 10 倍！ 更重要的是，Context 長度一路從 2K 解鎖到 32K都成功Pass，直接與老大哥 GH200 站在同一條起跑線上，直到 32,600 tokens 才開始撞牆。
+整體來說， NVIDIA GB10（Grace Blackwell 128GB）在執行 DiffusionGemma 26B 時，交出了一份令人驚艷的成績單，雖然 Context 拉長後，速度衰減得比 GH200 明顯，但實際串接在CLI 的使用體感與超高性價比，絕對是本地推理 Server 的首選。
 
 
-The real problem isn't generating once - it's drift. So there's a check mode:
-npx @horiastanxd/claude-init check
 
-It regenerates in memory and diffs against what's on disk, exiting non-zero on drift. Drop it in CI or a pre-commit hook:
-- run: npx @horiastanxd/claude-init check
+項目
+內容
 
-claude mcp add claude-init -- npx @horiastanxd/claude-init --mcp
 
-Now an agent can analyze a repo and write its own context files.
-Languages: JS/TS (npm/pnpm/yarn/bun), Python (pip/uv/poetry), Rust, Go, Java (Maven/Gradle), Ruby, PHP
---recurse for monorepos (npm/pnpm workspaces)
-TypeScript, MIT licensed
-Repo: https://github.com/horiastanxd/claude-init
-What tool or format should it support next?]]></summary>
+
+
+平台
+NVIDIA GB10（Grace Blackwell），128 GB 統一記憶體
+
+
+框架
+vLLM 0.22.1rc1
+
+
+模型
+nvidia/diffusiongemma-26B-A4B-it-NVFP4
+
+
+部署參數
+--gpu-memory-utilization 0.7 --max-model-len 32768 --max-num-seqs 4 --enable-auto-tool-choice --tool-call-parser gemma4 --reasoning-parser gemma4
+
+
+容器
+vllm-diffusiongemma
+
+
+部署方式
+Podman，需用 --device nvidia.com/gpu=all 而非 --gpus all
+
+
+
+
+部署的設定我跟 GH200 那台使用相同的 vLLM 版本（0.22.1rc1），部…]]></summary>
         <author>
-            <name>Horia Stan</name>
+            <name>JH5</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Kubernetes Observability]]></title>
-        <id>https://dev.to/lavkeshdwivedi/kubernetes-observability-ab4</id>
-        <link href="https://dev.to/lavkeshdwivedi/kubernetes-observability-ab4"/>
-        <updated>2026-06-19T23:52:06.000Z</updated>
-        <summary type="html"><![CDATA[Originally published on lavkesh.com
-I've found that Kubernetes observability is a unique beast, different from monitoring your application, you're dealing with infrastructure, workloads, and the cluster itself, but fortunately the tooling has come a long way so you don't have to start from scratch
-Prometheus is the de facto standard for Kubernetes, its pull model fits naturally with Kubernetes service discovery, you add annotations and Prometheus automatically finds your pods, no manual configuration needed, and with kube-state-metrics and Node Exporter you get a solid foundation for cluster state and host metrics
-I ran the Prometheus Operator in a 200‑node cluster with about 4 000 pods and quickly learned that the default scrape interval of 15 seconds was eating more than a gigabyte of RA…]]></summary>
-        <author>
-            <name>Lavkesh Dwivedi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AI Agents For Release Notes And Changelog Automation]]></title>
-        <id>https://dev.to/nazar_boyko/ai-agents-for-release-notes-and-changelog-automation-kia</id>
-        <link href="https://dev.to/nazar_boyko/ai-agents-for-release-notes-and-changelog-automation-kia"/>
-        <updated>2026-06-19T23:49:18.000Z</updated>
-        <summary type="html"><![CDATA[Here's a changelog entry nobody asked for:
-## v2.4.0
+        <title type="html"><![CDATA[I Built 18 Free Developer Tools - Here's What I Learned]]></title>
+        <id>https://dev.to/darshik_italiya_35cda323e/i-built-18-free-developer-tools-heres-what-i-learned-3pem</id>
+        <link href="https://dev.to/darshik_italiya_35cda323e/i-built-18-free-developer-tools-heres-what-i-learned-3pem"/>
+        <updated>2026-06-20T04:51:20.000Z</updated>
+        <summary type="html"><![CDATA[I Built 18 Free Developer Tools - Here's What I Learned
 
-- fix stuff
-- wip
-- address PR comments
-- Merge branch 'main' into feature/checkout
-- update deps
-- final fix (for real this time)
 
-That's not a changelog. That's a git log with a version number stapled on top. And the people who maintain Keep a Changelog have a name for it that I can't improve on: "Don't let your friends dump git logs into changelogs."
-The interesting part is the timing. That tagline is from 2014. The problem of turning raw commit history into something a human wants to read has been understood, written down, and argued about for over a decade. What's new isn't the problem. What's new is that we finally have a tool (an LLM) that can read a pile of commits and write the prose itself. And it's also the first tool in that…]]></summary>
+
+  
+  
+  Why I Built This
+
+
+As a developer, I was constantly switching between different online tools - some required signup, others were bloated with ads, and many lacked basic features. So I decided to build my own collection.
+DevTools Hub is a free collection of 18+ online developer utilities, designed with privacy and simplicity in mind.
+JSON Formatter & Validator - Beautify and validate JSON with syntax highlighting
+JSON to CSV Converter - Convert JSON to CSV format instantly
+Try JSON Formatter →
+Image Converter - Convert between PNG, JPG, WebP
+Image Compressor - Reduce file size without quality loss
+Image Resizer - Resize images to any dimension
+Password Generator - Cryptographically secure random passwords
+Hash Generator - MD5, SHA-1, SHA-256, SHA-512 hashing
+JWT Encoder/Decoder - Encode and decode JSON Web Tokens
+Dockerfile Generator - Generate production-ready Dockerfiles
+Database URL Generator - Build connection strings for PostgreSQL, MySQL, MongoDB
+.gitignore Generator - Create .gitignore files for any stack
+See all 18 tools →
+Most tools process data client-side using JavaScript. Your sensitive data never leaves your browser.
+Jump right in - no account creation, no email verification, no tracking.
+Built with Next.js 14 for optimal performance. Tools load in under 100ms.
+Clean interface with dark mode support. Responsive design works on all devices.
+Frontend: Next.js 14 (React 18, App Router)
+Backend: FastAPI (Python)
+Styling: Tailwind CSS
+Deployment: Vercel
+I also wrote comprehensive guides on:
+Docker & Kubernetes
+API design patterns
+Database modeling
+Git workflows
+Web security
+Read tutorials →
+Planning to add:
+API testing tools
+Code formatters for more languages
+WebSocket tester
+SSL certificate checker
+Visit devtoolskit.co.in and let me know what you think!
+What tools would you like to see added? Drop a comment below! 👇
+Tags: #webdev #javascript #python #opensource #tools]]></summary>
         <author>
-            <name>Nazar Boyko</name>
+            <name>Darshik Italiya</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Scarab Diagnostic Field Test #034 - Prometheus Docker Swarm Label Source Boundary]]></title>
-        <id>https://dev.to/scarab-systems/scarab-diagnostic-field-test-034-prometheus-docker-swarm-label-source-boundary-48ke</id>
-        <link href="https://dev.to/scarab-systems/scarab-diagnostic-field-test-034-prometheus-docker-swarm-label-source-boundary-48ke"/>
-        <updated>2026-06-19T23:48:26.000Z</updated>
-        <summary type="html"><![CDATA[Target: prometheus/prometheus
-Issue: prometheus/prometheus#12244
-Pull request: prometheus/prometheus#18979
-Field Lab record: Prometheus #12244
-This field test was about documentation, but not "just documentation."
-The public issue reported confusion around Docker Swarm task discovery metadata in Prometheus.
-The user expected __meta_dockerswarm_container_label_<labelname> to expose labels from the running container or image, such as OCI image labels.
-The visible behavior was different.
-The metadata existed, but the source was not the runtime container or image label surface the user expected.
-That made this a boundary problem:
-what does the documented metadata name mean, and which public source of truth does it actually represent?
-The public Field Lab record for this case is here:
-https://g…]]></summary>
+        <title type="html"><![CDATA[Solstice Cipher: Routing Light to Crack Codes — A Puzzle Game for the June Solstice Game Jam]]></title>
+        <id>https://dev.to/fanioz/solstice-cipher-routing-light-to-crack-codes-a-puzzle-game-for-the-june-solstice-game-jam-lcc</id>
+        <link href="https://dev.to/fanioz/solstice-cipher-routing-light-to-crack-codes-a-puzzle-game-for-the-june-solstice-game-jam-lcc"/>
+        <updated>2026-06-20T04:48:53.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for the June Solstice Game Jam
+The June solstice is the moment the sun reaches its peak — the longest day, the shortest shadow. I wanted to build a game where you become the sun.
+Solstice Cipher is an optical puzzle game where you manipulate light beams to decrypt hidden words. Each level gives you a sun emitter, a set of cipher glyphs hiding the letters of a secret word, and a briefcase full of optical tools. Your job: route the light beam through the correct sequence of glyphs to illuminate every letter and reveal the cipher.
+The game progresses through 15 hand-crafted levels that track the arc of the solstice day. Early levels teach you the basics with a single mirror; by the end, you're juggling prisms that split beams, color filters that tint white light into red,…]]></summary>
         <author>
-            <name>Scarab Systems</name>
+            <name>fanioz</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Scarab Diagnostic Field Test #033 - Prometheus Remote-Write Label Order Boundary]]></title>
-        <id>https://dev.to/scarab-systems/scarab-diagnostic-field-test-033-prometheus-remote-write-label-order-boundary-44lk</id>
-        <link href="https://dev.to/scarab-systems/scarab-diagnostic-field-test-033-prometheus-remote-write-label-order-boundary-44lk"/>
-        <updated>2026-06-19T23:46:09.000Z</updated>
-        <summary type="html"><![CDATA[Target: prometheus/prometheus
-Issue: prometheus/prometheus#11505
-Pull request: prometheus/prometheus#18978
-Field Lab record: Prometheus #11505
-This field test was about a small but important remote-write boundary in Prometheus:
-labels are required to be sorted lexicographically, but incoming remote-write labels could pass through a conversion path before that requirement was enforced.
-That sounds narrow because it is narrow.
-But this is exactly the kind of case Scarab is meant to make visible.
-Not "the remote-write subsystem is broken."
-Not "rewrite ingestion."
-Not "let an agent go hunting."
-The question was smaller:
-where does repo truth say invalid input should stop, and where was the actual boundary allowing that truth to blur?
-The public Field Lab record for this case is here:
-https://…]]></summary>
+        <title type="html"><![CDATA[Quick-Start-Guide]]></title>
+        <id>https://dev.to/tengxgfyrz67s/quick-start-guide-4oh8</id>
+        <link href="https://dev.to/tengxgfyrz67s/quick-start-guide-4oh8"/>
+        <updated>2026-06-20T04:48:29.000Z</updated>
+        <summary type="html"><![CDATA[Quick Start Guide
+
+
+
+Project Code：https://github.com/hyperlane-dev/hyperlane
+Welcome to hyperlane — a lightweight, high-performance, cross-platform Rust HTTP server library built on top of Tokio. This guide will walk you through everything you need to know to get your first hyperlane server up and running in minutes.
+Hyperlane is a Rust HTTP server framework designed for speed, simplicity, and developer productivity. Built on the battle-tested Tokio async runtime, it provides a clean and intuitive API for building web services, APIs, and real-time applications. Whether you're building a simple REST API or a complex microservice architecture, hyperlane gives you the tools you need with minimal overhead.
+Key highlights:
+Lightweight: Minimal dependencies and a small footprint.
+High Performanc…]]></summary>
         <author>
-            <name>Scarab Systems</name>
+            <name>tengxgfyrz67s</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Iran requires insurance on ships using Strait of Hormuz, fees likely to follow]]></title>
-        <id>https://www.lloydslist.com/LL1157571/Iran-imposes-mandatory-insurance-on-ships-transiting-Strait-of-Hormuz-with-fees-likely-to-follow</id>
-        <link href="https://www.lloydslist.com/LL1157571/Iran-imposes-mandatory-insurance-on-ships-transiting-Strait-of-Hormuz-with-fees-likely-to-follow"/>
-        <updated>2026-06-19T23:32:03.000Z</updated>
+        <title type="html"><![CDATA[How to Let an AI Agent Generate Real PDFs (with an MCP server)]]></title>
+        <id>https://dev.to/gerardo_barrera_538fc60b7/how-to-let-an-ai-agent-generate-real-pdfs-with-an-mcp-server-28e3</id>
+        <link href="https://dev.to/gerardo_barrera_538fc60b7/how-to-let-an-ai-agent-generate-real-pdfs-with-an-mcp-server-28e3"/>
+        <updated>2026-06-20T04:37:27.000Z</updated>
+        <summary type="html"><![CDATA[AI agents are great at producing text. But the moment you need an actual document — an invoice, a report, a certificate — they fall apart. You get markdown you have to format yourself, or (with Code Interpreter) a rough PDF from a Python lib with generic fonts and tables that never quite look right. There's no clean way to hand an agent the job of "produce a polished PDF."
+So I gave my agents one tool that does exactly that, over MCP (Model Context Protocol). The agent describes the document, and gets back a link to a finished, editable PDF. Here's how to wire it up in about 5 lines of config.
+Disclosure: I work on PDFMakerAPI — but the pattern here (give an agent a single, well-scoped tool that returns a reviewable artifact) applies to any MCP server. The config below just happens to use …]]></summary>
+        <author>
+            <name>Gerardo Barrera</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Generate a PDF from JSON in Node.js (without a headless browser)]]></title>
+        <id>https://dev.to/gerardo_barrera_538fc60b7/how-to-generate-a-pdf-from-json-in-nodejs-without-a-headless-browser-3i9h</id>
+        <link href="https://dev.to/gerardo_barrera_538fc60b7/how-to-generate-a-pdf-from-json-in-nodejs-without-a-headless-browser-3i9h"/>
+        <updated>2026-06-20T04:29:56.000Z</updated>
+        <summary type="html"><![CDATA[If you've ever had to generate PDFs from a Node app — invoices, receipts, reports, certificates — you've probably reached for 
+Puppeteer or some headless-Chrome setup. It works… until you have to run it in production. Now you're shipping a 300MB Chromium 
+There's a simpler way: describe the document as JSON, POST it to an API, get a PDF back. No browser. In this post I'll show how 
+Full disclosure: I built PDFMakerAPI, the tool I'm using here. There's a free tier, no API key needed to
+## The idea: separate the data from the design
+The trick to sane PDF generation is to stop gluing strings of HTML together. Instead you keep two things separate:
+The design — a layout of text, tables, and containers (you can design this visually, or describe it as JSON).
+The data — the actual values that chan…]]></summary>
+        <author>
+            <name>Gerardo Barrera</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[This Week in AI: Claude Goes Dark, SpaceX Buys Cursor for $60B]]></title>
+        <id>https://dev.to/zyvop/this-week-in-ai-claude-goes-dark-spacex-buys-cursor-for-60b-1a9</id>
+        <link href="https://dev.to/zyvop/this-week-in-ai-claude-goes-dark-spacex-buys-cursor-for-60b-1a9"/>
+        <updated>2026-06-20T04:27:37.000Z</updated>
+        <summary type="html"><![CDATA[This Week in AI: June 12–18, 2026
+
+
+Six days. That's how long two of Anthropic's most capable models have been offline because of a single letter from the Commerce Department. In the same six days, SpaceX bought a code editor for $60 billion, OpenAI's real financials leaked and they're worse than anyone guessed, and GitHub got so overloaded by AI agents that Microsoft had to borrow servers from Amazon to keep it online.
+Buckle up. Here's the week.
+  🔌 A government order took Claude Fable 5 and Mythos 5 offline on June 12 — and they're still down, six days later.
+  💰 SpaceX bought Cursor for $60 billion, four days after its own record IPO, instantly becoming the 4th most valuable company in the US.
+  📉 OpenAI's leaked 2025 financials: $13B in revenue, $34B in costs, a $38.5B net loss.
+  …]]></summary>
+        <author>
+            <name>ZyVOP</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building a CompTIA practice-test engine that gives students source-verified questions]]></title>
+        <id>https://dev.to/henry_yau_2266/building-a-comptia-practice-test-engine-that-gives-students-source-verified-questions-332</id>
+        <link href="https://dev.to/henry_yau_2266/building-a-comptia-practice-test-engine-that-gives-students-source-verified-questions-332"/>
+        <updated>2026-06-20T04:22:12.000Z</updated>
+        <summary type="html"><![CDATA[If you've ever studied for a CompTIA exam with free practice questions online, you already know the problem: most "practice tests" are recycled exam dumps. The same leaked pool, copy-pasted across a dozen sites, with a worrying number of "correct" answers that are subtly wrong and no indication of where any of it came from.
+For a student, that's worse than useless. You can memorize a wrong answer with total confidence and walk into the exam having actively trained the mistake.
+I wanted to build a practice-test engine that made the opposite promise to students: every answer you see can be traced back to a primary source. Not "I checked most of them." Not "a reviewer will probably catch the bad ones." A hard guarantee, enforced by code. This post is how I turned that promise into an actual p…]]></summary>
+        <author>
+            <name>Henry Yau</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Trained a Neural Network on Real Medical Data and Fit It in 8.9 kB of Pure C]]></title>
+        <id>https://dev.to/alexrosito67/i-trained-a-neural-network-on-real-medical-data-and-fit-it-in-89-kb-of-pure-c-4e40</id>
+        <link href="https://dev.to/alexrosito67/i-trained-a-neural-network-on-real-medical-data-and-fit-it-in-89-kb-of-pure-c-4e40"/>
+        <updated>2026-06-20T04:16:08.000Z</updated>
+        <summary type="html"><![CDATA[I want to be honest with you from the start: I didn't set out to write this article.
+I set out to answer a question I had about my own tool — can Hasaki do regression? — and somewhere between loading a dataset of 3,658 real patient records and watching a microcontroller predict blood pressure from 14 numbers, I realized the answer deserved to be written down.
+Hasaki is a command-line neural network trainer I built for embedded systems developers. You train a model on your desktop, and it exports a self-contained C header — weights, biases, and a predict() function — ready to drop into any MCU project. No TensorFlow. No runtime. No dependencies.
+Every public demo I've done has been classification: smoke detection, MNIST digits, motion sensing. Binary or multiclass outputs. But Hasaki has a …]]></summary>
+        <author>
+            <name>Alex Rosito</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Built a Chrome Extension That Copies Code Identifiers Instantly]]></title>
+        <id>https://dev.to/venkatesh_007/i-built-a-chrome-extension-that-copies-code-identifiers-instantly-12fe</id>
+        <link href="https://dev.to/venkatesh_007/i-built-a-chrome-extension-that-copies-code-identifiers-instantly-12fe"/>
+        <updated>2026-06-20T04:12:03.000Z</updated>
+        <summary type="html"><![CDATA[While solving SQL and coding problems on platforms like LeetCode, I found myself repeatedly selecting column names, table names, variables, and snippets just to copy and paste them into the editor.
+So I built CodeCopy.
+Features
+⚡ Double-click any text to copy instantly
+The goal was simple: reduce small interruptions during problem-solving and keep the workflow focused on writing solutions.
+Still refining the UI and adding more customization options before publishing.
+Would love to hear what features fellow developers would find useful in a productivity extension like this.
+GitHub Repository
+🔗 Source Code:
+https://github.com/venkatesh-0007/Quick_Copy]]></summary>
+        <author>
+            <name>Venkatesh Amudalapalli</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Track Court Cases for Any Advocate in India — eCourtsIndia Guide]]></title>
+        <id>https://dev.to/rchtjn2/how-to-track-court-cases-for-any-advocate-in-india-ecourtsindia-guide-24a3</id>
+        <link href="https://dev.to/rchtjn2/how-to-track-court-cases-for-any-advocate-in-india-ecourtsindia-guide-24a3"/>
+        <updated>2026-06-20T04:09:41.000Z</updated>
+        <summary type="html"><![CDATA[India has one of the largest judicial systems in the world — 25 High Courts, over 3,000 district courts, and millions of pending cases. For lawyers, litigants, and legal tech developers, tracking the status of cases is a daily necessity.
+In this post, I'll walk through how to use eCourtsIndia to track all active cases for any advocate across India's district and subordinate courts — and why this matters for developers building legal tech applications.
+India's eCourts Mission Mode Project digitized court records across the country. But the data is spread across hundreds of individual court portals, each with its own interface. Finding all cases for a specific advocate meant visiting every court's website separately — until now.
+eCourtsIndia aggregates case data from all district and subordi…]]></summary>
+        <author>
+            <name>Rachit Jain</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to feed a dictator]]></title>
+        <id>https://www.theguardian.com/film/2026/jun/09/how-to-feed-a-dictator-film</id>
+        <link href="https://www.theguardian.com/film/2026/jun/09/how-to-feed-a-dictator-film"/>
+        <updated>2026-06-20T01:16:56.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Claude Design: What It Is, Where It Fits, and When to Skip It]]></title>
-        <id>https://dev.to/studiomeyer_io/claude-design-what-it-is-where-it-fits-and-when-to-skip-it-593d</id>
-        <link href="https://dev.to/studiomeyer_io/claude-design-what-it-is-where-it-fits-and-when-to-skip-it-593d"/>
-        <updated>2026-06-19T23:28:19.000Z</updated>
-        <summary type="html"><![CDATA[Claude Design is a tool from Anthropic Labs that turns a conversation into editable visual work: prototypes, slide decks, one-pagers, mockups, landing-page concepts. You describe what you want, Claude builds a first version you can see immediately, and you refine it by talking, leaving comments, dragging elements around, or moving sliders Claude builds for you. When it is ready, you send it to Canva, Adobe, Figma, PowerPoint, PDF, or straight into code.
-It launched on April 17, 2026 and passed a million users in the first week after its June overhaul. I run a design and AI studio on Mallorca, and within days of each update a client asked some version of the same question: should we be using this? The honest answer is yes, for specific jobs, and no as a replacement for the things you alread…]]></summary>
-        <author>
-            <name>Matthias | StudioMeyer</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Microsoft Recall Opt-in Change]]></title>
-        <id>https://dev.to/lavkeshdwivedi/microsoft-recall-opt-in-change-4233</id>
-        <link href="https://dev.to/lavkeshdwivedi/microsoft-recall-opt-in-change-4233"/>
-        <updated>2026-06-19T23:19:39.000Z</updated>
-        <summary type="html"><![CDATA[Originally published on lavkesh.com
-Microsoft just announced Recall will ship as opt-in rather than opt-out. That is a complete reversal from the original design, and it matters more than the technical detail itself. It marks a line in the sand for what users will accept from AI features running on their own hardware.
-Recall is the AI memory feature announced in May as part of Copilot+ PCs. The premise is genuinely useful: your PC takes periodic screenshots of everything you do and uses an on-device LLM to make it all searchable. You could search "that document I was looking at last Tuesday" and find it, even if you never saved it or cannot remember the filename. Think of it as a photographic memory for your computer.
-The reaction from the security community when it was announced was immed…]]></summary>
-        <author>
-            <name>Lavkesh Dwivedi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Smaller AI Models Take the Lead]]></title>
-        <id>https://dev.to/lavkeshdwivedi/smaller-ai-models-take-the-lead-282d</id>
-        <link href="https://dev.to/lavkeshdwivedi/smaller-ai-models-take-the-lead-282d"/>
-        <updated>2026-06-19T23:19:35.000Z</updated>
-        <summary type="html"><![CDATA[Originally published on lavkesh.com
-The AI model landscape has changed. The focus is no longer on building the largest model, but on creating smaller models that are still useful. Google's Gemini 1.5 Flash, Meta's Llama 3.1 8B, and Microsoft's Phi-3 Mini are currently winning in real production deployments. The reasons for their success come down to simple engineering economics.
-Large models like GPT-4 are capable but expensive to run at scale. For features handling millions of requests daily, small differences in per-token cost add up to serious infrastructure expenses. Companies have found that deploying GPT-4 for every user interaction may not be necessary. A model that is good enough and costs less can be a better choice.
-For many tasks, a model that is good enough will win. Tasks like…]]></summary>
-        <author>
-            <name>Lavkesh Dwivedi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Backtesting Trading Strategies: From Theory to Execution – My Quest for the Holy Grail of Profit]]></title>
-        <id>https://dev.to/timevolt/backtesting-trading-strategies-from-theory-to-execution-my-quest-for-the-holy-grail-of-profit-1p3k</id>
-        <link href="https://dev.to/timevolt/backtesting-trading-strategies-from-theory-to-execution-my-quest-for-the-holy-grail-of-profit-1p3k"/>
-        <updated>2026-06-19T23:16:13.000Z</updated>
-        <summary type="html"><![CDATA[The Quest Begins (The "Why")
-
-
-Picture this: I’m sitting at my desk, coffee gone cold, staring at a spreadsheet that looks like something out of Indiana Jones and the Last Crusade – a maze of dates, prices, and a gut feeling that I’ve cracked the code to beat the market. I had a shiny new idea: buy when the 50‑day moving average crosses above the 200‑day (the classic “golden cross”) and sell when it crosses below. Sounds simple, right?  
-I threw the logic into a quick Python script, ran it on a year of AAPL data, and—boom—my P&L chart looked like a rocket ship. I felt like Neo in The Matrix when he finally sees the code. “I know kung fu,” I whispered to my monitor.  
-Then reality slapped me like a boss fight in Dark Souls. The results were too good to be true. I’d somehow managed to look i…]]></summary>
-        <author>
-            <name>Timevolt</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why 'Offline-First AI' Is No Longer Optional for the Global South]]></title>
-        <id>https://dev.to/gabrielmahia/why-offline-first-ai-is-no-longer-optional-for-the-global-south-4f46</id>
-        <link href="https://dev.to/gabrielmahia/why-offline-first-ai-is-no-longer-optional-for-the-global-south-4f46"/>
-        <updated>2026-06-19T23:10:34.000Z</updated>
-        <summary type="html"><![CDATA[Why "Offline-First AI" Is No Longer Optional for the Global South
-
-
-There's a quiet assumption embedded in most AI development: that the people using your tools have reliable internet, stable electricity, and data that's safe to send to foreign servers.
-That assumption is wrong for most of the world.
-In Kenya, Tanzania, and Uganda, mobile internet penetration is high — but reliability isn't. A clinic in Kisumu might have strong Safaricom signal one hour and none the next. A county office in Turkana operates on intermittent power. A smallholder farmer in Nakuru checks agricultural prices at dawn before the day's data bundle runs out.
-The AI tools being built for these contexts need to survive when the internet doesn't. Not degrade gracefully — survive.
-That's what offline-mcp was built for.…]]></summary>
-        <author>
-            <name>Gabriel Mahia</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Migrate from Cursor Rules to Agent Skills]]></title>
-        <id>https://dev.to/sriram7/how-to-migrate-from-cursor-rules-to-agent-skills-1cl7</id>
-        <link href="https://dev.to/sriram7/how-to-migrate-from-cursor-rules-to-agent-skills-1cl7"/>
-        <updated>2026-06-19T23:10:00.000Z</updated>
-        <summary type="html"><![CDATA[Agent Skills are the open standard (agentskills.io) for packaging team-specific instructions that any AI coding tool can discover.
-Migrating from hand-maintained Cursor rules means moving from static markdown you write once to structured, evidence-ranked intelligence your team already enforced in PR review — and (optionally) letting tooling generate the skill automatically.
-Cursor rules live only in Cursor's tree. Copilot wants .github/copilot-instructions.md. Claude Code reads CLAUDE.md. Maintaining the same conventions in four places doesn't scale.
-Agent Skills provide one portable package. See what are Agent Skills for the full picture.
-Legacy .cursorrules or .cursor/rules/*.mdc
-
-Ad-hoc pasted instructions in chat
-CONTRIBUTING.md sections nobody reads
-.codehabits/conventions.json — stru…]]></summary>
-        <author>
-            <name>Sriram Sureshkumar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Americans express unease over SpaceX's influence on retirement savings]]></title>
-        <id>https://www.theguardian.com/science/2026/jun/19/spacex-retirement-savings-elon-musk</id>
-        <link href="https://www.theguardian.com/science/2026/jun/19/spacex-retirement-savings-elon-musk"/>
-        <updated>2026-06-19T22:45:20.000Z</updated>
+        <title type="html"><![CDATA[Hey, n00b, we didn't hire you to complete tasks]]></title>
+        <id>https://newsletter.kentbeck.com/p/hey-n00b-we-didnt-hire-you-to-complete</id>
+        <link href="https://newsletter.kentbeck.com/p/hey-n00b-we-didnt-hire-you-to-complete"/>
+        <updated>2026-06-20T00:11:07.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How do flocking birds and schools of fish move?]]></title>
-        <id>https://www.nyu.edu/about/news-publications/news/2026/june/how-do-flocking-birds-and-schools-of-fish-move--new-research-off.html</id>
-        <link href="https://www.nyu.edu/about/news-publications/news/2026/june/how-do-flocking-birds-and-schools-of-fish-move--new-research-off.html"/>
-        <updated>2026-06-19T22:37:30.000Z</updated>
+        <title type="html"><![CDATA[Aikido Code Audit]]></title>
+        <id>https://www.aikido.dev/blog/introducing-code-audit-find-complex-vulnerabilities-hidden-in-your-codebase</id>
+        <link href="https://www.aikido.dev/blog/introducing-code-audit-find-complex-vulnerabilities-hidden-in-your-codebase"/>
+        <updated>2026-06-19T23:54:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ask HN: Will programmers write more efficient code during the memory shortage?]]></title>
+        <id>https://news.ycombinator.com/item?id=48604232</id>
+        <link href="https://news.ycombinator.com/item?id=48604232"/>
+        <updated>2026-06-19T22:51:09.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -257,7 +316,7 @@ CONTRIBUTING.md sections nobody reads
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Surprising Economics of Load-Balanced Systems]]></title>
+        <title type="html"><![CDATA[Surprising economics of load-balanced systems]]></title>
         <id>https://brooker.co.za/blog/2020/08/06/erlang.html</id>
         <link href="https://brooker.co.za/blog/2020/08/06/erlang.html"/>
         <updated>2026-06-19T20:30:59.000Z</updated>
@@ -267,7 +326,7 @@ CONTRIBUTING.md sections nobody reads
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Think of the Children: How to Force Real ID for All Internet Traffic (2023)]]></title>
+        <title type="html"><![CDATA[Think of the children: How to force real ID for all internet traffic (2023)]]></title>
         <id>https://nochan.net/b/Internet-Crap/20230829-Think-Of-The-Children/</id>
         <link href="https://nochan.net/b/Internet-Crap/20230829-Think-Of-The-Children/"/>
         <updated>2026-06-19T20:19:57.000Z</updated>
@@ -287,6 +346,26 @@ CONTRIBUTING.md sections nobody reads
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Big Banana Car]]></title>
+        <id>https://bigbananacar.com/</id>
+        <link href="https://bigbananacar.com/"/>
+        <updated>2026-06-19T18:14:11.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[John Jumper to join Anthropic]]></title>
+        <id>https://twitter.com/JohnJumperSci/status/2068001285173834106</id>
+        <link href="https://twitter.com/JohnJumperSci/status/2068001285173834106"/>
+        <updated>2026-06-19T17:53:00.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Schwab to join prediction markets race with S&P 500 event-based options: WSJ]]></title>
         <id>8abb39a9-8302-41b5-8a26-29ebd664051b</id>
         <link href="https://www.coindesk.com/markets/2026/06/19/schwab-to-join-prediction-markets-race-with-s-and-p-500-event-based-options-wsj"/>
@@ -294,16 +373,6 @@ CONTRIBUTING.md sections nobody reads
         <summary type="html"><![CDATA[The planned offering would let customers bet on index moves as Coinbase and Robinhood expand in the sector.]]></summary>
         <author>
             <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A new bill takes aim at government pressure to silence lawful online speech]]></title>
-        <id>https://www.eff.org/deeplinks/2026/06/new-bill-takes-aim-government-pressure-silence-lawful-online-speech</id>
-        <link href="https://www.eff.org/deeplinks/2026/06/new-bill-takes-aim-government-pressure-silence-lawful-online-speech"/>
-        <updated>2026-06-19T17:34:28.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -357,30 +426,10 @@ CONTRIBUTING.md sections nobody reads
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Google workspace threatening to block Firefox access]]></title>
-        <id>https://tales.fromprod.com/2026/169/google-workspace-threatening-to-block-firefox.html</id>
-        <link href="https://tales.fromprod.com/2026/169/google-workspace-threatening-to-block-firefox.html"/>
-        <updated>2026-06-19T16:30:49.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Hyundai buys Boston Dynamics]]></title>
         <id>https://startupfortune.com/hyundai-takes-full-control-of-boston-dynamics-as-softbank-exits-for-325-million/</id>
         <link href="https://startupfortune.com/hyundai-takes-full-control-of-boston-dynamics-as-softbank-exits-for-325-million/"/>
         <updated>2026-06-19T16:28:20.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Amateur may have cracked Linear A]]></title>
-        <id>https://aiclambake.com/clamtakes/linear-a/</id>
-        <link href="https://aiclambake.com/clamtakes/linear-a/"/>
-        <updated>2026-06-19T16:04:42.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -747,6 +796,16 @@ The post LEGO Announces Its First Fully Functional Pinball Machine appeared firs
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Building a robotics research setup that lives next to my desk]]></title>
+        <id>https://dfdxlabs.com/research/2026/robotics-setup/</id>
+        <link href="https://dfdxlabs.com/research/2026/robotics-setup/"/>
+        <updated>2026-06-18T14:51:53.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Algorand unveils roadmap to achieve quantum resistance by 2028]]></title>
         <id>15dc0649-5afa-4d21-bfb6-73df9301f66b</id>
         <link href="https://www.coindesk.com/tech/2026/06/18/algorand-unveils-post-quantum-roadmap-to-secure-blockchain-by-2027"/>
@@ -947,6 +1006,26 @@ The post LEGO Announces Its First Fully Functional Pinball Machine appeared firs
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Snap Smart Glasses]]></title>
+        <id>https://www.specs.com/smart-glasses/specs-27</id>
+        <link href="https://www.specs.com/smart-glasses/specs-27"/>
+        <updated>2026-06-17T12:02:02.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The discovery that changed how scientists think about memory – IBM]]></title>
+        <id>https://www.ibm.com/think/news/discovery-changed-how-scientists-think-about-memory-kavli-prize</id>
+        <link href="https://www.ibm.com/think/news/discovery-changed-how-scientists-think-about-memory-kavli-prize"/>
+        <updated>2026-06-17T11:09:29.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Entrepreneurs in Nairobi make the case for going solar]]></title>
         <id>https://www.technologyreview.com/?p=1138600</id>
         <link href="https://www.technologyreview.com/2026/06/17/1138600/entrepreneurs-nairobi-case-for-going-solar/"/>
@@ -977,20 +1056,40 @@ The post LEGO Announces Its First Fully Functional Pinball Machine appeared firs
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Metiq: a real time 3D globe for 100 public datasets]]></title>
-        <id>https://metiq.space/</id>
-        <link href="https://metiq.space/"/>
-        <updated>2026-06-16T14:43:38.000Z</updated>
+        <title type="html"><![CDATA[Digital Printing of Arabic: explaining the problem]]></title>
+        <id>https://digitalorientalist.com/2017/08/21/digital-printing-of-arabic-explaining-the-problem/</id>
+        <link href="https://digitalorientalist.com/2017/08/21/digital-printing-of-arabic-explaining-the-problem/"/>
+        <updated>2026-06-16T22:23:04.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[DuckDB Internals Part 1]]></title>
-        <id>https://www.greybeam.ai/blog/duckdb-internals-part-1</id>
-        <link href="https://www.greybeam.ai/blog/duckdb-internals-part-1"/>
-        <updated>2026-06-16T11:07:08.000Z</updated>
+        <title type="html"><![CDATA[Data Compression Explained (2012)]]></title>
+        <id>https://mattmahoney.net/dc/dce.html</id>
+        <link href="https://mattmahoney.net/dc/dce.html"/>
+        <updated>2026-06-16T21:51:57.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Meet Nikolai Evreinov, the 19th century Nathan Fielder]]></title>
+        <id>https://mssv.net/2026/06/16/meet-nikolai-evreinov-the-19th-century-nathan-fielder/</id>
+        <link href="https://mssv.net/2026/06/16/meet-nikolai-evreinov-the-19th-century-nathan-fielder/"/>
+        <updated>2026-06-16T15:00:30.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Metiq: a real time 3D globe for 100 public datasets]]></title>
+        <id>https://metiq.space/</id>
+        <link href="https://metiq.space/"/>
+        <updated>2026-06-16T14:43:38.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1047,36 +1146,6 @@ The post LEGO Announces Its First Fully Functional Pinball Machine appeared firs
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[To study how chips work, MIT researchers built their own operating system]]></title>
-        <id>https://news.mit.edu/2026/to-study-how-chips-really-work-mit-researchers-built-their-own-operating-system-0610</id>
-        <link href="https://news.mit.edu/2026/to-study-how-chips-really-work-mit-researchers-built-their-own-operating-system-0610"/>
-        <updated>2026-06-15T16:06:22.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[A 1976 university experiment spun up the U.S. wind industry]]></title>
-        <id>https://spectrum.ieee.org/william-heronemus-wind-energy</id>
-        <link href="https://spectrum.ieee.org/william-heronemus-wind-energy"/>
-        <updated>2026-06-15T14:25:51.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Gribouille 0.3.0: A Grammar of Graphics for Typst]]></title>
-        <id>https://mickael.canouil.fr/posts/2026-06-15-gribouille-0-3/</id>
-        <link href="https://mickael.canouil.fr/posts/2026-06-15-gribouille-0-3/"/>
-        <updated>2026-06-15T13:35:23.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[From wallet addresses to payment links: how pay3 built real-time multi-chain detection on Quicknode Streams]]></title>
         <id>pay3-real-time-payment-detection-streams</id>
         <link href="https://www.quicknode.com/blog/pay3-real-time-payment-detection-streams"/>
@@ -1084,26 +1153,6 @@ The post LEGO Announces Its First Fully Functional Pinball Machine appeared firs
         <summary type="html"><![CDATA[pay3 replaced the wallet address with a single link, pay3.so/@username. Here's how it built real-time payment detection across Ethereum, BNB Smart Chain, Solana, and Tron on Quicknode Streams, with no indexer and no per-chain polling.]]></summary>
         <author>
             <name>Quicknode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[RhinoCollab a plugin for real-time editing for Rhino 3D]]></title>
-        <id>https://rhinocollab.com/</id>
-        <link href="https://rhinocollab.com/"/>
-        <updated>2026-06-14T20:43:23.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I used sound waves to make espresso. It could cut coffee‑brewing energy use by ¾]]></title>
-        <id>https://theconversation.com/i-used-sound-waves-to-make-espresso-it-could-cut-coffee-brewing-energy-use-by-75-284929</id>
-        <link href="https://theconversation.com/i-used-sound-waves-to-make-espresso-it-could-cut-coffee-brewing-energy-use-by-75-284929"/>
-        <updated>2026-06-13T08:21:45.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
