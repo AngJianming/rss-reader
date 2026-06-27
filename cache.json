@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/daksh-gargas/database-rate-limiting-the-missing-piece-after-a-circuit-breaker-2bp7",
-          "author": "Daksh Gargas",
-          "description": "This is an extension to my previous post on Circuit Breakers.\nIt only decides:\n\"Should I even try calling Redis?\"\nWhen the circuit is open, your application executes the fallback.\nFor many systems, that fallback is the database.\nRequest\n   │\nCircuit Breaker (Open)\n   │\nDatabase\n\nAnd that's where the real problem begins.\nImagine your system normally handles:\n100K requests/sec\nRedis serves 99K\n\nDatabase serves 1K\n\n\n\nRedis suddenly goes down.\nWithout any protection:\n100K Requests\n\n↓\n\nDatabase 💥\n\nYour database was never designed to handle the entire production workload.\nA circuit breaker saved you from Redis timeouts—but it didn't save your database.\nInstead of letting every request reach the database, the application enforces a limit.\nif circuitBreaker.IsOpen() {\n\n    if !dbRateLimiter.Allow…",
-          "link": "https://dev.to/daksh-gargas/database-rate-limiting-the-missing-piece-after-a-circuit-breaker-2bp7",
-          "publishedOn": "2026-06-27T20:38:27.000Z",
-          "wordCount": 1817,
-          "title": "Database Rate Limiting: The Missing Piece After a Circuit Breaker",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0443zsr0ikx89zelq3zl.png"
-        },
-        {
-          "id": "https://dev.to/gitsergecrypto/how-to-prove-an-ai-agent-output-existed-x402-near-anchoring-in-practice-2ede",
-          "author": "GitSerge-crypto",
-          "description": "How to prove an AI agent output existed — x402 + NEAR anchoring in practice\n\n\n\n  \n  \n  Why this matters\n\n\nYou deployed an AI agent. It generated a financial report, a code review, a medical summary. A week later, someone questions the output. Did the agent actually produce this? When? Was it modified after the fact?\nLogs are mutable. Timestamps lie. Git history can be rewritten.\nWhat you need is a cryptographic proof — signed by an independent notary — that binds a specific artifact hash to a specific point in time. And it should cost less than a cent.\nThis article walks through a real, working system: AOTrust, a notarization service that issues PDRs (Provenance Data Records) for $0.01 USDC via x402 on Base L2, with Merkle anchoring on NEAR.\nA Base wallet with $0.01 USDC (10,000 micro-USDC…",
-          "link": "https://dev.to/gitsergecrypto/how-to-prove-an-ai-agent-output-existed-x402-near-anchoring-in-practice-2ede",
-          "publishedOn": "2026-06-27T20:35:22.000Z",
-          "wordCount": 2578,
-          "title": "How to prove an AI agent output existed — x402 + NEAR anchoring in practice",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fkrkt7w274m5jxn8pu6yo.png"
-        },
-        {
-          "id": "https://dev.to/daksh-gargas/a-circuit-breaker-alone-wont-save-your-database-3d0i",
-          "author": "Daksh Gargas",
-          "description": "A common misconception is that a circuit breaker protects your database.\nIt doesn't.\nIt only protects your application from repeatedly calling a dependency that is already known to be unhealthy.\nWithout a circuit breaker:\nRequest\n   │\nRedis (500ms timeout)\n   │\nDB\n\nEvery request:\nWaits for Redis to time out.\nWastes network calls.\nEventually hits the database anyway.\nAfter Redis fails repeatedly, the circuit opens.\nNow requests become:\nRequest\n   │\nCircuit Breaker\n   │\nFallback\n\nNotice something?\nThe circuit breaker doesn't decide the fallback. It only decides:\n\"Should I even try Redis?\"\nA production system usually follows this order:\nRequest\n   │\nCircuit Open?\n   │\nYes\n   │\nLocal Cache?\n   │\nHit ─────────► Return\n   │\nMiss\n   │\nDB Rate Limiter\n   │\nAllowed?\n   │\nYes ─────────► Database\n   │\nNo\n   │\nReturn 503\n\nSuppose:\nNormal traffic: 100K RPS\n\nRedis serves 99K RPS\n\nDatabase handles 1K RPS\n\n\n\nIf Redis crashes and every request falls back to the database:\n100K RPS\n\n↓\n\nDatabase 💥\n\nInstead, protect the database:\nif circuitBreaker.IsOpen() {\n    if localCache.Has(key) {\n        return localCache.Get(key)\n    }\n\n    if !dbRateLimiter.Allow() {\n        return 503\n    }\n\n    return db.Get(key)\n}\n\nOnly a limited number of requests are allowed to reach the database. The rest fail fast, keeping the system alive.\nNot in the API Gateway.\nThe gateway only sees:\nGET /users/123\n\nIt has no idea whether your service will:\nQuery Redis\nQuery Postgres\nCall Elasticsearch\nRead Kafka\nThe service itself knows when it's about to hit the database, so that's where the dependency-specific rate limiter belongs.\n👉 Read: Database Rate Limiting: The Missing Piece After a Circuit Breaker\nA circuit breaker and a rate limiter solve different problems.\nCircuit Breaker: Stop calling a dependency that is already failing.\nDB Rate Limiter: Protect the database from being overwhelmed when fallbacks occur.\nIn production, they almost always work together.",
-          "link": "https://dev.to/daksh-gargas/a-circuit-breaker-alone-wont-save-your-database-3d0i",
-          "publishedOn": "2026-06-27T20:33:58.000Z",
-          "wordCount": 1618,
-          "title": "A Circuit Breaker Alone Won't Save Your Database",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F96f0fawktomy5yxf7pn2.png"
-        },
-        {
-          "id": "https://dev.to/coridev/ai-coding-agents-are-the-new-attack-surface-nobodys-ready-for-1jf1",
-          "author": "Cor E",
-          "description": "The Trust Problem Hiding in Your Automated Pipeline\n\n\nThe moment you give an AI agent the ability to act — clone, configure, execute — you've created a trust boundary that most teams haven't thought through yet.\nResearchers showed that a GitHub repository can look completely clean to static scanners, human reviewers, and AI coding agents, while still carrying a malicious payload that fires during the normal setup workflow. The attack doesn't need to trick a human into running something suspicious. It just needs the agentic tool to do what it was designed to do: autonomously clone a repo and get it running.\nThat's the whole attack surface. The agent's competence is the vulnerability.\nSupply chain attacks through repositories are not new. Typosquatting, dependency confusion, malicious setup …",
-          "link": "https://dev.to/coridev/ai-coding-agents-are-the-new-attack-surface-nobodys-ready-for-1jf1",
-          "publishedOn": "2026-06-27T20:32:43.000Z",
-          "wordCount": 1966,
-          "title": "AI Coding Agents Are the New Attack Surface Nobody's Ready For",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fnzpcqal7ekizf2j01kpx.png"
-        },
-        {
-          "id": "https://dev.to/ramya_perumal_e93721ef2fa/docker-networking-and-best-practices-17ji",
-          "author": "Ramya Perumal",
-          "description": "Docker Networking\n\n\nContainers are assigned an IP address when they are created. To check the IP address, we can use the following command:\ndocker inspect <container_id>\n\nIf we send a request from the host to the container's IP address, the container responds using its assigned IP address.\nBy default, Docker creates a bridge network. This bridge network allows:\nCommunication between the host and the container (through port mapping).\nCommunication between containers connected to the same bridge network.\nWith the default bridge network, containers generally communicate using IP addresses. To communicate using container names (hostnames), we can use a custom bridge network.\nThe main difference between the default bridge network and a custom bridge network is that containers on a custom bridge…",
-          "link": "https://dev.to/ramya_perumal_e93721ef2fa/docker-networking-and-best-practices-17ji",
-          "publishedOn": "2026-06-27T20:30:19.000Z",
-          "wordCount": 2419,
-          "title": "Docker -Networking and Best Practices",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ftz4rymf1xwbnuk2phmhh.png"
-        },
-        {
-          "id": "https://dev.to/ramya_perumal_e93721ef2fa/docker-arg-directive-dockerignore-and-docker-volumes-29kh",
-          "author": "Ramya Perumal",
-          "description": "ARG Directive\n\n\nThe ARG directive acts like a variable. We can define it inside the Dockerfile and change its value during the image build process.\nARG PYTHON_VERSION=3.8\nFROM python:${PYTHON_VERSION}-slim\n\nHere, the Python version in the Dockerfile is set to 3.8. However, during the build process, we can change it to 3.10.\ndocker build -f Dockerfile --build-arg PYTHON_VERSION=3.10 -t helloworld_flask:v1 .\n\n-t means tag.\n-f means Dockerfile path.\nWe can use ARG to make base image versions and other build-time values configurable.\nFROM node:20-alpine\n\n# 1. Define the arguments\nARG APP_DIR=app\nARG INSTALL_ARGS=\"--omit=dev\"\n\n# 2. Use them in instructions\nWORKDIR /${APP_DIR}\nCOPY . .\nRUN npm install ${INSTALL_ARGS}\n\nNote: ARG values can only be changed during the image build process. They cann…",
-          "link": "https://dev.to/ramya_perumal_e93721ef2fa/docker-arg-directive-dockerignore-and-docker-volumes-29kh",
-          "publishedOn": "2026-06-27T20:30:07.000Z",
-          "wordCount": 2003,
-          "title": "Docker – ARG Directive, .dockerignore, and Docker Volumes",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhb60pxl1r7fk1bjr6nd6.png"
-        },
-        {
-          "id": "https://dev.to/ramya_perumal_e93721ef2fa/docker-port-mapping-logs-container-management-and-image-removal-20oo",
-          "author": "Ramya Perumal",
-          "description": "Docker – Logs, Remove, and Port Mapping\n\n\n\n  \n  \n  Port Mapping\n\n\nWhen we run an application inside a container, we define the port on which the application will run. The container runs the application on that port.\nIt is not possible to access an application running inside Docker from outside the container unless port mapping is configured.\nPort mapping is specified using the -p option.\nSyntax:\ndocker run -p <host_port>:<container_port>\n\nExample:\ndocker run -p 8888:8080\n\nHere:\n8888 is the host (machine) port used to access the application from outside the container.\n8080 is the port defined in the application and exposed inside the container.\nIf the host port is already in use, Docker displays an error message.\ndocker ps --format \"table {{.ID}}\\t{{.Names}}\\t{{.Ports}}\"\n\nTo run a container…",
-          "link": "https://dev.to/ramya_perumal_e93721ef2fa/docker-port-mapping-logs-container-management-and-image-removal-20oo",
-          "publishedOn": "2026-06-27T20:29:51.000Z",
-          "wordCount": 1908,
-          "title": "Docker – Port Mapping, Logs, Container Management, and Image Removal",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1pwc6jbbw5qufb36e26v.png"
-        },
-        {
-          "id": "https://dev.to/ramya_perumal_e93721ef2fa/docker-image-and-container-bonding-client-server-architecture-2apd",
-          "author": "Ramya Perumal",
-          "description": "Question:\n\n\nA container is running from an image. If we try to delete the image while the container is running, why can't we delete the image?\nIf we attempt to delete the image, Docker will display an error message stating that the image is being used by a container.\nThe reason is that each line in a Dockerfile creates a layer.\nEach layer is a read-only layer. Once a layer is created, it cannot be modified. If we want to make changes to the image, we need to create a new Dockerfile and build a new image.\nWhen we create a container, only a reference to the image layers is passed to the container. The container has a writable layer, meaning we can create files, modify files, or generate output inside the container. These changes reside only in the container and do not affect the image.\nHowev…",
-          "link": "https://dev.to/ramya_perumal_e93721ef2fa/docker-image-and-container-bonding-client-server-architecture-2apd",
-          "publishedOn": "2026-06-27T20:29:32.000Z",
-          "wordCount": 1782,
-          "title": "Docker – Image and Container Bonding & Client-Server Architecture",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Feh0mr97cc0wn75mcd6ro.png"
-        },
-        {
-          "id": "https://dev.to/dhanik_3e79e065189c6e7aaa/i-built-a-better-mutual-fund-screener-for-india-e9b",
-          "author": "Dhanik",
-          "description": "TL;DR\n\n\nWe built dhanik.online because researching mutual funds required jumping between multiple websites.\nScreen 14,000+ mutual funds\nCompare funds side by side\nCalculate XIRR\nAnalyze rolling returns\nTrack your portfolio\nWebsite:\nhttps://dhanik.online\n\n\n\n\n\n\n\n  \n  \n  Features\n\n\n\n  \n  \n  Fund Comparison\n\n\nCompare multiple mutual funds side by side with returns, risk metrics, expense ratios, and portfolio details in a single view.\nMeasure the actual returns generated by your SIPs and investments using an accurate XIRR calculator.\nLook beyond point-to-point returns and understand how consistently a fund has performed across different market cycles.\nTrack all your mutual fund investments from one dashboard and monitor your portfolio performance with meaningful insights.\nReact\nTypeScript\nTailwind CSS\nSupabase\nNetlify",
-          "link": "https://dev.to/dhanik_3e79e065189c6e7aaa/i-built-a-better-mutual-fund-screener-for-india-e9b",
-          "publishedOn": "2026-06-27T20:24:34.000Z",
-          "wordCount": 1401,
-          "title": "We Built a Better Mutual Fund Screener for India",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fv3gbqp2ih8524u9ogch6.jpg"
-        },
-        {
-          "id": "https://dev.to/tokonomics/deepinfra-pricing-2026-is-it-really-the-cheapest-llm-api-4ldl",
-          "author": "Zouhair Ait Oukhrib",
-          "description": "DeepInfra offers open-source LLM inference at prices 5-50x lower than OpenAI and Anthropic. But is it actually cheaper once you factor in latency, reliability, and model availability?\nI spent a week benchmarking DeepInfra against direct API calls. Here's what I found.\n\n\n\nModel\nDeepInfra\nOpenAI Equivalent\nSavings\n\n\n\n\nLlama 3.1 8B\n$0.05/M input\nGPT-4o-mini $0.15/M\n3x cheaper\n\n\nLlama 3.1 70B\n$0.35/M input\nGPT-4o $2.50/M\n7x cheaper\n\n\nDeepSeek R1\n$0.55/M input\no1 $15.00/M\n27x cheaper\n\n\n\nNo minimum commitment. Pay-per-token with $5 free credit to start.\nHigh-volume, simple tasks. Processing 10M+ tokens/day on classification or extraction? Switching from GPT-4o-mini to Llama 3.1 8B saves 67%.\nBatch processing. If you don't need sub-100ms latency, DeepInfra's throughput-optimized endpoints push co…",
-          "link": "https://dev.to/tokonomics/deepinfra-pricing-2026-is-it-really-the-cheapest-llm-api-4ldl",
-          "publishedOn": "2026-06-27T20:22:32.000Z",
-          "wordCount": 1648,
-          "title": "DeepInfra Pricing 2026: Is It Really the Cheapest LLM API?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fltdgekrt87mbkwsyswf0.webp"
-        },
-        {
-          "id": "https://dev.to/chaesang/lode-runner-ultima-and-a-samsung-tape-drive-2ef6",
-          "author": "Chaesang Jung",
-          "description": "Before I studied computer science, there was a contest in Busan, a cassette that loaded games, and code I typed in from a magazine.\nA look back — long before any of the tools we argue about now.\nThese episodes come from studying computer science in Korea in the 1990s. But the memory starts a few years earlier, with a handful of words from the 1980s.\nIn 1985, my elementary school in Busan ran an after-school class to pick kids for a math competition. That year the regional district math contest happened to be discontinued, so the class was quietly converted into a computer class instead — and that's how I first met a personal computer, and the idea of a contest built around one. It was probably an early ancestor of today's programming olympiads. I got lucky: in 1986 I went up to Seoul for t…",
-          "link": "https://dev.to/chaesang/lode-runner-ultima-and-a-samsung-tape-drive-2ef6",
-          "publishedOn": "2026-06-27T20:17:49.000Z",
+          "id": "https://dev.to/hiroki-kameyama/building-a-rag-system-from-scratch-with-pgvector-and-gemini-introduction-c8i",
+          "author": "Hiroki Kameyama",
+          "description": "What This Guide Covers\n\n\nWhen you start building LLM-powered applications, one pattern becomes unavoidable: RAG (Retrieval-Augmented Generation).\nLLMs only know what they were trained on. Your company's internal documents, the latest spec sheets, project-specific information — none of that exists in the model. To handle data the model doesn't know, you need a system that retrieves relevant knowledge in real time and injects it into the context. That's RAG.\nIn this guide, we'll implement a RAG system from scratch using pgvector and Gemini, then extend it step by step through Tool Use, AI Agents, MCP, and cloud deployment.\nStep 1: Embedding · Vector DB · RAG — core implementation\nStep 2: AI Architect perspective — design decisions explained\nStep 3: Tool Use — LLM autonomously searches the DB…",
+          "link": "https://dev.to/hiroki-kameyama/building-a-rag-system-from-scratch-with-pgvector-and-gemini-introduction-c8i",
+          "publishedOn": "2026-06-27T21:59:18.000Z",
           "wordCount": 1892,
-          "title": "Lode Runner, Ultima, and a Samsung Tape Drive",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fr9y9gjzzpm3wr7b889iu.png"
+          "title": "Building a RAG System from Scratch with pgvector and Gemini — Introduction",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fu4q4c0dccog0a4y54757.png"
         },
         {
-          "id": "https://dev.to/daksh-gargas/why-redis-doesnt-implement-true-lru-1d4n",
-          "author": "Daksh Gargas",
-          "description": "One question that recently made me rethink cache eviction was:\nIf Redis uses LRU, why doesn't it maintain a heap (or a perfectly sorted list) of keys?\nThe answer comes down to optimizing the common case.\nImagine a Redis instance with 10 million keys.\nIf Redis maintained a perfect LRU structure, every cache hit would need to update it:\nGET user:123\n\n↓\n\nUpdate LRU ordering\n\n↓\n\nReturn value\n\nEven though the lookup is O(1), updating a heap would be O(log n), and maintaining a doubly-linked LRU list would still require modifying shared metadata on every single read.\nFor a cache serving millions of requests per second, that's expensive.\nInstead of maintaining an exact ordering, Redis uses random sampling.\nWhen memory is full and a write arrives:\nRandomly sample a small number of keys (default: 5…",
-          "link": "https://dev.to/daksh-gargas/why-redis-doesnt-implement-true-lru-1d4n",
-          "publishedOn": "2026-06-27T20:15:57.000Z",
-          "wordCount": 1638,
-          "title": "Why Redis Doesn't Implement \"True\" LRU",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fh08co8lqsooyj24855kj.png"
+          "id": "https://dev.to/_0c004e5fde78250aee362/wei-shi-mo-na-ge-hui-zhu-yi-ni-de-zhan-pin-fan-er-rang-ni-geng-xiang-kao-jin-nh3",
+          "author": "張旭豐",
+          "description": "為什麼那個會「注意你」的展品，反而讓你更想靠近\n\n\n\n  \n  \n  博物館互動設計的隱形槓桿\n\n\n\n\n\n東京。\nteamLab 展覽入口。\n地面是一整片黑色的水面，倒映著數位花朵。\n你踏進去。\n花朵在你腳步周圍散開，隨著你的移動一圈一圈地綻放和飄落。\n你停下來，花也停下來。\n你開始走，花就跟著你。\n你以為是感應。但仔細看——延遲了大概 0.3 秒。\n不是「立刻反應」，是「好像在觀察你，然後才決定」。\n你站在那裡又多看了三秒。\n讓我問你一個問題。\n你去過那種「互動博物館」嗎？牆上寫著「請觸摸」，但你碰了之後什麼都沒發生——或者是那種「語音導覽機」，你對著它說話，它說「請靠近一點」。\n然後你就失去興趣了。\n現在讓我想另一個場景。\n一個會動的恐龍骨骼。你站在它面前的時候，它頭轉過來看了你一眼。\n你知道這是感應器。你知道工程師設計了「檢測到人」的時候讓它轉頭。\n但你還是覺得——\n「它在看我。」\n兩種互動，哪一個讓你停留更久？\n這裡有一個秘密。\n讓人停留更久的，通常不是「立刻反應」的互動。\n是那種「好像在決定要不要理你」的互動。\n為什麼？\n因為「立刻反應」讓你確認了——「這是機器」。\n但「好像在決定要不要理你」讓你的大腦進入了一個不確定的狀態——\n「它真的知道我來了嗎？」\n這個「我想看看」就是互動設計裡最重要的瞬間——\n參與者的好奇心，被啟動了。\n玉樹真一郎在《任天堂的體驗設計》裡，分析了一個現象：\n《超級馬里奧》裡，當玩家靠近一個問號磚塊，頂了它，沒有任何東西掉下來。\n玩家不會覺得「這個遊戲壞了」。\n玩家會想：「為什麼這次沒有？」\n然後再頂一次。\n為什麼「沒有東西掉下來」沒有讓玩家放棄？\n因為設計師在玩家心裡創造了一個「還沒發生的確定事件」。\n玩家知道「遲早會有東西掉下來」。所以他們願意等待、願意再試一次。\n博物館的互動設計也應該這樣。\n不是立刻給答案。是讓你相信「答案快來了」，…",
+          "link": "https://dev.to/_0c004e5fde78250aee362/wei-shi-mo-na-ge-hui-zhu-yi-ni-de-zhan-pin-fan-er-rang-ni-geng-xiang-kao-jin-nh3",
+          "publishedOn": "2026-06-27T21:57:34.000Z",
+          "wordCount": 1478,
+          "title": "為什麼那個會「注意你」的展品，反而讓你更想靠近",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzomn4dicxdwembjtto8e.png"
+        },
+        {
+          "id": "https://dev.to/shridhar_shah2297/agents-are-learning-to-write-their-own-skillmd-files-3foo",
+          "author": "Shridhar Shah",
+          "description": "The Agent Skills open standard today, and the 2026 research on agents that write their own skills.\nTL;DR: In late 2025, \"Agent Skills\" became a thing — a dead-simple way to teach an AI agent a task: a folder with a SKILL.md file (some instructions in Markdown). It's already an open standard. The wild part is what's coming next: agents that write their own skills. I built a demo where an agent solves a task the hard way once, saves a real SKILL.md, and then reuses it — cutting its total effort almost in half. ~130 lines, no API key.\nIf you've used Claude Code or similar tools lately, you've probably seen SKILL.md files. The idea is refreshingly low-tech. A \"skill\" is just a folder with a Markdown file that says how to do something:\n---\nname: csv-to-markdown\ndescription: Turn comma-separated…",
+          "link": "https://dev.to/shridhar_shah2297/agents-are-learning-to-write-their-own-skillmd-files-3foo",
+          "publishedOn": "2026-06-27T21:53:22.000Z",
+          "wordCount": 2782,
+          "title": "Agents Are Learning to Write Their Own SKILL.md Files",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FShridhar-2205%2Fliving-software%40main%2Fassets%2Fcovers%2Fcover-06.png"
+        },
+        {
+          "id": "https://dev.to/nazar_boyko/inside-an-ai-agent-planning-tool-use-memory-constraints-and-verification-2fcc",
+          "author": "Nazar Boyko",
+          "description": "Have you noticed how every demo of \"an AI agent\" looks impressive in the video and falls apart the moment you ask a sharper question?\nThe agent confidently does the wrong thing. It forgets what it just decided. It tries to call a tool that doesn't exist. It loops forever rewriting the same file. It calmly tells you the deployment succeeded when it didn't.\nThese aren't failures of the model. They're failures of the workflow around the model.\nBecause that's all an agent really is: a software workflow where a language model can pick the next step and call tools. The \"intelligence\" sits in the prompt and the orchestration around it, not in some secret agent-flavoured fairy dust. Strip the word \"agent\" away and you've got five pieces of plumbing: planning, tool use, memory, constraints, verific…",
+          "link": "https://dev.to/nazar_boyko/inside-an-ai-agent-planning-tool-use-memory-constraints-and-verification-2fcc",
+          "publishedOn": "2026-06-27T21:50:51.000Z",
+          "wordCount": 5126,
+          "title": "Inside An AI Agent: Planning, Tool Use, Memory, Constraints, And Verification",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fimages.weserv.nl%2F%3Furl%3Dhttps%253A%252F%252Fwww.nazarboyko.com%252Fassets%252Fimgs%252Farticles%252Finside-an-ai-agent-planning-tools-memory-constraints-verification%252Fcover.webp%26w%3D1600%26h%3D672%26fit%3Dcover%26a%3Dtop%26output%3Dwebp"
+        },
+        {
+          "id": "https://dev.to/eugenioenko/from-i-cant-click-to-a-full-testing-harness-how-we-built-playwright-for-the-terminal-1bf6",
+          "author": "Eugene Yakhnenko",
+          "description": "I'm building TTT -- a terminal text editor and IDE written in Go. Single binary, zero config, runs anywhere. Think VS Code but in your terminal. It has syntax highlighting, LSP integration, a plugin system, an integrated terminal, git integration, etc...\nThe source is on GitHub and I develop it with Claude Code as my pair programmer. This is the story of how a frustrating limitation turned into something genuinely useful: a built-in scripted interaction system that lets AI agents (or anyone) drive the editor like Playwright drives a browser.\nI was deep in revamping the widget system and building out a Lua plugin API. Phases of work stacking up -- widget rendering, panel support, tree views, input fields, command registration, keybinding hooks. The kind of work where you need to see what's …",
+          "link": "https://dev.to/eugenioenko/from-i-cant-click-to-a-full-testing-harness-how-we-built-playwright-for-the-terminal-1bf6",
+          "publishedOn": "2026-06-27T21:48:30.000Z",
+          "wordCount": 2478,
+          "title": "From \"I Can't Click\" to a Full Testing Harness: How We Built Playwright for the Terminal",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fqy4wkob7khqcjj6ssln3.png"
+        },
+        {
+          "id": "https://dev.to/ifehdelight/i-started-building-a-premium-template-marketplace-week-1-progress-stack-whats-coming-5ddd",
+          "author": "Mbanefo Emmanuel Ifechukwu",
+          "description": "I've been thinking about this problem for a while.\nDevelopers and businesses need quality websites fast — but the options \nSo I decided to build the solution myself.\nSoftchic is a premium template and ready-made website marketplace —\nThe market exists. Developers need templates. Businesses need websites.\nSoftchic is different — every template ships with:\nModern stack (Next.js, TypeScript, Tailwind CSS v4)\nClean, production-ready code\nPremium design out of the box\nThe name went through 25+ candidates across multiple languages \nFramework: Next.js 14 (App Router)\nLanguage: TypeScript\nStyling: Tailwind CSS v4\nComponents: shadcn/ui\nPayments: Lemon Squeezy (international) + Paystack (Nigeria)\nEmail: Resend\nDeployment: Vercel\nDesign language: dark and premium — #0D0D0D background, \n#2563EB blue, #F97316 orange accents.\n✅ Waitlist page — designed and ready to deploy\n\n✅ Navbar — responsive, dark-themed\n\n✅ WaitlistForm — wired to Resend for email capture\n\n✅ Brand system — colors, typography, full design identity locked\n\n✅ Payment architecture — Lemon Squeezy + IP-based currency detection \nThe waitlist goes live very soon. Follow me here on Dev.to — \nThe launch goal: 200 waitlist subscribers before opening the store.\nWaitlist page goes live 🚀\nProduct listing page\nTemplate preview system\nFirst upload — a SaaS landing page template\nBuilding a marketplace from scratch is not a small task.\nBut the only way to validate any of it is to ship and let the market respond.\nPlanned launch: July 18–20, 2026.\nBuilding something yourself? Drop it in the comments — let's connect.\nNext post: How I structured the Next.js 14 project and what Tailwind v4 \n\n\nThe waitlist drops soon — you'll want to be early.\n— Delight | Founder, Softchic\n\n@ifehdelight on X",
+          "link": "https://dev.to/ifehdelight/i-started-building-a-premium-template-marketplace-week-1-progress-stack-whats-coming-5ddd",
+          "publishedOn": "2026-06-27T21:45:57.000Z",
+          "wordCount": 2387,
+          "title": "I Started Building a Premium Template Marketplace — Week 1 Progress, Stack & What's Coming",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fimoju1a28k628dy9ntqx.png"
+        },
+        {
+          "id": "https://dev.to/shridhar_shah2297/i-built-an-ai-agent-that-gets-curious-on-its-own-4oe1",
+          "author": "Shridhar Shah",
+          "description": "Active inference: curiosity emerges for free from minimizing surprise — 48% vs 100% on a foraging task.\nTL;DR: Most AI agents chase rewards — they pick whatever action scores the most points. I tried a different, brain-inspired goal: avoid surprises. Something neat happened — the agent became curious without being told to. It goes looking for information before acting, and that takes it from 48% to 100% on a simple task. ~100 lines.\nMost AI agents are \"reward chasers.\" Give them points for doing well, and they'll pick whatever action they expect to score highest. Simple and effective.\nThere's another idea from brain science: instead of chasing points, try to avoid being surprised — act so the world matches what you expected. It sounds almost too simple, but it leads to a surprising bonus: …",
+          "link": "https://dev.to/shridhar_shah2297/i-built-an-ai-agent-that-gets-curious-on-its-own-4oe1",
+          "publishedOn": "2026-06-27T21:43:35.000Z",
+          "wordCount": 3189,
+          "title": "I Built an AI Agent That Gets Curious On Its Own",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FShridhar-2205%2Fliving-software%40main%2Fassets%2Fcovers%2Fcover-04.png"
+        },
+        {
+          "id": "https://dev.to/shridhar_shah2297/can-an-ai-agent-pass-the-test-we-give-4-year-olds-5825",
+          "author": "Shridhar Shah",
+          "description": "Theory of Mind and the Sally-Anne false-belief test, in ~60 lines of Python.\nTL;DR: There's a famous test that kids pass around age 4. It checks whether you understand that other people can believe things that aren't true. I built two AI agents: one that only knows \"what's actually happening\" (fails, like a toddler) and one that keeps track of what each person believes (passes). It's ~110 lines, and it's the foundation for agents that can actually work together.\nSally puts her marble in the basket, then leaves the room.\nWhile she's gone, Anne moves the marble to the box.\nSally comes back. Where will she look for her marble?\n\n\n\nIf you said basket, nice — you just used something called \"theory of mind.\" Sally never saw the marble move, so in her head it's still in the basket. What's actually…",
+          "link": "https://dev.to/shridhar_shah2297/can-an-ai-agent-pass-the-test-we-give-4-year-olds-5825",
+          "publishedOn": "2026-06-27T21:43:33.000Z",
+          "wordCount": 2106,
+          "title": "Can an AI Agent Pass the Test We Give 4-Year-Olds?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FShridhar-2205%2Fliving-software%40main%2Fassets%2Fcovers%2Fcover-03.png"
+        },
+        {
+          "id": "https://dev.to/shridhar_shah2297/do-ai-agents-need-to-sleep-i-built-one-that-does-53c4",
+          "author": "Shridhar Shah",
+          "description": "A sleep-like phase that consolidates noisy daily experience into durable memory — 75% vs 100% recall.\nTL;DR: There's a wave of 2026 research giving AI a \"sleep\" phase — time spent not answering questions, just tidying up what it learned that day. I built a 90-line demo of the idea. The agent that \"sleeps\" remembers 100% of what it learned. The exact same agent without sleep remembers only 75% and gets confused by bad info. Runs on a laptop.\nIf you've built anything with an LLM, you know the pain: the model only \"remembers\" what's in its current context window. Once the conversation gets long enough, the oldest stuff scrolls off the top and is just... gone. Forgotten.\nThe usual fix is \"make the context window bigger.\" But that's like fixing a messy desk by buying a bigger desk. It's expensi…",
+          "link": "https://dev.to/shridhar_shah2297/do-ai-agents-need-to-sleep-i-built-one-that-does-53c4",
+          "publishedOn": "2026-06-27T21:36:55.000Z",
+          "wordCount": 2175,
+          "title": "Do AI Agents Need to Sleep? I Built One That Does",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FShridhar-2205%2Fliving-software%40main%2Fassets%2Fcovers%2Fcover-02.png"
+        },
+        {
+          "id": "https://dev.to/shridhar_shah2297/i-built-an-ai-agent-that-rewrites-its-own-code-in-150-lines-3jjo",
+          "author": "Shridhar Shah",
+          "description": "A tiny Darwin Gödel Machine that edits itself and keeps only changes that verifiably score higher.\nTL;DR: I built a small program that improves itself. It looks at the tasks it's failing, edits its own code to fix them, and keeps a change only if the change actually makes it score better on a test. It goes from passing 1 of 8 tasks to 8 of 8 — and nobody wrote those fixes but the program itself. It runs on a laptop in under a second. No fancy hardware, no API key.\nNormally, software only gets better when we make it better. You write code, you find a bug, you fix it, you ship again. The program never improves on its own.\nPeople have wanted \"software that improves itself\" for decades. The classic version (called a \"Gödel Machine\") had one rule that made it impossible to build: before the pro…",
+          "link": "https://dev.to/shridhar_shah2297/i-built-an-ai-agent-that-rewrites-its-own-code-in-150-lines-3jjo",
+          "publishedOn": "2026-06-27T21:36:53.000Z",
+          "wordCount": 2484,
+          "title": "I Built an AI Agent That Rewrites Its Own Code (in ~150 lines)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FShridhar-2205%2Fliving-software%40main%2Fassets%2Fcovers%2Fcover-01.png"
+        },
+        {
+          "id": "https://dev.to/soytuber/undisclosed-0-days-openzl-for-zero-trust-and-reddits-anti-spam-architecture-4mbl",
+          "author": "soy",
+          "description": "Undisclosed 0-Days, OpenZL for Zero-Trust, and Reddit's Anti-Spam Architecture\n\n\n\n  \n  \n  Today's Highlights\n\n\nThis week's security highlights feature a critical mass-drop of zero-day exploits on GitHub, a new open-source library simplifying Zero-Knowledge Proofs for advanced privacy, and an in-depth look at Reddit's robust anti-spam defensive techniques.\nSource: https://github.com/bikini/exploitarium\nThis news item highlights a GitHub repository, \"exploitarium,\" maintained by an anonymous entity, which has been observed to be mass-dropping undisclosed zero-day exploits. The repository provides proof-of-concept code and details for vulnerabilities that have not yet been publicly documented or patched by vendors. This activity is highly significant for the security community as it immediate…",
+          "link": "https://dev.to/soytuber/undisclosed-0-days-openzl-for-zero-trust-and-reddits-anti-spam-architecture-4mbl",
+          "publishedOn": "2026-06-27T21:36:02.000Z",
+          "wordCount": 1849,
+          "title": "Undisclosed 0-Days, OpenZL for Zero-Trust, and Reddit's Anti-Spam Architecture",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Feluxwspecwodqmrrosf0.png"
+        },
+        {
+          "id": "https://dev.to/eltony_lfgi/my-routine-said-it-ran-it-was-lying-2gfb",
+          "author": "elTony LFGI",
+          "description": "I run an AI system that maintains itself on a schedule. One of its routines is supposed to do a job twice a week and save the result to a file.\nThe scheduler swore it ran. Twice. lastRunAt right there - timestamped, green, smug.\nThe file? Didn't exist. Not \"saved in the wrong folder\" - didn't exist anywhere.\nHere's the thing nobody warns you about when you wire up autonomous agents: \"it ran\" and \"it worked\" are different claims, and most of your dashboards only check the first one.\nA scheduler firing a job tells you a process started. It tells you nothing about whether the job did the thing. My routine started, hit an early error reading a file that didn't exist yet, and just... ended. No crash. No red anywhere. It \"ran.\" It produced nothing. For days.\nIf I'd trusted the green checkmark, I…",
+          "link": "https://dev.to/eltony_lfgi/my-routine-said-it-ran-it-was-lying-2gfb",
+          "publishedOn": "2026-06-27T21:35:26.000Z",
+          "wordCount": 1870,
+          "title": "My routine said it ran. It was lying.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhjmmufvvckr7o1tj1yzb.png"
         }
       ]
     },
@@ -252,6 +252,46 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://www.msn.com/en-us/money/general/michigan-spent-1-8-billion-and-only-created-602-jobs/ar-AA26Cusu",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.msn.com/en-us/money/general/michigan-spent-1-8-billion-and-only-created-602-jobs/ar-AA26Cusu",
+          "publishedOn": "2026-06-27T21:44:57.000Z",
+          "wordCount": 585,
+          "title": "Michigan spent $1.8B and only created 602 jobs",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.psychologytoday.com/au/blog/mood-by-microbe/202606/what-ozempic-does-to-the-gut-brain-axis",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.psychologytoday.com/au/blog/mood-by-microbe/202606/what-ozempic-does-to-the-gut-brain-axis",
+          "publishedOn": "2026-06-27T21:34:06.000Z",
+          "wordCount": 2368,
+          "title": "GLP-1 drugs led to weight loss and reversed depression-like behavior in mice",
+          "imageUrl": "https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_91_1_1528x800/public/teaser_image/blog_entry/2026-06/shutterstock_2284966451.jpg?h=99361e79&itok=GqJ4weXl"
+        },
+        {
+          "id": "https://fortune.com/2026/06/26/meta-wynn-williams-surveillance-gag-order-lawsuit-2026/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://fortune.com/2026/06/26/meta-wynn-williams-surveillance-gag-order-lawsuit-2026/",
+          "publishedOn": "2026-06-27T21:14:19.000Z",
+          "wordCount": 7184,
+          "title": "'Careless People' author claims Meta surveilled her for 12mos to enforce silence",
+          "imageUrl": "https://fortune.com/img-assets/wp-content/uploads/2026/06/AP26176790762613-e1782489902594.jpg?resize=1200,600"
+        },
+        {
+          "id": "https://worksinprogress.co/issue/should-european-housing-politics-be-americanized/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://worksinprogress.co/issue/should-european-housing-politics-be-americanized/",
+          "publishedOn": "2026-06-27T21:07:38.000Z",
+          "wordCount": 2493,
+          "title": "Should European housing politics be Americanized?",
+          "imageUrl": "https://worksinprogress.co/wip-image/uploads/2026/06/american_and_european_housing-scaled.jpg"
+        },
+        {
           "id": "https://github.com/kageroumado/adrafinil",
           "author": null,
           "description": "Comments",
@@ -259,17 +299,7 @@
           "publishedOn": "2026-06-27T20:34:53.000Z",
           "wordCount": 4524,
           "title": "Show HN: Adrafinil – keep a lid-closed Mac awake only while agents work",
-          "imageUrl": "https://opengraph.githubassets.com/e7e63f7c14d0eb5de5d28d3a496025f3c9c349c836966292ef95652122112bfa/kageroumado/adrafinil"
-        },
-        {
-          "id": "https://www.gadgetreview.com/arrest-him-the-moment-police-handcuffed-a-farmer-for-going-5-seconds-over-his-time-limit-at-data-center-meeting",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.gadgetreview.com/arrest-him-the-moment-police-handcuffed-a-farmer-for-going-5-seconds-over-his-time-limit-at-data-center-meeting",
-          "publishedOn": "2026-06-27T20:16:32.000Z",
-          "wordCount": 4347,
-          "title": "A Farmer Arrested for Going 5 Seconds over His Time Limit at Data Center Meeting",
-          "imageUrl": "https://www.gadgetreview.com/wp-content/uploads/5fede032-177f-4664-97ad-ee4ef30cdc65.jpg"
+          "imageUrl": "https://opengraph.githubassets.com/5ea8cc27cd3bf86a2b09046f6574b28a7dbac49a0d350e2df71a3e6fe282e946/kageroumado/adrafinil"
         },
         {
           "id": "https://ipcrawl.com/",
@@ -302,16 +332,6 @@
           "imageUrl": "https://app.ashbyhq.com/api/images/org-theme-logo/7e5b88a8-0d79-4402-9ab8-3b8efa158966/524a0a49-dcc6-42e9-88a4-07178ef53946/0f376189-8354-41c1-83e5-05c6ab93a9c0.png"
         },
         {
-          "id": "https://www.theguardian.com/society/2026/jun/27/screen-time-damage-under-twos-development-study",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.theguardian.com/society/2026/jun/27/screen-time-damage-under-twos-development-study",
-          "publishedOn": "2026-06-27T16:51:09.000Z",
-          "wordCount": 4359,
-          "title": "Screen time can damage under-twos' development, landmark study suggests",
-          "imageUrl": "https://i.guim.co.uk/img/media/80926b962ff832a320bb64479ff8effa6baaa3ba/637_0_4995_3995/master/4995.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=e7c4e6089037de66e0c363359bfadcdf"
-        },
-        {
           "id": "https://pluralistic.net/2026/06/27/zuckerstreisand-2/",
           "author": null,
           "description": "Comments",
@@ -329,7 +349,7 @@
           "publishedOn": "2026-06-27T14:31:00.000Z",
           "wordCount": 1901,
           "title": "Anonymous GitHub account mass-dropping undisclosed 0-days",
-          "imageUrl": "https://opengraph.githubassets.com/84f1007cdbb6869c911e47a22cd02afa91dc0d2531aeaaf7cbe25043a8782a2f/bikini/exploitarium"
+          "imageUrl": "https://opengraph.githubassets.com/16bb4be6c69f64838a476474cfb8b5b14f15a033f4ddc1b1ccff4ad3fd26ac8e/bikini/exploitarium"
         },
         {
           "id": "https://cephalosec.com/blog/cybersecurity-in-the-post-mythos-era-keep-calm-and-carry-on/",
@@ -370,16 +390,6 @@
           "wordCount": 3712,
           "title": "Asian AI startups launch Mythos-like models",
           "imageUrl": "https://techcrunch.com/wp-content/uploads/2026/06/GettyImages-2278736523.jpeg?resize=1200,798"
-        },
-        {
-          "id": "https://arstechnica.com/gadgets/2026/06/streaming-services-obnoxiously-loud-ads-become-illegal-on-july-1-in-california/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://arstechnica.com/gadgets/2026/06/streaming-services-obnoxiously-loud-ads-become-illegal-on-july-1-in-california/",
-          "publishedOn": "2026-06-27T12:43:16.000Z",
-          "wordCount": 2982,
-          "title": "Streaming services' obnoxiously loud ads become illegal on July 1 in California",
-          "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2026/06/GettyImages-1987915833-1152x648.jpg"
         },
         {
           "id": "https://www.quantamagazine.org/how-many-elementary-particles-are-there-really-20260615/",
@@ -429,17 +439,7 @@
           "publishedOn": "2026-06-27T09:18:52.000Z",
           "wordCount": 430,
           "title": "DSpark: Speculative decoding accelerates LLM inference [pdf]",
-          "imageUrl": "https://opengraph.githubassets.com/a328188361922b9010e02d7bf5f64eee59108aa294ad7a5eb5b7cf998efe7a28/deepseek-ai/DeepSpec"
-        },
-        {
-          "id": "https://ethz.ch/en/news-and-events/eth-news/news/2026/06/a-new-type-of-pixel.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://ethz.ch/en/news-and-events/eth-news/news/2026/06/a-new-type-of-pixel.html",
-          "publishedOn": "2026-06-27T07:51:26.000Z",
-          "wordCount": 1974,
-          "title": "Researchers have developed pixels that can emit and analyse light together",
-          "imageUrl": "https://ethz.ch/en/news-and-events/eth-news/news/2026/06/a-new-type-of-pixel/_jcr_content/pageimages/imageCarousel.imageformat.lightbox.729879006.jpg"
+          "imageUrl": "https://opengraph.githubassets.com/8852f574de49bcc71ee8bc3e18c6d423e1f165244933839048c3c5a935a0e256/deepseek-ai/DeepSpec"
         },
         {
           "id": "https://www.theregister.com/software/2026/06/26/one-man-two-kernels-and-a-lot-of-risc-v/5262858",
@@ -487,7 +487,7 @@
           "description": "Comments",
           "link": "https://www.fosslinux.com/158206/linux-on-older-hardware-revival-guide.htm",
           "publishedOn": "2026-06-25T04:06:29.000Z",
-          "wordCount": 13145,
+          "wordCount": 13142,
           "title": "Linux on Older Hardware: The Complete Revival Guide",
           "imageUrl": "https://www.fosslinux.com/wp-content/uploads/2026/06/linux-older-hardware-revival-guide-2026.png"
         },
@@ -522,6 +522,16 @@
           "imageUrl": "https://blogger.googleusercontent.com/img/a/AVvXsEg3bAOGt0L1GVBtGqU2QNOOC94EH6hLlr03hkB2frgZQHukGHx5GtFTrE5_7X0kZ9YCwcx1wNddkJDTlbL_4AeyJycMSgdmeoa5As6QPni7yRmS1Q0u6z7x_DhzHCA6DYjNa4d9hwlN_ARJZywMo5x1ZI88v8i1BOv4HV1lqGvyzuaGBxcqVATP7g=w1200-h630-p-k-no-nu"
         },
         {
+          "id": "https://www.theatlantic.com/magazine/2026/08/writers-way-galapagos-charles-darwin-travel/687480/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.theatlantic.com/magazine/2026/08/writers-way-galapagos-charles-darwin-travel/687480/",
+          "publishedOn": "2026-06-24T14:24:03.000Z",
+          "wordCount": 14184,
+          "title": "Paradise Revisited: What Darwin Saw in the Galápagos",
+          "imageUrl": "https://cdn.theatlantic.com/thumbor/wuuiXgZjIk-8kSpa3IUUi6jkNTQ=/0x54:2876x1552/1200x625/media/img/2026/06/2026_06_18_galapagos_inline_7/original.jpg"
+        },
+        {
           "id": "https://spectrum.ieee.org/ai-radio-chip-design",
           "author": null,
           "description": "Comments",
@@ -532,24 +542,14 @@
           "imageUrl": "https://spectrum.ieee.org/media-library/image.png?id=67001745&width=1200&height=600&coordinates=0%2C255%2C0%2C244"
         },
         {
-          "id": "https://en.wikipedia.org/wiki/Underarm_bowling_incident_of_1981",
+          "id": "https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer",
           "author": null,
           "description": "Comments",
-          "link": "https://en.wikipedia.org/wiki/Underarm_bowling_incident_of_1981",
-          "publishedOn": "2026-06-23T20:21:19.000Z",
-          "wordCount": null,
-          "title": "Underarm bowling incident of 1981",
+          "link": "https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer",
+          "publishedOn": "2026-06-24T13:31:10.000Z",
+          "wordCount": 3172,
+          "title": "How do you keep Web MIDI from crashing a 1983 synthesizer?",
           "imageUrl": null
-        },
-        {
-          "id": "https://blog.mrcroxx.com/posts/task-failed-successfully-saturating-nic-and-disk-bandwidth/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://blog.mrcroxx.com/posts/task-failed-successfully-saturating-nic-and-disk-bandwidth/",
-          "publishedOn": "2026-06-23T14:28:20.000Z",
-          "wordCount": 4078,
-          "title": "Task Failed Successfully: Saturating NIC and Disk Bandwidth",
-          "imageUrl": "/images/og-image.webp"
         }
       ]
     },
@@ -844,7 +844,7 @@
           "description": "For years, investors had valued the firm well above its bitcoin holdings, giving Strategy massive flexibility to raise capital as needed — a situation Michael Saylor and team took full advantage of.",
           "link": "https://www.coindesk.com/markets/2026/06/27/strategy-s-valuation-has-fallen-below-the-value-of-its-bitcoin-holdings",
           "publishedOn": "2026-06-27T12:08:14.000Z",
-          "wordCount": 12340,
+          "wordCount": 12326,
           "title": "Strategy's valuation has fallen below the value of its bitcoin holdings",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b7a99614202ed28b61d1994d9d008c5549d6458b-3552x1970.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -884,7 +884,7 @@
           "description": "Maxine Waters, the ranking Democrat on House Financial Services, asked the chief of the Department of Labor to withdraw its proposal on alternative assets.",
           "link": "https://www.coindesk.com/policy/2026/06/26/u-s-house-democrat-who-may-soon-run-key-committee-condemns-crypto-in-401-k-s",
           "publishedOn": "2026-06-26T19:38:12.000Z",
-          "wordCount": 12309,
+          "wordCount": 12298,
           "title": "U.S. House Democrat, who may soon run key committee, condemns crypto in 401(k)s",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/89b803b9327ce481768baa1a256ecba7a0965065-4000x2667.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1014,7 +1014,7 @@
           "description": "The real estate investor pitched his model as a treasury company backed by cash-flowing property rather than stock sales, framing the slide in bitcoin as a chance to accumulate.",
           "link": "https://www.coindesk.com/business/2026/06/26/grant-cardone-says-he-will-keep-buying-bitcoin-using-real-estate-cash-flows",
           "publishedOn": "2026-06-26T08:25:44.000Z",
-          "wordCount": 12677,
+          "wordCount": 12810,
           "title": "Grant Cardone says he will keep buying bitcoin using real estate cash flows",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/93d464fc4284b08cd9ff597efc7a57e9d09e9c73-2048x1152.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1024,7 +1024,7 @@
           "description": "Strategy’s paper loss exceeds the market caps of hundreds of tokens, highlighting the extreme concentration of risk in the crypto market right now.",
           "link": "https://www.coindesk.com/markets/2026/06/26/too-big-to-fail-strategy-s-usd13-billion-bitcoin-paper-loss-alone-dwarfs-hundreds-of-prominent-tokens",
           "publishedOn": "2026-06-26T06:37:29.000Z",
-          "wordCount": 12544,
+          "wordCount": 12398,
           "title": "Too big to fail: Strategy’s $13 billion bitcoin paper loss alone dwarfs hundreds of prominent tokens",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0339788ec6da49e65916e89c4bf0f137635275cd-720x406.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
@@ -1046,7 +1046,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-06-27T20:57:04.000Z",
+          "publishedOn": "2026-06-27T22:05:11.000Z",
           "wordCount": 4155,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
