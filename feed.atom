@@ -1,244 +1,472 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-06-27T19:28:05.107Z</id>
+    <id>urn:2026-06-27T20:57:31.653Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-06-27T19:28:05.107Z</updated>
+    <updated>2026-06-27T20:57:31.653Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-06-27T19:27:35.000Z</updated>
+        <updated>2026-06-27T20:57:04.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[We Didn't Need Another AI Tool. We Needed Better Processes.]]></title>
-        <id>https://dev.to/saifuddin_tipu_ba2d0355b0/we-didnt-need-another-ai-tool-we-needed-better-processes-254</id>
-        <link href="https://dev.to/saifuddin_tipu_ba2d0355b0/we-didnt-need-another-ai-tool-we-needed-better-processes-254"/>
-        <updated>2026-06-27T19:13:53.000Z</updated>
-        <summary type="html"><![CDATA[AI is everywhere.
-Every day, a new tool promises to automate your work, answer your questions, or replace entire job roles.
-But after talking to business owners and operations teams, I kept hearing the same problem:
-«"Our issue isn't AI. Our issue is that nobody follows the same process."»
-The problem wasn't a lack of intelligence.
-It was a lack of consistency.
-The Same Question, Different Answers
-Imagine asking three employees how to handle a customer complaint.
-If you get three different answers, you don't have an AI problem.
-You have a process problem.
-This happens more often than people realize, especially in growing companies where knowledge lives in people's heads instead of a shared system.
-Why Documentation Alone Doesn't Work
-Many teams already have documentation.
-Google Docs
-Notio…]]></summary>
+        <title type="html"><![CDATA[Database Rate Limiting: The Missing Piece After a Circuit Breaker]]></title>
+        <id>https://dev.to/daksh-gargas/database-rate-limiting-the-missing-piece-after-a-circuit-breaker-2bp7</id>
+        <link href="https://dev.to/daksh-gargas/database-rate-limiting-the-missing-piece-after-a-circuit-breaker-2bp7"/>
+        <updated>2026-06-27T20:38:27.000Z</updated>
+        <summary type="html"><![CDATA[This is an extension to my previous post on Circuit Breakers.
+It only decides:
+"Should I even try calling Redis?"
+When the circuit is open, your application executes the fallback.
+For many systems, that fallback is the database.
+Request
+   │
+Circuit Breaker (Open)
+   │
+Database
+
+And that's where the real problem begins.
+Imagine your system normally handles:
+100K requests/sec
+Redis serves 99K
+
+Database serves 1K
+
+
+
+Redis suddenly goes down.
+Without any protection:
+100K Requests
+
+↓
+
+Database 💥
+
+Your database was never designed to handle the entire production workload.
+A circuit breaker saved you from Redis timeouts—but it didn't save your database.
+Instead of letting every request reach the database, the application enforces a limit.
+if circuitBreaker.IsOpen() {
+
+    if !dbRateLimiter.Allow…]]></summary>
         <author>
-            <name>Saifuddin Tipu</name>
+            <name>Daksh Gargas</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Three Token-2022 Mints in One Week: Fees, Yield, and Soul-Bound Tokens]]></title>
-        <id>https://dev.to/neocarvajal/three-token-2022-mints-in-one-week-fees-yield-and-soul-bound-tokens-j4j</id>
-        <link href="https://dev.to/neocarvajal/three-token-2022-mints-in-one-week-fees-yield-and-soul-bound-tokens-j4j"/>
-        <updated>2026-06-27T19:10:11.000Z</updated>
-        <summary type="html"><![CDATA[During the last few days of the 100 Days Of Solana challenge, I explored one of the most interesting features of Solana's Token-2022 Program: extensions.
+        <title type="html"><![CDATA[How to prove an AI agent output existed — x402 + NEAR anchoring in practice]]></title>
+        <id>https://dev.to/gitsergecrypto/how-to-prove-an-ai-agent-output-existed-x402-near-anchoring-in-practice-2ede</id>
+        <link href="https://dev.to/gitsergecrypto/how-to-prove-an-ai-agent-output-existed-x402-near-anchoring-in-practice-2ede"/>
+        <updated>2026-06-27T20:35:22.000Z</updated>
+        <summary type="html"><![CDATA[How to prove an AI agent output existed — x402 + NEAR anchoring in practice
 
-If you're coming from Web2, think of Token-2022 extensions like middleware. Instead of creating an entirely new token standard every time you need a new feature, you simply enable additional behaviors on a mint. The token keeps following the SPL Token standard while gaining new capabilities such as transfer fees, interest-bearing balances, or transfer restrictions.
-In this article I’ll walk through the three Token-2022 mints I built during the challenge, explain what each extension does, show the exact commands I used, and break down what actually happens on-chain.
-YwkdCKSVccVGBzVFJWAf1USvYsc6LtbHz1VVUgKtAwY
 
-https://explorer.solana.com/…]]></summary>
+
+  
+  
+  Why this matters
+
+
+You deployed an AI agent. It generated a financial report, a code review, a medical summary. A week later, someone questions the output. Did the agent actually produce this? When? Was it modified after the fact?
+Logs are mutable. Timestamps lie. Git history can be rewritten.
+What you need is a cryptographic proof — signed by an independent notary — that binds a specific artifact hash to a specific point in time. And it should cost less than a cent.
+This article walks through a real, working system: AOTrust, a notarization service that issues PDRs (Provenance Data Records) for $0.01 USDC via x402 on Base L2, with Merkle anchoring on NEAR.
+A Base wallet with $0.01 USDC (10,000 micro-USDC…]]></summary>
         <author>
-            <name>Erick Carvajal</name>
+            <name>GitSerge-crypto</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Cursor Rules That Actually Improve AI Output (.mdc Project Rules)]]></title>
-        <id>https://dev.to/nongdyz_d9c3069b1acb2a08c/cursor-rules-that-actually-improve-ai-output-mdc-project-rules-50cg</id>
-        <link href="https://dev.to/nongdyz_d9c3069b1acb2a08c/cursor-rules-that-actually-improve-ai-output-mdc-project-rules-50cg"/>
-        <updated>2026-06-27T19:06:17.000Z</updated>
-        <summary type="html"><![CDATA[Most Cursor rules I see online are wish lists. "Write clean code." "Follow best practices." "Be concise." Cursor reads them, nods politely, and ships exactly the same code it would have without them.
-The reason is simple: vague rules give the model nothing to act on. A rule only changes output if it's specific, enforceable, and scoped to when it matters. After rewriting my rules around those three properties, Cursor went from "code that works but I'd reject in review" to "code that passes review the first time" on most requests.
-Here's what actually moved the needle, with real .mdc rules you can paste in.
-.cursor/rules/*.mdc, not .cursorrules
-
-
-Cursor has moved to Project Rules stored as .mdc files in .cursor/rules/. The big advantage over the old single .cursorrules file is scoping: each …]]></summary>
-        <author>
-            <name>NongdyZ</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ships keep moving through Hormuz despite strike]]></title>
-        <id>https://www.lloydslist.com/LL1157680/Ships-keep-moving-through-Hormuz-despite-strike-and-suspension-of-IMO-exit-strategy</id>
-        <link href="https://www.lloydslist.com/LL1157680/Ships-keep-moving-through-Hormuz-despite-strike-and-suspension-of-IMO-exit-strategy"/>
-        <updated>2026-06-27T19:06:03.000Z</updated>
+        <title type="html"><![CDATA[Show HN: Adrafinil – keep a lid-closed Mac awake only while agents work]]></title>
+        <id>https://github.com/kageroumado/adrafinil</id>
+        <link href="https://github.com/kageroumado/adrafinil"/>
+        <updated>2026-06-27T20:34:53.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I open-sourced DeltaPulse Bot — $500 Per Day Momentum-Driven Polymarket Trader]]></title>
-        <id>https://dev.to/soulcrancerdev/i-open-sourced-deltapulse-bot-500-per-day-momentum-driven-polymarket-trader-ppd</id>
-        <link href="https://dev.to/soulcrancerdev/i-open-sourced-deltapulse-bot-500-per-day-momentum-driven-polymarket-trader-ppd"/>
-        <updated>2026-06-27T19:02:30.000Z</updated>
-        <summary type="html"><![CDATA[DeltaPulse Bot — $500 Per Day Momentum-Driven Polymarket Trader
+        <title type="html"><![CDATA[A Circuit Breaker Alone Won't Save Your Database]]></title>
+        <id>https://dev.to/daksh-gargas/a-circuit-breaker-alone-wont-save-your-database-3d0i</id>
+        <link href="https://dev.to/daksh-gargas/a-circuit-breaker-alone-wont-save-your-database-3d0i"/>
+        <updated>2026-06-27T20:33:58.000Z</updated>
+        <summary type="html"><![CDATA[A common misconception is that a circuit breaker protects your database.
+It doesn't.
+It only protects your application from repeatedly calling a dependency that is already known to be unhealthy.
+Without a circuit breaker:
+Request
+   │
+Redis (500ms timeout)
+   │
+DB
+
+Every request:
+Waits for Redis to time out.
+Wastes network calls.
+Eventually hits the database anyway.
+After Redis fails repeatedly, the circuit opens.
+Now requests become:
+Request
+   │
+Circuit Breaker
+   │
+Fallback
+
+Notice something?
+The circuit breaker doesn't decide the fallback. It only decides:
+"Should I even try Redis?"
+A production system usually follows this order:
+Request
+   │
+Circuit Open?
+   │
+Yes
+   │
+Local Cache?
+   │
+Hit ─────────► Return
+   │
+Miss
+   │
+DB Rate Limiter
+   │
+Allowed?
+   │
+Yes ─────────► Database
+   │
+No
+   │
+Return 503
+
+Suppose:
+Normal traffic: 100K RPS
+
+Redis serves 99K RPS
+
+Database handles 1K RPS
 
 
-DeltaPulse Bot — $500 Per Day Momentum-Driven Polymarket Trader
-I open-sourced polymarket-trading-bot for developers in Polymarket and prediction-market tooling. This post walks through what it does, how the pieces fit together, and how to run it locally.
-Automate trading or snipe strategies with a typed codebase
-Backtest ideas before deploying with real capital
-Extend the bot with your own risk rules and market filters
-Most tutorials stop at a smart contract or a UI mockup. I wanted a complete vertical slice — wallet flow, on-chain logic, backend state, and a responsive frontend — so you can study or fork a production-shaped codebase.
-DeltaPulse Bot — $500 Per Day Momentum-Driven Polymarket Trader
-Windows (x86_64): ~10 MB e…]]></summary>
+
+If Redis crashes and every request falls back to the database:
+100K RPS
+
+↓
+
+Database 💥
+
+Instead, protect the database:
+if circuitBreaker.IsOpen() {
+    if localCache.Has(key) {
+        return localCache.Get(key)
+    }
+
+    if !dbRateLimiter.Allow() {
+        return 503
+    }
+
+    return db.Get(key)
+}
+
+Only a limited number of requests are allowed to reach the database. The rest fail fast, keeping the system alive.
+Not in the API Gateway.
+The gateway only sees:
+GET /users/123
+
+It has no idea whether your service will:
+Query Redis
+Query Postgres
+Call Elasticsearch
+Read Kafka
+The service itself knows when it's about to hit the database, so that's where the dependency-specific rate limiter belongs.
+👉 Read: Database Rate Limiting: The Missing Piece After a Circuit Breaker
+A circuit breaker and a rate limiter solve different problems.
+Circuit Breaker: Stop calling a dependency that is already failing.
+DB Rate Limiter: Protect the database from being overwhelmed when fallbacks occur.
+In production, they almost always work together.]]></summary>
         <author>
-            <name>Crancer Dev — Polymarket Specialist</name>
+            <name>Daksh Gargas</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[what room to breathe makes room for]]></title>
-        <id>https://dev.to/shrouwoods/what-room-to-breathe-makes-room-for-g1l</id>
-        <link href="https://dev.to/shrouwoods/what-room-to-breathe-makes-room-for-g1l"/>
-        <updated>2026-06-27T19:00:48.000Z</updated>
-        <summary type="html"><![CDATA[thesis
+        <title type="html"><![CDATA[AI Coding Agents Are the New Attack Surface Nobody's Ready For]]></title>
+        <id>https://dev.to/coridev/ai-coding-agents-are-the-new-attack-surface-nobodys-ready-for-1jf1</id>
+        <link href="https://dev.to/coridev/ai-coding-agents-are-the-new-attack-surface-nobodys-ready-for-1jf1"/>
+        <updated>2026-06-27T20:32:43.000Z</updated>
+        <summary type="html"><![CDATA[The Trust Problem Hiding in Your Automated Pipeline
 
 
-when i wrote about room to breathe, i framed the pause mostly as defense. a way to step off the improvement treadmill before it ground me down, and a way to actually understand what i shipped before piling the next change on top of it. that is true, but it is only half the story. the space i protect does not sit empty. it is exactly where the bigger, slower ideas finally get enough air to form. the quiet heads-up i gave about something longer only became possible because i stopped filling every gap with one more optimization.
-i sold room to breathe as rest, and rest is real, but something else happened once i actually started leaving the space. it did not stay quiet for long. the moment i was not pouring every spare cycle into squeezing the last few points out of a thing that alre…]]></summary>
+The moment you give an AI agent the ability to act — clone, configure, execute — you've created a trust boundary that most teams haven't thought through yet.
+Researchers showed that a GitHub repository can look completely clean to static scanners, human reviewers, and AI coding agents, while still carrying a malicious payload that fires during the normal setup workflow. The attack doesn't need to trick a human into running something suspicious. It just needs the agentic tool to do what it was designed to do: autonomously clone a repo and get it running.
+That's the whole attack surface. The agent's competence is the vulnerability.
+Supply chain attacks through repositories are not new. Typosquatting, dependency confusion, malicious setup …]]></summary>
         <author>
-            <name>Philip Hern</name>
+            <name>Cor E</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Built a Browser-Only HTML Entity Encoder/Decoder — Named, Decimal & Hex, 246 Tests]]></title>
-        <id>https://dev.to/dev_nestio_229945f10652e4/i-built-a-browser-only-html-entity-encoderdecoder-named-decimal-hex-246-tests-132a</id>
-        <link href="https://dev.to/dev_nestio_229945f10652e4/i-built-a-browser-only-html-entity-encoderdecoder-named-decimal-hex-246-tests-132a"/>
-        <updated>2026-06-27T19:00:47.000Z</updated>
-        <summary type="html"><![CDATA[Every developer has hit this: you need to escape <, >, &, and quotes before dropping user input into HTML — or you're staring at mangled text full of &amp; and need to convert it back. Most online tools do the basics, but fall short on the full HTML5 named entity set or force you to choose between three encoding formats.
-I built one that handles all three formats, 253 named entities, and decodes all of them with a single regex pass — entirely in the browser, no server, no framework.
-👉 https://html-entity-encoder.pages.dev
-Encode: text → HTML entities in three modes
+        <title type="html"><![CDATA[Docker -Networking and Best Practices]]></title>
+        <id>https://dev.to/ramya_perumal_e93721ef2fa/docker-networking-and-best-practices-17ji</id>
+        <link href="https://dev.to/ramya_perumal_e93721ef2fa/docker-networking-and-best-practices-17ji"/>
+        <updated>2026-06-27T20:30:19.000Z</updated>
+        <summary type="html"><![CDATA[Docker Networking
 
 
+Containers are assigned an IP address when they are created. To check the IP address, we can use the following command:
+docker inspect <container_id>
 
-Named — é → &eacute;, © → &copy;, π → &pi;
-
-
-Decimal — é → &#233;, © → &#169;
-
-
-Hex — é → &#xE9;, © → &#xA9;
-
-
-
-
-Decode: all three entity formats back to plain text
-253 HTML5 named entities — Latin-1 Supplement, Latin Extend…]]></summary>
+If we send a request from the host to the container's IP address, the container responds using its assigned IP address.
+By default, Docker creates a bridge network. This bridge network allows:
+Communication between the host and the container (through port mapping).
+Communication between containers connected to the same bridge network.
+With the default bridge network, containers generally communicate using IP addresses. To communicate using container names (hostnames), we can use a custom bridge network.
+The main difference between the default bridge network and a custom bridge network is that containers on a custom bridge…]]></summary>
         <author>
-            <name>Dev Nestio</name>
+            <name>Ramya Perumal</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Reading a protected Next.js page with zero credentials (CVE-2025-29927)]]></title>
-        <id>https://dev.to/oopssec-store/reading-a-protected-nextjs-page-with-zero-credentials-cve-2025-29927-eej</id>
-        <link href="https://dev.to/oopssec-store/reading-a-protected-nextjs-page-with-zero-credentials-cve-2025-29927-eej"/>
-        <updated>2026-06-27T19:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Exploiting CVE-2025-29927 to bypass Next.js middleware-based authentication using the x-middleware-subrequest internal header, accessing a protected internal status page without credentials.
-Next.js uses an internal header to prevent middleware from running twice on subrequests. In versions before 15.2.3, an external attacker can send this header themselves to skip middleware entirely, bypassing any auth that depends on it.
-Spin up the OopsSec Store in a new directory:
-npx create-oss-store oss-store
-cd oss-store
-npm start
+        <title type="html"><![CDATA[Docker – ARG Directive, .dockerignore, and Docker Volumes]]></title>
+        <id>https://dev.to/ramya_perumal_e93721ef2fa/docker-arg-directive-dockerignore-and-docker-volumes-29kh</id>
+        <link href="https://dev.to/ramya_perumal_e93721ef2fa/docker-arg-directive-dockerignore-and-docker-volumes-29kh"/>
+        <updated>2026-06-27T20:30:07.000Z</updated>
+        <summary type="html"><![CDATA[ARG Directive
 
-Or with Docker (no Node.js required):
-docker run -p 3000:3000 leogra/oss-oopssec-store
 
-Head to http://localhost:3000.
-The application has a /monitoring/siem page visible in the UI, which hints at a broader monitoring section. Poking around under /monitoring/ (or running…]]></summary>
-        <author>
-            <name>Oopssec Store</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[C# CA1070: Event Fields & Virtual Methods Explained]]></title>
-        <id>https://dev.to/paradane/c-ca1070-event-fields-virtual-methods-explained-4fhi</id>
-        <link href="https://dev.to/paradane/c-ca1070-event-fields-virtual-methods-explained-4fhi"/>
-        <updated>2026-06-27T18:59:25.000Z</updated>
-        <summary type="html"><![CDATA[C# Code Analysis Rule CA1070 serves as a critical safeguard in .NET development, specifically targeting the misuse of virtual event fields. Introduced to address inconsistencies in event handling within inheritance hierarchies, this rule prevents developers from declaring event fields as virtual, a practice that can lead to unpredictable behavior in derived classes. The rule emerged from real-world scenarios where virtual events caused event handlers to be lost or misfired when overridden, undermining the reliability of event-driven architectures. For instance, consider a base class Publisher with a virtual OnDataChanged event. If a derived class overrides this event, the base class's invocation list may not propagate to the derived implementation, resulting in missed notifications. CA1070…]]></summary>
-        <author>
-            <name>Paradane</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AI Will Not Replace Your IT Roadmap But It Changes It]]></title>
-        <id>https://dev.to/shift2it/ai-will-not-replace-your-it-roadmap-but-it-changes-it-43ap</id>
-        <link href="https://dev.to/shift2it/ai-will-not-replace-your-it-roadmap-but-it-changes-it-43ap"/>
-        <updated>2026-06-27T18:53:02.000Z</updated>
-        <summary type="html"><![CDATA[A practical way to choose your next step into IT without turning AI into a shortcut around fundamentals.
-Why beginners start in the wrong place
-The role-first framework
-How to build proof
-Certification strategy
-Weekly checklist
-Beginners entering IT need a plan that connects learning to employability. A course can help, but a role-first roadmap is what gives the course a purpose.
-The common mistake is to ask, "Which certification should I take?" before asking, "Which first role am I preparing for?" That order creates scattered learning.
-Choose a first role, identify baseline knowledge, build visible proof, then select certifications that support the path. This keeps the learning plan practical.
-Use documented labs, diagrams, troubleshooting notes, cloud screenshots from legitimate practice environments, and ticket-style writeups. Do not create fake experience.
-Certifications can structure learning and help screening, but they do not replace practical skill, communication, documentation, or role clarity.
-Pick a target role.
-Compare job descriptions.
-Build one proof artifact.
-Write a short reflection.
-Review whether a certification supports the role.
-This article is part of my SHIFT 2 IT series for people moving into IT realistically.]]></summary>
-        <author>
-            <name>Andreas-Christian Hetzl</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[25 Prompts For Planning Your First Website Or Mobile App With AI In 2026]]></title>
-        <id>https://dev.to/marcusykim/25-prompts-for-planning-your-first-website-or-mobile-app-with-ai-in-2026-7n5</id>
-        <link href="https://dev.to/marcusykim/25-prompts-for-planning-your-first-website-or-mobile-app-with-ai-in-2026-7n5"/>
-        <updated>2026-06-27T18:52:30.000Z</updated>
-        <summary type="html"><![CDATA[The most dangerous beginner prompt is also the most tempting one:
-Build me an app for [idea].
+The ARG directive acts like a variable. We can define it inside the Dockerfile and change its value during the image build process.
+ARG PYTHON_VERSION=3.8
+FROM python:${PYTHON_VERSION}-slim
 
-It feels direct. It feels efficient. It feels like the whole point of using AI.
-But if you are building your first website or mobile app with AI, that prompt is usually too empty. It asks the tool to make product decisions, architecture decisions, scope decisions, design decisions, data decisions, and launch decisions before you have told it what kind of project you are actually trying to make.
-That is how a small idea turns into a pretend platform.
-You wanted a simple app for tracking workout routines. AI gives you accounts, subscriptions, social features, leaderboards, wearable integrations, dashboards, an admin panel, and a database schema that looks like it should have a board of directors.
-T…]]></summary>
+Here, the Python version in the Dockerfile is set to 3.8. However, during the build process, we can change it to 3.10.
+docker build -f Dockerfile --build-arg PYTHON_VERSION=3.10 -t helloworld_flask:v1 .
+
+-t means tag.
+-f means Dockerfile path.
+We can use ARG to make base image versions and other build-time values configurable.
+FROM node:20-alpine
+
+# 1. Define the arguments
+ARG APP_DIR=app
+ARG INSTALL_ARGS="--omit=dev"
+
+# 2. Use them in instructions
+WORKDIR /${APP_DIR}
+COPY . .
+RUN npm install ${INSTALL_ARGS}
+
+Note: ARG values can only be changed during the image build process. They cann…]]></summary>
         <author>
-            <name>Marcus Kim</name>
+            <name>Ramya Perumal</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[CSV File Difference Detection Techniques for Large Datasets - Paradane]]></title>
-        <id>https://dev.to/paradane/csv-file-difference-detection-techniques-for-large-datasets-paradane-287d</id>
-        <link href="https://dev.to/paradane/csv-file-difference-detection-techniques-for-large-datasets-paradane-287d"/>
-        <updated>2026-06-27T18:50:17.000Z</updated>
-        <summary type="html"><![CDATA[When integrating data from multiple source systems, CSV files often arrive with divergent layouts. One row may have columns listed in a different order, another may contain extra descriptive fields, and a third may rename identical concepts with slightly varied header strings. Before any comparison can be trusted, these files must be synchronized so that each column in one file corresponds to the correct column in the other. This introductory discussion outlines three core techniques—header‑value mapping algorithms, row‑offset calculation formulas, and dynamic column alignment logic—that together provide a robust foundation for reliable CSV comparison.
-Header‑value mapping algorithms are the first line of defense against naming inconsistencies. A simple approach is to normalize header stri…]]></summary>
+        <title type="html"><![CDATA[Docker – Port Mapping, Logs, Container Management, and Image Removal]]></title>
+        <id>https://dev.to/ramya_perumal_e93721ef2fa/docker-port-mapping-logs-container-management-and-image-removal-20oo</id>
+        <link href="https://dev.to/ramya_perumal_e93721ef2fa/docker-port-mapping-logs-container-management-and-image-removal-20oo"/>
+        <updated>2026-06-27T20:29:51.000Z</updated>
+        <summary type="html"><![CDATA[Docker – Logs, Remove, and Port Mapping
+
+
+
+  
+  
+  Port Mapping
+
+
+When we run an application inside a container, we define the port on which the application will run. The container runs the application on that port.
+It is not possible to access an application running inside Docker from outside the container unless port mapping is configured.
+Port mapping is specified using the -p option.
+Syntax:
+docker run -p <host_port>:<container_port>
+
+Example:
+docker run -p 8888:8080
+
+Here:
+8888 is the host (machine) port used to access the application from outside the container.
+8080 is the port defined in the application and exposed inside the container.
+If the host port is already in use, Docker displays an error message.
+docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}"
+
+To run a container…]]></summary>
         <author>
-            <name>Paradane</name>
+            <name>Ramya Perumal</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I parsed Steam's binary shortcuts.vdf with zero dependencies]]></title>
-        <id>https://dev.to/wesellistools/i-parsed-steams-binary-shortcutsvdf-with-zero-dependencies-40m5</id>
-        <link href="https://dev.to/wesellistools/i-parsed-steams-binary-shortcutsvdf-with-zero-dependencies-40m5"/>
-        <updated>2026-06-27T18:49:32.000Z</updated>
-        <summary type="html"><![CDATA[I have a Steam Deck and a pile of self-contained Linux games — Godot exports, LÖVE builds, the odd plain ELF — that aren't on Steam. Getting one of them to show up in Game Mode as a proper library tile, with box art, controller-ready, is more fiddly than it should be. So I wrote a small tool to do the boring parts for me, and the most interesting part of building it turned out to be the file format Steam uses to track non-Steam games.
-This is a writeup of that part: reading and rewriting shortcuts.vdf, why I did it with nothing but the Python standard library, and a couple of gotchas that cost me time so they don't cost you any.
-Quick honesty note up front, because it shapes everything below: this is a side project. The format parsing is tested for clean round-trips, but I have not confirm…]]></summary>
+        <title type="html"><![CDATA[Docker – Image and Container Bonding & Client-Server Architecture]]></title>
+        <id>https://dev.to/ramya_perumal_e93721ef2fa/docker-image-and-container-bonding-client-server-architecture-2apd</id>
+        <link href="https://dev.to/ramya_perumal_e93721ef2fa/docker-image-and-container-bonding-client-server-architecture-2apd"/>
+        <updated>2026-06-27T20:29:32.000Z</updated>
+        <summary type="html"><![CDATA[Question:
+
+
+A container is running from an image. If we try to delete the image while the container is running, why can't we delete the image?
+If we attempt to delete the image, Docker will display an error message stating that the image is being used by a container.
+The reason is that each line in a Dockerfile creates a layer.
+Each layer is a read-only layer. Once a layer is created, it cannot be modified. If we want to make changes to the image, we need to create a new Dockerfile and build a new image.
+When we create a container, only a reference to the image layers is passed to the container. The container has a writable layer, meaning we can create files, modify files, or generate output inside the container. These changes reside only in the container and do not affect the image.
+Howev…]]></summary>
         <author>
-            <name>Wes Ellis</name>
+            <name>Ramya Perumal</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[We Built a Better Mutual Fund Screener for India]]></title>
+        <id>https://dev.to/dhanik_3e79e065189c6e7aaa/i-built-a-better-mutual-fund-screener-for-india-e9b</id>
+        <link href="https://dev.to/dhanik_3e79e065189c6e7aaa/i-built-a-better-mutual-fund-screener-for-india-e9b"/>
+        <updated>2026-06-27T20:24:34.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR
+
+
+We built dhanik.online because researching mutual funds required jumping between multiple websites.
+Screen 14,000+ mutual funds
+Compare funds side by side
+Calculate XIRR
+Analyze rolling returns
+Track your portfolio
+Website:
+https://dhanik.online
+
+
+
+
+
+
+
+  
+  
+  Features
+
+
+
+  
+  
+  Fund Comparison
+
+
+Compare multiple mutual funds side by side with returns, risk metrics, expense ratios, and portfolio details in a single view.
+Measure the actual returns generated by your SIPs and investments using an accurate XIRR calculator.
+Look beyond point-to-point returns and understand how consistently a fund has performed across different market cycles.
+Track all your mutual fund investments from one dashboard and monitor your portfolio performance with meaningful insights.
+React
+TypeScript
+Tailwind CSS
+Supabase
+Netlify]]></summary>
+        <author>
+            <name>Dhanik</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DeepInfra Pricing 2026: Is It Really the Cheapest LLM API?]]></title>
+        <id>https://dev.to/tokonomics/deepinfra-pricing-2026-is-it-really-the-cheapest-llm-api-4ldl</id>
+        <link href="https://dev.to/tokonomics/deepinfra-pricing-2026-is-it-really-the-cheapest-llm-api-4ldl"/>
+        <updated>2026-06-27T20:22:32.000Z</updated>
+        <summary type="html"><![CDATA[DeepInfra offers open-source LLM inference at prices 5-50x lower than OpenAI and Anthropic. But is it actually cheaper once you factor in latency, reliability, and model availability?
+I spent a week benchmarking DeepInfra against direct API calls. Here's what I found.
+
+
+
+Model
+DeepInfra
+OpenAI Equivalent
+Savings
+
+
+
+
+Llama 3.1 8B
+$0.05/M input
+GPT-4o-mini $0.15/M
+3x cheaper
+
+
+Llama 3.1 70B
+$0.35/M input
+GPT-4o $2.50/M
+7x cheaper
+
+
+DeepSeek R1
+$0.55/M input
+o1 $15.00/M
+27x cheaper
+
+
+
+No minimum commitment. Pay-per-token with $5 free credit to start.
+High-volume, simple tasks. Processing 10M+ tokens/day on classification or extraction? Switching from GPT-4o-mini to Llama 3.1 8B saves 67%.
+Batch processing. If you don't need sub-100ms latency, DeepInfra's throughput-optimized endpoints push co…]]></summary>
+        <author>
+            <name>Zouhair Ait Oukhrib</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Lode Runner, Ultima, and a Samsung Tape Drive]]></title>
+        <id>https://dev.to/chaesang/lode-runner-ultima-and-a-samsung-tape-drive-2ef6</id>
+        <link href="https://dev.to/chaesang/lode-runner-ultima-and-a-samsung-tape-drive-2ef6"/>
+        <updated>2026-06-27T20:17:49.000Z</updated>
+        <summary type="html"><![CDATA[Before I studied computer science, there was a contest in Busan, a cassette that loaded games, and code I typed in from a magazine.
+A look back — long before any of the tools we argue about now.
+These episodes come from studying computer science in Korea in the 1990s. But the memory starts a few years earlier, with a handful of words from the 1980s.
+In 1985, my elementary school in Busan ran an after-school class to pick kids for a math competition. That year the regional district math contest happened to be discontinued, so the class was quietly converted into a computer class instead — and that's how I first met a personal computer, and the idea of a contest built around one. It was probably an early ancestor of today's programming olympiads. I got lucky: in 1986 I went up to Seoul for t…]]></summary>
+        <author>
+            <name>Chaesang Jung</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A Farmer Arrested for Going 5 Seconds over His Time Limit at Data Center Meeting]]></title>
+        <id>https://www.gadgetreview.com/arrest-him-the-moment-police-handcuffed-a-farmer-for-going-5-seconds-over-his-time-limit-at-data-center-meeting</id>
+        <link href="https://www.gadgetreview.com/arrest-him-the-moment-police-handcuffed-a-farmer-for-going-5-seconds-over-his-time-limit-at-data-center-meeting"/>
+        <updated>2026-06-27T20:16:32.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Redis Doesn't Implement "True" LRU]]></title>
+        <id>https://dev.to/daksh-gargas/why-redis-doesnt-implement-true-lru-1d4n</id>
+        <link href="https://dev.to/daksh-gargas/why-redis-doesnt-implement-true-lru-1d4n"/>
+        <updated>2026-06-27T20:15:57.000Z</updated>
+        <summary type="html"><![CDATA[One question that recently made me rethink cache eviction was:
+If Redis uses LRU, why doesn't it maintain a heap (or a perfectly sorted list) of keys?
+The answer comes down to optimizing the common case.
+Imagine a Redis instance with 10 million keys.
+If Redis maintained a perfect LRU structure, every cache hit would need to update it:
+GET user:123
+
+↓
+
+Update LRU ordering
+
+↓
+
+Return value
+
+Even though the lookup is O(1), updating a heap would be O(log n), and maintaining a doubly-linked LRU list would still require modifying shared metadata on every single read.
+For a cache serving millions of requests per second, that's expensive.
+Instead of maintaining an exact ordering, Redis uses random sampling.
+When memory is full and a write arrives:
+Randomly sample a small number of keys (default: 5…]]></summary>
+        <author>
+            <name>Daksh Gargas</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IP Crawl: Living atlas of open webcams discovered on the public internet]]></title>
+        <id>https://ipcrawl.com/</id>
+        <link href="https://ipcrawl.com/"/>
+        <updated>2026-06-27T19:09:49.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -249,26 +477,6 @@ Quick honesty note up front, because it shapes everything below: this is a side 
         <summary type="html"><![CDATA[Bitcoin has long been lumped in with precious metals as a hedge against a weakening dollar. That trade is unwinding on a hawkish Fed, and bitcoin is falling alongside the metals it was supposed to rival.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Card That Made the Apple II Serious]]></title>
-        <id>https://www.wiseowl.com/articles/a2fpga-videx-01-the-card-that-made-the-apple-ii-serious/</id>
-        <link href="https://www.wiseowl.com/articles/a2fpga-videx-01-the-card-that-made-the-apple-ii-serious/"/>
-        <updated>2026-06-27T18:00:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA["No, I swear I wrote this."]]></title>
-        <id>https://revise.io/blog/06-27-2026/no-i-swear-i-wrote-this</id>
-        <link href="https://revise.io/blog/06-27-2026/no-i-swear-i-wrote-this"/>
-        <updated>2026-06-27T17:17:05.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -302,16 +510,6 @@ Quick honesty note up front, because it shapes everything below: this is a side 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Doctors suspected man had brain cancer. He had worms]]></title>
-        <id>https://arstechnica.com/health/2026/06/doctors-suspected-man-had-brain-cancer-he-actually-had-worms/</id>
-        <link href="https://arstechnica.com/health/2026/06/doctors-suspected-man-had-brain-cancer-he-actually-had-worms/"/>
-        <updated>2026-06-27T16:31:58.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[What Robinhood’s recent layoffs say about the current state of crypto investments]]></title>
         <id>1469a6e4-4232-476c-a7c9-0ff8ab2c13e6</id>
         <link href="https://www.coindesk.com/opinion/2026/06/27/what-robinhood-s-recent-layoffs-say-about-the-current-state-of-crypto-investments"/>
@@ -332,7 +530,7 @@ Quick honesty note up front, because it shapes everything below: this is a side 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Zuckerberg's Increasingly Bizarre War on Whistleblowers]]></title>
+        <title type="html"><![CDATA[Zuckerberg's war on whistleblowers]]></title>
         <id>https://pluralistic.net/2026/06/27/zuckerstreisand-2/</id>
         <link href="https://pluralistic.net/2026/06/27/zuckerstreisand-2/"/>
         <updated>2026-06-27T14:38:05.000Z</updated>
@@ -382,10 +580,30 @@ Quick honesty note up front, because it shapes everything below: this is a side 
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Running a software jam in a world of slop]]></title>
+        <id>https://foxmoss.com/blog/radish/</id>
+        <link href="https://foxmoss.com/blog/radish/"/>
+        <updated>2026-06-27T13:36:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Suspicious Discontinuities (2020)]]></title>
         <id>https://danluu.com/discontinuities/</id>
         <link href="https://danluu.com/discontinuities/"/>
         <updated>2026-06-27T13:32:20.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Asian AI startups launch Mythos-like models]]></title>
+        <id>https://techcrunch.com/2026/06/27/asian-ai-startups-launch-mythos-like-models-as-anthropics-export-ban-drags-on/</id>
+        <link href="https://techcrunch.com/2026/06/27/asian-ai-startups-launch-mythos-like-models-as-anthropics-export-ban-drags-on/"/>
+        <updated>2026-06-27T13:10:21.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -442,7 +660,7 @@ Quick honesty note up front, because it shapes everything below: this is a side 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[If you can't hold it, you don't own it]]></title>
+        <title type="html"><![CDATA[The case for physical media ownership]]></title>
         <id>https://dervis.de/physical/</id>
         <link href="https://dervis.de/physical/"/>
         <updated>2026-06-27T11:32:10.000Z</updated>
@@ -466,16 +684,6 @@ Quick honesty note up front, because it shapes everything below: this is a side 
         <id>https://github.com/deepseek-ai/DeepSpec/blob/main/DSpark_paper.pdf</id>
         <link href="https://github.com/deepseek-ai/DeepSpec/blob/main/DSpark_paper.pdf"/>
         <updated>2026-06-27T09:18:52.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Beer CSS – Build material design in record time]]></title>
-        <id>https://www.beercss.com/</id>
-        <link href="https://www.beercss.com/"/>
-        <updated>2026-06-27T09:06:11.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -534,16 +742,6 @@ The post Tomica Factory Now Part Of KLCC Brand Store Malaysia; First Factory Loc
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[WordStar: A Writer's Word Processor (1996)]]></title>
-        <id>https://www.sfwriter.com/wordstar.htm</id>
-        <link href="https://www.sfwriter.com/wordstar.htm"/>
-        <updated>2026-06-27T03:30:01.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[nubia Air Pro Listed On SIRIM, May Launch Soon]]></title>
         <id>https://www.lowyat.net/?p=397014</id>
         <link href="https://www.lowyat.net/2026/397014/nubia-air-pro-sirim/"/>
@@ -552,16 +750,6 @@ The post Tomica Factory Now Part Of KLCC Brand Store Malaysia; First Factory Loc
 The post nubia Air Pro Listed On SIRIM, May Launch Soon appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Nurul Kamil</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why does kinetic energy increase quadratically, not linearly, with speed? (2011)]]></title>
-        <id>https://physics.stackexchange.com/questions/535/why-does-kinetic-energy-increase-quadratically-not-linearly-with-speed</id>
-        <link href="https://physics.stackexchange.com/questions/535/why-does-kinetic-energy-increase-quadratically-not-linearly-with-speed"/>
-        <updated>2026-06-26T22:43:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -932,16 +1120,6 @@ The post Suzuki Brings In FWD eVitara To Malaysia; Costs RM188,000 appeared firs
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Cultures of Making and Relating]]></title>
-        <id>https://blog.khinsen.net/posts/2026/06/25/cultures.html</id>
-        <link href="https://blog.khinsen.net/posts/2026/06/25/cultures.html"/>
-        <updated>2026-06-25T15:54:17.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[A History of Menus Is a Menu of History]]></title>
         <id>https://pudding.cool/2026/06/menu-story/</id>
         <link href="https://pudding.cool/2026/06/menu-story/"/>
@@ -1022,6 +1200,16 @@ The post Suzuki Brings In FWD eVitara To Malaysia; Costs RM188,000 appeared firs
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[How H-E-B became Texas' most beloved brand (2024)]]></title>
+        <id>https://texashighways.com/culture/how-heb-became-texas-most-beloved-brand/</id>
+        <link href="https://texashighways.com/culture/how-heb-became-texas-most-beloved-brand/"/>
+        <updated>2026-06-24T20:19:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Reducing tick density along recreational trails in Ottawa, Canada]]></title>
         <id>https://www.sciencedirect.com/science/article/pii/S1877959X26000476</id>
         <link href="https://www.sciencedirect.com/science/article/pii/S1877959X26000476"/>
@@ -1042,7 +1230,17 @@ The post Suzuki Brings In FWD eVitara To Malaysia; Costs RM188,000 appeared firs
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AI Is Designing Radio Chips That Humans Couldn't Even Imagine]]></title>
+        <title type="html"><![CDATA[The eerie interface of man and machine (Life Magazine, October 1967)]]></title>
+        <id>https://blog.jgc.org/2026/06/the-eerie-interface-of-man-and-machine.html</id>
+        <link href="https://blog.jgc.org/2026/06/the-eerie-interface-of-man-and-machine.html"/>
+        <updated>2026-06-24T15:25:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AI learns the “dark art” of RFIC design]]></title>
         <id>https://spectrum.ieee.org/ai-radio-chip-design</id>
         <link href="https://spectrum.ieee.org/ai-radio-chip-design"/>
         <updated>2026-06-24T14:02:16.000Z</updated>
@@ -1079,6 +1277,16 @@ The post Suzuki Brings In FWD eVitara To Malaysia; Costs RM188,000 appeared firs
         <summary type="html"><![CDATA[AI is booming. New use cases are emerging each day. To capitalize on the technology’s potential, enterprises require data at scale. In many cases, though, the relevant information is blocked or unstructured, which limits its use by AI models.  To understand this challenge, consider the foundation of the web itself. The web was not designed…]]></summary>
         <author>
             <name>MIT Technology Review Insights</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Underarm bowling incident of 1981]]></title>
+        <id>https://en.wikipedia.org/wiki/Underarm_bowling_incident_of_1981</id>
+        <link href="https://en.wikipedia.org/wiki/Underarm_bowling_incident_of_1981"/>
+        <updated>2026-06-23T20:21:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
