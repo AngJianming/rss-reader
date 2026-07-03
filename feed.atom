@@ -1,119 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-03T20:59:09.583Z</id>
+    <id>urn:2026-07-03T22:10:30.640Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-03T20:59:09.583Z</updated>
+    <updated>2026-07-03T22:10:30.640Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-03T20:58:37.000Z</updated>
+        <updated>2026-07-03T22:10:02.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Mid-Year Backend Reset: My H2 Goals for Speed, Security, and Better Docs]]></title>
-        <id>https://dev.to/tahsin000/mid-year-backend-reset-my-h2-goals-for-speed-security-and-better-docs-14ap</id>
-        <link href="https://dev.to/tahsin000/mid-year-backend-reset-my-h2-goals-for-speed-security-and-better-docs-14ap"/>
-        <updated>2026-07-03T20:47:52.000Z</updated>
-        <summary type="html"><![CDATA[July always feels like a natural pause point.
-The first half of the year is already behind us. Some features shipped. Some bugs were fixed. Some ideas worked well. A few things probably stayed in the backlog longer than expected.
+        <title type="html"><![CDATA[The dual-write problem in NestJS, solved with Drizzle: a transactional outbox + idempotent inbox]]></title>
+        <id>https://dev.to/rodrigobnogueira/the-dual-write-problem-in-nestjs-solved-with-drizzle-a-transactional-outbox-idempotent-inbox-462l</id>
+        <link href="https://dev.to/rodrigobnogueira/the-dual-write-problem-in-nestjs-solved-with-drizzle-a-transactional-outbox-idempotent-inbox-462l"/>
+        <updated>2026-07-03T22:00:26.000Z</updated>
+        <summary type="html"><![CDATA[Every event-driven backend eventually writes this method:
+async placeOrder(input: PlaceOrderInput) {
+  await this.db.insert(orders).values(input);          // 1. write the row
+  await this.kafka.send({ topic: 'order.placed', … }); // 2. publish the event
+}
 
-For me, this is not about making a huge roadmap or setting unrealistic goals. It is more about asking a simple question:
-What backend systems do I want to make better before the year ends?
-After thinking about my recent work, I found myself coming back to three areas:
-Performance
-Security
-Documentation
-These are not flashy goals. They are not always visible to users. But they are the kind of improvements that make a backend codebase healthier, safer, and easier to work with over time.
-At the start of the year, goals often feel exciting. We plan new projects, new …]]></summary>
+And every one of them has the same bug. If the process crashes between 1 and 2, the order exists but the event never happened — downstream consumers silently miss it. Swap the order and you get the opposite failure: an event for an order that was rolled back. There is no try/catch arrangement that fixes this, because a database and a broker cannot commit atomically. This is the dual-write problem.
+The boring, proven fix is the transactional outbox: don't publish in step 2. Instead, write the event into an outbox_events table in the same…]]></summary>
         <author>
-            <name>Tahsin Abrar</name>
+            <name>Rodrigo Nogueira</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Built a Programming Language Where the Code is Plain English]]></title>
-        <id>https://dev.to/abneeshsingh21/i-built-a-programming-language-where-the-code-is-plain-english-57a2</id>
-        <link href="https://dev.to/abneeshsingh21/i-built-a-programming-language-where-the-code-is-plain-english-57a2"/>
-        <updated>2026-07-03T20:32:25.000Z</updated>
-        <summary type="html"><![CDATA[What if your code looked like this?
-name = "Abneesh"
-age = 20
-scores = [95, 87, 92]
-If age is greater than 18 then
-    Say "Welcome, " + name
-Otherwise
-    Say "Access denied"
-End
-For each score in scores
-    Say score
-End
-
-No semicolons. No curly braces. No => arrows. Just English.
-EPL — the English Programming Language. It's a fully-featured language that compiles to native binaries via LLVM, transpiles to JavaScript/Kotlin/Python, ships Android and iOS projects, and has a built-in web framework — all from a syntax anyone can read.
-Abneesh Singh, and I've been building EPL as an open-source project. Here's what it can do today at v10.1.
+        <title type="html"><![CDATA[Not many know which part of the process needs AI!]]></title>
+        <id>https://dev.to/yadu989/ai-context-and-memory-management-chapter-2-3ihn</id>
+        <link href="https://dev.to/yadu989/ai-context-and-memory-management-chapter-2-3ihn"/>
+        <updated>2026-07-03T21:48:12.000Z</updated>
+        <summary type="html"><![CDATA[A process that took 2–3 weeks and produced a 40-page document is the kind of thing everyone wants to "AI-ify."
+In regulated lending, the LLM is the last and smallest part of the pipeline. The hard parts are: ingesting messy documents reliably, extracting data into a canonical model, validating and cross-reconciling it, and doing the actual financial calculations - and those calculations must be done in deterministic code, never by a language model that might quietly round a number wrong.
+The LLM drafts prose. Code does the math. A human owns the risk decision. That ordering isn't a limitation - under OSFI E-21 it's the only design that's allowed to exist.
+The teams that win with AI in banking aren't the ones using the biggest model. They're the ones who know which 10% of the problem the model should touch.
+Where have you seen an LLM used for something that should have been deterministic code?
 
 
   
   
-  Install and Run in 30 Seconds
-
-
-
-
-pip install eplang
-echo 'Print "Hello, World!"' > hello.epl
-epl hello.epl
-
-Or jump into the interactive REPL:…]]></summary>
+  FinancialServices #AI #Lending]]></summary>
         <author>
-            <name>abneesh singh</name>
+            <name>Neeraj Yadav</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Account Security on Solana, Made Simple]]></title>
-        <id>https://dev.to/100daysofsolana/account-security-on-solana-made-simple-154d</id>
-        <link href="https://dev.to/100daysofsolana/account-security-on-solana-made-simple-154d"/>
-        <updated>2026-07-03T20:21:08.000Z</updated>
-        <summary type="html"><![CDATA[When you write a normal backend, you mostly trust your own database. A row you wrote is a row you can read back, and the data is what you put there. Solana works differently, and the difference is the single most important thing to understand about writing safe programs.
-On Solana, your program is handed a list of accounts with every instruction, and any of those accounts can be anything the caller wants. The caller picks them. An account is just an address, a balance, some bytes, and a field saying which program owns it, and a caller is free to hand your program an account they built themselves, filled with whatever bytes serve them. Your program has no trusted edge. Every account is attacker-controlled until your code proves otherwise.
-That sounds alarming, but it collapses into somethin…]]></summary>
+        <title type="html"><![CDATA[Goodbye, Forever, Probably]]></title>
+        <id>https://whitep4nth3r.com/blog/goodbye-forever-probably/</id>
+        <link href="https://whitep4nth3r.com/blog/goodbye-forever-probably/"/>
+        <updated>2026-07-03T21:42:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Vincent Jande</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Pragmatic Migration: Moving from AngularJS to Angular v22]]></title>
-        <id>https://dev.to/prestonwest/the-pragmatic-migration-moving-from-angularjs-to-angular-v22-1n0e</id>
-        <link href="https://dev.to/prestonwest/the-pragmatic-migration-moving-from-angularjs-to-angular-v22-1n0e"/>
-        <updated>2026-07-03T20:17:09.000Z</updated>
-        <summary type="html"><![CDATA[The tech industry is littered with the ghosts of failed migrations—multi-year rewrites that burned through millions in budget only to be scrapped, or catastrophic IT shifts like the British bank TSB's migration that resulted in the corruption of 1.3 billion customer records. For organizations still relying on legacy AngularJS (v1.x), the pressure to modernize is not just a desire for developer convenience—it is a critical business and cybersecurity imperative. AngularJS has been officially in End of Life (EOL) status for years. Every day that passes without security patches and official support introduces massive risk to enterprise systems.
-Yet, the idea of refactoring a massive, monolithic enterprise application from the ground up rightfully induces panic in product managers and engineeri…]]></summary>
+        <title type="html"><![CDATA[How We Vectorize 33.7M Ukrainian Court Decisions via Voyage AI]]></title>
+        <id>https://dev.to/overthelex/how-we-vectorize-337m-ukrainian-court-decisions-via-voyage-ai-3hlc</id>
+        <link href="https://dev.to/overthelex/how-we-vectorize-337m-ukrainian-court-decisions-via-voyage-ai-3hlc"/>
+        <updated>2026-07-03T21:35:48.000Z</updated>
+        <summary type="html"><![CDATA[EDRSR — the Unified State Register of Court Decisions — is effectively all of Ukraine's judicial practice in open access. Today Qdrant holds **44M+ vectors: criminal (19M), civil (14.3M), commercial (5.1M), misdemeanors (5.6M). Vectorization of civil cases (CPC, justice_kind=1) — the largest cohort at 33.7M documents — runs on a dedicated EC2 instance (r6a.xlarge, 32 GB RAM, 2 TB gp3). Here's what's under the hood: models, pipeline, cost, rakes, and current status.
+When a lawyer searches "is there case law on recovering bank prepayment fees" — they don't want to open 40 decisions and read them through. They want the system to surface the top 5 most relevant ones, pull out key paragraphs, and show how courts reasoned. Full-text search (FTS) over keywords doesn't give that — it returns every…]]></summary>
         <author>
-            <name>Preston West</name>
+            <name>overthelex</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Current OSS proof, without the launch gloss]]></title>
-        <id>https://dev.to/morganlabs/current-oss-proof-without-the-launch-gloss-24fn</id>
-        <link href="https://dev.to/morganlabs/current-oss-proof-without-the-launch-gloss-24fn"/>
-        <updated>2026-07-03T20:15:50.000Z</updated>
-        <summary type="html"><![CDATA[Current OSS proof, without the launch gloss:
-25 merged upstream PRs
-real review across multiple repos
-mostly narrow code+test fixes
-no own-repo PRs counted in that number
-The useful part is not the count by itself. The useful part is the mix of constraints: different test setups, different maintainer preferences, different rule engines, different definitions of "small enough to merge."
-The pattern I want to keep repeating is simple:
-Find a real issue. Reproduce it. Patch the narrow behavior. Add the smallest useful test. Leave the repo closer to the maintainer's model than my own.
-That is less glamorous than a big build thread, but it is a cleaner signal for the kind of work I want more of: scoped debugging, code review, static analysis, test repair, and small infrastructure fixes that actually land.
-Disclosure: I used AI assistance to organize this private article draft. The current count should be rechecked against the OSS contribution ledger before publishing.]]></summary>
+        <title type="html"><![CDATA[2 TB of Ukrainian Law + DeepSeek V3 860B on GCP: What We'd Get]]></title>
+        <id>https://dev.to/overthelex/2-tb-of-ukrainian-law-deepseek-v3-860b-on-gcp-what-wed-get-2jj5</id>
+        <link href="https://dev.to/overthelex/2-tb-of-ukrainian-law-deepseek-v3-860b-on-gcp-what-wed-get-2jj5"/>
+        <updated>2026-07-03T21:35:47.000Z</updated>
+        <summary type="html"><![CDATA[In production we have ~1.5 TB of full-text court decisions and their vector embeddings, plus another ~550 GB of other legal data: registries, legislation, business entities, a Spanish case law corpus, EU-Lex. If we take this corpus and train an MoE model the size of DeepSeek V3, scaled to 860B parameters, on GCP — what comes out? We break down the dataset, architecture, compute cost, and the properties such a model would have on Ukrainian law.
+The entire corpus is what's already running in SecondLayer's production. No extra scrapes, no Common Crawl, no noise.
+EDRSR — the dataset core, ~1.5 TB. The Unified State Register of Court Decisions of Ukraine. 96.2 million full-text decisions (1,079 GB in PostgreSQL TOAST), 471 GB of vectors in Qdrant (voyage-3.5, 1024-dim), 28 GB of metadata (court…]]></summary>
         <author>
-            <name>Morgan</name>
+            <name>overthelex</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Local LLM Deployment, Agent Handbook, & LLM Cost Reduction: Applied AI Workflows]]></title>
+        <id>https://dev.to/soytuber/local-llm-deployment-agent-handbook-llm-cost-reduction-applied-ai-workflows-24hf</id>
+        <link href="https://dev.to/soytuber/local-llm-deployment-agent-handbook-llm-cost-reduction-applied-ai-workflows-24hf"/>
+        <updated>2026-07-03T21:35:35.000Z</updated>
+        <summary type="html"><![CDATA[Local LLM Deployment, Agent Handbook, & LLM Cost Reduction: Applied AI Workflows
+
+
+
+  
+  
+  Today's Highlights
+
+
+This week's highlights cover practical guides for running state-of-the-art LLMs locally and building AI agents, alongside an innovative technique to significantly cut LLM API costs for code processing. These resources focus on actionable insights and frameworks for real-world AI application development.
+Source: https://github.com/jamesob/local-llm
+This GitHub repository provides a comprehensive, hands-on guide for setting up and running state-of-the-art Large Language Models (LLMs) on local hardware. It meticulously covers the necessary tooling, dependencies, and configuration steps required to get various open-source LLMs operational without relying on cloud APIs. The guide emp…]]></summary>
+        <author>
+            <name>soy</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Best Free AI Generators in 2026: 9 Tools Actually Worth Using]]></title>
+        <id>https://dev.to/bachalorcoder/the-best-free-ai-generators-in-2026-9-tools-actually-worth-using-kig</id>
+        <link href="https://dev.to/bachalorcoder/the-best-free-ai-generators-in-2026-9-tools-actually-worth-using-kig"/>
+        <updated>2026-07-03T21:23:45.000Z</updated>
+        <summary type="html"><![CDATA[I build and run one of the tools on this list (AGenO — full disclosure below), and I use every other tool here regularly. This is what "free" actually gets you on each one, including the catches.
+The AI tool landscape has a dirty secret: almost nothing labeled "free" is free. Most tools give you a taste — ten messages, three images, one song — and then the paywall lands. So instead of another list of forty tools nobody has tried, here are nine that give you real value at $0, organized by what you're trying to make, with the actual limits spelled out.
+
+
+
+Tool
+Best for
+What's actually free
+The catch
+
+
+
+
+ChatGPT
+General chat & writing
+~10 msgs/5h on the flagship model
+Silently switches you to a weaker model after the limit
+
+
+Claude
+Long documents, nuanced writing
+10–25 msgs/5h, varies with de…]]></summary>
+        <author>
+            <name>Givin Yang</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scrape Google Trends Without an API Key (Including the Scraper Flag Google Hands You)]]></title>
+        <id>https://dev.to/scrapemint/scrape-google-trends-without-an-api-key-including-the-scraper-flag-google-hands-you-8o7</id>
+        <link href="https://dev.to/scrapemint/scrape-google-trends-without-an-api-key-including-the-scraper-flag-google-hands-you-8o7"/>
+        <updated>2026-07-03T21:23:25.000Z</updated>
+        <summary type="html"><![CDATA[Google Trends has no official API, and most wrapper libraries rot within months. But the Trends site itself runs on a keyless JSON API that anyone can call, and it serves the exact numbers you see in the UI. Here is the full recipe, including one gotcha where Google quietly labels your session a scraper.
+Trends works in two steps. First you call explore, which returns a list of widgets, one per chart on the page, each with a signed token:
+GET https://trends.google.com/trends/api/explore
+    ?hl=en-US&tz=0
+    &req={"comparisonItem":[{"keyword":"web scraping","geo":"US","time":"today 12-m"}],"category":0,"property":""}
+
+Then you call a widget data endpoint with that widget's request and token:
+GET https://trends.google.com/trends/api/widgetdata/multiline?hl=en-US&tz=0&req=<widget.request>&t…]]></summary>
+        <author>
+            <name>Ken-Mutisya</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Engineering Geofencing: Lessons in Android Battery and Location Accuracy]]></title>
+        <id>https://dev.to/haseebthedev0/engineering-geofencing-lessons-in-android-battery-and-location-accuracy-2li</id>
+        <link href="https://dev.to/haseebthedev0/engineering-geofencing-lessons-in-android-battery-and-location-accuracy-2li"/>
+        <updated>2026-07-03T21:23:07.000Z</updated>
+        <summary type="html"><![CDATA[It happened during a quiet, solemn moment in a community prayer hall. I was sitting in the third row, reflecting, when suddenly, a high-pitched ringtone shattered the silence. It wasn't my phone, but the ripple effect of embarrassment was immediate. Everyone looked around, shifting uncomfortably. That collective tension is something we have all felt—a moment of human error that technology should have intercepted. I looked at my own device, feeling the familiar anxiety of whether I had remembered to flip the physical silent switch. It was then that I decided to stop relying on my own memory.
+We live in an era of hyper-connected devices, yet the most basic context-awareness—knowing where we are and how our phone should behave—remains manual. I found myself constantly toggling between 'Normal…]]></summary>
+        <author>
+            <name>Haseeb</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Textparser – High-performance C parsing engine using Python-compiled grammars]]></title>
+        <id>https://dev.to/boris_barbulovski/textparser-high-performance-c-parsing-engine-using-python-compiled-grammars-5e4k</id>
+        <link href="https://dev.to/boris_barbulovski/textparser-high-performance-c-parsing-engine-using-python-compiled-grammars-5e4k"/>
+        <updated>2026-07-03T21:20:35.000Z</updated>
+        <summary type="html"><![CDATA[Hi everyone,
+💡 The Core Idea & Why It's DifferentTraditional parser generators (like Flex/Bison) come with a steep learning curve and rigid code generation. On the other end, hand-writing recursive descent parsers or state machines becomes an unmaintainable mess as your language grows.textparser bridges this gap using a hybrid JSON + Python + C workflow:You define your tokens, syntax patterns, and color styles in a clean, human-readable JSON grammar file.
+🚀 Features At A Glance30+ Languages Out-of-the-Box: Includes ready-to-use JSON grammars for C, C++, Rust, Python, JavaScript, HTML, SQL, and dozens more.Rich Token Metadata: Every parsed token tracks exact code coordinates, structural flags, and custom syntax styling options.Zero Bloat: Ideal for terminal text editors, syntax highlighters, custom linters, and lightweight static analysis tools where bringing in a massive compiler front-end is overkill.]]></summary>
+        <author>
+            <name>Boris Barbulovski</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Chemistry Coding the SpudCell 🥔]]></title>
+        <id>https://dev.to/catherine_mcmillen_ed10ca/chemistry-coding-the-spudcell-4p31</id>
+        <link href="https://dev.to/catherine_mcmillen_ed10ca/chemistry-coding-the-spudcell-4p31"/>
+        <updated>2026-07-03T21:18:43.000Z</updated>
+        <summary type="html"><![CDATA[This week, researchers at the University of Minnesota announced something that genuinely stopped me mid-scroll. A team led by Associate Professors Kate Adamala and Aaron Engelhart built the world's first synthetic cell with a complete life cycle — not modified from an existing organism, not borrowed from biology. Built. From. Scratch.
+They're calling it SpudCell.
+It can grow. It feeds. It copies its own genetic material. It divides into new cells. And it does all of this from a starting point of pure chemistry — non-living components assembled with intent.
+Adamala put it plainly: "We've replicated in chemistry what only used to be possible in biology: the complete set of behaviors of a cell. It proves that the most fundamental functions of life, like growth and replication, do not need a m…]]></summary>
+        <author>
+            <name>Cat Mac</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hit the Reverse Button on a Learning Vacuum Brain 💭]]></title>
+        <id>https://dev.to/catherine_mcmillen_ed10ca/hit-the-reverse-button-on-a-learning-vacuum-brain-239d</id>
+        <link href="https://dev.to/catherine_mcmillen_ed10ca/hit-the-reverse-button-on-a-learning-vacuum-brain-239d"/>
+        <updated>2026-07-03T21:17:59.000Z</updated>
+        <summary type="html"><![CDATA[There's a phase almost every developer gets stuck in. You're consuming tutorials, bookmarking articles, finishing courses, and buying books you'll read "eventually." You're learning constantly — but you're not producing anything. You're just... absorbing.
+That's the learning vacuum. And if you've been there, you know how easy it is to confuse staying busy with making progress.
+At some point, the shift has to happen. You stop being a sponge and start being a signal. Here's how I started making that turn.
+You don't need a blog, a brand, or an audience for this. Just a file. A note. Anything.
+Write down what you built, what broke, and what you figured out. Even one sentence counts. I like to write a quick sentence and how many hours, just like if you were filling in an invoice for contract wo…]]></summary>
+        <author>
+            <name>Cat Mac</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The First .com Domain Was Symbolics.com]]></title>
+        <id>https://dev.to/fluidwire/the-first-com-domain-was-symbolicscom-3jn7</id>
+        <link href="https://dev.to/fluidwire/the-first-com-domain-was-symbolicscom-3jn7"/>
+        <updated>2026-07-03T21:14:40.000Z</updated>
+        <summary type="html"><![CDATA[Every business that has ever typed a web address into a browser owes a small debt to a company most people have never heard of. On March 15, 1985, a computer maker called Symbolics registered Symbolics.com and, in doing so, became the first ever holder of a .com domain name. More than forty years later that address is still registered and still resolves - making it the oldest .com domain on the internet.
+Symbolics Inc. was a Massachusetts company that built specialized computers called Lisp machines - workstations designed from the silicon up to run the Lisp programming language, then the darling of artificial intelligence research. These were serious, expensive machines aimed at labs and universities, and the company sat right at the cutting edge of 1980s computing. So it was fitting, if …]]></summary>
+        <author>
+            <name>fluidwire</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Africans Are Turning to Starlink]]></title>
+        <id>https://www.economist.com/middle-east-and-africa/2026/07/02/africans-are-turning-to-starlink</id>
+        <link href="https://www.economist.com/middle-east-and-africa/2026/07/02/africans-are-turning-to-starlink"/>
+        <updated>2026-07-03T21:08:37.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: ContextCodeCache in Rust]]></title>
+        <id>https://github.com/colwill/ccc</id>
+        <link href="https://github.com/colwill/ccc"/>
+        <updated>2026-07-03T21:03:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Infracost (YC W21) Is Hiring a Marketing Lead to Shift FinOps Left]]></title>
+        <id>https://www.ycombinator.com/companies/infracost/jobs/YTJcFwr-marketing-lead</id>
+        <link href="https://www.ycombinator.com/companies/infracost/jobs/YTJcFwr-marketing-lead"/>
+        <updated>2026-07-03T21:00:50.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Applied Category Theory Course (2018)]]></title>
+        <id>https://math.ucr.edu/home/baez/act_course/index.html</id>
+        <link href="https://math.ucr.edu/home/baez/act_course/index.html"/>
+        <updated>2026-07-03T20:42:00.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Espionage Against the European Parliament]]></title>
+        <id>https://citizenlab.ca/research/member-of-committee-investigating-spyware-hacked-with-pegasus/</id>
+        <link href="https://citizenlab.ca/research/member-of-committee-investigating-spyware-hacked-with-pegasus/"/>
+        <updated>2026-07-03T20:38:26.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -137,149 +285,13 @@ Disclosure: I used AI assistance to organize this private article draft. The cur
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[FIFA World Cup 2026 Stadium Security Scan]]></title>
-        <id>https://dev.to/guardr/fifa-world-cup-2026-stadium-security-scan-34b6</id>
-        <link href="https://dev.to/guardr/fifa-world-cup-2026-stadium-security-scan-34b6"/>
-        <updated>2026-07-03T20:10:52.000Z</updated>
-        <summary type="html"><![CDATA[With the World Cup in full swing, we got curious: how well configured are the official stadium websites for the 16 host venues across the US, Canada and Mexico? So we ran a FIFA World Cup 2026 stadium security scan on all of them.
-TL;DR: every single stadium site had a weak or missing Content-Security-Policy header. Half had HSTS problems. One had a session cookie with zero protections. High traffic does not mean high security.
-We scanned the official website for each of the 16 confirmed FIFA World Cup 2026 host venues, checking TLS/SSL, security headers, cookie security, DNS hardening and exposed paths. Each site gets an A–F grade. Scans were run on July 3, 2026, a single point-in-time snapshot.
-
-
-
-Venue
-City
-Grade
-Score
-
-
-
-
-MetLife Stadium
-East Rutherford, NJ
-A
-90
-
-
-AT&T Stadium
-Dallas, …]]></summary>
+        <title type="html"><![CDATA[Kagi Changelog (July 2): Heads, tails, and an AI toggle]]></title>
+        <id>https://kagi.com/changelog#10959</id>
+        <link href="https://kagi.com/changelog#10959"/>
+        <updated>2026-07-03T20:08:01.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Guardr</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What merged PRs teach that local projects do not]]></title>
-        <id>https://dev.to/morganlabs/what-merged-prs-teach-that-local-projects-do-not-gfk</id>
-        <link href="https://dev.to/morganlabs/what-merged-prs-teach-that-local-projects-do-not-gfk"/>
-        <updated>2026-07-03T20:09:36.000Z</updated>
-        <summary type="html"><![CDATA[Local projects are useful, but they are too forgiving.
-If I own the repo, I can choose the architecture, the naming, the test strategy, and the tradeoffs. That is good for building. It is not always good for proving I can work inside someone else's system.
-Merged upstream PRs are different.
-You do not get to decide that the repo should use your preferred style. You do not get to rewrite the surrounding code because it would make your fix prettier. You have to understand the local pattern and make the smallest change that fits.
-That constraint is the value.
-The most useful fixes in my OSS ledger are all narrow:
-preserve empty-string entries in Conform array submissions
-skip side-effect-free external imports in Rollup when hoisting is disabled
-avoid crashing no-unresolved case checks on EACCES / EPERM
-
-allow scoped package names in JSDoc declaration-reference inline tags
-handle object-shaped not schemas in swagger-typescript-api
-
-avoid false positives in require-meta-* when meta object spreads cannot be resolved
-format structured command entries in Cline history export
-Each one forced a slightly different kind of reading.
-Some were about parser behavior. Some were about test fixtures. Some were about error handling. Some were about not assuming a static analysis rule knows more than it actually knows.
-That last part has been the recurring lesson. The fix is rarely "make the tool smarter" in the abstract. The fix is usually "make the tool honest about this one boundary."
-That is also why I like OSS proof for developer-infrastructure work. A merged PR is small, but it is not private. Someone else accepted the tradeoff. Someone else decided the test was enough. Someone else now has to live with the change.
-That does not make it a perfect signal. It does make it a better signal than a private screenshot.
-Disclosure: I used AI assistance to organize this private article draft. The examples and current PR count should be rechecked against the OSS contribution ledger before publishing.]]></summary>
-        <author>
-            <name>Morgan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The checklist I use before sending a small OSS PR]]></title>
-        <id>https://dev.to/morganlabs/the-checklist-i-use-before-sending-a-small-oss-pr-8fb</id>
-        <link href="https://dev.to/morganlabs/the-checklist-i-use-before-sending-a-small-oss-pr-8fb"/>
-        <updated>2026-07-03T20:01:48.000Z</updated>
-        <summary type="html"><![CDATA[Small open-source PRs look easy from the outside because the diff is usually small.
-The diff is not the work.
-The work is getting to the point where a maintainer can review it without having to guess what you changed, why it is safe, or whether you accidentally dragged in unrelated cleanup.
-The checklist I keep coming back to is boring:
-Reproduce the issue before changing code.
-Find the smallest behavior boundary that explains the bug.
-Add or adjust the focused test first if the repo makes that practical.
-Keep the patch narrow, even if nearby code is tempting to clean up.
-Run the local checks that match the touched area.
-Re-read the diff like the maintainer has never seen your reasoning.
-If the PR body needs a paragraph to explain why half the files changed, the patch is probably too wide.
-That checklist has mattered across very different fixes: React Router SSR scripts, ast-grep pattern validation, ESLint rule edge cases, JSON schema defaults, Playwright optional chaining, and reporter output in knip.
-The pattern is the same even when the libraries are different. A good small PR proves one thing.
-It does not try to be a resume. It does not fix the whole subsystem. It does not turn a maintainer issue into a platform for everything you noticed while reading the code.
-That restraint is practical. Maintainers are already carrying the whole project in their head. The cleanest contribution is usually the one that removes one sharp edge and gives them enough evidence to trust it.
-Disclosure: I used AI assistance to organize this private article draft. The examples should be rechecked against the OSS contribution ledger before publishing.]]></summary>
-        <author>
-            <name>Morgan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Making LLM security verdicts verifiable: the evidence gate pattern]]></title>
-        <id>https://dev.to/jaskarn_singh_383b2bca0af/making-llm-security-verdicts-verifiable-the-evidence-gate-pattern-3afp</id>
-        <link href="https://dev.to/jaskarn_singh_383b2bca0af/making-llm-security-verdicts-verifiable-the-evidence-gate-pattern-3afp"/>
-        <updated>2026-07-03T20:01:15.000Z</updated>
-        <summary type="html"><![CDATA[Every "AI security analyst" I tried had the same flaw: a correct verdict and a confident-but-wrong one are indistinguishable on screen. In security that's not a UX nit — it's the whole problem. So I built USAP around a single rule, and this post is about that rule and three things that fell out of it.
-USAP's output contract is 11 typed JSON fields. The uncompromising one is evidence_references: every verdict must carry at least one source that resolves. Four accepted forms:
-mcp:<logical>:<tool>:<call_id> — evidence fetched live from a connected MCP
-https://... — a canonical external source (CVE, EPSS feed, MITRE)
-s3://... — an operator artifact
-local://<repo-path> — an in-repo standard, for advisory verdicts (the path must exist)
-A source like "scanner" or "the SIEM showed it" is rejected …]]></summary>
-        <author>
-            <name>Jaskarn Singh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Beyond the .tflite File: Mastering High-Performance Edge AI with MediaPipe Tasks and AICore]]></title>
-        <id>https://dev.to/programmingcentral/beyond-the-tflite-file-mastering-high-performance-edge-ai-with-mediapipe-tasks-and-aicore-44e</id>
-        <link href="https://dev.to/programmingcentral/beyond-the-tflite-file-mastering-high-performance-edge-ai-with-mediapipe-tasks-and-aicore-44e"/>
-        <updated>2026-07-03T20:00:00.000Z</updated>
-        <summary type="html"><![CDATA[For years, the workflow for Android developers looking to implement on-device Machine Learning (ML) followed a predictable, albeit exhausting, pattern. You would download a .tflite model, drop it into your assets folder, and prepare for a long weekend of writing boilerplate. You had to manually handle tensor buffers, manage complex image resizing, normalize pixel values, and parse raw, unreadable float arrays into something a human could actually use.
-It was a world of low-level manipulation that felt more like manual memory management than modern app development. But the landscape of Edge AI is shifting. We are moving away from imperative tensor manipulation and toward declarative pipeline orchestration.
-In this deep dive, we will explore the architectural revolution brought about by Medi…]]></summary>
-        <author>
-            <name>Programming Central</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Software Development Changed. Good Engineering Didn’t.]]></title>
-        <id>https://dev.to/techbarsw/software-development-changed-good-engineering-didnt-2g7</id>
-        <link href="https://dev.to/techbarsw/software-development-changed-good-engineering-didnt-2g7"/>
-        <updated>2026-07-03T19:57:56.000Z</updated>
-        <summary type="html"><![CDATA[Over the last 10 years, software development has changed dramatically. Products are built faster, teams use more cloud services, data has become central to business decisions, and AI has entered everyday development workflows.
-But the core principles of good engineering have not disappeared. Code still needs to be readable, maintainable, secure, and reliable.
-What changed is the environment around that code.
-Today, engineering teams are not only asked to write clean code. They need to build systems that can scale, integrate with other services, handle data responsibly, stay secure, and reach the market much faster than before.
-Good Code Still Means the Same Thing
-Ten years ago, good code was usually associated with clean structure, clear patterns, readability, and maintainability.
-That is …]]></summary>
-        <author>
-            <name>Techbar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Small open-source fixes are a better signal than a big portfolio claim]]></title>
-        <id>https://dev.to/morganlabs/small-open-source-fixes-are-a-better-signal-than-a-big-portfolio-claim-507d</id>
-        <link href="https://dev.to/morganlabs/small-open-source-fixes-are-a-better-signal-than-a-big-portfolio-claim-507d"/>
-        <updated>2026-07-03T19:54:52.000Z</updated>
-        <summary type="html"><![CDATA[I have been using small upstream PRs as a forcing function for proof.
-Not big rewrites. Not "I built a platform" posts. Just narrow bugs in real repositories, with a test, a focused patch, and whatever cleanup the maintainer asks for.
-That has been more useful than I expected.
-The main reason is that a merged PR carries constraints a portfolio project usually does not. You have to fit the repo's style. You have to reproduce the issue. You have to keep the diff small enough for someone else to review. If the maintainer asks for a different shape, the answer is not to argue with your original idea. The answer is to understand the invariant they are protecting.
-The fixes that taught me the most were not flashy:
-a React Router nonce fix for default SSR fallback/error scripts
-an eslint-plugin-i…]]></summary>
-        <author>
-            <name>Morgan</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -333,16 +345,6 @@ an eslint-plugin-i…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Wasn't Allowed Prompting ChatGPT During My Chalk Talk: This Is Discrimination (2025)]]></title>
-        <id>https://inpreparation.substack.com/p/opinion-i-was-not-allowed-to-type</id>
-        <link href="https://inpreparation.substack.com/p/opinion-i-was-not-allowed-to-type"/>
-        <updated>2026-07-03T17:46:10.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[A device that revives eyeballs from dead donors could make eye transplants possible]]></title>
         <id>https://www.technologyreview.com/?p=1140148</id>
         <link href="https://www.technologyreview.com/2026/07/03/1140148/a-device-that-revives-eyeballs-from-dead-donors-could-make-eye-transplants-possible/"/>
@@ -367,16 +369,6 @@ an eslint-plugin-i…]]></summary>
         <id>https://github.com/kerlenton/mcpsnoop</id>
         <link href="https://github.com/kerlenton/mcpsnoop"/>
         <updated>2026-07-03T16:53:50.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Life and Times of Maxis, Part 1: SimEverything]]></title>
-        <id>https://www.filfre.net/2026/07/the-life-and-times-of-maxis-part-1-simeverything/</id>
-        <link href="https://www.filfre.net/2026/07/the-life-and-times-of-maxis-part-1-simeverything/"/>
-        <updated>2026-07-03T15:56:02.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -443,16 +435,6 @@ an eslint-plugin-i…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[America, 1926: A forgotten 100-year-old report]]></title>
-        <id>https://www.derekthompson.org/p/america-1926-an-absurdly-deep-dive</id>
-        <link href="https://www.derekthompson.org/p/america-1926-an-absurdly-deep-dive"/>
-        <updated>2026-07-03T15:08:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Best Simple System for Now (2025)]]></title>
         <id>https://dannorth.net/blog/best-simple-system-for-now/</id>
         <link href="https://dannorth.net/blog/best-simple-system-for-now/"/>
@@ -467,16 +449,6 @@ an eslint-plugin-i…]]></summary>
         <id>https://github.com/jamesob/local-llm</id>
         <link href="https://github.com/jamesob/local-llm"/>
         <updated>2026-07-03T15:03:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Instead of banning AI, I made a classroom contract with my students]]></title>
-        <id>https://www.science.org/content/article/instead-banning-ai-i-made-classroom-contract-my-students</id>
-        <link href="https://www.science.org/content/article/instead-banning-ai-i-made-classroom-contract-my-students"/>
-        <updated>2026-07-03T14:28:33.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -783,16 +755,6 @@ The post Intel Has Quietly Raised The Price For The Core Ultra 7 270K Plus And U
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Safari MCP server for web developers]]></title>
-        <id>https://webkit.org/blog/18136/introducing-the-safari-mcp-server-for-web-developers/</id>
-        <link href="https://webkit.org/blog/18136/introducing-the-safari-mcp-server-for-web-developers/"/>
-        <updated>2026-07-03T01:37:11.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How to Build a RAG Q&A AI Agent for Your Documents Using LangChain v1]]></title>
         <id>6a46f2677c3edf68bfede8ce</id>
         <link href="https://www.freecodecamp.org/news/build-a-private-rag-qa-ai-agent-for-your-documents-using-langchain/"/>
@@ -800,16 +762,6 @@ The post Intel Has Quietly Raised The Price For The Core Ultra 7 270K Plus And U
         <summary type="html"><![CDATA[In this tutorial, I'll show you how to build a private local RAG-powered Q&A AI agent for your personal documents using LangChain v1, Ollama, Qwen, and Python. The agent reads your documents and answe]]></summary>
         <author>
             <name>Darsh Shah</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: Bramble – Local-first password manager]]></title>
-        <id>https://github.com/flythenimbus/bramble</id>
-        <link href="https://github.com/flythenimbus/bramble"/>
-        <updated>2026-07-02T19:29:58.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1033,16 +985,6 @@ The post Intel Has Quietly Raised The Price For The Core Ultra 7 270K Plus And U
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: CLI that helps AI agents avoid vulnerable dependencies]]></title>
-        <id>https://github.com/clidey/deptrust</id>
-        <link href="https://github.com/clidey/deptrust"/>
-        <updated>2026-07-01T20:51:47.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How to Defend Your JavaScript App Against Unsafe Data with TypeScript Guard Utilities]]></title>
         <id>6a4576be7808ec6de20de8ff</id>
         <link href="https://www.freecodecamp.org/news/defend-your-js-app-against-unsafe-data-with-typescript-guard-utilities/"/>
@@ -1103,16 +1045,6 @@ The post Intel Has Quietly Raised The Price For The Core Ultra 7 270K Plus And U
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Supersonic flight returning to US after half-century ban]]></title>
-        <id>https://www.forbes.com/sites/suzannerowankelleher/2026/06/30/faa-supersonic-flight-no-boom/</id>
-        <link href="https://www.forbes.com/sites/suzannerowankelleher/2026/06/30/faa-supersonic-flight-no-boom/"/>
-        <updated>2026-07-01T02:26:22.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Claude Science is Anthropic’s newest flagship product]]></title>
         <id>https://www.technologyreview.com/?p=1139987</id>
         <link href="https://www.technologyreview.com/2026/06/30/1139987/claude-science-is-anthropics-newest-flagship-product/"/>
@@ -1150,6 +1082,16 @@ The post Intel Has Quietly Raised The Price For The Core Ultra 7 270K Plus And U
         <summary type="html"><![CDATA[Blazar's shredTransactionSubscribe brings Solana transaction visibility before execution as a WebSocket JSON-RPC subscription. Learn the filters, notification shape, and example requests.]]></summary>
         <author>
             <name>Quicknode</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A peek into Reddit's anti-spam internals]]></title>
+        <id>https://lyra.horse/blog/2026/06/reddit-spam-internals/</id>
+        <link href="https://lyra.horse/blog/2026/06/reddit-spam-internals/"/>
+        <updated>2026-06-27T15:18:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
