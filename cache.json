@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/exploitnotes/bronocctf-proper-pwning-writeup-1h8j",
+          "id": "https://dev.to/arikaturika/what-do-you-use-ai-for-the-most-14im",
+          "author": "Arika O",
+          "description": "At work, I use Claude, ChatGPT and Copilot, depending on the task I have. Sometimes I create my task plan using one agent, another one helps with writing the code and another one does the code review. Sometimes I use the same agent for all three steps, so I don't really have a flow that's set in stone.\nOne thing I did notice though is that, all agents perform very well when it comes to generatig code for greenfield projects but the quality of their output decreases the more I work with legacy code. This is something that my colleagues also noticed, so I assume my experince is not unique.\nSince our code base is 100% legacy, I do use the agents for generating code, but what I use them for the most is explaining code. And that saves me a lot of time and frustration. In the past, if I was lucky enough and the person that wrote a very complicated piece of code would still be working in the company, I would ask them to help me understand their reasoning. \nNow I do not really need to do that. If the documentation is not sufficient, I can always ask an agent to explain the logic behind some code and almost everytime it comes back with a reasonable explanation. Sometimes the explanation is really silly or it's a straight up hallucination but I think that's where our common sense should kick in: while reading something the agent outputed, by looking at the code we should be able to tell if the explanation makes sense or not. \nWhat are you using your agents the most?\nPhoto credit Daniil Komov on Pexels",
+          "link": "https://dev.to/arikaturika/what-do-you-use-ai-for-the-most-14im",
+          "publishedOn": "2026-07-12T17:54:33.000Z",
+          "wordCount": 1579,
+          "title": "What do you use AI for the most?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9r1l5b12ar9vewvswdpy.jpg"
+        },
+        {
+          "id": "https://dev.to/exploitnotes/broncoctf-spot-the-difference-writeup-4505",
           "author": "Yogeshwar Peela",
-          "description": "Category: Pwn / Binary Exploitation\nDifficulty: Medium\nFlag: bronco{1m_th3_b35t_PWN3r_1n_th3_wh0l3_w1d3_w0r1d}\nWe're given proper.zip containing four files:\n$ unzip proper.zip\nArchive:  proper.zip\n  inflating: Dockerfile\n  inflating: flag.txt\n  inflating: proper\n  inflating: proper.c\n\nThe Dockerfile shows how the binary is built and served:\nRUN gcc proper.c -o proper -fno-stack-protector -z execstack -no-pie\n...\nEXPOSE 1338\nCMD [\"socat\", \"TCP-LISTEN:1338,reuseaddr,fork\", \"EXEC:./proper\"]\n\nKey takeaways from this alone:\nNo stack canary (-fno-stack-protector)\nNo PIE (-no-pie) → all addresses are fixed and known from the binary itself, no leak needed\nThe service is just the compiled binary piped over a raw TCP socket via socat\n\n\n\nchecksec confirms:\nRELRO           STACK CANARY      NX        …",
-          "link": "https://dev.to/exploitnotes/bronocctf-proper-pwning-writeup-1h8j",
-          "publishedOn": "2026-07-12T16:43:19.000Z",
-          "wordCount": 2610,
-          "title": "BronocCTF : Proper Pwning Writeup",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ffk3gmiep4xu30mehflax.gif"
+          "description": "Challenge\n\n\nWe're given two files, file1.txt and file2.txt, each containing what looks like\n$ ls\nfile1.txt  file2.txt\n\nPasting the two files side by side line-by-line makes it clear they're almost\npaste file1.txt file2.txt | nl\n\nMost lines match. A handful don't. That's the whole challenge, really — find the\nRather than eyeball a few hundred lines, script it:\nf1 = open(\"file1.txt\").read().splitlines()\nf2 = open(\"file2.txt\").read().splitlines()\n\nprint(len(f1), len(f2))\n\nfor i, (a, b) in enumerate(zip(f1, f2), 1):\n    if a != b:\n        print(i, a, b)\n\nGotcha #1: len(f1) and len(f2) come out different — 350 vs 351 lines.\nzip() silently\nafter a genuine\nThe fix is to use a real sequence-alignment diff instead of a positional\nzip(), so insertions and deletions are handled correctly:\nimport diff…",
+          "link": "https://dev.to/exploitnotes/broncoctf-spot-the-difference-writeup-4505",
+          "publishedOn": "2026-07-12T17:50:18.000Z",
+          "wordCount": 2207,
+          "title": "BroncoCTF : Spot the difference Writeup",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fiaa4b0d6q7if2bwh144r.gif"
         },
         {
-          "id": "https://dev.to/exploitnotes/bronoctf-custom-cipher-writeup-19po",
+          "id": "https://dev.to/lovestaco/i-poked-a-10-year-old-chat-protocol-with-a-stick-2g4h",
+          "author": "Athreya aka Maneshwar",
+          "description": "Hello, I'm Maneshwar. I'm building git-lrc, a Micro AI code reviewer that runs on every commit. It is free and source-available on Github. Star git-lrc to help devs discover the project. Do give it a try and share your feedback.\nSo here's how I spent my weekend. \nI went digging through old GitHub repos looking for something forgotten, found a project called lhttp, and instead of just reading the README like a reasonable person, I cloned it, compiled it, ran it, and poked it with a stick until it did something weird.\nIt did something weird. We'll get there.\nlhttp describes itself as \"a http like protocol using websocket to provide long live, build your IM service quickly scalable without XMPP.\" \nTranslation: it's a tiny text protocol, styled like HTTP, that rides on top of a websocket conne…",
+          "link": "https://dev.to/lovestaco/i-poked-a-10-year-old-chat-protocol-with-a-stick-2g4h",
+          "publishedOn": "2026-07-12T17:49:36.000Z",
+          "wordCount": 2879,
+          "title": "I Poked a 10-Year-Old Chat Protocol With a Stick",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fadjg9dyogl0me32okg16.png"
+        },
+        {
+          "id": "https://dev.to/biomathcode/build-a-football-dribbler-game-using-google-ai-studio-3cod",
+          "author": "Pratik sharma",
+          "description": "This is a submission for Weekend Challenge: Passion Edition\nI have always loved playing football and cricket. It much more about the learning process. When you start learning you are not out in the field. You learn slowly. You learn to dribble, drift, passing, kicking. Things from first principles. That where the fun is. We may start hating the sports when we lose or are not good enough. But Sometimes Your rediscover your learnings. You rediscover your fun. This is the reason i build this project. Dribbling is the most addictive activity. I would have spend countless hours dribbling.  \n  \n  \n\n\nI build a computer vision enabled football dribble game. The rules are simple keep the ball up in the air like dribbling, a random goal post appears on the screen, your ball touches the goal post. Ye…",
+          "link": "https://dev.to/biomathcode/build-a-football-dribbler-game-using-google-ai-studio-3cod",
+          "publishedOn": "2026-07-12T17:49:23.000Z",
+          "wordCount": 3213,
+          "title": "Build a FootBall Dribbler Game Using Google AI Studio",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fcweyveg56sduznki9k3r.png"
+        },
+        {
+          "id": "https://dev.to/exploitnotes/broncoctf-unblur-me-writeup-27a2",
           "author": "Yogeshwar Peela",
-          "description": "Summary\n\n\npscheme.py implements a toy \"encryption\" scheme that encodes each 4-byte\noriginal public key is handed to you in the ciphertext, the scheme\norder field to undo the\nimport cmath\nimport itertools\nimport random\n\n\nclass Poly:\n    def __init__(self, coeff: list):\n        self.coeff = coeff\n        self.coeff.reverse()\n        self.coeff = list(itertools.dropwhile(lambda x: x == 0, self.coeff))\n        self.coeff.reverse()\n\n        if len(self.coeff) == 0:\n            self.coeff = [0]\n\n    def get_degree(self):\n        return len(self.coeff) - 1\n\n    def __mul__(self, other):\n        if other.get_degree() == 1 and other.coeff[0] == 0:\n            return Poly([0])\n\n        newdeg = self.get_degree() + other.get_degree()\n        newcoeff = [0 for _ in range(newdeg + 1)]\n        for i1, c…",
-          "link": "https://dev.to/exploitnotes/bronoctf-custom-cipher-writeup-19po",
-          "publishedOn": "2026-07-12T16:35:17.000Z",
-          "wordCount": 2583,
-          "title": "BronoCTF : Custom Cipher Writeup",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fi6wjew0awefsg8jp8l7h.gif"
+          "description": "Challenge\n\n\nA web page at https://broncoctf-unblur-me.chals.io/ presents a\nSolve 500 derivatives to unblur the image and unlock a secret.\nProgress: 0 / 500\n\nA blurred image sits behind a quiz form. The stated task is to answer\nblur() filter from the image. Doing that legitimately would be\nFetching the page source directly:\n$ curl https://broncoctf-unblur-me.chals.io/\n\nThe interesting logic is all client-side JavaScript:\nfunction checkAnswer() {\n  const userAnswer = parseInt(document.getElementById('answer').value);\n  if (userAnswer === currentAnswer) {\n    correctCount++;\n    ...\n    if (correctCount >= 500) {\n      // reveal image\n      flag.style.filter = \"none\";\n      flag.style.pointerEvents = \"auto\";\n    }\n  }\n}\n\nfunction loadSecretImage() {\n  fetch('/api/v1/internal/fetch-config-blob…",
+          "link": "https://dev.to/exploitnotes/broncoctf-unblur-me-writeup-27a2",
+          "publishedOn": "2026-07-12T17:46:37.000Z",
+          "wordCount": 2124,
+          "title": "BroncoCTF : Unblur me Writeup",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fnr3dqr42pdeugkvythq8.gif"
         },
         {
-          "id": "https://dev.to/billiem/your-embedding-axes-can-move-while-cosine-neighbours-stay-put-377f",
-          "author": "Billie M",
-          "description": "An embedding can look substantially different after an orthogonal change of basis, even though its cosine similarities have not changed. I built a small browser instrument that makes that mismatch visible: the points move, the axes change, and every phrase keeps the same five cosine neighbours.\nThe measured numerical drift stays below 2e-15 across 180 short phrases embedded into 384 dimensions with MiniLM. That is the narrow result. It is not a claim that every transformation preserves an embedding, or that individual axes can never be useful.\nThe working embedding-tours instrument is on billiem.uk. It is not embedded here. Open it to cycle through raw coordinate pairs, PCA pairs and a seeded grand tour, then use the basis control in raw-coordinate mode to switch between the original and o…",
-          "link": "https://dev.to/billiem/your-embedding-axes-can-move-while-cosine-neighbours-stay-put-377f",
-          "publishedOn": "2026-07-12T16:30:49.000Z",
-          "wordCount": 2061,
-          "title": "Your embedding axes can move while cosine neighbours stay put",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Faynuuo0ltcrltk3h96gx.png"
+          "id": "https://dev.to/zwiserfit/we-did-not-define-our-category-we-ran-a-gym-until-it-defined-itself-40ej",
+          "author": "Suzanne Mok",
+          "description": "We did not define our category before building.\nWe built a system that runs 9 autonomous AI agents operating a real fitness studio in Dongguan, China. 120 days in production. 84 months of operating a physical business before that.\nThen we looked up and realized: there is no existing name for what we built.\n\"AI fitness\" isnt right — we are not a fitness AI. \"Agent OS\" isnt right — there is no operating system. \"Store automation\" misses the point entirely.\nThe closest honest description took 11 words: one founder + 9 open-source agents + one real fitness studio.\nThe Anthropic official handbook describes our constitutional governance model two months after we were already running it.\nJack Dorsey described a verification layer for physical commerce two years before we built it.\nThey never spoke to each other. We never spoke to either of them. Three independent parties, on different sides of the planet, arrived at the same architecture.\nThat is not imitation. That is independent convergence — and it is the strongest signal you can get that a direction is correct before anyone has named it.\nA category is not defined by a pitch deck. It is defined by the intersection of three things:\nWhat you built that no one else has — not what you say you will build\nWhat you learned that no paper could teach you — the failures, the near-misses, the jurisdiction collisions\nWhat failed in ways that only happen at your scale — 34 days of auto-recovered bugs, 19 days of a port proxy ghost, 120 consecutive days of quiet operation\nWe did not write a category definition. We ran a gym until the category defined itself.\nOur category: verification layer for physical business behavior. But we did not start with that name. We started with 84 months of operations, 120 days of agents, and 3.6GB of RAM.\n→ github.com/ZWISERFIT/ZWISERFIT\n→ github.com/ZWISERFIT/retroonto",
+          "link": "https://dev.to/zwiserfit/we-did-not-define-our-category-we-ran-a-gym-until-it-defined-itself-40ej",
+          "publishedOn": "2026-07-12T17:42:29.000Z",
+          "wordCount": 1709,
+          "title": "We Did Not Define Our Category — We Ran a Gym Until It Defined Itself",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fw44nh6zhb6ptniq65wh0.png"
         },
         {
-          "id": "https://dev.to/saint_vandora/-2jpi",
-          "author": "FOLASAYO SAMUEL OLAYEMI",
-          "description": "Comment an Entire File in Vim in Seconds (Two Methods Every Developer Should Know)\n\n\n  \nFOLASAYO SAMUEL OLAYEMI\n                    \n                  \n\n                \nJul 12\n        \n#webdev\n            #devops\n            #programming\n            #tutorial\n        \n5 reactions\n            \nAdd Comment\n            \n        \n        \n          \n            2 min read",
-          "link": "https://dev.to/saint_vandora/-2jpi",
-          "publishedOn": "2026-07-12T16:25:50.000Z",
-          "wordCount": 1469,
-          "title": "Whether you're debugging, testing a new implementation, or temporarily disabling code, there are times when you need to comment out an entire file in Vim. While many developers rely on plugins, Vim already provides powerful built-in commands that make this incredibly fast.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F8fm76ymxzx6sy5d3s3sa.png"
+          "id": "https://dev.to/karthick_07/simplicity-over-complexity-how-i-built-my-minimalist-developer-portfolio-4556",
+          "author": "Karthick (k)",
+          "description": "As software developers, it's easy to get caught up in the trap of over-engineering. We reach for heavy frameworks, endless animations, and massive dependencies before we even consider what we are trying to convey. \nFor my latest portfolio layout, I decided to live by a simple rule: Choose simplicity over complexity. \nHere is how I designed and built a premium, modern developer portfolio using nothing but semantic HTML and clean CSS grid/flexbox layouts.\nThe goal was to create a light, spacious layout that feels dynamic yet entirely professional. \nThe Palette: Clean light backgrounds powered by subtle, moving ambient gradients (radial-gradient combinations).\nTypography: A harmonious pairing of Outfit (for sharp, structural geometric UI elements) and Ovo (a refined serif for striking headers and expressive blocks).\nThe Highlight: A glassmorphic, capsule-shaped navigation deck (.nav-menu-capsule) that floats elegantly at the top of the interface.\nInstead of a static greeting, the landing view includes a live pulsing indicator badge to clearly state my availability to engineering teams right away.\n\nhtml\n<div class=\"live-status-badge\">\n    <span class=\"pulse-dot\"></span>\n    <span class=\"status-text\">Open to new engineering roles</span>\n</div>",
+          "link": "https://dev.to/karthick_07/simplicity-over-complexity-how-i-built-my-minimalist-developer-portfolio-4556",
+          "publishedOn": "2026-07-12T17:42:16.000Z",
+          "wordCount": 1501,
+          "title": "Simplicity Over Complexity: How I Built My Minimalist Developer Portfolio",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fb3jq8la6zbi5aal7cnua.png"
         },
         {
-          "id": "https://dev.to/ankit_rattan/why-distributed-systems-become-essential-beyond-100k-mau-12d3",
-          "author": "Ankit Rattan",
-          "description": "Every application starts small. One server, one database, one backend. Everything runs beautifully. Your APIs respond in milliseconds, deployments are simple, and debugging is straightforward.\nThen your product starts growing.\nA few thousand users become tens of thousands. Suddenly, one feature going viral means your entire application slows down. Database connections get exhausted, servers start running at 100% CPU, and a single deployment feels like walking on a tightrope.\nThis is usually the point where developers hear the term Distributed Systems.\nAnd honestly, it sounds way more intimidating than it needs to be.\nSo, what exactly is a distributed system?\nIn simple words, it's just a bunch of independent computers working together so seamlessly that users think they're interacting with …",
-          "link": "https://dev.to/ankit_rattan/why-distributed-systems-become-essential-beyond-100k-mau-12d3",
-          "publishedOn": "2026-07-12T16:23:19.000Z",
-          "wordCount": 2053,
-          "title": "Why Distributed Systems Become Essential Beyond 100K+ MAU",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F4t44a8jlk88cc12a5f2a.png"
+          "id": "https://dev.to/jkballa/swagger-vs-openapi-explained-in-30-seconds-3e3g",
+          "author": "Jitendra Balla",
+          "description": "People say \"Swagger\" and \"OpenAPI\" like they're two different things. Here's the actual story.\nSwagger came first. It was a spec plus tooling for describing REST APIs. It got so popular the spec was donated to a foundation and renamed OpenAPI. So today, \"Swagger\" sometimes means the old spec, sometimes the tools, and sometimes just OpenAPI out of habit.\nThe practical bit: if you have a Swagger file, it's almost certainly OpenAPI-compatible, and you can turn it into docs the same way.\nSwagger to Markdown handles either: https://markdown.co.in/tools/swager-to-markdown.html\nThe bigger lesson from this week: if a machine-readable version of your API already exists in any form, you should almost never write docs from scratch. Generate first, polish second.\nOne tiny tip: pick one name, Swagger or OpenAPI, and use it consistently across your team. Saves new folks a surprising amount of confusion.",
+          "link": "https://dev.to/jkballa/swagger-vs-openapi-explained-in-30-seconds-3e3g",
+          "publishedOn": "2026-07-12T17:38:00.000Z",
+          "wordCount": 1444,
+          "title": "Swagger vs OpenAPI, explained in 30 seconds",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fxnwdux1ucj9jgbh8r80o.png"
         },
         {
-          "id": "https://dev.to/bridgingthegapeucom/ddd-more-is-software-design-dead-in-the-age-of-automatons-5ba9",
-          "author": "BridgingTheGap.eu.com",
-          "description": "Grab your favorite hot sauce, because the tech world is serving up some seriously fiery hot takes on the future of software development. In a recent, unscripted episode of Loosely Coupled, host Karol Skrzymowski gathered a powerhouse panel featuring Martin Fowler, Mathias Verraes, Xin Yao, and Andrew Harmel-Law to dive headfirst into how AI influences software architecture and design.\nThe Great AI Uncertainty\n\"Look, let's stop pretending we have a crystal ball. The AI trajectory has already blindsided us with how effective it is. We know a seismic shift is rocking the software industry, but anyone telling you exactly how the dust will settle is selling you snake oil. Nobody knows.\"\nThis uncertainty is manifesting in the daily reality of development, where the sheer volume of code being gen…",
-          "link": "https://dev.to/bridgingthegapeucom/ddd-more-is-software-design-dead-in-the-age-of-automatons-5ba9",
-          "publishedOn": "2026-07-12T16:21:21.000Z",
-          "wordCount": 2058,
-          "title": "DDD & More: Is Software Design Dead in the Age of Automatons?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fgpswlaczfhsa4pbdm32v.png"
+          "id": "https://dev.to/rsbalaji/solved-the-windows-shrink-volume-problem-using-aomei-partition-assistant-to-install-linux-mint-4ed6",
+          "author": "balaji s",
+          "description": "Recently, I wanted to install Linux Mint Cinnamon alongside Windows 11 on my Samsung Galaxy Book2 Pro 360. Since my laptop had only a single C: drive, I needed to shrink the Windows partition and create 100 GB of unallocated space for Linux.\nAt first, I thought Windows Disk Management would be enough. However, I encountered one of the most common Windows partitioning errors:\n\nYou cannot shrink a volume beyond the point where any unmovable files are located.\nWhen I opened Disk Management Right Click C: → Shrink Volume Windows calculated the available shrink space as only 653 MB instead of the expected 100 GB.\nWindows stores several system files near the end of the partition.\nPage File (pagefile.sys)\nHibernation File (hiberfil.sys)\nMaster File Table (MFT)\nSystem Restore data\nNTFS Metadata\nWi…",
+          "link": "https://dev.to/rsbalaji/solved-the-windows-shrink-volume-problem-using-aomei-partition-assistant-to-install-linux-mint-4ed6",
+          "publishedOn": "2026-07-12T17:37:25.000Z",
+          "wordCount": 1961,
+          "title": "Solved the Windows Shrink Volume Problem Using AOMEI Partition Assistant to Install Linux Mint",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F3e3a4o9qcqaz9z7kjlf5.png"
         },
         {
-          "id": "https://dev.to/tiltedlunar123/i-normalized-four-log-formats-into-one-shape-so-my-detection-rules-didnt-have-to-care-2mkn",
-          "author": "TiltedLunar123",
-          "description": "triagelens is a little soc triage tool i've been building. you paste in raw logs, it runs rule-based detections, maps them to mitre att&ck, scores the risk 0-100, and writes an analyst-style report. the part that almost sank the whole thing wasn't the detections. it was the logs.\nit takes four formats: windows security event 4688, sysmon event id 1, linux ssh auth.log, and generic json. sounds fine until you actually look at them.\na \"process started\" event exists in three of those four. in windows security 4688 it's a structured event with a new process name field and a creator process. in sysmon event 1 it's also structured but the fields sit in different places with different names, plus you get a command line and hashes windows security doesn't give you. in auth.log there's no such thin…",
-          "link": "https://dev.to/tiltedlunar123/i-normalized-four-log-formats-into-one-shape-so-my-detection-rules-didnt-have-to-care-2mkn",
-          "publishedOn": "2026-07-12T16:20:52.000Z",
-          "wordCount": 2181,
-          "title": "i normalized four log formats into one shape so my detection rules didn't have to care",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fu6fgk61gpnqvpdhkm1h5.png"
+          "id": "https://dev.to/nomurasan/i-measured-claude-codes-prompt-cache-cost-three-ways-85-of-it-wasnt-mine-to-trim-48hm",
+          "author": "Sho Naka",
+          "description": "I ran the same empty Claude Code project through three launch paths and read the cache tokens off the session log after every turn. One of those paths never touched the shared server-side cache at all — cache_read stayed at 0 on every run.\nTL;DR: the launch path (VSCode extension, VSCode-internal terminal, or a standalone terminal like iTerm2) decides whether Claude Code hits Anthropic's shared prompt cache. And even after trimming CLAUDE.md files, skills, and hooks, roughly 85% of the remaining cache_creation cost turned out to be Claude Code's own fixed overhead — not anything I control.\nClaude Code writes a JSONL log for every session under ~/.claude/projects/<project-key>/, and each assistant turn in that log carries a usage object with cache_creation_input_tokens and cache_read_input_…",
+          "link": "https://dev.to/nomurasan/i-measured-claude-codes-prompt-cache-cost-three-ways-85-of-it-wasnt-mine-to-trim-48hm",
+          "publishedOn": "2026-07-12T17:37:12.000Z",
+          "wordCount": 2245,
+          "title": "I Measured Claude Code's Prompt-Cache Cost Three Ways. 85% of It Wasn't Mine to Trim.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F5qkkyh25eex2qnbrjdnh.png"
         },
         {
-          "id": "https://dev.to/david_shibley/building-maestro-ai-routing-llm-calls-so-your-agent-doesnt-burn-sonnet-on-summaries-1m36",
-          "author": "David Shibley",
-          "description": "How I built a harness-agnostic model router for Cursor and Claude Code and what broke along the way.\nWhen you use Claude Sonnet for everything in Cursor, you pay premium prices for work a local Llama could handle in two seconds. When you use only Ollama, you get worse results on architecture reviews and multi-step refactors.\nI wanted a middle layer: cheap by default, escalate when the task actually needs it. Not a new chatbot, a dispatcher the existing agent could call for subtasks.\nThat layer became Maestro AI.\nThink of your coding agent as a conductor. It should keep architecture, multi-file edits, and complex reasoning. Maestro is the section leader who picks which musician plays each part:\nA quick HTML demo → local Llama\nA paragraph summary → local strong (or hosted GLM)\nA medium refac…",
-          "link": "https://dev.to/david_shibley/building-maestro-ai-routing-llm-calls-so-your-agent-doesnt-burn-sonnet-on-summaries-1m36",
-          "publishedOn": "2026-07-12T16:19:08.000Z",
-          "wordCount": 3010,
-          "title": "Building Maestro AI: Routing LLM Calls So Your Agent Doesn't Burn Sonnet on Summaries",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F19dl9lecl5ejmtc622qg.png"
+          "id": "https://dev.to/exploitnotes/bronoctf-no-laughing-matter-162d",
+          "author": "Yogeshwar Peela",
+          "description": "Challenge\n\n\nA single file, aha.txt, containing nothing but space-separated 8-letter\nA and H.\n$ cat aha.txt\nAHHAAAHA AHHHAAHA AHHAHHHH AHHAHHHA AHHAAAHH AHHAHHHH AHHHHAHH\nAHAHAHAH AHAAAHHA AHAHAHAH AHAAHHHA AHAAHHHA AHAHHAAH AHAAHHAA\n...\n\nTwo things give this away immediately:\nOnly two distinct symbols (A and H) → almost always means binary\nin disguise (0/1 mapped to two letters).\nEvery \"word\" is exactly 8 characters long → 8 bits = 1 byte. That's\nthe strongest tell — this is ASCII, one character per group.\nSo the plan is: pick a mapping (A → 0, H → 1, or vice versa), convert\ncipher = open(\"aha.txt\").read().split()\n\ndecoded = \"\"\nfor byte in cipher:\n    bits = byte.replace(\"A\", \"0\").replace(\"H\", \"1\")\n    decoded += chr(int(bits, 2))\n\nprint(decoded)\n\nint(bits, 2) parses the 8-character \"0\"/\"1\" string as a base-2 number,\nchr() turns that number into its ASCII character. Running it against\nbronco{UFUNNYLMAOLOLXDIJBOLROFLHAHA}\n\nAlphabet size is a huge clue. A ciphertext using only 2 distinct\ncharacters is very likely binary; 16 distinct characters often means hex;\n64 (plus +, /, =) means base64.\nFixed-width grouping matters. 8-character groups screamed \"one byte\nper group\" before a single line of code was written — always check group\nlengths against 8 (bytes), 2 (hex pairs), 4 (base64 quads), etc.\nGuessing the 0/1 mapping only has two possibilities (A=0,H=1 or\nA=1,H=0) — if the first guess produces garbage, just flip it and\nre-decode; it's a cheap check.",
+          "link": "https://dev.to/exploitnotes/bronoctf-no-laughing-matter-162d",
+          "publishedOn": "2026-07-12T17:35:59.000Z",
+          "wordCount": 1760,
+          "title": "BronoCTF : No Laughing Matter",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fo7vv6leqltpauk80vpc5.gif"
         },
         {
-          "id": "https://dev.to/quantoracle/turn-any-website-into-clean-markdown-for-your-rag-pipeline-with-code-34oe",
-          "author": "quantoracledev",
-          "description": "If you've built anything with retrieval-augmented generation (RAG), you know the\n80% of the work is getting clean text in. Your embeddings\n<div> soup.\nThis post shows a fast, reliable way to convert any URL — or a whole site —\n, with code you can drop into a pipeline today.\nrequests + BeautifulSoup?\n\n\nYou can, and for a single static page it's fine:\nimport requests\nfrom bs4 import BeautifulSoup\n\nhtml = requests.get(\"https://example.com\").text\ntext = BeautifulSoup(html, \"html.parser\").get_text()\n\nBut this falls over fast in the real world:\nYou get everything — menus, footers, \"related articles,\" cookie notices —\nall polluting your chunks and your embeddings.\nJavaScript-rendered sites (React, Vue, Next.js) return an empty shell; you\nneed a real browser.\nStructure is lost — headings, lists, t…",
-          "link": "https://dev.to/quantoracle/turn-any-website-into-clean-markdown-for-your-rag-pipeline-with-code-34oe",
-          "publishedOn": "2026-07-12T16:18:30.000Z",
-          "wordCount": 2044,
-          "title": "Turn any website into clean Markdown for your RAG pipeline (with code)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fxtoc4oxthohx6nmahbcd.png"
-        },
-        {
-          "id": "https://dev.to/scott_shoemaker_8d10ccbd2/architecting-medreach-ai-solving-data-rot-and-regulatory-bottlenecks-in-pharma-marketing-6na",
-          "author": "Scott Shoemaker",
-          "description": "As we kick off Month 1 of our AI Software Development Capstone, I am thrilled to officially introduce the project I will be co-developing over the next five months: MedReach AI.\n\nIn my role as the Project/Scrum Master and Backend Architect, I am pairing up with my teammate, Collin Miner, who will be spearheading the frontend UI/UX and client-side architecture. Together, we are building a multi-tenant SaaS platform designed to completely overhaul how pharmaceutical and medical device companies handle outreach, segmentation, and compliance.       But before diving into our tech stack, we have to look at why this industry is in desperate need of a modern, lightweight solution.\nThe Problem: Data Rot and the \"Two-Person Marketing Team\" Dilemma\n\nWhen a two- or three-person marketing department attempts to run a campaign using unvalidated spreadsheets, three critical failures occur:\nWasted Budget & Poor Targeting: Campaigns are sent to outdated contacts or duplicate records, sinking ROI.\n\n\nRegulatory & Compliance Risks: In the pharma world, sending unverified communications can lead to severe penalties under federal regulations like HIPAA, the Physician Payments Sunshine Act, and strict FDA guidelines regarding off-label promotion.\n\n\nResource Drain: Small teams end up spending 80% of their time manually scrubbing CSVs and cross-referencing government registries instead of actually designing marketing campaigns. \nWhile enterprise-grade data hygiene tools exist, they cost hundreds of thousands of dollars annually and require dedicated technical implementation teams—completely pricing out mid-sized organizations.",
-          "link": "https://dev.to/scott_shoemaker_8d10ccbd2/architecting-medreach-ai-solving-data-rot-and-regulatory-bottlenecks-in-pharma-marketing-6na",
-          "publishedOn": "2026-07-12T16:17:13.000Z",
-          "wordCount": 1631,
-          "title": "Architecting MedReach AI: Solving Data Rot and Regulatory Bottlenecks in Pharma Marketing",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fyoikxvkbc3ilk5zgwteh.png"
-        },
-        {
-          "id": "https://dev.to/mickyarun/i-got-obsessed-with-killing-scrum-so-i-built-a-world-out-of-12-ai-agents-1hl1",
-          "author": "arun rajkumar",
-          "description": "This is a submission for Weekend Challenge: Passion Edition\nI built Bodhiorchard — an open-source platform that replaces Scrum, Jira, and the team wiki with 12 specialised AI agents and a living 3D world you can actually walk around in.\nI call the methodology Agent-Driven Development (ADD). Instead of story points, planning poker, and a graveyard of stale Confluence pages, the work lives in one place: a BUD (Business Understanding Document) — a single, vector-indexed source of truth that carries a feature from a Slack conversation all the way to production.\nThe agents handle the busywork I never wanted humans doing: triage, design drafts, tech plans, standups, test plans, estimation, retros. Your repos show up as trees in an orchard. Features are branches. The whole team walks around as av…",
-          "link": "https://dev.to/mickyarun/i-got-obsessed-with-killing-scrum-so-i-built-a-world-out-of-12-ai-agents-1hl1",
-          "publishedOn": "2026-07-12T16:09:21.000Z",
-          "wordCount": 3347,
-          "title": "I Got Obsessed With Killing Scrum. So I Built a World Out of 12 AI Agents.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ffcskqi1obz6i2yedc9n2.png"
-        },
-        {
-          "id": "https://dev.to/saint_vandora/comment-an-entire-file-in-vim-in-seconds-two-methods-every-developer-should-know-k78",
-          "author": "FOLASAYO SAMUEL OLAYEMI",
-          "description": "Whether you're debugging, testing a new implementation, or temporarily disabling code, there are times when you need to comment out an entire file in Vim. While many developers rely on plugins, Vim already provides powerful built-in commands that make this incredibly fast.\nHere are two efficient approaches.\nThis approach is straightforward because you can visually confirm that the entire file is selected before applying the comment.\nPress:\nEsc\n\nType:\nggVG\n\nHere's what each command does:\ngg → Jump to the beginning of the file.\nV → Enter Visual Line Mode.\nG → Extend the selection to the last line.\nAt this point, the entire file should be highlighted.\nPress:\n:\n\nVim automatically inserts:\n:'<,'>\n\nThis means \"apply the following command to the selected lines.\"\nNow complete the command:\n:'<,'>s/…",
-          "link": "https://dev.to/saint_vandora/comment-an-entire-file-in-vim-in-seconds-two-methods-every-developer-should-know-k78",
-          "publishedOn": "2026-07-12T16:09:09.000Z",
-          "wordCount": 2020,
-          "title": "Comment an Entire File in Vim in Seconds (Two Methods Every Developer Should Know)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fq7ayy8pmkpb2vxzcdt87.png"
+          "id": "https://dev.to/anshulnegitc/fifa-fan-screen-ah3",
+          "author": "Anshul Negi",
+          "description": "This is a submission for Weekend Challenge: Passion Edition\nFIFA Jumbotron lets users upload a 10-second video and display it on a virtual football stadium jumbotron. \n / \n        FifaFanFestJumbotron\n      \n    \n\n⚽ FIFA Fan Fest 2026 Jumbotron Experience\nWelcome to the FIFA Fan Fest 2026 Jumbotron Experience, an interactive, full-stack, zoneless Angular application that brings the stadium celebration directly to fans. Users can record a 10-second celebration video and watch themselves broadcast on the grand stadium jumbotron with state-of-the-art live chroma-keying (green screen) technology!\n🌟 Key Features\nLive Chroma-Keying & Compositing: Integrates camera feeds or user-uploaded media seamlessly into the virtual jumbotron using a custom-tailored green-screen algorithm.\nRobust Media Hand…",
+          "link": "https://dev.to/anshulnegitc/fifa-fan-screen-ah3",
+          "publishedOn": "2026-07-12T17:35:29.000Z",
+          "wordCount": 1671,
+          "title": "FIFA Fan Screen",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0p820uafnupfguxs53rl.png"
         }
       ]
     },
@@ -252,13 +252,33 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
-          "id": "https://web.archive.org/web/20040612082405/https://www.google.com/explanation.html",
+          "id": "https://github.com/hasenj/go-shirei/",
           "author": null,
           "description": "Comments",
-          "link": "https://web.archive.org/web/20040612082405/https://www.google.com/explanation.html",
-          "publishedOn": "2026-07-12T16:04:19.000Z",
-          "wordCount": 445,
-          "title": "An explanation of our search results",
+          "link": "https://github.com/hasenj/go-shirei/",
+          "publishedOn": "2026-07-12T16:55:42.000Z",
+          "wordCount": 2309,
+          "title": "Show HN: Shirei, cross-platform GUI framework in native Go",
+          "imageUrl": "https://opengraph.githubassets.com/59c8985c76cdaee5cc17a08d9ab41ef160460425df0cf3edd518476327a16877/hasenj/go-shirei"
+        },
+        {
+          "id": "https://arxiv.org/abs/2607.06377",
+          "author": null,
+          "description": "Comments",
+          "link": "https://arxiv.org/abs/2607.06377",
+          "publishedOn": "2026-07-12T16:54:47.000Z",
+          "wordCount": 616,
+          "title": "Automation Without Understanding",
+          "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
+        },
+        {
+          "id": "https://marc.info/?l=openbsd-misc&m=119318909016582",
+          "author": null,
+          "description": "Comments",
+          "link": "https://marc.info/?l=openbsd-misc&m=119318909016582",
+          "publishedOn": "2026-07-12T16:05:29.000Z",
+          "wordCount": 218,
+          "title": "Theo de Raadt: \"You've been smoking something mind altering\" (2007)",
           "imageUrl": null
         },
         {
@@ -332,6 +352,26 @@
           "imageUrl": "https://static.ghost.org/v5.0.0/images/publication-cover.jpg"
         },
         {
+          "id": "https://github.com/BryanLunduke/LCOS",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/BryanLunduke/LCOS",
+          "publishedOn": "2026-07-12T14:15:13.000Z",
+          "wordCount": 1340,
+          "title": "The Lunduke Computer Operating System",
+          "imageUrl": "https://opengraph.githubassets.com/5f0ae6ac5187b271033d7ffa78e51bc5210d7f09f153da8661ef956becfe6f53/BryanLunduke/LCOS"
+        },
+        {
+          "id": "https://kurvengefahr.org/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://kurvengefahr.org/",
+          "publishedOn": "2026-07-12T14:09:23.000Z",
+          "wordCount": 40,
+          "title": "Show HN: Kurvengefahr – browser CAD/CAM for pen plotters",
+          "imageUrl": "https://kurvengefahr.org/og.png"
+        },
+        {
           "id": "https://github.com/sshwarts/skillscript",
           "author": null,
           "description": "Comments",
@@ -339,7 +379,7 @@
           "publishedOn": "2026-07-12T13:34:00.000Z",
           "wordCount": 12323,
           "title": "Show HN: Skillscript – A declarative, sandboxed language for tool orchestration",
-          "imageUrl": "https://opengraph.githubassets.com/626c70549c4aaf4812e54fac45c83ed86b362847bf517bd512021fa4033dc58b/sshwarts/skillscript"
+          "imageUrl": "https://opengraph.githubassets.com/27a5aa523a10546b1777bc29209ed7cea4c0665d912948a31557402b5fd6ef50/sshwarts/skillscript"
         },
         {
           "id": "https://spectrum.ieee.org/ai-science-research-flattens-discovery",
@@ -387,7 +427,7 @@
           "description": "Comments",
           "link": "https://terrytao.wordpress.com/2026/07/11/old-and-new-apps-via-modern-coding-agents/",
           "publishedOn": "2026-07-12T11:09:42.000Z",
-          "wordCount": 5080,
+          "wordCount": 5120,
           "title": "Old and new apps, via modern coding agents by Terry Tao",
           "imageUrl": "https://terrytao.wordpress.com/wp-content/uploads/2026/07/image-2.png"
         },
@@ -409,7 +449,7 @@
           "publishedOn": "2026-07-12T05:51:32.000Z",
           "wordCount": 2858,
           "title": "Show HN: Mindwalk – Replay coding-agent sessions on a 3D map of your codebase",
-          "imageUrl": "https://opengraph.githubassets.com/82931d553dda3ecb0b1480afed92b7e83cdafaf2eda5042fbd895d31cbeabf07/cosmtrek/mindwalk"
+          "imageUrl": "https://opengraph.githubassets.com/9968bd24a0d1a2892961ed4286e90c80de38a14cf47a288e7f878c3349846c73/cosmtrek/mindwalk"
         },
         {
           "id": "https://www.iroh.computer/blog/mesh-llm",
@@ -420,26 +460,6 @@
           "wordCount": 2832,
           "title": "Mesh LLM: distributed AI computing on iroh",
           "imageUrl": "https://www.iroh.computer/api/og?title=Blog&subtitle=Mesh%20LLM:%20distributed%20AI%20computing%20on%20iroh"
-        },
-        {
-          "id": "https://github.com/Wren6991/RISCBoy",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/Wren6991/RISCBoy",
-          "publishedOn": "2026-07-11T21:58:00.000Z",
-          "wordCount": 3417,
-          "title": "RISCBoy is an open-source portable games console, designed from scratch",
-          "imageUrl": "https://opengraph.githubassets.com/65dc4e8fc88545101a7bfc782afd4055ccabedefbba1dd6578fea9fcad1b41f8/Wren6991/RISCBoy"
-        },
-        {
-          "id": "https://antjs.org/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://antjs.org/",
-          "publishedOn": "2026-07-11T20:07:18.000Z",
-          "wordCount": 7,
-          "title": "Show HN: Ant – A JavaScript runtime and ecosystem",
-          "imageUrl": "/og_image.png"
         },
         {
           "id": "https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom",
@@ -462,16 +482,6 @@
           "imageUrl": "https://techcrunch.com/wp-content/uploads/2023/05/vint-cerf-GettyImages-454796419.jpg?resize=1200,723"
         },
         {
-          "id": "https://triapul.cz/automa/i_did_not_kill_stanley_lieber",
-          "author": null,
-          "description": "Comments",
-          "link": "https://triapul.cz/automa/i_did_not_kill_stanley_lieber",
-          "publishedOn": "2026-07-09T14:10:04.000Z",
-          "wordCount": 4958,
-          "title": "I Did Not Kill Stanley Lieber: How to Draw (With 9front)",
-          "imageUrl": null
-        },
-        {
           "id": "https://www.ft.com/content/200a6c44-9b66-4af3-82eb-98acb53898e4",
           "author": null,
           "description": "Comments",
@@ -479,16 +489,6 @@
           "publishedOn": "2026-07-08T22:07:05.000Z",
           "wordCount": null,
           "title": "Lessons from the Vasa Shipwreck",
-          "imageUrl": null
-        },
-        {
-          "id": "https://nigeltao.github.io/blog/2026/handsum.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://nigeltao.github.io/blog/2026/handsum.html",
-          "publishedOn": "2026-07-08T12:07:59.000Z",
-          "wordCount": 3614,
-          "title": "Handsum: An LQIP Image File Format",
           "imageUrl": null
         },
         {
@@ -522,14 +522,14 @@
           "imageUrl": null
         },
         {
-          "id": "https://mamoniem.com/xbox-og-adventures/",
+          "id": "https://infrequently.org/2026/07/abject-praise/",
           "author": null,
           "description": "Comments",
-          "link": "https://mamoniem.com/xbox-og-adventures/",
-          "publishedOn": "2026-07-07T04:35:55.000Z",
-          "wordCount": 4036,
-          "title": "Xbox 'OG' Adventures",
-          "imageUrl": null
+          "link": "https://infrequently.org/2026/07/abject-praise/",
+          "publishedOn": "2026-07-07T12:36:15.000Z",
+          "wordCount": 6758,
+          "title": "Abject Praise",
+          "imageUrl": "https://infrequently.org/2026/07/abject-praise/overall-pass-rates.jpg"
         },
         {
           "id": "https://atthis.link/blog/2026/57207.html",
@@ -789,7 +789,7 @@
           "description": "The market shrank by $7.7 billion in June alone, the largest dollar amount since May 2022's Terra-Luna crash, but stablecoins will likely resume their long-term growth, one analyst said.",
           "link": "https://www.coindesk.com/markets/2026/07/12/stablecoin-market-cap-has-shrunk-by-usd10-billion-since-may-but-analyst-sees-no-reason-to-panic",
           "publishedOn": "2026-07-12T13:00:00.000Z",
-          "wordCount": 13089,
+          "wordCount": 13090,
           "title": "Stablecoin market cap has shrunk by $10 billion since May, but analyst sees no reason to panic",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/62ae8ce6306c7fdf4b52e0a884495d92c7e20a82-1920x1280.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -799,7 +799,7 @@
           "description": "The group's Dir. of Global Macro Jurien Timmer calls it an accumulation zone but notes the lack of a catalyst to bounce yet.",
           "link": "https://www.coindesk.com/markets/2026/07/12/bitcoin-is-nearing-a-power-law-support-line-fidelity-has-tracked-since-2015",
           "publishedOn": "2026-07-12T11:30:00.000Z",
-          "wordCount": 12182,
+          "wordCount": 12183,
           "title": "Bitcoin is nearing a power law support line Fidelity has tracked since 2015",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/302438fa1f251317f39e4d492e27d9f5668318b6-650x372.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -809,7 +809,7 @@
           "description": "The U.S. hit Iran for the third time this week and Tehran has reportedly closed the Strait of Hormuz again.",
           "link": "https://www.coindesk.com/markets/2026/07/12/bitcoin-ether-little-changed-as-u-s-launches-fresh-iran-strikes",
           "publishedOn": "2026-07-12T06:18:15.000Z",
-          "wordCount": 12372,
+          "wordCount": 12373,
           "title": "Bitcoin, ether little changed as U.S. launches fresh Iran strikes",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0dcb7e70fce0bac1a8a2dfe771435937149fb242-6720x4480.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -819,7 +819,7 @@
           "description": "Ripple's Brad Garlinghouse says he and co-founder Chris Larsen considered winding the company down and handing its XRP to shareholders before deciding to fight the 2020 lawsuit.",
           "link": "https://www.coindesk.com/markets/2026/07/12/ripple-once-weighed-shutting-down-and-handing-xrp-to-shareholders-ceo-says",
           "publishedOn": "2026-07-12T06:09:49.000Z",
-          "wordCount": 12250,
+          "wordCount": 12251,
           "title": "Ripple once weighed shutting down and handing XRP to shareholders, CEO says",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3fdb04bd3eb1c1413ad0d70e8d1e464ee4866ad9-1500x1000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -829,7 +829,7 @@
           "description": "The BIP 110 proposal would cap arbitrary data on Bitcoin for a year, but Saylor, Adam Back and others say turning a spam dispute into a consensus fight could create a bigger risk than the spam itself.",
           "link": "https://www.coindesk.com/tech/2026/07/12/bitcoin-s-bip-110-fork-deadline-nears-with-miner-support-at-zero",
           "publishedOn": "2026-07-12T05:49:52.000Z",
-          "wordCount": 13185,
+          "wordCount": 13186,
           "title": "Bitcoin’s BIP 110 fork deadline nears with miner support at zero",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/61a9559ef27c28600826f6691b0424ccfd776182-1500x1000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -839,7 +839,7 @@
           "description": "Bonzo Lend lost approximately $9.05 million after an attacker exploited a verification flaw in a third-party Supra oracle contract on the Hedera network.",
           "link": "https://www.coindesk.com/web3/2026/07/11/lending-protocol-bonzo-loses-77-of-value-locked-as-usd9-million-oracle-exploit-rattles-hedera",
           "publishedOn": "2026-07-11T18:06:58.000Z",
-          "wordCount": 11945,
+          "wordCount": 11946,
           "title": "Lending protocol Bonzo loses 77% of value locked as $9 million oracle exploit rattles Hedera",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/eeb54516a3b0a19f03d51ee5552619fa13b3be71-1920x1440.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -849,7 +849,7 @@
           "description": "Funding constraints and investor caution, not regulation, are delaying crypto IPOs, according to Cohen & Company Capital Markets' Christian Lopez.",
           "link": "https://www.coindesk.com/business/2026/07/08/crypto-ipo-market-stalls-as-capital-rotates-to-ai-and-macro-uncertainty-weighs",
           "publishedOn": "2026-07-11T17:07:24.000Z",
-          "wordCount": 13460,
+          "wordCount": 13461,
           "title": "Crypto IPO market stalls as capital rotates to AI and macro uncertainty weighs",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/254961a3adc7c5698b4ba47d0de96c8605400978-1920x1280.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -859,7 +859,7 @@
           "description": "Several recent regulatory steps indicate the UK might finally stop dragging its feet when it comes to crypto, argues Wirex CEO Chet Shah.",
           "link": "https://www.coindesk.com/opinion/2026/07/11/the-uk-has-finally-shown-it-s-serious-about-crypto",
           "publishedOn": "2026-07-11T15:00:00.000Z",
-          "wordCount": 13600,
+          "wordCount": 13465,
           "title": "The UK has finally shown it’s serious about crypto",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d77ca36caf0092a5926c5d03601dbfc0203999a6-5779x3853.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -869,7 +869,7 @@
           "description": "It's a sign of the times as the troubled company swaps its bitcoin treasury ambitions for AI data centers.",
           "link": "https://www.coindesk.com/markets/2026/07/11/bitcoin-treasury-company-empery-digital-sold-about-half-of-btc-stack",
           "publishedOn": "2026-07-11T12:25:05.000Z",
-          "wordCount": 11966,
+          "wordCount": 11821,
           "title": "Bitcoin treasury company Empery Digital sold about half of its BTC stack",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f4c321fb46fab8f95fc281073bbf1a2544f78eb7-2328x1492.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -879,7 +879,7 @@
           "description": "The Ethereum Foundation pointed coordinated AI agents at the software its validators run and got a remotely triggerable crash out of it. It also got a pile of confident, well-written findings that were not bugs at all.",
           "link": "https://www.coindesk.com/tech/2026/07/10/ai-found-an-ethereum-bug-that-could-take-validators-offline-but-humans-had-to-prove-it",
           "publishedOn": "2026-07-11T12:00:00.000Z",
-          "wordCount": 13298,
+          "wordCount": 13079,
           "title": "AI found an Ethereum bug that could take validators offline, but humans had to prove it",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e66950b0e6ed69b66abb166d8961c9cff1c8bfb1-720x406.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -889,7 +889,7 @@
           "description": "Analysts predict a rally to $300,000 or more by 2029. But key data suggests the era of moonshots may be over.",
           "link": "https://www.coindesk.com/markets/2026/07/10/bitcoin-analysts-predict-usd300-000-usd500-000-price-in-2029-the-math-says-no",
           "publishedOn": "2026-07-11T02:30:00.000Z",
-          "wordCount": 13029,
+          "wordCount": 13176,
           "title": "Bitcoin analysts predict $300,000–$500,000 price in 2029. The math says no",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c7d242469e65ee7e6f0e9ceac50286334728802f-5458x3638.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -899,7 +899,7 @@
           "description": "Alex Schultz says stablecoins are assumed inside Meta. The harder problem is getting the rest of the world there.",
           "link": "https://www.coindesk.com/coindesk-news/2026/07/10/meta-s-chief-data-officer-says-agentic-commerce-is-the-next-tier-of-business",
           "publishedOn": "2026-07-10T21:26:55.000Z",
-          "wordCount": 12807,
+          "wordCount": 12808,
           "title": "Meta's Chief Data Officer Says Agentic Commerce is the \"Next Tier of Business\"",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0b55bc6f2fad31cc29bbad3b7a452e3ddd7fdf79-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -909,7 +909,7 @@
           "description": "Despite President Donald Trump's refusal to sign Congress' bipartisan housing bill, it's set to go into effect at midnight, and its temporary CBDC ban along with it.",
           "link": "https://www.coindesk.com/policy/2026/07/10/u-s-government-digital-dollar-set-to-be-banned-tonight-under-housing-law-s-cbdc-limit",
           "publishedOn": "2026-07-10T16:02:21.000Z",
-          "wordCount": 12964,
+          "wordCount": 12819,
           "title": "U.S. government digital dollar set to be banned tonight under housing law's CBDC limit",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e473e13d2b998775c2c41a1456513cc8710f6cd7-2461x1385.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -919,7 +919,7 @@
           "description": "The initiative builds on a broader shift by companies exploring stablecoins to move money between international operations more efficiently.",
           "link": "https://www.coindesk.com/business/2026/07/10/hyundai-becomes-first-major-south-korean-company-to-introduce-internal-stablecoin-transfers",
           "publishedOn": "2026-07-10T15:26:43.000Z",
-          "wordCount": 12300,
+          "wordCount": 12301,
           "title": "Hyundai becomes first major South Korean company to introduce internal stablecoin transfers",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/fc1a4a08a209cc97dd1f7ba339f320d900f67507-5175x3514.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -929,7 +929,7 @@
           "description": "The Genlayer Foundation is leading the 27-firm consortium that makes AI-based payments, escrow and dispute resolution interoperable.",
           "link": "https://www.coindesk.com/business/2026/07/10/okx-metamask-matter-labs-back-dispute-resolution-court-for-ai-agents",
           "publishedOn": "2026-07-10T12:29:08.000Z",
-          "wordCount": 12251,
+          "wordCount": 12252,
           "title": "OKX, MetaMask, Matter Labs back dispute resolution court for AI agents",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c4b55ff67ef1d065e3e2e556ba0209a416b27d44-2048x1365.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -939,7 +939,7 @@
           "description": "The approval adds to a growing list of crypto firms seeking federal banking licenses as the industry moves into the regulated financial system.",
           "link": "https://www.coindesk.com/business/2026/07/10/circle-secures-u-s-trust-bank-approval-in-crypto-expansion",
           "publishedOn": "2026-07-10T11:41:47.000Z",
-          "wordCount": 12392,
+          "wordCount": 12393,
           "title": "Circle soars after securing U.S. trust bank approval in crypto expansion",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/024ae1afdc1672e747814cc0546828b965ecf695-5162x3441.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -949,7 +949,7 @@
           "description": "Your day-ahead look for July 10, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/07/10/japan-s-invest-locally-plan-likely-to-spur-demand-for-assets-like-bitcoin-gold",
           "publishedOn": "2026-07-10T11:37:31.000Z",
-          "wordCount": 13227,
+          "wordCount": 13228,
           "title": "Japan's 'invest locally' plan likely to spur demand for assets like bitcoin, gold",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8084d437acef0b7abd54ddbc7772f8ce7e5f01b0-4885x2748.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -959,7 +959,7 @@
           "description": "The price of bitcoin hit $64,400, retesting a level it failed to penetrate on Monday, with a break higher opening the path toward the June 15 peak of $67,250.",
           "link": "https://www.coindesk.com/markets/2026/07/10/crypto-defies-equity-weakness-as-altcoin-optimism-builds-into-the-weekend",
           "publishedOn": "2026-07-10T10:37:44.000Z",
-          "wordCount": 13396,
+          "wordCount": 13265,
           "title": "Crypto defies equity weakness as altcoin optimism builds into the weekend",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4429ece1ee47e2753b9dea6ed02a23b700a51c0c-1848x978.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -969,7 +969,7 @@
           "description": "Polymarket's application to allow users to take positions that are not fully collateralized follows authorization granted to rival Kalshi in March.",
           "link": "https://www.coindesk.com/markets/2026/07/10/polymarket-seeks-approval-to-bring-margin-trading-to-u-s-customers",
           "publishedOn": "2026-07-10T09:35:21.000Z",
-          "wordCount": 12160,
+          "wordCount": 12161,
           "title": "Polymarket seeks approval to bring margin trading to U.S. customers",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3a10f0f1f99cb5edbe4443d5281553bd75080b6b-6048x4024.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -979,7 +979,7 @@
           "description": "Bitcoin has spent 307 days in the $60,000-$70,000 range, the third longest consolidation in any $10,000 price band.",
           "link": "https://www.coindesk.com/markets/2026/07/10/bitcoin-s-usd60k-to-usd70k-range-becomes-third-longest-consolidation-in-history",
           "publishedOn": "2026-07-10T09:16:52.000Z",
-          "wordCount": 12348,
+          "wordCount": 12349,
           "title": "Bitcoin's $60,000-$70,000 range becomes third most traded range in history",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/82471df5aceb0cc90abe5bd675be96931b284e45-1440x840.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -989,7 +989,7 @@
           "description": "The bitcoin treasury company is working with JPYC and Progmat to explore tokenized credit products backed by bitcoin, aiming to create efficient, 24/7 credit markets in Japan.",
           "link": "https://www.coindesk.com/markets/2026/07/10/metaplanet-explores-bringing-bitcoin-backed-digital-credit-to-japan",
           "publishedOn": "2026-07-10T09:08:20.000Z",
-          "wordCount": 13032,
+          "wordCount": 13033,
           "title": "Metaplanet explores bringing bitcoin-backed digital credit to Japan",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3ea648cf946f0b6bd658d99f67a6767d04b5becd-1200x800.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -999,7 +999,7 @@
           "description": "A smoother long-term MACD just flipped bullish, pointing to more upside. Here are key levels that will decide if the ongoing bounce turns into a full blown uptrend.",
           "link": "https://www.coindesk.com/markets/2026/07/10/bitcoin-gets-a-green-light-from-a-reliable-momentum-gauge-here-are-key-levels-to-watch",
           "publishedOn": "2026-07-10T06:49:13.000Z",
-          "wordCount": 13237,
+          "wordCount": 13240,
           "title": "Bitcoin gets a green light from a reliable momentum gauge. Here are key levels to watch",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a5d0f75b04392e25a31f206a3e9a16e752cb4a2c-2872x1915.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1009,7 +1009,7 @@
           "description": "Spot bitcoin funds lost about $95 million on Thursday and ether funds roughly $52 million, ending the one bright spot in crypto's institutional flows even as prices rallied.",
           "link": "https://www.coindesk.com/tech/2026/07/10/live-markets-bitcoin-etfs-bleed-again-while-ether-funds-snap-a-five-day-inflow-streak",
           "publishedOn": "2026-07-10T06:21:34.000Z",
-          "wordCount": 15520,
+          "wordCount": 15521,
           "title": "Live updates: Bitcoin rises to $64,000 as SK Hynix opens for trade after $26.5 billion IPO",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/80da2f00868990a0c7d6b1977ab9e547140f89a4-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1019,7 +1019,7 @@
           "description": "A late-session volume surge carried XRP above its recent range, with traders now watching whether $1.10 can hold as support.",
           "link": "https://www.coindesk.com/markets/2026/07/10/xrp-up-2-as-buyers-push-through-usd1-10-resistance",
           "publishedOn": "2026-07-10T05:13:48.000Z",
-          "wordCount": 12861,
+          "wordCount": 12496,
           "title": "XRP up 2% as buyers push through $1.10 resistance",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3335575b8017b2a144ef36b99906483e6efe6b5d-1400x866.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1029,7 +1029,7 @@
           "description": "A sharp rise in the yen has left bitcoin and other major cryptocurrencies underperforming in yen terms compared with their dollar-based trading pairs.",
           "link": "https://www.coindesk.com/markets/2026/07/10/bitcoin-s-quiet-split-strong-in-usd-lagging-in-jpy-as-yen-rises-on-intervention-fears",
           "publishedOn": "2026-07-10T04:34:06.000Z",
-          "wordCount": 12890,
+          "wordCount": 13037,
           "title": "Bitcoin's quiet split: Strong in USD, lagging in JPY as Yen rises on intervention fears",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3c086f61e9c97a87a590441e5467e751f7438b20-4898x3265.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
@@ -1051,7 +1051,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-07-12T16:55:20.000Z",
+          "publishedOn": "2026-07-12T17:57:05.000Z",
           "wordCount": 4303,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"

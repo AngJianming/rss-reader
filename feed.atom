@@ -1,301 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-12T16:55:51.409Z</id>
+    <id>urn:2026-07-12T17:57:44.169Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-12T16:55:51.409Z</updated>
+    <updated>2026-07-12T17:57:44.169Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-12T16:55:20.000Z</updated>
+        <updated>2026-07-12T17:57:05.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[BronocCTF : Proper Pwning Writeup]]></title>
-        <id>https://dev.to/exploitnotes/bronocctf-proper-pwning-writeup-1h8j</id>
-        <link href="https://dev.to/exploitnotes/bronocctf-proper-pwning-writeup-1h8j"/>
-        <updated>2026-07-12T16:43:19.000Z</updated>
-        <summary type="html"><![CDATA[Category: Pwn / Binary Exploitation
-Difficulty: Medium
-Flag: bronco{1m_th3_b35t_PWN3r_1n_th3_wh0l3_w1d3_w0r1d}
-We're given proper.zip containing four files:
-$ unzip proper.zip
-Archive:  proper.zip
-  inflating: Dockerfile
-  inflating: flag.txt
-  inflating: proper
-  inflating: proper.c
-
-The Dockerfile shows how the binary is built and served:
-RUN gcc proper.c -o proper -fno-stack-protector -z execstack -no-pie
-...
-EXPOSE 1338
-CMD ["socat", "TCP-LISTEN:1338,reuseaddr,fork", "EXEC:./proper"]
-
-Key takeaways from this alone:
-No stack canary (-fno-stack-protector)
-No PIE (-no-pie) → all addresses are fixed and known from the binary itself, no leak needed
-The service is just the compiled binary piped over a raw TCP socket via socat
+        <title type="html"><![CDATA[What do you use AI for the most?]]></title>
+        <id>https://dev.to/arikaturika/what-do-you-use-ai-for-the-most-14im</id>
+        <link href="https://dev.to/arikaturika/what-do-you-use-ai-for-the-most-14im"/>
+        <updated>2026-07-12T17:54:33.000Z</updated>
+        <summary type="html"><![CDATA[At work, I use Claude, ChatGPT and Copilot, depending on the task I have. Sometimes I create my task plan using one agent, another one helps with writing the code and another one does the code review. Sometimes I use the same agent for all three steps, so I don't really have a flow that's set in stone.
+One thing I did notice though is that, all agents perform very well when it comes to generatig code for greenfield projects but the quality of their output decreases the more I work with legacy code. This is something that my colleagues also noticed, so I assume my experince is not unique.
+Since our code base is 100% legacy, I do use the agents for generating code, but what I use them for the most is explaining code. And that saves me a lot of time and frustration. In the past, if I was lucky enough and the person that wrote a very complicated piece of code would still be working in the company, I would ask them to help me understand their reasoning. 
+Now I do not really need to do that. If the documentation is not sufficient, I can always ask an agent to explain the logic behind some code and almost everytime it comes back with a reasonable explanation. Sometimes the explanation is really silly or it's a straight up hallucination but I think that's where our common sense should kick in: while reading something the agent outputed, by looking at the code we should be able to tell if the explanation makes sense or not. 
+What are you using your agents the most?
+Photo credit Daniil Komov on Pexels]]></summary>
+        <author>
+            <name>Arika O</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BroncoCTF : Spot the difference Writeup]]></title>
+        <id>https://dev.to/exploitnotes/broncoctf-spot-the-difference-writeup-4505</id>
+        <link href="https://dev.to/exploitnotes/broncoctf-spot-the-difference-writeup-4505"/>
+        <updated>2026-07-12T17:50:18.000Z</updated>
+        <summary type="html"><![CDATA[Challenge
 
 
+We're given two files, file1.txt and file2.txt, each containing what looks like
+$ ls
+file1.txt  file2.txt
 
-checksec confirms:
-RELRO           STACK CANARY      NX        …]]></summary>
+Pasting the two files side by side line-by-line makes it clear they're almost
+paste file1.txt file2.txt | nl
+
+Most lines match. A handful don't. That's the whole challenge, really — find the
+Rather than eyeball a few hundred lines, script it:
+f1 = open("file1.txt").read().splitlines()
+f2 = open("file2.txt").read().splitlines()
+
+print(len(f1), len(f2))
+
+for i, (a, b) in enumerate(zip(f1, f2), 1):
+    if a != b:
+        print(i, a, b)
+
+Gotcha #1: len(f1) and len(f2) come out different — 350 vs 351 lines.
+zip() silently
+after a genuine
+The fix is to use a real sequence-alignment diff instead of a positional
+zip(), so insertions and deletions are handled correctly:
+import diff…]]></summary>
         <author>
             <name>Yogeshwar Peela</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[BronoCTF : Custom Cipher Writeup]]></title>
-        <id>https://dev.to/exploitnotes/bronoctf-custom-cipher-writeup-19po</id>
-        <link href="https://dev.to/exploitnotes/bronoctf-custom-cipher-writeup-19po"/>
-        <updated>2026-07-12T16:35:17.000Z</updated>
-        <summary type="html"><![CDATA[Summary
-
-
-pscheme.py implements a toy "encryption" scheme that encodes each 4-byte
-original public key is handed to you in the ciphertext, the scheme
-order field to undo the
-import cmath
-import itertools
-import random
-
-
-class Poly:
-    def __init__(self, coeff: list):
-        self.coeff = coeff
-        self.coeff.reverse()
-        self.coeff = list(itertools.dropwhile(lambda x: x == 0, self.coeff))
-        self.coeff.reverse()
-
-        if len(self.coeff) == 0:
-            self.coeff = [0]
-
-    def get_degree(self):
-        return len(self.coeff) - 1
-
-    def __mul__(self, other):
-        if other.get_degree() == 1 and other.coeff[0] == 0:
-            return Poly([0])
-
-        newdeg = self.get_degree() + other.get_degree()
-        newcoeff = [0 for _ in range(newdeg + 1)]
-        for i1, c…]]></summary>
+        <title type="html"><![CDATA[I Poked a 10-Year-Old Chat Protocol With a Stick]]></title>
+        <id>https://dev.to/lovestaco/i-poked-a-10-year-old-chat-protocol-with-a-stick-2g4h</id>
+        <link href="https://dev.to/lovestaco/i-poked-a-10-year-old-chat-protocol-with-a-stick-2g4h"/>
+        <updated>2026-07-12T17:49:36.000Z</updated>
+        <summary type="html"><![CDATA[Hello, I'm Maneshwar. I'm building git-lrc, a Micro AI code reviewer that runs on every commit. It is free and source-available on Github. Star git-lrc to help devs discover the project. Do give it a try and share your feedback.
+So here's how I spent my weekend. 
+I went digging through old GitHub repos looking for something forgotten, found a project called lhttp, and instead of just reading the README like a reasonable person, I cloned it, compiled it, ran it, and poked it with a stick until it did something weird.
+It did something weird. We'll get there.
+lhttp describes itself as "a http like protocol using websocket to provide long live, build your IM service quickly scalable without XMPP." 
+Translation: it's a tiny text protocol, styled like HTTP, that rides on top of a websocket conne…]]></summary>
         <author>
-            <name>Yogeshwar Peela</name>
+            <name>Athreya aka Maneshwar</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Your embedding axes can move while cosine neighbours stay put]]></title>
-        <id>https://dev.to/billiem/your-embedding-axes-can-move-while-cosine-neighbours-stay-put-377f</id>
-        <link href="https://dev.to/billiem/your-embedding-axes-can-move-while-cosine-neighbours-stay-put-377f"/>
-        <updated>2026-07-12T16:30:49.000Z</updated>
-        <summary type="html"><![CDATA[An embedding can look substantially different after an orthogonal change of basis, even though its cosine similarities have not changed. I built a small browser instrument that makes that mismatch visible: the points move, the axes change, and every phrase keeps the same five cosine neighbours.
-The measured numerical drift stays below 2e-15 across 180 short phrases embedded into 384 dimensions with MiniLM. That is the narrow result. It is not a claim that every transformation preserves an embedding, or that individual axes can never be useful.
-The working embedding-tours instrument is on billiem.uk. It is not embedded here. Open it to cycle through raw coordinate pairs, PCA pairs and a seeded grand tour, then use the basis control in raw-coordinate mode to switch between the original and o…]]></summary>
-        <author>
-            <name>Billie M</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Whether you're debugging, testing a new implementation, or temporarily disabling code, there are times when you need to comment out an entire file in Vim. While many developers rely on plugins, Vim already provides powerful built-in commands that make this incredibly fast.]]></title>
-        <id>https://dev.to/saint_vandora/-2jpi</id>
-        <link href="https://dev.to/saint_vandora/-2jpi"/>
-        <updated>2026-07-12T16:25:50.000Z</updated>
-        <summary type="html"><![CDATA[Comment an Entire File in Vim in Seconds (Two Methods Every Developer Should Know)
-
-
-  
-FOLASAYO SAMUEL OLAYEMI
-                    
-                  
-
-                
-Jul 12
-        
-#webdev
-            #devops
-            #programming
-            #tutorial
-        
-5 reactions
-            
-Add Comment
-            
-        
-        
-          
-            2 min read]]></summary>
-        <author>
-            <name>FOLASAYO SAMUEL OLAYEMI</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why Distributed Systems Become Essential Beyond 100K+ MAU]]></title>
-        <id>https://dev.to/ankit_rattan/why-distributed-systems-become-essential-beyond-100k-mau-12d3</id>
-        <link href="https://dev.to/ankit_rattan/why-distributed-systems-become-essential-beyond-100k-mau-12d3"/>
-        <updated>2026-07-12T16:23:19.000Z</updated>
-        <summary type="html"><![CDATA[Every application starts small. One server, one database, one backend. Everything runs beautifully. Your APIs respond in milliseconds, deployments are simple, and debugging is straightforward.
-Then your product starts growing.
-A few thousand users become tens of thousands. Suddenly, one feature going viral means your entire application slows down. Database connections get exhausted, servers start running at 100% CPU, and a single deployment feels like walking on a tightrope.
-This is usually the point where developers hear the term Distributed Systems.
-And honestly, it sounds way more intimidating than it needs to be.
-So, what exactly is a distributed system?
-In simple words, it's just a bunch of independent computers working together so seamlessly that users think they're interacting with …]]></summary>
-        <author>
-            <name>Ankit Rattan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[DDD & More: Is Software Design Dead in the Age of Automatons?]]></title>
-        <id>https://dev.to/bridgingthegapeucom/ddd-more-is-software-design-dead-in-the-age-of-automatons-5ba9</id>
-        <link href="https://dev.to/bridgingthegapeucom/ddd-more-is-software-design-dead-in-the-age-of-automatons-5ba9"/>
-        <updated>2026-07-12T16:21:21.000Z</updated>
-        <summary type="html"><![CDATA[Grab your favorite hot sauce, because the tech world is serving up some seriously fiery hot takes on the future of software development. In a recent, unscripted episode of Loosely Coupled, host Karol Skrzymowski gathered a powerhouse panel featuring Martin Fowler, Mathias Verraes, Xin Yao, and Andrew Harmel-Law to dive headfirst into how AI influences software architecture and design.
-The Great AI Uncertainty
-"Look, let's stop pretending we have a crystal ball. The AI trajectory has already blindsided us with how effective it is. We know a seismic shift is rocking the software industry, but anyone telling you exactly how the dust will settle is selling you snake oil. Nobody knows."
-This uncertainty is manifesting in the daily reality of development, where the sheer volume of code being gen…]]></summary>
-        <author>
-            <name>BridgingTheGap.eu.com</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[i normalized four log formats into one shape so my detection rules didn't have to care]]></title>
-        <id>https://dev.to/tiltedlunar123/i-normalized-four-log-formats-into-one-shape-so-my-detection-rules-didnt-have-to-care-2mkn</id>
-        <link href="https://dev.to/tiltedlunar123/i-normalized-four-log-formats-into-one-shape-so-my-detection-rules-didnt-have-to-care-2mkn"/>
-        <updated>2026-07-12T16:20:52.000Z</updated>
-        <summary type="html"><![CDATA[triagelens is a little soc triage tool i've been building. you paste in raw logs, it runs rule-based detections, maps them to mitre att&ck, scores the risk 0-100, and writes an analyst-style report. the part that almost sank the whole thing wasn't the detections. it was the logs.
-it takes four formats: windows security event 4688, sysmon event id 1, linux ssh auth.log, and generic json. sounds fine until you actually look at them.
-a "process started" event exists in three of those four. in windows security 4688 it's a structured event with a new process name field and a creator process. in sysmon event 1 it's also structured but the fields sit in different places with different names, plus you get a command line and hashes windows security doesn't give you. in auth.log there's no such thin…]]></summary>
-        <author>
-            <name>TiltedLunar123</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building Maestro AI: Routing LLM Calls So Your Agent Doesn't Burn Sonnet on Summaries]]></title>
-        <id>https://dev.to/david_shibley/building-maestro-ai-routing-llm-calls-so-your-agent-doesnt-burn-sonnet-on-summaries-1m36</id>
-        <link href="https://dev.to/david_shibley/building-maestro-ai-routing-llm-calls-so-your-agent-doesnt-burn-sonnet-on-summaries-1m36"/>
-        <updated>2026-07-12T16:19:08.000Z</updated>
-        <summary type="html"><![CDATA[How I built a harness-agnostic model router for Cursor and Claude Code and what broke along the way.
-When you use Claude Sonnet for everything in Cursor, you pay premium prices for work a local Llama could handle in two seconds. When you use only Ollama, you get worse results on architecture reviews and multi-step refactors.
-I wanted a middle layer: cheap by default, escalate when the task actually needs it. Not a new chatbot, a dispatcher the existing agent could call for subtasks.
-That layer became Maestro AI.
-Think of your coding agent as a conductor. It should keep architecture, multi-file edits, and complex reasoning. Maestro is the section leader who picks which musician plays each part:
-A quick HTML demo → local Llama
-A paragraph summary → local strong (or hosted GLM)
-A medium refac…]]></summary>
-        <author>
-            <name>David Shibley</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Turn any website into clean Markdown for your RAG pipeline (with code)]]></title>
-        <id>https://dev.to/quantoracle/turn-any-website-into-clean-markdown-for-your-rag-pipeline-with-code-34oe</id>
-        <link href="https://dev.to/quantoracle/turn-any-website-into-clean-markdown-for-your-rag-pipeline-with-code-34oe"/>
-        <updated>2026-07-12T16:18:30.000Z</updated>
-        <summary type="html"><![CDATA[If you've built anything with retrieval-augmented generation (RAG), you know the
-80% of the work is getting clean text in. Your embeddings
-<div> soup.
-This post shows a fast, reliable way to convert any URL — or a whole site —
-, with code you can drop into a pipeline today.
-requests + BeautifulSoup?
-
-
-You can, and for a single static page it's fine:
-import requests
-from bs4 import BeautifulSoup
-
-html = requests.get("https://example.com").text
-text = BeautifulSoup(html, "html.parser").get_text()
-
-But this falls over fast in the real world:
-You get everything — menus, footers, "related articles," cookie notices —
-all polluting your chunks and your embeddings.
-JavaScript-rendered sites (React, Vue, Next.js) return an empty shell; you
-need a real browser.
-Structure is lost — headings, lists, t…]]></summary>
-        <author>
-            <name>quantoracledev</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Architecting MedReach AI: Solving Data Rot and Regulatory Bottlenecks in Pharma Marketing]]></title>
-        <id>https://dev.to/scott_shoemaker_8d10ccbd2/architecting-medreach-ai-solving-data-rot-and-regulatory-bottlenecks-in-pharma-marketing-6na</id>
-        <link href="https://dev.to/scott_shoemaker_8d10ccbd2/architecting-medreach-ai-solving-data-rot-and-regulatory-bottlenecks-in-pharma-marketing-6na"/>
-        <updated>2026-07-12T16:17:13.000Z</updated>
-        <summary type="html"><![CDATA[As we kick off Month 1 of our AI Software Development Capstone, I am thrilled to officially introduce the project I will be co-developing over the next five months: MedReach AI.
-
-In my role as the Project/Scrum Master and Backend Architect, I am pairing up with my teammate, Collin Miner, who will be spearheading the frontend UI/UX and client-side architecture. Together, we are building a multi-tenant SaaS platform designed to completely overhaul how pharmaceutical and medical device companies handle outreach, segmentation, and compliance.       But before diving into our tech stack, we have to look at why this industry is in desperate need of a modern, lightweight solution.
-The Problem: Data Rot and the "Two-Person Marketing Team" Dilemma
-
-When a two- or three-person marketing department attempts to run a campaign using unvalidated spreadsheets, three critical failures occur:
-Wasted Budget & Poor Targeting: Campaigns are sent to outdated contacts or duplicate records, sinking ROI.
-
-
-Regulatory & Compliance Risks: In the pharma world, sending unverified communications can lead to severe penalties under federal regulations like HIPAA, the Physician Payments Sunshine Act, and strict FDA guidelines regarding off-label promotion.
-
-
-Resource Drain: Small teams end up spending 80% of their time manually scrubbing CSVs and cross-referencing government registries instead of actually designing marketing campaigns. 
-While enterprise-grade data hygiene tools exist, they cost hundreds of thousands of dollars annually and require dedicated technical implementation teams—completely pricing out mid-sized organizations.]]></summary>
-        <author>
-            <name>Scott Shoemaker</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Got Obsessed With Killing Scrum. So I Built a World Out of 12 AI Agents.]]></title>
-        <id>https://dev.to/mickyarun/i-got-obsessed-with-killing-scrum-so-i-built-a-world-out-of-12-ai-agents-1hl1</id>
-        <link href="https://dev.to/mickyarun/i-got-obsessed-with-killing-scrum-so-i-built-a-world-out-of-12-ai-agents-1hl1"/>
-        <updated>2026-07-12T16:09:21.000Z</updated>
+        <title type="html"><![CDATA[Build a FootBall Dribbler Game Using Google AI Studio]]></title>
+        <id>https://dev.to/biomathcode/build-a-football-dribbler-game-using-google-ai-studio-3cod</id>
+        <link href="https://dev.to/biomathcode/build-a-football-dribbler-game-using-google-ai-studio-3cod"/>
+        <updated>2026-07-12T17:49:23.000Z</updated>
         <summary type="html"><![CDATA[This is a submission for Weekend Challenge: Passion Edition
-I built Bodhiorchard — an open-source platform that replaces Scrum, Jira, and the team wiki with 12 specialised AI agents and a living 3D world you can actually walk around in.
-I call the methodology Agent-Driven Development (ADD). Instead of story points, planning poker, and a graveyard of stale Confluence pages, the work lives in one place: a BUD (Business Understanding Document) — a single, vector-indexed source of truth that carries a feature from a Slack conversation all the way to production.
-The agents handle the busywork I never wanted humans doing: triage, design drafts, tech plans, standups, test plans, estimation, retros. Your repos show up as trees in an orchard. Features are branches. The whole team walks around as av…]]></summary>
+I have always loved playing football and cricket. It much more about the learning process. When you start learning you are not out in the field. You learn slowly. You learn to dribble, drift, passing, kicking. Things from first principles. That where the fun is. We may start hating the sports when we lose or are not good enough. But Sometimes Your rediscover your learnings. You rediscover your fun. This is the reason i build this project. Dribbling is the most addictive activity. I would have spend countless hours dribbling.  
+  
+  
+
+
+I build a computer vision enabled football dribble game. The rules are simple keep the ball up in the air like dribbling, a random goal post appears on the screen, your ball touches the goal post. Ye…]]></summary>
         <author>
-            <name>arun rajkumar</name>
+            <name>Pratik sharma</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Comment an Entire File in Vim in Seconds (Two Methods Every Developer Should Know)]]></title>
-        <id>https://dev.to/saint_vandora/comment-an-entire-file-in-vim-in-seconds-two-methods-every-developer-should-know-k78</id>
-        <link href="https://dev.to/saint_vandora/comment-an-entire-file-in-vim-in-seconds-two-methods-every-developer-should-know-k78"/>
-        <updated>2026-07-12T16:09:09.000Z</updated>
-        <summary type="html"><![CDATA[Whether you're debugging, testing a new implementation, or temporarily disabling code, there are times when you need to comment out an entire file in Vim. While many developers rely on plugins, Vim already provides powerful built-in commands that make this incredibly fast.
-Here are two efficient approaches.
-This approach is straightforward because you can visually confirm that the entire file is selected before applying the comment.
-Press:
-Esc
+        <title type="html"><![CDATA[BroncoCTF : Unblur me Writeup]]></title>
+        <id>https://dev.to/exploitnotes/broncoctf-unblur-me-writeup-27a2</id>
+        <link href="https://dev.to/exploitnotes/broncoctf-unblur-me-writeup-27a2"/>
+        <updated>2026-07-12T17:46:37.000Z</updated>
+        <summary type="html"><![CDATA[Challenge
 
-Type:
-ggVG
 
-Here's what each command does:
-gg → Jump to the beginning of the file.
-V → Enter Visual Line Mode.
-G → Extend the selection to the last line.
-At this point, the entire file should be highlighted.
-Press:
-:
+A web page at https://broncoctf-unblur-me.chals.io/ presents a
+Solve 500 derivatives to unblur the image and unlock a secret.
+Progress: 0 / 500
 
-Vim automatically inserts:
-:'<,'>
+A blurred image sits behind a quiz form. The stated task is to answer
+blur() filter from the image. Doing that legitimately would be
+Fetching the page source directly:
+$ curl https://broncoctf-unblur-me.chals.io/
 
-This means "apply the following command to the selected lines."
-Now complete the command:
-:'<,'>s/…]]></summary>
+The interesting logic is all client-side JavaScript:
+function checkAnswer() {
+  const userAnswer = parseInt(document.getElementById('answer').value);
+  if (userAnswer === currentAnswer) {
+    correctCount++;
+    ...
+    if (correctCount >= 500) {
+      // reveal image
+      flag.style.filter = "none";
+      flag.style.pointerEvents = "auto";
+    }
+  }
+}
+
+function loadSecretImage() {
+  fetch('/api/v1/internal/fetch-config-blob…]]></summary>
         <author>
-            <name>FOLASAYO SAMUEL OLAYEMI</name>
+            <name>Yogeshwar Peela</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[An explanation of our search results]]></title>
-        <id>https://web.archive.org/web/20040612082405/https://www.google.com/explanation.html</id>
-        <link href="https://web.archive.org/web/20040612082405/https://www.google.com/explanation.html"/>
-        <updated>2026-07-12T16:04:19.000Z</updated>
+        <title type="html"><![CDATA[We Did Not Define Our Category — We Ran a Gym Until It Defined Itself]]></title>
+        <id>https://dev.to/zwiserfit/we-did-not-define-our-category-we-ran-a-gym-until-it-defined-itself-40ej</id>
+        <link href="https://dev.to/zwiserfit/we-did-not-define-our-category-we-ran-a-gym-until-it-defined-itself-40ej"/>
+        <updated>2026-07-12T17:42:29.000Z</updated>
+        <summary type="html"><![CDATA[We did not define our category before building.
+We built a system that runs 9 autonomous AI agents operating a real fitness studio in Dongguan, China. 120 days in production. 84 months of operating a physical business before that.
+Then we looked up and realized: there is no existing name for what we built.
+"AI fitness" isnt right — we are not a fitness AI. "Agent OS" isnt right — there is no operating system. "Store automation" misses the point entirely.
+The closest honest description took 11 words: one founder + 9 open-source agents + one real fitness studio.
+The Anthropic official handbook describes our constitutional governance model two months after we were already running it.
+Jack Dorsey described a verification layer for physical commerce two years before we built it.
+They never spoke to each other. We never spoke to either of them. Three independent parties, on different sides of the planet, arrived at the same architecture.
+That is not imitation. That is independent convergence — and it is the strongest signal you can get that a direction is correct before anyone has named it.
+A category is not defined by a pitch deck. It is defined by the intersection of three things:
+What you built that no one else has — not what you say you will build
+What you learned that no paper could teach you — the failures, the near-misses, the jurisdiction collisions
+What failed in ways that only happen at your scale — 34 days of auto-recovered bugs, 19 days of a port proxy ghost, 120 consecutive days of quiet operation
+We did not write a category definition. We ran a gym until the category defined itself.
+Our category: verification layer for physical business behavior. But we did not start with that name. We started with 84 months of operations, 120 days of agents, and 3.6GB of RAM.
+→ github.com/ZWISERFIT/ZWISERFIT
+→ github.com/ZWISERFIT/retroonto]]></summary>
+        <author>
+            <name>Suzanne Mok</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Simplicity Over Complexity: How I Built My Minimalist Developer Portfolio]]></title>
+        <id>https://dev.to/karthick_07/simplicity-over-complexity-how-i-built-my-minimalist-developer-portfolio-4556</id>
+        <link href="https://dev.to/karthick_07/simplicity-over-complexity-how-i-built-my-minimalist-developer-portfolio-4556"/>
+        <updated>2026-07-12T17:42:16.000Z</updated>
+        <summary type="html"><![CDATA[As software developers, it's easy to get caught up in the trap of over-engineering. We reach for heavy frameworks, endless animations, and massive dependencies before we even consider what we are trying to convey. 
+For my latest portfolio layout, I decided to live by a simple rule: Choose simplicity over complexity. 
+Here is how I designed and built a premium, modern developer portfolio using nothing but semantic HTML and clean CSS grid/flexbox layouts.
+The goal was to create a light, spacious layout that feels dynamic yet entirely professional. 
+The Palette: Clean light backgrounds powered by subtle, moving ambient gradients (radial-gradient combinations).
+Typography: A harmonious pairing of Outfit (for sharp, structural geometric UI elements) and Ovo (a refined serif for striking headers and expressive blocks).
+The Highlight: A glassmorphic, capsule-shaped navigation deck (.nav-menu-capsule) that floats elegantly at the top of the interface.
+Instead of a static greeting, the landing view includes a live pulsing indicator badge to clearly state my availability to engineering teams right away.
+
+html
+<div class="live-status-badge">
+    <span class="pulse-dot"></span>
+    <span class="status-text">Open to new engineering roles</span>
+</div>]]></summary>
+        <author>
+            <name>Karthick (k)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Swagger vs OpenAPI, explained in 30 seconds]]></title>
+        <id>https://dev.to/jkballa/swagger-vs-openapi-explained-in-30-seconds-3e3g</id>
+        <link href="https://dev.to/jkballa/swagger-vs-openapi-explained-in-30-seconds-3e3g"/>
+        <updated>2026-07-12T17:38:00.000Z</updated>
+        <summary type="html"><![CDATA[People say "Swagger" and "OpenAPI" like they're two different things. Here's the actual story.
+Swagger came first. It was a spec plus tooling for describing REST APIs. It got so popular the spec was donated to a foundation and renamed OpenAPI. So today, "Swagger" sometimes means the old spec, sometimes the tools, and sometimes just OpenAPI out of habit.
+The practical bit: if you have a Swagger file, it's almost certainly OpenAPI-compatible, and you can turn it into docs the same way.
+Swagger to Markdown handles either: https://markdown.co.in/tools/swager-to-markdown.html
+The bigger lesson from this week: if a machine-readable version of your API already exists in any form, you should almost never write docs from scratch. Generate first, polish second.
+One tiny tip: pick one name, Swagger or OpenAPI, and use it consistently across your team. Saves new folks a surprising amount of confusion.]]></summary>
+        <author>
+            <name>Jitendra Balla</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Solved the Windows Shrink Volume Problem Using AOMEI Partition Assistant to Install Linux Mint]]></title>
+        <id>https://dev.to/rsbalaji/solved-the-windows-shrink-volume-problem-using-aomei-partition-assistant-to-install-linux-mint-4ed6</id>
+        <link href="https://dev.to/rsbalaji/solved-the-windows-shrink-volume-problem-using-aomei-partition-assistant-to-install-linux-mint-4ed6"/>
+        <updated>2026-07-12T17:37:25.000Z</updated>
+        <summary type="html"><![CDATA[Recently, I wanted to install Linux Mint Cinnamon alongside Windows 11 on my Samsung Galaxy Book2 Pro 360. Since my laptop had only a single C: drive, I needed to shrink the Windows partition and create 100 GB of unallocated space for Linux.
+At first, I thought Windows Disk Management would be enough. However, I encountered one of the most common Windows partitioning errors:
+
+You cannot shrink a volume beyond the point where any unmovable files are located.
+When I opened Disk Management Right Click C: → Shrink Volume Windows calculated the available shrink space as only 653 MB instead of the expected 100 GB.
+Windows stores several system files near the end of the partition.
+Page File (pagefile.sys)
+Hibernation File (hiberfil.sys)
+Master File Table (MFT)
+System Restore data
+NTFS Metadata
+Wi…]]></summary>
+        <author>
+            <name>balaji s</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Measured Claude Code's Prompt-Cache Cost Three Ways. 85% of It Wasn't Mine to Trim.]]></title>
+        <id>https://dev.to/nomurasan/i-measured-claude-codes-prompt-cache-cost-three-ways-85-of-it-wasnt-mine-to-trim-48hm</id>
+        <link href="https://dev.to/nomurasan/i-measured-claude-codes-prompt-cache-cost-three-ways-85-of-it-wasnt-mine-to-trim-48hm"/>
+        <updated>2026-07-12T17:37:12.000Z</updated>
+        <summary type="html"><![CDATA[I ran the same empty Claude Code project through three launch paths and read the cache tokens off the session log after every turn. One of those paths never touched the shared server-side cache at all — cache_read stayed at 0 on every run.
+TL;DR: the launch path (VSCode extension, VSCode-internal terminal, or a standalone terminal like iTerm2) decides whether Claude Code hits Anthropic's shared prompt cache. And even after trimming CLAUDE.md files, skills, and hooks, roughly 85% of the remaining cache_creation cost turned out to be Claude Code's own fixed overhead — not anything I control.
+Claude Code writes a JSONL log for every session under ~/.claude/projects/<project-key>/, and each assistant turn in that log carries a usage object with cache_creation_input_tokens and cache_read_input_…]]></summary>
+        <author>
+            <name>Sho Naka</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BronoCTF : No Laughing Matter]]></title>
+        <id>https://dev.to/exploitnotes/bronoctf-no-laughing-matter-162d</id>
+        <link href="https://dev.to/exploitnotes/bronoctf-no-laughing-matter-162d"/>
+        <updated>2026-07-12T17:35:59.000Z</updated>
+        <summary type="html"><![CDATA[Challenge
+
+
+A single file, aha.txt, containing nothing but space-separated 8-letter
+A and H.
+$ cat aha.txt
+AHHAAAHA AHHHAAHA AHHAHHHH AHHAHHHA AHHAAAHH AHHAHHHH AHHHHAHH
+AHAHAHAH AHAAAHHA AHAHAHAH AHAAHHHA AHAAHHHA AHAHHAAH AHAAHHAA
+...
+
+Two things give this away immediately:
+Only two distinct symbols (A and H) → almost always means binary
+in disguise (0/1 mapped to two letters).
+Every "word" is exactly 8 characters long → 8 bits = 1 byte. That's
+the strongest tell — this is ASCII, one character per group.
+So the plan is: pick a mapping (A → 0, H → 1, or vice versa), convert
+cipher = open("aha.txt").read().split()
+
+decoded = ""
+for byte in cipher:
+    bits = byte.replace("A", "0").replace("H", "1")
+    decoded += chr(int(bits, 2))
+
+print(decoded)
+
+int(bits, 2) parses the 8-character "0"/"1" string as a base-2 number,
+chr() turns that number into its ASCII character. Running it against
+bronco{UFUNNYLMAOLOLXDIJBOLROFLHAHA}
+
+Alphabet size is a huge clue. A ciphertext using only 2 distinct
+characters is very likely binary; 16 distinct characters often means hex;
+64 (plus +, /, =) means base64.
+Fixed-width grouping matters. 8-character groups screamed "one byte
+per group" before a single line of code was written — always check group
+lengths against 8 (bytes), 2 (hex pairs), 4 (base64 quads), etc.
+Guessing the 0/1 mapping only has two possibilities (A=0,H=1 or
+A=1,H=0) — if the first guess produces garbage, just flip it and
+re-decode; it's a cheap check.]]></summary>
+        <author>
+            <name>Yogeshwar Peela</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FIFA Fan Screen]]></title>
+        <id>https://dev.to/anshulnegitc/fifa-fan-screen-ah3</id>
+        <link href="https://dev.to/anshulnegitc/fifa-fan-screen-ah3"/>
+        <updated>2026-07-12T17:35:29.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for Weekend Challenge: Passion Edition
+FIFA Jumbotron lets users upload a 10-second video and display it on a virtual football stadium jumbotron. 
+ / 
+        FifaFanFestJumbotron
+      
+    
+
+⚽ FIFA Fan Fest 2026 Jumbotron Experience
+Welcome to the FIFA Fan Fest 2026 Jumbotron Experience, an interactive, full-stack, zoneless Angular application that brings the stadium celebration directly to fans. Users can record a 10-second celebration video and watch themselves broadcast on the grand stadium jumbotron with state-of-the-art live chroma-keying (green screen) technology!
+🌟 Key Features
+Live Chroma-Keying & Compositing: Integrates camera feeds or user-uploaded media seamlessly into the virtual jumbotron using a custom-tailored green-screen algorithm.
+Robust Media Hand…]]></summary>
+        <author>
+            <name>Anshul Negi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Shirei, cross-platform GUI framework in native Go]]></title>
+        <id>https://github.com/hasenj/go-shirei/</id>
+        <link href="https://github.com/hasenj/go-shirei/"/>
+        <updated>2026-07-12T16:55:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Automation Without Understanding]]></title>
+        <id>https://arxiv.org/abs/2607.06377</id>
+        <link href="https://arxiv.org/abs/2607.06377"/>
+        <updated>2026-07-12T16:54:47.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Theo de Raadt: "You've been smoking something mind altering" (2007)]]></title>
+        <id>https://marc.info/?l=openbsd-misc&amp;m=119318909016582</id>
+        <link href="https://marc.info/?l=openbsd-misc&amp;m=119318909016582"/>
+        <updated>2026-07-12T16:05:29.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -366,6 +394,26 @@ Now complete the command:
         <id>https://www.elliotcsmith.com/autoresearch-claude-and-constrained-optimization/</id>
         <link href="https://www.elliotcsmith.com/autoresearch-claude-and-constrained-optimization/"/>
         <updated>2026-07-12T14:32:00.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Lunduke Computer Operating System]]></title>
+        <id>https://github.com/BryanLunduke/LCOS</id>
+        <link href="https://github.com/BryanLunduke/LCOS"/>
+        <updated>2026-07-12T14:15:13.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Kurvengefahr – browser CAD/CAM for pen plotters]]></title>
+        <id>https://kurvengefahr.org/</id>
+        <link href="https://kurvengefahr.org/"/>
+        <updated>2026-07-12T14:09:23.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -528,26 +576,6 @@ The post Apple Sues OpenAI, Two Former Staffers For Stealing Trade Secrets appea
         <id>https://www.iroh.computer/blog/mesh-llm</id>
         <link href="https://www.iroh.computer/blog/mesh-llm"/>
         <updated>2026-07-11T22:38:57.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[RISCBoy is an open-source portable games console, designed from scratch]]></title>
-        <id>https://github.com/Wren6991/RISCBoy</id>
-        <link href="https://github.com/Wren6991/RISCBoy"/>
-        <updated>2026-07-11T21:58:00.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: Ant – A JavaScript runtime and ecosystem]]></title>
-        <id>https://antjs.org/</id>
-        <link href="https://antjs.org/"/>
-        <updated>2026-07-11T20:07:18.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -942,16 +970,6 @@ The post PC Gamer’s Father Resurrects Dead NVIDIA RTX 3070 With Capacitor From
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Did Not Kill Stanley Lieber: How to Draw (With 9front)]]></title>
-        <id>https://triapul.cz/automa/i_did_not_kill_stanley_lieber</id>
-        <link href="https://triapul.cz/automa/i_did_not_kill_stanley_lieber"/>
-        <updated>2026-07-09T14:10:04.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Download: a nuclear landmark, and China eyes Nvidia chips]]></title>
         <id>https://www.technologyreview.com/?p=1140283</id>
         <link href="https://www.technologyreview.com/2026/07/09/1140283/the-download-nuclear-power-milestone-nvidia-china-ai-chips/"/>
@@ -1052,16 +1070,6 @@ The post PC Gamer’s Father Resurrects Dead NVIDIA RTX 3070 With Capacitor From
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Handsum: An LQIP Image File Format]]></title>
-        <id>https://nigeltao.github.io/blog/2026/handsum.html</id>
-        <link href="https://nigeltao.github.io/blog/2026/handsum.html"/>
-        <updated>2026-07-08T12:07:59.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[What is Open USD (OUSD)? Open Standard&apos;s Stablecoin Explained]]></title>
         <id>what-is-openusd-ousd-stablecoin</id>
         <link href="https://www.quicknode.com/blog/what-is-openusd-ousd-stablecoin"/>
@@ -1102,6 +1110,16 @@ The post PC Gamer’s Father Resurrects Dead NVIDIA RTX 3070 With Capacitor From
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Abject Praise]]></title>
+        <id>https://infrequently.org/2026/07/abject-praise/</id>
+        <link href="https://infrequently.org/2026/07/abject-praise/"/>
+        <updated>2026-07-07T12:36:15.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[The Download: your stake in OpenAI, and the Treasury’s AI warning]]></title>
         <id>https://www.technologyreview.com/?p=1140197</id>
         <link href="https://www.technologyreview.com/2026/07/07/1140197/the-download-your-openai-stake-treasury-ai-warning/"/>
@@ -1129,16 +1147,6 @@ The post PC Gamer’s Father Resurrects Dead NVIDIA RTX 3070 With Capacitor From
         <summary type="html"><![CDATA[Anthony Agueda, a third-generation California dairy farmer, pulls a rake through a bed of dark, wet wood chips on his family’s land in Hickman, a tiny town in the state’s agricultural heartland. He reaches down with both hands and pulls up a clump of muck, turning it over to reveal a half-dozen squirming red earthworms.…]]></summary>
         <author>
             <name>James Temple</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Xbox 'OG' Adventures]]></title>
-        <id>https://mamoniem.com/xbox-og-adventures/</id>
-        <link href="https://mamoniem.com/xbox-og-adventures/"/>
-        <updated>2026-07-07T04:35:55.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
