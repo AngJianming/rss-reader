@@ -1,69 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-15T17:12:51.435Z</id>
+    <id>urn:2026-07-15T19:03:55.888Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-15T17:12:51.435Z</updated>
+    <updated>2026-07-15T19:03:55.888Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-15T17:12:12.000Z</updated>
+        <updated>2026-07-15T19:03:31.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Database Indexes: What's Actually Happening Under the Hood]]></title>
-        <id>https://dev.to/ali_algmass/database-indexes-whats-actually-happening-under-the-hood-2bin</id>
-        <link href="https://dev.to/ali_algmass/database-indexes-whats-actually-happening-under-the-hood-2bin"/>
-        <updated>2026-07-15T17:06:02.000Z</updated>
-        <summary type="html"><![CDATA[Every backend developer has typed ->index() in a migration at some point. Fewer have stopped to ask: what does the database engine actually do with that?
-ali@example.com';
-Row 1 → sara@x.com   ✗
-omar@x.com   ✗
-ali@example.com ✓   (found after checking 3 rows)
-Looking for "ali":
-root [g] → a < g → go left
-node [c] → a < c → go left
-leaf [a,b] → found 'ali' → pointer to the real row
-Instead of scanning a million rows, you're doing roughly log2(1,000,000) ≈ 20 comparisons. That gap — O(n) vs O(log n) — is the entire reason indexes exist, and it only gets more dramatic as tables grow.
-B+Tree, not just "a tree"
-Almost every relational database (InnoDB, Postgres) stores its indexes as a B+Tree, specifically:
-Internal nodes hold only keys, used purely for navigation.
-This is why B+Trees, not hash…]]></summary>
+        <title type="html"><![CDATA[Why did my benchmark stop at N=22? A debugging story in nine bugs]]></title>
+        <id>https://dev.to/xbill/why-did-my-benchmark-stop-at-n22-a-debugging-story-in-nine-bugs-3m2l</id>
+        <link href="https://dev.to/xbill/why-did-my-benchmark-stop-at-n22-a-debugging-story-in-nine-bugs-3m2l"/>
+        <updated>2026-07-15T18:56:45.000Z</updated>
+        <summary type="html"><![CDATA[Submission for DEV's Summer Bug Smash — Smash Stories track.
+There was a file in my repo called run_benchmark_1_22.py.
+Not 1 to 24, which is what the harness was written to do. Not 1 to 26, which is how many Mersenne exponents the agents know. Twenty-two. A chart in the README — a2a_latency_times_1_22.png — agreed. At some point, past-me had decided the benchmark ends at 22, committed the evidence, and moved on.
+This summer, hunting for a Bug Smash target, I finally asked: why 22?
+a2a-benchmark compares A2A agent performance across four languages. Python and Go sit behind Gemini tool-calling (ADK); Node and Rust are bare HTTP handlers. Each computes Mersenne primes with Lucas–Lehmer; a harness sweeps N from 1 to 24 and draws two charts.
+I ran the full sweep. At N=24, the Python column prin…]]></summary>
         <author>
-            <name>ali ehab algmass</name>
+            <name>xbill</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Atlassian Transforms Jira into a Developer and AI Agent Orchestration Hub]]></title>
-        <id>https://dev.to/davekurian/atlassian-transforms-jira-into-a-developer-and-ai-agent-orchestration-hub-2l7i</id>
-        <link href="https://dev.to/davekurian/atlassian-transforms-jira-into-a-developer-and-ai-agent-orchestration-hub-2l7i"/>
-        <updated>2026-07-15T17:05:15.000Z</updated>
-        <summary type="html"><![CDATA[Jira is becoming the control plane for your AI workforce — and the bottleneck math finally makes sense
+        <title type="html"><![CDATA[My benchmark's Python column was N/A for a year — CPython's 4300-digit limit, and eight other bugs]]></title>
+        <id>https://dev.to/xbill/my-benchmarks-python-column-was-na-for-a-year-cpythons-4300-digit-limit-and-eight-other-bugs-1hgk</id>
+        <link href="https://dev.to/xbill/my-benchmarks-python-column-was-na-for-a-year-cpythons-4300-digit-limit-and-eight-other-bugs-1hgk"/>
+        <updated>2026-07-15T18:56:09.000Z</updated>
+        <summary type="html"><![CDATA[Submission for DEV's Summer Bug Smash — Clear the Lineup track.
+a2a-benchmark is my multi-language A2A (Agent-to-Agent) performance suite: four agents — Python and Go behind Gemini tool-calling via ADK, Node.js and Rust as direct handlers — each compute Mersenne primes with the Lucas–Lehmer test, while a harness sweeps N=1–24 and charts calculation time and round-trip time.
+The committed results stopped at N=22. I never questioned that. I should have.
+CPython 3.11+ limits int→str conversion to 4,300 digits by default (a DoS mitigation). My Python agent stringified each prime it found:
+mersenne_primes.append(str((1 << p) - 1))
 
-
-Atlassian's bet is the right one. The bottleneck in software isn't how fast an agent types anymore — it's the coordination overhead around the typing. Coding-agent adoption is already widespread, per Atlassian's own DevEx report, but the gains are plateauing. Why? Because every agent that ships code still has to be told what code, in what context, with what handoff, against what environment. That's planning work, and it's human work, and it's been the slowest layer of the stack for a decade.
-Jira is the place that planning work already lives. So turning it into the control plane for a mixed human-plus-agent workforce is a natural extension, not a reinvention. Today Atlassian announced a…]]></summary>
+The 24th Mersenne exponent is p=19937, and 2^19937−1 has 6,002 digits. So for any request of 24+ primes, the tool raised ValueError — and the A2A response dutifully …]]></summary>
         <author>
-            <name>Dave Kurian</name>
+            <name>xbill</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[PoPE: Placebo-Controlled Evaluation Challenges Error-Conditioned Self-Repair in Small Code LLMs]]></title>
-        <id>https://dev.to/pneumetron/pope-placebo-controlled-evaluation-challenges-error-conditioned-self-repair-in-small-code-llms-9gc</id>
-        <link href="https://dev.to/pneumetron/pope-placebo-controlled-evaluation-challenges-error-conditioned-self-repair-in-small-code-llms-9gc"/>
-        <updated>2026-07-15T17:05:07.000Z</updated>
-        <summary type="html"><![CDATA[What Changed
-
-
-Researchers have introduced PoPE (Popperian Placebo-controlled Evaluation), a novel methodology designed to rigorously measure the efficacy of learned error-conditioned self-repair in frozen small code Large Language Models (LLMs). This approach addresses a critical gap in existing self-repair literature: the absence of placebo controls when evaluating how information from failed attempts guides subsequent retries. PoPE treats a failed program as a conjecture and an execution counterexample as an oracle-relative refutation, aiming to determine if falsifying evidence can be operationally utilized by the same model.
-PoPE's core innovation lies in its use of channel-specific placebos. These placebos maintain the predeclared structural scaffold of error feedback while either abl…]]></summary>
+        <title type="html"><![CDATA[I spent a week trying to intercept Slack push notifications from a Chrome extension. Here's why it's impossible.]]></title>
+        <id>https://dev.to/mbilalkhan192003/i-spent-a-week-trying-to-intercept-slack-push-notifications-from-a-chrome-extension-heres-why-9mc</id>
+        <link href="https://dev.to/mbilalkhan192003/i-spent-a-week-trying-to-intercept-slack-push-notifications-from-a-chrome-extension-heres-why-9mc"/>
+        <updated>2026-07-15T18:55:52.000Z</updated>
+        <summary type="html"><![CDATA[After I published my last article about building a Chrome extension that speaks browser notifications aloud, a commenter asked a question I didn't have a good answer to.
+He pointed out that a lot of web apps — Slack, Gmail, most modern tools — fire their notifications from a service worker via registration.showNotification(), not from the page's JavaScript context. My MAIN world override of window.Notification would never reach those.
+He was right. And I told him I'd look into it.
+I spent a week researching whether there was any way to close that gap. There isn't. But the reason why is more interesting than a simple "no."
+Two ways a website can show you a notification
+When a website sends you a browser notification, it can do it in one of two ways.
+The first is the constructor path. The pa…]]></summary>
         <author>
-            <name>Pneumetron</name>
+            <name>M.Bilal Khan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Built a Dashboard to Make Security Reports Easier to Read]]></title>
+        <id>https://dev.to/devfendforge/i-built-a-dashboard-to-make-security-reports-easier-to-read-33e9</id>
+        <link href="https://dev.to/devfendforge/i-built-a-dashboard-to-make-security-reports-easier-to-read-33e9"/>
+        <updated>2026-07-15T18:51:31.000Z</updated>
+        <summary type="html"><![CDATA[****When working with security tools like "Trivy" and "npm" audit, I realized that their primary goal is to generate detailed reports that can be consumed by automation, CI/CD pipelines, and other security tools.
+For developers, however, there are times when you simply want a quick visual overview of a report.
+Questions like:
+How many critical vulnerabilities are there?
+Which packages need immediate attention?
+Which vulnerabilities already have a fix available?
+What should I investigate first?
+can require navigating through a large JSON report or terminal output.
+Of course,Trivy already provides excellent terminal output, and there are powerful enterprise platforms that provide comprehensive security  dashboards.
+I wasn't trying to recreate those tools or copy their ideas.
+Instead, I wante…]]></summary>
+        <author>
+            <name>Ambika Dobhal</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Five Local-First Mac Apps I Built to Fix Everyday Workflow Problems]]></title>
+        <id>https://dev.to/quietware/five-local-first-mac-apps-i-built-to-fix-everyday-workflow-problems-4e8o</id>
+        <link href="https://dev.to/quietware/five-local-first-mac-apps-i-built-to-fix-everyday-workflow-problems-4e8o"/>
+        <updated>2026-07-15T18:48:10.000Z</updated>
+        <summary type="html"><![CDATA[Over the last few months, I’ve been turning small workflow problems I encounter on my Mac into focused utilities.
+Rather than building one enormous productivity suite, I wanted each app to solve a specific frustration well.
+I also wanted to build software the way I prefer to use it: local-first, available through a one-time purchase, and usable without creating another account or paying for another subscription.
+Here are five of the apps I’ve built so far.
+My desktop used to become a temporary storage zone for screenshots, folders, documents, links, and files I needed for active projects.
+Folders helped with long-term storage, but they were not always useful for things I wanted to keep visible and nearby.
+ScreenShelf creates a customizable visual shelf for:
+Files and folders
+Screenshots an…]]></summary>
+        <author>
+            <name>Michael B</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[find command finds things]]></title>
+        <id>https://dev.to/echen4628/find-command-finds-things-506</id>
+        <link href="https://dev.to/echen4628/find-command-finds-things-506"/>
+        <updated>2026-07-15T18:47:13.000Z</updated>
+        <summary type="html"><![CDATA[Recently I learned: find is a useful command to find files in your directories.
+find folder1 folder2 folder3
+
+This dumps every file and directory under those folders.
+It also supports flags such as -name "*.txt" to find files matching a particular pattern. There are also filters for size, permissions, and last modified date.
+I'm thinking this would be a great tool for sanity-testing code that creates nested directories (like a new Docker container's filesystem). This command will give me a full flat listing of the resulting tree (like a deeply nested ls command`).
+The downside is of course it can dump a lot of output, but in sanity-testing scenarios, there shouldn't be that many files anyways.
+Something interesting is that this command will take multiple folders before the flags. I'm used to thinking of programs where the arguments are all positionally ordered, so if you don't pass a flag it just assumes the next thing is a regular argument. In this case, find checks whether an argument looks like a flag (starts with -) before deciding whether to treat it as a path or as part of the expression. I wonder if this is a common pattern across other Linux commands. (Claude says find is  special case, but I need to look more into this.)]]></summary>
+        <author>
+            <name>Eric Chen</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Built an autonomous dependency upgrader using Loop Engineering and LangGraph]]></title>
+        <id>https://dev.to/sagar_sr_65f558d4eef3b46b/built-an-autonomous-dependency-upgrader-using-loop-engineering-and-langgraph-22a3</id>
+        <link href="https://dev.to/sagar_sr_65f558d4eef3b46b/built-an-autonomous-dependency-upgrader-using-loop-engineering-and-langgraph-22a3"/>
+        <updated>2026-07-15T18:44:51.000Z</updated>
+        <summary type="html"><![CDATA[You have a project with 20 dependencies. Half of them are outdated. Running ncu -u or pip install --upgrade upgrades all of them at once — and when something breaks, you have no idea which package caused it.
+So you don't upgrade. The deps rot. Security patches pile up.
+loopgrade fixes this.
+It upgrades one dependency at a time, runs your test suite after each upgrade, commits if it passes, reverts if it fails, and moves on to the next one. When it's done, it gives you a full report of what was upgraded, what failed, and why.
+GitHub: https://github.com/Sagar-S-R/loopgrade
+https://pypi.org/project/loopgrade/
+Open for Contributors
+
+
+  
+  
+  #Python #LangGraph #opensource]]></summary>
+        <author>
+            <name>Sagar S R</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Left Google DeepMind]]></title>
+        <id>https://turntrout.com/why-i-left-google-deepmind</id>
+        <link href="https://turntrout.com/why-i-left-google-deepmind"/>
+        <updated>2026-07-15T18:40:34.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[O(N) Manacher's Algorithm with Mirror Boundary Optimization]]></title>
+        <id>https://dev.to/dipadityadas/beats-9944-on-manachers-algorithm-with-mirror-boundary-optimization-3lec</id>
+        <link href="https://dev.to/dipadityadas/beats-9944-on-manachers-algorithm-with-mirror-boundary-optimization-3lec"/>
+        <updated>2026-07-15T18:36:13.000Z</updated>
+        <summary type="html"><![CDATA[Intuition
+
+
+Manacher's Algorithm leverages the symmetry of palindromes to avoid redundant comparisons. Instead of treating odd- and even-length palindromes separately, the input string is transformed by inserting a special character (#) between every character and adding sentinel characters (^ and $) at both ends. This allows every palindrome to be treated as an odd-length palindrome.
+While traversing the transformed string, the algorithm maintains the center and right boundary of the rightmost palindrome found so far. For each position, it uses the palindrome information from its mirror position (with respect to the current center) to initialize the palindrome radius, significantly reducing unnecessary expansions. Only when the palindrome reaches beyond the current right boundary is addit…]]></summary>
+        <author>
+            <name>Dipaditya Das</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A diagram is data, not a drawing]]></title>
+        <id>https://dev.to/msteja/a-diagram-is-data-not-a-drawing-4ej6</id>
+        <link href="https://dev.to/msteja/a-diagram-is-data-not-a-drawing-4ej6"/>
+        <updated>2026-07-15T18:35:34.000Z</updated>
+        <summary type="html"><![CDATA[I gave one model the same 44-node architecture twice.
+The first time I asked for raw SVG — place every box, route every edge, hand me the coordinates. The second time I asked it to describe the same system as typed JSON and let a layout engine draw it. Same model, same session, same brief. The only thing I changed was the output boundary.
+
+The boxes are fine in both. I want to be upfront about that, because the usual version of this pitch is out of date. Models place labeled boxes well now. If you ask a current frontier model for a six-box flowchart as SVG you get a clean six-box flowchart, and if that's what you need, go do that — it's the right tool and I'm not going to pretend otherwise.
+What broke was the edges.
+With no routing algorithm the model just drew long diagonals straight thro…]]></summary>
+        <author>
+            <name>Siva Teja</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[pinto: A Git-Native Scrum Backlog and Kanban Board for Your Terminal]]></title>
+        <id>https://dev.to/moriturus/pinto-a-git-native-scrum-backlog-and-kanban-board-for-your-terminal-509</id>
+        <link href="https://dev.to/moriturus/pinto-a-git-native-scrum-backlog-and-kanban-board-for-your-terminal-509"/>
+        <updated>2026-07-15T18:35:18.000Z</updated>
+        <summary type="html"><![CDATA[pinto lets teams manage Scrum backlogs as plain text.
+Every backlog change can be inspected with git diff, carried across a branch, merged, and reviewed in a pull request—just like source code. The backlog follows the same lifecycle as the product it describes.
+pinto is local-first: no server, account, or hosted database is required. It works with AI agents, but never depends on them. And unlike a generic CLI to-do list, its core model is Scrum: Product Backlog Items (PBIs), Sprints, Kanban, and the metrics teams use to inspect and adapt.
+Jira, Asana, and Notion are capable products. But as more features accumulate, the process can start serving the tool instead of the other way around:
+Creating one ticket means navigating required fields and workflow settings.
+Running a Sprint begins with…]]></summary>
+        <author>
+            <name>Henrique Sasaki Yuya</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How I saved over ₹50,000 in taxes as a freelance dev using Section 44ADA (and templates that helped me do it)]]></title>
+        <id>https://dev.to/hemantdev/how-i-saved-over-50000-in-taxes-as-a-freelance-dev-using-section-44ada-and-templates-that-helped-41g0</id>
+        <link href="https://dev.to/hemantdev/how-i-saved-over-50000-in-taxes-as-a-freelance-dev-using-section-44ada-and-templates-that-helped-41g0"/>
+        <updated>2026-07-15T18:35:14.000Z</updated>
+        <summary type="html"><![CDATA[Freelancing in software development sounds like the ultimate dream:
+Work from anywhere 🌴
+A client requests "just one small change" for the 15th time.
+Here is a step-by-step guide on how to protect yourself, price your work correctly, and handle Indian taxes (GST/TDS) like a professional.
+Stop Doing Unpaid Requirements Gathering (Use a Questionnaire)
+When a client says: "I want an e-commerce website, how much will it cost?"
+If you jump on a call and spend 2 hours discussing it without any commitment, you are losing money.
+The Fix: Before scheduling a call, send them a structured Project Intake Questionnaire. Ask about:
+Business model and target audience.
+Eliminate "Scope Creep" with a Scope Document
+"Scope Creep" is when a client keeps adding features without paying extra. It kills develop…]]></summary>
+        <author>
+            <name>Hemant A</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DPDP compliance costs for Indian startups: what to budget before 13 May 2027]]></title>
+        <id>https://dev.to/mr_manushukla/dpdp-compliance-costs-for-indian-startups-what-to-budget-before-13-may-2027-fi8</id>
+        <link href="https://dev.to/mr_manushukla/dpdp-compliance-costs-for-indian-startups-what-to-budget-before-13-may-2027-fi8"/>
+        <updated>2026-07-15T18:34:14.000Z</updated>
+        <summary type="html"><![CDATA[DPDP compliance costs for Indian startups: what to budget before 13 May 2027
+
+
+Summary. Full compliance with India's Digital Personal Data Protection Act is due on 13 May 2027. That is the date consent, notice, security safeguards, breach intimation and data-principal rights all become enforceable, and it is roughly 10 months away. The DPDP Rules 2025 were notified on 13 November 2025 and land in three phases: the Data Protection Board of India stood up immediately, penalties and Consent Manager registration begin on 13 November 2026, and everything else bites on 13 May 2027. The penalty schedule is not proportionate to your size: up to ₹250 crore for failing reasonable security safeguards, ₹200 crore for failing to notify a breach, and ₹150 crore for missing Significant Data Fiduciary obl…]]></summary>
+        <author>
+            <name>Manu Shukla</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Murati's Thinking Machines Releases Open-Weights 975B Parameter LLM]]></title>
+        <id>https://thinkingmachines.ai/inkling/</id>
+        <link href="https://thinkingmachines.ai/inkling/"/>
+        <updated>2026-07-15T18:14:23.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Inkling: Our Open-Weights Model]]></title>
+        <id>https://thinkingmachines.ai/news/introducing-inkling/</id>
+        <link href="https://thinkingmachines.ai/news/introducing-inkling/"/>
+        <updated>2026-07-15T18:12:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Meet GPT-Red: an LLM super-hacker OpenAI built to make its models safer]]></title>
+        <id>https://www.technologyreview.com/?p=1140514</id>
+        <link href="https://www.technologyreview.com/2026/07/15/1140514/meet-gpt-red-an-llm-super-hacker-openai-built-to-make-its-models-safer/"/>
+        <updated>2026-07-15T17:09:37.000Z</updated>
+        <summary type="html"><![CDATA[OpenAI has built an LLM super-hacker called GPT-Red that it uses as a sparring partner to help its other models boost their defenses against cyberattacks. Last week the company released the latest version of its flagship LLM, GPT-5.6. OpenAI says that training it against GPT-Red made the model its most robust release yet. GPT-Red automates…]]></summary>
+        <author>
+            <name>Will Douglas Heaven</name>
         </author>
     </entry>
     <entry>
@@ -87,55 +276,6 @@ PoPE's core innovation lies in its use of channel-specific placebos. These place
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[0xPdf Now: Pay-as-You-Go Wallet, Free First Parse, $5 Welcome Credit & MCP]]></title>
-        <id>https://dev.to/rishamax/0xpdf-now-pay-as-you-go-wallet-free-first-parse-5-welcome-credit-mcp-2bec</id>
-        <link href="https://dev.to/rishamax/0xpdf-now-pay-as-you-go-wallet-free-first-parse-5-welcome-credit-mcp-2bec"/>
-        <updated>2026-07-15T16:53:12.000Z</updated>
-        <summary type="html"><![CDATA[Schema-first PDF → JSON was the product. What’s new is how you buy and use it — no monthly plans, prepaid wallet, a real free first success, and an MCP server for agents.
-
-
-
-Feature
-What it means
-
-
-
-
-Pay as you go
-~$6 / 1,000 text pages, ~$24 / 1,000 OCR pages — no subscription
-
-
-Prepaid wallet
-Top up from $5, spend down as you parse
-
-
-Free first parse
-Your first successful parse is free (no hold / no debit)
-
-
-$5 welcome credit
-After first parse + card on file, once
-
-
-MCP
-Same API for Cursor / Claude / agents
-
-
-Try free
-
-Playground — no card required to experiment
-
-
-
-Most PDF APIs push you into seats or opaque “credits.” We wanted something developers and agents can reason about:
-Parse a real doc in the browser.
-If it fits, add a card and top up.
-Usage debits the wallet by page type (text …]]></summary>
-        <author>
-            <name>risha-max</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Cantor and Securitize collaborate on blockchain-based IPOs]]></title>
         <id>82be6d67-7bf6-4ab9-8cbb-7cb9664453c1</id>
         <link href="https://www.coindesk.com/business/2026/07/15/cantor-and-securitize-collaborate-on-blockchain-based-ipos"/>
@@ -143,168 +283,6 @@ Usage debits the wallet by page type (text …]]></summary>
         <summary type="html"><![CDATA[The move creates a pathway for public companies to raise capital onchain and issue tokenized securities.]]></summary>
         <author>
             <name>Ian Allison</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Tested ChatGPT vs. Perplexity for Research (Here is my winner)]]></title>
-        <id>https://dev.to/hari_haran_144973263df174/i-tested-chatgpt-vs-perplexity-for-research-here-is-my-winner-2432</id>
-        <link href="https://dev.to/hari_haran_144973263df174/i-tested-chatgpt-vs-perplexity-for-research-here-is-my-winner-2432"/>
-        <updated>2026-07-15T16:51:31.000Z</updated>
-        <summary type="html"><![CDATA[When I need to learn a new concept or find information, I used to open 20 Google tabs. Now, I use AI.
-But which AI is actually better for research? I tested ChatGPT and Perplexity for a week. Here is what I found:
-*ChatGPT:
-
-Best for: Brainstorming and organizing messy notes.
-*Perplexity:
-
-Best for: Finding facts and reading the web.
-Which one do you use more for your daily work?]]></summary>
-        <author>
-            <name>Hari Haran</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Idempotency: Why "Just Retry It" Breaks More Than It Fixes]]></title>
-        <id>https://dev.to/tech_queen/idempotency-why-just-retry-it-breaks-more-than-it-fixes-27cb</id>
-        <link href="https://dev.to/tech_queen/idempotency-why-just-retry-it-breaks-more-than-it-fixes-27cb"/>
-        <updated>2026-07-15T16:48:01.000Z</updated>
-        <summary type="html"><![CDATA[A payment request goes out. The network hiccups. The client never sees a response, so it does the reasonable thing and retries. Thirty seconds later, a customer gets charged twice for one order, and someone on support is trying to explain to them why.
-Nobody wrote a bug here. The client behaved exactly the way retry logic is supposed to behave. The problem is one layer deeper: the system let a "did this actually happen" question get answered twice, and each answer was "yes, charge them."
-That's idempotency, or rather, the absence of it. It's one of those concepts that's simple to state and easy to get wrong in practice, and once you've been burned by it once, you start seeing the gap everywhere.
-Why retries are unavoidable, not optional
-In a distributed system, a timeout doesn't tell you t…]]></summary>
-        <author>
-            <name>Ifeoluwa Obayemi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Software Engineering Job Market Has Changed. Most Candidates Haven't.]]></title>
-        <id>https://dev.to/hey-amanthakur/the-software-engineering-job-market-has-changed-most-candidates-havent-1be5</id>
-        <link href="https://dev.to/hey-amanthakur/the-software-engineering-job-market-has-changed-most-candidates-havent-1be5"/>
-        <updated>2026-07-15T16:46:45.000Z</updated>
-        <summary type="html"><![CDATA[A few months ago, I started noticing a pattern.
-Every day, I would come across posts from talented developers saying:
-"I've applied to 500+ jobs."
-"I'm getting rejected without interviews."
-"I've built multiple projects, but nobody is responding."
-The common assumption is that the market is bad.
-While that's partially true, I don't think that's the complete story.
-The software engineering landscape has fundamentally changed, and many candidates are still preparing for a market that no longer exists.
-There was a time when learning a framework, building a few portfolio projects, and solving interview questions consistently could land you interviews.
-Today, almost every applicant has:
-React, Angular, Vue, or Next.js experience.
-Node.js, Java, Python, or Go on their resume.
-Several GitHub repo…]]></summary>
-        <author>
-            <name>Aman Thakur</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[VibeFeed – A social feed with no algorithm, just your close friends]]></title>
-        <id>https://dev.to/deniz_filikci_ad742c7634c/vibefeed-a-social-feed-with-no-algorithm-just-your-close-friends-3a35</id>
-        <link href="https://dev.to/deniz_filikci_ad742c7634c/vibefeed-a-social-feed-with-no-algorithm-just-your-close-friends-3a35"/>
-        <updated>2026-07-15T16:45:41.000Z</updated>
-        <summary type="html"><![CDATA[I'm a solo founder from Denmark, and I'd describe myself as non-technical, my background is design, not engineering. A few weeks ago I shipped an iOS app called VibeFeed, and it's since crept into the top of the Danish App Store's Social Networking category. This is the honest writeup: why I built it, the stack that let one non engineer ship it, and what I got wrong.
-Every feed I open has slowly turned into the same thing: ads, strangers, and an algorithm deciding what I see. The handful of people I actually care about get buried under all of it. I wanted the opposite, a quiet, chronological feed shared only with the small circle of people I'd actually invite to dinner. No ranking. No infinite scroll. No public like counts. No follower numbers.
-Next.js on Vercel for the web side and deploys. Push to GitHub, it's live. No servers to babysit.
-The lesson that surprised me: the hard part wasn't the code, it was modeling the data so that "a private circle of friends" was true at the row level and couldn't be worked around. I redid that schema more times than I'd like to admit.
-What I got wrong
-Where it is now
-It's early and honest: a couple dozen users, some of them still my test accounts, iOS only. The "calm / anti-algorithm social app" graveyard is deep — Path is the obvious ghost — and I'm well aware most of them died the moment they chased scale and bolted on growth-hacky mechanics. My bet is that keeping the circle genuinely small, forever, is the thing they got wrong.
-If you've built something in the anti-algorithm / digital-wellbeing space, I'd genuinely like to hear what worked and what didn't — especially around onboarding and getting a whole friend-group in at once rather than one lonely user at a time.]]></summary>
-        <author>
-            <name>Deniz VibeFeed</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Schema-First PDF JSON in One API Call (Try the Playground)]]></title>
-        <id>https://dev.to/rishamax/schema-first-pdf-json-in-one-api-call-try-the-playground-516a</id>
-        <link href="https://dev.to/rishamax/schema-first-pdf-json-in-one-api-call-try-the-playground-516a"/>
-        <updated>2026-07-15T16:44:37.000Z</updated>
-        <summary type="html"><![CDATA[If you are wiring invoice/form extraction into an app, the usual trap is: OCR dump → brittle regex → custom parsers per vendor.
-0xPdf flips that: you define a JSON schema (or pick a template), send a PDF, get structured JSON back — one HTTP call or MCP tool.
-Open the browser playground and run sample PDFs (or upload your own):
-https://0xpdf.io/samples?utm_source=devto&utm_medium=article&utm_campaign=schema-first-playground
-No production wiring required to see whether the shape fits your workflow.
-curl -X POST "https://api.0xpdf.io/api/v1/pdf/parse" \
-  -H "X-API-Key: YOUR_KEY" \
-  -F "file=@invoice.pdf" \
-  -F "schema_template=invoice"
-
-Docs + SDKs: https://0xpdf.io/docs?utm_source=devto&utm_medium=article&utm_campaign=schema-first-playground
-Developers and agents that need typed fields (vendor, totals, line items) — not a wall of OCR text.
-If the playground output looks right on 3–5 of your real PDFs, the API path is usually straightforward.
-Built by 0xPdf.]]></summary>
-        <author>
-            <name>risha-max</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ELI — a local AI assistant where the LLM isn't the source of truth]]></title>
-        <id>https://dev.to/shadowesc95/eli-a-local-ai-assistant-where-the-llm-isnt-the-source-of-truth-l5m</id>
-        <link href="https://dev.to/shadowesc95/eli-a-local-ai-assistant-where-the-llm-isnt-the-source-of-truth-l5m"/>
-        <updated>2026-07-15T16:41:57.000Z</updated>
-        <summary type="html"><![CDATA[I ended up building ELI around a pretty simple idea: don't trust the LLM to describe system state.
-So i am looking for some feedback if posible, hopefully this project works for you and helps you out in daily life! So poke holes, ask questions, and get involved if you want to participate!
-At this point it can:
-Desktop automation
-
-Read your screen, PDFs and images
-
-Local voice in/out with your own wake word
-
-Layered memory (SQLite + FAISS + knowledge graph)
-
-Generate document-grounded reports with citations
-
-Sandboxed code execution
-
-Local FastAPI/PWA interface you can open from anything on your LAN
-
-MQTT smart-home integration
-
-Runs locally and offline by default
-
-It's mostly just been me over the guts of a year, so it's definitely not finished and I'm under no illusion there's plenty I've missed. That's kind of why I'm posting it here, just to get some honest feedback and to see if this project helps people.
-I'd really appreciate people pulling the architecture apart, pointing out bad ideas, suggesting improvements, or just generally trying to break it. I'm especially interested in how other people separate deterministic system state from probabilistic LLM reasoning (if you do at all). One last thing! Check out the readme's, and the documents in /blueprints for a much clearer idea!
-https://github.com/ShadowESC95/ELI_v2.0]]></summary>
-        <author>
-            <name>Jason</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Microservices and Micro-Frontends: Full Gist Wey Every Engineer Suppose Know.]]></title>
-        <id>https://dev.to/technvernacular/microservices-and-micro-frontends-full-gist-wey-every-engineer-suppose-know-12fp</id>
-        <link href="https://dev.to/technvernacular/microservices-and-micro-frontends-full-gist-wey-every-engineer-suppose-know-12fp"/>
-        <updated>2026-07-15T16:40:52.000Z</updated>
-        <summary type="html"><![CDATA[As a software engineer wey don build system wey don scale, make I break down this two big big architecture pattern for you. No be small thing, so grab seat, this one go long o.
-For software world, when your app don grow reach one level, one big question go dey knock your door: "How I go split this thing wey don become too big for one team to fit manage?" Na so two related but different answers come dey: Microservices (for backend) and Micro-Frontends (for frontend). We go waka through both, cover why people dey use am, why some people dey avoid am, and every corner and nuance wey dey inside.
-Microservices na architecture style where you break one big application (wey dem dey call monolith) into plenty small, independent services. Each service dey own im own business capability, im own data…]]></summary>
-        <author>
-            <name>Tech In Vernacular</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[10 Things You Can Build with Identity Lifecycle Management]]></title>
-        <id>https://dev.to/carolineilm/10-things-you-can-build-with-identity-lifecycle-management-35ho</id>
-        <link href="https://dev.to/carolineilm/10-things-you-can-build-with-identity-lifecycle-management-35ho"/>
-        <updated>2026-07-15T16:37:20.000Z</updated>
-        <summary type="html"><![CDATA[Editor's Note: We recently published this article on the OmniTrust blog, and I wanted to share it with the broader developer and open-source community here. I'd like to hear about additional use cases, new ideas, or projects being built with ILM.
-==============================================================
-When developers discover a new open-source project, one of the first questions they ask is simple: “What can I actually build with this?”
-Identity Lifecycle Management (ILM) is an open foundation for automating certificates, keys, secrets, and machine identities across modern cloud, hybrid, and enterprise environments. Rather than being just another certificate lifecycle management platform, ILM gives developers, platform engineers, security architects, and contributors the flexibility…]]></summary>
-        <author>
-            <name>Caroline Y</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Primate Is the Last Great Web Framework]]></title>
-        <id>https://superarch.org/theanswerisc/primate-is-the-last-great-framework.html</id>
-        <link href="https://superarch.org/theanswerisc/primate-is-the-last-great-framework.html"/>
-        <updated>2026-07-15T16:35:38.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -328,10 +306,10 @@ Identity Lifecycle Management (ILM) is an open foundation for automating certifi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Starlink 2X Price Increase]]></title>
-        <id>https://www.corporatejetinvestor.com/news/starlink-price-rise-reckless-says-correnti/</id>
-        <link href="https://www.corporatejetinvestor.com/news/starlink-price-rise-reckless-says-correnti/"/>
-        <updated>2026-07-15T16:22:43.000Z</updated>
+        <title type="html"><![CDATA[FreeBSD 16 Retires the Last of Its GPL Code from Its Base System]]></title>
+        <id>https://www.phoronix.com/news/FreeBSD-16-Goes-GPL-Free</id>
+        <link href="https://www.phoronix.com/news/FreeBSD-16-Goes-GPL-Free"/>
+        <updated>2026-07-15T16:32:05.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -368,10 +346,10 @@ Identity Lifecycle Management (ILM) is an open foundation for automating certifi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Purging George Orwell's books misses what drives the political right]]></title>
-        <id>https://theloop.ecpr.eu/purging-the-books-of-george-orwell-will-not-halt-the-rise-of-the-political-right/</id>
-        <link href="https://theloop.ecpr.eu/purging-the-books-of-george-orwell-will-not-halt-the-rise-of-the-political-right/"/>
-        <updated>2026-07-15T16:13:32.000Z</updated>
+        <title type="html"><![CDATA[Codex Micro]]></title>
+        <id>https://openai.com/supply/co-lab/work-louder/</id>
+        <link href="https://openai.com/supply/co-lab/work-louder/"/>
+        <updated>2026-07-15T16:12:58.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -408,7 +386,17 @@ Identity Lifecycle Management (ILM) is an open foundation for automating certifi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Running Gemma 4 26B at 5 tokens/SEC on a 13-year-old Xeon with no GPU]]></title>
+        <title type="html"><![CDATA[How I Used Harness Engineering to Make Our Company AI-Native]]></title>
+        <id>6a57a891a1ec2486def24d23</id>
+        <link href="https://www.freecodecamp.org/news/harness-engineering-ai-native-company/"/>
+        <updated>2026-07-15T15:34:41.000Z</updated>
+        <summary type="html"><![CDATA[Most companies say they want to "adopt AI". In practice this usually means a chatbot bolted onto a website. Meanwhile, engineers using AI coding tools hit the opposite wall. The AI writes code fast, b]]></summary>
+        <author>
+            <name>Tech With RJ</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Running Gemma 4 26B at 5 tokens/sec on a 13-year-old Xeon with no GPU]]></title>
         <id>https://www.neomindlabs.com/2026/06/08/running-gemma-4-26b-at-5-tokens-sec-on-a-13-year-old-xeon-with-no-gpu/</id>
         <link href="https://www.neomindlabs.com/2026/06/08/running-gemma-4-26b-at-5-tokens-sec-on-a-13-year-old-xeon-with-no-gpu/"/>
         <updated>2026-07-15T15:34:05.000Z</updated>
@@ -428,13 +416,33 @@ Identity Lifecycle Management (ILM) is an open foundation for automating certifi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[DEA to Temporarily Schedule 7-Oh and Related Substances to Protect Public Safety]]></title>
-        <id>https://www.dea.gov/press-releases/2026/07/01/dea-temporarily-schedule-7-oh-and-related-substances-protect-public</id>
-        <link href="https://www.dea.gov/press-releases/2026/07/01/dea-temporarily-schedule-7-oh-and-related-substances-protect-public"/>
-        <updated>2026-07-15T15:17:44.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
+        <title type="html"><![CDATA[How to Build a RAG Chatbot for Your Docs with Node.js, Google Gemini, and pgvector]]></title>
+        <id>6a57a6aa328507d0d4d46169</id>
+        <link href="https://www.freecodecamp.org/news/how-to-build-rag-chatbot-nodejs-gemini-pgvector/"/>
+        <updated>2026-07-15T15:26:34.000Z</updated>
+        <summary type="html"><![CDATA[I was helping a team that had a 200-page API documentation PDF. Every new engineer spent their first two weeks Ctrl+F-ing through it, asking the same questions in Slack, getting redirected to the same]]></summary>
         <author>
-            <name>Hacker News</name>
+            <name>Zia Ullah</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Product Experimentation with Regression-Based Causal Inference: Estimating LLM Feature Impact with Python and statsmodels]]></title>
+        <id>6a57a65ae479ecc16ad3b5b5</id>
+        <link href="https://www.freecodecamp.org/news/regression-models-for-causal-inference-on-ai-features/"/>
+        <updated>2026-07-15T15:25:14.000Z</updated>
+        <summary type="html"><![CDATA[A randomized A/B test is the cleanest form of product experiment available. The coin flip that splits users between the new prompt template and the control removes every possible confounder by constru]]></summary>
+        <author>
+            <name>Rudrendu Paul</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AI Paper Review: Deep Unsupervised Learning using Nonequilibrium Thermodynamics]]></title>
+        <id>6a57a5ffa7a08b8fa91b718f</id>
+        <link href="https://www.freecodecamp.org/news/ai-paper-review-deep-unsupervised-learning-using-nonequilibrium-thermodynamics/"/>
+        <updated>2026-07-15T15:23:43.000Z</updated>
+        <summary type="html"><![CDATA[Today, diffusion models power some of the most impressive AI systems ever built. They generate photorealistic images, create videos, synthesize speech, design proteins, and increasingly influence fiel]]></summary>
+        <author>
+            <name>Mohammed Fahd Abrah</name>
         </author>
     </entry>
     <entry>
@@ -569,20 +577,10 @@ The post Denza Z9 GT EV Officially Launches In Malaysia appeared first on Lowyat
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[SpaceX bond worth 10% less than issue price – heading for junk bond status]]></title>
-        <id>https://www.ft.com/content/3a023b95-66c3-41e1-b0ce-df752a499541</id>
-        <link href="https://www.ft.com/content/3a023b95-66c3-41e1-b0ce-df752a499541"/>
-        <updated>2026-07-15T12:59:09.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Germany maybe found a new source of renewable energy]]></title>
-        <id>https://www.schweizerbart.de/papers/zdgg/detail/prepub/108503/Geological_and_geophysical_characterisation_of_the_exploration_boreholes_EB1_and_EB2_Inde_Syncline_Rhenohercynian_Fold_and_Thrust_Belt_and_Weisweiler_Horst_Lower_Rhine_Embayment_Germany</id>
-        <link href="https://www.schweizerbart.de/papers/zdgg/detail/prepub/108503/Geological_and_geophysical_characterisation_of_the_exploration_boreholes_EB1_and_EB2_Inde_Syncline_Rhenohercynian_Fold_and_Thrust_Belt_and_Weisweiler_Horst_Lower_Rhine_Embayment_Germany"/>
-        <updated>2026-07-15T12:34:05.000Z</updated>
+        <title type="html"><![CDATA[Briar is in maintenance mode]]></title>
+        <id>https://briarproject.org/news/2026-maintenance-mode/</id>
+        <link href="https://briarproject.org/news/2026-maintenance-mode/"/>
+        <updated>2026-07-15T12:33:27.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -743,7 +741,7 @@ The post HONOR Pad 20 Pro Now Listed On SIRIM Database appeared first on Lowyat.
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Live markets: Bitcoin tops $65,000 as markets get more good inflation news]]></title>
+        <title type="html"><![CDATA[Live updates: Bitcoin tops $65,000 as markets get more good inflation news]]></title>
         <id>9511b63c-cc10-4668-a696-26fc4b3fa8aa</id>
         <link href="https://www.coindesk.com/tech/2026/07/15/live-markets-bitcoin-ether-etfs-draw-inflows-as-majors-rise-as-much-as-5"/>
         <updated>2026-07-15T08:29:18.000Z</updated>
@@ -838,10 +836,10 @@ The post Alleged Google Pixel Watch 5 Press Renders Appear Online appeared first
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Jurassic Park computers in excruciating detail]]></title>
-        <id>https://fabiensanglard.net/jurrasic_park_computers/index.html</id>
-        <link href="https://fabiensanglard.net/jurrasic_park_computers/index.html"/>
-        <updated>2026-07-15T02:57:47.000Z</updated>
+        <title type="html"><![CDATA[Stripe, Advent offer to buy PayPal for more than $53B]]></title>
+        <id>https://www.reuters.com/business/finance/stripe-advent-offer-buy-paypal-more-than-53-billion-sources-say-2026-07-15/</id>
+        <link href="https://www.reuters.com/business/finance/stripe-advent-offer-buy-paypal-more-than-53-billion-sources-say-2026-07-15/"/>
+        <updated>2026-07-15T03:32:45.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -978,16 +976,6 @@ The post Alleged Google Pixel Watch 5 Press Renders Appear Online appeared first
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[C3 0.8.2 a Modest Improvement]]></title>
-        <id>https://c3-lang.org/blog/0_8_2_a_modest_improvement/</id>
-        <link href="https://c3-lang.org/blog/0_8_2_a_modest_improvement/"/>
-        <updated>2026-07-14T10:48:12.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[PsiQuantum has a plan to make a massive quantum computer out of light]]></title>
         <id>https://www.technologyreview.com/?p=1140356</id>
         <link href="https://www.technologyreview.com/2026/07/14/1140356/psiquantum-plan-massive-quantum-computer-out-of-light/"/>
@@ -1008,16 +996,6 @@ The post Alleged Google Pixel Watch 5 Press Renders Appear Online appeared first
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Build and Schedule Local AI Assistants for Daily Tasks]]></title>
-        <id>6a555a585f978e5aa7071985</id>
-        <link href="https://www.freecodecamp.org/news/how-to-build-and-schedule-local-ai-assistants-for-daily-tasks/"/>
-        <updated>2026-07-13T21:36:24.000Z</updated>
-        <summary type="html"><![CDATA[Most AI agents are reactive as they wait for us to ask something. In this tutorial, I'll show you how to build local AI assistants that run on a schedule, handle the tasks you care about, and generate]]></summary>
-        <author>
-            <name>Darsh Shah</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[What Anthropic’s latest AI discovery does—and doesn’t—show]]></title>
         <id>https://www.technologyreview.com/?p=1140343</id>
         <link href="https://www.technologyreview.com/2026/07/13/1140343/what-anthropics-latest-ai-discovery-does-and-doesnt-show/"/>
@@ -1028,33 +1006,13 @@ The post Alleged Google Pixel Watch 5 Press Renders Appear Online appeared first
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Integrate AI Agents in .NET Environments for Faster Development]]></title>
-        <id>6a54f638437d4490d700b9ab</id>
-        <link href="https://www.freecodecamp.org/news/how-to-integrate-ai-agents-in-net-environments-for-faster-development/"/>
-        <updated>2026-07-13T14:29:12.000Z</updated>
-        <summary type="html"><![CDATA[Generative AI agents are transforming .NET development by helping developers automate repetitive coding tasks, generate unit tests, assist with debugging, document code, and accelerate CI/CD workflows]]></summary>
+        <title type="html"><![CDATA[Editing React components that never rendered]]></title>
+        <id>https://blog.crossui.com/2026/07/editing-react-components-that-never-rendered</id>
+        <link href="https://blog.crossui.com/2026/07/editing-react-components-that-never-rendered"/>
+        <updated>2026-07-13T13:49:33.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Gopinath Karunanithi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Build a Shadcn Sheet Component in React: Cart and Filter Panel Examples]]></title>
-        <id>6a54f29d91d656f74f1f4a21</id>
-        <link href="https://www.freecodecamp.org/news/how-to-build-a-shadcn-sheet-component-in-react-cart-and-filter-panel-examples/"/>
-        <updated>2026-07-13T14:13:49.000Z</updated>
-        <summary type="html"><![CDATA[A Sheet is a panel that slides in from the edge of the screen instead of popping up in the center like a modal. You've likely used one when you've opened a shopping cart on an e-commerce site or tappe]]></summary>
-        <author>
-            <name>Vaibhav Gupta</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Build a Browser-Based PDF Image Extractor Using JavaScript]]></title>
-        <id>6a54f26925b48b98bd11b23e</id>
-        <link href="https://www.freecodecamp.org/news/build-pdf-image-extractor-javascript/"/>
-        <updated>2026-07-13T14:12:57.000Z</updated>
-        <summary type="html"><![CDATA[PDF files are widely used for sharing documents because they preserve formatting across different devices. Many PDFs contain valuable images such as logos, product photos, charts, diagrams, illustrati]]></summary>
-        <author>
-            <name>Bhavin Sheth</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1068,10 +1026,10 @@ The post Alleged Google Pixel Watch 5 Press Renders Appear Online appeared first
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What Every Python Developer Should Know About the CPython ABI]]></title>
-        <id>https://labs.quansight.org/blog/python-abi-abi3t</id>
-        <link href="https://labs.quansight.org/blog/python-abi-abi3t"/>
-        <updated>2026-07-11T18:39:34.000Z</updated>
+        <title type="html"><![CDATA[Today I Rescued 7,234 Old GIFs]]></title>
+        <id>https://danq.me/2026/07/10/rescuing-7234-gifs/</id>
+        <link href="https://danq.me/2026/07/10/rescuing-7234-gifs/"/>
+        <updated>2026-07-12T19:00:49.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1115,16 +1073,6 @@ The post Alleged Google Pixel Watch 5 Press Renders Appear Online appeared first
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Four nuclear reactors hit a big milestone in the US —Casey Crownhart I was really looking forward to July 4, and not just because I love a poolside barbecue. This year…]]></summary>
         <author>
             <name>Thomas Macaulay</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Four nuclear reactors hit a big milestone in the US]]></title>
-        <id>https://www.technologyreview.com/?p=1140235</id>
-        <link href="https://www.technologyreview.com/2026/07/09/1140235/nuclear-reactor-milestone-criticality/"/>
-        <updated>2026-07-09T08:00:00.000Z</updated>
-        <summary type="html"><![CDATA[I was really looking forward to July 4, and not just because I love a poolside barbecue. This year the American holiday also marked a big symbolic deadline for US nuclear power. Last year the Trump administration set a goal to see three new microreactors achieve criticality, a technical milestone establishing that a reactor can…]]></summary>
-        <author>
-            <name>Casey Crownhart</name>
         </author>
     </entry>
     <entry>
