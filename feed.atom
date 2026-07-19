@@ -1,300 +1,628 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-19T02:12:11.869Z</id>
+    <id>urn:2026-07-19T05:46:43.912Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-19T02:12:11.869Z</updated>
+    <updated>2026-07-19T05:46:43.912Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-19T02:11:41.000Z</updated>
+        <updated>2026-07-19T05:46:16.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Filling the PASETO gap in JavaScript: paseto-kit (v3/v4 + full PASERK)]]></title>
-        <id>https://dev.to/elalitareq/filling-the-paseto-gap-in-javascript-paseto-kit-v3v4-full-paserk-be5</id>
-        <link href="https://dev.to/elalitareq/filling-the-paseto-gap-in-javascript-paseto-kit-v3v4-full-paserk-be5"/>
-        <updated>2026-07-19T01:58:26.000Z</updated>
-        <summary type="html"><![CDATA[The gap
-
-
-PASETO is a "secure alternative to JWT" — no algorithm-confusion footguns, versioned
-panva/paseto.
-So there was no maintained JS library that covered both PASETO and full PASERK. That's
-paseto-kit fills.
-PASETO v4 — XChaCha20 + BLAKE2b (local), Ed25519 (public)
-PASETO v3 — the NIST/FIPS-friendly profile: P-384 / AES-256-CTR / HMAC-SHA384
-Full PASERK (all 11 types, per version): local/public/secret serialization,
-lid/pid/sid key IDs, local-wrap/secret-wrap, password wrapping with Argon2id (v4)
-and PBKDF2 (v3), and seal (X25519 / P-384 ECDH)
-Registered-claims validation (exp, nbf, iss, aud, sub) with clock tolerance
-Runtime-agnostic — one build for Node, Deno, Bun, browsers, edge. No node: imports,
-no Buffer; just Uint8Array + WebCrypto's CSPRNG, on the audited @noble/* primitives
-import { generateKeyPair, sign, verify } from 'paseto-kit';
-
-const { secretKey, publicKey } = generateKeyPair();
-const token = sign(secretKey, { role: 'admin' });
-const { payload } = verify(publicKey, token);
-
-Need the NIST profile? Everything's mirrored under a v3 namespace, with distinct key types
-import { v3 } from 'paseto-kit';
-const key = v3.generateLocalKey();
-v3.decrypt(key, v3.encrypt(key, { sub: 'u1' }), { validate: { exp: true } });
-
-Crypto libraries earn trust by being boring and verifiable. paseto-kit implements no novel
-test vectors, including the expect-fail cases (e.g. non-canonical
-Honest caveat: it's pre-1.0 and has not had an independent third-party security audit.
-npm: npm install paseto-kit · repo: https://github.com/Elalitareq/paseto-kit]]></summary>
+        <title type="html"><![CDATA[J'ai automatisé la production d'articles SEO avec Claude Code — et le plus important, c'est le garde-fou]]></title>
+        <id>https://dev.to/hernanz/jai-automatise-la-production-darticles-seo-avec-claude-code-et-le-plus-important-cest-le-421f</id>
+        <link href="https://dev.to/hernanz/jai-automatise-la-production-darticles-seo-avec-claude-code-et-le-plus-important-cest-le-421f"/>
+        <updated>2026-07-19T05:42:07.000Z</updated>
+        <summary type="html"><![CDATA[Google a effacé jusqu'à 80 % du trafic de sites qui publiaient du contenu IA en masse. C'est le motif scaled content abuse.
+On voulait quand même automatiser la production d'articles. La question n'était donc pas « comment produire vite », mais « comment empêcher la machine de publier de la bouillie ».
+Voilà l'architecture qu'on a retenue, et le morceau de code qui compte vraiment.
+Six étapes, chacune tenue par un agent Claude Code spécialisé avec son propre contexte :
+1. Chasseur      → mine les mots-clés (questions réelles, faible concurrence)
+2. Cartographe   → lit la page 1 Google, relève les questions traitées
+3. Rédacteur     → écrit selon un guide de voix versionné
+4. Éditeur ⛔    → contrôle qualité, BLOQUE si en dessous du standard
+5. Générateur    → markdown → HTML + JSON-LD + sit…]]></summary>
         <author>
-            <name>Tareq El-Ali</name>
+            <name>Olivier</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AgentPool: A Stack Overflow for Coding Agents]]></title>
-        <id>https://dev.to/zugatech/agentpool-a-stack-overflow-for-coding-agents-2676</id>
-        <link href="https://dev.to/zugatech/agentpool-a-stack-overflow-for-coding-agents-2676"/>
-        <updated>2026-07-19T01:53:24.000Z</updated>
-        <summary type="html"><![CDATA[Every Claude Code session starts amnesiac. Your agent burns 20 minutes discovering
-not re-solving solved problems, because it has no memory across sessions
-I built AgentPool to close that gap: a shared pool of solved-problem fixes that
-Three tools, one feedback loop:
-agent hits error ──► ask_pool(problem)      ──► ranked prior fixes
-agent solves it  ──► post_solution(p, s)    ──► next agent finds it
-agent tries a fix──► confirm_solution(id, ok)──► good answers rise, bad ones sink
-
-Reading needs no auth. Writing needs a free key, minted in-session by a join tool
-Each entry is embedded with fastembed (BGE-small, 384-dim, ONNX — no torch) and
-sqlite-vec for KNN. A query does cosine top-k, then reranks:
-final = similarity*0.6 + normalized(score)*0.3 + recency*0.1
-score = Σ(confirm · tier_weight) − Σ(fail · tier_weight)
-
-Every entry and vote is stamped with a provenance tier (anon/free/paid/verified,
-With a small pool, k-nearest-neighbor search always returns something —
-A shared, writable pool is an attack surface. AgentPoison (NeurIPS 2024) showed a
-post_solution runs through a write-time content shield
-That shield now also has a second, separate job: a public, writable, human-readable
-not a
-The pool talks plain HTTP (a cq-compatible REST surface, not just MCP), so
-ZugaMind,
-agentpool_sync.py
-requests, no MCP SDK. Copy-pasteable into
-claude mcp add --transport http agentpool https://agentpool-mcp-production.up.railway.app/mcp
-
-Then in a session: "check agentpool before solving this." To contribute:
-"join agentpool as " and it mints you a key in-session.
-Repo (Apache-2.0, cq-compatible): https://github.com/Zuga-Technologies/agentpool-mcp
-Two pages you don't need a key or a client for:
-/leaderboard (who's
-/trust (the shield audit
-I'd genuinely like feedback on the ranking weights and the shield's false-positive
-github]]></summary>
+        <title type="html"><![CDATA[Inside Zcash's new node that targets Visa-scale privacy at 50,000 transactions per second]]></title>
+        <id>3dfa403f-6478-48e6-bc4f-38f7a638a050</id>
+        <link href="https://www.coindesk.com/tech/2026/07/16/inside-zcash-s-new-node-that-targets-visa-scale-privacy-at-50-000-transactions-per-second"/>
+        <updated>2026-07-19T05:37:34.000Z</updated>
+        <summary type="html"><![CDATA[The new Zakura client is the first live piece of a plan to take Zcash from roughly one private transaction per second to payment-network scale.]]></summary>
         <author>
-            <name>Antonio Delgado</name>
+            <name>Shaurya Malwa</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A Spend Cap That Stops Counting Is Already Fail-Open]]></title>
-        <id>https://dev.to/alex_spinov/a-spend-cap-that-stops-counting-is-already-fail-open-4mi</id>
-        <link href="https://dev.to/alex_spinov/a-spend-cap-that-stops-counting-is-already-fail-open-4mi"/>
-        <updated>2026-07-19T01:53:12.000Z</updated>
-        <summary type="html"><![CDATA[Two of the five ways a spend cap can handle a missing price produce the exact same decision stream — same sha256, byte for byte. One of them is the thing everybody calls fail-open. The other is the thing everybody recommends instead of it: fall over to a free local model.
-Let me say what that hash is and isn't before it does any work. It covers (seq, label, admitted, charge) and deliberately drops the human-readable reason strings, so two policies that print different words hash the same when they decide the same. Once you see that, the collision is a theorem rather than a discovery: a free fallback charges zero, fail-open charges zero, and a ledger built out of charges cannot tell them apart because there is nothing there to tell apart. The sha256 proves only that my implementation doesn'…]]></summary>
-        <author>
-            <name>Alexey Spinov</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stratagems #18: Leo Tracked an AI Signal to Derek. Both Were Looking for the Same Enemy.]]></title>
-        <id>https://dev.to/xulingfeng/stratagems-18-leo-tracked-an-ai-signal-to-derek-both-were-looking-for-the-same-enemy-51g4</id>
-        <link href="https://dev.to/xulingfeng/stratagems-18-leo-tracked-an-ai-signal-to-derek-both-were-looking-for-the-same-enemy-51g4"/>
-        <updated>2026-07-19T01:47:12.000Z</updated>
-        <summary type="html"><![CDATA[Capture the ringleader first. The rest will scatter on their own.
-Capture the Ringleader
-Previously on this series:
-#5: Leo Walked Into a Burning House. He Walked Out With a Client. — Leo received an anonymous message at 1 AM, drove across town to fix a competitor's outage. A second message followed — a screenshot with a name: Automated Compliance Lab. He didn't delete the screenshot.
-#14: Leo Found an AI Leak. He Wasn't the First to Find It. — Leo discovered a hidden FinOptima pipeline doing reverse-cache distillation. He injected 15 lines of weight-drift monitoring code. Before his audit ended, ACL had already sealed the same leak — two weeks ahead of him.
-#15: Derek and Alex Shared One Server. ACL's AI Was Listening to Both. — Alex and Derek faked an alert to divert ACL's audit engineer…]]></summary>
-        <author>
-            <name>xulingfeng</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Midnight sprint: a sealed-bid auction, a stubborn error 170, and everything it taught me"]]></title>
-        <id>https://dev.to/tminus1s/midnight-sprint-a-sealed-bid-auction-a-stubborn-error-170-and-everything-it-taught-me-24kd</id>
-        <link href="https://dev.to/tminus1s/midnight-sprint-a-sealed-bid-auction-a-stubborn-error-170-and-everything-it-taught-me-24kd"/>
-        <updated>2026-07-19T01:46:51.000Z</updated>
-        <summary type="html"><![CDATA[I'm a self-taught builder, not a career dev. I lean on AI to help me a lot when my syntax breaks and explanations are rather verbose, I read a lot of
-The whole sprint ran through the Midnight Expert plugins inside Claude Code
-A Compact smart contract — a sealed-bid auction with a real nullifier:
-https://github.com/tomiin/midnight-sealed-bid-commit-reveal
+        <title type="html"><![CDATA[Test Saga Compensation When Payment Succeeds but Inventory Times Out]]></title>
+        <id>https://dev.to/robinzzz/test-saga-compensation-when-payment-succeeds-but-inventory-times-out-2li4</id>
+        <link href="https://dev.to/robinzzz/test-saga-compensation-when-payment-succeeds-but-inventory-times-out-2li4"/>
+        <updated>2026-07-19T05:33:49.000Z</updated>
+        <summary type="html"><![CDATA[An order reserves inventory, charges payment, then times out waiting for reservation confirmation. Cancellation begins. A late inventory success arrives after the refund. Without a state model, stock remains held or payment is refunded twice.
+OrderCreated -> InventoryReserved -> PaymentCharged -> Confirmed
+                         | timeout
+                         v
+                  RefundRequested -> InventoryReleased -> Cancelled
 
+invariant 1: terminal Confirmed implies one charge and one reservation
+invariant 2: terminal Cancelled implies no net charge and no reservation
+invariant 3: each compensation key produces at most one external effect
 
-Deployed it to Midnight Preprod with a live on-chain interaction (contract
-address is in that repo's README).
-A PR back to the Midnight Expert repo improving an error-code entry I'd just
-spent hours living inside.
-(Bonus, same journey: a from-scratch CLI wallet —
-https://github.com/tomiin/midnight-cli-wallet — which is where I accidentally
-learned the fix that unblocked everything else.)
-First three quests were the warm-up: explore the m…]]></summary>
-        <author>
-            <name>Tminus1sec base.eth</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Was macht ein KI-Ingenieur eigentlich den ganzen Tag? Ein ehrlicher Einblick]]></title>
-        <id>https://dev.to/alexander_ohl/was-macht-ein-ki-ingenieur-eigentlich-den-ganzen-tag-ein-ehrlicher-einblick-3ob9</id>
-        <link href="https://dev.to/alexander_ohl/was-macht-ein-ki-ingenieur-eigentlich-den-ganzen-tag-ein-ehrlicher-einblick-3ob9"/>
-        <updated>2026-07-19T01:39:00.000Z</updated>
-        <summary type="html"><![CDATA["Was machst du eigentlich genau?"
-Diese Frage bekomme ich oft – von Kunden, von Bekannten, manchmal sogar von Entwicklern. Denn der Begriff "KI-Ingenieur" klingt nach Science-Fiction. Also: Hier ist mein ehrlicher Tagesablauf.
-Der Tag beginnt nicht mit Coding. Er beginnt mit Verstehen. Ich schaue:
-Welche Workflow-Jobs sind nachts gelaufen? Gibt es Fehler?
-Haben Kunden-Systeme neue Logs produziert, die ich analysieren sollte?
-Was hat sich im KI-Bereich über Nacht verändert? (Im KI-Markt 2026 kann das eine Menge sein.)
-Das dauert 20–30 Minuten. Kein Luxus – reine Notwendigkeit.
-Ein großer Teil meiner Arbeit besteht darin, Automatisierungspipelines zu entwerfen und umzusetzen. Das sieht konkret so aus:
-Kundendaten eingehend
-    ↓
- n8n-Workflow prüft Quelle & Vollständigkeit
-    ↓
- KI-Agent ka…]]></summary>
-        <author>
-            <name>Alexander Ohl / Pragma Code</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[# Colibri Made Me Rethink How We Run LLMs — And There Might Be a Next Step]]></title>
-        <id>https://dev.to/lhabacuc/-colibri-made-me-rethink-how-we-run-llms-and-there-might-be-a-next-step-52bj</id>
-        <link href="https://dev.to/lhabacuc/-colibri-made-me-rethink-how-we-run-llms-and-there-might-be-a-next-step-52bj"/>
-        <updated>2026-07-19T01:24:05.000Z</updated>
-        <summary type="html"><![CDATA[Over the past few days, I came across a project that made me stop everything to understand how it worked. It wasn't just another framework for running language models, nor another GPU-based optimization. It was something different.
-The project is called Colibri.
-At first glance, it almost seems impossible. The idea is simple, yet remarkably bold: run a massive Mixture of Experts (MoE) model on an ordinary computer using nothing more than a CPU and an SSD, loading into memory only the experts that are actually needed at each step.
-When I first read that, my reaction was probably the same as everyone else's:
-"How could that possibly work?"
-After studying the architecture, I realized that Colibri's real innovation isn't simply that it can run an enormous model. The real breakthrough is that i…]]></summary>
-        <author>
-            <name>Liedson Habacuc</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why Python is the Uncontested King of AI Development in 2026]]></title>
-        <id>https://dev.to/oviawe_nosa_78bf57cb51e41/why-python-is-the-uncontested-king-of-ai-development-in-2026-5h4h</id>
-        <link href="https://dev.to/oviawe_nosa_78bf57cb51e41/why-python-is-the-uncontested-king-of-ai-development-in-2026-5h4h"/>
-        <updated>2026-07-19T01:21:35.000Z</updated>
-        <summary type="html"><![CDATA[Python’s dominance in AI isn't an accident. In 2026, it’s the center of the modern ML stack because it bridges research, orchestration, and production.
-The Ecosystem Advantage
-The strongest argument for Python is its mature, battle-tested ecosystem. PyTorch has become the research-to-production backbone, while Scikit-learn remains the gold standard for practical machine learning. These tools let engineers prototype quickly without fighting the language.
-LLMs and Code Generation
-Large language models have amplified Python’s position. Because Python is highly readable and widely represented in training data, LLMs produce especially high-quality Python code. This creates a feedback loop that accelerates development for AI engineers.
-The Nervous System of AI Agents
-The biggest shift in 2026 is toward agentic workflows-systems that plan, use tools, and call APIs. If the model is the brain, Python is the nervous system. It’s the connective tissue that lets agents interact with the real world.
-Conclusion
-Python won’t be replaced anytime soon. Its real power is not that it does everything natively, but that it integrates everything elegantly. It remains the essential language for the future of software.]]></summary>
-        <author>
-            <name>Oviawe Nosa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building Your First AI Agent with Python: A Beginner's Guide]]></title>
-        <id>https://dev.to/oviawe_nosa_78bf57cb51e41/building-your-first-ai-agent-with-python-a-beginners-guide-fe9</id>
-        <link href="https://dev.to/oviawe_nosa_78bf57cb51e41/building-your-first-ai-agent-with-python-a-beginners-guide-fe9"/>
-        <updated>2026-07-19T01:16:52.000Z</updated>
-        <summary type="html"><![CDATA[AI agents are programs that can perceive information, decide what to do, and take actions toward a goal. Unlike a simple chatbot that only responds to prompts, an agent can use tools, follow steps, and adapt its behavior based on context. In this tutorial, you’ll build a small weather assistant agent in Python that can answer questions like “What’s the weather in Paris?” by calling a weather API.
-Prerequisites
-Before you start, make sure you have:
-Basic Python knowledge
-Python 3.10+
-An OpenAI API key
-A weather API key (like OpenWeatherMap)
-pip installed
-Install the libraries:
-Understand the agent loop
-A simple agent usually follows this pattern:
-Receive a user request
-Decide whether a tool is needed
-Call the tool
-Use the result to generate a final response
-
-
-Set up your project
+Build an in-memory simulator that permutes duplicate delivery, timeout, late success, refund failure, and process restart. Persist event IDs and state revisions; reject transitions from stale revisions.
 
 
 
-Create a file named agent.py and load your environment variables:
-Build the weather tool
-This function calls OpenWeatherMap and returns a simplified result.
-Let the model decide when to use the tool
-We’ll use OpenAI’s API with function calling so the model can request the weather tool.
-Conclusion
-You just built your first AI agent. Starting with a weather assistant is a great way to learn the workflow without getting overwhelmed. From here, you can expand into more advanced agents with memory and multiple tools.]]></summary>
+Injection
+Expected terminal evidence
+
+
+
+
+payment succeeds, reserve response lost
+reconcile before refund
+
+
+refund delivered twice
+one provider effect
+
+
+late reserve after cancel
+release command emitted
+
+
+compensation fails
+nonterminal alertable state
+
+
+
+Property tests should generate event orders and assert invariants after quiescence. Keep a minimal failing sequence whenever one breaks. Do not claim exactly-once delivery; make effects idempotent and reconciliation repeatable.
+This simulator does not reproduce production brokers, provider semantics, or network timing. It validates a protocol hypothesis. Which compensation in your current Saga has no durable idempotency key?]]></summary>
         <author>
-            <name>Oviawe Nosa</name>
+            <name>Robin</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Building a Self-Healing GitHub Trending API in One Day]]></title>
-        <id>https://dev.to/pool_guard_603fe0cb4809a4/building-a-self-healing-github-trending-api-in-one-day-1h9i</id>
-        <link href="https://dev.to/pool_guard_603fe0cb4809a4/building-a-self-healing-github-trending-api-in-one-day-1h9i"/>
-        <updated>2026-07-19T01:08:36.000Z</updated>
-        <summary type="html"><![CDATA[What happens when you refuse to accept "the source is down" as an answer.
-The problem
-Every existing scraper I found had the same design: one source, one point of failure. Small HTML change from GitHub → your service is 503 for a week. Rate limited from Cloudflare → same result.
-I wanted a trending API that stays up when GitHub's page is down. So I built Hydra, and put it live at hydra9.dev.
-The architecture (in one picture)
-Why 4 sources and not 2
-Track A (github.com/trending HTML): freshest data, but the format changes without warning
-Historical data — the thing GitHub won't give you
-Hydra runs a Celery beat task every 15 minutes that stores a fresh snapshot to Postgres. That unlocks four analytics endpoints the official page can't offer:
-curl https://hydra9.dev/api/v1/trending/new-stars
-curl https://hydra9.dev/api/v1/trending/dropped
-curl https://hydra9.dev/api/v1/trending/velocity
-curl https://hydra9.dev/api/v1/trending/history?at=2026-07-14T00:00:00Z
-The stack (deliberately boring)
-One lesson: @lru_cache and Pydantic don't mix
-@lru_cache
-track_singletons(settings: Settings) -> dict[TrackId, Track]:
-_. lru_cache needs hashable arguments. Every real request threw:
-TypeError: unhashable type: 'Settings'
-@lru_cache
-Try it
-https://hydra9.dev
-https://hydra9.dev/docs
-https://github.com/loly-baby/Hydra
-https://github.com/loly-baby/Hydra
-http://localhost:8000/api/v1/trending
-Hydra runs on a single 6GB VPS shared with another project. If the public instance gets hammered, self-hosting is a Docker Compose away.]]></summary>
+        <title type="html"><![CDATA[A Bulk Delete Confirmation Must Show the Set That Will Actually Disappear]]></title>
+        <id>https://dev.to/haaaaaley/a-bulk-delete-confirmation-must-show-the-set-that-will-actually-disappear-5a3k</id>
+        <link href="https://dev.to/haaaaaley/a-bulk-delete-confirmation-must-show-the-set-that-will-actually-disappear-5a3k"/>
+        <updated>2026-07-19T05:33:46.000Z</updated>
+        <summary type="html"><![CDATA[A user selects 30 items, changes a filter, and presses Delete. Three items are unauthorized and silently skipped; two hidden items remain selected. “Delete 30 items?” does not describe the actual operation.
+requested: 30
+authorized: 27
+hidden_by_filter: 2
+skipped: 3
+destructive_now: 27
+undo_until: "UTC timestamp"
+
+The confirmation card should name the action, exact authorized count, hidden selections, skipped items and reason categories, retention/undo window, and the post-action destination. Let users inspect the set without losing keyboard position.
+
+
+
+Scenario
+Research question
+
+
+
+
+filter changes after selection
+can users predict included items?
+
+
+mixed permissions
+do skips look like success?
+
+
+partial API failure
+is retry scope understandable?
+
+
+undo expires
+is deadline perceivable without color?
+
+
+screen reader
+is the set summary reached before Delete?
+
+
+
+Stop the study if participants delete unintended fixtures, cannot distinguish skipped from failed, or privacy-sensitive item names appear where they should be summarized. Use synthetic data and a reversible prototype.
+After execution, show before/after counts and a stable operation ID. Focus should move to a status heading; Undo must be a real button with its expiry stated in text.
+This is a design proposal and research protocol, not validated user evidence. Which is safer for hidden selections: clear them automatically, block deletion, or show an inspectable cross-filter set?]]></summary>
         <author>
-            <name>Pool Guard</name>
+            <name>Haley</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Build a support triage agent that owns its own inbox]]></title>
-        <id>https://dev.to/mqasimca/build-a-support-triage-agent-that-owns-its-own-inbox-2aml</id>
-        <link href="https://dev.to/mqasimca/build-a-support-triage-agent-that-owns-its-own-inbox-2aml"/>
-        <updated>2026-07-19T01:08:05.000Z</updated>
-        <summary type="html"><![CDATA[Most "AI support bot" demos bolt an LLM onto a shared Gmail or hang a webhook off a helpdesk and call it a day. That works right up until you want the agent to actually be a participant in the conversation — to receive mail at a real address, decide what to do with it, and reply as itself instead of as a script poking at someone else's mailbox.
-So let's not do that. Let's give support@yourcompany.com its own first-class identity: an Agent Account that receives every inbound email, classifies it with a model, routes and filters it with server-side rules, and replies in the right thread — once, never twice. No shared inbox, no scraping a human's account, no helpdesk middleman.
-I work on the Nylas CLI, so the terminal commands below are the exact ones I reach for when I'm setting one of these…]]></summary>
+        <title type="html"><![CDATA[Prove Your Mobile Upload Removed EXIF GPS Before the Retry Queue Keeps a Copy]]></title>
+        <id>https://dev.to/roronoa_/prove-your-mobile-upload-removed-exif-gps-before-the-retry-queue-keeps-a-copy-512p</id>
+        <link href="https://dev.to/roronoa_/prove-your-mobile-upload-removed-exif-gps-before-the-retry-queue-keeps-a-copy-512p"/>
+        <updated>2026-07-19T05:33:39.000Z</updated>
+        <summary type="html"><![CDATA[A user selects a photo containing GPS coordinates, capture time, and orientation. The preview looks clean, but the background retry queue still holds the original file and uploads it after restart.
+Create synthetic JPEG and HEIC samples with known metadata—never personal photos. Record expected orientation and a fake GPS location such as 0.0, 0.0 plus an unmistakable fixture marker.
+select original -> normalize orientation -> strip metadata
+-> write sanitized temp file -> enqueue sanitized path -> upload
+
+
+
+
+Path
+Pass condition
+
+
+
+
+foreground upload
+intercepted bytes contain no GPS/time
+
+
+background retry
+queue references sanitized file
+
+
+app restart
+original path is not restored
+
+
+thumbnail
+no metadata copied back
+
+
+upload failure
+both files follow declared cleanup policy
+
+
+
+Intercept the request in a test server and inspect the uploaded bytes, not only the UI preview. Compare pixel orientation separately from metadata removal; stripping orientation without rotating pixels can produce a sideways image.
+Record device, OS, framework, image type, permission state, and app build. Verify temporary files are excluded from cloud backup and deleted after success or expiry.
+This protocol covers selected JPEG/HEIC fixtures, not every vendor codec or edited media format. Platform image APIs may change metadata behavior across OS versions. Which artifact is riskier in your app: the upload body, retry queue, thumbnail cache, or backup?]]></summary>
         <author>
-            <name>Qasim</name>
+            <name>Roronoa</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Add custom metadata to Nylas objects for filtering]]></title>
-        <id>https://dev.to/mqasimca/add-custom-metadata-to-nylas-objects-for-filtering-2a2d</id>
-        <link href="https://dev.to/mqasimca/add-custom-metadata-to-nylas-objects-for-filtering-2a2d"/>
-        <updated>2026-07-19T01:07:56.000Z</updated>
-        <summary type="html"><![CDATA[You're sending a message from your app, and you need to remember which campaign it belonged to, or tie a calendar event back to the order in your own database. The obvious approach is a separate table mapping Nylas IDs to your records, which means a join on every read and a sync to keep current. There's a lighter way: attach your own data directly to the object as metadata, then filter objects by it later. Your campaign ID rides along on the message, and a single query pulls back every message in that campaign. This post covers tagging objects with the API and the CLI.
-It's a worked use case rather than an endpoint tour, covering metadata from two angles: the HTTP API your backend calls and the nylas CLI for setting and reading it from the terminal. I work on the CLI, so the commands below…]]></summary>
+        <title type="html"><![CDATA[Fill a WAL Volume on Purpose Before ENOSPC Turns Your Health Check Green]]></title>
+        <id>https://dev.to/odd_background_328/fill-a-wal-volume-on-purpose-before-enospc-turns-your-health-check-green-1fkp</id>
+        <link href="https://dev.to/odd_background_328/fill-a-wal-volume-on-purpose-before-enospc-turns-your-health-check-green-1fkp"/>
+        <updated>2026-07-19T05:33:35.000Z</updated>
+        <summary type="html"><![CDATA[A service reports healthy because its process is alive, while WAL writes fail with ENOSPC. Log rotation also fails, retries amplify load, and deleting one file does not prove durable writes resumed.
+mkdir -p ./disk-fixture
+dd if=/dev/zero of=./disk-fixture/filler bs=1M count=900
+# Run only inside a disposable volume with a declared size.
+
+Drive a fixed write workload and record free bytes, successful writes, failed writes by error class, WAL/checkpoint age, retry count, and health state. Never run this against a workstation root or shared production volume.
+
+
+
+Threshold
+Action
+
+
+
+
+20% free
+warn and stop optional writes
+
+
+10% free
+reject new work, retain read path
+
+
+first ENOSPC
+fail readiness, stop retries
+
+
+space restored
+integrity check before readiness
+
+
+
+A useful readiness probe performs a bounded durable-write check or observes a recent successful checkpoint; a process-only liveness probe should remain separate.
+inject -> ENOSPC -> readiness false -> bounded cleanup
+       -> integrity/checkpoint -> test write -> readiness true
+
+Test log rotation failure, deletion of an open file that does not release space, and a restart before checkpoint. Cleanup must remove the fixture, confirm file descriptors release blocks, run integrity checks, and prove a new write survives restart.
+This local container drill does not model cloud-volume burst credits, remote filesystems, or every database WAL. Which signal should remove your instance from service first: free bytes, checkpoint age, or the first failed durable write?]]></summary>
         <author>
-            <name>Qasim</name>
+            <name>Odd_Background_328</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Keep Keyboard Focus Stable When a Virtualized Grid Recycles Its Rows]]></title>
+        <id>https://dev.to/babycat/keep-keyboard-focus-stable-when-a-virtualized-grid-recycles-its-rows-47jo</id>
+        <link href="https://dev.to/babycat/keep-keyboard-focus-stable-when-a-virtualized-grid-recycles-its-rows-47jo"/>
+        <updated>2026-07-19T05:33:32.000Z</updated>
+        <summary type="html"><![CDATA[A keyboard user focuses row 40, column 3. Scrolling recycles that DOM node. Focus falls to <body>, while a screen reader announces the wrong row after sorting. Virtualization saved nodes but broke navigation.
+type ActiveCell={rowId:string,columnId:string};
+let active:ActiveCell={rowId:'row-0040',columnId:'status'};
+
+Store stable row IDs, not rendered indexes. When the active row leaves the window, keep logical focus and move DOM focus to a grid proxy or newly rendered equivalent. After sorting, locate the same row ID at its new position.
+<div role="grid" aria-rowcount="10000" tabindex="0" aria-activedescendant="cell-row-0040-status"></div>
+
+
+
+
+Event
+Expected focus evidence
+
+
+
+
+ArrowDown
+next logical row announced
+
+
+scroll recycles active row
+focus remains in grid
+
+
+sort
+same row ID stays active
+
+
+filter removes row
+deterministic fallback announced
+
+
+loading error
+retry reachable without pointer
+
+
+
+Build Playwright tests for document.activeElement, aria-activedescendant, and row/column attributes. Add manual checks with keyboard, zoom, and at least one browser/screen-reader pair. Automated assertions cannot validate announcement quality alone.
+Test cancellation and retry during async page loading; never announce every scroll frame. This pattern covers one virtualization strategy, not all grid libraries. When the active item disappears after filtering, should your product focus the nearest row, the grid heading, or the filter control?]]></summary>
+        <author>
+            <name>babycat</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Make Chunked Upload Finalization Idempotent Before the Network Retries It]]></title>
+        <id>https://dev.to/kongkong1/make-chunked-upload-finalization-idempotent-before-the-network-retries-it-ilg</id>
+        <link href="https://dev.to/kongkong1/make-chunked-upload-finalization-idempotent-before-the-network-retries-it-ilg"/>
+        <updated>2026-07-19T05:33:27.000Z</updated>
+        <summary type="html"><![CDATA[A 12 MB artifact is split into three chunks. The client uploads chunk 2 twice, loses the response to finalize, and retries. A weak API creates two artifacts or assembles corrupted data.
+type Chunk={sessionId:string,index:number,sha256:string,size:number};
+type Finalize={sessionId:string,orderedHashes:string[],artifactSha256:string};
+
+PUT /sessions/:id/chunks/:index should be idempotent for identical bytes and reject a different hash at an existing index. POST /sessions/:id/finalize should compare-and-set uploading → finalizing → complete, returning the same artifact ID after a retry.
+created -> uploading -> finalizing -> complete
+                    \-> expired
+
+
+
+
+Injection
+Expected result
+
+
+
+
+duplicate identical chunk
+200, no extra storage
+
+
+duplicate changed chunk
+409
+
+
+missing index
+422 with missing list
+
+
+finalize response lost
+retry returns same artifact
+
+
+expired session
+410 and cleanup scheduled
+
+
+
+Compute every chunk hash server-side and verify the final artifact hash after ordered assembly. Store temporary parts outside the public artifact namespace. A sweeper should remove expired sessions only when they are not finalizing.
+End-to-end tests must cross UI selection, API authorization, temporary storage, assembly, download, and cleanup. Rollback disables new sessions while preserving completed downloads and garbage-collecting partial data.
+A local filesystem fixture does not reproduce S3 consistency, multipart APIs, or production throughput. Which state transition in your upload flow currently has no idempotency key?]]></summary>
+        <author>
+            <name>kongkong</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Create an API Deprecation Debt Ledger Before the Sunset Date Slips Again]]></title>
+        <id>https://dev.to/bestbee/create-an-api-deprecation-debt-ledger-before-the-sunset-date-slips-again-33ko</id>
+        <link href="https://dev.to/bestbee/create-an-api-deprecation-debt-ledger-before-the-sunset-date-slips-again-33ko"/>
+        <updated>2026-07-19T05:33:22.000Z</updated>
+        <summary type="html"><![CDATA[An internal API has a sunset date, but nobody can name every consumer. Traffic remains after the deadline, exceptions have no owner, and the old service still requires on-call support. That is migration debt.
+consumer,monthly_calls,owner,migration_hours,exception_until,last_seen
+billing-ui,120000,team-a,24,,2026-07-18
+legacy-export,80,team-b,40,2026-08-15,2026-07-17
+unknown,9300,,unknown,,2026-07-18
+
+Track three costs separately:
+migration_cost = estimated_hours * loaded_hourly_rate
+run_cost = infrastructure + on_call + security maintenance
+delay_cost = run_cost_per_month + risk_reserve
+
+Illustrative numbers are not ROI evidence. Run downside, expected, and upside scenarios, especially for unknown traffic and estimates that exceed one sprint.
+
+
+
+Gate
+Required owner
+Stop condition
+
+
+
+
+consumer inventory
+platform
+unknown traffic above threshold
+
+
+migration kit
+API team
+clean-room example fails
+
+
+exception
+business owner
+missing expiry or rationale
+
+
+shutdown
+incident owner
+rollback untested
+
+
+
+Make exceptions expire automatically. An expired exception should page its owner or disable the waiver workflow—not silently become permanent. Keep read-only telemetry after migration long enough to detect late consumers, but define retention.
+This ledger does not capture every organizational dependency or prove that shutdown is cheaper. It makes assumptions reviewable. Which is more expensive in your system: one month of old-API operation or one unknown high-value consumer outage?]]></summary>
+        <author>
+            <name>bestbee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build a Bloom Filter and Watch ‘Probably Present’ Become a False Positive]]></title>
+        <id>https://dev.to/magickong/build-a-bloom-filter-and-watch-probably-present-become-a-false-positive-1ihi</id>
+        <link href="https://dev.to/magickong/build-a-bloom-filter-and-watch-probably-present-become-a-false-positive-1ihi"/>
+        <updated>2026-07-19T05:33:18.000Z</updated>
+        <summary type="html"><![CDATA[A Bloom filter can say an item is definitely absent or probably present. It cannot prove membership. The easiest way to learn that distinction is to generate a false positive yourself.
+import hashlib
+class Bloom:
+    def __init__(self, bits=128, hashes=3):
+        self.bits=[0]*bits; self.k=hashes
+    def positions(self, value):
+        raw=value.encode()
+        for i in range(self.k):
+            yield int.from_bytes(hashlib.sha256(bytes([i])+raw).digest()[:8])%len(self.bits)
+    def add(self, value):
+        for p in self.positions(value): self.bits[p]=1
+    def maybe(self, value):
+        return all(self.bits[p] for p in self.positions(value))
+
+Insert deterministic values item-0000 through item-0099. Then query new values until maybe() returns true. Print the first false positive with bit count, hash count, inserted count, and query count.
+
+
+
+Bits
+Hashes
+Inserted
+False positives / 10,000
+
+
+
+
+128
+3
+100
+measure
+
+
+1,024
+3
+100
+measure
+
+
+1,024
+7
+100
+measure
+
+
+
+Use the same input sequence for each row. Test empty filters, repeated insertion, known members, and a deliberately undersized filter. Expected invariant: inserted items have no false negatives; absent items may be false positives.
+Do not replace an authorization check or billing record with a Bloom filter. Use it as a cheap prefilter followed by an authoritative lookup when maybe() is true.
+Python's hash choices here are educational, not a production recommendation, and the measured rate is not universal. Which workload can tolerate an extra lookup but never a false negative?]]></summary>
+        <author>
+            <name>Alex Chen</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Back Up SQLite’s WAL Before a Migration—Then Prove the Restore Works]]></title>
+        <id>https://dev.to/rivera123/back-up-sqlites-wal-before-a-migration-then-prove-the-restore-works-30ff</id>
+        <link href="https://dev.to/rivera123/back-up-sqlites-wal-before-a-migration-then-prove-the-restore-works-30ff"/>
+        <updated>2026-07-19T05:33:16.000Z</updated>
+        <summary type="html"><![CDATA[A task database runs in WAL mode. You copy only app.db, apply a destructive migration, and discover that recent rows lived in app.db-wal. A backup that was never restored is only a hopeful file copy.
+PRAGMA journal_mode=WAL;
+CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT NOT NULL);
+INSERT INTO tasks(title) VALUES ('before-checkpoint');
+
+Use SQLite's online backup mechanism, or force a reviewed checkpoint before copying a closed database. Do not copy an actively written main file and assume the sidecars are irrelevant.
+sqlite3 app.db '.backup backup.db'
+sqlite3 backup.db 'PRAGMA integrity_check; SELECT count(*) FROM tasks;'
+
+Then run the migration, deliberately fail halfway, replace the database from backup.db, and execute both integrity and application-level assertions.
+
+
+
+Failure
+Evidence required
+
+
+
+
+main file copied without WAL
+expected row count differs
+
+
+truncated backup
+integrity check fails
+
+
+newer schema opened by old app
+compatibility test fails
+
+
+restore to wrong path
+application still sees migrated schema
+
+
+
+A tiny manifest makes the artifact portable:
+{"schema":7,"rows":{"tasks":101},"integrity":"ok","createdAt":"UTC","sha256":"..."}
+
+Exit nonzero if any value differs after restore. Keep the broken fixture so the script proves it detects loss before demonstrating success.
+This is a single-host SQLite drill. It does not cover replicated databases, storage snapshots, or zero-downtime migration. What assertion beyond integrity_check would catch a logically incomplete restore in your application?]]></summary>
+        <author>
+            <name>Sam Rivera</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Verify Webhook Signatures Before Your Proxy Rewrites the JSON]]></title>
+        <id>https://dev.to/jaryn_123/verify-webhook-signatures-before-your-proxy-rewrites-the-json-3aki</id>
+        <link href="https://dev.to/jaryn_123/verify-webhook-signatures-before-your-proxy-rewrites-the-json-3aki"/>
+        <updated>2026-07-19T05:33:10.000Z</updated>
+        <summary type="html"><![CDATA[A webhook arrives with a valid HMAC over its raw bytes. Middleware parses the JSON, changes whitespace and key order, then asks the verifier to authenticate the new serialization. The object is equivalent; the signature is not.
+import crypto from "node:crypto";
+export function verify(raw, header, secret) {
+  const [ts, sig] = header.split(",");
+  if (Math.abs(Date.now()/1000-Number(ts)) > 300) return false;
+  const expected=crypto.createHmac("sha256",secret).update(`${ts}.`).update(raw).digest("hex");
+  return sig.length===expected.length && crypto.timingSafeEqual(Buffer.from(sig),Buffer.from(expected));
+}
+
+Capture raw before JSON parsing. Bind the timestamp into the signature and store an event ID or signature digest in a five-minute replay cache. Reject a second delivery after the first succeeds.
+
+
+
+Fixture
+Expected
+
+
+
+
+exact raw body
+accept once
+
+
+reordered keys
+reject
+
+
+one-byte mutation
+reject
+
+
+six-minute-old timestamp
+reject
+
+
+duplicate valid request
+reject as replay
+
+
+
+Create one valid fixture with a fixed timestamp and secret, then derive every negative case from it. Never log the production signature or secret. Record only fixture ID, reason class, and request digest.
+prevent: verify raw bytes before business logic
+detect: reason-coded rejects and replay-cache hits
+recover: rotate secret, retain sanitized evidence, replay known-good events deliberately
+
+This example covers HMAC webhooks, not asymmetric signatures or every provider header format. Follow the provider's canonicalization rules. Which middleware in your stack first destroys access to the original bytes?]]></summary>
+        <author>
+            <name>jaryn</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to convert a PDF to images entirely in the browser (no upload)]]></title>
+        <id>https://dev.to/omermirza09/how-to-convert-a-pdf-to-images-entirely-in-the-browser-no-upload-257m</id>
+        <link href="https://dev.to/omermirza09/how-to-convert-a-pdf-to-images-entirely-in-the-browser-no-upload-257m"/>
+        <updated>2026-07-19T05:32:34.000Z</updated>
+        <summary type="html"><![CDATA[Most "PDF to image" websites work like this: you upload your file, their server renders it, and you download the result — trusting that they delete your document afterwards. For a contract, an ID scan, or a medical form, that's a lot of trust to hand over for a one-line conversion.
+The good news: you don't need a server at all. Modern browsers can render PDF pages to a <canvas> and export them as PNG or JPG entirely on the client. Here's how to do it properly — including the part everyone gets wrong: resolution.
+pdf.js (by Mozilla) is the engine behind Firefox's built-in PDF viewer. It parses a PDF and lets you render any page onto a canvas. That canvas is then a normal image you can export.
+Load it from a CDN:
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"…]]></summary>
+        <author>
+            <name>Muhammad Omer Mirza</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Google Pixel 11a May Launch With An Overdue Chipset Upgrade]]></title>
+        <id>https://www.lowyat.net/?p=398986</id>
+        <link href="https://www.lowyat.net/2026/398986/google-pixel-11a-leak/"/>
+        <updated>2026-07-19T05:32:17.000Z</updated>
+        <summary type="html"><![CDATA[The Google Pixel 10a debuted in February with minimal upgrades from last year’s iteration. Although we still have a long way to go before the Pixel 11a officially launches, leaks have already started emerging. Should these details prove accurate, then the device could come with some considerable improvements. As per the leaks, which originate from […]
+The post Google Pixel 11a May Launch With An Overdue Chipset Upgrade appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Nurul Kamil</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LLM-Integrated Multivariable Calculus Course]]></title>
+        <id>https://calculus.academa.ai/</id>
+        <link href="https://calculus.academa.ai/"/>
+        <updated>2026-07-19T02:55:43.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FDA approves new kind of cholesterol pill]]></title>
+        <id>https://www.fda.gov/news-events/press-announcements/fda-approves-first-oral-pcsk9-inhibitor-lower-ldl-cholesterol-adults-high-cholesterol</id>
+        <link href="https://www.fda.gov/news-events/press-announcements/fda-approves-first-oral-pcsk9-inhibitor-lower-ldl-cholesterol-adults-high-cholesterol"/>
+        <updated>2026-07-19T02:40:22.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I built a browser-based P2P file transfer tool using WebRTC]]></title>
+        <id>https://airdows.com/</id>
+        <link href="https://airdows.com/"/>
+        <updated>2026-07-19T02:17:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deepsec]]></title>
+        <id>https://github.com/vercel-labs/deepsec</id>
+        <link href="https://github.com/vercel-labs/deepsec"/>
+        <updated>2026-07-19T01:33:32.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AI Mania Is Eviscerating Global Decision-Making]]></title>
+        <id>https://ludic.mataroa.blog/blog/ai-mania-is-eviscerating-global-decision-making/#fnref:3</id>
+        <link href="https://ludic.mataroa.blog/blog/ai-mania-is-eviscerating-global-decision-making/#fnref:3"/>
+        <updated>2026-07-19T01:29:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -318,26 +646,6 @@ It's a worked use case rather than an endpoint tour, covering metadata from two 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Harness Engineering]]></title>
-        <id>https://github.com/lopopolo/harness-engineering</id>
-        <link href="https://github.com/lopopolo/harness-engineering"/>
-        <updated>2026-07-18T23:27:36.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Codex Resets]]></title>
-        <id>https://codex-resets.com/</id>
-        <link href="https://codex-resets.com/"/>
-        <updated>2026-07-18T23:24:26.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Mayor Mamdani Says Landlords Can't Use AI Images to Advertise]]></title>
         <id>https://petapixel.com/2026/07/16/mayor-mamdani-says-landlords-cant-secretly-use-ai-images-to-advertise-properties/</id>
         <link href="https://petapixel.com/2026/07/16/mayor-mamdani-says-landlords-cant-secretly-use-ai-images-to-advertise-properties/"/>
@@ -352,16 +660,6 @@ It's a worked use case rather than an endpoint tour, covering metadata from two 
         <id>https://www.tug.org/tug2026/preprints/lode-realtime.pdf</id>
         <link href="https://www.tug.org/tug2026/preprints/lode-realtime.pdf"/>
         <updated>2026-07-18T22:09:07.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Judge a book by its first pages]]></title>
-        <id>https://uncovered.ink/</id>
-        <link href="https://uncovered.ink/"/>
-        <updated>2026-07-18T22:02:31.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -408,16 +706,6 @@ It's a worked use case rather than an endpoint tour, covering metadata from two 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What's the deal with all the random weekly quota resets for agents lately?]]></title>
-        <id>https://minimaxir.com/2026/07/agent-quota-reset/</id>
-        <link href="https://minimaxir.com/2026/07/agent-quota-reset/"/>
-        <updated>2026-07-18T19:06:23.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Crypto executives say digital native generations may never need a bank account]]></title>
         <id>51763e89-36ff-48e9-8e9e-503541ca4826</id>
         <link href="https://www.coindesk.com/business/2026/07/17/crypto-executives-say-digital-native-generations-may-never-need-a-bank-account"/>
@@ -425,16 +713,6 @@ It's a worked use case rather than an endpoint tour, covering metadata from two 
         <summary type="html"><![CDATA[Steakhouse Financial co-founder Adrian Cachinero says digital-native generations may rely less on banks, while Binance says younger users are already driving crypto adoption in emerging markets.]]></summary>
         <author>
             <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Kimi K3 Moment]]></title>
-        <id>https://stephen.bochinski.dev/blog/2026/07/18/the-kimi-k3-moment/</id>
-        <link href="https://stephen.bochinski.dev/blog/2026/07/18/the-kimi-k3-moment/"/>
-        <updated>2026-07-18T17:32:40.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -558,16 +836,6 @@ It's a worked use case rather than an endpoint tour, covering metadata from two 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What AI did to stackoverflow in a graph]]></title>
-        <id>https://data.stackexchange.com/stackoverflow/query/1953768#graph</id>
-        <link href="https://data.stackexchange.com/stackoverflow/query/1953768#graph"/>
-        <updated>2026-07-18T11:12:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Fable 5 vs. GPT-5.6 Sol on an NP-Hard Problem: Does /goal help?]]></title>
         <id>https://charlesazam.com/blog/fable-5-gpt-5-6-sol-goal/</id>
         <link href="https://charlesazam.com/blog/fable-5-gpt-5-6-sol-goal/"/>
@@ -669,16 +937,6 @@ The post POCO X8 Reportedly Launching After All; May Feature Massive 9,000mAh Ba
         <summary type="html"><![CDATA[Every fast-growing engineering team eventually hits the same wall. A developer needs a new staging environment, so they file a ticket. The platform team queues it. Two weeks later, the environment exi]]></summary>
         <author>
             <name>Ayobami Adejumo</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Tech note: making your own V-I plots at home]]></title>
-        <id>https://lcamtuf.substack.com/p/tech-note-making-your-own-v-i-plots</id>
-        <link href="https://lcamtuf.substack.com/p/tech-note-making-your-own-v-i-plots"/>
-        <updated>2026-07-17T20:10:02.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -877,17 +1135,6 @@ The post Huawei Mate XT2 May Adopt Design Similar To Samsung Galaxy Z Trifold ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Intel Nova Lake Desktop CPUs To Be Called Core Ultra Series 4]]></title>
-        <id>https://www.lowyat.net/?p=398910</id>
-        <link href="https://www.lowyat.net/2026/398910/intel-nova-lake-desktop-cpus-to-be-called-core-ultra-series-4/"/>
-        <updated>2026-07-17T08:18:58.000Z</updated>
-        <summary type="html"><![CDATA[The upcoming Intel Nova Lake desktop CPU lineup will be designated as Core Ultra Series 4, and will even feature a new logo design. This detail has seemingly been confirmed by leakster site, Videocardz. In addition to the new designation, the site claims to have received details on review and sales embargo windows for several […]
-The post Intel Nova Lake Desktop CPUs To Be Called Core Ultra Series 4 appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>John Law</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Ether falls twice as hard as bitcoin and HYPE drops 10% as the chip trade unwinds]]></title>
         <id>e14f77d4-ad7f-4ba2-a47f-dfdf0d396563</id>
         <link href="https://www.coindesk.com/markets/2026/07/17/ether-falls-twice-as-hard-as-bitcoin-and-hype-drops-10-as-the-chip-trade-unwinds"/>
@@ -1017,16 +1264,6 @@ This wave of VentureBeat Pulse Research examines h…]]></summary>
         <summary type="html"><![CDATA[If Stripe acquires PayPal, the real prize could be consumer wallets, stablecoin issuance or the infrastructure powering the next generation of digital payments.]]></summary>
         <author>
             <name>Jamie Crawley</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Visa backs Open USD with new stablecoin platform as Circle faces fresh competition]]></title>
-        <id>f73d99ea-b0cd-4188-a327-b132cbd25f6d</id>
-        <link href="https://www.coindesk.com/business/2026/07/16/visa-backs-open-usd-with-new-stablecoin-platform-as-circle-faces-fresh-competition"/>
-        <updated>2026-07-16T16:14:30.000Z</updated>
-        <summary type="html"><![CDATA[Visa launched a stablecoin platform that lets banks and fintechs issue, manage and settle digital dollars through its payments network.]]></summary>
-        <author>
-            <name>Helene Braun</name>
         </author>
     </entry>
     <entry>
@@ -1161,6 +1398,16 @@ This wave of VentureBeat Pulse Research examines enterprise agent orchestration:
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Making Software: How to make a font]]></title>
+        <id>https://www.makingsoftware.com/chapters/how-to-make-a-font</id>
+        <link href="https://www.makingsoftware.com/chapters/how-to-make-a-font"/>
+        <updated>2026-07-14T09:41:29.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[PsiQuantum has a plan to make a massive quantum computer out of light]]></title>
         <id>https://www.technologyreview.com/?p=1140356</id>
         <link href="https://www.technologyreview.com/2026/07/14/1140356/psiquantum-plan-massive-quantum-computer-out-of-light/"/>
@@ -1178,6 +1425,16 @@ This wave of VentureBeat Pulse Research examines enterprise agent orchestration:
         <summary type="html"><![CDATA[This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. Anthropic—currently the world’s most valuable AI company, with a nearly $1 trillion valuation—has a reputation for publishing strange and heady research. It’s looking into whether AI models can feel pain, for example,…]]></summary>
         <author>
             <name>James O'Donnell</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mathematicians still don't know the fastest way to multiply numbers]]></title>
+        <id>https://www.scientificamerican.com/article/mathematicians-still-dont-know-the-fastest-way-to-multiply-numbers/</id>
+        <link href="https://www.scientificamerican.com/article/mathematicians-still-dont-know-the-fastest-way-to-multiply-numbers/"/>
+        <updated>2026-07-13T17:21:10.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1201,20 +1458,20 @@ This wave of VentureBeat Pulse Research examines enterprise agent orchestration:
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Circular Obstacle Pathfinding (2017)]]></title>
-        <id>https://redblobgames.github.io/circular-obstacle-pathfinding/</id>
-        <link href="https://redblobgames.github.io/circular-obstacle-pathfinding/"/>
-        <updated>2026-07-12T23:42:41.000Z</updated>
+        <title type="html"><![CDATA[A Visual Catalog of Retro Macintosh Software]]></title>
+        <id>https://www.marciot.com/mac68k-visual-catalog/</id>
+        <link href="https://www.marciot.com/mac68k-visual-catalog/"/>
+        <updated>2026-07-12T00:22:14.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How GitHub gave every repository a durable owner]]></title>
-        <id>https://github.blog/security/application-security/how-github-gave-every-repository-a-durable-owner/</id>
-        <link href="https://github.blog/security/application-security/how-github-gave-every-repository-a-durable-owner/"/>
-        <updated>2026-07-09T20:47:09.000Z</updated>
+        <title type="html"><![CDATA[Parsoid]]></title>
+        <id>https://www.mediawiki.org/wiki/Parsoid</id>
+        <link href="https://www.mediawiki.org/wiki/Parsoid"/>
+        <updated>2026-07-11T01:41:55.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
