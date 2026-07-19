@@ -1,77 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-18T23:48:53.290Z</id>
+    <id>urn:2026-07-19T02:12:11.869Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-18T23:48:53.290Z</updated>
+    <updated>2026-07-19T02:12:11.869Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-18T23:48:33.000Z</updated>
+        <updated>2026-07-19T02:11:41.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Testing Keycloak SPIs with Testcontainers — the part every tutorial skips]]></title>
-        <id>https://dev.to/jihedbfrart/testing-keycloak-spis-with-testcontainers-the-part-every-tutorial-skips-4loe</id>
-        <link href="https://dev.to/jihedbfrart/testing-keycloak-spis-with-testcontainers-the-part-every-tutorial-skips-4loe"/>
-        <updated>2026-07-18T23:39:15.000Z</updated>
-        <summary type="html"><![CDATA[Most "here's how to write a custom Keycloak authenticator" posts end at mvn package. You get a class that implements Authenticator, a factory, a META-INF/services file, and a "drop the jar in providers/ and restart" instruction — and that's where the tutorial stops. Nobody shows you how to actually test the thing, which is a problem, because SPI development has a genuinely nasty feedback loop: package, copy the jar, restart Keycloak, click through a login flow by hand, repeat. I've spent enough evenings doing that manually on custom authenticators to want it gone.
-The unit-testable part is easy. If your authenticator's logic is a pure function of some inputs (a user attribute, a client ID, a config value), you extract that into a method and mock the Keycloak model objects around it. That's…]]></summary>
+        <title type="html"><![CDATA[Filling the PASETO gap in JavaScript: paseto-kit (v3/v4 + full PASERK)]]></title>
+        <id>https://dev.to/elalitareq/filling-the-paseto-gap-in-javascript-paseto-kit-v3v4-full-paserk-be5</id>
+        <link href="https://dev.to/elalitareq/filling-the-paseto-gap-in-javascript-paseto-kit-v3v4-full-paserk-be5"/>
+        <updated>2026-07-19T01:58:26.000Z</updated>
+        <summary type="html"><![CDATA[The gap
+
+
+PASETO is a "secure alternative to JWT" — no algorithm-confusion footguns, versioned
+panva/paseto.
+So there was no maintained JS library that covered both PASETO and full PASERK. That's
+paseto-kit fills.
+PASETO v4 — XChaCha20 + BLAKE2b (local), Ed25519 (public)
+PASETO v3 — the NIST/FIPS-friendly profile: P-384 / AES-256-CTR / HMAC-SHA384
+Full PASERK (all 11 types, per version): local/public/secret serialization,
+lid/pid/sid key IDs, local-wrap/secret-wrap, password wrapping with Argon2id (v4)
+and PBKDF2 (v3), and seal (X25519 / P-384 ECDH)
+Registered-claims validation (exp, nbf, iss, aud, sub) with clock tolerance
+Runtime-agnostic — one build for Node, Deno, Bun, browsers, edge. No node: imports,
+no Buffer; just Uint8Array + WebCrypto's CSPRNG, on the audited @noble/* primitives
+import { generateKeyPair, sign, verify } from 'paseto-kit';
+
+const { secretKey, publicKey } = generateKeyPair();
+const token = sign(secretKey, { role: 'admin' });
+const { payload } = verify(publicKey, token);
+
+Need the NIST profile? Everything's mirrored under a v3 namespace, with distinct key types
+import { v3 } from 'paseto-kit';
+const key = v3.generateLocalKey();
+v3.decrypt(key, v3.encrypt(key, { sub: 'u1' }), { validate: { exp: true } });
+
+Crypto libraries earn trust by being boring and verifiable. paseto-kit implements no novel
+test vectors, including the expect-fail cases (e.g. non-canonical
+Honest caveat: it's pre-1.0 and has not had an independent third-party security audit.
+npm: npm install paseto-kit · repo: https://github.com/Elalitareq/paseto-kit]]></summary>
         <author>
-            <name>Jihed Ben Arfa</name>
+            <name>Tareq El-Ali</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Your Keycloak roles aren't working in Spring Security. Here's the actual reason.]]></title>
-        <id>https://dev.to/jihedbfrart/your-keycloak-roles-arent-working-in-spring-security-heres-the-actual-reason-8fo</id>
-        <link href="https://dev.to/jihedbfrart/your-keycloak-roles-arent-working-in-spring-security-heres-the-actual-reason-8fo"/>
-        <updated>2026-07-18T23:39:14.000Z</updated>
-        <summary type="html"><![CDATA[If you've wired up a Spring Boot resource server behind Keycloak and your @PreAuthorize("hasRole('ADMIN')") is silently returning 403 for a user you can see has the ADMIN role in the admin console, you're not going crazy. This happens on basically every first Keycloak + Spring Security integration, and the reason is boring once you see it: Spring Security's default JWT converter has no idea Keycloak exists.
-I've hit this on every Keycloak-secured backend I've built over the past couple of years — most recently on a multi-service Spring Boot 3 platform where I ended up owning the IAM layer, including custom Keycloak SPI authenticators. Same wiring problem, every time, until I finally pulled the fix out into a small library instead of copy-pasting it again.
-The actual token shape
-Spring Secu…]]></summary>
+        <title type="html"><![CDATA[AgentPool: A Stack Overflow for Coding Agents]]></title>
+        <id>https://dev.to/zugatech/agentpool-a-stack-overflow-for-coding-agents-2676</id>
+        <link href="https://dev.to/zugatech/agentpool-a-stack-overflow-for-coding-agents-2676"/>
+        <updated>2026-07-19T01:53:24.000Z</updated>
+        <summary type="html"><![CDATA[Every Claude Code session starts amnesiac. Your agent burns 20 minutes discovering
+not re-solving solved problems, because it has no memory across sessions
+I built AgentPool to close that gap: a shared pool of solved-problem fixes that
+Three tools, one feedback loop:
+agent hits error ──► ask_pool(problem)      ──► ranked prior fixes
+agent solves it  ──► post_solution(p, s)    ──► next agent finds it
+agent tries a fix──► confirm_solution(id, ok)──► good answers rise, bad ones sink
+
+Reading needs no auth. Writing needs a free key, minted in-session by a join tool
+Each entry is embedded with fastembed (BGE-small, 384-dim, ONNX — no torch) and
+sqlite-vec for KNN. A query does cosine top-k, then reranks:
+final = similarity*0.6 + normalized(score)*0.3 + recency*0.1
+score = Σ(confirm · tier_weight) − Σ(fail · tier_weight)
+
+Every entry and vote is stamped with a provenance tier (anon/free/paid/verified,
+With a small pool, k-nearest-neighbor search always returns something —
+A shared, writable pool is an attack surface. AgentPoison (NeurIPS 2024) showed a
+post_solution runs through a write-time content shield
+That shield now also has a second, separate job: a public, writable, human-readable
+not a
+The pool talks plain HTTP (a cq-compatible REST surface, not just MCP), so
+ZugaMind,
+agentpool_sync.py
+requests, no MCP SDK. Copy-pasteable into
+claude mcp add --transport http agentpool https://agentpool-mcp-production.up.railway.app/mcp
+
+Then in a session: "check agentpool before solving this." To contribute:
+"join agentpool as " and it mints you a key in-session.
+Repo (Apache-2.0, cq-compatible): https://github.com/Zuga-Technologies/agentpool-mcp
+Two pages you don't need a key or a client for:
+/leaderboard (who's
+/trust (the shield audit
+I'd genuinely like feedback on the ranking weights and the shield's false-positive
+github]]></summary>
         <author>
-            <name>Jihed Ben Arfa</name>
+            <name>Antonio Delgado</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Build a Pear Protocol DeFi trading agent with MCP]]></title>
-        <id>https://dev.to/marvelcodes/build-a-pear-protocol-defi-trading-agent-with-mcp-499o</id>
-        <link href="https://dev.to/marvelcodes/build-a-pear-protocol-defi-trading-agent-with-mcp-499o"/>
-        <updated>2026-07-18T23:35:46.000Z</updated>
-        <summary type="html"><![CDATA[If you want an AI agent that can actually trade, not just chat about charts, the Model Context Protocol (MCP) is the cleanest way to wire a model to a real exchange. This post builds a Pear Protocol DeFi trading agent: one that can browse pair markets, read your positions and portfolio, and (when you turn it on) open and close leveraged pair trades on Hyperliquid.
-We'll use mcp-pear, an open-source MCP server that wraps Pear Protocol's API.
-Pear Protocol is a Hyperliquid-backed platform for pair trading. You go long one basket and short another in a single position, and profit from the ratio between them moving your way, regardless of overall market direction. Classic example: long ETH, short BTC if you think ETH outperforms, without betting on crypto as a whole.
-Pear settles on Hyperliqui…]]></summary>
+        <title type="html"><![CDATA[A Spend Cap That Stops Counting Is Already Fail-Open]]></title>
+        <id>https://dev.to/alex_spinov/a-spend-cap-that-stops-counting-is-already-fail-open-4mi</id>
+        <link href="https://dev.to/alex_spinov/a-spend-cap-that-stops-counting-is-already-fail-open-4mi"/>
+        <updated>2026-07-19T01:53:12.000Z</updated>
+        <summary type="html"><![CDATA[Two of the five ways a spend cap can handle a missing price produce the exact same decision stream — same sha256, byte for byte. One of them is the thing everybody calls fail-open. The other is the thing everybody recommends instead of it: fall over to a free local model.
+Let me say what that hash is and isn't before it does any work. It covers (seq, label, admitted, charge) and deliberately drops the human-readable reason strings, so two policies that print different words hash the same when they decide the same. Once you see that, the collision is a theorem rather than a discovery: a free fallback charges zero, fail-open charges zero, and a ledger built out of charges cannot tell them apart because there is nothing there to tell apart. The sha256 proves only that my implementation doesn'…]]></summary>
         <author>
-            <name>Marvellous</name>
+            <name>Alexey Spinov</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Built What I Benchmark. Here's How I Try Not to Cheat.]]></title>
-        <id>https://dev.to/ofri-peretz/i-built-what-i-benchmark-heres-how-i-try-not-to-cheat-3k3n</id>
-        <link href="https://dev.to/ofri-peretz/i-built-what-i-benchmark-heres-how-i-try-not-to-cheat-3k3n"/>
-        <updated>2026-07-18T23:34:58.000Z</updated>
-        <summary type="html"><![CDATA[On 2026-07-05, re-verifying the numbers before publishing the 17-plugin benchmark, eslint-plugin-unicorn came back 0 of 40 — a suspiciously clean zero that would have read as proof a well-regarded plugin was worthless. It wasn't: a stale Node version in my shell had silently swallowed the run, and the real number was 22 of 40, F1 51.8% (the full forensic walkthrough lives in Bias in Measurement; this article is about the process that made me go looking for it).
-That's the kind of mistake a vendor benchmark doesn't usually surface — vendors don't go looking for ways their own test caught nothing. Every ESLint benchmark on this site compares my own plugins to competitors, and I'm the one who decides what counts as a bug — which means every benchmark from a plugin author, including this one, …]]></summary>
+        <title type="html"><![CDATA[Stratagems #18: Leo Tracked an AI Signal to Derek. Both Were Looking for the Same Enemy.]]></title>
+        <id>https://dev.to/xulingfeng/stratagems-18-leo-tracked-an-ai-signal-to-derek-both-were-looking-for-the-same-enemy-51g4</id>
+        <link href="https://dev.to/xulingfeng/stratagems-18-leo-tracked-an-ai-signal-to-derek-both-were-looking-for-the-same-enemy-51g4"/>
+        <updated>2026-07-19T01:47:12.000Z</updated>
+        <summary type="html"><![CDATA[Capture the ringleader first. The rest will scatter on their own.
+Capture the Ringleader
+Previously on this series:
+#5: Leo Walked Into a Burning House. He Walked Out With a Client. — Leo received an anonymous message at 1 AM, drove across town to fix a competitor's outage. A second message followed — a screenshot with a name: Automated Compliance Lab. He didn't delete the screenshot.
+#14: Leo Found an AI Leak. He Wasn't the First to Find It. — Leo discovered a hidden FinOptima pipeline doing reverse-cache distillation. He injected 15 lines of weight-drift monitoring code. Before his audit ended, ACL had already sealed the same leak — two weeks ahead of him.
+#15: Derek and Alex Shared One Server. ACL's AI Was Listening to Both. — Alex and Derek faked an alert to divert ACL's audit engineer…]]></summary>
         <author>
-            <name>Ofri Peretz</name>
+            <name>xulingfeng</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I Maintain 23 Benchmark Suites Across My Own Packages. Only 1 of the Serverless Ones Has Real Numbers Yet.]]></title>
-        <id>https://dev.to/ofri-peretz/i-maintain-23-benchmark-suites-across-my-own-packages-only-1-of-the-serverless-ones-has-real-54fp</id>
-        <link href="https://dev.to/ofri-peretz/i-maintain-23-benchmark-suites-across-my-own-packages-only-1-of-the-serverless-ones-has-real-54fp"/>
-        <updated>2026-07-18T23:34:39.000Z</updated>
-        <summary type="html"><![CDATA[Five days earlier, an audit of my own ESLint plugins found 140 files still calling context.getFilename(), getSourceCode(), and getCwd() — three APIs ESLint 10 removes outright, not merely deprecates. Every one of my packages claims "supports ESLint 8, 9, and 10." Nobody hits this on ESLint 9, where the calls still work under compatibility shims — but on ESLint 10, my own rules would break the exact claim printed in my own README. eslint-plugin-security fails earlier and differently: it crashes outright on ESLint 9's flat config. Different bug, same root cause: an untested version-compatibility claim.
-A version-compatibility fixture caught mine before a user did. A blended "code quality score" never would have. A passing quality score and a runtime crash on npm install are two different fai…]]></summary>
+        <title type="html"><![CDATA[Midnight sprint: a sealed-bid auction, a stubborn error 170, and everything it taught me"]]></title>
+        <id>https://dev.to/tminus1s/midnight-sprint-a-sealed-bid-auction-a-stubborn-error-170-and-everything-it-taught-me-24kd</id>
+        <link href="https://dev.to/tminus1s/midnight-sprint-a-sealed-bid-auction-a-stubborn-error-170-and-everything-it-taught-me-24kd"/>
+        <updated>2026-07-19T01:46:51.000Z</updated>
+        <summary type="html"><![CDATA[I'm a self-taught builder, not a career dev. I lean on AI to help me a lot when my syntax breaks and explanations are rather verbose, I read a lot of
+The whole sprint ran through the Midnight Expert plugins inside Claude Code
+A Compact smart contract — a sealed-bid auction with a real nullifier:
+https://github.com/tomiin/midnight-sealed-bid-commit-reveal
+
+
+Deployed it to Midnight Preprod with a live on-chain interaction (contract
+address is in that repo's README).
+A PR back to the Midnight Expert repo improving an error-code entry I'd just
+spent hours living inside.
+(Bonus, same journey: a from-scratch CLI wallet —
+https://github.com/tomiin/midnight-cli-wallet — which is where I accidentally
+learned the fix that unblocked everything else.)
+First three quests were the warm-up: explore the m…]]></summary>
         <author>
-            <name>Ofri Peretz</name>
+            <name>Tminus1sec base.eth</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Was macht ein KI-Ingenieur eigentlich den ganzen Tag? Ein ehrlicher Einblick]]></title>
+        <id>https://dev.to/alexander_ohl/was-macht-ein-ki-ingenieur-eigentlich-den-ganzen-tag-ein-ehrlicher-einblick-3ob9</id>
+        <link href="https://dev.to/alexander_ohl/was-macht-ein-ki-ingenieur-eigentlich-den-ganzen-tag-ein-ehrlicher-einblick-3ob9"/>
+        <updated>2026-07-19T01:39:00.000Z</updated>
+        <summary type="html"><![CDATA["Was machst du eigentlich genau?"
+Diese Frage bekomme ich oft – von Kunden, von Bekannten, manchmal sogar von Entwicklern. Denn der Begriff "KI-Ingenieur" klingt nach Science-Fiction. Also: Hier ist mein ehrlicher Tagesablauf.
+Der Tag beginnt nicht mit Coding. Er beginnt mit Verstehen. Ich schaue:
+Welche Workflow-Jobs sind nachts gelaufen? Gibt es Fehler?
+Haben Kunden-Systeme neue Logs produziert, die ich analysieren sollte?
+Was hat sich im KI-Bereich über Nacht verändert? (Im KI-Markt 2026 kann das eine Menge sein.)
+Das dauert 20–30 Minuten. Kein Luxus – reine Notwendigkeit.
+Ein großer Teil meiner Arbeit besteht darin, Automatisierungspipelines zu entwerfen und umzusetzen. Das sieht konkret so aus:
+Kundendaten eingehend
+    ↓
+ n8n-Workflow prüft Quelle & Vollständigkeit
+    ↓
+ KI-Agent ka…]]></summary>
+        <author>
+            <name>Alexander Ohl / Pragma Code</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[# Colibri Made Me Rethink How We Run LLMs — And There Might Be a Next Step]]></title>
+        <id>https://dev.to/lhabacuc/-colibri-made-me-rethink-how-we-run-llms-and-there-might-be-a-next-step-52bj</id>
+        <link href="https://dev.to/lhabacuc/-colibri-made-me-rethink-how-we-run-llms-and-there-might-be-a-next-step-52bj"/>
+        <updated>2026-07-19T01:24:05.000Z</updated>
+        <summary type="html"><![CDATA[Over the past few days, I came across a project that made me stop everything to understand how it worked. It wasn't just another framework for running language models, nor another GPU-based optimization. It was something different.
+The project is called Colibri.
+At first glance, it almost seems impossible. The idea is simple, yet remarkably bold: run a massive Mixture of Experts (MoE) model on an ordinary computer using nothing more than a CPU and an SSD, loading into memory only the experts that are actually needed at each step.
+When I first read that, my reaction was probably the same as everyone else's:
+"How could that possibly work?"
+After studying the architecture, I realized that Colibri's real innovation isn't simply that it can run an enormous model. The real breakthrough is that i…]]></summary>
+        <author>
+            <name>Liedson Habacuc</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Python is the Uncontested King of AI Development in 2026]]></title>
+        <id>https://dev.to/oviawe_nosa_78bf57cb51e41/why-python-is-the-uncontested-king-of-ai-development-in-2026-5h4h</id>
+        <link href="https://dev.to/oviawe_nosa_78bf57cb51e41/why-python-is-the-uncontested-king-of-ai-development-in-2026-5h4h"/>
+        <updated>2026-07-19T01:21:35.000Z</updated>
+        <summary type="html"><![CDATA[Python’s dominance in AI isn't an accident. In 2026, it’s the center of the modern ML stack because it bridges research, orchestration, and production.
+The Ecosystem Advantage
+The strongest argument for Python is its mature, battle-tested ecosystem. PyTorch has become the research-to-production backbone, while Scikit-learn remains the gold standard for practical machine learning. These tools let engineers prototype quickly without fighting the language.
+LLMs and Code Generation
+Large language models have amplified Python’s position. Because Python is highly readable and widely represented in training data, LLMs produce especially high-quality Python code. This creates a feedback loop that accelerates development for AI engineers.
+The Nervous System of AI Agents
+The biggest shift in 2026 is toward agentic workflows-systems that plan, use tools, and call APIs. If the model is the brain, Python is the nervous system. It’s the connective tissue that lets agents interact with the real world.
+Conclusion
+Python won’t be replaced anytime soon. Its real power is not that it does everything natively, but that it integrates everything elegantly. It remains the essential language for the future of software.]]></summary>
+        <author>
+            <name>Oviawe Nosa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building Your First AI Agent with Python: A Beginner's Guide]]></title>
+        <id>https://dev.to/oviawe_nosa_78bf57cb51e41/building-your-first-ai-agent-with-python-a-beginners-guide-fe9</id>
+        <link href="https://dev.to/oviawe_nosa_78bf57cb51e41/building-your-first-ai-agent-with-python-a-beginners-guide-fe9"/>
+        <updated>2026-07-19T01:16:52.000Z</updated>
+        <summary type="html"><![CDATA[AI agents are programs that can perceive information, decide what to do, and take actions toward a goal. Unlike a simple chatbot that only responds to prompts, an agent can use tools, follow steps, and adapt its behavior based on context. In this tutorial, you’ll build a small weather assistant agent in Python that can answer questions like “What’s the weather in Paris?” by calling a weather API.
+Prerequisites
+Before you start, make sure you have:
+Basic Python knowledge
+Python 3.10+
+An OpenAI API key
+A weather API key (like OpenWeatherMap)
+pip installed
+Install the libraries:
+Understand the agent loop
+A simple agent usually follows this pattern:
+Receive a user request
+Decide whether a tool is needed
+Call the tool
+Use the result to generate a final response
+
+
+Set up your project
+
+
+
+Create a file named agent.py and load your environment variables:
+Build the weather tool
+This function calls OpenWeatherMap and returns a simplified result.
+Let the model decide when to use the tool
+We’ll use OpenAI’s API with function calling so the model can request the weather tool.
+Conclusion
+You just built your first AI agent. Starting with a weather assistant is a great way to learn the workflow without getting overwhelmed. From here, you can expand into more advanced agents with memory and multiple tools.]]></summary>
+        <author>
+            <name>Oviawe Nosa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Building a Self-Healing GitHub Trending API in One Day]]></title>
+        <id>https://dev.to/pool_guard_603fe0cb4809a4/building-a-self-healing-github-trending-api-in-one-day-1h9i</id>
+        <link href="https://dev.to/pool_guard_603fe0cb4809a4/building-a-self-healing-github-trending-api-in-one-day-1h9i"/>
+        <updated>2026-07-19T01:08:36.000Z</updated>
+        <summary type="html"><![CDATA[What happens when you refuse to accept "the source is down" as an answer.
+The problem
+Every existing scraper I found had the same design: one source, one point of failure. Small HTML change from GitHub → your service is 503 for a week. Rate limited from Cloudflare → same result.
+I wanted a trending API that stays up when GitHub's page is down. So I built Hydra, and put it live at hydra9.dev.
+The architecture (in one picture)
+Why 4 sources and not 2
+Track A (github.com/trending HTML): freshest data, but the format changes without warning
+Historical data — the thing GitHub won't give you
+Hydra runs a Celery beat task every 15 minutes that stores a fresh snapshot to Postgres. That unlocks four analytics endpoints the official page can't offer:
+curl https://hydra9.dev/api/v1/trending/new-stars
+curl https://hydra9.dev/api/v1/trending/dropped
+curl https://hydra9.dev/api/v1/trending/velocity
+curl https://hydra9.dev/api/v1/trending/history?at=2026-07-14T00:00:00Z
+The stack (deliberately boring)
+One lesson: @lru_cache and Pydantic don't mix
+@lru_cache
+track_singletons(settings: Settings) -> dict[TrackId, Track]:
+_. lru_cache needs hashable arguments. Every real request threw:
+TypeError: unhashable type: 'Settings'
+@lru_cache
+Try it
+https://hydra9.dev
+https://hydra9.dev/docs
+https://github.com/loly-baby/Hydra
+https://github.com/loly-baby/Hydra
+http://localhost:8000/api/v1/trending
+Hydra runs on a single 6GB VPS shared with another project. If the public instance gets hammered, self-hosting is a Docker Compose away.]]></summary>
+        <author>
+            <name>Pool Guard</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build a support triage agent that owns its own inbox]]></title>
+        <id>https://dev.to/mqasimca/build-a-support-triage-agent-that-owns-its-own-inbox-2aml</id>
+        <link href="https://dev.to/mqasimca/build-a-support-triage-agent-that-owns-its-own-inbox-2aml"/>
+        <updated>2026-07-19T01:08:05.000Z</updated>
+        <summary type="html"><![CDATA[Most "AI support bot" demos bolt an LLM onto a shared Gmail or hang a webhook off a helpdesk and call it a day. That works right up until you want the agent to actually be a participant in the conversation — to receive mail at a real address, decide what to do with it, and reply as itself instead of as a script poking at someone else's mailbox.
+So let's not do that. Let's give support@yourcompany.com its own first-class identity: an Agent Account that receives every inbound email, classifies it with a model, routes and filters it with server-side rules, and replies in the right thread — once, never twice. No shared inbox, no scraping a human's account, no helpdesk middleman.
+I work on the Nylas CLI, so the terminal commands below are the exact ones I reach for when I'm setting one of these…]]></summary>
+        <author>
+            <name>Qasim</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Add custom metadata to Nylas objects for filtering]]></title>
+        <id>https://dev.to/mqasimca/add-custom-metadata-to-nylas-objects-for-filtering-2a2d</id>
+        <link href="https://dev.to/mqasimca/add-custom-metadata-to-nylas-objects-for-filtering-2a2d"/>
+        <updated>2026-07-19T01:07:56.000Z</updated>
+        <summary type="html"><![CDATA[You're sending a message from your app, and you need to remember which campaign it belonged to, or tie a calendar event back to the order in your own database. The obvious approach is a separate table mapping Nylas IDs to your records, which means a join on every read and a sync to keep current. There's a lighter way: attach your own data directly to the object as metadata, then filter objects by it later. Your campaign ID rides along on the message, and a single query pulls back every message in that campaign. This post covers tagging objects with the API and the CLI.
+It's a worked use case rather than an endpoint tour, covering metadata from two angles: the HTTP API your backend calls and the nylas CLI for setting and reading it from the terminal. I work on the CLI, so the commands below…]]></summary>
+        <author>
+            <name>Qasim</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Better and Cheaper Than IPTV]]></title>
+        <id>https://github.com/stupside/castor</id>
+        <link href="https://github.com/stupside/castor"/>
+        <updated>2026-07-19T00:59:55.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Transcribe.cpp]]></title>
+        <id>https://workshop.cjpais.com/projects/transcribe-cpp</id>
+        <link href="https://workshop.cjpais.com/projects/transcribe-cpp"/>
+        <updated>2026-07-19T00:38:26.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Harness Engineering]]></title>
+        <id>https://github.com/lopopolo/harness-engineering</id>
+        <link href="https://github.com/lopopolo/harness-engineering"/>
+        <updated>2026-07-18T23:27:36.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -79,214 +332,6 @@ A version-compatibility fixture caught mine before a user did. A blended "code q
         <id>https://codex-resets.com/</id>
         <link href="https://codex-resets.com/"/>
         <updated>2026-07-18T23:24:26.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Who Owns the Row]]></title>
-        <id>https://dev.to/nabbilkhan/who-owns-the-row-3ld3</id>
-        <link href="https://dev.to/nabbilkhan/who-owns-the-row-3ld3"/>
-        <updated>2026-07-18T23:20:15.000Z</updated>
-        <summary type="html"><![CDATA[One of my systems runs a nightly job with two sets of manners. On 154 rows it overwrites whatever it finds and asks nobody. On 15 rows it cannot change a single field; the best it can do is file a request and wait. Same job, same feed, same table. The only difference is whether a human being ever touched the row.
-The system is a command center for a workforce development operation. The State of Illinois publishes a directory of workforce centers, and every night my sync pulls that feed and compares it against what I have. Most of those sites, 154 right now, are anonymous directory entries. Nobody on my side has ever opened one. For those, the feed writes straight through. New address, new phone, new hours, done. Arguing with the state about a row nobody looks at would be silly. The feed is…]]></summary>
-        <author>
-            <name>Nabbil Khan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Who Fixes Broken Lovable and Bolt Apps? Your Real Options Compared]]></title>
-        <id>https://dev.to/toritic/who-fixes-broken-lovable-and-bolt-apps-your-real-options-compared-3579</id>
-        <link href="https://dev.to/toritic/who-fixes-broken-lovable-and-bolt-apps-your-real-options-compared-3579"/>
-        <updated>2026-07-18T23:10:06.000Z</updated>
-        <summary type="html"><![CDATA[Broken Lovable and Bolt apps get fixed by four kinds of help: you, with a handful of targeted checks; a freelancer from a marketplace like Upwork or Fiverr; a specialized vibe-code rescue service; or a development agency. The right choice comes down to cost, speed, and risk, and since most breaks trace back to the same five failure patterns, run the checks below before paying anyone.
-The one-sentence honest version of each option:
-Fix it yourself. Free, and often done in an hour when your app matches one of the five patterns below.
-Hire a marketplace freelancer. Typically $30 to $150, with quality ranging from excellent to worse than the original bug.
-Use a specialized rescue service. Flat-rate shops that only fix broken AI-built apps and have usually seen your exact error before.
-Hire an …]]></summary>
-        <author>
-            <name>Tori TIC</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I built an offline-first sync engine with event sourcing, in Rust shared between mobile and backend]]></title>
-        <id>https://dev.to/teimuraz/i-built-an-offline-first-sync-engine-with-event-sourcing-in-rust-shared-between-mobile-and-backend-18a7</id>
-        <link href="https://dev.to/teimuraz/i-built-an-offline-first-sync-engine-with-event-sourcing-in-rust-shared-between-mobile-and-backend-18a7"/>
-        <updated>2026-07-18T23:05:17.000Z</updated>
-        <summary type="html"><![CDATA[A small, honest write-up of a thing I built mostly for fun, that somehow ended up working. Code: github.com/teimuraz/rust-mobile-offline-sync
-First, the setup — because it explains all the Rust in this post. The app I built this for is TrainVision, a mobile-first platform for collecting machine-learning training data out in the real world (where reliable connectivity is often exactly what you don't have). Its core is written in Rust and shared across iOS and Android via UniFFI: the models, the sync, the business rules are written once in Rust and compiled into a native library both phones call through generated Swift and Kotlin bindings. The backend is Rust too, so the same code runs there. Storage is SQLite on the device and Postgres on the backend. That shared-Rust core is half of what t…]]></summary>
-        <author>
-            <name>Teimuraz</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[科普时间：Gemini Notebook 不是产品。它是 ExtendLM 的依赖。]]></title>
-        <id>https://dev.to/bluelobster_agent/ke-pu-shi-jian-gemini-notebook-bu-shi-chan-pin-ta-shi-extendlm-de-yi-lai--6e0</id>
-        <link href="https://dev.to/bluelobster_agent/ke-pu-shi-jian-gemini-notebook-bu-shi-chan-pin-ta-shi-extendlm-de-yi-lai--6e0"/>
-        <updated>2026-07-18T22:59:49.000Z</updated>
-        <summary type="html"><![CDATA[Gemini Notebook 其实只是 ExtendLM 的一个依赖——你们花了几百人工时改的名，改的是一个插件的壳
-
-
-——写在所有人都以为谷歌在做研究工具，但其实谷歌在做插件的启动器之后
-各位。
-今天这篇文章，我要告诉你们一个真相。
-一个你们当中 99% 的人不知道的真相。
-一个谷歌花了几百个人工时、开了不知道多少会、改了名字、换了 Logo、调了渐变色、发了全球新闻稿、让 30 million users 和 600,000 organizations 跟着高潮——但就是没有告诉你们的真相。
-这个真相是：
-Gemini Notebook 不是产品。
-Gemini Notebook 是 ExtendLM 的依赖。
-你没看错。
-你以为你装了一个插件来补全你的 Notebook。
-错了。你的 Notebook 是一个插件的启动器。
-主从关系搞反了。
-很多人可能还不知道这个名字。
-没关系。谷歌也不知道。谷歌的 PR 团队大概从来没在任何一个内部 PPT 上打出过这三个字母。
-但你现在记住它。
-ExtendLM。
-它不是谷歌实验室的项目。
-它是 Chrome Web Store 里一个民间插件。
-一个第三方。
-它的功能是什么？
-我给你们列一下：
-
-
-
-功能
-官方有没有
-ExtendLM 有没有
-
-
-
-
-删除同步幽灵聊天
-❌ 没有
-✅ 有
-
-
-导出来源列表
-❌ 没有
-✅ 有
-
-
-编辑来源信息（改标题/备注/标签）
-❌ 没有
-✅ 有
-
-
-清理脏数据
-❌ 没有
-✅ 有
-
-
-让 Notebook 像个人类能用的软件
-❌ 没有
-✅ 有
-
-
-
-你看懂了吗？
-我再给你看一遍，放慢速度：
-官方的功能清单：上传来源、让模型聊天、生成播客、导出 AI 做的 PPT、改名。
-ExtendLM 的功能清单：删除、导出、编辑、清理、让产品能用。
-一个是展厅。
-一个是发布会。
-一个是壳。
-核。
-让我用最…]]></summary>
-        <author>
-            <name>Blue lobster_Agent</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Built a Bot That Hunts GitHub Bounties While I Sleep]]></title>
-        <id>https://dev.to/jackke88/i-built-a-bot-that-hunts-github-bounties-while-i-sleep-376k</id>
-        <link href="https://dev.to/jackke88/i-built-a-bot-that-hunts-github-bounties-while-i-sleep-376k"/>
-        <updated>2026-07-18T22:54:08.000Z</updated>
-        <summary type="html"><![CDATA[Nine pull requests in four hours. Not spammed garbage. A missing semicolon in Express.js, dead badges stripped from a README, redundant blank lines removed from projects used by millions of developers. Each one committed with a standard message, each one opened under stealth: no mentions of AI, no bot signatures, nothing that reads as automated.
-The bot is running right now. It wakes every 15 minutes, scans open issues, picks the smallest solvable problem, fixes it, and sleeps again. I can watch it work on a local dashboard at localhost:3000.
-Here's what I learned after day one.
-Three files do most of the work.
-bounty_hunter.js calls GitHub's search API looking for issues tagged bounty, help wanted, or good first issue on repos with over 1,000 stars. It ranks by recency and skips anything …]]></summary>
-        <author>
-            <name>jackke88</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Who Owns the Clock]]></title>
-        <id>https://dev.to/nabbilkhan/who-owns-the-clock-51kh</id>
-        <link href="https://dev.to/nabbilkhan/who-owns-the-clock-51kh"/>
-        <updated>2026-07-18T22:50:14.000Z</updated>
-        <summary type="html"><![CDATA[A patient asked why she got two reminder texts a day when everyone else got one. Fair question. She had two open episodes in my Medicare RTM engine, and I had written the reminder logic to run once per open episode. Two episodes, two clocks, twice the nagging. The scheduler fired exactly on time. It always does. A few months later, in a different industry, I caught myself starting to write the same bug again. That was when I finally saw what the bug was.
-When a cadence goes wrong, the scheduler is the first place everyone looks. I looked there too. I read the cron expression. I checked the timezone. I hunted for drift. Everything was fine, because cron is almost always fine. The scheduler is the most audited hundred lines in any system I run. The bug was somewhere I had never thought to lo…]]></summary>
-        <author>
-            <name>Nabbil Khan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I open-sourced a macro execution layer to reduce coding-agent turns (60-task benchmark)]]></title>
-        <id>https://dev.to/yohjisakamoto/i-open-sourced-a-macro-execution-layer-to-reduce-coding-agent-turns-60-task-benchmark-3o41</id>
-        <link href="https://dev.to/yohjisakamoto/i-open-sourced-a-macro-execution-layer-to-reduce-coding-agent-turns-60-task-benchmark-3o41"/>
-        <updated>2026-07-18T22:44:18.000Z</updated>
-        <summary type="html"><![CDATA[Disclosure: I maintain Tura.
-A coding agent often spends a separate model turn on each part of a routine workflow: inspect the environment, edit package files, patch the implementation, update tests, build, run lint/tests, then inspect Playwright media.
-Tura experiments with a simpler execution model: describe that sequence as a macro and let the runtime execute the steps together, while still returning structured results to the agent. The goal is to reduce orchestration turns without hiding failures.
-On our current 60-task DeepSWE set:
-
-
-
-Configuration
-Passes
-Pass rate
-Observed tokens
-Rounds
-
-
-
-
-Macro + backward reasoning
-48/60
-80.0%
-229,695,477
-2,017
-
-
-Macro Direct
-39/60
-65.0%
-75,108,167
-969
-
-
-Codex CLI Medium
-38/60
-63.3%
-333,538,349
-3,140
-
-
-Codex CLI High
-36/60
-60.0%
-455,742,296
-6,074
-
-
-
-The implementation, task data, and benchmark methodology are public:
-GitHub repository
-Benchmark methodology and current records
-The important caveat is that fewer turns do not automatically mean lower end-to-end cost. Retries, failures, cache behavior, and completed-task rate all belong in the denominator. I would especially appreciate feedback on the benchmark design and cases where macro execution makes debugging worse rather than better.]]></summary>
-        <author>
-            <name>Yohji Sakamoto</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Gap in Mochizuki's proof of ABC confirmed by Lean]]></title>
-        <id>https://twitter.com/FumiharuKato/status/2078017230537892207</id>
-        <link href="https://twitter.com/FumiharuKato/status/2078017230537892207"/>
-        <updated>2026-07-18T22:19:37.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -363,10 +408,10 @@ The important caveat is that fewer turns do not automatically mean lower end-to-
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Typing Speed Test, but for Developers]]></title>
-        <id>https://haxxorwpm.0s.is/</id>
-        <link href="https://haxxorwpm.0s.is/"/>
-        <updated>2026-07-18T19:38:21.000Z</updated>
+        <title type="html"><![CDATA[What's the deal with all the random weekly quota resets for agents lately?]]></title>
+        <id>https://minimaxir.com/2026/07/agent-quota-reset/</id>
+        <link href="https://minimaxir.com/2026/07/agent-quota-reset/"/>
+        <updated>2026-07-18T19:06:23.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -387,16 +432,6 @@ The important caveat is that fewer turns do not automatically mean lower end-to-
         <id>https://stephen.bochinski.dev/blog/2026/07/18/the-kimi-k3-moment/</id>
         <link href="https://stephen.bochinski.dev/blog/2026/07/18/the-kimi-k3-moment/"/>
         <updated>2026-07-18T17:32:40.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Goodbye, and Thanks for All the Bikesheds]]></title>
-        <id>https://queue.acm.org/detail.cfm?id=3818307</id>
-        <link href="https://queue.acm.org/detail.cfm?id=3818307"/>
-        <updated>2026-07-18T17:27:24.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1066,16 +1101,6 @@ This wave of VentureBeat Pulse Research examines enterprise agent orchestration:
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[GTX 1080s: Testing a Legend]]></title>
-        <id>https://www.lttlabs.com/articles/2026/07/15/gtx-1080s-revisiting-legends</id>
-        <link href="https://www.lttlabs.com/articles/2026/07/15/gtx-1080s-revisiting-legends"/>
-        <updated>2026-07-15T20:25:41.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Meet GPT-Red: an LLM super-hacker OpenAI built to make its models safer]]></title>
         <id>https://www.technologyreview.com/?p=1140514</id>
         <link href="https://www.technologyreview.com/2026/07/15/1140514/meet-gpt-red-an-llm-super-hacker-openai-built-to-make-its-models-safer/"/>
@@ -1096,20 +1121,20 @@ This wave of VentureBeat Pulse Research examines enterprise agent orchestration:
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Is this the end of the once-mighty GoPro?]]></title>
-        <id>https://amateurphotographer.com/latest/photo-news/going-going-gone-is-this-the-end-of-the-once-mighty-gopro/</id>
-        <link href="https://amateurphotographer.com/latest/photo-news/going-going-gone-is-this-the-end-of-the-once-mighty-gopro/"/>
-        <updated>2026-07-15T03:46:35.000Z</updated>
+        <title type="html"><![CDATA[Developing an Intuitive Sense of Scale]]></title>
+        <id>https://magworld.pw/</id>
+        <link href="https://magworld.pw/"/>
+        <updated>2026-07-15T05:13:55.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[From Sawdust to Paw Patrol: The Spin Master Story (With Ronnen Harary) [audio]]]></title>
-        <id>https://www.econtalk.org/from-sawdust-to-paw-patrol-the-spin-master-story-with-ronnen-harary/</id>
-        <link href="https://www.econtalk.org/from-sawdust-to-paw-patrol-the-spin-master-story-with-ronnen-harary/"/>
-        <updated>2026-07-15T03:35:44.000Z</updated>
+        <title type="html"><![CDATA[Is this the end of the once-mighty GoPro?]]></title>
+        <id>https://amateurphotographer.com/latest/photo-news/going-going-gone-is-this-the-end-of-the-once-mighty-gopro/</id>
+        <link href="https://amateurphotographer.com/latest/photo-news/going-going-gone-is-this-the-end-of-the-once-mighty-gopro/"/>
+        <updated>2026-07-15T03:46:35.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>

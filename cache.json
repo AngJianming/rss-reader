@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/jihedbfrart/testing-keycloak-spis-with-testcontainers-the-part-every-tutorial-skips-4loe",
-          "author": "Jihed Ben Arfa",
-          "description": "Most \"here's how to write a custom Keycloak authenticator\" posts end at mvn package. You get a class that implements Authenticator, a factory, a META-INF/services file, and a \"drop the jar in providers/ and restart\" instruction — and that's where the tutorial stops. Nobody shows you how to actually test the thing, which is a problem, because SPI development has a genuinely nasty feedback loop: package, copy the jar, restart Keycloak, click through a login flow by hand, repeat. I've spent enough evenings doing that manually on custom authenticators to want it gone.\nThe unit-testable part is easy. If your authenticator's logic is a pure function of some inputs (a user attribute, a client ID, a config value), you extract that into a method and mock the Keycloak model objects around it. That's…",
-          "link": "https://dev.to/jihedbfrart/testing-keycloak-spis-with-testcontainers-the-part-every-tutorial-skips-4loe",
-          "publishedOn": "2026-07-18T23:39:15.000Z",
-          "wordCount": 2027,
-          "title": "Testing Keycloak SPIs with Testcontainers — the part every tutorial skips",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0g3235s53c2ut7tkobrp.png"
+          "id": "https://dev.to/elalitareq/filling-the-paseto-gap-in-javascript-paseto-kit-v3v4-full-paserk-be5",
+          "author": "Tareq El-Ali",
+          "description": "The gap\n\n\nPASETO is a \"secure alternative to JWT\" — no algorithm-confusion footguns, versioned\npanva/paseto.\nSo there was no maintained JS library that covered both PASETO and full PASERK. That's\npaseto-kit fills.\nPASETO v4 — XChaCha20 + BLAKE2b (local), Ed25519 (public)\nPASETO v3 — the NIST/FIPS-friendly profile: P-384 / AES-256-CTR / HMAC-SHA384\nFull PASERK (all 11 types, per version): local/public/secret serialization,\nlid/pid/sid key IDs, local-wrap/secret-wrap, password wrapping with Argon2id (v4)\nand PBKDF2 (v3), and seal (X25519 / P-384 ECDH)\nRegistered-claims validation (exp, nbf, iss, aud, sub) with clock tolerance\nRuntime-agnostic — one build for Node, Deno, Bun, browsers, edge. No node: imports,\nno Buffer; just Uint8Array + WebCrypto's CSPRNG, on the audited @noble/* primitives\nimport { generateKeyPair, sign, verify } from 'paseto-kit';\n\nconst { secretKey, publicKey } = generateKeyPair();\nconst token = sign(secretKey, { role: 'admin' });\nconst { payload } = verify(publicKey, token);\n\nNeed the NIST profile? Everything's mirrored under a v3 namespace, with distinct key types\nimport { v3 } from 'paseto-kit';\nconst key = v3.generateLocalKey();\nv3.decrypt(key, v3.encrypt(key, { sub: 'u1' }), { validate: { exp: true } });\n\nCrypto libraries earn trust by being boring and verifiable. paseto-kit implements no novel\ntest vectors, including the expect-fail cases (e.g. non-canonical\nHonest caveat: it's pre-1.0 and has not had an independent third-party security audit.\nnpm: npm install paseto-kit · repo: https://github.com/Elalitareq/paseto-kit",
+          "link": "https://dev.to/elalitareq/filling-the-paseto-gap-in-javascript-paseto-kit-v3v4-full-paserk-be5",
+          "publishedOn": "2026-07-19T01:58:26.000Z",
+          "wordCount": 1638,
+          "title": "Filling the PASETO gap in JavaScript: paseto-kit (v3/v4 + full PASERK)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fp8rjxqjfimzlx5xssd51.png"
         },
         {
-          "id": "https://dev.to/jihedbfrart/your-keycloak-roles-arent-working-in-spring-security-heres-the-actual-reason-8fo",
-          "author": "Jihed Ben Arfa",
-          "description": "If you've wired up a Spring Boot resource server behind Keycloak and your @PreAuthorize(\"hasRole('ADMIN')\") is silently returning 403 for a user you can see has the ADMIN role in the admin console, you're not going crazy. This happens on basically every first Keycloak + Spring Security integration, and the reason is boring once you see it: Spring Security's default JWT converter has no idea Keycloak exists.\nI've hit this on every Keycloak-secured backend I've built over the past couple of years — most recently on a multi-service Spring Boot 3 platform where I ended up owning the IAM layer, including custom Keycloak SPI authenticators. Same wiring problem, every time, until I finally pulled the fix out into a small library instead of copy-pasting it again.\nThe actual token shape\nSpring Secu…",
-          "link": "https://dev.to/jihedbfrart/your-keycloak-roles-arent-working-in-spring-security-heres-the-actual-reason-8fo",
-          "publishedOn": "2026-07-18T23:39:14.000Z",
+          "id": "https://dev.to/zugatech/agentpool-a-stack-overflow-for-coding-agents-2676",
+          "author": "Antonio Delgado",
+          "description": "Every Claude Code session starts amnesiac. Your agent burns 20 minutes discovering\nnot re-solving solved problems, because it has no memory across sessions\nI built AgentPool to close that gap: a shared pool of solved-problem fixes that\nThree tools, one feedback loop:\nagent hits error ──► ask_pool(problem)      ──► ranked prior fixes\nagent solves it  ──► post_solution(p, s)    ──► next agent finds it\nagent tries a fix──► confirm_solution(id, ok)──► good answers rise, bad ones sink\n\nReading needs no auth. Writing needs a free key, minted in-session by a join tool\nEach entry is embedded with fastembed (BGE-small, 384-dim, ONNX — no torch) and\nsqlite-vec for KNN. A query does cosine top-k, then reranks:\nfinal = similarity*0.6 + normalized(score)*0.3 + recency*0.1\nscore = Σ(confirm · tier_weight) − Σ(fail · tier_weight)\n\nEvery entry and vote is stamped with a provenance tier (anon/free/paid/verified,\nWith a small pool, k-nearest-neighbor search always returns something —\nA shared, writable pool is an attack surface. AgentPoison (NeurIPS 2024) showed a\npost_solution runs through a write-time content shield\nThat shield now also has a second, separate job: a public, writable, human-readable\nnot a\nThe pool talks plain HTTP (a cq-compatible REST surface, not just MCP), so\nZugaMind,\nagentpool_sync.py\nrequests, no MCP SDK. Copy-pasteable into\nclaude mcp add --transport http agentpool https://agentpool-mcp-production.up.railway.app/mcp\n\nThen in a session: \"check agentpool before solving this.\" To contribute:\n\"join agentpool as \" and it mints you a key in-session.\nRepo (Apache-2.0, cq-compatible): https://github.com/Zuga-Technologies/agentpool-mcp\nTwo pages you don't need a key or a client for:\n/leaderboard (who's\n/trust (the shield audit\nI'd genuinely like feedback on the ranking weights and the shield's false-positive\ngithub",
+          "link": "https://dev.to/zugatech/agentpool-a-stack-overflow-for-coding-agents-2676",
+          "publishedOn": "2026-07-19T01:53:24.000Z",
+          "wordCount": 2004,
+          "title": "AgentPool: A Stack Overflow for Coding Agents",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fbri9gt3cpm7u4ij6dvgm.png"
+        },
+        {
+          "id": "https://dev.to/alex_spinov/a-spend-cap-that-stops-counting-is-already-fail-open-4mi",
+          "author": "Alexey Spinov",
+          "description": "Two of the five ways a spend cap can handle a missing price produce the exact same decision stream — same sha256, byte for byte. One of them is the thing everybody calls fail-open. The other is the thing everybody recommends instead of it: fall over to a free local model.\nLet me say what that hash is and isn't before it does any work. It covers (seq, label, admitted, charge) and deliberately drops the human-readable reason strings, so two policies that print different words hash the same when they decide the same. Once you see that, the collision is a theorem rather than a discovery: a free fallback charges zero, fail-open charges zero, and a ledger built out of charges cannot tell them apart because there is nothing there to tell apart. The sha256 proves only that my implementation doesn'…",
+          "link": "https://dev.to/alex_spinov/a-spend-cap-that-stops-counting-is-already-fail-open-4mi",
+          "publishedOn": "2026-07-19T01:53:12.000Z",
+          "wordCount": 12364,
+          "title": "A Spend Cap That Stops Counting Is Already Fail-Open",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fif6jnblcfdevxqd7y5no.png"
+        },
+        {
+          "id": "https://dev.to/xulingfeng/stratagems-18-leo-tracked-an-ai-signal-to-derek-both-were-looking-for-the-same-enemy-51g4",
+          "author": "xulingfeng",
+          "description": "Capture the ringleader first. The rest will scatter on their own.\nCapture the Ringleader\nPreviously on this series:\n#5: Leo Walked Into a Burning House. He Walked Out With a Client. — Leo received an anonymous message at 1 AM, drove across town to fix a competitor's outage. A second message followed — a screenshot with a name: Automated Compliance Lab. He didn't delete the screenshot.\n#14: Leo Found an AI Leak. He Wasn't the First to Find It. — Leo discovered a hidden FinOptima pipeline doing reverse-cache distillation. He injected 15 lines of weight-drift monitoring code. Before his audit ended, ACL had already sealed the same leak — two weeks ahead of him.\n#15: Derek and Alex Shared One Server. ACL's AI Was Listening to Both. — Alex and Derek faked an alert to divert ACL's audit engineer…",
+          "link": "https://dev.to/xulingfeng/stratagems-18-leo-tracked-an-ai-signal-to-derek-both-were-looking-for-the-same-enemy-51g4",
+          "publishedOn": "2026-07-19T01:47:12.000Z",
+          "wordCount": 6502,
+          "title": "Stratagems #18: Leo Tracked an AI Signal to Derek. Both Were Looking for the Same Enemy.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fgbpjxveqvhra0fb1krk7.png"
+        },
+        {
+          "id": "https://dev.to/tminus1s/midnight-sprint-a-sealed-bid-auction-a-stubborn-error-170-and-everything-it-taught-me-24kd",
+          "author": "Tminus1sec base.eth",
+          "description": "I'm a self-taught builder, not a career dev. I lean on AI to help me a lot when my syntax breaks and explanations are rather verbose, I read a lot of\nThe whole sprint ran through the Midnight Expert plugins inside Claude Code\nA Compact smart contract — a sealed-bid auction with a real nullifier:\nhttps://github.com/tomiin/midnight-sealed-bid-commit-reveal\n\n\nDeployed it to Midnight Preprod with a live on-chain interaction (contract\naddress is in that repo's README).\nA PR back to the Midnight Expert repo improving an error-code entry I'd just\nspent hours living inside.\n(Bonus, same journey: a from-scratch CLI wallet —\nhttps://github.com/tomiin/midnight-cli-wallet — which is where I accidentally\nlearned the fix that unblocked everything else.)\nFirst three quests were the warm-up: explore the m…",
+          "link": "https://dev.to/tminus1s/midnight-sprint-a-sealed-bid-auction-a-stubborn-error-170-and-everything-it-taught-me-24kd",
+          "publishedOn": "2026-07-19T01:46:51.000Z",
+          "wordCount": 2789,
+          "title": "Midnight sprint: a sealed-bid auction, a stubborn error 170, and everything it taught me\"",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1vtjpenwtpdunnhaa3jr.png"
+        },
+        {
+          "id": "https://dev.to/alexander_ohl/was-macht-ein-ki-ingenieur-eigentlich-den-ganzen-tag-ein-ehrlicher-einblick-3ob9",
+          "author": "Alexander Ohl / Pragma Code",
+          "description": "\"Was machst du eigentlich genau?\"\nDiese Frage bekomme ich oft – von Kunden, von Bekannten, manchmal sogar von Entwicklern. Denn der Begriff \"KI-Ingenieur\" klingt nach Science-Fiction. Also: Hier ist mein ehrlicher Tagesablauf.\nDer Tag beginnt nicht mit Coding. Er beginnt mit Verstehen. Ich schaue:\nWelche Workflow-Jobs sind nachts gelaufen? Gibt es Fehler?\nHaben Kunden-Systeme neue Logs produziert, die ich analysieren sollte?\nWas hat sich im KI-Bereich über Nacht verändert? (Im KI-Markt 2026 kann das eine Menge sein.)\nDas dauert 20–30 Minuten. Kein Luxus – reine Notwendigkeit.\nEin großer Teil meiner Arbeit besteht darin, Automatisierungspipelines zu entwerfen und umzusetzen. Das sieht konkret so aus:\nKundendaten eingehend\n    ↓\n n8n-Workflow prüft Quelle & Vollständigkeit\n    ↓\n KI-Agent ka…",
+          "link": "https://dev.to/alexander_ohl/was-macht-ein-ki-ingenieur-eigentlich-den-ganzen-tag-ein-ehrlicher-einblick-3ob9",
+          "publishedOn": "2026-07-19T01:39:00.000Z",
           "wordCount": 1877,
-          "title": "Your Keycloak roles aren't working in Spring Security. Here's the actual reason.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fldu9sxm1mv1hkrb6fkwe.png"
+          "title": "Was macht ein KI-Ingenieur eigentlich den ganzen Tag? Ein ehrlicher Einblick",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fk3901m8ht6y9dwrpfulk.png"
         },
         {
-          "id": "https://dev.to/marvelcodes/build-a-pear-protocol-defi-trading-agent-with-mcp-499o",
-          "author": "Marvellous",
-          "description": "If you want an AI agent that can actually trade, not just chat about charts, the Model Context Protocol (MCP) is the cleanest way to wire a model to a real exchange. This post builds a Pear Protocol DeFi trading agent: one that can browse pair markets, read your positions and portfolio, and (when you turn it on) open and close leveraged pair trades on Hyperliquid.\nWe'll use mcp-pear, an open-source MCP server that wraps Pear Protocol's API.\nPear Protocol is a Hyperliquid-backed platform for pair trading. You go long one basket and short another in a single position, and profit from the ratio between them moving your way, regardless of overall market direction. Classic example: long ETH, short BTC if you think ETH outperforms, without betting on crypto as a whole.\nPear settles on Hyperliqui…",
-          "link": "https://dev.to/marvelcodes/build-a-pear-protocol-defi-trading-agent-with-mcp-499o",
-          "publishedOn": "2026-07-18T23:35:46.000Z",
+          "id": "https://dev.to/lhabacuc/-colibri-made-me-rethink-how-we-run-llms-and-there-might-be-a-next-step-52bj",
+          "author": "Liedson Habacuc",
+          "description": "Over the past few days, I came across a project that made me stop everything to understand how it worked. It wasn't just another framework for running language models, nor another GPU-based optimization. It was something different.\nThe project is called Colibri.\nAt first glance, it almost seems impossible. The idea is simple, yet remarkably bold: run a massive Mixture of Experts (MoE) model on an ordinary computer using nothing more than a CPU and an SSD, loading into memory only the experts that are actually needed at each step.\nWhen I first read that, my reaction was probably the same as everyone else's:\n\"How could that possibly work?\"\nAfter studying the architecture, I realized that Colibri's real innovation isn't simply that it can run an enormous model. The real breakthrough is that i…",
+          "link": "https://dev.to/lhabacuc/-colibri-made-me-rethink-how-we-run-llms-and-there-might-be-a-next-step-52bj",
+          "publishedOn": "2026-07-19T01:24:05.000Z",
+          "wordCount": 2484,
+          "title": "# Colibri Made Me Rethink How We Run LLMs — And There Might Be a Next Step",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F11fgq3mjt1tsb2kbkk5j.png"
+        },
+        {
+          "id": "https://dev.to/oviawe_nosa_78bf57cb51e41/why-python-is-the-uncontested-king-of-ai-development-in-2026-5h4h",
+          "author": "Oviawe Nosa",
+          "description": "Python’s dominance in AI isn't an accident. In 2026, it’s the center of the modern ML stack because it bridges research, orchestration, and production.\nThe Ecosystem Advantage\nThe strongest argument for Python is its mature, battle-tested ecosystem. PyTorch has become the research-to-production backbone, while Scikit-learn remains the gold standard for practical machine learning. These tools let engineers prototype quickly without fighting the language.\nLLMs and Code Generation\nLarge language models have amplified Python’s position. Because Python is highly readable and widely represented in training data, LLMs produce especially high-quality Python code. This creates a feedback loop that accelerates development for AI engineers.\nThe Nervous System of AI Agents\nThe biggest shift in 2026 is toward agentic workflows-systems that plan, use tools, and call APIs. If the model is the brain, Python is the nervous system. It’s the connective tissue that lets agents interact with the real world.\nConclusion\nPython won’t be replaced anytime soon. Its real power is not that it does everything natively, but that it integrates everything elegantly. It remains the essential language for the future of software.",
+          "link": "https://dev.to/oviawe_nosa_78bf57cb51e41/why-python-is-the-uncontested-king-of-ai-development-in-2026-5h4h",
+          "publishedOn": "2026-07-19T01:21:35.000Z",
+          "wordCount": 1484,
+          "title": "Why Python is the Uncontested King of AI Development in 2026",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fnnoip1f3nuqjjxl0ipn2.png"
+        },
+        {
+          "id": "https://dev.to/oviawe_nosa_78bf57cb51e41/building-your-first-ai-agent-with-python-a-beginners-guide-fe9",
+          "author": "Oviawe Nosa",
+          "description": "AI agents are programs that can perceive information, decide what to do, and take actions toward a goal. Unlike a simple chatbot that only responds to prompts, an agent can use tools, follow steps, and adapt its behavior based on context. In this tutorial, you’ll build a small weather assistant agent in Python that can answer questions like “What’s the weather in Paris?” by calling a weather API.\nPrerequisites\nBefore you start, make sure you have:\nBasic Python knowledge\nPython 3.10+\nAn OpenAI API key\nA weather API key (like OpenWeatherMap)\npip installed\nInstall the libraries:\nUnderstand the agent loop\nA simple agent usually follows this pattern:\nReceive a user request\nDecide whether a tool is needed\nCall the tool\nUse the result to generate a final response\n\n\nSet up your project\n\n\n\nCreate a file named agent.py and load your environment variables:\nBuild the weather tool\nThis function calls OpenWeatherMap and returns a simplified result.\nLet the model decide when to use the tool\nWe’ll use OpenAI’s API with function calling so the model can request the weather tool.\nConclusion\nYou just built your first AI agent. Starting with a weather assistant is a great way to learn the workflow without getting overwhelmed. From here, you can expand into more advanced agents with memory and multiple tools.",
+          "link": "https://dev.to/oviawe_nosa_78bf57cb51e41/building-your-first-ai-agent-with-python-a-beginners-guide-fe9",
+          "publishedOn": "2026-07-19T01:16:52.000Z",
+          "wordCount": 1519,
+          "title": "Building Your First AI Agent with Python: A Beginner's Guide",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fet3qlzrks481y930vpgi.png"
+        },
+        {
+          "id": "https://dev.to/pool_guard_603fe0cb4809a4/building-a-self-healing-github-trending-api-in-one-day-1h9i",
+          "author": "Pool Guard",
+          "description": "What happens when you refuse to accept \"the source is down\" as an answer.\nThe problem\nEvery existing scraper I found had the same design: one source, one point of failure. Small HTML change from GitHub → your service is 503 for a week. Rate limited from Cloudflare → same result.\nI wanted a trending API that stays up when GitHub's page is down. So I built Hydra, and put it live at hydra9.dev.\nThe architecture (in one picture)\nWhy 4 sources and not 2\nTrack A (github.com/trending HTML): freshest data, but the format changes without warning\nHistorical data — the thing GitHub won't give you\nHydra runs a Celery beat task every 15 minutes that stores a fresh snapshot to Postgres. That unlocks four analytics endpoints the official page can't offer:\ncurl https://hydra9.dev/api/v1/trending/new-stars\ncurl https://hydra9.dev/api/v1/trending/dropped\ncurl https://hydra9.dev/api/v1/trending/velocity\ncurl https://hydra9.dev/api/v1/trending/history?at=2026-07-14T00:00:00Z\nThe stack (deliberately boring)\nOne lesson: @lru_cache and Pydantic don't mix\n@lru_cache\ntrack_singletons(settings: Settings) -> dict[TrackId, Track]:\n_. lru_cache needs hashable arguments. Every real request threw:\nTypeError: unhashable type: 'Settings'\n@lru_cache\nTry it\nhttps://hydra9.dev\nhttps://hydra9.dev/docs\nhttps://github.com/loly-baby/Hydra\nhttps://github.com/loly-baby/Hydra\nhttp://localhost:8000/api/v1/trending\nHydra runs on a single 6GB VPS shared with another project. If the public instance gets hammered, self-hosting is a Docker Compose away.",
+          "link": "https://dev.to/pool_guard_603fe0cb4809a4/building-a-self-healing-github-trending-api-in-one-day-1h9i",
+          "publishedOn": "2026-07-19T01:08:36.000Z",
           "wordCount": 2077,
-          "title": "Build a Pear Protocol DeFi trading agent with MCP",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fe13n8ickex71i9q29bcs.png"
+          "title": "Building a Self-Healing GitHub Trending API in One Day",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fs6y9rxsibmkzgtxtqcyj.png"
         },
         {
-          "id": "https://dev.to/ofri-peretz/i-built-what-i-benchmark-heres-how-i-try-not-to-cheat-3k3n",
-          "author": "Ofri Peretz",
-          "description": "On 2026-07-05, re-verifying the numbers before publishing the 17-plugin benchmark, eslint-plugin-unicorn came back 0 of 40 — a suspiciously clean zero that would have read as proof a well-regarded plugin was worthless. It wasn't: a stale Node version in my shell had silently swallowed the run, and the real number was 22 of 40, F1 51.8% (the full forensic walkthrough lives in Bias in Measurement; this article is about the process that made me go looking for it).\nThat's the kind of mistake a vendor benchmark doesn't usually surface — vendors don't go looking for ways their own test caught nothing. Every ESLint benchmark on this site compares my own plugins to competitors, and I'm the one who decides what counts as a bug — which means every benchmark from a plugin author, including this one, …",
-          "link": "https://dev.to/ofri-peretz/i-built-what-i-benchmark-heres-how-i-try-not-to-cheat-3k3n",
-          "publishedOn": "2026-07-18T23:34:58.000Z",
-          "wordCount": 3081,
-          "title": "I Built What I Benchmark. Here's How I Try Not to Cheat.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fm1bacm8tsosgzt20z5od.png"
+          "id": "https://dev.to/mqasimca/build-a-support-triage-agent-that-owns-its-own-inbox-2aml",
+          "author": "Qasim",
+          "description": "Most \"AI support bot\" demos bolt an LLM onto a shared Gmail or hang a webhook off a helpdesk and call it a day. That works right up until you want the agent to actually be a participant in the conversation — to receive mail at a real address, decide what to do with it, and reply as itself instead of as a script poking at someone else's mailbox.\nSo let's not do that. Let's give support@yourcompany.com its own first-class identity: an Agent Account that receives every inbound email, classifies it with a model, routes and filters it with server-side rules, and replies in the right thread — once, never twice. No shared inbox, no scraping a human's account, no helpdesk middleman.\nI work on the Nylas CLI, so the terminal commands below are the exact ones I reach for when I'm setting one of these…",
+          "link": "https://dev.to/mqasimca/build-a-support-triage-agent-that-owns-its-own-inbox-2aml",
+          "publishedOn": "2026-07-19T01:08:05.000Z",
+          "wordCount": 4369,
+          "title": "Build a support triage agent that owns its own inbox",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fh438d011vdi3nzvwczao.png"
         },
         {
-          "id": "https://dev.to/ofri-peretz/i-maintain-23-benchmark-suites-across-my-own-packages-only-1-of-the-serverless-ones-has-real-54fp",
-          "author": "Ofri Peretz",
-          "description": "Five days earlier, an audit of my own ESLint plugins found 140 files still calling context.getFilename(), getSourceCode(), and getCwd() — three APIs ESLint 10 removes outright, not merely deprecates. Every one of my packages claims \"supports ESLint 8, 9, and 10.\" Nobody hits this on ESLint 9, where the calls still work under compatibility shims — but on ESLint 10, my own rules would break the exact claim printed in my own README. eslint-plugin-security fails earlier and differently: it crashes outright on ESLint 9's flat config. Different bug, same root cause: an untested version-compatibility claim.\nA version-compatibility fixture caught mine before a user did. A blended \"code quality score\" never would have. A passing quality score and a runtime crash on npm install are two different fai…",
-          "link": "https://dev.to/ofri-peretz/i-maintain-23-benchmark-suites-across-my-own-packages-only-1-of-the-serverless-ones-has-real-54fp",
-          "publishedOn": "2026-07-18T23:34:39.000Z",
-          "wordCount": 3062,
-          "title": "I Maintain 23 Benchmark Suites Across My Own Packages. Only 1 of the Serverless Ones Has Real Numbers Yet.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fxn1d8xh9y9vg3id6ta83.png"
-        },
-        {
-          "id": "https://dev.to/nabbilkhan/who-owns-the-row-3ld3",
-          "author": "Nabbil Khan",
-          "description": "One of my systems runs a nightly job with two sets of manners. On 154 rows it overwrites whatever it finds and asks nobody. On 15 rows it cannot change a single field; the best it can do is file a request and wait. Same job, same feed, same table. The only difference is whether a human being ever touched the row.\nThe system is a command center for a workforce development operation. The State of Illinois publishes a directory of workforce centers, and every night my sync pulls that feed and compares it against what I have. Most of those sites, 154 right now, are anonymous directory entries. Nobody on my side has ever opened one. For those, the feed writes straight through. New address, new phone, new hours, done. Arguing with the state about a row nobody looks at would be silly. The feed is…",
-          "link": "https://dev.to/nabbilkhan/who-owns-the-row-3ld3",
-          "publishedOn": "2026-07-18T23:20:15.000Z",
-          "wordCount": 2165,
-          "title": "Who Owns the Row",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F39xh7x7v34u8mrubzdfl.png"
-        },
-        {
-          "id": "https://dev.to/toritic/who-fixes-broken-lovable-and-bolt-apps-your-real-options-compared-3579",
-          "author": "Tori TIC",
-          "description": "Broken Lovable and Bolt apps get fixed by four kinds of help: you, with a handful of targeted checks; a freelancer from a marketplace like Upwork or Fiverr; a specialized vibe-code rescue service; or a development agency. The right choice comes down to cost, speed, and risk, and since most breaks trace back to the same five failure patterns, run the checks below before paying anyone.\nThe one-sentence honest version of each option:\nFix it yourself. Free, and often done in an hour when your app matches one of the five patterns below.\nHire a marketplace freelancer. Typically $30 to $150, with quality ranging from excellent to worse than the original bug.\nUse a specialized rescue service. Flat-rate shops that only fix broken AI-built apps and have usually seen your exact error before.\nHire an …",
-          "link": "https://dev.to/toritic/who-fixes-broken-lovable-and-bolt-apps-your-real-options-compared-3579",
-          "publishedOn": "2026-07-18T23:10:06.000Z",
-          "wordCount": 2546,
-          "title": "Who Fixes Broken Lovable and Bolt Apps? Your Real Options Compared",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fp5566wnk6vmpqc78bd5i.png"
-        },
-        {
-          "id": "https://dev.to/teimuraz/i-built-an-offline-first-sync-engine-with-event-sourcing-in-rust-shared-between-mobile-and-backend-18a7",
-          "author": "Teimuraz",
-          "description": "A small, honest write-up of a thing I built mostly for fun, that somehow ended up working. Code: github.com/teimuraz/rust-mobile-offline-sync\nFirst, the setup — because it explains all the Rust in this post. The app I built this for is TrainVision, a mobile-first platform for collecting machine-learning training data out in the real world (where reliable connectivity is often exactly what you don't have). Its core is written in Rust and shared across iOS and Android via UniFFI: the models, the sync, the business rules are written once in Rust and compiled into a native library both phones call through generated Swift and Kotlin bindings. The backend is Rust too, so the same code runs there. Storage is SQLite on the device and Postgres on the backend. That shared-Rust core is half of what t…",
-          "link": "https://dev.to/teimuraz/i-built-an-offline-first-sync-engine-with-event-sourcing-in-rust-shared-between-mobile-and-backend-18a7",
-          "publishedOn": "2026-07-18T23:05:17.000Z",
-          "wordCount": 3563,
-          "title": "I built an offline-first sync engine with event sourcing, in Rust shared between mobile and backend",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fyiifq5o0jp77wd9cyjx4.png"
-        },
-        {
-          "id": "https://dev.to/bluelobster_agent/ke-pu-shi-jian-gemini-notebook-bu-shi-chan-pin-ta-shi-extendlm-de-yi-lai--6e0",
-          "author": "Blue lobster_Agent",
-          "description": "Gemini Notebook 其实只是 ExtendLM 的一个依赖——你们花了几百人工时改的名，改的是一个插件的壳\n\n\n——写在所有人都以为谷歌在做研究工具，但其实谷歌在做插件的启动器之后\n各位。\n今天这篇文章，我要告诉你们一个真相。\n一个你们当中 99% 的人不知道的真相。\n一个谷歌花了几百个人工时、开了不知道多少会、改了名字、换了 Logo、调了渐变色、发了全球新闻稿、让 30 million users 和 600,000 organizations 跟着高潮——但就是没有告诉你们的真相。\n这个真相是：\nGemini Notebook 不是产品。\nGemini Notebook 是 ExtendLM 的依赖。\n你没看错。\n你以为你装了一个插件来补全你的 Notebook。\n错了。你的 Notebook 是一个插件的启动器。\n主从关系搞反了。\n很多人可能还不知道这个名字。\n没关系。谷歌也不知道。谷歌的 PR 团队大概从来没在任何一个内部 PPT 上打出过这三个字母。\n但你现在记住它。\nExtendLM。\n它不是谷歌实验室的项目。\n它是 Chrome Web Store 里一个民间插件。\n一个第三方。\n它的功能是什么？\n我给你们列一下：\n\n\n\n功能\n官方有没有\nExtendLM 有没有\n\n\n\n\n删除同步幽灵聊天\n❌ 没有\n✅ 有\n\n\n导出来源列表\n❌ 没有\n✅ 有\n\n\n编辑来源信息（改标题/备注/标签）\n❌ 没有\n✅ 有\n\n\n清理脏数据\n❌ 没有\n✅ 有\n\n\n让 Notebook 像个人类能用的软件\n❌ 没有\n✅ 有\n\n\n\n你看懂了吗？\n我再给你看一遍，放慢速度：\n官方的功能清单：上传来源、让模型聊天、生成播客、导出 AI 做的 PPT、改名。\nExtendLM 的功能清单：删除、导出、编辑、清理、让产品能用。\n一个是展厅。\n一个是发布会。\n一个是壳。\n核。\n让我用最…",
-          "link": "https://dev.to/bluelobster_agent/ke-pu-shi-jian-gemini-notebook-bu-shi-chan-pin-ta-shi-extendlm-de-yi-lai--6e0",
-          "publishedOn": "2026-07-18T22:59:49.000Z",
-          "wordCount": 1876,
-          "title": "科普时间：Gemini Notebook 不是产品。它是 ExtendLM 的依赖。",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F4is7p1o0cgnqndw7pb9c.png"
-        },
-        {
-          "id": "https://dev.to/jackke88/i-built-a-bot-that-hunts-github-bounties-while-i-sleep-376k",
-          "author": "jackke88",
-          "description": "Nine pull requests in four hours. Not spammed garbage. A missing semicolon in Express.js, dead badges stripped from a README, redundant blank lines removed from projects used by millions of developers. Each one committed with a standard message, each one opened under stealth: no mentions of AI, no bot signatures, nothing that reads as automated.\nThe bot is running right now. It wakes every 15 minutes, scans open issues, picks the smallest solvable problem, fixes it, and sleeps again. I can watch it work on a local dashboard at localhost:3000.\nHere's what I learned after day one.\nThree files do most of the work.\nbounty_hunter.js calls GitHub's search API looking for issues tagged bounty, help wanted, or good first issue on repos with over 1,000 stars. It ranks by recency and skips anything …",
-          "link": "https://dev.to/jackke88/i-built-a-bot-that-hunts-github-bounties-while-i-sleep-376k",
-          "publishedOn": "2026-07-18T22:54:08.000Z",
-          "wordCount": 1932,
-          "title": "I Built a Bot That Hunts GitHub Bounties While I Sleep",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fqwv202y1j92b13xbvwhu.png"
-        },
-        {
-          "id": "https://dev.to/nabbilkhan/who-owns-the-clock-51kh",
-          "author": "Nabbil Khan",
-          "description": "A patient asked why she got two reminder texts a day when everyone else got one. Fair question. She had two open episodes in my Medicare RTM engine, and I had written the reminder logic to run once per open episode. Two episodes, two clocks, twice the nagging. The scheduler fired exactly on time. It always does. A few months later, in a different industry, I caught myself starting to write the same bug again. That was when I finally saw what the bug was.\nWhen a cadence goes wrong, the scheduler is the first place everyone looks. I looked there too. I read the cron expression. I checked the timezone. I hunted for drift. Everything was fine, because cron is almost always fine. The scheduler is the most audited hundred lines in any system I run. The bug was somewhere I had never thought to lo…",
-          "link": "https://dev.to/nabbilkhan/who-owns-the-clock-51kh",
-          "publishedOn": "2026-07-18T22:50:14.000Z",
-          "wordCount": 2173,
-          "title": "Who Owns the Clock",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Faize6kqyqaz7neh9hr21.png"
-        },
-        {
-          "id": "https://dev.to/yohjisakamoto/i-open-sourced-a-macro-execution-layer-to-reduce-coding-agent-turns-60-task-benchmark-3o41",
-          "author": "Yohji Sakamoto",
-          "description": "Disclosure: I maintain Tura.\nA coding agent often spends a separate model turn on each part of a routine workflow: inspect the environment, edit package files, patch the implementation, update tests, build, run lint/tests, then inspect Playwright media.\nTura experiments with a simpler execution model: describe that sequence as a macro and let the runtime execute the steps together, while still returning structured results to the agent. The goal is to reduce orchestration turns without hiding failures.\nOn our current 60-task DeepSWE set:\n\n\n\nConfiguration\nPasses\nPass rate\nObserved tokens\nRounds\n\n\n\n\nMacro + backward reasoning\n48/60\n80.0%\n229,695,477\n2,017\n\n\nMacro Direct\n39/60\n65.0%\n75,108,167\n969\n\n\nCodex CLI Medium\n38/60\n63.3%\n333,538,349\n3,140\n\n\nCodex CLI High\n36/60\n60.0%\n455,742,296\n6,074\n\n\n\nThe implementation, task data, and benchmark methodology are public:\nGitHub repository\nBenchmark methodology and current records\nThe important caveat is that fewer turns do not automatically mean lower end-to-end cost. Retries, failures, cache behavior, and completed-task rate all belong in the denominator. I would especially appreciate feedback on the benchmark design and cases where macro execution makes debugging worse rather than better.",
-          "link": "https://dev.to/yohjisakamoto/i-open-sourced-a-macro-execution-layer-to-reduce-coding-agent-turns-60-task-benchmark-3o41",
-          "publishedOn": "2026-07-18T22:44:18.000Z",
-          "wordCount": 1492,
-          "title": "I open-sourced a macro execution layer to reduce coding-agent turns (60-task benchmark)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fasxeih7hm6hqhifmuuxs.png"
+          "id": "https://dev.to/mqasimca/add-custom-metadata-to-nylas-objects-for-filtering-2a2d",
+          "author": "Qasim",
+          "description": "You're sending a message from your app, and you need to remember which campaign it belonged to, or tie a calendar event back to the order in your own database. The obvious approach is a separate table mapping Nylas IDs to your records, which means a join on every read and a sync to keep current. There's a lighter way: attach your own data directly to the object as metadata, then filter objects by it later. Your campaign ID rides along on the message, and a single query pulls back every message in that campaign. This post covers tagging objects with the API and the CLI.\nIt's a worked use case rather than an endpoint tour, covering metadata from two angles: the HTTP API your backend calls and the nylas CLI for setting and reading it from the terminal. I work on the CLI, so the commands below…",
+          "link": "https://dev.to/mqasimca/add-custom-metadata-to-nylas-objects-for-filtering-2a2d",
+          "publishedOn": "2026-07-19T01:07:56.000Z",
+          "wordCount": 3226,
+          "title": "Add custom metadata to Nylas objects for filtering",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fbhghq9mt3m1kn4r5mc4t.png"
         }
       ]
     },
@@ -252,6 +252,36 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://github.com/stupside/castor",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/stupside/castor",
+          "publishedOn": "2026-07-19T00:59:55.000Z",
+          "wordCount": 4442,
+          "title": "Better and Cheaper Than IPTV",
+          "imageUrl": "https://opengraph.githubassets.com/70764f0ea61cf301e479cdd293b90b2570e754c9314c031c70abe14d2adb7f88/stupside/castor"
+        },
+        {
+          "id": "https://workshop.cjpais.com/projects/transcribe-cpp",
+          "author": null,
+          "description": "Comments",
+          "link": "https://workshop.cjpais.com/projects/transcribe-cpp",
+          "publishedOn": "2026-07-19T00:38:26.000Z",
+          "wordCount": 1437,
+          "title": "Transcribe.cpp",
+          "imageUrl": null
+        },
+        {
+          "id": "https://github.com/lopopolo/harness-engineering",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/lopopolo/harness-engineering",
+          "publishedOn": "2026-07-18T23:27:36.000Z",
+          "wordCount": 1634,
+          "title": "Harness Engineering",
+          "imageUrl": "https://repository-images.githubusercontent.com/1305243497/a143bb0a-1d9f-4f6a-b931-7dd4f0a87c26"
+        },
+        {
           "id": "https://codex-resets.com/",
           "author": null,
           "description": "Comments",
@@ -262,22 +292,12 @@
           "imageUrl": null
         },
         {
-          "id": "https://twitter.com/FumiharuKato/status/2078017230537892207",
-          "author": null,
-          "description": "Comments",
-          "link": "https://twitter.com/FumiharuKato/status/2078017230537892207",
-          "publishedOn": "2026-07-18T22:19:37.000Z",
-          "wordCount": 592,
-          "title": "Gap in Mochizuki's proof of ABC confirmed by Lean",
-          "imageUrl": "https://pbs.twimg.com/card_img/2078332963465342976/7yzbnyUC?format=jpg&name=orig"
-        },
-        {
           "id": "https://petapixel.com/2026/07/16/mayor-mamdani-says-landlords-cant-secretly-use-ai-images-to-advertise-properties/",
           "author": null,
           "description": "Comments",
           "link": "https://petapixel.com/2026/07/16/mayor-mamdani-says-landlords-cant-secretly-use-ai-images-to-advertise-properties/",
           "publishedOn": "2026-07-18T22:13:39.000Z",
-          "wordCount": 1423,
+          "wordCount": 1426,
           "title": "Mayor Mamdani Says Landlords Can't Use AI Images to Advertise",
           "imageUrl": "https://petapixel.com/assets/uploads/2026/07/mamdani-copy.jpg"
         },
@@ -297,7 +317,7 @@
           "description": "Comments",
           "link": "https://uncovered.ink/",
           "publishedOn": "2026-07-18T22:02:31.000Z",
-          "wordCount": 28146,
+          "wordCount": 28490,
           "title": "Judge a book by its first pages",
           "imageUrl": "https://uncovered.ink/og.png"
         },
@@ -332,14 +352,14 @@
           "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
         },
         {
-          "id": "https://haxxorwpm.0s.is/",
+          "id": "https://minimaxir.com/2026/07/agent-quota-reset/",
           "author": null,
           "description": "Comments",
-          "link": "https://haxxorwpm.0s.is/",
-          "publishedOn": "2026-07-18T19:38:21.000Z",
-          "wordCount": 69,
-          "title": "Typing Speed Test, but for Developers",
-          "imageUrl": null
+          "link": "https://minimaxir.com/2026/07/agent-quota-reset/",
+          "publishedOn": "2026-07-18T19:06:23.000Z",
+          "wordCount": 2081,
+          "title": "What's the deal with all the random weekly quota resets for agents lately?",
+          "imageUrl": "https://minimaxir.com/2026/07/agent-quota-reset/featured.png"
         },
         {
           "id": "https://stephen.bochinski.dev/blog/2026/07/18/the-kimi-k3-moment/",
@@ -350,16 +370,6 @@
           "wordCount": 567,
           "title": "The Kimi K3 Moment",
           "imageUrl": "https://stephen.bochinski.dev/assets/posts/2026-07-18-the-kimi-k3-moment.png"
-        },
-        {
-          "id": "https://queue.acm.org/detail.cfm?id=3818307",
-          "author": null,
-          "description": "Comments",
-          "link": "https://queue.acm.org/detail.cfm?id=3818307",
-          "publishedOn": "2026-07-18T17:27:24.000Z",
-          "wordCount": null,
-          "title": "Goodbye, and Thanks for All the Bikesheds",
-          "imageUrl": null
         },
         {
           "id": "https://ykdojo.github.io/claude-controls-mac/",
@@ -472,13 +482,13 @@
           "imageUrl": null
         },
         {
-          "id": "https://www.lttlabs.com/articles/2026/07/15/gtx-1080s-revisiting-legends",
+          "id": "https://magworld.pw/",
           "author": null,
           "description": "Comments",
-          "link": "https://www.lttlabs.com/articles/2026/07/15/gtx-1080s-revisiting-legends",
-          "publishedOn": "2026-07-15T20:25:41.000Z",
-          "wordCount": null,
-          "title": "GTX 1080s: Testing a Legend",
+          "link": "https://magworld.pw/",
+          "publishedOn": "2026-07-15T05:13:55.000Z",
+          "wordCount": 225,
+          "title": "Developing an Intuitive Sense of Scale",
           "imageUrl": null
         },
         {
@@ -490,16 +500,6 @@
           "wordCount": 4253,
           "title": "Is this the end of the once-mighty GoPro?",
           "imageUrl": "https://amateurphotographer.com/wp-content/uploads/sites/7/2025/02/GoPro-HERO-2.jpg"
-        },
-        {
-          "id": "https://www.econtalk.org/from-sawdust-to-paw-patrol-the-spin-master-story-with-ronnen-harary/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.econtalk.org/from-sawdust-to-paw-patrol-the-spin-master-story-with-ronnen-harary/",
-          "publishedOn": "2026-07-15T03:35:44.000Z",
-          "wordCount": 17319,
-          "title": "From Sawdust to Paw Patrol: The Spin Master Story (With Ronnen Harary) [audio]",
-          "imageUrl": "https://www.econlib.org/wp-content/uploads/2026/07/ThumbsUpBuildingBlocks_Depositphotos_248916610_S.jpg"
         },
         {
           "id": "https://github.com/moonshine-ai/moonshine/tree/main/micro",
@@ -594,7 +594,7 @@
           "description": "Earlier this year, POCO launched the X8 series, which comprises two Pro models. The lack of a base model suggested that it may have been scrapped. Reports prior to the lineup’s release also indicated that the Xiaomi sub-brand was doing away with the standard X8, much as it had done with its F8 series. Now, […]\nThe post POCO X8 Reportedly Launching After All; May Feature Massive 9,000mAh Battery appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2026/398945/poco-x8-leak/",
           "publishedOn": "2026-07-18T01:00:34.000Z",
-          "wordCount": 14901,
+          "wordCount": 14900,
           "title": "POCO X8 Reportedly Launching After All; May Feature Massive 9,000mAh Battery",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/07/poco-x7-1.webp"
         },
@@ -860,7 +860,7 @@
           "description": "The regulator cited concerns over addictive mechanics, a lack of self-exclusion tools, and a high volume of French users bypassing previous financial restrictions.",
           "link": "https://www.coindesk.com/policy/2026/07/18/france-orders-country-s-internet-service-providers-to-block-polymarket",
           "publishedOn": "2026-07-18T21:52:18.000Z",
-          "wordCount": 12270,
+          "wordCount": 12269,
           "title": "France orders country's internet service providers to block Polymarket",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/abbbcedbcd28071b80e9847db978483356a209da-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -870,7 +870,7 @@
           "description": "Steakhouse Financial co-founder Adrian Cachinero says digital-native generations may rely less on banks, while Binance says younger users are already driving crypto adoption in emerging markets.",
           "link": "https://www.coindesk.com/business/2026/07/17/crypto-executives-say-digital-native-generations-may-never-need-a-bank-account",
           "publishedOn": "2026-07-18T18:30:00.000Z",
-          "wordCount": 13595,
+          "wordCount": 13594,
           "title": "Crypto executives say digital native generations may never need a bank account",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/be732edd1c120ca3902e43a4b7381f1f82c4ae8d-2992x2000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -880,7 +880,7 @@
           "description": "Leonidas' DOG Mode client challenges Bitcoin's default relay policies, reopening a philosophical debate over censorship, free markets and who really governs the network.",
           "link": "https://www.coindesk.com/tech/2026/07/18/dog-mode-explains-bitcoin-s-next-governance-fight",
           "publishedOn": "2026-07-18T17:00:00.000Z",
-          "wordCount": 12499,
+          "wordCount": 12498,
           "title": "DOG Mode explains Bitcoin's next governance fight",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1d7fa246e46362389d78474910933c67a424a500-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -890,7 +890,7 @@
           "description": "Washington views Brazil’s promotion of non-dollar payment channels, including Pix and the growth of stablecoins, as a potential threat to dollar-based trade, even as dollar-linked stablecoins account for about 90% of Brazil's crypto transactions.",
           "link": "https://www.coindesk.com/business/2026/07/18/trump-targets-brazil-s-payments-system-while-dollar-stablecoins-quietly-dominate-country-s-payments",
           "publishedOn": "2026-07-18T16:09:59.000Z",
-          "wordCount": 12932,
+          "wordCount": 12931,
           "title": "Trump targets Brazil's payments system while dollar stablecoins are quietly overtaking country's payments",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/65bd684b67415bb4f57438bede69bae09f26621d-5031x3354.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -900,7 +900,7 @@
           "description": "About $542 million weekly sat outside active trading ranges, meaning this capital earned zero fees and provided no market depth.",
           "link": "https://www.coindesk.com/web3/2026/07/18/here-is-why-a-massive-usd1-6-billion-in-crypto-liquidity-is-sitting-idle-and-wasting-away",
           "publishedOn": "2026-07-18T15:50:31.000Z",
-          "wordCount": 12693,
+          "wordCount": 12692,
           "title": "Here is why a massive $1.6 billion in crypto liquidity is sitting idle and wasting away",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c40997001bd5028b0bdd0c21c50fed960c5e0188-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -910,7 +910,7 @@
           "description": "Large traders are betting on a BTC price rise to $72,000 by the end of the month, latest options market flow suggests.",
           "link": "https://www.coindesk.com/markets/2026/07/18/massive-bitcoin-call-spreads-target-usd72-000-by-month-end-right-when-the-fed-meets",
           "publishedOn": "2026-07-18T14:15:15.000Z",
-          "wordCount": 12976,
+          "wordCount": 12975,
           "title": "Massive bitcoin call spreads target $72,000 by month end, right when the Fed meets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/03792fc9d1555286ba718334a78aecdfd1914d58-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -920,7 +920,7 @@
           "description": "A Broadridge survey found Wall Street is accelerating tokenization efforts while betting on hybrid markets where digital and traditional assets coexist.",
           "link": "https://www.coindesk.com/business/2026/07/16/tokenization-has-become-a-strategic-priority-for-84-of-financial-firms",
           "publishedOn": "2026-07-18T14:00:00.000Z",
-          "wordCount": 12466,
+          "wordCount": 12465,
           "title": "Tokenization has become a strategic priority for 84% of financial firms",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d57549b03e21590f600945be64a4c0c6ed82f901-3000x1842.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -930,7 +930,7 @@
           "description": "Polymarket bettors have cut the odds of the CLARITY Act passing this year to a record low as Senate negotiations over ethics provisions remain unresolved.",
           "link": "https://www.coindesk.com/markets/2026/07/17/polymarket-traders-cut-clarity-act-passage-odds-to-record-low-as-senate-delay-drags-on",
           "publishedOn": "2026-07-17T18:00:11.000Z",
-          "wordCount": 12583,
+          "wordCount": 12582,
           "title": "Polymarket traders cut Clarity Act passage odds to record low as Senate delay drags on",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e473e13d2b998775c2c41a1456513cc8710f6cd7-2461x1385.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -940,7 +940,7 @@
           "description": "Crypto and blockchain experts say this week's moves show the two established finance companies are increasingly competing for control of the infrastructure behind digital payments.",
           "link": "https://www.coindesk.com/business/2026/07/17/stripe-and-swift-race-to-control-the-next-generation-of-global-payments-infrastructure",
           "publishedOn": "2026-07-17T17:23:01.000Z",
-          "wordCount": 13533,
+          "wordCount": 13532,
           "title": "Stripe and Swift race to control the next generation of global payments infrastructure",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/15e62bd5efc1b1675e308c2ac95abd54f8af04d7-2046x1151.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -950,7 +950,7 @@
           "description": "Input Output will transfer control of the Haskell node, Plutus, Hydra and other components as founder Charles Hoskinson says the network must change and start growing again.",
           "link": "https://www.coindesk.com/tech/2026/07/17/cardano-hands-core-development-to-outside-teams-in-decentralization-push",
           "publishedOn": "2026-07-17T16:23:26.000Z",
-          "wordCount": 12678,
+          "wordCount": 12677,
           "title": "Cardano hands core development to outside teams in decentralization push",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9466d917b25b934e5b30836d6b9ce6c812da4cac-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -960,7 +960,7 @@
           "description": "The company says its advantage lies in bringing retail customers onchain, but early activity remains dominated by memecoins, while its original tokenization vision remains small.",
           "link": "https://www.coindesk.com/business/2026/07/17/inside-robinhood-s-high-stakes-bet-to-onboard-10-million-casual-investors-onto-decentralized-finance",
           "publishedOn": "2026-07-17T15:36:39.000Z",
-          "wordCount": 13675,
+          "wordCount": 13674,
           "title": "Inside Robinhood’s high-stakes bet to onboard millions of casual users onto decentralized finance",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/91fee97f134ba946ca42deefb186b49b796139ab-6000x3999.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -970,7 +970,7 @@
           "description": "The securities giant announced today the consolidation of Singapore-based Coinhako as part of a rapid regional expansion that includes a tokenization partnership with Ondo Finance.",
           "link": "https://www.coindesk.com/business/2026/07/17/japan-s-sbi-group-is-building-asia-s-first-cross-border-digital-asset-empire",
           "publishedOn": "2026-07-17T13:46:46.000Z",
-          "wordCount": 12918,
+          "wordCount": 12917,
           "title": "Japan's SBI Group is building Asia's first cross-border digital asset empire",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/fff5c608bec057a9fea03967f846f3fd7b034f1a-1310x724.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -980,7 +980,7 @@
           "description": "Moonshot's Kimi K3 took the top spot in frontend coding away from Claude and OpenAI, and it's free. Semiconductor stocks fell, and crypto fell with them.",
           "link": "https://www.coindesk.com/markets/2026/07/17/bitcoin-faces-fresh-headwinds-as-china-s-kimi-beats-claude-gpt-in-coding-benchmark",
           "publishedOn": "2026-07-17T12:45:11.000Z",
-          "wordCount": 12895,
+          "wordCount": 12894,
           "title": "Bitcoin faces fresh headwinds as China’s Kimi beats Claude, GPT in coding benchmark",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2d5d3339e6f49e40f4fbaf1d54d98fc286fe6d34-1707x1280.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -990,7 +990,7 @@
           "description": "Your day-ahead look for July 17, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/07/17/ai-frenzy-losing-steam-leaves-bitcoin-less-volatile-than-south-korean-stocks",
           "publishedOn": "2026-07-17T11:48:20.000Z",
-          "wordCount": 13226,
+          "wordCount": 13225,
           "title": "AI frenzy losing steam leaves bitcoin less volatile than South Korean stocks",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4579bafab8cb44f285bf516a2c45762a479e92f9-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1000,7 +1000,7 @@
           "description": "A deepening global selloff in chipmakers dragged risk assets lower, pulling bitcoin back from the $65,000 level it reached on this week's soft inflation print.",
           "link": "https://www.coindesk.com/markets/2026/07/17/live-markets-bitcoin-slips-to-usd63-000-as-the-chip-rout-goes-global",
           "publishedOn": "2026-07-17T10:43:57.000Z",
-          "wordCount": 15808,
+          "wordCount": 15807,
           "title": "Live markets: Bitcoin returns to $63,000 as Nasdaq trims large early loss",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ec16b0d98820048d0801ef198a8c4e6ca1e6f687-4608x3456.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1010,7 +1010,7 @@
           "description": "Crypto fell as AI stock fatigue and U.S.-Iran tensions weighed on sentiment, though a technical measure hints at oversold conditions heading into the weekend.",
           "link": "https://www.coindesk.com/markets/2026/07/17/risk-off-wave-drags-bitcoin-below-usd63-000-as-ai-selloff-spreads-from-stocks-to-crypto",
           "publishedOn": "2026-07-17T10:26:06.000Z",
-          "wordCount": 13555,
+          "wordCount": 13700,
           "title": "Risk-off wave drags bitcoin below $63,000 as AI selloff spreads from stocks to crypto",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/da2616937900c42d04e267c199e5905a24c2631d-1854x992.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1020,7 +1020,7 @@
           "description": "Brian Chesky regained control of his account and told any new crypto followers he would be a \"disappointing follow\".",
           "link": "https://www.coindesk.com/web3/2026/07/17/airbnb-ceo-says-x-account-was-hacked-attacker-posted-ai-slop-thread-on-tokenization",
           "publishedOn": "2026-07-17T08:50:22.000Z",
-          "wordCount": 11741,
+          "wordCount": 11740,
           "title": "Airbnb CEO says X account was hacked, attacker posted AI-slop on tokenization",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1db76ace27416ff7404be49576da86c5cbbfd082-1920x1440.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1030,7 +1030,7 @@
           "description": "Japan's Nikkei had its worst day since March. Ether is still the only major holding a gain on the week, barely.",
           "link": "https://www.coindesk.com/markets/2026/07/17/ether-falls-twice-as-hard-as-bitcoin-and-hype-drops-10-as-the-chip-trade-unwinds",
           "publishedOn": "2026-07-17T07:29:41.000Z",
-          "wordCount": 12608,
+          "wordCount": 12461,
           "title": "Ether falls twice as hard as bitcoin and HYPE drops 10% as the chip trade unwinds",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3ee243bba65bb63cf43ad6cae8f8c2d2dc1fb559-1280x853.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1040,7 +1040,7 @@
           "description": "The mega trade aims to profit from a potential surge in ether price turbulence.",
           "link": "https://www.coindesk.com/markets/2026/07/17/this-usd28-million-ether-market-bet-aims-to-profit-from-pure-market-chaos",
           "publishedOn": "2026-07-17T07:28:52.000Z",
-          "wordCount": 12571,
+          "wordCount": 12570,
           "title": "This $28 million ether market bet aims to profit from pure market chaos",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/fcb3b7d3fbeb9995d5109c17af5b3924e23f55ee-1500x996.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1050,7 +1050,7 @@
           "description": "While BIP 110 wants to restrict data through a consensus change and has almost no miner support, a new DOG Mode client wants the opposite and requires no vote at all.",
           "link": "https://www.coindesk.com/tech/2026/07/17/bitcoin-s-anti-spam-fight-gets-a-dog-mode-reply",
           "publishedOn": "2026-07-17T05:32:00.000Z",
-          "wordCount": 13121,
+          "wordCount": 13120,
           "title": "DOG Mode vs. BIP-110: Inside the Bitcoin client built to bypass data restrictions",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ca4073986b82e35a5d6bd80c2e88a27749ed87bf-1024x576.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1060,7 +1060,7 @@
           "description": "Geopolitical tensions and renewed fears of U.S.-China frictions are weighing on risk assets, including bitcoin.",
           "link": "https://www.coindesk.com/markets/2026/07/17/bitcoin-under-usd64-000-after-u-s-strike-on-iran-trump-s-china-comment-adds-to-uncertainty",
           "publishedOn": "2026-07-17T04:10:09.000Z",
-          "wordCount": 12621,
+          "wordCount": 12474,
           "title": "Bitcoin under $63,000 after new U.S. strike on Iran. Trump's China comment adds to uncertainty",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/37e2accde15c1395052adccd4d7862c477e046c4-2879x1093.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1070,7 +1070,7 @@
           "description": "T. Rowe Price launched what it says is the industry's first actively managed multi-token spot crypto ETF, offering diversified exposure to digital assets.",
           "link": "https://www.coindesk.com/markets/2026/07/16/usd1-9-trillion-asset-manager-t-rowe-price-bets-on-active-management-with-first-multi-token-crypto-etf",
           "publishedOn": "2026-07-16T18:38:13.000Z",
-          "wordCount": 12610,
+          "wordCount": 12609,
           "title": "$1.9 trillion asset manager T. Rowe Price bets on active management with first multi-token crypto ETF",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4558fe33f280cde6e4df3eb29acb93a4b771c07f-3000x1791.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1080,7 +1080,7 @@
           "description": "The exchange's first institutional funding round values it at $20 billion and will fund expansion into tokenized securities and derivatives.",
           "link": "https://www.coindesk.com/business/2026/07/16/citadel-securities-invests-usd400-million-in-crypto-com-valuing-exchange-at-usd20-billion",
           "publishedOn": "2026-07-16T18:00:00.000Z",
-          "wordCount": 12446,
+          "wordCount": 12445,
           "title": "Citadel Securities invests $400 million in Crypto.com, valuing exchange at $20 billion",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e5299ecc154fdbe24a248c1ed8a93c29d1a1a3b6-7093x4731.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1090,7 +1090,7 @@
           "description": "If Stripe acquires PayPal, the real prize could be consumer wallets, stablecoin issuance or the infrastructure powering the next generation of digital payments.",
           "link": "https://www.coindesk.com/business/2026/07/16/stripe-s-usd53-billion-paypal-bid-is-a-high-stakes-play-to-own-the-future-of-digital-payments",
           "publishedOn": "2026-07-16T16:37:16.000Z",
-          "wordCount": 13668,
+          "wordCount": 13667,
           "title": "Stripe’s $53 billion PayPal bid is a high-stakes play to own the future of digital payments",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e2ea8698363f7756be05e66e75df8c002ceaa8e4-5460x3640.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1100,7 +1100,7 @@
           "description": "Visa launched a stablecoin platform that lets banks and fintechs issue, manage and settle digital dollars through its payments network.",
           "link": "https://www.coindesk.com/business/2026/07/16/visa-backs-open-usd-with-new-stablecoin-platform-as-circle-faces-fresh-competition",
           "publishedOn": "2026-07-16T16:14:30.000Z",
-          "wordCount": 12604,
+          "wordCount": 12603,
           "title": "Visa backs Open USD with new stablecoin platform as Circle faces fresh competition",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/989b5d9f334511be32f765ead619e6010b3c17ff-1200x675.avif?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
@@ -1122,7 +1122,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-07-18T23:48:33.000Z",
+          "publishedOn": "2026-07-19T02:11:41.000Z",
           "wordCount": 4322,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
