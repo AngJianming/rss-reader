@@ -1,165 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-20T22:54:48.786Z</id>
+    <id>urn:2026-07-20T23:54:41.677Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-20T22:54:48.786Z</updated>
+    <updated>2026-07-20T23:54:41.677Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-20T22:54:33.000Z</updated>
+        <updated>2026-07-20T23:54:10.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Best Line of Code Is the One You Never Write]]></title>
-        <id>https://dev.to/nahamaalochi/the-best-line-of-code-is-the-one-you-never-write-1ola</id>
-        <link href="https://dev.to/nahamaalochi/the-best-line-of-code-is-the-one-you-never-write-1ola"/>
-        <updated>2026-07-20T22:47:37.000Z</updated>
-        <summary type="html"><![CDATA[The best line of code is the one you never write.
-This isn’t laziness. It’s restraint.
-Every line of code is a liability: something to read, understand, test, debug, maintain, migrate, and eventually explain to someone who didn’t write it, often future you, who will be far less charitable. Less code doesn’t just mean fewer bugs. It means fewer assumptions, fewer hidden contracts, and fewer places for complexity to quietly rot.
-Simple code beats clever code almost every time. Clever code impresses in the moment. Simple code survives. The goal isn’t to be smart. It’s to be clear. Code should explain itself without requiring interpretation or bravado.
-Consider a small example.
-Clever:
-total := lo.SumBy(
-    lo.Filter(orders, func(o Order) bool {
-        return o.Paid && !o.Refunded
-    }),
-  …]]></summary>
+        <title type="html"><![CDATA[Optimizing RAG at Scale: Chunking, Retrieval, and the Bayesian Search That Cut Latency 40%]]></title>
+        <id>https://dev.to/imus_d7584cbc8ee9b0336256/optimizing-rag-at-scale-chunking-retrieval-and-the-bayesian-search-that-cut-latency-40-59ia</id>
+        <link href="https://dev.to/imus_d7584cbc8ee9b0336256/optimizing-rag-at-scale-chunking-retrieval-and-the-bayesian-search-that-cut-latency-40-59ia"/>
+        <updated>2026-07-20T23:40:13.000Z</updated>
+        <summary type="html"><![CDATA[Optimizing RAG at Scale: Chunking, Retrieval, and the Bayesian Search That Cut Latency 40%
+
+
+How we moved from "semantic search + hope" to a measured, tunable retrieval pipeline with 95% recall@10
+Everyone ships RAG the same way: chunk by 512 tokens, embed with text-embedding-3-small, top-k=5, stuff into context. It works for demos.
+Then you hit production:
+Legal contracts: 512 tokens splits clauses mid-sentence
+API docs: 1000-token chunks drown signal in noise
+Customer tickets: Conversational context needs overlap, not fixed windows
+Latency: 500ms embedding + 200ms vector search + 300ms LLM = 1s+ per query
+We rebuilt our retrieval layer from first principles. Here's what actually moves metrics.
+# rag/chunking.py
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+
+@datac…]]></summary>
         <author>
-            <name>Edgar Nahama Alochi</name>
+            <name>Imus</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Better Problems: The Power of Abstraction]]></title>
-        <id>https://dev.to/mckeondev/better-problems-the-power-of-abstraction-1dei</id>
-        <link href="https://dev.to/mckeondev/better-problems-the-power-of-abstraction-1dei"/>
-        <updated>2026-07-20T22:37:13.000Z</updated>
-        <summary type="html"><![CDATA[Second in a series on practical software design.
-Technical details are essential, but they're not the solution
-Here's a simple user story for a lending library api:
-As a library member, I want to borrow a book so that I can take it home.
-And here are two code blocks that implement it.  Take a few seconds to look at each. Which is easier to understand?
-[HttpPost("borrow")]
-public async Task<IActionResult> Borrow(int bookId, int memberId)
-{
-    var connectionString = _config.GetConnectionString("LibraryDb");
-    using var conn = new SqlConnection(connectionString);
-    await conn.OpenAsync();
-    var cmd = new SqlCommand("SELECT * FROM Books WHERE Id = @id", conn);
-    cmd.Parameters.AddWithValue("@id", bookId);
-    var reader = await cmd.ExecuteReaderAsync();
-    Book book = null;
-    if (a…]]></summary>
+        <title type="html"><![CDATA[A Dart regex that cannot be made to hang]]></title>
+        <id>https://dev.to/yusufihsangorgel/a-dart-regex-that-cannot-be-made-to-hang-1pl4</id>
+        <link href="https://dev.to/yusufihsangorgel/a-dart-regex-that-cannot-be-made-to-hang-1pl4"/>
+        <updated>2026-07-20T23:38:53.000Z</updated>
+        <summary type="html"><![CDATA[FFI binding to Google's RE2. Matching runs in linear time, so no catastrophic backtracking.
+Here is a validator that ships in a lot of Dart code. It checks that a string is a list of words separated by single spaces:
+final ok = RegExp(r'^(\w+\s?)*$');
+
+It works. Type a name, a tag list, a short label, and it returns true or false quickly. Then someone sends 31 characters of x with no trailing separator and the isolate stops answering.
+I timed it. On Apple Silicon, Dart 3.11, dart:core RegExp takes 5.15 seconds to reject that 31-character input against ^(\w+\s?)*$. It is trying every way to divide the input between the outer * and the inner \w+, and there are exponentially many. The textbook case (a+)+$ is worse: 29 characters of a take 2.77 seconds, and 31 characters did not finish while I…]]></summary>
         <author>
-            <name>Jim McKeon</name>
+            <name>Yusuf İhsan Görgel</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Clean quoted replies from email with the Nylas API]]></title>
-        <id>https://dev.to/mqasimca/clean-quoted-replies-from-email-with-the-nylas-api-22mf</id>
-        <link href="https://dev.to/mqasimca/clean-quoted-replies-from-email-with-the-nylas-api-22mf"/>
-        <updated>2026-07-20T22:27:23.000Z</updated>
-        <summary type="html"><![CDATA[Open a five-message reply chain and look at how much of it is actually new. One or two sentences at the top, then a wall of quoted history, a signature, a legal disclaimer, and "Best regards." For a human skimming, that noise is just clutter. For code, it's worse: feed that blob to a language model for summarization and you're paying for tokens of quoted text the model has already seen, and showing it as a preview means the same quoted chain on every message. Cleaning email pulls out just the meaningful text, and this post wires it up with the Email API and the CLI.
-It's a worked use case rather than an endpoint tour, covering the clean conversation endpoint and the cleaned-message webhook from two angles: the HTTP API your backend calls and the nylas CLI for cleaning a message from the te…]]></summary>
+        <title type="html"><![CDATA[How Does an LLM Request and Response Cycle Work? A Full Walkthrough]]></title>
+        <id>https://dev.to/qainsights/how-does-an-llm-request-and-response-cycle-work-a-full-walkthrough-2k7j</id>
+        <link href="https://dev.to/qainsights/how-does-an-llm-request-and-response-cycle-work-a-full-walkthrough-2k7j"/>
+        <updated>2026-07-20T23:36:59.000Z</updated>
+        <summary type="html"><![CDATA[In this blog post, we will see how an LLM request and response cycle works, from the second you hit send to the moment the last word lands on your screen. I will not throw a wall of transformer math at you. Instead, we will follow one single prompt through every stage of the journey, so nothing feels abstract.
+A single prompt sent to a large language model passes through multiple distinct stages before a response appears on screen. The process begins with the client app building a structured JSON request, which then clears an API gateway before the input text is broken into numeric tokens and assembled into the model's context window.
+The model then runs a forward pass through transformer layers to predict one token at a time, repeating this loop until an end-of-sequence signal is reached.…]]></summary>
         <author>
-            <name>Qasim</name>
+            <name>NaveenKumar Namachivayam ⚡</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Connect a mailbox with Nylas hosted OAuth]]></title>
-        <id>https://dev.to/mqasimca/connect-a-mailbox-with-nylas-hosted-oauth-3cgg</id>
-        <link href="https://dev.to/mqasimca/connect-a-mailbox-with-nylas-hosted-oauth-3cgg"/>
-        <updated>2026-07-20T22:27:12.000Z</updated>
-        <summary type="html"><![CDATA[Before your app can read a single email or calendar event, the user has to give it permission. That permission is an OAuth handshake with their provider, Google, Microsoft, or another, and getting it right means redirect URIs, scopes, token exchange, and refresh tokens. Hosted OAuth hands that whole dance to Nylas: you send the user to a hosted authorization URL, they approve access at their provider, and you get back a grant you can use to call the email, calendar, and contacts APIs. This post walks the flow with the API and shows the CLI command that does it in one step.
-It's a worked use case rather than an endpoint tour, covering the hosted OAuth flow from two angles: the HTTP endpoints your backend calls and the nylas CLI for connecting an account from the terminal. I work on the CLI,…]]></summary>
+        <title type="html"><![CDATA[When a human edits an agent's output, where does that decision go?]]></title>
+        <id>https://dev.to/arsalan_shahid116/when-a-human-edits-an-agents-output-where-does-that-decision-go-30pj</id>
+        <link href="https://dev.to/arsalan_shahid116/when-a-human-edits-an-agents-output-where-does-that-decision-go-30pj"/>
+        <updated>2026-07-20T23:33:21.000Z</updated>
+        <summary type="html"><![CDATA[An agent drafts a reply to an insurance claim. A human reads it, changes one sentence that would have committed the insurer to something it did not mean, and ships it. That edit is the single most valuable thing that happened in the whole interaction. It is a human catching an error a model could not.
+Now ask where that edit is recorded. In most production systems, the answer is: in application code, a chat thread, a ticket comment, or nobody's memory at all. The judgement that mattered most leaves no durable trace. Six months later, when a regulator or a customer asks who decided what and why, you cannot answer.
+This is not a niche problem, and it is getting bigger. Foundation models are moving out of "generate a response" and into operational roles: they plan across steps, call tools, re…]]></summary>
         <author>
-            <name>Qasim</name>
+            <name>Arsalan Shahid</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Search a mailbox with the Nylas Email API]]></title>
-        <id>https://dev.to/mqasimca/search-a-mailbox-with-the-nylas-email-api-3bkj</id>
-        <link href="https://dev.to/mqasimca/search-a-mailbox-with-the-nylas-email-api-3bkj"/>
-        <updated>2026-07-20T22:27:02.000Z</updated>
-        <summary type="html"><![CDATA[Sooner or later your app needs to find specific messages: every email from one sender, everything with "invoice" in the subject, unread mail from last week, or a complex query only Gmail's search box can express. Nylas gives you two ways to do this, and they trade off against each other. Standard query parameters are normalized across providers, so largely one code path searches Gmail and Outlook alike, give or take a few provider-specific constraints. The search_query_native parameter lets you pass the provider's own query language for power searches the standard set doesn't cover. This post walks both with the Email API and shows the CLI for the portable one.
-It's a worked use case rather than an endpoint tour, covering searching messages from two angles: the HTTP API your backend calls …]]></summary>
+        <title type="html"><![CDATA[I Tried Kimi K3 for a Week. Here’s What Happened.]]></title>
+        <id>https://dev.to/joodi/i-tried-kimi-k3-for-a-week-heres-what-happened-3867</id>
+        <link href="https://dev.to/joodi/i-tried-kimi-k3-for-a-week-heres-what-happened-3867"/>
+        <updated>2026-07-20T23:26:43.000Z</updated>
+        <summary type="html"><![CDATA[A few days ago I posted my first impressions of Kimi K3 on LinkedIn. Since then, I’ve been using it daily for real work — not benchmarks, not demos. Here’s what actually held up.
+The Context Window Isn’t Marketing
+Frontend Coding: The Hype Checks Out
+It’s also #1 on nextjs.org/evals — the first open model to beat all proprietary ones on that benchmark.
+Agentic Work: Good, Not Magic
+The Honest Truth
+Why the Open Weights Matter
+Bottom Line
+If you want to try it: kimi.com
+P.S. — Original first impressions post here on LinkedIn.]]></summary>
         <author>
-            <name>Qasim</name>
+            <name>Joodi</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Record and transcribe meetings with Nylas Notetaker]]></title>
-        <id>https://dev.to/mqasimca/record-and-transcribe-meetings-with-nylas-notetaker-2ai9</id>
-        <link href="https://dev.to/mqasimca/record-and-transcribe-meetings-with-nylas-notetaker-2ai9"/>
-        <updated>2026-07-20T22:26:51.000Z</updated>
-        <summary type="html"><![CDATA[Building meeting recording yourself is a project: a bot that joins Zoom or Google Meet, captures the audio and video, runs it through transcription, then summarizes the result and pulls out action items. That's a media pipeline, a transcription service, and a bot framework before you've shipped anything. Nylas Notetaker collapses all of it into an API call. You send a bot to a meeting link, and it joins, records, transcribes, and hands you back the recording, transcript, summary, and action items. This post drives the whole flow with the API and the CLI.
-It's a worked use case rather than an endpoint tour, covering Notetaker from two angles: the HTTP API your backend calls and the nylas CLI for sending a bot from the terminal. I work on the CLI, so the commands below are the ones I reach f…]]></summary>
+        <title type="html"><![CDATA[We built Multi-Repo Workspaces for AI coding]]></title>
+        <id>https://dev.to/devswarm/we-built-multi-repo-workspaces-for-ai-coding-2ib1</id>
+        <link href="https://dev.to/devswarm/we-built-multi-repo-workspaces-for-ai-coding-2ib1"/>
+        <updated>2026-07-20T23:25:18.000Z</updated>
+        <summary type="html"><![CDATA[Most production applications aren't monorepos.
+A feature often spans the frontend, backend, shared packages, infrastructure, and more. While polyrepos work well for ownership, AI coding tools typically only see one repository at a time.
+We wanted to change that.
+With Multi-Repo Workspaces in DevSwarm, you can bundle multiple Git repositories into a single workspace while keeping each repository independent with its own history, branches, remotes, CI, and pull requests.
+Your AI agent, whether it's Claude Code, Codex, OpenCode, or another supported agent, gets context across the entire system and can make coordinated changes across repositories. When it's finished, you can review code changes and pull requests from every repository in one central view, leave comments and suggestions, and merge each repository independently.
+No monorepo migration. No changes to your existing Git workflow.
+I'd love to hear how other teams are handling cross-repository development with AI. Are you using monorepos, polyrepos, or something in between?
+Read more: https://devswarm.ai/blog/multi-repo-workspaces/]]></summary>
         <author>
-            <name>Qasim</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Send and download email attachments with Nylas]]></title>
-        <id>https://dev.to/mqasimca/send-and-download-email-attachments-with-nylas-4hio</id>
-        <link href="https://dev.to/mqasimca/send-and-download-email-attachments-with-nylas-4hio"/>
-        <updated>2026-07-20T22:26:38.000Z</updated>
-        <summary type="html"><![CDATA[Attaching a file to an email you send through an API is one of those tasks that looks trivial until you hit the first limit. Base64-encode a PDF into a JSON request and a 4MB file fails, because the cap is on the whole request, not the file. Inline a logo and it shows up as a separate attachment instead of in the body, because you didn't wire up the content ID. And pulling an attachment back out of a received message needs the message context, not just the attachment ID. This post covers sending attachments with the Email API and downloading them with the CLI, with the limits that actually bite.
-It's a worked use case rather than an endpoint tour, covering attachments from two angles: the HTTP API your backend calls to send and the nylas CLI for inspecting and downloading what you receive.…]]></summary>
-        <author>
-            <name>Qasim</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[When Does Self-Hosting an LLM Actually Beat the API? The Break-Even Math]]></title>
-        <id>https://dev.to/framz/when-does-self-hosting-an-llm-actually-beat-the-api-the-break-even-math-gl1</id>
-        <link href="https://dev.to/framz/when-does-self-hosting-an-llm-actually-beat-the-api-the-break-even-math-gl1"/>
-        <updated>2026-07-20T22:25:36.000Z</updated>
-        <summary type="html"><![CDATA[Every team I've worked with hits the same argument about three months after shipping something on top of an LLM: "Should we still be paying per token, or should we just self-host?"
-And it's always argued on vibes. Someone read a blog post. Someone else got burned by a GPU bill once. Nobody's actually done the math. So here's the math — or at least the shape of it.
-Paying an API has one killer advantage that people forget to give it credit for: you pay for exactly what you use, and nothing when you're idle. No GPU sitting warm at 3am doing nothing. No serving stack to babysit. If your volume is low or spiky, this is basically unbeatable, and honestly you should stop reading and just use the API.
-Self-hosting flips that. You take on a mostly fixed cost — the GPU (rented or amortised) plus th…]]></summary>
-        <author>
-            <name>Framz</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Shadow AI: What Your Team Is Already Pasting Into ChatGPT]]></title>
-        <id>https://dev.to/framz/shadow-ai-what-your-team-is-already-pasting-into-chatgpt-29gc</id>
-        <link href="https://dev.to/framz/shadow-ai-what-your-team-is-already-pasting-into-chatgpt-29gc"/>
-        <updated>2026-07-20T22:25:24.000Z</updated>
-        <summary type="html"><![CDATA[Right now, somewhere in your org, someone is pasting a stack trace, a customer record, or a chunk of the codebase into ChatGPT to get unstuck. You know it. I know it. The person doing it half-knows it's sketchy and is doing it anyway — because it works.
-That's shadow AI, and the reason it's so hard to stamp out is that it's not laziness or malice. It's people trying to do their jobs faster. Send the "don't use ChatGPT" email and you don't stop it — you just make it quieter.
-So don't start with a ban. Start with knowing what's actually leaving the building.
-PII. Names, emails, addresses — worse if it's health or financial — tucked inside "help me reply to this customer" prompts. This is the one with legal teeth.
-Secrets. API keys, tokens, connection strings, a stray .env, private keys — pas…]]></summary>
-        <author>
-            <name>Framz</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Four Layers of Cloud Lock-In (and How Terraform Cuts Your Exit Cost)]]></title>
-        <id>https://dev.to/framz/the-four-layers-of-cloud-lock-in-and-how-terraform-cuts-your-exit-cost-17he</id>
-        <link href="https://dev.to/framz/the-four-layers-of-cloud-lock-in-and-how-terraform-cuts-your-exit-cost-17he"/>
-        <updated>2026-07-20T22:25:08.000Z</updated>
-        <summary type="html"><![CDATA[People throw around "vendor lock-in" like it's a binary — you either have it or you don't. That framing is why the conversation usually goes nowhere. Lock-in isn't one thing. It's four different things stacked on top of each other, each with a wildly different cost to unwind, and once you separate them you can actually decide what's worth worrying about.
-Data. Proprietary formats, and — the real killer — egress fees to get it back out. Cheap to design around early, brutally expensive to fix late.
-Platform. The vendor-specific managed stuff: serverless, managed databases, IAM, observability. This is where the deep lock-in lives, because these services are genuinely good and have no clean equivalent next door.
-Contract. Renewal clauses, termination terms, committed-spend discounts that quiet…]]></summary>
-        <author>
-            <name>Framz</name>
+            <name>DevSwarm</name>
         </author>
     </entry>
     <entry>
         <title type="html"><![CDATA[Optimizing RAG at Scale: Chunking, Retrieval, and the Bayesian Search That Cut Latency 40%]]></title>
-        <id>https://dev.to/imus_d7584cbc8ee9b0336256/optimizing-rag-at-scale-chunking-retrieval-and-the-bayesian-search-that-cut-latency-40-2234</id>
-        <link href="https://dev.to/imus_d7584cbc8ee9b0336256/optimizing-rag-at-scale-chunking-retrieval-and-the-bayesian-search-that-cut-latency-40-2234"/>
-        <updated>2026-07-20T22:10:32.000Z</updated>
+        <id>https://dev.to/imus_d7584cbc8ee9b0336256/optimizing-rag-at-scale-chunking-retrieval-and-the-bayesian-search-that-cut-latency-40-2cfc</id>
+        <link href="https://dev.to/imus_d7584cbc8ee9b0336256/optimizing-rag-at-scale-chunking-retrieval-and-the-bayesian-search-that-cut-latency-40-2cfc"/>
+        <updated>2026-07-20T23:24:32.000Z</updated>
         <summary type="html"><![CDATA[Optimizing RAG at Scale: Chunking, Retrieval, and the Bayesian Search That Cut Latency 40%
 
 
@@ -182,9 +142,9 @@ from dataclasses import dataclass
     </entry>
     <entry>
         <title type="html"><![CDATA[Building Production-Grade LLM Evaluation Pipelines: From Vibes to Metrics]]></title>
-        <id>https://dev.to/imus_d7584cbc8ee9b0336256/building-production-grade-llm-evaluation-pipelines-from-vibes-to-metrics-30ia</id>
-        <link href="https://dev.to/imus_d7584cbc8ee9b0336256/building-production-grade-llm-evaluation-pipelines-from-vibes-to-metrics-30ia"/>
-        <updated>2026-07-20T22:10:30.000Z</updated>
+        <id>https://dev.to/imus_d7584cbc8ee9b0336256/building-production-grade-llm-evaluation-pipelines-from-vibes-to-metrics-35c3</id>
+        <link href="https://dev.to/imus_d7584cbc8ee9b0336256/building-production-grade-llm-evaluation-pipelines-from-vibes-to-metrics-35c3"/>
+        <updated>2026-07-20T23:24:30.000Z</updated>
         <summary type="html"><![CDATA[Building Production-Grade LLM Evaluation Pipelines: From Vibes to Metrics
 
 
@@ -199,23 +159,161 @@ Academic benc…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Donation Controversy]]></title>
-        <id>https://mullvad.net/en/blog/donation-controversy</id>
-        <link href="https://mullvad.net/en/blog/donation-controversy"/>
-        <updated>2026-07-20T21:43:07.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
+        <title type="html"><![CDATA[.DAT to .DXF Converter]]></title>
+        <id>https://dev.to/spondon_saha_102/dat-to-dxf-converter-28m0</id>
+        <link href="https://dev.to/spondon_saha_102/dat-to-dxf-converter-28m0"/>
+        <updated>2026-07-20T23:23:46.000Z</updated>
+        <summary type="html"><![CDATA[NACA 2412 Airfoil Databases are in .dat file. The problem? There are no clean .dat -> .dxf converters. The solution? I built one.
+
+
+
+
+
+
+  
+  
+  This post is directly linked to my ongoing project at the time of writing: Comparative Aerodynamic Analysis Of Wing Planforms.
+
+
+
+
+
+I needed to model a NACA 2412 wing which had .dat coordinate files available. But OnShape needed .dxf in order to import the coordinates. I couldn't find a clean converter online, so I decided to build one for the sake of this project. I wanted to share the script:
+#plot_airfoil.py
+# Desired chord length (mm)
+CHORD = 200
+# import necessary libraries for dxf conversion
+import ezdxf
+# Path to airfoil data file
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+filename = os.path.join(script_dir, "..", "air…]]></summary>
         <author>
-            <name>Hacker News</name>
+            <name>Spondon Saha</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[My falling-out with the rationalist community]]></title>
-        <id>https://lcamtuf.substack.com/p/my-falling-out-with-the-rationalist</id>
-        <link href="https://lcamtuf.substack.com/p/my-falling-out-with-the-rationalist"/>
-        <updated>2026-07-20T21:30:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
+        <title type="html"><![CDATA[200+ Tested AI Prompts I Use to Run My SaaS (And How I Tested Them)]]></title>
+        <id>https://dev.to/draftkit/200-tested-ai-prompts-i-use-to-run-my-saas-and-how-i-tested-them-3p23</id>
+        <link href="https://dev.to/draftkit/200-tested-ai-prompts-i-use-to-run-my-saas-and-how-i-tested-them-3p23"/>
+        <updated>2026-07-20T23:22:01.000Z</updated>
+        <summary type="html"><![CDATA[I've spent the last year building and running a SaaS almost entirely on AI-generated output — launch copy, code reviews, cold outreach, changelogs, support replies. Along the way I've written, tested, and thrown away something like 400+ prompts. About half of them are now in a curated pack I sell. The other half were just bad.
+This post isn't a sales pitch. It's the actual lessons from testing hundreds of prompts: why most of them fail, what a good one looks like, and how to test them systematically instead of vibes-checking. If it's useful, I link to the paid pack at the very end. If it's not, you still walk away with three prompts you can use today.
+Almost every bad prompt I've written fails for one of three reasons. They're all fixable.
+The canonical bad prompt:
+Write a tweet to launch …]]></summary>
         <author>
-            <name>Hacker News</name>
+            <name>draftkit</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A 500 Error Taught Me More Than a Green Checkmark Would Have]]></title>
+        <id>https://dev.to/iriandr/a-500-error-taught-me-more-than-a-green-checkmark-would-have-3040</id>
+        <link href="https://dev.to/iriandr/a-500-error-taught-me-more-than-a-green-checkmark-would-have-3040"/>
+        <updated>2026-07-20T23:15:57.000Z</updated>
+        <summary type="html"><![CDATA[I set up my first CI pipeline today. It failed on the first real run —
+The idea is simple: instead of manually checking "does this still work?"
+CI (Continuous Integration) is that automatic check — build the project,
+main.
+GitHub looks for automation instructions in one specific place:
+.github/workflows/. Any YAML file there gets picked up automatically.
+name: Docker Build
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start services with docker compose
+        run: docker compose up -d --build
+
+      - name: Wait for app to start
+        run: sleep 5
+
+      - name: Check app responds
+        run: curl --fail http://localhost:5000
+
+      - name: Show logs on failure
+       …]]></summary>
+        <author>
+            <name>IriAndr</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Edge vs. Endpoint Bot Blocking: A Developer's Guide to Cloudflare and Wordfence]]></title>
+        <id>https://dev.to/rerealize/edge-vs-endpoint-bot-blocking-a-developers-guide-to-cloudflare-and-wordfence-8ee</id>
+        <link href="https://dev.to/rerealize/edge-vs-endpoint-bot-blocking-a-developers-guide-to-cloudflare-and-wordfence-8ee"/>
+        <updated>2026-07-20T23:11:16.000Z</updated>
+        <summary type="html"><![CDATA[Edge vs. Endpoint Bot Blocking: A Developer's Guide to Cloudflare and Wordfence
+
+
+
+  
+  
+  The Real Cost of AI Bot Traffic on Your WordPress Stack
+
+
+If you're running WordPress in 2026, you've felt it: the relentless surge of AI bot traffic scraping your content, testing your forms, and hammering your APIs. As developers, we face a choice that affects our entire infrastructure philosophy—do we block bots at the edge, before they reach our servers, or do we handle it at the application level?
+This isn't just about security theater. It's about resource allocation, latency, and architectural coherence. The wrong choice can waste compute cycles, degrade user experience, and leave you firefighting issues that should have been prevented upstream.
+Let me walk you through how two popular solutions…]]></summary>
+        <author>
+            <name>Marcus</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Use Apple’s Foundation Models in a Web App with a macOS Companion]]></title>
+        <id>6a5e92afe12aa31dae6e8a79</id>
+        <link href="https://www.freecodecamp.org/news/how-to-use-apple-s-foundation-models-in-a-web-app-with-a-macos-companion/"/>
+        <updated>2026-07-20T21:27:11.000Z</updated>
+        <summary type="html"><![CDATA[Not every AI feature needs a cloud model, with its per-token bills, network round-trips, and private data leaving your machine. If you're on a modern Mac, a capable language model is already on your d]]></summary>
+        <author>
+            <name>Balogun Wahab</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Optimize Enterprise Application Performance with T-SQL Query Tuning and Indexing Strategies]]></title>
+        <id>6a5e89d9dfc3c99e37bbdef0</id>
+        <link href="https://www.freecodecamp.org/news/optimize-enterprise-app-performance-with-t-sql-query-tuning-and-indexing-strategies/"/>
+        <updated>2026-07-20T20:49:29.000Z</updated>
+        <summary type="html"><![CDATA[In this article, you'll learn how to optimize SQL Server performance using T-SQL query tuning, indexing strategies, execution plans, and real-world optimization techniques for enterprise applications.]]></summary>
+        <author>
+            <name>Gopinath Karunanithi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Build a Browser-Based PDF Signature Tool Using JavaScript]]></title>
+        <id>6a5e89518186f4c5817d466b</id>
+        <link href="https://www.freecodecamp.org/news/build-pdf-signature-tool-javascript/"/>
+        <updated>2026-07-20T20:47:13.000Z</updated>
+        <summary type="html"><![CDATA[PDF documents are commonly used for agreements, forms, approvals, invoices, reports, applications, and other documents that may need a signature or additional text before they are shared. A traditiona]]></summary>
+        <author>
+            <name>Bhavin Sheth</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Build a Multi-Tenant SaaS API with Node.js, RBAC, and Audit Logging]]></title>
+        <id>6a5e8914bc397f89a942b88b</id>
+        <link href="https://www.freecodecamp.org/news/how-to-build-a-multi-tenant-saas-api-with-nodejs-rbac-and-audit-logging/"/>
+        <updated>2026-07-20T20:46:12.000Z</updated>
+        <summary type="html"><![CDATA[A colleague asked me to help debug what looked like a permissions issue in their SaaS project management tool. Users were seeing resources they hadn't created. I pulled up the query logs expecting som]]></summary>
+        <author>
+            <name>Zia Ullah</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HRV Data Is Everywhere. Here's What It Actually Means]]></title>
+        <id>6a5e88ed780db2fa84ad0b48</id>
+        <link href="https://www.freecodecamp.org/news/hrv-data-is-everywhere-here-s-what-it-actually-means/"/>
+        <updated>2026-07-20T20:45:33.000Z</updated>
+        <summary type="html"><![CDATA[Health data is having a moment. Of all the metrics receiving the most developer interest at present, there’s nothing like heart rate variability (HRV). It’s a feature found on every major SDK for wear]]></summary>
+        <author>
+            <name>Shradha Puri</name>
         </author>
     </entry>
     <entry>
@@ -379,6 +477,16 @@ Academic benc…]]></summary>
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Mythologizing AI makes it more likely that we’ll fail to operate it well (2023)]]></title>
+        <id>https://www.newyorker.com/science/annals-of-artificial-intelligence/there-is-no-ai</id>
+        <link href="https://www.newyorker.com/science/annals-of-artificial-intelligence/there-is-no-ai"/>
+        <updated>2026-07-20T15:28:32.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[The Voice of Google]]></title>
         <id>https://www.newyorker.com/culture/the-weekend-essay/the-voice-of-google</id>
         <link href="https://www.newyorker.com/culture/the-weekend-essay/the-voice-of-google"/>
@@ -476,6 +584,16 @@ Academic benc…]]></summary>
         <summary type="html"><![CDATA[The deals sparked a rebound in AI compute stocks after investors questioned demand for new data center capacity.]]></summary>
         <author>
             <name>Krisztian Sandor</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: OTP Inspired actor supervisor based full stack templates]]></title>
+        <id>https://shipstacks.tech/</id>
+        <link href="https://shipstacks.tech/"/>
+        <updated>2026-07-20T13:47:29.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -909,36 +1027,6 @@ The post HONOR Opens Robot Phone Pre-Orders In China Ahead Of August Launch appe
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How to Build a Browser-Based PDF Redaction Tool Using JavaScript]]></title>
-        <id>6a5a91870c25cb6dfa32c0c9</id>
-        <link href="https://www.freecodecamp.org/news/build-pdf-redaction-tool-javascript/"/>
-        <updated>2026-07-17T20:33:11.000Z</updated>
-        <summary type="html"><![CDATA[PDF documents are frequently used to share invoices, contracts, reports, legal records, customer documents, financial statements, and internal business files. But before these documents are shared, th]]></summary>
-        <author>
-            <name>Bhavin Sheth</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Build an Internal Developer Platform: A Complete Guide to Backstage, ArgoCD, and Crossplane]]></title>
-        <id>6a5a912d1a97bb513c72431e</id>
-        <link href="https://www.freecodecamp.org/news/how-to-build-an-internal-developer-platform-a-complete-guide-to-backstage-argocd-and-crossplane/"/>
-        <updated>2026-07-17T20:31:41.000Z</updated>
-        <summary type="html"><![CDATA[Every fast-growing engineering team eventually hits the same wall. A developer needs a new staging environment, so they file a ticket. The platform team queues it. Two weeks later, the environment exi]]></summary>
-        <author>
-            <name>Ayobami Adejumo</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How Neural Machine Translation Works: Build Your Own Translation App with React Native and QVAC]]></title>
-        <id>6a5a5daeee4c6fc82387d36e</id>
-        <link href="https://www.freecodecamp.org/news/how-neural-machine-translation-works-build-your-own-translation-app-with-react-native-and-qvac/"/>
-        <updated>2026-07-17T16:51:58.000Z</updated>
-        <summary type="html"><![CDATA[For the past 10 years, we've experienced a massive improvement in translation technologies. We went from robotic-like translations to systems that not only understand the meaning of each word in a sen]]></summary>
-        <author>
-            <name>Jibril-M🍀</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[85.3 GFlops: Optimizing FP32 Matrix Multiplication on a Single AMD Zen 3 Core]]></title>
         <id>https://github.com/houslast3/85.30-GFLOPS-Single-Core-FP32-Matrix-Multiplication-on-AMD-Zen-3</id>
         <link href="https://github.com/houslast3/85.30-GFLOPS-Single-Core-FP32-Matrix-Multiplication-on-AMD-Zen-3"/>
@@ -976,26 +1064,6 @@ The post HONOR Opens Robot Phone Pre-Orders In China Ahead Of August Launch appe
         <summary type="html"><![CDATA[Every morning, airline dispatchers, grid operators, and farmers around the world make decisions based on the same thing: a weather forecast. While these forecasts are something that most people glance at for two seconds, weather predictions influence major strategic decisions in many industries, with real money, livelihoods, and even actual lives at stake. Farmers use…]]></summary>
         <author>
             <name>Monique Kuglitsch, Jesper Dramsch, Franz G. Kuglitsch, Andrea Toreti</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Implement PayPal in a Microservice Architecture Using NestJS, gRPC, and Docker]]></title>
-        <id>6a59619ee14c719ac88d7a33</id>
-        <link href="https://www.freecodecamp.org/news/how-to-implement-paypal-in-a-microservice-architecture-using-nestjs-grpc-and-docker/"/>
-        <updated>2026-07-16T22:56:30.000Z</updated>
-        <summary type="html"><![CDATA[In this tutorial, you'll build a production-ready PayPal payment service using NestJS microservices. Along the way, you'll learn how to isolate payment logic into its own service, communicate between]]></summary>
-        <author>
-            <name>Md Tarikul Islam</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Observer Design Pattern Handbook: Event-Driven Architecture & Domain-Driven Design in Dart]]></title>
-        <id>6a59593c2c971321745e7720</id>
-        <link href="https://www.freecodecamp.org/news/the-observer-design-pattern-handbook-event-driven-architecture-domain-driven-design-in-dart/"/>
-        <updated>2026-07-16T22:20:44.000Z</updated>
-        <summary type="html"><![CDATA[Every application, at some point, has to deal with a fundamental challenge: something happens, and several other things need to react to it. A user logs in, and the app needs to save a token, cache th]]></summary>
-        <author>
-            <name>Oluwaseyi Fatunmole</name>
         </author>
     </entry>
     <entry>
