@@ -1,18 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-22T22:12:13.538Z</id>
+    <id>urn:2026-07-22T23:58:33.365Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-22T22:12:13.538Z</updated>
+    <updated>2026-07-22T23:58:33.365Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-22T22:11:47.000Z</updated>
+        <updated>2026-07-22T23:58:04.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Your budgeting app is lying to you about last month]]></title>
+        <id>https://dev.to/sssselfmade/your-budgeting-app-is-lying-to-you-about-last-month-3kn8</id>
+        <link href="https://dev.to/sssselfmade/your-budgeting-app-is-lying-to-you-about-last-month-3kn8"/>
+        <updated>2026-07-22T23:48:26.000Z</updated>
+        <summary type="html"><![CDATA[I build a multi-currency personal-finance app. This is one of the
+
+
+  
+  
+  The symptom
+
+
+You spent 200 zł on groceries in March. Your base currency is euros.
+That's not a rounding quirk. It means your financial history is being
+rewritten with today's exchange rate, and you can't trust any
+The naive multi-currency data model looks reasonable:
+transaction {
+  amount:   200
+  currency: "PLN"
+  date:     "2026-03-14"
+}
+
+Then, to show a total in the user's base currency, you convert on read:
+const eur = amount * liveRate(currency, "EUR");
+
+liveRate returns today's rate. So the March transaction is re-priced
+right now — but the same logic
+historical transactions, where it's just wrong. A cost
+Convert live for balances. Snapshot for history.
+A transaction is an event that happened at a moment in time. The
+fact about that moment, not a live
+transaction {
+  amount:        200
+  currency:      "PLN"
+  date:          "2026-03-14"
+  rate_to_base:  0.2312     // EUR per PLN on the value date, frozen
+  amount_base:   46.24      // optional: precomputed, for fast sums
+}
+
+Now historical totals are a plain SUM(amount_base) — deterministic,
+balances get the live rate, because those really are
+Which date's rate? Use the transaction's value date (when the
+Rates aren't published every day. The ECB (I use their Frankfurter
+Some currencies aren't in the feed. The ECB doesn't publish UAH,
+Store the rate, not just the converted amount. If you only store
+amount_base, you can never let the user change their base currency
+amount + currency + date,
+historical rate — which means you
+Idempotency. Banks re-send transactions. Snapshot the rate keyed to
+If you're building anything that sums money across currencies over
+live value or a historical one.
+I'm building EveryPenny, a calm]]></summary>
+        <author>
+            <name>Ihor Olkhovatyi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[My app's anti-theft feature locked every user out]]></title>
+        <id>https://dev.to/sssselfmade/my-apps-anti-theft-feature-locked-every-user-out-48mf</id>
+        <link href="https://dev.to/sssselfmade/my-apps-anti-theft-feature-locked-every-user-out-48mf"/>
+        <updated>2026-07-22T23:48:16.000Z</updated>
+        <summary type="html"><![CDATA[A real incident from the finance app I build solo. The security design
+
+
+  
+  
+  The textbook setup
+
+
+Short-lived access token, long-lived rotating refresh token. Every
+It presents its refresh token.
+The server verifies it, revokes it, and issues a brand-new
+access + refresh pair.
+The old refresh token is now dead — single use.
+And the part everyone recommends (OWASP calls it refresh-token reuse
+already
+, treat it as theft. An attacker who stole a token and
+revoke every session for that user so both the attacker and the
+This is correct. It catches a real attack. Ship it.
+One evening my own app showed me a auth error over a €0.00 balance and
+The audit log told the story. All day: healthy refreshes every ~15
+already-revoked token,
+Every session in the chain carried the same device id. It was…]]></summary>
+        <author>
+            <name>Ihor Olkhovatyi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Automate FOMC and CPI Alerts with n8n and a Free Economic Calendar API]]></title>
+        <id>https://dev.to/ichigowa/automate-fomc-and-cpi-alerts-with-n8n-and-a-free-economic-calendar-api-3j87</id>
+        <link href="https://dev.to/ichigowa/automate-fomc-and-cpi-alerts-with-n8n-and-a-free-economic-calendar-api-3j87"/>
+        <updated>2026-07-22T23:34:26.000Z</updated>
+        <summary type="html"><![CDATA[If you trade — or just hold anything denominated in dollars — you already know the drill: FOMC decisions, CPI prints, and NFP releases move markets in seconds, and the only warning you get is whatever tab you happened to leave open. This post walks through a small n8n workflow that polls an economic calendar every morning and pushes high-impact USD events straight to Telegram. Total build time: about 15 minutes. Total cost: $0 on free tiers.
+ForexFactory's calendar is the de facto standard for retail traders, but it's built for humans, not machines:
+No official API. The calendar is rendered HTML with timezone handling done client-side. There's an unofficial weekly XML feed, but it's coarse, cached, and has broken without notice before.
+Manual checking doesn't scale. You'll check it religio…]]></summary>
+        <author>
+            <name>Ichigowa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How Reading a Design Patterns Book Led Me to Audit My Rust Framework with UML and Merise]]></title>
+        <id>https://dev.to/seballiot/how-reading-a-design-patterns-book-led-me-to-audit-my-rust-framework-with-uml-and-merise-45dj</id>
+        <link href="https://dev.to/seballiot/how-reading-a-design-patterns-book-led-me-to-audit-my-rust-framework-with-uml-and-merise-45dj"/>
+        <updated>2026-07-22T23:20:33.000Z</updated>
+        <summary type="html"><![CDATA[I was reading a design patterns book. I got to the UML class diagrams — and I stopped.
+Because the diagram on the page was describing something Rust already says in its own syntax. A struct is a class. Option<T> is a 0..1 association. Vec<T> is 1..N. Ownership is composition. The formalism I was looking at, drawn as boxes and diamonds, was the same information the compiler already had — just in a different notation.
+Which led to an uncomfortable thought. If the type system already encodes what UML draws, then translating my code into UML shouldn't tell me anything new. It should be redundant. Unless the translation didn't line up — and everywhere it failed to line up, there would be a bug hiding in the gap.
+So I tried it. I took Runique — my Rust web framework, v2.1.21 — and I modeled the …]]></summary>
+        <author>
+            <name>itsuki</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Senator Lummis: Ethics, other provisions in crypto Clarity Act to be further discussed]]></title>
+        <id>841f277e-f033-47bc-84af-17ac07ca7f1a</id>
+        <link href="https://www.coindesk.com/policy/2026/07/22/senator-lummis-ethics-other-provisions-in-crypto-clarity-act-to-be-further-discussed"/>
+        <updated>2026-07-22T23:19:41.000Z</updated>
+        <summary type="html"><![CDATA[Senator Cynthia Lummis, one of the lead negotiators on the bill, told CoinDesk she was "pleased" that the updated bill was ready for release.]]></summary>
+        <author>
+            <name>Nikhilesh De</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Implementing UUID v7 by hand: time-sortable primary keys (and the same-millisecond trap)]]></title>
+        <id>https://dev.to/takahiro_hashito_a1f3f0dc/implementing-uuid-v7-by-hand-time-sortable-primary-keys-and-the-same-millisecond-trap-1l71</id>
+        <link href="https://dev.to/takahiro_hashito_a1f3f0dc/implementing-uuid-v7-by-hand-time-sortable-primary-keys-and-the-same-millisecond-trap-1l71"/>
+        <updated>2026-07-22T23:17:02.000Z</updated>
+        <summary type="html"><![CDATA[Random UUID v4 makes a poor primary key: values land all over the index, so B-tree inserts scatter across pages and page splits go up. UUID v7 puts a millisecond timestamp in the leading bits (standardized in RFC 9562), so generation order equals sort order and you get locality back.
+I needed a UUID generator that runs entirely in the browser, and while building it I implemented v7 by hand instead of pulling in a library. Here is the layout, the implementation, the trap I hit, and when each version is actually the right choice.
+The 128 bits break down like this:
+| 48bit unix_ms | 4bit ver(=7) | 12bit rand_a | 2bit variant | 62bit rand_b |
+
+The first 48 bits are the Unix timestamp in milliseconds, big-endian. Then the version (7) and variant bits, and everything else is random. The random p…]]></summary>
+        <author>
+            <name>takahiro hashito</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Expiring Content: Put the Deadline in the Data, Not the Prose]]></title>
+        <id>https://dev.to/takahiro_hashito_a1f3f0dc/expiring-content-put-the-deadline-in-the-data-not-the-prose-27bh</id>
+        <link href="https://dev.to/takahiro_hashito_a1f3f0dc/expiring-content-put-the-deadline-in-the-data-not-the-prose-27bh"/>
+        <updated>2026-07-22T23:16:55.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+
+
+I run several sites that publish time-limited information: Kindle manga sales, grocery and household deals. Everything on them expires.
+That creates a structural weakness. Expired deals left on the page erode trust in the whole site. A reader clicks a link labeled "through July 31" and lands on a full-price page. After that happens a couple of times, they stop coming back.
+Removing expired entries by hand does not scale; the more articles you have, the worse it gets. So I moved the deadline into the data and let the build decide what to show.
+Each article carries metrics.deadline in its JSON, and build.js computes the days remaining at generation time.
+articles.json
+  └ metrics.deadline: "2026-07-31"
+        ↓  build.js
+   daysUntil(deadline, survey date)
+        ↓
+   ┌─ lef…]]></summary>
+        <author>
+            <name>takahiro hashito</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Enforcing Content Tone With a Lint That Fails the Build]]></title>
+        <id>https://dev.to/takahiro_hashito_a1f3f0dc/enforcing-content-tone-with-a-lint-that-fails-the-build-19jf</id>
+        <link href="https://dev.to/takahiro_hashito_a1f3f0dc/enforcing-content-tone-with-a-lint-that-fails-the-build-19jf"/>
+        <updated>2026-07-22T23:16:46.000Z</updated>
+        <summary type="html"><![CDATA[Introduction
+
+
+I run about twenty static sites on an automated pipeline. Article data lives in JSON, and a dependency-free build.js emits the HTML. Since updates run unattended, most of the writing is done by machines too.
+That created a problem I did not anticipate: tone drifted. I had a rule that these sites use no emoji. Yet every run slipped one in somewhere. A heading here, an FAQ answer there. I would remove them, and the next day they showed up somewhere else.
+Trying to hold a style rule in place through review does not scale. So I turned it into a lint that fails the build.
+The shape is simple: walk the files, report any line containing an emoji, and exit non-zero if there is even one.
+update data
+   ↓
+emoji-lint  ← exits 1 if a single emoji is found
+   ↓
+build.js (generate site)
+ …]]></summary>
+        <author>
+            <name>takahiro hashito</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[citesure 0.5.17: soft-check ORCID iDs before you ship]]></title>
+        <id>https://dev.to/sybilgambleyyu/citesure-0517-soft-check-orcid-ids-before-you-ship-mic</id>
+        <link href="https://dev.to/sybilgambleyyu/citesure-0517-soft-check-orcid-ids-before-you-ship-mic"/>
+        <updated>2026-07-22T23:14:38.000Z</updated>
+        <summary type="html"><![CDATA[Bibliographies increasingly carry ORCID iDs. LLM drafts also invent them.
+citesure 0.5.17 treats ORCID like other soft identifiers: validate the shape, resolve the public record, and warn when the listed author is clearly wrong.
+Offline ISO 7064 mod 11-2 checksum (citesure lint-orcids)
+Online public API person resolve + author-name soft-match (citesure orcid)
+Disk-cached person records; MCP tool citesure_orcid for agents
+Domain pack orcid-authors
+
+
+
+
+  
+  
+  Examples
+
+
+
+
+
+pip install https://github.com/SybilGambleyyu/citesure/releases/download/v0.5.17/citesure-0.5.17-py3-none-any.whl
+citesure orcid 0000-0002-1825-0097
+citesure orcid refs.bib
+citesure lint-orcids refs.bib
+
+This is a soft check: a resolved ORCID does not prove paper authorship. Use it to catch placeholder and mismatched iDs in CI the same way you catch bad DOIs.
+Evidence: 250/250 integrity · 38/38 claims · 67 unit tests · 13 packs.
+Release
+Canonical post
+Demo]]></summary>
+        <author>
+            <name>SybilGambleyyu</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Understanding Next.js Page Caching (with a real example)]]></title>
+        <id>https://dev.to/nahamaalochi/understanding-nextjs-page-caching-with-a-real-example-10io</id>
+        <link href="https://dev.to/nahamaalochi/understanding-nextjs-page-caching-with-a-real-example-10io"/>
+        <updated>2026-07-22T23:12:10.000Z</updated>
+        <summary type="html"><![CDATA[Caching can be a tricky topic, especially when pages don’t update the way you expect.
+/writing page of my site. Whenever I added or updated articles, the changes did not show immediately. Oddly enough, the individual article pages updated as expected, but the listing page stayed stale.
+After some digging, I realized this was not a bug. It was Next.js doing exactly what it is supposed to.
+Next.js (App Router) handles HTML caching at the edge in production. For statically prerendered pages, it sets Cache-Control: s-maxage=31536000, which is one year. This header tells CDNs and edge caches that they can serve the page without re-fetching for a long time. Browser cache headers such as no-cache do not override this because s-maxage takes priority for shared caches.
+This explains why the listing…]]></summary>
+        <author>
+            <name>Edgar Nahama Alochi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Software Is Cheap. Proof Is Not.]]></title>
+        <id>https://dev.to/appfoundrytools/software-is-cheap-proof-is-not-5e3c</id>
+        <link href="https://dev.to/appfoundrytools/software-is-cheap-proof-is-not-5e3c"/>
+        <updated>2026-07-22T23:08:36.000Z</updated>
+        <summary type="html"><![CDATA[AI has made a working demo radically cheaper.
+That is useful. It is also dangerous, because a plausible interface can now create the feeling of progress long before there is evidence of a product.
+At App Foundry, we treat generation as the easy part. The hard part is deciding what deserves to exist, turning evidence into a coherent product contract, and proving the live journey as a stranger would experience it.
+A prototype can prove that familiar patterns fit together. It does not prove that people need the result.
+A product has to survive contact with reality:
+Can people find it?
+Can they understand it without context?
+Can they finish the core task?
+Does it recover cleanly from errors?
+Does it protect the data it touches?
+Does it still work in a clean browser with no developer state?
+Tha…]]></summary>
+        <author>
+            <name>App Foundry</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Your Unit Tests Aren't Enough (And How to Break Your Own API)]]></title>
+        <id>https://dev.to/david_oprea/why-your-unit-tests-arent-enough-and-how-to-break-your-own-api-5ge</id>
+        <link href="https://dev.to/david_oprea/why-your-unit-tests-arent-enough-and-how-to-break-your-own-api-5ge"/>
+        <updated>2026-07-22T23:08:10.000Z</updated>
+        <summary type="html"><![CDATA[Stop testing the happy path. Learn how to use property-based testing and Schemathesis to automate chaos and break your API before your users do
+We’ve all been there. You finish building a new API endpoint, fire off a perfectly formatted JSON payload, and get a beautiful 200 OK. You write a few unit tests covering the expected inputs, watch the green checkmarks light up in your CI pipeline, and confidently merge the pull request.
+Then the code hits a live environment. A frontend glitch sends a massive integer instead of a string. A random scraper drops a 10MB payload into a query parameter. Someone decides to test your search bar with a null byte. Suddenly, your bulletproof endpoint is throwing unhandled 500 Internal Server Errors, triggering alerts, and potentially exposing backend stack t…]]></summary>
+        <author>
+            <name>David Oprea</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Backfill Pattern: Adding Required Columns Without Downtime]]></title>
+        <id>https://dev.to/thdr/the-backfill-pattern-adding-required-columns-without-downtime-5e53</id>
+        <link href="https://dev.to/thdr/the-backfill-pattern-adding-required-columns-without-downtime-5e53"/>
+        <updated>2026-07-22T23:08:03.000Z</updated>
+        <summary type="html"><![CDATA[Adding a required column to a table sounds like the simplest task in the world. Then you try it on a table that's already in production, with code writing to it every second, and you find out why it isn't.
+There are two ways people usually try this, and both break.
+Add the column as NOT NULL right away, and the migration fails outright, or it locks the table while it scans millions of existing rows that have no value to give it.
+Add it as nullable instead and move on, and nothing enforces the constraint at all. Six months later half the rows are still null, and the column is "required" only in your head.
+The way out is a boring four step dance.
+Create the column as nullable. The migration is instant and safe. Nothing breaks, because nothing is required yet. Old code keeps writing rows with…]]></summary>
+        <author>
+            <name>Leonardo Theodoro</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Anthropomorphism in Children's Interactions with LLM Chatbots]]></title>
+        <id>https://arxiv.org/abs/2607.18250</id>
+        <link href="https://arxiv.org/abs/2607.18250"/>
+        <updated>2026-07-22T22:49:58.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Key Democratic lawmakers say crypto Clarity Act 'falls short' on ethics, other issues]]></title>
+        <id>4cf46644-99a0-42c6-be66-2138bc4ec193</id>
+        <link href="https://www.coindesk.com/policy/2026/07/22/key-democratic-lawmakers-say-crypto-clarity-act-falls-short-on-ethics-other-issues"/>
+        <updated>2026-07-22T22:22:25.000Z</updated>
+        <summary type="html"><![CDATA[Several of the Democrats most likely to vote for the crypto market structure bill said they had issues with the new draft published by Republicans earlier in the day.]]></summary>
+        <author>
+            <name>Nikhilesh De</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fretboard Memorisation with Modular Arithmetic]]></title>
+        <id>https://ohaodha.ie/blog/fretboard-memorisation-with-modular-arithmetic/</id>
+        <link href="https://ohaodha.ie/blog/fretboard-memorisation-with-modular-arithmetic/"/>
+        <updated>2026-07-22T22:09:41.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -36,311 +348,13 @@
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[MergeForge: Resolve Git Conflicts in VS Code or Cursor Like in JetBrains]]></title>
-        <id>https://dev.to/ognjenmarcheta/mergeforge-resolve-git-conflicts-in-vs-code-or-cursor-like-in-jetbrains-3oj1</id>
-        <link href="https://dev.to/ognjenmarcheta/mergeforge-resolve-git-conflicts-in-vs-code-or-cursor-like-in-jetbrains-3oj1"/>
-        <updated>2026-07-22T21:47:48.000Z</updated>
-        <summary type="html"><![CDATA[Tired of squinting at VS Code’s stacked merge editor?
-MergeForge brings a JetBrains-style three-pane conflict resolver to VS Code and Cursor — and pairs it with an AI assistant that actually reads your repository before it suggests a fix.
-
-We’ve all been there.
-You’re halfway through a rebase. Git stops. Twelve files are conflicted. You open one in VS Code… and get that familiar stacked layout: Incoming, Current, and a result pane that somehow still feels like a puzzle with half the pieces missing.
-If you ever used WebStorm or IntelliJ, you know how good merge tools can feel:
-Your side on the left
-Their side on the right
-The result in the middle
-Gutter arrows that just… work
-In VS Code land, that flow never quite arrived. You click Accept Current, Accept Incoming, Accept Both, and hope not…]]></summary>
+        <title type="html"><![CDATA[What Is HyDE? How to Improve RAG with Hypothetical Documents]]></title>
+        <id>6a6136e1ca77a68a9bf2d904</id>
+        <link href="https://www.freecodecamp.org/news/what-is-hyde-how-to-improve-rag-with-hypothetical-documents/"/>
+        <updated>2026-07-22T21:32:17.000Z</updated>
+        <summary type="html"><![CDATA[Retrieval-Augmented Generation, commonly known as RAG, has become one of the most widely used approaches for building applications with large language models. Instead of asking an LLM to answer entire]]></summary>
         <author>
-            <name>Ognjen Marčeta</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Actually Protect Yourself From wp2shell (Not Just "Update WordPress")]]></title>
-        <id>https://dev.to/adityapidurkar/how-to-actually-protect-yourself-from-wp2shell-not-just-update-wordpress-4ead</id>
-        <link href="https://dev.to/adityapidurkar/how-to-actually-protect-yourself-from-wp2shell-not-just-update-wordpress-4ead"/>
-        <updated>2026-07-22T21:39:42.000Z</updated>
-        <summary type="html"><![CDATA[Everyone's telling you the same thing right now: update WordPress. Which is, fine, yes, obviously but that's not enough. Patching closes the hole. What is someone is already In your system?
-So let's actually walk through this properly what to do right now, what to do if you can't patch immediately, and what to do if you think you were already hit.
-Need more context? I wrote a summarising one here.
-wp2shell: The Bug That Turned an Empty WordPress Install Into a Shell
-
-
-  
-Aditya Pidurkar
-                    
-                  
-
-                
-Jul 22
-        
-#wordpress
-            #wp2shell
-            #cybersecurity
-            #cve
-        
-Add Comment
-            
-        
-WordPress flipped on forced automatic background updates for this one because of how serious it is. That's great, …]]></summary>
-        <author>
-            <name>Aditya Pidurkar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Request validation with Zod in Express]]></title>
-        <id>https://dev.to/zsevic/request-validation-with-zod-in-express-4gj0</id>
-        <link href="https://dev.to/zsevic/request-validation-with-zod-in-express-4gj0"/>
-        <updated>2026-07-22T21:39:10.000Z</updated>
-        <summary type="html"><![CDATA[Express does not validate request input for you. Without a check at the edge, handlers get raw req.body, req.query, and req.params - strings where you expected numbers, missing fields, and shapes that only blow up deep in business logic.
-Zod is a TypeScript-first schema library. You declare the shape once, infer types with z.infer, and parse at the HTTP boundary so route handlers only see valid data. Invalid input becomes HTTP 400 before your code runs.
-This post covers Zod 4 schemas (z.email(), z.uuid(), z.coerce), Express validation middleware, error formatting and pitfalls.
-Node.js version 26
-Zod 4: npm i zod
-
-Express: npm i express and npm i -D @types/express
-
-
-
-Zod 3 method forms like z.string().email() still work but are deprecated in v4. Prefer the top-level APIs below.
-// schemas.t…]]></summary>
-        <author>
-            <name>Željko Šević</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Unity's Path to CoreCLR: What the Mono Cutover Means for Your Studio]]></title>
-        <id>https://dev.to/oceanviewgames/unitys-path-to-coreclr-what-the-mono-cutover-means-for-your-studio-49p1</id>
-        <link href="https://dev.to/oceanviewgames/unitys-path-to-coreclr-what-the-mono-cutover-means-for-your-studio-49p1"/>
-        <updated>2026-07-22T21:36:15.000Z</updated>
-        <summary type="html"><![CDATA[Unity is replacing its scripting runtime. Not tweaking it, replacing it. The Mono runtime that has sat under every line of C# you have written in Unity for years is being retired in favour of Microsoft's CoreCLR. It is the most significant change to Unity's foundation in over a decade, and it is no longer a distant roadmap item: the Unity 6.7 public alpha is out now, with CoreCLR arriving as an experimental option.
-Most of the coverage treats this as good news wrapped in a version number. It is good news. But if you run a real project, the interesting questions are the practical ones: when does this actually reach me, what changes underneath my game, and what is going to break. Here is that read, from the perspective of a studio that plans and runs Unity upgrades for a living.
-Unity has be…]]></summary>
-        <author>
-            <name>Ocean View Games</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Unity 6.5 Is Here: Should Your Studio Upgrade?]]></title>
-        <id>https://dev.to/oceanviewgames/unity-65-is-here-should-your-studio-upgrade-1hef</id>
-        <link href="https://dev.to/oceanviewgames/unity-65-is-here-should-your-studio-upgrade-1hef"/>
-        <updated>2026-07-22T21:36:04.000Z</updated>
-        <summary type="html"><![CDATA[Unity 6.5 arrived in mid-June 2026, and if you skimmed the announcement you would be forgiven for filing it under "minor update." There is no single headline feature to point at. But 6.5 is more consequential than it looks, because the important changes are subtractions. Several systems that a lot of production projects still lean on have been marked for removal, and the countdown has started.
-This post is the read we would give a client: what actually changed, which parts matter depending on where you are in your development cycle, and a straight answer on whether to upgrade.
-Under the Unity 6 model there are two kinds of release, and the difference decides most of the upgrade question on its own.
-Update releases (6.4, 6.5, 6.6) carry the newest features, platform support, and performance…]]></summary>
-        <author>
-            <name>Ocean View Games</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[From Docker Build to Kubernetes Deploy on Ubuntu: The Image Workflow That Never Changed]]></title>
-        <id>https://dev.to/jjoyneriv/from-docker-build-to-kubernetes-deploy-on-ubuntu-the-image-workflow-that-never-changed-d4f</id>
-        <link href="https://dev.to/jjoyneriv/from-docker-build-to-kubernetes-deploy-on-ubuntu-the-image-workflow-that-never-changed-d4f"/>
-        <updated>2026-07-22T21:31:12.000Z</updated>
-        <summary type="html"><![CDATA[Amid all the noise about dockershim, one thing got lost: the everyday workflow of building an image with Docker and running it on Kubernetes never changed. Docker is still an excellent build tool, Kubernetes still runs OCI images, and on Ubuntu the loop is clean. Here it is end to end.
-Multi-stage keeps the runtime image small and the attack surface low — this matters more on Kubernetes, where you pull the image onto every node that schedules the pod:
-# build stage
-FROM golang:1.22 AS build
-WORKDIR /src
-COPY go.* ./
-RUN go mod download
-COPY . .
-RUN CGO_ENABLED=0 go build -o /out/api ./cmd/api
-
-# runtime stage — distroless, no shell, tiny
-FROM gcr.io/distroless/static:nonroot
-COPY --from=build /out/api /api
-USER nonroot:nonroot
-EXPOSE 8080
-ENTRYPOINT ["/api"]
-
-Use buildx (bundled with moder…]]></summary>
-        <author>
-            <name>James Joyner</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I ran 3 months of spec-driven development without ever reading the code]]></title>
-        <id>https://dev.to/giboulz/i-ran-3-months-of-spec-driven-development-without-ever-reading-the-code-1nbc</id>
-        <link href="https://dev.to/giboulz/i-ran-3-months-of-spec-driven-development-without-ever-reading-the-code-1nbc"/>
-        <updated>2026-07-22T21:28:42.000Z</updated>
-        <summary type="html"><![CDATA[I'm a scrum master. I was a developer ten years ago. I have enough background to
-I would never read the code.
-The specs define the tests. The tests control the code. The code is a black
-I'm not claiming this is what everyone should do. But it's my bet, and it
-process has
-backlog-as-data — the full
-Here's the short version.
-Most agent task-management tools store tasks in a dedicated place — a
-tasks.json, a database, a backlog/ folder. My bet is different: the
-is the YAML frontmatter of my spec files. One file per ticket,
-field — never a location in a document.
----
-id: PARSE-07
-title: Tolerate CRLF in decklist import
-type: ticket
-status: todo
-priority: should
-exec:
-  model: sonnet
-  effort: think
-  review: light
-  matured: 2026-07-22
----
-
-# PARSE-07 — Tolerate CRLF in decklist import
-
-The sp…]]></summary>
-        <author>
-            <name>giboulz</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Turned Federal Compliance Regulations Into JSON So My AI Coding Agent Could Actually Use Them]]></title>
-        <id>https://dev.to/firststeptechnology/i-turned-federal-compliance-regulations-into-json-so-my-ai-coding-agent-could-actually-use-them-4p6n</id>
-        <link href="https://dev.to/firststeptechnology/i-turned-federal-compliance-regulations-into-json-so-my-ai-coding-agent-could-actually-use-them-4p6n"/>
-        <updated>2026-07-22T21:27:59.000Z</updated>
-        <summary type="html"><![CDATA[If you've ever had to check code or infrastructure against a compliance framework, you know the drill: someone reads a 100-page PDF, then reads your codebase, then makes a judgment call. It's slow, inconsistent, and it can't be automated.
-So I built a pipeline to fix that — for real.
-The problem
-CMMC Level 1 and NIST SP 800-171 Rev 2 are two of the most common compliance frameworks small defense contractors and government-adjacent companies have to meet. Both exist only as dense regulatory text. There's no official machine-readable version.
-That means every compliance check is manual. Every AI coding assistant reviewing your infrastructure has zero built-in awareness of these requirements. Every CI/CD pipeline has to skip compliance checks entirely or rely on someone remembering to look.
-*…]]></summary>
-        <author>
-            <name>Makita Tunsill</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Built urldn-link-check — A GitHub Action to Catch Broken Links Before They Reach Production]]></title>
-        <id>https://dev.to/la_hsensmira_727afaa0409/i-built-urldn-link-check-a-github-action-to-catch-broken-links-before-they-reach-production-4ob4</id>
-        <link href="https://dev.to/la_hsensmira_727afaa0409/i-built-urldn-link-check-a-github-action-to-catch-broken-links-before-they-reach-production-4ob4"/>
-        <updated>2026-07-22T21:27:32.000Z</updated>
-        <summary type="html"><![CDATA[Documentation is often the last thing developers think about—until a broken link frustrates users or a README sends someone to a 404 page.
-I wanted a simple way to automatically verify links in Markdown documentation during CI, so I built urldn-link-check.
-It's an open-source GitHub Action and CLI that scans your documentation and reports issues before they're merged.
-Features
-or
-npx urldn-link-check .
-uses: urldn/link-check@v1
-That's it.
-Every push or pull request can automatically verify your documentation.
-Why I Built It
-While maintaining documentation, I noticed that broken links often go unnoticed until someone reports them.
-Instead of checking them manually, I wanted a lightweight tool that integrates directly into GitHub Actions and fits naturally into a CI workflow.
-Open Source
-The project is MIT licensed and contributions are welcome.
-⭐ GitHub: https://github.com/urldn/link-check
-📦 npm: https://www.npmjs.com/package/urldn-link-check
-https://www.npmjs.com/package/urldn-link-check
-This is the first developer tool in the URLDN ecosystem, with more open-source projects planned in the future.
-If you have ideas or feedback, I'd love to hear them.]]></summary>
-        <author>
-            <name>La hsen Smira</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Introducing NumPy4J: Bringing NumPy-Style Computing toJava]]></title>
-        <id>https://dev.to/darius_nica/introducing-numpy4j-bringing-numpy-style-computing-tojava-3gha</id>
-        <link href="https://dev.to/darius_nica/introducing-numpy4j-bringing-numpy-style-computing-tojava-3gha"/>
-        <updated>2026-07-22T21:24:47.000Z</updated>
-        <summary type="html"><![CDATA[Java is everywhere in backend systems, enterprise applications, and production environments. But when it comes to numerical computing, data manipulation, and scientific-style operations, Python's NumPy ecosystem has become the standard.
-I wanted a similar experience in Java: a lightweight, dependency-free library for working with multidimensional arrays and linear algebra.
-That idea became NumPy4J.
-What is NumPy4J?
-NumPy4J is an open-source numerical computing library for Java inspired by NumPy.
-It provides:
-Multidimensional arrays (NDArray)
-Example:
-NDArray A = NDArray.of(new double[]{
-    1, 2,
-    3, 4
-}, 2, 2);
-
-NDArray B = NDArray.ones(2, 2);
-
-NDArray C = A.add(B);
-
-Matrix operations:
-
-NDArray result = LinearAlgebra.matmul(A, B);
-
-Solving equations:
-NDArray x = LinearAlgebra.solve(A, b);
-Why build another numerical library?
-There are already excellent Java math libraries available.
-Provide a NumPy-like API experience
-To make sure behavior stays consistent, NumPy4J uses Python NumPy as a reference implementation.
-Test cases are generated with NumPy and validated against the Java implementation, covering:
-Broadcasting
-The roadmap includes:
-More NumPy-compatible operations
-Try it out
-If you work with Java and need NumPy-style numerical operations, I would love for you to try NumPy4J, provide feedback, and contribute ideas.
-GitHub: https://github.com/darius1973/numpy4j
-Documentation: https://darius1973.github.io/numpy4j/index.html
-Wiki: https://github.com/darius1973/numpy4j/wiki/NumPy4J-Wiki
-Available at: https://central.sonatype.com/artifact/io.github.darius1973/numpy4j
-
-
-  
-  
-  Java #OpenSource #NumPy #MachineLearning #LinearAlgebra #NumericalComputing]]></summary>
-        <author>
-            <name>Darius Nica</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Install Docker on Ubuntu 26.04 (the right way, with the docker-group truth)]]></title>
-        <id>https://dev.to/peculiarengineer/install-docker-on-ubuntu-2604-the-right-way-with-the-docker-group-truth-1knd</id>
-        <link href="https://dev.to/peculiarengineer/install-docker-on-ubuntu-2604-the-right-way-with-the-docker-group-truth-1knd"/>
-        <updated>2026-07-22T21:24:32.000Z</updated>
-        <summary type="html"><![CDATA[The wrong way to install Docker on Ubuntu is the one that looks easiest: sudo apt install docker.io. That package exists, it installs, and it runs a container. It is also whatever version happened to be frozen into the archive when 26.04 was cut, it lags the real releases by months, and it ships without the Compose and Buildx plugins you will want by the end of the week. Use Docker's own apt repository instead, and this is the post I keep open so I do not re-derive the repo setup from memory each time.
-This is short on purpose. The steps are the official ones, and the only place worth slowing down is step 5, where adding yourself to the docker group quietly hands out root. That tradeoff is the part most guides skip, and it is the one thing here actually worth reading twice.
-TL;DR Remove an…]]></summary>
-        <author>
-            <name>Minor Keith</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[citesure 0.2: CourtListener case law and CJK title matching]]></title>
-        <id>https://dev.to/sybilgambleyyu/citesure-02-courtlistener-case-law-and-cjk-title-matching-2m5c</id>
-        <link href="https://dev.to/sybilgambleyyu/citesure-02-courtlistener-case-law-and-cjk-title-matching-2m5c"/>
-        <updated>2026-07-22T21:23:37.000Z</updated>
-        <summary type="html"><![CDATA[LLM-written bibliographies do not stop at arXiv preprints. Law review drafts invent reporter cites; multilingual papers mangle Chinese titles. citesure 0.2 extends the integrity gate into those failure modes.
-References that look like court cases — @jurisdiction entries, Plaintiff v. Defendant titles, or reporter strings such as 347 U.S. 483 — are resolved against Free Law Project CourtListener. Ranking prefers an exact reporter cite over companion orders, so Brown lands on 347 U.S. 483 rather than a later procedural listing.
-@jurisdiction{brown1954,
-  title        = {Brown v. Board of Education},
-  year         = {1954},
-  howpublished = {347 U.S. 483},
-}
-
-citesure check examples/packs/us-case-law.bib
-citesure warm-cache cases.bib
-
-Optional COURTLISTENER_TOKEN for higher rate limits. Law-review CI: templates/journal/law-review.yml.
-NFKC + fullwidth folding; character-level similarity for CJK-heavy titles; CJK bigrams in claim scoring so Chinese claims are not silently empty.
-Integrity bench 242/242 (US cases + Chinese titles + multi-domain set)
-Claims mini-bench 29/29
-
-Eight domain packs including us-case-law
-
-
-
-
-  
-  
-  Install
-
-
-
-
-
-pip install "git+https://github.com/SybilGambleyyu/citesure.git[pdf]"
-
-Source: github.com/SybilGambleyyu/citesure · Demo: workers.dev]]></summary>
-        <author>
-            <name>SybilGambleyyu</name>
+            <name>Sameer Shukla</name>
         </author>
     </entry>
     <entry>
@@ -384,6 +398,16 @@ Source: github.com/SybilGambleyyu/citesure · Demo: workers.dev]]></summary>
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[How to Make a Static HTML Page Editable in the Browser with Vanilla JavaScript]]></title>
+        <id>6a61266b62f25d8178b980e0</id>
+        <link href="https://www.freecodecamp.org/news/how-to-make-a-static-html-page-editable-in-the-browser-with-vanilla-javascript/"/>
+        <updated>2026-07-22T20:22:03.000Z</updated>
+        <summary type="html"><![CDATA[When you maintain a document for someone else, such as a résumé, a one-page portfolio, or a printable menu, the bottleneck is rarely the layout. It's the edit loop. Every small change ("move this bull]]></summary>
+        <author>
+            <name>timothy ogbemudia</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Fairphone 6 wide camera experimental Linux support]]></title>
         <id>https://nondescriptpointer.com/articles/fairphone-6-wide-camera-linux/</id>
         <link href="https://nondescriptpointer.com/articles/fairphone-6-wide-camera-linux/"/>
@@ -394,10 +418,40 @@ Source: github.com/SybilGambleyyu/citesure · Demo: workers.dev]]></summary>
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[How to Trace and Monitor AI Agents with LangSmith]]></title>
+        <id>6a611eaea47daf82ec9372d6</id>
+        <link href="https://www.freecodecamp.org/news/how-to-trace-and-monitor-ai-agents-with-langsmith/"/>
+        <updated>2026-07-22T19:49:02.000Z</updated>
+        <summary type="html"><![CDATA[In this tutorial, I'll show you how to trace and monitor a local AI agent with LangSmith. We'll build a small local AI agent and then enable LangSmith tracing for it so that we can inspect model calls]]></summary>
+        <author>
+            <name>Darsh Shah</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[John C. Dvorak has died]]></title>
         <id>https://twitter.com/na_announce/status/2079952538040672302</id>
         <link href="https://twitter.com/na_announce/status/2079952538040672302"/>
         <updated>2026-07-22T19:22:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Clarity didn't work, trying mysterianism]]></title>
+        <id>https://gwern.net/doc/fiction/science-fiction/2012-10-03-yvain-thewhisperingearring.html</id>
+        <link href="https://gwern.net/doc/fiction/science-fiction/2012-10-03-yvain-thewhisperingearring.html"/>
+        <updated>2026-07-22T18:55:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Cactus Hybrid: We taught Gemma 4 to know when it's wrong]]></title>
+        <id>https://github.com/cactus-compute/cactus-hybrid</id>
+        <link href="https://github.com/cactus-compute/cactus-hybrid"/>
+        <updated>2026-07-22T17:56:29.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -514,26 +568,6 @@ Source: github.com/SybilGambleyyu/citesure · Demo: workers.dev]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Does creatine make you smarter?]]></title>
-        <id>https://dynomight.net/creatine/</id>
-        <link href="https://dynomight.net/creatine/"/>
-        <updated>2026-07-22T15:45:18.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Can a MUD evaluate LLMs? A $99 proof of concept]]></title>
-        <id>https://cruciblebench.ai/</id>
-        <link href="https://cruciblebench.ai/"/>
-        <updated>2026-07-22T15:39:01.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[SEC's Peirce warns some DeFi vaults, onchain lending may fall under securities laws]]></title>
         <id>11a78612-75e9-40b1-bcd4-766f8bb32097</id>
         <link href="https://www.coindesk.com/policy/2026/07/22/sec-s-peirce-warns-some-defi-vaults-onchain-lending-may-fall-under-securities-laws"/>
@@ -584,30 +618,10 @@ Source: github.com/SybilGambleyyu/citesure · Demo: workers.dev]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Which streaming service was that on again?]]></title>
-        <id>https://www.timwehrle.de/blog/which-streaming-service-was-that-on-again/</id>
-        <link href="https://www.timwehrle.de/blog/which-streaming-service-was-that-on-again/"/>
-        <updated>2026-07-22T14:46:14.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Ghost Cut – or why Cut and Paste is broken everywhere]]></title>
         <id>https://ishmael.textualize.io/blog/ghost-cut/</id>
         <link href="https://ishmael.textualize.io/blog/ghost-cut/"/>
         <updated>2026-07-22T14:43:28.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[“We have information that Moonshot distilled Fable for the development of K3”]]></title>
-        <id>https://twitter.com/mkratsios47/status/2079933645888880708</id>
-        <link href="https://twitter.com/mkratsios47/status/2079933645888880708"/>
-        <updated>2026-07-22T14:42:08.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -767,16 +781,6 @@ The post Maxis Faces Letter Of Demand From Khairul Aming Over Alleged Personal D
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Shape-shifting mirrors on NASA’s new space telescope could unveil Jupiters like our own When NASA’s Nancy Grace Roman Space Telescope launches, as early as the end of next month, it will…]]></summary>
         <author>
             <name>Thomas Macaulay</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[10 REM"_(C2SLFF4]]></title>
-        <id>https://beej.us/blog/data/mystery-comment/</id>
-        <link href="https://beej.us/blog/data/mystery-comment/"/>
-        <updated>2026-07-22T11:58:09.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -994,26 +998,6 @@ The post Authorities Seizes Network School Premises In Forest City appeared firs
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Claude's Fable 5 just solved an 87-year-old math problem, and it matters for bitcoin]]></title>
-        <id>c54e734a-a72b-49c1-81df-c5ab668e4264</id>
-        <link href="https://www.coindesk.com/tech/2026/07/21/claude-s-fable-5-just-solved-an-87-year-old-math-problem-and-it-matters-for-bitcoin"/>
-        <updated>2026-07-21T16:19:24.000Z</updated>
-        <summary type="html"><![CDATA[Claude Fable 5 disproved the Jacobian conjecture over the weekend, landing days after the capabilities of China's Kimi AI became the biggest force moving bitcoin markets.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats]]></title>
-        <id>94991228-ca60-4c25-8f4a-64f75e312096</id>
-        <link href="https://www.coindesk.com/tech/2026/07/21/galaxy-sets-up-usd5-million-fund-to-help-shield-bitcoin-against-quantum-computing-threats"/>
-        <updated>2026-07-21T16:16:14.000Z</updated>
-        <summary type="html"><![CDATA[The crypto financial services firm is funding developers to strengthen the blockchain's security before quantum computers become powerful enough to steal billions in crypto.]]></summary>
-        <author>
-            <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Download: Chinese AI divides the White House, and a record copyright payout]]></title>
         <id>https://www.technologyreview.com/?p=1140685</id>
         <link href="https://www.technologyreview.com/2026/07/21/1140685/the-download-chinese-ai-divides-white-house-anthropic-copyright-settlement/"/>
@@ -1051,46 +1035,6 @@ The post Authorities Seizes Network School Premises In Forest City appeared firs
         <summary type="html"><![CDATA[Not every AI feature needs a cloud model, with its per-token bills, network round-trips, and private data leaving your machine. If you're on a modern Mac, a capable language model is already on your d]]></summary>
         <author>
             <name>Balogun Wahab</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Optimize Enterprise Application Performance with T-SQL Query Tuning and Indexing Strategies]]></title>
-        <id>6a5e89d9dfc3c99e37bbdef0</id>
-        <link href="https://www.freecodecamp.org/news/optimize-enterprise-app-performance-with-t-sql-query-tuning-and-indexing-strategies/"/>
-        <updated>2026-07-20T20:49:29.000Z</updated>
-        <summary type="html"><![CDATA[In this article, you'll learn how to optimize SQL Server performance using T-SQL query tuning, indexing strategies, execution plans, and real-world optimization techniques for enterprise applications.]]></summary>
-        <author>
-            <name>Gopinath Karunanithi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Build a Browser-Based PDF Signature Tool Using JavaScript]]></title>
-        <id>6a5e89518186f4c5817d466b</id>
-        <link href="https://www.freecodecamp.org/news/build-pdf-signature-tool-javascript/"/>
-        <updated>2026-07-20T20:47:13.000Z</updated>
-        <summary type="html"><![CDATA[PDF documents are commonly used for agreements, forms, approvals, invoices, reports, applications, and other documents that may need a signature or additional text before they are shared. A traditiona]]></summary>
-        <author>
-            <name>Bhavin Sheth</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to Build a Multi-Tenant SaaS API with Node.js, RBAC, and Audit Logging]]></title>
-        <id>6a5e8914bc397f89a942b88b</id>
-        <link href="https://www.freecodecamp.org/news/how-to-build-a-multi-tenant-saas-api-with-nodejs-rbac-and-audit-logging/"/>
-        <updated>2026-07-20T20:46:12.000Z</updated>
-        <summary type="html"><![CDATA[A colleague asked me to help debug what looked like a permissions issue in their SaaS project management tool. Users were seeing resources they hadn't created. I pulled up the query logs expecting som]]></summary>
-        <author>
-            <name>Zia Ullah</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why do we love music? (2018)]]></title>
-        <id>https://pmc.ncbi.nlm.nih.gov/articles/PMC6353111/</id>
-        <link href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6353111/"/>
-        <updated>2026-07-20T20:31:28.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1138,6 +1082,26 @@ The post Authorities Seizes Network School Premises In Forest City appeared firs
         <id>https://daniel.lawrence.lu/blog/2026-07-15-dgx-spark-as-daily-driver/</id>
         <link href="https://daniel.lawrence.lu/blog/2026-07-15-dgx-spark-as-daily-driver/"/>
         <updated>2026-07-19T19:44:44.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Designing a 4D Digital Archive for Ikebana]]></title>
+        <id>https://ishiguro-lab.org/projects/designing-a-4d-digital-archive-for-ikebana/</id>
+        <link href="https://ishiguro-lab.org/projects/designing-a-4d-digital-archive-for-ikebana/"/>
+        <updated>2026-07-19T18:42:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How we made our LeRobot video reader up to 15× faster]]></title>
+        <id>https://www.eventual.ai/blog/how-we-made-our-lerobot-video-reader-up-to-15x-faster</id>
+        <link href="https://www.eventual.ai/blog/how-we-made-our-lerobot-video-reader-up-to-15x-faster"/>
+        <updated>2026-07-17T18:24:29.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1237,20 +1201,20 @@ This wave of VentureBeat Pulse Research examines enterprise agent orchestration:
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Nobody knows what a used GPU cluster is worth]]></title>
-        <id>https://ciphertalk.substack.com/p/nobody-knows-what-a-used-gpu-cluster</id>
-        <link href="https://ciphertalk.substack.com/p/nobody-knows-what-a-used-gpu-cluster"/>
-        <updated>2026-07-15T06:50:49.000Z</updated>
+        <title type="html"><![CDATA[Museum of the Human Web]]></title>
+        <id>https://museum.parallel.ai/introduction?era=modern</id>
+        <link href="https://museum.parallel.ai/introduction?era=modern"/>
+        <updated>2026-07-15T15:15:27.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Mechanical light bulb from 1675 [video]]]></title>
-        <id>https://www.youtube.com/watch?v=0Y-9GbsS9Fg</id>
-        <link href="https://www.youtube.com/watch?v=0Y-9GbsS9Fg"/>
-        <updated>2026-07-14T21:26:36.000Z</updated>
+        <title type="html"><![CDATA[Nobody knows what a used GPU cluster is worth]]></title>
+        <id>https://ciphertalk.substack.com/p/nobody-knows-what-a-used-gpu-cluster</id>
+        <link href="https://ciphertalk.substack.com/p/nobody-knows-what-a-used-gpu-cluster"/>
+        <updated>2026-07-15T06:50:49.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
