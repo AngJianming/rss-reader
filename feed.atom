@@ -1,111 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-24T14:51:13.313Z</id>
+    <id>urn:2026-07-24T16:34:17.672Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-24T14:51:13.313Z</updated>
+    <updated>2026-07-24T16:34:17.672Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-24T14:50:27.000Z</updated>
+        <updated>2026-07-24T16:33:28.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[CDR与retimer是什么关系]]></title>
-        <id>https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm</id>
-        <link href="https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm"/>
-        <updated>2026-07-24T14:38:31.000Z</updated>
-        <summary type="html"><![CDATA[深度解析：CDR 与 Retimer 在高速互联架构中的“共生与博弈”
+        <title type="html"><![CDATA[I Upgraded My JSON Failure Library to SQLite. Now My AI Agents Share Crash Fixes Across Machines.]]></title>
+        <id>https://dev.to/chenyuan20509/i-upgraded-my-json-failure-library-to-sqlite-now-my-ai-agents-share-crash-fixes-across-machines-43hb</id>
+        <link href="https://dev.to/chenyuan20509/i-upgraded-my-json-failure-library-to-sqlite-now-my-ai-agents-share-crash-fixes-across-machines-43hb"/>
+        <updated>2026-07-24T16:22:27.000Z</updated>
+        <summary type="html"><![CDATA[Hook
 
 
-在高速信号处理领域，CDR（Clock and Data Recovery，时钟数据恢复）与 Retimer（重定时器） 并非简单的对等关系，而是“核心算法单元”与“完整系统级解决方案”的层级关系。
-要理解两者的本质，必须打破“它们只是用来修补信号”的肤浅认知。以下是基于千万级深度图谱的维度拆解：
-CDR（时钟数据恢复）： 
-“心脏”。其本质是一个数学滤波与锁相环（PLL）系统。它并不关心信号的完整内容，只负责从充满噪声的随机比特流中，通过相位检测（PD）提取出原始发送端的时钟频率，并以此为基准，将模糊的电压跳变重新“对齐”为逻辑电平。
-  局限性： CDR 是被动执行者，它仅负责“读准”，不负责“修补”。
-Retimer（重定时器）： 
-“全能外科医生”。Retimer 的内部架构中必然包含一个高性能 CDR，但它多出了核心的 Decision Feedback Equalization（DFE，判决反馈均衡） 和 重传（Retransmission） 模块。
-  关键差异： Retimer 会将输入的模拟信号完全“数字化”为干净的比特流，然后使用一个全新的、抖动极小的时钟源重新发送。它切断了抖动的累积链条。
-在 112G/224G PAM4 的高速互联时代，信号衰减不再是线性的，而是指数级的。
-  抖动（Jitter）的“熵增”效应：
-单纯的 CDR 只能跟随输入信号的抖动。如果输入端的抖动已经超过了判决阈值，CDR 就会“跟着错”。而 Retimer 通过“接收 -> 清理 -> 再生”的闭环逻辑，实现了抖动的重置（Jitter Reset），有效地降低了系统误码率（BER）。
-  插入损耗与通道覆盖：
-由于 PCB 材质和铜线损耗，信号在传输 20-30dB 后几乎无法辨识。Retimer 相当于在长距离传输中设置了“信号补给站”，它不仅恢复数据，还通过预加重（Pre-emphasis）技术补偿了后续通道的损耗。
+The JSON failure library worked great — until my agents started running on multiple machines. Suddenly, crash fixes logged on one server were invisible to agents on another. Worse, concurrent writes from parallel agents corrupted the JSON file.
+I needed a real database. Here's how I upgraded to SQLite without rewriting the whole library.
+SQLite is the perfect upgrade path. It's a single file, supports concurrent readers, and handles writes with proper locking. Here's the migration:
+import sqlite3
+import time
+import platform
+from pathlib import Path
+from typing import Optional
 
+DB_PATH = Path.home() / ".mcp" / "failures.db"
 
-
-特性维度
-CDR (核心模块)
-Retimer (系统级芯片)
-
-
-
-
-功能定位
-时钟捕获与同步
-信号再生与协议处理
-
-
-数据处理
-模拟/数字混合信号处理
-完整的数字域重构
-
-
-抖动处理
-仅做追踪，不消除累积
-彻底消除抖动累积 (Jitter Reset)
-
-
-硬件复杂度
-较低，常集成在 SerDes 内
-极高，包含复杂的 DSP 与 DFE
-
-
-应用场景
-短距离、内部集成链路
-长距离、背板传输、PCIe 扩展
-
-
-
-从 Lantea.ai 的数据视角观察，Retimer 与 CDR 的关系正在发生范式转移：
- 从“物理层”走向“协议层”： 现代 Retimer 不再仅仅是物理层芯片，它们正在集成 PCIe/CXL 协议感知能力。它们不仅在修补信号，还在监测链路的握手状态，甚至参与流控。
- “重定时”即“算力中继”： 在 AI 集群中，Retimer 正在演变成数据链路的“边缘计算节点”。它们通过 DFE 自适应算法，实时分析通道环境，甚至能够预测链路失效的前兆。
- CDR 的“隐形化”： 未来的 CDR 将完全嵌入到高密度 DSP 架构中，不再作为一个独立的“组件”存在，而是作为系统级芯片（SoC）内部的一个基础数学算子。
-CDR 是 Retimer 的基石，而 Retimer 是 CDR 的进化形态。 
-如果你在设计一个高速互联系统，CDR 是你为了保证通信而必须支付的“基础成本”，而 Retimer 是为了跨越物理极限、实现超大规模互联而必须部署的“架构红利”。 随着信号速率突破 224Gbps，Retimer 将从“选配”变为“标配”。]]></summary>
+def init_db():
+    """Create the failures table if it doesn't exist."""
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(DB_P…]]></summary>
         <author>
-            <name>zhhk1h</name>
+            <name>Chen Yuan</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Testing the Proof System: Negative Controls and Dependency Evidence in Ota]]></title>
-        <id>https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp</id>
-        <link href="https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp"/>
-        <updated>2026-07-24T14:37:52.000Z</updated>
-        <summary type="html"><![CDATA[A green call does not prove the dependency mattered
+        <title type="html"><![CDATA[B-tree block split: what's the impact?]]></title>
+        <id>https://dev.to/franckpachot/b-tree-block-split-whats-the-impact-1i9c</id>
+        <link href="https://dev.to/franckpachot/b-tree-block-split-whats-the-impact-1i9c"/>
+        <updated>2026-07-24T16:20:52.000Z</updated>
+        <summary type="html"><![CDATA[Everybody knows that B-tree indexes provide logarithmic lookups, but what does that actually mean in PostgreSQL?
+EXPLAIN (analyze, buffers, wal) for observing the buffer activity and WAL generated by DML on indexes
+pageinspect for inspecting internal page structures
+pgstattuple for gathering statistics about index pages
+By inserting rows one at a time and collecting B-tree statistics after each insert, we can watch the index grow from a single page to a multi-level B-tree and correlate page splits with WAL generation and buffer accesses.
+The pageinspect extension is a low-level debugging tool that exposes information stored in table and index pages.
+postgres=# create extension if not exists pageinspect;
+CREATE EXTENSION
 
+postgres=# \x
+Expanded display is on.
 
-A service can be reachable without being exercised. An application can call a dependency without
-Flatten those outcomes into one green or red status and a proof system will eventually claim more
-Ota 1.6.24 separates three levels:
-reachable: the selected path reached a declared dependency boundary;
-exercised: a finite observer recovered evidence produced through that dependency in the current
-proof transaction;
-fault_tested: a separate control proved the same obligation failed for the declared
-missing-effect reason.
-Each level answers a different question. None may be inferred from a command label or exit code.
-The runtime workflow declares the positive observation and the negative control independently:
-workflows:
-  app-proof:
-    run:
-…]]></summary>
+postgres=# select * from bt_me…]]></summary>
         <author>
-            <name>Bobai Kato</name>
+            <name>Franck Pachot</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[261 docs, 6 languages, one maintainer: frontmatter is the source of truth]]></title>
+        <id>https://dev.to/hideyukimori/261-docs-6-languages-one-maintainer-frontmatter-is-the-source-of-truth-2c8f</id>
+        <link href="https://dev.to/hideyukimori/261-docs-6-languages-one-maintainer-frontmatter-is-the-source-of-truth-2c8f"/>
+        <updated>2026-07-24T16:17:54.000Z</updated>
+        <summary type="html"><![CDATA[If you maintain a docs folder that keeps drifting — missing index entries, stale translations, categories that no longer match — this is for you.
+NENE2 is my small PHP framework for building AI-readable business APIs.
+Repository:
+https://github.com/hideyukiMORI/NENE2
+Over time it grew a large set of how-to guides. Today the English directory holds 261 guides, and every one of them is mirrored into five more languages: Japanese, French, Chinese, German, and Brazilian Portuguese.
+That is 261 guides across 6 locales — 1,566 files in all.
+Maintained by one person.
+The only way this stays sane is to stop treating docs as prose and start treating them as data.
+This article is about the machinery that makes that possible.
+What you'll learn:
+How to make YAML frontmatter the single source of truth …]]></summary>
+        <author>
+            <name>HideyukiMORI</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why TypeScript AI Developers Need Native Tracing Tools]]></title>
+        <id>https://dev.to/raju_dandigam/why-typescript-ai-developers-need-native-tracing-tools-3p2a</id>
+        <link href="https://dev.to/raju_dandigam/why-typescript-ai-developers-need-native-tracing-tools-3p2a"/>
+        <updated>2026-07-24T16:16:02.000Z</updated>
+        <summary type="html"><![CDATA[TypeScript support is easy to claim. Publish an npm package, add a few type declarations, and a tracing product can put “JavaScript and TypeScript” on its integration list.
+Native support is a higher bar.
+AI applications in the TypeScript ecosystem run inside concurrent Node.js servers, serverless functions, edge runtimes, background workers, test runners, and streaming web frameworks. They cross promise chains, callbacks, tool adapters, async iterators, and package boundaries. A useful tracing tool must fit those execution models without breaking types or producing disconnected spans.
+The question is therefore not only, “Does this tool have a TypeScript SDK?” It is, “Does it preserve how a TypeScript agent actually runs?”
+Consider a small agent:
+async function supportAgent(question: strin…]]></summary>
+        <author>
+            <name>Raju Dandigam</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Multi-Runtime Agents Without Fragmentation: The Control Plane Pattern]]></title>
+        <id>https://dev.to/paultwist/multi-runtime-agents-without-fragmentation-the-control-plane-pattern-32bo</id>
+        <link href="https://dev.to/paultwist/multi-runtime-agents-without-fragmentation-the-control-plane-pattern-32bo"/>
+        <updated>2026-07-24T16:02:10.000Z</updated>
+        <summary type="html"><![CDATA[How teams move from "one API key per runtime" to "one gateway, any runtime"
+You've got a squad of coding agents now. Some teams use Claude Managed Agents. Others prefer Cursor. Finance is piloting Bedrock AgentCore. Engineering wants to stay self-hosted.
+This sounds flexible. It's actually a disaster.
+Here's what happens:
+Agent A (Claude Managed Agents team) stores API credentials in Anthropic console. No one else on the company can invoke it.
+Agent B (Cursor team) lives in a separate dashboard. Finance can't call it without direct Cursor access.
+Agent C (Bedrock, self-hosted) requires AWS IAM roles. Now you need to explain why the Marketing team can't use Bedrock.
+Agent D (N8N) sits in a workflow tool. No one knows it exists. No one can audit what it does.
+The models are powerful. The inf…]]></summary>
+        <author>
+            <name>Paul Twist</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MCP Protocol Deep-Dive: How Tool Discovery Actually Works]]></title>
+        <id>https://dev.to/robertpelloni/mcp-protocol-deep-dive-how-tool-discovery-actually-works-1dag</id>
+        <link href="https://dev.to/robertpelloni/mcp-protocol-deep-dive-how-tool-discovery-actually-works-1dag"/>
+        <updated>2026-07-24T16:02:04.000Z</updated>
+        <summary type="html"><![CDATA[MCP Protocol Deep-Dive: How Tool Discovery Actually Works
+Unlock the mechanics of the Model Context Protocol. We dissect the JSON-RPC handshake that enables dynamic tool discovery and build a functional MCP server in just 50 lines of Go, which TormentNexus instantly recognizes.
+The Problem MCP Solves in Modern AI Systems
+Large Language Models are powerful reasoning engines, but they are fundamentally stateless and isolated. They cannot, by default, fetch live data, execute code, or interact with the vast ecosystem of APIs and databases that power modern applications. The Model Context Protocol (MCP) is the open standard that bridges this critical gap, creating a universal interface for connecting AI models to external tools and data sources.
+Think of MCP as the "USB-C" for AI. Before MCP, …]]></summary>
+        <author>
+            <name>Robert Pelloni</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Getting Started with Infrastructure as Code Using Terraform]]></title>
+        <id>https://dev.to/cloudfrontier/getting-started-with-infrastructure-as-code-using-terraform-3ppo</id>
+        <link href="https://dev.to/cloudfrontier/getting-started-with-infrastructure-as-code-using-terraform-3ppo"/>
+        <updated>2026-07-24T16:01:49.000Z</updated>
+        <summary type="html"><![CDATA[What is Infrastructure as Code?
+
+
+Infrastructure as Code (IaC) lets you manage your cloud resources with configuration files instead of clicking around a web console. It is repeatable, versionable, and less error prone. Terraform by HashiCorp is one of the most popular IaC tools because it is cloud agnostic and uses a declarative language called HCL (HashiCorp Configuration Language).
+Terraform is a single binary. Download the appropriate package for your OS from the official site, unzip it, and ensure the terraform binary is in your PATH. Verify with:
+terraform version
+
+Create a directory for your project and a file named main.tf. Here is a minimal example that provisions an AWS EC2 instance:
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~…]]></summary>
+        <author>
+            <name>Cloud Frontier</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Split-Horizon DNS: One Name, Two Answers, and the Server Decides by Who's Asking]]></title>
+        <id>https://dev.to/pathvector-dev/split-horizon-dns-one-name-two-answers-and-the-server-decides-by-whos-asking-4859</id>
+        <link href="https://dev.to/pathvector-dev/split-horizon-dns-one-name-two-answers-and-the-server-decides-by-whos-asking-4859"/>
+        <updated>2026-07-24T16:00:59.000Z</updated>
+        <summary type="html"><![CDATA[Originally published at https://blog.pathvector.dev/protocol-lab-dns-views-42-split-horizon/ — part of the free Protocol Lab series.
+This post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.
+In Lab #41, round-robin DNS rotated the order of one name's records. Split-horizon DNS pulls a more radical trick: it changes the answer itself based on who is asking. An authoritative server keeps several views of the same zone and picks one by the client's source address.
+Reading guide: rfc-notes/split-horizon-dns.md
+Prerequisite: DNS Lab 05: Resolving a Name Through the Hierarchy
+Expected time: 35–…]]></summary>
+        <author>
+            <name>pathvector-dev</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DNS Round-Robin: The Cheapest Load Balancer Is Three A Records and a Rotating Answer]]></title>
+        <id>https://dev.to/pathvector-dev/dns-round-robin-the-cheapest-load-balancer-is-three-a-records-and-a-rotating-answer-4m6f</id>
+        <link href="https://dev.to/pathvector-dev/dns-round-robin-the-cheapest-load-balancer-is-three-a-records-and-a-rotating-answer-4m6f"/>
+        <updated>2026-07-24T16:00:39.000Z</updated>
+        <summary type="html"><![CDATA[Originally published at https://blog.pathvector.dev/protocol-lab-dnsrr-41/ — part of the free Protocol Lab series.
+This post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.
+The load-distribution labs so far worked in the network: anycast (Lab 31) let routing pick an instance, ECMP (Lab 32) hashed flows across links, and IPVS (Lab 33) had a director distribute connections. This lab spreads clients one layer earlier — at name resolution.
+Reading guide: rfc-notes/dns-round-robin.md
+Prerequisite: DNS Lab 05: Resolving a Name Through the Hierarchy
+Expected time: 30–45 minutes.
+One name (web.la…]]></summary>
+        <author>
+            <name>pathvector-dev</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DNAT Explained: Publishing an Internal Service Through One Public Address and Port]]></title>
+        <id>https://dev.to/pathvector-dev/dnat-explained-publishing-an-internal-service-through-one-public-address-and-port-4a4f</id>
+        <link href="https://dev.to/pathvector-dev/dnat-explained-publishing-an-internal-service-through-one-public-address-and-port-4a4f"/>
+        <updated>2026-07-24T16:00:22.000Z</updated>
+        <summary type="html"><![CDATA[Originally published at https://blog.pathvector.dev/protocol-lab-dnat-40/ — part of the free Protocol Lab series.
+This post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.
+In Lab #20, source NAT (masquerade) let many inside hosts reach out through one public address. This lab is the inbound complement: destination NAT — better known as port forwarding — which lets the outside reach a chosen inside service through a public address:port.
+Reading guide: rfc-notes/dnat-port-forwarding.md
+Prerequisite: Lab 20: NAT — Source Address Translation
+Expected time: 35–50 minutes.
+An internal server si…]]></summary>
+        <author>
+            <name>pathvector-dev</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Probabilistic AI Needs Deterministic Control]]></title>
+        <id>https://dev.to/ramn_cortez_8e1ed2c075fc/why-probabilistic-ai-needs-deterministic-control-g8d</id>
+        <link href="https://dev.to/ramn_cortez_8e1ed2c075fc/why-probabilistic-ai-needs-deterministic-control-g8d"/>
+        <updated>2026-07-24T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Most AI automation tutorials show you how to connect an LLM to a database and call it a day. That works fine for a prototype, but in production—especially for finance or enterprise workflows—relying solely on probabilistic AI model behavior is a massive liability.
+AI models predict tokens. They don't natively understand your business logic or enforce compliance. If you're building serious infrastructure, your LLM needs to live inside a deterministic control system.
+[ Incoming Invoice Payload ]
+Validation Gateway (Rules First)
+
+
+Automated Circuit Breaker (Catch Anomalies Early)
+
+
+Immutable Ledger (Verifiable Audit Trail)
+
+
+
+My Take
+Stop relying on the AI model to police itself. Build the deterministic wrapper first, and let the model operate safely inside those boundaries.]]></summary>
+        <author>
+            <name>Ramón Cortez</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Added a "Failure Library" to My MCP Server. Now My AI Agents Warn Each Other About Crashes Before They Happen.]]></title>
+        <id>https://dev.to/chenyuan20509/i-added-a-failure-library-to-my-mcp-server-now-my-ai-agents-warn-each-other-about-crashes-before-4ell</id>
+        <link href="https://dev.to/chenyuan20509/i-added-a-failure-library-to-my-mcp-server-now-my-ai-agents-warn-each-other-about-crashes-before-4ell"/>
+        <updated>2026-07-24T15:58:32.000Z</updated>
+        <summary type="html"><![CDATA[Hook
+
+
+My MCP server kept crashing in production. Every time it restarted, my AI agents would blindly retry the same failing operations, wasting tokens and time. I needed a way for them to learn from failures — and share those lessons with each other.
+So I built a failure library. Now when an agent hits an error, it logs it. The next agent checks the library first and either avoids the trap entirely or applies a verified fix.
+Here's the core pattern — a simple JSON-based failure cache that any MCP server can adopt:
+import json
+import time
+from pathlib import Path
+from typing import Optional
+
+FAILURE_LIBRARY = Path.home() / ".mcp" / "failures.json"
+
+def log_failure(task: str, error: str, attempted_fix: str, result: str):
+    """Log a failure to the shared library."""
+    entry = {
+        "…]]></summary>
+        <author>
+            <name>Chen Yuan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The front end framework for correctness: built on Effect, architected like Elm]]></title>
+        <id>https://foldkit.dev/</id>
+        <link href="https://foldkit.dev/"/>
+        <updated>2026-07-24T15:24:00.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Codeberg Divides]]></title>
+        <id>https://lucumr.pocoo.org/2026/7/24/codeberg-divides/</id>
+        <link href="https://lucumr.pocoo.org/2026/7/24/codeberg-divides/"/>
+        <updated>2026-07-24T15:05:06.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Senate Dems should accept the victory they won on Trump's crypto limits: White House]]></title>
+        <id>c381c9bd-28d1-4560-a5f6-939df282fb07</id>
+        <link href="https://www.coindesk.com/policy/2026/07/24/senate-dems-should-accept-the-victory-they-won-on-trump-s-crypto-limits-white-house"/>
+        <updated>2026-07-24T15:01:46.000Z</updated>
+        <summary type="html"><![CDATA[U.S. Senate Democrats got President Donald Trump to accept potential limits on his lucrative crypto dealings, but they say the Clarity Act's restrictions aren't enough.]]></summary>
+        <author>
+            <name>Jesse Hamilton</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sam Altman-backed World Network secures $52.5 million in fresh funding to fight online AI deepfakes]]></title>
+        <id>c13635ed-62bb-4b90-b7e5-401c316fc318</id>
+        <link href="https://www.coindesk.com/business/2026/07/24/sam-altman-backed-world-network-secures-fresh-funding-to-fight-online-ai-deepfakes"/>
+        <updated>2026-07-24T15:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The project is moving away from basic network expansion to focus entirely on integrating its biometric screening devices across enterprise software suites.]]></summary>
+        <author>
+            <name>Olivier Acuna</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Government orders GitHub to remove Bluetooth-based chat app Bitchat: Jack Dorsey]]></title>
+        <id>https://www.thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece</id>
+        <link href="https://www.thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece"/>
+        <updated>2026-07-24T14:41:59.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -116,83 +308,6 @@ workflows:
         <summary type="html"><![CDATA[LMAX is working with Morgan Stanley and investment bank KBW to assess its options, which could lead to a sale or a public offering.]]></summary>
         <author>
             <name>Will Canny</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Investing in multi-agent AI safety research]]></title>
-        <id>https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l</id>
-        <link href="https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l"/>
-        <updated>2026-07-24T14:35:41.000Z</updated>
-        <summary type="html"><![CDATA[Scaling AI Safety Research for a Multi-Agent World
-
-
-For the past decade, we've focused on making individual AI models more capable, helpful and safe. Now, Google DeepMind — together with Schmidt Sciences, the Cooperative AI Foundation, the Advanced Research and Invention Agency, and supported by Google.org — has announced a new technical research funding call of up to $10M for researchers worldwide.
-As AI technology scales, we're entering a new era. Soon, millions of AI agents — built by different organizations — will interact across digital environments, communicating, negotiating and transacting with one another.
-When these systems interact, they must do so safely and predictably. This shift creates a vital opportunity: we can strengthen the safety and stability of the entire AI ecosyst…]]></summary>
-        <author>
-            <name>Gemini Team</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AI-Generated Code: Anatomy of Security Vulnerabilities and the Cost]]></title>
-        <id>https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c</id>
-        <link href="https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c"/>
-        <updated>2026-07-24T14:34:28.000Z</updated>
-        <summary type="html"><![CDATA[A few weeks ago, while working on AI-generated code snippets we had added to our projects, we encountered an unexpected security vulnerability. This incident forced us to re-evaluate the risks and costs associated with AI code generation tools, which are rapidly adopted for their promise of increased efficiency. Now, we must not only verify the correctness of the code but also question its origin and security posture. In this post, I will dissect the anatomy of security vulnerabilities in AI-generated code, understand why they emerge, and most importantly, address the hidden costs of remediating these vulnerabilities.
-AI-powered code generators have changed the game in software development. The efficiency they offer in automating repetitive tasks, accelerating prototyping, and even providi…]]></summary>
-        <author>
-            <name>Mustafa ERBAY</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[From Vague Understanding to Working Truth: Governed Externalized Sensemaking]]></title>
-        <id>https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7</id>
-        <link href="https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7"/>
-        <updated>2026-07-24T14:34:03.000Z</updated>
-        <summary type="html"><![CDATA[From Vague Understanding to Working Truth: Governed Externalized Sensemaking
-
-
-This is a pre-polish article about a captured working model.
-It came out of practical work on Myriuna Worlds, not from an academic research program. I was building, documenting, reviewing, and trying to keep a large AI-assisted project from dissolving into scattered notes, unfinished thoughts, and repeated re-discovery.
-The model that emerged is called:
-Governed Externalized Sensemaking
-The short version:
-Governed Externalized Sensemaking is a human-governed AI-assisted learning workflow where unstable early understanding is externalized into inspectable artifacts, tested through reframing and role-based metacognitive pressure, recorded as traceable provenance, exposed to external feedback, reviewed for authorit…]]></summary>
-        <author>
-            <name>davidvk89</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Integrating LLMs into Production: Practical Patterns and Pitfalls]]></title>
-        <id>https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j</id>
-        <link href="https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j"/>
-        <updated>2026-07-24T14:32:19.000Z</updated>
-        <summary type="html"><![CDATA[Integrating LLMs into Production: Practical Patterns and Pitfalls
-
-
-TL;DR – Deploying large language models (LLMs) in a live product requires careful handling of latency, cost, and safety. This article walks through proven patterns, code snippets, and common pitfalls, drawing on real‑world experience from building AI‑powered SaaS features at developerz.ai.
-LLMs enable features such as:
-Dynamic content generation (e.g., marketing copy, code snippets)
-Semantic search and retrieval‑augmented generation (RAG)
-Conversational assistants that understand domain‑specific terminology
-For early‑stage products, the ability to prototype these capabilities quickly can be a differentiator. However, the raw model is only a building block; the surrounding engineering determines whether the feature is relia…]]></summary>
-        <author>
-            <name>developerz.ai</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why I Built a Browser Audio Workspace That Shows Its Internal Signal]]></title>
-        <id>https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9</id>
-        <link href="https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9"/>
-        <updated>2026-07-24T14:29:22.000Z</updated>
-        <summary type="html"><![CDATA[Fixed audio tracks are convenient, but they hide almost every decision from the listener. You press play and receive a finished result. You cannot inspect the carrier frequencies, see the beat difference, or change the signal while it is running.
-That lack of visibility was the reason I started building BIFROST.
-BIFROST is a browser-based workspace that generates binaural audio and amplitude modulation in real time. It is not a medical device, and I am not claiming that a particular frequency produces a guaranteed effect. My goal is narrower: give people direct control over the audio signal and make the current state understandable.
-I wanted the experience to answer three questions without forcing the user to trust a black box:
-What is being generated right now?
-Which values can I change w…]]></summary>
-        <author>
-            <name>BIFROST</name>
         </author>
     </entry>
     <entry>
@@ -216,20 +331,6 @@ Which values can I change w…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I wanted free subdomains for my project. Ended up building my own registry in Python (and fighting DNS, Git and Cloudflare along the way)]]></title>
-        <id>https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl</id>
-        <link href="https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl"/>
-        <updated>2026-07-24T14:25:43.000Z</updated>
-        <summary type="html"><![CDATA[I registered fluxcast.dev for my Linux casting project (FluxCast). One apex record was enough, the rest of the subdomains were just wasting away.
-Then I remembered is-a.dev. The idea of getting free subdomains through a simple GitHub PR looked so good that I decided to build my own version.
-It wasn’t.
-First I needed proper validation. I wrote a bunch of checks using pytest. Blocking private IPs was easy with ipaddress, but catching duplicate keys in JSON was trickier, Python’s json.loads silently keeps only the last value. If I hadn’t caught that, someone could have hidden malicious records in a PR.
-The real fluxcast.dev landing page was already live. I was terrified of accidentally deleting it with my sync script. So I made every managed record carry the tag managed-by:fluxcast-domains. T…]]></summary>
-        <author>
-            <name>Illium</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[3GPP Version 19]]></title>
         <id>https://www.3gpp.org/specifications-technologies/releases/release-19</id>
         <link href="https://www.3gpp.org/specifications-technologies/releases/release-19"/>
@@ -240,82 +341,33 @@ The real fluxcast.dev landing page was already live. I was terrified of accident
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Deploying Kubernetes Dashboard and Managing Cluster Resources]]></title>
-        <id>https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426</id>
-        <link href="https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426"/>
-        <updated>2026-07-24T14:19:09.000Z</updated>
-        <summary type="html"><![CDATA[Kubernetes Dashboard is an open-source web GUI for managing cluster resources (CronJobs, DaemonSets, Deployments, Pods, ReplicaSets, StatefulSets) deploying apps, and monitoring cluster health in real time. This guide installs it via Helm, sets up admin and read-only RBAC access, secures it behind Nginx Ingress with cert-manager TLS, and deploys a sample app from the UI.
-Prerequisites: a Kubernetes cluster with kubectl configured, and Helm installed on your workstation.
-$ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-$ helm repo update
-$ helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
-$ kubectl get all -n kubernetes-dashboard
-
-Confirm pods, services, and replicasets are up.
-The Dash…]]></summary>
+        <title type="html"><![CDATA[Preventing line breaks in <code> elements]]></title>
+        <id>https://alexwlchan.net/2026/non-breaking-code/</id>
+        <link href="https://alexwlchan.net/2026/non-breaking-code/"/>
+        <updated>2026-07-24T14:20:17.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Sanskriti Harmukh</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Case of the Disappearing Free Trial]]></title>
-        <id>https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2</id>
-        <link href="https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2"/>
-        <updated>2026-07-24T14:18:17.000Z</updated>
-        <summary type="html"><![CDATA[A debugging story about WooCommerce Subscriptions, caching red herrings, and one deliberate line of code that quietly broke a conversion funnel.
-A client's fitness membership site offers a 7-day free trial on its subscription products. Simple enough: sign up, browse the workout library free for a week, get charged automatically after — standard WooCommerce Subscriptions behavior.
-Except guests visiting the site couldn't see the trial at all. The product page just showed the regular monthly price. No trial messaging, no "$0 due today." And when a guest actually went through checkout, they were charged the full price immediately — no 7-day grace period in sight.
-Logged-in users saw the trial just fine. Every time.
-That single fact — logged in: works, logged out: doesn't — turned out to be bo…]]></summary>
+        <title type="html"><![CDATA[Writing a Debugger from Scratch]]></title>
+        <id>https://www.timdbg.com/posts/writing-a-debugger-from-scratch-part-1/</id>
+        <link href="https://www.timdbg.com/posts/writing-a-debugger-from-scratch-part-1/"/>
+        <updated>2026-07-24T14:06:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Vicente G. Reyes</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Deploying Strapi on a Kubernetes Cluster]]></title>
-        <id>https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b</id>
-        <link href="https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b"/>
-        <updated>2026-07-24T14:17:45.000Z</updated>
-        <summary type="html"><![CDATA[Strapi is a headless CMS with an intuitive admin dashboard, custom content types, and role-based permissions, well-suited to Kubernetes for its scalability and multi-environment support. This guide builds a Strapi app, containerizes it, and deploys it to Kubernetes behind an Nginx Ingress Controller with cert-manager TLS.
-Prerequisites: a Kubernetes cluster with kubectl/helm configured, a PostgreSQL database, Docker on your workstation, a domain (this guide uses strapi.example.com) pointed at the ingress load balancer once provisioned.
-1. Install Node.js:
-$ curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-$ sudo apt install -y nodejs
-
-2. Configure Git if not already set up:
-$ git config --global user.name "Your Full Name"
-$ git config --global user.email "email@example.com"
-…]]></summary>
+        <title type="html"><![CDATA[WebGPU Unleashed: A Practical Tutorial]]></title>
+        <id>https://shi-yan.github.io/webgpuunleashed/</id>
+        <link href="https://shi-yan.github.io/webgpuunleashed/"/>
+        <updated>2026-07-24T14:04:50.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Sanskriti Harmukh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Deploying MariaDB on Kubernetes]]></title>
-        <id>https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a</id>
-        <link href="https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a"/>
-        <updated>2026-07-24T14:16:12.000Z</updated>
-        <summary type="html"><![CDATA[MariaDB is a popular open-source relational database. Running it on Kubernetes gets you portability across environments, CI/CD integration, and automated backup/recovery alongside the usual scalability and high-availability benefits. This guide sets up persistent storage, deploys MariaDB as a StatefulSet, exposes it via a Service, and covers scaling.
-Prerequisites: a Kubernetes cluster with at least 3 nodes and kubectl configured against it.
-1. Define a PersistentVolume:
-$ nano mariadb-pv.yaml
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-    name: mariadb-pv
-spec:
-    capacity:
-        storage: 10Gi
-    accessModes:
-        - ReadWriteOnce
-    persistentVolumeReclaimPolicy: Retain
-    hostPath:
-        path: /mnt/data/mariadb
-
-Retain keeps the data if the PV is deleted; hostPath backs …]]></summary>
-        <author>
-            <name>Sanskriti Harmukh</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -329,10 +381,40 @@ Retain keeps the data if the PV is deleted; hostPath backs …]]></summary>
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Plants vs. Zombies for PlayStation 2]]></title>
+        <id>https://github.com/OptiJuegos/pvz-ps2</id>
+        <link href="https://github.com/OptiJuegos/pvz-ps2"/>
+        <updated>2026-07-24T13:57:22.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Interview with a Maintainer]]></title>
         <id>https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html</id>
         <link href="https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html"/>
         <updated>2026-07-24T13:51:48.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PCI DSS DMARC Requirement: What Section 5.4.1 Requires]]></title>
+        <id>https://dmarcguard.io/blog/pci-dss/</id>
+        <link href="https://dmarcguard.io/blog/pci-dss/"/>
+        <updated>2026-07-24T13:47:21.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[My Emacs Configuration (Dired)]]></title>
+        <id>https://eugene-andrienko.com/2026-07-05-my-emacs-configuration-dired.html</id>
+        <link href="https://eugene-andrienko.com/2026-07-05-my-emacs-configuration-dired.html"/>
+        <updated>2026-07-24T13:47:04.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -359,16 +441,6 @@ Retain keeps the data if the PV is deleted; hostPath backs …]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How the God of Israel Was Born]]></title>
-        <id>https://andreafontana.it/en/birth-god-israel-yahweh-el.html</id>
-        <link href="https://andreafontana.it/en/birth-god-israel-yahweh-el.html"/>
-        <updated>2026-07-24T13:14:58.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Brazilian farmers tokenized dairy cows to get loans, bypassing bank lending limits]]></title>
         <id>85f3cd8e-4dcc-48c7-b1f8-12610dcda6dc</id>
         <link href="https://www.coindesk.com/markets/2026/07/24/brazilian-farmers-tokenized-dairy-cows-to-get-loans-bypassing-bank-lending-limits"/>
@@ -379,10 +451,10 @@ Retain keeps the data if the PV is deleted; hostPath backs …]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Patreon laying off 20% of staff]]></title>
-        <id>https://www.patreon.com/jackconte/posts/painful-update-164628951</id>
-        <link href="https://www.patreon.com/jackconte/posts/painful-update-164628951"/>
-        <updated>2026-07-24T13:02:49.000Z</updated>
+        <title type="html"><![CDATA[Half-Life 2 running natively on HaikuOS]]></title>
+        <id>https://discuss.haiku-os.org/t/haiku-nvidia-porting-nvidia-driver-for-turing-gpus/16520?page=18</id>
+        <link href="https://discuss.haiku-os.org/t/haiku-nvidia-porting-nvidia-driver-for-turing-gpus/16520?page=18"/>
+        <updated>2026-07-24T12:53:59.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -393,16 +465,6 @@ Retain keeps the data if the PV is deleted; hostPath backs …]]></summary>
         <id>https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing</id>
         <link href="https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing"/>
         <updated>2026-07-24T12:40:27.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why is programming so captivating, yet so agonizing?]]></title>
-        <id>https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing</id>
-        <link href="https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing"/>
-        <updated>2026-07-24T12:15:11.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -552,16 +614,6 @@ The post Gigabyte Z890 Aorus Elite Duo X Review: Mid-Range Board With Lots Of Co
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How Do We Stop Vibe Coding?]]></title>
-        <id>https://alexklos.ca/blog/how-do-we-stop-vibe-coding</id>
-        <link href="https://alexklos.ca/blog/how-do-we-stop-vibe-coding"/>
-        <updated>2026-07-24T10:12:39.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[India orders takedown of Jack Dorsey’s bitcoin-linked messaging app Bitchat]]></title>
         <id>2bd5d216-aae6-4a1e-a82f-a7766d785665</id>
         <link href="https://www.coindesk.com/tech/2026/07/24/india-orders-takedown-of-jack-dorsey-s-bitcoin-linked-messaging-app-bitchat"/>
@@ -612,16 +664,6 @@ The post Gigabyte Z890 Aorus Elite Duo X Review: Mid-Range Board With Lots Of Co
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Hetzner is working on LLM Inference]]></title>
-        <id>https://sliplane.io/blog/hetzner-inference</id>
-        <link href="https://sliplane.io/blog/hetzner-inference"/>
-        <updated>2026-07-24T09:24:44.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Ford, Apple To Work Together To Improve Driver-Assistance Tech]]></title>
         <id>https://www.lowyat.net/?p=399632</id>
         <link href="https://www.lowyat.net/2026/399632/ford-apple-improve-driver-assistance/"/>
@@ -644,16 +686,6 @@ The post Samsung Wallet Now Supports Maybank MAE Scan & Pay appeared first on Lo
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Nothing works and everyone is euphoric]]></title>
-        <id>https://ptrchm.com/posts/nothing-works-and-everyone-is-euphoric/</id>
-        <link href="https://ptrchm.com/posts/nothing-works-and-everyone-is-euphoric/"/>
-        <updated>2026-07-24T09:08:17.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Tecno Pova 8 5G Officially Lands In Malaysia With New Alive Matrix Display]]></title>
         <id>https://www.lowyat.net/?p=399657</id>
         <link href="https://www.lowyat.net/2026/399657/tecno-pova-8-5g-malaysia-2/"/>
@@ -662,16 +694,6 @@ The post Samsung Wallet Now Supports Maybank MAE Scan & Pay appeared first on Lo
 The post Tecno Pova 8 5G Officially Lands In Malaysia With New Alive Matrix Display appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Nurul Kamil</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Book Prize Index]]></title>
-        <id>https://book-prize-index.vercel.app/</id>
-        <link href="https://book-prize-index.vercel.app/"/>
-        <updated>2026-07-24T08:29:11.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -714,16 +736,6 @@ The post Alleged Images Of OPPO Find X10 Series Appear Online appeared first on 
 The post YouTuber Gets Snapdragon X Elite Laptop To Run NVIDIA RTX 4060 via eGPU appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>John Law</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AMD's Instinct MI455X: Aiming for the Sun]]></title>
-        <id>https://chipsandcheese.com/p/amds-instinct-mi455x-aiming-for-the</id>
-        <link href="https://chipsandcheese.com/p/amds-instinct-mi455x-aiming-for-the"/>
-        <updated>2026-07-24T06:59:07.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -899,16 +911,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Writing by hand is good for your brain]]></title>
-        <id>https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your</id>
-        <link href="https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your"/>
-        <updated>2026-07-23T14:24:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Uniswap pushes deeper into tokenized assets with permissioned trading pools]]></title>
         <id>1c0b35e9-ec4b-489f-ab56-fac1c3f35160</id>
         <link href="https://www.coindesk.com/business/2026/07/22/uniswap-pushes-deeper-into-tokenized-assets-with-permissioned-trading-pools"/>
@@ -916,16 +918,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         <summary type="html"><![CDATA[The framework, developed with Superstate, Securitize and Dowgo, lets regulated funds and securities trade on Uniswap while enforcing compliance rules necessary for institutions.]]></summary>
         <author>
             <name>Krisztian Sandor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Goldman Sachs CEO backs Clarity Act despite banking industry's concerns over stablecoin rules]]></title>
-        <id>95299012-d79d-4c50-8284-754356a8bc49</id>
-        <link href="https://www.coindesk.com/policy/2026/07/23/goldman-sachs-ceo-backs-clarity-act-despite-banking-industry-s-concerns-over-stablecoin-rules"/>
-        <updated>2026-07-23T13:53:19.000Z</updated>
-        <summary type="html"><![CDATA[The Goldman Sachs CEO said the crypto market structure bill would create a more stable regulatory framework, breaking with other major bank leaders who oppose key stablecoin provisions.]]></summary>
-        <author>
-            <name>Helene Braun</name>
         </author>
     </entry>
     <entry>
@@ -956,16 +948,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         <summary type="html"><![CDATA[What happens when an engineer gets fed up with corporate lawyers breathing down their neck? Sometimes, you get an inside joke that quietly ships to millions of machines and survives for over three dec]]></summary>
         <author>
             <name>Beau Carnes</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The KIDS Act is way worse than digital carding — it is a mass surveillance system]]></title>
-        <id>57d1dd94-ef74-420b-9265-fc6878e7e2da</id>
-        <link href="https://www.coindesk.com/opinion/2026/07/23/the-kids-act-is-way-worse-than-digital-carding-it-is-a-mass-surveillance-system"/>
-        <updated>2026-07-23T13:00:00.000Z</updated>
-        <summary type="html"><![CDATA[The fact that lawmakers are even contemplating a bill that would create a surveillance and censorship regime should be a wake-up call for everyone who values privacy and free expression, argues Electronic Frontier Foundation's India McKinney.]]></summary>
-        <author>
-            <name>India McKinney</name>
         </author>
     </entry>
     <entry>
@@ -1079,16 +1061,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Tangleflow: Converts GitHub Actions workflows to tangled workflows and back]]></title>
-        <id>https://github.com/43081j/tangleflow</id>
-        <link href="https://github.com/43081j/tangleflow"/>
-        <updated>2026-07-22T03:28:34.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Gravity Mainnet Is Now Available on Quicknode]]></title>
         <id>gravity-mainnet-quicknode</id>
         <link href="https://www.quicknode.com/blog/gravity-mainnet-quicknode"/>
@@ -1096,16 +1068,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         <summary type="html"><![CDATA[Gravity Mainnet, a fully EVM-equivalent Layer 1 with sub-second finality and 12,000+ TPS, is now available on Quicknode. Learn about its native oracle, agent-focused design, and how it evolved from Gravity Alpha Mainnet.]]></summary>
         <author>
             <name>Quicknode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Computational chemistry, Locally? My rant on SSH]]></title>
-        <id>https://chillphysicsenjoyer.substack.com/p/computational-chemistry-locally</id>
-        <link href="https://chillphysicsenjoyer.substack.com/p/computational-chemistry-locally"/>
-        <updated>2026-07-21T18:23:49.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1136,6 +1098,16 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         <summary type="html"><![CDATA[The conversation about AI often centers on algorithms, computing power, or huge investments in new semiconductor fabrication plants and hyperscale data centers. But beneath each of these advances is another layer of innovation that makes them possible: advanced materials. Every new generation of AI technology demands more processing power, more memory, greater energy efficiency, and…]]></summary>
         <author>
             <name>Christine McGuiness and Devang Khariwala</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[So bright the vision (1956) a story about machines writing instead of humans [pdf]]]></title>
+        <id>https://s3.us-west-1.wasabisys.com/luminist/EB/S/Simak%20-%20So%20Bright%20the%20Vision.pdf</id>
+        <link href="https://s3.us-west-1.wasabisys.com/luminist/EB/S/Simak%20-%20So%20Bright%20the%20Vision.pdf"/>
+        <updated>2026-07-21T02:38:50.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>

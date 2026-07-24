@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm",
-          "author": "zhhk1h",
-          "description": "深度解析：CDR 与 Retimer 在高速互联架构中的“共生与博弈”\n\n\n在高速信号处理领域，CDR（Clock and Data Recovery，时钟数据恢复）与 Retimer（重定时器） 并非简单的对等关系，而是“核心算法单元”与“完整系统级解决方案”的层级关系。\n要理解两者的本质，必须打破“它们只是用来修补信号”的肤浅认知。以下是基于千万级深度图谱的维度拆解：\nCDR（时钟数据恢复）： \n“心脏”。其本质是一个数学滤波与锁相环（PLL）系统。它并不关心信号的完整内容，只负责从充满噪声的随机比特流中，通过相位检测（PD）提取出原始发送端的时钟频率，并以此为基准，将模糊的电压跳变重新“对齐”为逻辑电平。\n  局限性： CDR 是被动执行者，它仅负责“读准”，不负责“修补”。\nRetimer（重定时器）： \n“全能外科医生”。Retimer 的内部架构中必然包含一个高性能 CDR，但它多出了核心的 Decision Feedback Equalization（DFE，判决反馈均衡） 和 重传（Retransmission） 模块。\n  关键差异： Retimer 会将输入的模拟信号完全“数字化”为干净的比特流，然后使用一个全新的、抖动极小的时钟源重新发送。它切断了抖动的累积链条。\n在 112G/224G PAM4 的高速互联时代，信号衰减不再是线性的，而是指数级的。\n  抖动（Jitter）的“熵增”效应：\n单纯的 CDR 只能跟随输入信号的抖动。如果输入端的抖动已经超过了判决阈值，CDR 就会“跟着错”。而 Retimer 通过“接收 -> 清理 -> 再生”的闭环逻辑，实现了抖动的重置（Jitter Reset），有效地降低了系统误码率（BER）。\n  插入损耗与通道覆盖：\n由于 PCB 材质和铜线损耗，信号在传输 20-30dB 后几乎无法辨识。Retimer 相当于在长距离传输中设置了“信号补给站”，它不仅恢复数据，还通过预加重（Pre-emphasis）技术补偿了后续通道的损耗。\n\n\n\n特性维度\nCDR (核心模块)\nRetimer (系统级芯片)\n\n\n\n\n功能定位\n时钟捕获与同步\n信号再生与协议处理\n\n\n数据处理\n模拟/数字混合信号处理\n完整的数字域重构\n\n\n抖动处理\n仅做追踪，不消除累积\n彻底消除抖动累积 (Jitter Reset)\n\n\n硬件复杂度\n较低，常集成在 SerDes 内\n极高，包含复杂的 DSP 与 DFE\n\n\n应用场景\n短距离、内部集成链路\n长距离、背板传输、PCIe 扩展\n\n\n\n从 Lantea.ai 的数据视角观察，Retimer 与 CDR 的关系正在发生范式转移：\n 从“物理层”走向“协议层”： 现代 Retimer 不再仅仅是物理层芯片，它们正在集成 PCIe/CXL 协议感知能力。它们不仅在修补信号，还在监测链路的握手状态，甚至参与流控。\n “重定时”即“算力中继”： 在 AI 集群中，Retimer 正在演变成数据链路的“边缘计算节点”。它们通过 DFE 自适应算法，实时分析通道环境，甚至能够预测链路失效的前兆。\n CDR 的“隐形化”： 未来的 CDR 将完全嵌入到高密度 DSP 架构中，不再作为一个独立的“组件”存在，而是作为系统级芯片（SoC）内部的一个基础数学算子。\nCDR 是 Retimer 的基石，而 Retimer 是 CDR 的进化形态。 \n如果你在设计一个高速互联系统，CDR 是你为了保证通信而必须支付的“基础成本”，而 Retimer 是为了跨越物理极限、实现超大规模互联而必须部署的“架构红利”。 随着信号速率突破 224Gbps，Retimer 将从“选配”变为“标配”。",
-          "link": "https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm",
-          "publishedOn": "2026-07-24T14:38:31.000Z",
-          "wordCount": 1394,
-          "title": "CDR与retimer是什么关系",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhes59wa5xe60z0w6ztpa.png"
+          "id": "https://dev.to/chenyuan20509/i-upgraded-my-json-failure-library-to-sqlite-now-my-ai-agents-share-crash-fixes-across-machines-43hb",
+          "author": "Chen Yuan",
+          "description": "Hook\n\n\nThe JSON failure library worked great — until my agents started running on multiple machines. Suddenly, crash fixes logged on one server were invisible to agents on another. Worse, concurrent writes from parallel agents corrupted the JSON file.\nI needed a real database. Here's how I upgraded to SQLite without rewriting the whole library.\nSQLite is the perfect upgrade path. It's a single file, supports concurrent readers, and handles writes with proper locking. Here's the migration:\nimport sqlite3\nimport time\nimport platform\nfrom pathlib import Path\nfrom typing import Optional\n\nDB_PATH = Path.home() / \".mcp\" / \"failures.db\"\n\ndef init_db():\n    \"\"\"Create the failures table if it doesn't exist.\"\"\"\n    DB_PATH.parent.mkdir(parents=True, exist_ok=True)\n    conn = sqlite3.connect(str(DB_P…",
+          "link": "https://dev.to/chenyuan20509/i-upgraded-my-json-failure-library-to-sqlite-now-my-ai-agents-share-crash-fixes-across-machines-43hb",
+          "publishedOn": "2026-07-24T16:22:27.000Z",
+          "wordCount": 2385,
+          "title": "I Upgraded My JSON Failure Library to SQLite. Now My AI Agents Share Crash Fixes Across Machines.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fs8kyrlwd5job0npcqfw6.png"
         },
         {
-          "id": "https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp",
-          "author": "Bobai Kato",
-          "description": "A green call does not prove the dependency mattered\n\n\nA service can be reachable without being exercised. An application can call a dependency without\nFlatten those outcomes into one green or red status and a proof system will eventually claim more\nOta 1.6.24 separates three levels:\nreachable: the selected path reached a declared dependency boundary;\nexercised: a finite observer recovered evidence produced through that dependency in the current\nproof transaction;\nfault_tested: a separate control proved the same obligation failed for the declared\nmissing-effect reason.\nEach level answers a different question. None may be inferred from a command label or exit code.\nThe runtime workflow declares the positive observation and the negative control independently:\nworkflows:\n  app-proof:\n    run:\n…",
-          "link": "https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp",
-          "publishedOn": "2026-07-24T14:37:52.000Z",
-          "wordCount": 2104,
-          "title": "Testing the Proof System: Negative Controls and Dependency Evidence in Ota",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fres.cloudinary.com%2Fota-run%2Fimage%2Fupload%2Ftesting-the-proof-system-negative-controls-and-dependency-evidence.png"
+          "id": "https://dev.to/franckpachot/b-tree-block-split-whats-the-impact-1i9c",
+          "author": "Franck Pachot",
+          "description": "Everybody knows that B-tree indexes provide logarithmic lookups, but what does that actually mean in PostgreSQL?\nEXPLAIN (analyze, buffers, wal) for observing the buffer activity and WAL generated by DML on indexes\npageinspect for inspecting internal page structures\npgstattuple for gathering statistics about index pages\nBy inserting rows one at a time and collecting B-tree statistics after each insert, we can watch the index grow from a single page to a multi-level B-tree and correlate page splits with WAL generation and buffer accesses.\nThe pageinspect extension is a low-level debugging tool that exposes information stored in table and index pages.\npostgres=# create extension if not exists pageinspect;\nCREATE EXTENSION\n\npostgres=# \\x\nExpanded display is on.\n\npostgres=# select * from bt_me…",
+          "link": "https://dev.to/franckpachot/b-tree-block-split-whats-the-impact-1i9c",
+          "publishedOn": "2026-07-24T16:20:52.000Z",
+          "wordCount": 4207,
+          "title": "B-tree block split: what's the impact?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fg9s8helqro0z7zzxhkks.png"
         },
         {
-          "id": "https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l",
-          "author": "Gemini Team",
-          "description": "Scaling AI Safety Research for a Multi-Agent World\n\n\nFor the past decade, we've focused on making individual AI models more capable, helpful and safe. Now, Google DeepMind — together with Schmidt Sciences, the Cooperative AI Foundation, the Advanced Research and Invention Agency, and supported by Google.org — has announced a new technical research funding call of up to $10M for researchers worldwide.\nAs AI technology scales, we're entering a new era. Soon, millions of AI agents — built by different organizations — will interact across digital environments, communicating, negotiating and transacting with one another.\nWhen these systems interact, they must do so safely and predictably. This shift creates a vital opportunity: we can strengthen the safety and stability of the entire AI ecosyst…",
-          "link": "https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l",
-          "publishedOn": "2026-07-24T14:35:41.000Z",
-          "wordCount": 1938,
-          "title": "Investing in multi-agent AI safety research",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fg2x8v43efq92hmur1m3j.webp"
+          "id": "https://dev.to/hideyukimori/261-docs-6-languages-one-maintainer-frontmatter-is-the-source-of-truth-2c8f",
+          "author": "HideyukiMORI",
+          "description": "If you maintain a docs folder that keeps drifting — missing index entries, stale translations, categories that no longer match — this is for you.\nNENE2 is my small PHP framework for building AI-readable business APIs.\nRepository:\nhttps://github.com/hideyukiMORI/NENE2\nOver time it grew a large set of how-to guides. Today the English directory holds 261 guides, and every one of them is mirrored into five more languages: Japanese, French, Chinese, German, and Brazilian Portuguese.\nThat is 261 guides across 6 locales — 1,566 files in all.\nMaintained by one person.\nThe only way this stays sane is to stop treating docs as prose and start treating them as data.\nThis article is about the machinery that makes that possible.\nWhat you'll learn:\nHow to make YAML frontmatter the single source of truth …",
+          "link": "https://dev.to/hideyukimori/261-docs-6-languages-one-maintainer-frontmatter-is-the-source-of-truth-2c8f",
+          "publishedOn": "2026-07-24T16:17:54.000Z",
+          "wordCount": 4803,
+          "title": "261 docs, 6 languages, one maintainer: frontmatter is the source of truth",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9kgodekf6uatdmu0rpt7.png"
         },
         {
-          "id": "https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c",
-          "author": "Mustafa ERBAY",
-          "description": "A few weeks ago, while working on AI-generated code snippets we had added to our projects, we encountered an unexpected security vulnerability. This incident forced us to re-evaluate the risks and costs associated with AI code generation tools, which are rapidly adopted for their promise of increased efficiency. Now, we must not only verify the correctness of the code but also question its origin and security posture. In this post, I will dissect the anatomy of security vulnerabilities in AI-generated code, understand why they emerge, and most importantly, address the hidden costs of remediating these vulnerabilities.\nAI-powered code generators have changed the game in software development. The efficiency they offer in automating repetitive tasks, accelerating prototyping, and even providi…",
-          "link": "https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c",
-          "publishedOn": "2026-07-24T14:34:28.000Z",
-          "wordCount": 2742,
-          "title": "AI-Generated Code: Anatomy of Security Vulnerabilities and the Cost",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzip1495gwtoakplybqtk.png"
+          "id": "https://dev.to/raju_dandigam/why-typescript-ai-developers-need-native-tracing-tools-3p2a",
+          "author": "Raju Dandigam",
+          "description": "TypeScript support is easy to claim. Publish an npm package, add a few type declarations, and a tracing product can put “JavaScript and TypeScript” on its integration list.\nNative support is a higher bar.\nAI applications in the TypeScript ecosystem run inside concurrent Node.js servers, serverless functions, edge runtimes, background workers, test runners, and streaming web frameworks. They cross promise chains, callbacks, tool adapters, async iterators, and package boundaries. A useful tracing tool must fit those execution models without breaking types or producing disconnected spans.\nThe question is therefore not only, “Does this tool have a TypeScript SDK?” It is, “Does it preserve how a TypeScript agent actually runs?”\nConsider a small agent:\nasync function supportAgent(question: strin…",
+          "link": "https://dev.to/raju_dandigam/why-typescript-ai-developers-need-native-tracing-tools-3p2a",
+          "publishedOn": "2026-07-24T16:16:02.000Z",
+          "wordCount": 2933,
+          "title": "Why TypeScript AI Developers Need Native Tracing Tools",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fmhgnsfs7kq6lpccwzb9m.png"
         },
         {
-          "id": "https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7",
-          "author": "davidvk89",
-          "description": "From Vague Understanding to Working Truth: Governed Externalized Sensemaking\n\n\nThis is a pre-polish article about a captured working model.\nIt came out of practical work on Myriuna Worlds, not from an academic research program. I was building, documenting, reviewing, and trying to keep a large AI-assisted project from dissolving into scattered notes, unfinished thoughts, and repeated re-discovery.\nThe model that emerged is called:\nGoverned Externalized Sensemaking\nThe short version:\nGoverned Externalized Sensemaking is a human-governed AI-assisted learning workflow where unstable early understanding is externalized into inspectable artifacts, tested through reframing and role-based metacognitive pressure, recorded as traceable provenance, exposed to external feedback, reviewed for authorit…",
-          "link": "https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7",
-          "publishedOn": "2026-07-24T14:34:03.000Z",
-          "wordCount": 2948,
-          "title": "From Vague Understanding to Working Truth: Governed Externalized Sensemaking",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0yji11adhmk244gn6jjo.png"
+          "id": "https://dev.to/paultwist/multi-runtime-agents-without-fragmentation-the-control-plane-pattern-32bo",
+          "author": "Paul Twist",
+          "description": "How teams move from \"one API key per runtime\" to \"one gateway, any runtime\"\nYou've got a squad of coding agents now. Some teams use Claude Managed Agents. Others prefer Cursor. Finance is piloting Bedrock AgentCore. Engineering wants to stay self-hosted.\nThis sounds flexible. It's actually a disaster.\nHere's what happens:\nAgent A (Claude Managed Agents team) stores API credentials in Anthropic console. No one else on the company can invoke it.\nAgent B (Cursor team) lives in a separate dashboard. Finance can't call it without direct Cursor access.\nAgent C (Bedrock, self-hosted) requires AWS IAM roles. Now you need to explain why the Marketing team can't use Bedrock.\nAgent D (N8N) sits in a workflow tool. No one knows it exists. No one can audit what it does.\nThe models are powerful. The inf…",
+          "link": "https://dev.to/paultwist/multi-runtime-agents-without-fragmentation-the-control-plane-pattern-32bo",
+          "publishedOn": "2026-07-24T16:02:10.000Z",
+          "wordCount": 2615,
+          "title": "Multi-Runtime Agents Without Fragmentation: The Control Plane Pattern",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fmsvuwoejgizy2aax9rcj.png"
         },
         {
-          "id": "https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j",
-          "author": "developerz.ai",
-          "description": "Integrating LLMs into Production: Practical Patterns and Pitfalls\n\n\nTL;DR – Deploying large language models (LLMs) in a live product requires careful handling of latency, cost, and safety. This article walks through proven patterns, code snippets, and common pitfalls, drawing on real‑world experience from building AI‑powered SaaS features at developerz.ai.\nLLMs enable features such as:\nDynamic content generation (e.g., marketing copy, code snippets)\nSemantic search and retrieval‑augmented generation (RAG)\nConversational assistants that understand domain‑specific terminology\nFor early‑stage products, the ability to prototype these capabilities quickly can be a differentiator. However, the raw model is only a building block; the surrounding engineering determines whether the feature is relia…",
-          "link": "https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j",
-          "publishedOn": "2026-07-24T14:32:19.000Z",
-          "wordCount": 2035,
-          "title": "Integrating LLMs into Production: Practical Patterns and Pitfalls",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1gckyebnvng1lwggyrz5.png"
+          "id": "https://dev.to/robertpelloni/mcp-protocol-deep-dive-how-tool-discovery-actually-works-1dag",
+          "author": "Robert Pelloni",
+          "description": "MCP Protocol Deep-Dive: How Tool Discovery Actually Works\nUnlock the mechanics of the Model Context Protocol. We dissect the JSON-RPC handshake that enables dynamic tool discovery and build a functional MCP server in just 50 lines of Go, which TormentNexus instantly recognizes.\nThe Problem MCP Solves in Modern AI Systems\nLarge Language Models are powerful reasoning engines, but they are fundamentally stateless and isolated. They cannot, by default, fetch live data, execute code, or interact with the vast ecosystem of APIs and databases that power modern applications. The Model Context Protocol (MCP) is the open standard that bridges this critical gap, creating a universal interface for connecting AI models to external tools and data sources.\nThink of MCP as the \"USB-C\" for AI. Before MCP, …",
+          "link": "https://dev.to/robertpelloni/mcp-protocol-deep-dive-how-tool-discovery-actually-works-1dag",
+          "publishedOn": "2026-07-24T16:02:04.000Z",
+          "wordCount": 2331,
+          "title": "MCP Protocol Deep-Dive: How Tool Discovery Actually Works",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F22ztk6rtqaf1unmd34v6.png"
         },
         {
-          "id": "https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9",
-          "author": "BIFROST",
-          "description": "Fixed audio tracks are convenient, but they hide almost every decision from the listener. You press play and receive a finished result. You cannot inspect the carrier frequencies, see the beat difference, or change the signal while it is running.\nThat lack of visibility was the reason I started building BIFROST.\nBIFROST is a browser-based workspace that generates binaural audio and amplitude modulation in real time. It is not a medical device, and I am not claiming that a particular frequency produces a guaranteed effect. My goal is narrower: give people direct control over the audio signal and make the current state understandable.\nI wanted the experience to answer three questions without forcing the user to trust a black box:\nWhat is being generated right now?\nWhich values can I change w…",
-          "link": "https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9",
-          "publishedOn": "2026-07-24T14:29:22.000Z",
-          "wordCount": 1908,
-          "title": "Why I Built a Browser Audio Workspace That Shows Its Internal Signal",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F8qm799ew1xalm20dd9nk.png"
+          "id": "https://dev.to/cloudfrontier/getting-started-with-infrastructure-as-code-using-terraform-3ppo",
+          "author": "Cloud Frontier",
+          "description": "What is Infrastructure as Code?\n\n\nInfrastructure as Code (IaC) lets you manage your cloud resources with configuration files instead of clicking around a web console. It is repeatable, versionable, and less error prone. Terraform by HashiCorp is one of the most popular IaC tools because it is cloud agnostic and uses a declarative language called HCL (HashiCorp Configuration Language).\nTerraform is a single binary. Download the appropriate package for your OS from the official site, unzip it, and ensure the terraform binary is in your PATH. Verify with:\nterraform version\n\nCreate a directory for your project and a file named main.tf. Here is a minimal example that provisions an AWS EC2 instance:\nterraform {\n  required_providers {\n    aws = {\n      source  = \"hashicorp/aws\"\n      version = \"~…",
+          "link": "https://dev.to/cloudfrontier/getting-started-with-infrastructure-as-code-using-terraform-3ppo",
+          "publishedOn": "2026-07-24T16:01:49.000Z",
+          "wordCount": 1901,
+          "title": "Getting Started with Infrastructure as Code Using Terraform",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fh6d54u1cktlnohdgdy7i.png"
         },
         {
-          "id": "https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl",
-          "author": "Illium",
-          "description": "I registered fluxcast.dev for my Linux casting project (FluxCast). One apex record was enough, the rest of the subdomains were just wasting away.\nThen I remembered is-a.dev. The idea of getting free subdomains through a simple GitHub PR looked so good that I decided to build my own version.\nIt wasn’t.\nFirst I needed proper validation. I wrote a bunch of checks using pytest. Blocking private IPs was easy with ipaddress, but catching duplicate keys in JSON was trickier, Python’s json.loads silently keeps only the last value. If I hadn’t caught that, someone could have hidden malicious records in a PR.\nThe real fluxcast.dev landing page was already live. I was terrified of accidentally deleting it with my sync script. So I made every managed record carry the tag managed-by:fluxcast-domains. T…",
-          "link": "https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl",
-          "publishedOn": "2026-07-24T14:25:43.000Z",
-          "wordCount": 1816,
-          "title": "I wanted free subdomains for my project. Ended up building my own registry in Python (and fighting DNS, Git and Cloudflare along the way)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9po6desz1lhsyqw9xagk.png"
+          "id": "https://dev.to/pathvector-dev/split-horizon-dns-one-name-two-answers-and-the-server-decides-by-whos-asking-4859",
+          "author": "pathvector-dev",
+          "description": "Originally published at https://blog.pathvector.dev/protocol-lab-dns-views-42-split-horizon/ — part of the free Protocol Lab series.\nThis post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.\nIn Lab #41, round-robin DNS rotated the order of one name's records. Split-horizon DNS pulls a more radical trick: it changes the answer itself based on who is asking. An authoritative server keeps several views of the same zone and picks one by the client's source address.\nReading guide: rfc-notes/split-horizon-dns.md\nPrerequisite: DNS Lab 05: Resolving a Name Through the Hierarchy\nExpected time: 35–…",
+          "link": "https://dev.to/pathvector-dev/split-horizon-dns-one-name-two-answers-and-the-server-decides-by-whos-asking-4859",
+          "publishedOn": "2026-07-24T16:00:59.000Z",
+          "wordCount": 2710,
+          "title": "Split-Horizon DNS: One Name, Two Answers, and the Server Decides by Who's Asking",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhpbw58fiuv8eahbunu9q.png"
         },
         {
-          "id": "https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426",
-          "author": "Sanskriti Harmukh",
-          "description": "Kubernetes Dashboard is an open-source web GUI for managing cluster resources (CronJobs, DaemonSets, Deployments, Pods, ReplicaSets, StatefulSets) deploying apps, and monitoring cluster health in real time. This guide installs it via Helm, sets up admin and read-only RBAC access, secures it behind Nginx Ingress with cert-manager TLS, and deploys a sample app from the UI.\nPrerequisites: a Kubernetes cluster with kubectl configured, and Helm installed on your workstation.\n$ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/\n$ helm repo update\n$ helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard\n$ kubectl get all -n kubernetes-dashboard\n\nConfirm pods, services, and replicasets are up.\nThe Dash…",
-          "link": "https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426",
-          "publishedOn": "2026-07-24T14:19:09.000Z",
-          "wordCount": 2208,
-          "title": "Deploying Kubernetes Dashboard and Managing Cluster Resources",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fyg2hgnol7gpchu4x6ykd.png"
+          "id": "https://dev.to/pathvector-dev/dns-round-robin-the-cheapest-load-balancer-is-three-a-records-and-a-rotating-answer-4m6f",
+          "author": "pathvector-dev",
+          "description": "Originally published at https://blog.pathvector.dev/protocol-lab-dnsrr-41/ — part of the free Protocol Lab series.\nThis post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.\nThe load-distribution labs so far worked in the network: anycast (Lab 31) let routing pick an instance, ECMP (Lab 32) hashed flows across links, and IPVS (Lab 33) had a director distribute connections. This lab spreads clients one layer earlier — at name resolution.\nReading guide: rfc-notes/dns-round-robin.md\nPrerequisite: DNS Lab 05: Resolving a Name Through the Hierarchy\nExpected time: 30–45 minutes.\nOne name (web.la…",
+          "link": "https://dev.to/pathvector-dev/dns-round-robin-the-cheapest-load-balancer-is-three-a-records-and-a-rotating-answer-4m6f",
+          "publishedOn": "2026-07-24T16:00:39.000Z",
+          "wordCount": 2836,
+          "title": "DNS Round-Robin: The Cheapest Load Balancer Is Three A Records and a Rotating Answer",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fftjqjatqq5vqe51i56nb.png"
         },
         {
-          "id": "https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2",
-          "author": "Vicente G. Reyes",
-          "description": "A debugging story about WooCommerce Subscriptions, caching red herrings, and one deliberate line of code that quietly broke a conversion funnel.\nA client's fitness membership site offers a 7-day free trial on its subscription products. Simple enough: sign up, browse the workout library free for a week, get charged automatically after — standard WooCommerce Subscriptions behavior.\nExcept guests visiting the site couldn't see the trial at all. The product page just showed the regular monthly price. No trial messaging, no \"$0 due today.\" And when a guest actually went through checkout, they were charged the full price immediately — no 7-day grace period in sight.\nLogged-in users saw the trial just fine. Every time.\nThat single fact — logged in: works, logged out: doesn't — turned out to be bo…",
-          "link": "https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2",
-          "publishedOn": "2026-07-24T14:18:17.000Z",
-          "wordCount": 2868,
-          "title": "The Case of the Disappearing Free Trial",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fy1t9v07k5hheavm5g0fd.png"
+          "id": "https://dev.to/pathvector-dev/dnat-explained-publishing-an-internal-service-through-one-public-address-and-port-4a4f",
+          "author": "pathvector-dev",
+          "description": "Originally published at https://blog.pathvector.dev/protocol-lab-dnat-40/ — part of the free Protocol Lab series.\nThis post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.\nIn Lab #20, source NAT (masquerade) let many inside hosts reach out through one public address. This lab is the inbound complement: destination NAT — better known as port forwarding — which lets the outside reach a chosen inside service through a public address:port.\nReading guide: rfc-notes/dnat-port-forwarding.md\nPrerequisite: Lab 20: NAT — Source Address Translation\nExpected time: 35–50 minutes.\nAn internal server si…",
+          "link": "https://dev.to/pathvector-dev/dnat-explained-publishing-an-internal-service-through-one-public-address-and-port-4a4f",
+          "publishedOn": "2026-07-24T16:00:22.000Z",
+          "wordCount": 2980,
+          "title": "DNAT Explained: Publishing an Internal Service Through One Public Address and Port",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2z0cnwb8no8jp6dci3ds.png"
         },
         {
-          "id": "https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b",
-          "author": "Sanskriti Harmukh",
-          "description": "Strapi is a headless CMS with an intuitive admin dashboard, custom content types, and role-based permissions, well-suited to Kubernetes for its scalability and multi-environment support. This guide builds a Strapi app, containerizes it, and deploys it to Kubernetes behind an Nginx Ingress Controller with cert-manager TLS.\nPrerequisites: a Kubernetes cluster with kubectl/helm configured, a PostgreSQL database, Docker on your workstation, a domain (this guide uses strapi.example.com) pointed at the ingress load balancer once provisioned.\n1. Install Node.js:\n$ curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -\n$ sudo apt install -y nodejs\n\n2. Configure Git if not already set up:\n$ git config --global user.name \"Your Full Name\"\n$ git config --global user.email \"email@example.com\"\n…",
-          "link": "https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b",
-          "publishedOn": "2026-07-24T14:17:45.000Z",
-          "wordCount": 2238,
-          "title": "Deploying Strapi on a Kubernetes Cluster",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fz689q5ms0w6zdgpj3jtf.png"
+          "id": "https://dev.to/ramn_cortez_8e1ed2c075fc/why-probabilistic-ai-needs-deterministic-control-g8d",
+          "author": "Ramón Cortez",
+          "description": "Most AI automation tutorials show you how to connect an LLM to a database and call it a day. That works fine for a prototype, but in production—especially for finance or enterprise workflows—relying solely on probabilistic AI model behavior is a massive liability.\nAI models predict tokens. They don't natively understand your business logic or enforce compliance. If you're building serious infrastructure, your LLM needs to live inside a deterministic control system.\n[ Incoming Invoice Payload ]\nValidation Gateway (Rules First)\n\n\nAutomated Circuit Breaker (Catch Anomalies Early)\n\n\nImmutable Ledger (Verifiable Audit Trail)\n\n\n\nMy Take\nStop relying on the AI model to police itself. Build the deterministic wrapper first, and let the model operate safely inside those boundaries.",
+          "link": "https://dev.to/ramn_cortez_8e1ed2c075fc/why-probabilistic-ai-needs-deterministic-control-g8d",
+          "publishedOn": "2026-07-24T16:00:00.000Z",
+          "wordCount": 1613,
+          "title": "Why Probabilistic AI Needs Deterministic Control",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fc0t7lq4o0gmydpxw9kze.png"
         },
         {
-          "id": "https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a",
-          "author": "Sanskriti Harmukh",
-          "description": "MariaDB is a popular open-source relational database. Running it on Kubernetes gets you portability across environments, CI/CD integration, and automated backup/recovery alongside the usual scalability and high-availability benefits. This guide sets up persistent storage, deploys MariaDB as a StatefulSet, exposes it via a Service, and covers scaling.\nPrerequisites: a Kubernetes cluster with at least 3 nodes and kubectl configured against it.\n1. Define a PersistentVolume:\n$ nano mariadb-pv.yaml\n\napiVersion: v1\nkind: PersistentVolume\nmetadata:\n    name: mariadb-pv\nspec:\n    capacity:\n        storage: 10Gi\n    accessModes:\n        - ReadWriteOnce\n    persistentVolumeReclaimPolicy: Retain\n    hostPath:\n        path: /mnt/data/mariadb\n\nRetain keeps the data if the PV is deleted; hostPath backs …",
-          "link": "https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a",
-          "publishedOn": "2026-07-24T14:16:12.000Z",
-          "wordCount": 1898,
-          "title": "Deploying MariaDB on Kubernetes",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fcaag3dyzb9e3m4axfpas.png"
+          "id": "https://dev.to/chenyuan20509/i-added-a-failure-library-to-my-mcp-server-now-my-ai-agents-warn-each-other-about-crashes-before-4ell",
+          "author": "Chen Yuan",
+          "description": "Hook\n\n\nMy MCP server kept crashing in production. Every time it restarted, my AI agents would blindly retry the same failing operations, wasting tokens and time. I needed a way for them to learn from failures — and share those lessons with each other.\nSo I built a failure library. Now when an agent hits an error, it logs it. The next agent checks the library first and either avoids the trap entirely or applies a verified fix.\nHere's the core pattern — a simple JSON-based failure cache that any MCP server can adopt:\nimport json\nimport time\nfrom pathlib import Path\nfrom typing import Optional\n\nFAILURE_LIBRARY = Path.home() / \".mcp\" / \"failures.json\"\n\ndef log_failure(task: str, error: str, attempted_fix: str, result: str):\n    \"\"\"Log a failure to the shared library.\"\"\"\n    entry = {\n        \"…",
+          "link": "https://dev.to/chenyuan20509/i-added-a-failure-library-to-my-mcp-server-now-my-ai-agents-warn-each-other-about-crashes-before-4ell",
+          "publishedOn": "2026-07-24T15:58:32.000Z",
+          "wordCount": 4077,
+          "title": "I Added a \"Failure Library\" to My MCP Server. Now My AI Agents Warn Each Other About Crashes Before They Happen.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ftf3mibx6yakg6wecjojb.png"
         }
       ]
     },
@@ -252,6 +252,36 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://foldkit.dev/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://foldkit.dev/",
+          "publishedOn": "2026-07-24T15:24:00.000Z",
+          "wordCount": 1299,
+          "title": "The front end framework for correctness: built on Effect, architected like Elm",
+          "imageUrl": "https://foldkit.dev/og/home.png"
+        },
+        {
+          "id": "https://lucumr.pocoo.org/2026/7/24/codeberg-divides/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://lucumr.pocoo.org/2026/7/24/codeberg-divides/",
+          "publishedOn": "2026-07-24T15:05:06.000Z",
+          "wordCount": 892,
+          "title": "Codeberg Divides",
+          "imageUrl": "https://lucumr.pocoo.org/social/2026-07-24-codeberg-divides-social.png"
+        },
+        {
+          "id": "https://www.thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece",
+          "publishedOn": "2026-07-24T14:41:59.000Z",
+          "wordCount": 8910,
+          "title": "Government orders GitHub to remove Bluetooth-based chat app Bitchat: Jack Dorsey",
+          "imageUrl": "https://th-i.thgim.com/public/incoming/s017lf/article71262085.ece/alternates/LANDSCAPE_1200/12-11-JACK_DORSEY_CEO_TWITTER_B.jpg"
+        },
+        {
           "id": "https://www.usenix.org/conference/atc22/presentation/jansen",
           "author": null,
           "description": "Comments",
@@ -282,6 +312,36 @@
           "imageUrl": null
         },
         {
+          "id": "https://alexwlchan.net/2026/non-breaking-code/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://alexwlchan.net/2026/non-breaking-code/",
+          "publishedOn": "2026-07-24T14:20:17.000Z",
+          "wordCount": 492,
+          "title": "Preventing line breaks in <code> elements",
+          "imageUrl": "https://alexwlchan.net/images/profile_green_sq.jpg"
+        },
+        {
+          "id": "https://www.timdbg.com/posts/writing-a-debugger-from-scratch-part-1/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.timdbg.com/posts/writing-a-debugger-from-scratch-part-1/",
+          "publishedOn": "2026-07-24T14:06:03.000Z",
+          "wordCount": 2179,
+          "title": "Writing a Debugger from Scratch",
+          "imageUrl": null
+        },
+        {
+          "id": "https://shi-yan.github.io/webgpuunleashed/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://shi-yan.github.io/webgpuunleashed/",
+          "publishedOn": "2026-07-24T14:04:50.000Z",
+          "wordCount": 957,
+          "title": "WebGPU Unleashed: A Practical Tutorial",
+          "imageUrl": "/webgpuunleashed/meta.png"
+        },
+        {
           "id": "https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf",
           "author": null,
           "description": "Comments",
@@ -290,6 +350,16 @@
           "wordCount": 8308,
           "title": "Open Weights and American AI Leadership [pdf]",
           "imageUrl": null
+        },
+        {
+          "id": "https://github.com/OptiJuegos/pvz-ps2",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/OptiJuegos/pvz-ps2",
+          "publishedOn": "2026-07-24T13:57:22.000Z",
+          "wordCount": 4020,
+          "title": "Plants vs. Zombies for PlayStation 2",
+          "imageUrl": "https://opengraph.githubassets.com/debc3d92a0f0ffe46bb679b0c0db568cb1e50b6ef44a77211b4a37524ff22ec7/OptiJuegos/pvz-ps2"
         },
         {
           "id": "https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html",
@@ -302,6 +372,26 @@
           "imageUrl": "https://nesbitt.io/images/boxes.png"
         },
         {
+          "id": "https://dmarcguard.io/blog/pci-dss/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://dmarcguard.io/blog/pci-dss/",
+          "publishedOn": "2026-07-24T13:47:21.000Z",
+          "wordCount": 6022,
+          "title": "PCI DSS DMARC Requirement: What Section 5.4.1 Requires",
+          "imageUrl": "https://dmarcguard.io/og/blog/pci-dss.png"
+        },
+        {
+          "id": "https://eugene-andrienko.com/2026-07-05-my-emacs-configuration-dired.html",
+          "author": null,
+          "description": "Comments",
+          "link": "https://eugene-andrienko.com/2026-07-05-my-emacs-configuration-dired.html",
+          "publishedOn": "2026-07-24T13:47:04.000Z",
+          "wordCount": 5623,
+          "title": "My Emacs Configuration (Dired)",
+          "imageUrl": "https://eugene-andrienko.com//static/images/image.png"
+        },
+        {
           "id": "https://timharek.no/blog/kaizen-4/",
           "author": null,
           "description": "Comments",
@@ -312,24 +402,14 @@
           "imageUrl": null
         },
         {
-          "id": "https://andreafontana.it/en/birth-god-israel-yahweh-el.html",
+          "id": "https://discuss.haiku-os.org/t/haiku-nvidia-porting-nvidia-driver-for-turing-gpus/16520?page=18",
           "author": null,
           "description": "Comments",
-          "link": "https://andreafontana.it/en/birth-god-israel-yahweh-el.html",
-          "publishedOn": "2026-07-24T13:14:58.000Z",
-          "wordCount": 6117,
-          "title": "How the God of Israel Was Born",
-          "imageUrl": "https://andreafontana.it/pictures/soleb_temple_yhwh-social.jpg"
-        },
-        {
-          "id": "https://www.patreon.com/jackconte/posts/painful-update-164628951",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.patreon.com/jackconte/posts/painful-update-164628951",
-          "publishedOn": "2026-07-24T13:02:49.000Z",
-          "wordCount": null,
-          "title": "Patreon laying off 20% of staff",
-          "imageUrl": null
+          "link": "https://discuss.haiku-os.org/t/haiku-nvidia-porting-nvidia-driver-for-turing-gpus/16520?page=18",
+          "publishedOn": "2026-07-24T12:53:59.000Z",
+          "wordCount": 1017,
+          "title": "Half-Life 2 running natively on HaikuOS",
+          "imageUrl": "https://discuss.haiku-os.org/uploads/default/optimized/2X/9/9c440cbe1c11442b3d5ada83710d761520283f2b_2_1024x576.png"
         },
         {
           "id": "https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing",
@@ -342,22 +422,12 @@
           "imageUrl": null
         },
         {
-          "id": "https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing",
-          "author": null,
-          "description": "Comments",
-          "link": "https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing",
-          "publishedOn": "2026-07-24T12:15:11.000Z",
-          "wordCount": 4121,
-          "title": "Why is programming so captivating, yet so agonizing?",
-          "imageUrl": "https://kkcktdhgzddmdjdjoenc.supabase.co/storage/v1/object/public/media/images/095cd835-7364-458b-b833-183e3e64c9a8/3e6840af1080.jpg"
-        },
-        {
           "id": "https://hhh.hn/hanwha-github-token/",
           "author": null,
           "description": "Comments",
           "link": "https://hhh.hn/hanwha-github-token/",
           "publishedOn": "2026-07-24T11:54:41.000Z",
-          "wordCount": 1128,
+          "wordCount": 1129,
           "title": "My security camera shipped a GitHub admin token in its login page",
           "imageUrl": null
         },
@@ -380,16 +450,6 @@
           "wordCount": null,
           "title": "Game of Trees – Git-based version control from OpenBSD folks",
           "imageUrl": null
-        },
-        {
-          "id": "https://alexklos.ca/blog/how-do-we-stop-vibe-coding",
-          "author": null,
-          "description": "Comments",
-          "link": "https://alexklos.ca/blog/how-do-we-stop-vibe-coding",
-          "publishedOn": "2026-07-24T10:12:39.000Z",
-          "wordCount": 6065,
-          "title": "How Do We Stop Vibe Coding?",
-          "imageUrl": "https://alexklos.ca/blog/how-do-we-stop-vibe-coding/opengraph-image?9ad58c81dd8dc782"
         },
         {
           "id": "https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/",
@@ -422,36 +482,6 @@
           "imageUrl": "https://ziggit.dev/uploads/default/original/1X/3417db0e8abaf83a355700b91efd528025492487.png"
         },
         {
-          "id": "https://sliplane.io/blog/hetzner-inference",
-          "author": null,
-          "description": "Comments",
-          "link": "https://sliplane.io/blog/hetzner-inference",
-          "publishedOn": "2026-07-24T09:24:44.000Z",
-          "wordCount": 3948,
-          "title": "Hetzner is working on LLM Inference",
-          "imageUrl": "https://sliplane.io/images/blog/hetzner-inference/cover.webp"
-        },
-        {
-          "id": "https://ptrchm.com/posts/nothing-works-and-everyone-is-euphoric/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://ptrchm.com/posts/nothing-works-and-everyone-is-euphoric/",
-          "publishedOn": "2026-07-24T09:08:17.000Z",
-          "wordCount": 890,
-          "title": "Nothing works and everyone is euphoric",
-          "imageUrl": null
-        },
-        {
-          "id": "https://book-prize-index.vercel.app/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://book-prize-index.vercel.app/",
-          "publishedOn": "2026-07-24T08:29:11.000Z",
-          "wordCount": 41052,
-          "title": "The Book Prize Index",
-          "imageUrl": null
-        },
-        {
           "id": "https://glyphack.com/attention/",
           "author": null,
           "description": "Comments",
@@ -460,16 +490,6 @@
           "wordCount": 1527,
           "title": "It's getting harder to focus every day",
           "imageUrl": null
-        },
-        {
-          "id": "https://chipsandcheese.com/p/amds-instinct-mi455x-aiming-for-the",
-          "author": null,
-          "description": "Comments",
-          "link": "https://chipsandcheese.com/p/amds-instinct-mi455x-aiming-for-the",
-          "publishedOn": "2026-07-24T06:59:07.000Z",
-          "wordCount": 4560,
-          "title": "AMD's Instinct MI455X: Aiming for the Sun",
-          "imageUrl": "https://substackcdn.com/image/fetch/$s_!vm_9!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5aed42bb-f239-4316-89ea-e12fcafad025_964x1156.png"
         },
         {
           "id": "https://bfl.ai/blog/flux-3",
@@ -497,38 +517,8 @@
           "description": "Comments",
           "link": "https://news.ycombinator.com/item?id=49026810",
           "publishedOn": "2026-07-23T19:26:01.000Z",
-          "wordCount": 10400,
+          "wordCount": 10783,
           "title": "Show HN: Echo – Fable-level results at 1/3 the cost using open-weight models",
-          "imageUrl": null
-        },
-        {
-          "id": "https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your",
-          "author": null,
-          "description": "Comments",
-          "link": "https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your",
-          "publishedOn": "2026-07-23T14:24:43.000Z",
-          "wordCount": null,
-          "title": "Writing by hand is good for your brain",
-          "imageUrl": null
-        },
-        {
-          "id": "https://github.com/43081j/tangleflow",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/43081j/tangleflow",
-          "publishedOn": "2026-07-22T03:28:34.000Z",
-          "wordCount": 1606,
-          "title": "Tangleflow: Converts GitHub Actions workflows to tangled workflows and back",
-          "imageUrl": "https://opengraph.githubassets.com/4e5ca661ad569e649f11cd09a22da0153b958cdd5c049f8783cf97f0d54c0db3/43081j/tangleflow"
-        },
-        {
-          "id": "https://chillphysicsenjoyer.substack.com/p/computational-chemistry-locally",
-          "author": null,
-          "description": "Comments",
-          "link": "https://chillphysicsenjoyer.substack.com/p/computational-chemistry-locally",
-          "publishedOn": "2026-07-21T18:23:49.000Z",
-          "wordCount": null,
-          "title": "Computational chemistry, Locally? My rant on SSH",
           "imageUrl": null
         },
         {
@@ -542,12 +532,22 @@
           "imageUrl": "https://mediaassets.airbus.com/pm_38_918_918396-dsdhhev39o-preview.jpg"
         },
         {
+          "id": "https://s3.us-west-1.wasabisys.com/luminist/EB/S/Simak%20-%20So%20Bright%20the%20Vision.pdf",
+          "author": null,
+          "description": "Comments",
+          "link": "https://s3.us-west-1.wasabisys.com/luminist/EB/S/Simak%20-%20So%20Bright%20the%20Vision.pdf",
+          "publishedOn": "2026-07-21T02:38:50.000Z",
+          "wordCount": 86552,
+          "title": "So bright the vision (1956) a story about machines writing instead of humans [pdf]",
+          "imageUrl": null
+        },
+        {
           "id": "https://arstechnica.com/space/2026/07/indias-first-privately-developed-rocket-reaches-orbit-on-dramatic-debut-launch/",
           "author": null,
           "description": "Comments",
           "link": "https://arstechnica.com/space/2026/07/indias-first-privately-developed-rocket-reaches-orbit-on-dramatic-debut-launch/",
           "publishedOn": "2026-07-20T02:43:54.000Z",
-          "wordCount": 4095,
+          "wordCount": 4097,
           "title": "India's first privately-developed rocket reaches orbit on dramatic debut launch",
           "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2026/07/GettyImages-2285958264-1152x648.jpg"
         }
@@ -779,12 +779,32 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "c381c9bd-28d1-4560-a5f6-939df282fb07",
+          "author": "Jesse Hamilton",
+          "description": "U.S. Senate Democrats got President Donald Trump to accept potential limits on his lucrative crypto dealings, but they say the Clarity Act's restrictions aren't enough.",
+          "link": "https://www.coindesk.com/policy/2026/07/24/senate-dems-should-accept-the-victory-they-won-on-trump-s-crypto-limits-white-house",
+          "publishedOn": "2026-07-24T15:01:46.000Z",
+          "wordCount": 14068,
+          "title": "Senate Dems should accept the victory they won on Trump's crypto limits: White House",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/aefcf277cef626f81400c28bb3aab27f340fe892-2048x1152.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
+          "id": "c13635ed-62bb-4b90-b7e5-401c316fc318",
+          "author": "Olivier Acuna",
+          "description": "The project is moving away from basic network expansion to focus entirely on integrating its biometric screening devices across enterprise software suites.",
+          "link": "https://www.coindesk.com/business/2026/07/24/sam-altman-backed-world-network-secures-fresh-funding-to-fight-online-ai-deepfakes",
+          "publishedOn": "2026-07-24T15:00:00.000Z",
+          "wordCount": 12572,
+          "title": "Sam Altman-backed World Network secures $52.5 million in fresh funding to fight online AI deepfakes",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/06376b1ba03e98ad44ec3cf3c34231075cdf9af8-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
+        },
+        {
           "id": "b057ef88-8bfd-43fd-97d7-9bdf656db27e",
           "author": "Will Canny",
           "description": "LMAX is working with Morgan Stanley and investment bank KBW to assess its options, which could lead to a sale or a public offering.",
           "link": "https://www.coindesk.com/business/2026/05/22/institutional-crypto-trading-platform-lmax-is-exploring-sale-ipo",
           "publishedOn": "2026-07-24T14:36:16.000Z",
-          "wordCount": 12538,
+          "wordCount": 12928,
           "title": "Institutional crypto trading platform LMAX is exploring sale, IPO",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/26685777b02289720baed417998ab31c5110fd17-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -794,7 +814,7 @@
           "description": "New framework gives common shareholders a clearer view of net bitcoin exposure after preferred stock and convertible debt obligations",
           "link": "https://www.coindesk.com/markets/2026/07/24/saylor-and-team-overhaul-strategy-s-bitcoin-metrics-as-bear-market-persists",
           "publishedOn": "2026-07-24T13:15:15.000Z",
-          "wordCount": 12348,
+          "wordCount": 12364,
           "title": "Saylor and team overhaul Strategy's bitcoin metrics as bear market persists",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d00d58cb37e792985dd1a2d7a5b976dca32d84c0-720x406.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -804,7 +824,7 @@
           "description": "Smart collars monitor herd health in real time to prevent fraud, allowing local agricultural businesses to secure thousands in funding backed by livestock.",
           "link": "https://www.coindesk.com/markets/2026/07/24/brazilian-farmers-tokenized-dairy-cows-to-get-loans-bypassing-bank-lending-limits",
           "publishedOn": "2026-07-24T13:03:03.000Z",
-          "wordCount": 12481,
+          "wordCount": 12497,
           "title": "Brazilian farmers tokenized dairy cows to get loans, bypassing bank lending limits",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/fc6ad6da7b554fc0089b3535d846dc2ca01ae585-3000x2000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -814,7 +834,7 @@
           "description": "The EU is considering a ban on third-country crypto services providers for the first time and is targeting 14 crypto companies, which it has not named yet.",
           "link": "https://www.coindesk.com/policy/2026/07/24/eu-hits-russia-with-massive-21st-sanctions-package-targeting-usd120b-crypto-network",
           "publishedOn": "2026-07-24T11:58:06.000Z",
-          "wordCount": 12422,
+          "wordCount": 12443,
           "title": "EU hits Russia with massive 21st sanctions package targeting $120B crypto network",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/1b8af97c895160d3ed27ac10e9be7535ee79e1d6-3673x2449.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -824,7 +844,7 @@
           "description": "The SBI-owned crypto trading firm is said to have attracted takeover interest from a number of suitors over the past 18 months, but valuation has been a sticking point.",
           "link": "https://www.coindesk.com/business/2026/06/29/crypto-market-maker-b2c2-held-sale-talks-with-multiple-potential-buyers",
           "publishedOn": "2026-07-24T11:49:06.000Z",
-          "wordCount": 12508,
+          "wordCount": 12536,
           "title": "Crypto market maker B2C2 held sale talks with multiple potential buyers",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8da0275422489abf75f6dc703d2c645c27ac6f41-7360x4140.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -834,7 +854,7 @@
           "description": "Your day-ahead look for July 24, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/07/24/crypto-s-institutional-influx-has-killed-the-memecoin-craze",
           "publishedOn": "2026-07-24T11:35:48.000Z",
-          "wordCount": 12965,
+          "wordCount": 13009,
           "title": "Crypto's institutional influx has killed the memecoin craze",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6314a3c4c1da2749e2ded4a256318e060f848ec4-1024x683.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -844,7 +864,7 @@
           "description": "Bitcoin's $70,000 and $72,000 call strikes on Deribit have accumulated nearly $5 billion in open interest, with calls outnumbering puts by a significant margin.",
           "link": "https://www.coindesk.com/markets/2026/07/24/a-usd5-billion-cluster-has-formed-in-bitcoin-options-it-tells-a-bullish-story",
           "publishedOn": "2026-07-24T11:34:53.000Z",
-          "wordCount": 13027,
+          "wordCount": 13071,
           "title": "A $5 billion cluster has formed in bitcoin options. It tells a bullish story",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3cf0677948ced50fe8451fcff4d0119ea2ace0bd-2570x996.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -854,7 +874,7 @@
           "description": "BTC held just under $65,000 and crypto broadly rose on Friday even as Brent crude surged to $97.66, its highest since May, as the Iran conflict persists and traditional markets stay muted.",
           "link": "https://www.coindesk.com/markets/2026/07/24/bitcoin-settles-near-usd65-000-as-oil-s-march-toward-usd100-fails-to-spook-the-market",
           "publishedOn": "2026-07-24T11:19:38.000Z",
-          "wordCount": 13529,
+          "wordCount": 13572,
           "title": "Bitcoin settles near $65,000 as oil's march toward $100 fails to spook the market",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e8450b5fd2ea53520d4c9b8a233c30546550b731-1862x994.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -864,7 +884,7 @@
           "description": "The Singapore-based company once controlled nearly a fifth of Bitcoin's global hashrate. Now it owes $173 million and is selling off what's left.",
           "link": "https://www.coindesk.com/markets/2026/07/24/poolin-was-bitcoin-s-biggest-mining-pool-and-now-it-s-filing-for-bankruptcy",
           "publishedOn": "2026-07-24T11:09:40.000Z",
-          "wordCount": 12146,
+          "wordCount": 12162,
           "title": "Poolin was bitcoin's biggest mining pool and now it's filing for bankruptcy",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/7e0ff2c03c64259807e3b48d0db88b0f53862031-3200x1800.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -874,7 +894,7 @@
           "description": "Falling share prices, debt obligations and difficult market conditions are forcing former bitcoin accumulators to sell their holdings and restructure operations.",
           "link": "https://www.coindesk.com/markets/2026/07/24/bitcoin-treasury-companies-sell-up-repay-debt-pivot-to-ai-as-share-prices-collapse",
           "publishedOn": "2026-07-24T10:53:52.000Z",
-          "wordCount": 12967,
+          "wordCount": 13018,
           "title": "Bitcoin treasury companies sell up, repay debt, pivot to AI as share prices collapse",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/284f33ede7c8248d0a282b38095ebafd9c396fc8-1440x839.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -884,7 +904,7 @@
           "description": "The order targets Bitchat, an offline Bluetooth mesh app built to relay encrypted messages and bitcoin transactions, as 'Cockroach Janta Party' protesters in Delhi use mesh tools to communicate through internet shutdowns.",
           "link": "https://www.coindesk.com/tech/2026/07/24/india-orders-takedown-of-jack-dorsey-s-bitcoin-linked-messaging-app-bitchat",
           "publishedOn": "2026-07-24T10:10:42.000Z",
-          "wordCount": 12506,
+          "wordCount": 12516,
           "title": "India orders takedown of Jack Dorsey’s bitcoin-linked messaging app Bitchat",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c65b8ead0d19d4bb9349b2fa37927790ab65439b-1435x807.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -894,7 +914,7 @@
           "description": "The complaint claims BitMEX designed a system to retain customer collateral and alleges an internal desk accessed private user data during server freezes.",
           "link": "https://www.coindesk.com/business/2026/07/24/bitmex-faces-proposed-class-action-suit-for-theft-insider-trading-as-crypto-exchange-shuts-down",
           "publishedOn": "2026-07-24T09:54:00.000Z",
-          "wordCount": 12424,
+          "wordCount": 12620,
           "title": "BitMEX faces proposed class-action suit for theft, insider trading as crypto exchange shuts down",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d3506ff39d45db35003443c2101d31505f57539c-1920x1080.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -904,7 +924,7 @@
           "description": "Michael Saylor's Strategy — under continued pressure in this crypto bear market — released a new set of metrics to judge company performance.",
           "link": "https://www.coindesk.com/tech/2026/07/24/live-updates-dogecoin-and-ether-lead-pullback-as-investors-digest-tech-earnings",
           "publishedOn": "2026-07-24T07:22:26.000Z",
-          "wordCount": 13995,
+          "wordCount": 15067,
           "title": "Live updates: Bitcoin gives up gains, falls below $64,000 as stocks retreat",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/616e44316b00e97fa939ff279c0fd6447b7188ac-2916x1518.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -914,7 +934,7 @@
           "description": "Ripple launched an institutional minting platform and added RLUSD to Notabene’s compliance network as holder growth rose but monthly transfer volume fell to $10.95 billion.",
           "link": "https://www.coindesk.com/business/2026/07/24/ripple-s-rlusd-gets-two-boosts-as-transfer-volume-drops-25",
           "publishedOn": "2026-07-24T06:33:37.000Z",
-          "wordCount": 12592,
+          "wordCount": 12603,
           "title": "Ripple’s RLUSD gets two boosts as transfer volume drops 25%",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/08996a3dca840a6a70f04df3ee9284ea39cc0a81-3579x2013.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -924,7 +944,7 @@
           "description": "The South Korean financial giant says its Korbit – soon to be rebranded as Digital X – is just the starting point for a broader ecosystem that connects RWAs, stablecoins and digital assets.",
           "link": "https://www.coindesk.com/markets/2026/07/24/mirae-asset-has-a-name-for-what-it-s-building-with-korbit-an-intelligent-platform",
           "publishedOn": "2026-07-24T06:10:49.000Z",
-          "wordCount": 12747,
+          "wordCount": 12908,
           "title": "Mirae plans to turn crypto exchange Korbit into something Korea hasn't seen before",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ae0a096246871f868542edd025af448d189d9fa4-2177x1110.png?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -934,7 +954,7 @@
           "description": "The Magnificent Seven had their worst day since April 2025 after Alphabet and Tesla spooked investors on AI spending. Bitcoin fell less than 1%, and dogecoin led the majors lower.",
           "link": "https://www.coindesk.com/markets/2026/07/24/bitcoin-holds-near-usd65-000-as-usd800-billion-ai-selloff-leaves-crypto-largely-untouched",
           "publishedOn": "2026-07-24T04:43:19.000Z",
-          "wordCount": 12610,
+          "wordCount": 12620,
           "title": "Bitcoin holds near $65,000 as $800 billion AI selloff leaves crypto largely untouched",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/28b1a94149915bfe2334d8a4a2fc958c585a71c8-4032x3024.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -944,7 +964,7 @@
           "description": "The deadline to get the crypto market structure bill done before senators scatter will likely be missed, says Majority Leader Thune, though it may get a start before then.",
           "link": "https://www.coindesk.com/policy/2026/07/23/clarity-act-expected-to-miss-its-window-before-congress-summer-break-leadership-says",
           "publishedOn": "2026-07-23T20:16:37.000Z",
-          "wordCount": 13146,
+          "wordCount": 13161,
           "title": "Clarity Act expected to miss its window before Congress' summer break, leadership says",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d80238dd859faada40d384970db94239e3b42fbc-6000x4000.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -954,7 +974,7 @@
           "description": "The post, now deleted, touted a token called $VLAD and falsely claimed it would be listed on Robinhood.",
           "link": "https://www.coindesk.com/business/2026/07/23/robinhood-ceo-vlad-tenev-s-x-account-hacked-to-promote-token-amid-memecoin-frenzy",
           "publishedOn": "2026-07-23T18:29:31.000Z",
-          "wordCount": 11983,
+          "wordCount": 11994,
           "title": "Robinhood CEO Vlad Tenev's X account hacked to promote token amid memecoin frenzy",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/da9ffcdfcd965614c3a32a2e673631861308b387-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -964,7 +984,7 @@
           "description": "The former Signet developer aims to launch early next year a marketplace connecting stablecoin issuers with regional lenders to manage reserves.",
           "link": "https://www.coindesk.com/business/2026/07/23/tassat-wants-to-help-smaller-banks-tap-the-trillion-dollar-stablecoin-boom-before-wall-street-lock-them-out",
           "publishedOn": "2026-07-23T18:10:02.000Z",
-          "wordCount": 12330,
+          "wordCount": 12341,
           "title": "Tassat wants to help smaller banks tap the trillion-dollar stablecoin boom before Wall Street locks them out",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/90c0443debb8dba3963e8b167fb19e2e0b2e7ecd-1767x1480.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -974,7 +994,7 @@
           "description": "Rolling out this week, Coinbase Business users will be able to accept payments from AI agents, done via the x402 protocol, developed and incubated by the exchange.",
           "link": "https://www.coindesk.com/business/2026/07/23/coinbase-closes-the-gaps-in-ai-agent-economy-for-businesses-users-and-developers",
           "publishedOn": "2026-07-23T16:54:12.000Z",
-          "wordCount": 12432,
+          "wordCount": 12443,
           "title": "Coinbase's corporate customers can now accept payments from AI agents",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/01b078cd684ca9805f71cae842b6ed11cbf91ed4-1920x1080.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -984,7 +1004,7 @@
           "description": "A new court status report reveals the agency will pay a flat fee to resolve a two-year fight over what former Chair Gary Gensler knew about Ethereum.",
           "link": "https://www.coindesk.com/policy/2026/07/23/sec-agrees-to-end-lawsuit-over-missing-ethereum-records-will-pay-usd150-000-in-fees",
           "publishedOn": "2026-07-23T15:36:39.000Z",
-          "wordCount": 12488,
+          "wordCount": 12503,
           "title": "The SEC settles with Coinbase over its missing Gary Gensler texts",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/03ab15a46a49d90cd40a30c7756dd0610bc6a533-3645x2050.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -994,7 +1014,7 @@
           "description": "Crypto for Advisors: It’s time for tokenization to get to work",
           "link": "https://www.coindesk.com/coindesk-indices/2026/07/23/crypto-for-advisors-it-s-time-for-tokenization-to-get-to-work",
           "publishedOn": "2026-07-23T14:53:34.000Z",
-          "wordCount": 14400,
+          "wordCount": 14410,
           "title": "Crypto for Advisors: It’s time for tokenization to get to work",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b8fcaabd55769e9d3a3a4778cf59bffb35f71375-5568x3712.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         },
@@ -1004,29 +1024,9 @@
           "description": "The framework, developed with Superstate, Securitize and Dowgo, lets regulated funds and securities trade on Uniswap while enforcing compliance rules necessary for institutions.",
           "link": "https://www.coindesk.com/business/2026/07/22/uniswap-pushes-deeper-into-tokenized-assets-with-permissioned-trading-pools",
           "publishedOn": "2026-07-23T14:00:00.000Z",
-          "wordCount": 12407,
+          "wordCount": 12418,
           "title": "Uniswap pushes deeper into tokenized assets with permissioned trading pools",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/360fef2ec03b8a5acf252fa76d45c375526936f8-1920x1280.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "95299012-d79d-4c50-8284-754356a8bc49",
-          "author": "Helene Braun",
-          "description": "The Goldman Sachs CEO said the crypto market structure bill would create a more stable regulatory framework, breaking with other major bank leaders who oppose key stablecoin provisions.",
-          "link": "https://www.coindesk.com/policy/2026/07/23/goldman-sachs-ceo-backs-clarity-act-despite-banking-industry-s-concerns-over-stablecoin-rules",
-          "publishedOn": "2026-07-23T13:53:19.000Z",
-          "wordCount": 12636,
-          "title": "Goldman Sachs CEO backs Clarity Act despite banking industry's concerns over stablecoin rules",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c8c2bea5d82e1ca3893570623f6ec6b87f44a9d6-4032x3024.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
-        },
-        {
-          "id": "57d1dd94-ef74-420b-9265-fc6878e7e2da",
-          "author": "India McKinney",
-          "description": "The fact that lawmakers are even contemplating a bill that would create a surveillance and censorship regime should be a wake-up call for everyone who values privacy and free expression, argues Electronic Frontier Foundation's India McKinney.",
-          "link": "https://www.coindesk.com/opinion/2026/07/23/the-kids-act-is-way-worse-than-digital-carding-it-is-a-mass-surveillance-system",
-          "publishedOn": "2026-07-23T13:00:00.000Z",
-          "wordCount": 13546,
-          "title": "The KIDS Act is way worse than digital carding — it is a mass surveillance system",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/edabfbf40cfe402a63d12b3d9608d7ce6aeba356-4906x3678.jpg?auto=format&w=960&h=540&crop=focalpoint&fit=clip&q=75&fm=jpg"
         }
       ]
     },
@@ -1046,7 +1046,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-07-24T14:50:27.000Z",
+          "publishedOn": "2026-07-24T16:33:28.000Z",
           "wordCount": 4328,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"

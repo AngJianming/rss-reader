@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-07-24 datetime="2026-07-24T14:50:27.000Z">2026-07-24</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-07-24 datetime="2026-07-24T14:50:27.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-07-24 datetime="2026-07-24T16:33:28.000Z">2026-07-24</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-07-24 datetime="2026-07-24T16:33:28.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -76,73 +76,33 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm"
+                        data-accordion-key="https://dev.to/chenyuan20509/i-upgraded-my-json-failure-library-to-sqlite-now-my-ai-agents-share-crash-fixes-across-machines-43hb"
                         open
                       >
-                        <summary class="article-expander__title">CDR与retimer是什么关系</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm">
+                        <summary class="article-expander__title">I Upgraded My JSON Failure Library to SQLite. Now My AI Agents Share Crash Fixes Across Machines.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/chenyuan20509/i-upgraded-my-json-failure-library-to-sqlite-now-my-ai-agents-share-crash-fixes-across-machines-43hb">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhes59wa5xe60z0w6ztpa.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fs8kyrlwd5job0npcqfw6.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>深度解析：CDR 与 Retimer 在高速互联架构中的“共生与博弈”
+                              <span>Hook
 
 
-在高速信号处理领域，CDR（Clock and Data Recovery，时钟数据恢复）与 Retimer（重定时器） 并非简单的对等关系，而是“核心算法单元”与“完整系统级解决方案”的层级关系。
-要理解两者的本质，必须打破“它们只是用来修补信号”的肤浅认知。以下是基于千万级深度图谱的维度拆解：
-CDR（时钟数据恢复）： 
-“心脏”。其本质是一个数学滤波与锁相环（PLL）系统。它并不关心信号的完整内容，只负责从充满噪声的随机比特流中，通过相位检测（PD）提取出原始发送端的时钟频率，并以此为基准，将模糊的电压跳变重新“对齐”为逻辑电平。
-  局限性： CDR 是被动执行者，它仅负责“读准”，不负责“修补”。
-Retimer（重定时器）： 
-“全能外科医生”。Retimer 的内部架构中必然包含一个高性能 CDR，但它多出了核心的 Decision Feedback Equalization（DFE，判决反馈均衡） 和 重传（Retransmission） 模块。
-  关键差异： Retimer 会将输入的模拟信号完全“数字化”为干净的比特流，然后使用一个全新的、抖动极小的时钟源重新发送。它切断了抖动的累积链条。
-在 112G/224G PAM4 的高速互联时代，信号衰减不再是线性的，而是指数级的。
-  抖动（Jitter）的“熵增”效应：
-单纯的 CDR 只能跟随输入信号的抖动。如果输入端的抖动已经超过了判决阈值，CDR 就会“跟着错”。而 Retimer 通过“接收 -&gt; 清理 -&gt; 再生”的闭环逻辑，实现了抖动的重置（Jitter Reset），有效地降低了系统误码率（BER）。
-  插入损耗与通道覆盖：
-由于 PCB 材质和铜线损耗，信号在传输 20-30dB 后几乎无法辨识。Retimer 相当于在长距离传输中设置了“信号补给站”，它不仅恢复数据，还通过预加重（Pre-emphasis）技术补偿了后续通道的损耗。
+The JSON failure library worked great — until my agents started running on multiple machines. Suddenly, crash fixes logged on one server were invisible to agents on another. Worse, concurrent writes from parallel agents corrupted the JSON file.
+I needed a real database. Here&#x27;s how I upgraded to SQLite without rewriting the whole library.
+SQLite is the perfect upgrade path. It&#x27;s a single file, supports concurrent readers, and handles writes with proper locking. Here&#x27;s the migration:
+import sqlite3
+import time
+import platform
+from pathlib import Path
+from typing import Optional
 
+DB_PATH &#x3D; Path.home() / &quot;.mcp&quot; / &quot;failures.db&quot;
 
-
-特性维度
-CDR (核心模块)
-Retimer (系统级芯片)
-
-
-
-
-功能定位
-时钟捕获与同步
-信号再生与协议处理
-
-
-数据处理
-模拟/数字混合信号处理
-完整的数字域重构
-
-
-抖动处理
-仅做追踪，不消除累积
-彻底消除抖动累积 (Jitter Reset)
-
-
-硬件复杂度
-较低，常集成在 SerDes 内
-极高，包含复杂的 DSP 与 DFE
-
-
-应用场景
-短距离、内部集成链路
-长距离、背板传输、PCIe 扩展
-
-
-
-从 Lantea.ai 的数据视角观察，Retimer 与 CDR 的关系正在发生范式转移：
- 从“物理层”走向“协议层”： 现代 Retimer 不再仅仅是物理层芯片，它们正在集成 PCIe/CXL 协议感知能力。它们不仅在修补信号，还在监测链路的握手状态，甚至参与流控。
- “重定时”即“算力中继”： 在 AI 集群中，Retimer 正在演变成数据链路的“边缘计算节点”。它们通过 DFE 自适应算法，实时分析通道环境，甚至能够预测链路失效的前兆。
- CDR 的“隐形化”： 未来的 CDR 将完全嵌入到高密度 DSP 架构中，不再作为一个独立的“组件”存在，而是作为系统级芯片（SoC）内部的一个基础数学算子。
-CDR 是 Retimer 的基石，而 Retimer 是 CDR 的进化形态。 
-如果你在设计一个高速互联系统，CDR 是你为了保证通信而必须支付的“基础成本”，而 Retimer 是为了跨越物理极限、实现超大规模互联而必须部署的“架构红利”。 随着信号速率突破 224Gbps，Retimer 将从“选配”变为“标配”。</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
+def init_db():
+    &quot;&quot;&quot;Create the failures table if it doesn&#x27;t exist.&quot;&quot;&quot;
+    DB_PATH.parent.mkdir(parents&#x3D;True, exist_ok&#x3D;True)
+    conn &#x3D; sqlite3.connect(str(DB_P…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -153,32 +113,28 @@ CDR 是 Retimer 的基石，而 Retimer 是 CDR 的进化形态。
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp"
+                        data-accordion-key="https://dev.to/franckpachot/b-tree-block-split-whats-the-impact-1i9c"
                         open
                       >
-                        <summary class="article-expander__title">Testing the Proof System: Negative Controls and Dependency Evidence in Ota</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp">
+                        <summary class="article-expander__title">B-tree block split: what&#x27;s the impact?</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/franckpachot/b-tree-block-split-whats-the-impact-1i9c">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fres.cloudinary.com%2Fota-run%2Fimage%2Fupload%2Ftesting-the-proof-system-negative-controls-and-dependency-evidence.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fg9s8helqro0z7zzxhkks.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>A green call does not prove the dependency mattered
+                              <span>Everybody knows that B-tree indexes provide logarithmic lookups, but what does that actually mean in PostgreSQL?
+EXPLAIN (analyze, buffers, wal) for observing the buffer activity and WAL generated by DML on indexes
+pageinspect for inspecting internal page structures
+pgstattuple for gathering statistics about index pages
+By inserting rows one at a time and collecting B-tree statistics after each insert, we can watch the index grow from a single page to a multi-level B-tree and correlate page splits with WAL generation and buffer accesses.
+The pageinspect extension is a low-level debugging tool that exposes information stored in table and index pages.
+postgres&#x3D;# create extension if not exists pageinspect;
+CREATE EXTENSION
 
+postgres&#x3D;# \x
+Expanded display is on.
 
-A service can be reachable without being exercised. An application can call a dependency without
-Flatten those outcomes into one green or red status and a proof system will eventually claim more
-Ota 1.6.24 separates three levels:
-reachable: the selected path reached a declared dependency boundary;
-exercised: a finite observer recovered evidence produced through that dependency in the current
-proof transaction;
-fault_tested: a separate control proved the same obligation failed for the declared
-missing-effect reason.
-Each level answers a different question. None may be inferred from a command label or exit code.
-The runtime workflow declares the positive observation and the negative control independently:
-workflows:
-  app-proof:
-    run:
-…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
+postgres&#x3D;# select * from bt_me…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;14
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -189,21 +145,26 @@ workflows:
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l"
+                        data-accordion-key="https://dev.to/hideyukimori/261-docs-6-languages-one-maintainer-frontmatter-is-the-source-of-truth-2c8f"
                         open
                       >
-                        <summary class="article-expander__title">Investing in multi-agent AI safety research</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l">
+                        <summary class="article-expander__title">261 docs, 6 languages, one maintainer: frontmatter is the source of truth</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/hideyukimori/261-docs-6-languages-one-maintainer-frontmatter-is-the-source-of-truth-2c8f">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fg2x8v43efq92hmur1m3j.webp" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9kgodekf6uatdmu0rpt7.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Scaling AI Safety Research for a Multi-Agent World
-
-
-For the past decade, we&#x27;ve focused on making individual AI models more capable, helpful and safe. Now, Google DeepMind — together with Schmidt Sciences, the Cooperative AI Foundation, the Advanced Research and Invention Agency, and supported by Google.org — has announced a new technical research funding call of up to $10M for researchers worldwide.
-As AI technology scales, we&#x27;re entering a new era. Soon, millions of AI agents — built by different organizations — will interact across digital environments, communicating, negotiating and transacting with one another.
-When these systems interact, they must do so safely and predictably. This shift creates a vital opportunity: we can strengthen the safety and stability of the entire AI ecosyst…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
+                              <span>If you maintain a docs folder that keeps drifting — missing index entries, stale translations, categories that no longer match — this is for you.
+NENE2 is my small PHP framework for building AI-readable business APIs.
+Repository:
+https://github.com/hideyukiMORI/NENE2
+Over time it grew a large set of how-to guides. Today the English directory holds 261 guides, and every one of them is mirrored into five more languages: Japanese, French, Chinese, German, and Brazilian Portuguese.
+That is 261 guides across 6 locales — 1,566 files in all.
+Maintained by one person.
+The only way this stays sane is to stop treating docs as prose and start treating them as data.
+This article is about the machinery that makes that possible.
+What you&#x27;ll learn:
+How to make YAML frontmatter the single source of truth …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;16
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -214,16 +175,48 @@ When these systems interact, they must do so safely and predictably. This shift 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c"
+                        data-accordion-key="https://dev.to/raju_dandigam/why-typescript-ai-developers-need-native-tracing-tools-3p2a"
                         open
                       >
-                        <summary class="article-expander__title">AI-Generated Code: Anatomy of Security Vulnerabilities and the Cost</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c">
+                        <summary class="article-expander__title">Why TypeScript AI Developers Need Native Tracing Tools</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/raju_dandigam/why-typescript-ai-developers-need-native-tracing-tools-3p2a">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzip1495gwtoakplybqtk.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fmhgnsfs7kq6lpccwzb9m.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>A few weeks ago, while working on AI-generated code snippets we had added to our projects, we encountered an unexpected security vulnerability. This incident forced us to re-evaluate the risks and costs associated with AI code generation tools, which are rapidly adopted for their promise of increased efficiency. Now, we must not only verify the correctness of the code but also question its origin and security posture. In this post, I will dissect the anatomy of security vulnerabilities in AI-generated code, understand why they emerge, and most importantly, address the hidden costs of remediating these vulnerabilities.
-AI-powered code generators have changed the game in software development. The efficiency they offer in automating repetitive tasks, accelerating prototyping, and even providi…</span>
+                              <span>TypeScript support is easy to claim. Publish an npm package, add a few type declarations, and a tracing product can put “JavaScript and TypeScript” on its integration list.
+Native support is a higher bar.
+AI applications in the TypeScript ecosystem run inside concurrent Node.js servers, serverless functions, edge runtimes, background workers, test runners, and streaming web frameworks. They cross promise chains, callbacks, tool adapters, async iterators, and package boundaries. A useful tracing tool must fit those execution models without breaking types or producing disconnected spans.
+The question is therefore not only, “Does this tool have a TypeScript SDK?” It is, “Does it preserve how a TypeScript agent actually runs?”
+Consider a small agent:
+async function supportAgent(question: strin…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/paultwist/multi-runtime-agents-without-fragmentation-the-control-plane-pattern-32bo"
+                        open
+                      >
+                        <summary class="article-expander__title">Multi-Runtime Agents Without Fragmentation: The Control Plane Pattern</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/paultwist/multi-runtime-agents-without-fragmentation-the-control-plane-pattern-32bo">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fmsvuwoejgizy2aax9rcj.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>How teams move from &quot;one API key per runtime&quot; to &quot;one gateway, any runtime&quot;
+You&#x27;ve got a squad of coding agents now. Some teams use Claude Managed Agents. Others prefer Cursor. Finance is piloting Bedrock AgentCore. Engineering wants to stay self-hosted.
+This sounds flexible. It&#x27;s actually a disaster.
+Here&#x27;s what happens:
+Agent A (Claude Managed Agents team) stores API credentials in Anthropic console. No one else on the company can invoke it.
+Agent B (Cursor team) lives in a separate dashboard. Finance can&#x27;t call it without direct Cursor access.
+Agent C (Bedrock, self-hosted) requires AWS IAM roles. Now you need to explain why the Marketing team can&#x27;t use Bedrock.
+Agent D (N8N) sits in a workflow tool. No one knows it exists. No one can audit what it does.
+The models are powerful. The inf…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;9
                                   min&hairsp;)</span>
                             </span>
@@ -235,23 +228,128 @@ AI-powered code generators have changed the game in software development. The ef
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7"
+                        data-accordion-key="https://dev.to/robertpelloni/mcp-protocol-deep-dive-how-tool-discovery-actually-works-1dag"
                         open
                       >
-                        <summary class="article-expander__title">From Vague Understanding to Working Truth: Governed Externalized Sensemaking</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7">
+                        <summary class="article-expander__title">MCP Protocol Deep-Dive: How Tool Discovery Actually Works</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/robertpelloni/mcp-protocol-deep-dive-how-tool-discovery-actually-works-1dag">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0yji11adhmk244gn6jjo.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F22ztk6rtqaf1unmd34v6.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>From Vague Understanding to Working Truth: Governed Externalized Sensemaking
+                              <span>MCP Protocol Deep-Dive: How Tool Discovery Actually Works
+Unlock the mechanics of the Model Context Protocol. We dissect the JSON-RPC handshake that enables dynamic tool discovery and build a functional MCP server in just 50 lines of Go, which TormentNexus instantly recognizes.
+The Problem MCP Solves in Modern AI Systems
+Large Language Models are powerful reasoning engines, but they are fundamentally stateless and isolated. They cannot, by default, fetch live data, execute code, or interact with the vast ecosystem of APIs and databases that power modern applications. The Model Context Protocol (MCP) is the open standard that bridges this critical gap, creating a universal interface for connecting AI models to external tools and data sources.
+Think of MCP as the &quot;USB-C&quot; for AI. Before MCP, …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/cloudfrontier/getting-started-with-infrastructure-as-code-using-terraform-3ppo"
+                        open
+                      >
+                        <summary class="article-expander__title">Getting Started with Infrastructure as Code Using Terraform</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/cloudfrontier/getting-started-with-infrastructure-as-code-using-terraform-3ppo">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fh6d54u1cktlnohdgdy7i.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>What is Infrastructure as Code?
 
 
-This is a pre-polish article about a captured working model.
-It came out of practical work on Myriuna Worlds, not from an academic research program. I was building, documenting, reviewing, and trying to keep a large AI-assisted project from dissolving into scattered notes, unfinished thoughts, and repeated re-discovery.
-The model that emerged is called:
-Governed Externalized Sensemaking
-The short version:
-Governed Externalized Sensemaking is a human-governed AI-assisted learning workflow where unstable early understanding is externalized into inspectable artifacts, tested through reframing and role-based metacognitive pressure, recorded as traceable provenance, exposed to external feedback, reviewed for authorit…</span>
+Infrastructure as Code (IaC) lets you manage your cloud resources with configuration files instead of clicking around a web console. It is repeatable, versionable, and less error prone. Terraform by HashiCorp is one of the most popular IaC tools because it is cloud agnostic and uses a declarative language called HCL (HashiCorp Configuration Language).
+Terraform is a single binary. Download the appropriate package for your OS from the official site, unzip it, and ensure the terraform binary is in your PATH. Verify with:
+terraform version
+
+Create a directory for your project and a file named main.tf. Here is a minimal example that provisions an AWS EC2 instance:
+terraform {
+  required_providers {
+    aws &#x3D; {
+      source  &#x3D; &quot;hashicorp/aws&quot;
+      version &#x3D; &quot;~…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/pathvector-dev/split-horizon-dns-one-name-two-answers-and-the-server-decides-by-whos-asking-4859"
+                        open
+                      >
+                        <summary class="article-expander__title">Split-Horizon DNS: One Name, Two Answers, and the Server Decides by Who&#x27;s Asking</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/pathvector-dev/split-horizon-dns-one-name-two-answers-and-the-server-decides-by-whos-asking-4859">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhpbw58fiuv8eahbunu9q.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Originally published at https://blog.pathvector.dev/protocol-lab-dns-views-42-split-horizon/ — part of the free Protocol Lab series.
+This post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.
+In Lab #41, round-robin DNS rotated the order of one name&#x27;s records. Split-horizon DNS pulls a more radical trick: it changes the answer itself based on who is asking. An authoritative server keeps several views of the same zone and picks one by the client&#x27;s source address.
+Reading guide: rfc-notes/split-horizon-dns.md
+Prerequisite: DNS Lab 05: Resolving a Name Through the Hierarchy
+Expected time: 35–…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/pathvector-dev/dns-round-robin-the-cheapest-load-balancer-is-three-a-records-and-a-rotating-answer-4m6f"
+                        open
+                      >
+                        <summary class="article-expander__title">DNS Round-Robin: The Cheapest Load Balancer Is Three A Records and a Rotating Answer</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/pathvector-dev/dns-round-robin-the-cheapest-load-balancer-is-three-a-records-and-a-rotating-answer-4m6f">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fftjqjatqq5vqe51i56nb.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Originally published at https://blog.pathvector.dev/protocol-lab-dnsrr-41/ — part of the free Protocol Lab series.
+This post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.
+The load-distribution labs so far worked in the network: anycast (Lab 31) let routing pick an instance, ECMP (Lab 32) hashed flows across links, and IPVS (Lab 33) had a director distribute connections. This lab spreads clients one layer earlier — at name resolution.
+Reading guide: rfc-notes/dns-round-robin.md
+Prerequisite: DNS Lab 05: Resolving a Name Through the Hierarchy
+Expected time: 30–45 minutes.
+One name (web.la…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/pathvector-dev/dnat-explained-publishing-an-internal-service-through-one-public-address-and-port-4a4f"
+                        open
+                      >
+                        <summary class="article-expander__title">DNAT Explained: Publishing an Internal Service Through One Public Address and Port</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/pathvector-dev/dnat-explained-publishing-an-internal-service-through-one-public-address-and-port-4a4f">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2z0cnwb8no8jp6dci3ds.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Originally published at https://blog.pathvector.dev/protocol-lab-dnat-40/ — part of the free Protocol Lab series.
+This post is part of Protocol Lab, a free, hands-on series for learning networking protocols by building and breaking them in a container lab. All the lab material — topologies, configs, and scripts — lives in the repo: github.com/pathvector-studio/protocol-lab.
+In Lab #20, source NAT (masquerade) let many inside hosts reach out through one public address. This lab is the inbound complement: destination NAT — better known as port forwarding — which lets the outside reach a chosen inside service through a public address:port.
+Reading guide: rfc-notes/dnat-port-forwarding.md
+Prerequisite: Lab 20: NAT — Source Address Translation
+Expected time: 35–50 minutes.
+An internal server si…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;10
                                   min&hairsp;)</span>
                             </span>
@@ -263,101 +361,30 @@ Governed Externalized Sensemaking is a human-governed AI-assisted learning workf
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j"
+                        data-accordion-key="https://dev.to/ramn_cortez_8e1ed2c075fc/why-probabilistic-ai-needs-deterministic-control-g8d"
                         open
                       >
-                        <summary class="article-expander__title">Integrating LLMs into Production: Practical Patterns and Pitfalls</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j">
+                        <summary class="article-expander__title">Why Probabilistic AI Needs Deterministic Control</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ramn_cortez_8e1ed2c075fc/why-probabilistic-ai-needs-deterministic-control-g8d">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1gckyebnvng1lwggyrz5.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fc0t7lq4o0gmydpxw9kze.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Integrating LLMs into Production: Practical Patterns and Pitfalls
+                              <span>Most AI automation tutorials show you how to connect an LLM to a database and call it a day. That works fine for a prototype, but in production—especially for finance or enterprise workflows—relying solely on probabilistic AI model behavior is a massive liability.
+AI models predict tokens. They don&#x27;t natively understand your business logic or enforce compliance. If you&#x27;re building serious infrastructure, your LLM needs to live inside a deterministic control system.
+[ Incoming Invoice Payload ]
+Validation Gateway (Rules First)
 
 
-TL;DR – Deploying large language models (LLMs) in a live product requires careful handling of latency, cost, and safety. This article walks through proven patterns, code snippets, and common pitfalls, drawing on real‑world experience from building AI‑powered SaaS features at developerz.ai.
-LLMs enable features such as:
-Dynamic content generation (e.g., marketing copy, code snippets)
-Semantic search and retrieval‑augmented generation (RAG)
-Conversational assistants that understand domain‑specific terminology
-For early‑stage products, the ability to prototype these capabilities quickly can be a differentiator. However, the raw model is only a building block; the surrounding engineering determines whether the feature is relia…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9"
-                        open
-                      >
-                        <summary class="article-expander__title">Why I Built a Browser Audio Workspace That Shows Its Internal Signal</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F8qm799ew1xalm20dd9nk.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Fixed audio tracks are convenient, but they hide almost every decision from the listener. You press play and receive a finished result. You cannot inspect the carrier frequencies, see the beat difference, or change the signal while it is running.
-That lack of visibility was the reason I started building BIFROST.
-BIFROST is a browser-based workspace that generates binaural audio and amplitude modulation in real time. It is not a medical device, and I am not claiming that a particular frequency produces a guaranteed effect. My goal is narrower: give people direct control over the audio signal and make the current state understandable.
-I wanted the experience to answer three questions without forcing the user to trust a black box:
-What is being generated right now?
-Which values can I change w…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl"
-                        open
-                      >
-                        <summary class="article-expander__title">I wanted free subdomains for my project. Ended up building my own registry in Python (and fighting DNS, Git and Cloudflare along the way)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9po6desz1lhsyqw9xagk.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I registered fluxcast.dev for my Linux casting project (FluxCast). One apex record was enough, the rest of the subdomains were just wasting away.
-Then I remembered is-a.dev. The idea of getting free subdomains through a simple GitHub PR looked so good that I decided to build my own version.
-It wasn’t.
-First I needed proper validation. I wrote a bunch of checks using pytest. Blocking private IPs was easy with ipaddress, but catching duplicate keys in JSON was trickier, Python’s json.loads silently keeps only the last value. If I hadn’t caught that, someone could have hidden malicious records in a PR.
-The real fluxcast.dev landing page was already live. I was terrified of accidentally deleting it with my sync script. So I made every managed record carry the tag managed-by:fluxcast-domains. T…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426"
-                        open
-                      >
-                        <summary class="article-expander__title">Deploying Kubernetes Dashboard and Managing Cluster Resources</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fyg2hgnol7gpchu4x6ykd.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Kubernetes Dashboard is an open-source web GUI for managing cluster resources (CronJobs, DaemonSets, Deployments, Pods, ReplicaSets, StatefulSets) deploying apps, and monitoring cluster health in real time. This guide installs it via Helm, sets up admin and read-only RBAC access, secures it behind Nginx Ingress with cert-manager TLS, and deploys a sample app from the UI.
-Prerequisites: a Kubernetes cluster with kubectl configured, and Helm installed on your workstation.
-$ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-$ helm repo update
-$ helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
-$ kubectl get all -n kubernetes-dashboard
+Automated Circuit Breaker (Catch Anomalies Early)
 
-Confirm pods, services, and replicasets are up.
-The Dash…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
+
+Immutable Ledger (Verifiable Audit Trail)
+
+
+
+My Take
+Stop relying on the AI model to police itself. Build the deterministic wrapper first, and let the model operate safely inside those boundaries.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -368,19 +395,160 @@ The Dash…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2"
+                        data-accordion-key="https://dev.to/chenyuan20509/i-added-a-failure-library-to-my-mcp-server-now-my-ai-agents-warn-each-other-about-crashes-before-4ell"
                         open
                       >
-                        <summary class="article-expander__title">The Case of the Disappearing Free Trial</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2">
+                        <summary class="article-expander__title">I Added a &quot;Failure Library&quot; to My MCP Server. Now My AI Agents Warn Each Other About Crashes Before They Happen.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/chenyuan20509/i-added-a-failure-library-to-my-mcp-server-now-my-ai-agents-warn-each-other-about-crashes-before-4ell">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fy1t9v07k5hheavm5g0fd.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ftf3mibx6yakg6wecjojb.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>A debugging story about WooCommerce Subscriptions, caching red herrings, and one deliberate line of code that quietly broke a conversion funnel.
-A client&#x27;s fitness membership site offers a 7-day free trial on its subscription products. Simple enough: sign up, browse the workout library free for a week, get charged automatically after — standard WooCommerce Subscriptions behavior.
-Except guests visiting the site couldn&#x27;t see the trial at all. The product page just showed the regular monthly price. No trial messaging, no &quot;$0 due today.&quot; And when a guest actually went through checkout, they were charged the full price immediately — no 7-day grace period in sight.
-Logged-in users saw the trial just fine. Every time.
-That single fact — logged in: works, logged out: doesn&#x27;t — turned out to be bo…</span>
+                              <span>Hook
+
+
+My MCP server kept crashing in production. Every time it restarted, my AI agents would blindly retry the same failing operations, wasting tokens and time. I needed a way for them to learn from failures — and share those lessons with each other.
+So I built a failure library. Now when an agent hits an error, it logs it. The next agent checks the library first and either avoids the trap entirely or applies a verified fix.
+Here&#x27;s the core pattern — a simple JSON-based failure cache that any MCP server can adopt:
+import json
+import time
+from pathlib import Path
+from typing import Optional
+
+FAILURE_LIBRARY &#x3D; Path.home() / &quot;.mcp&quot; / &quot;failures.json&quot;
+
+def log_failure(task: str, error: str, attempted_fix: str, result: str):
+    &quot;&quot;&quot;Log a failure to the shared library.&quot;&quot;&quot;
+    entry &#x3D; {
+        &quot;…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;14
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://foldkit.dev/"
+                        open
+                      >
+                        <summary class="article-expander__title">The front end framework for correctness: built on Effect, architected like Elm</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://foldkit.dev/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://foldkit.dev/og/home.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://lucumr.pocoo.org/2026/7/24/codeberg-divides/"
+                        open
+                      >
+                        <summary class="article-expander__title">Codeberg Divides</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://lucumr.pocoo.org/2026/7/24/codeberg-divides/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://lucumr.pocoo.org/social/2026-07-24-codeberg-divides-social.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece"
+                        open
+                      >
+                        <summary class="article-expander__title">Government orders GitHub to remove Bluetooth-based chat app Bitchat: Jack Dorsey</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.thehindu.com/news/national/government-orders-github-to-remove-bluetooth-based-chat-app-bitchat-over-security-concerns-jack-dorsey/article71262049.ece">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://th-i.thgim.com/public/incoming/s017lf/article71262085.ece/alternates/LANDSCAPE_1200/12-11-JACK_DORSEY_CEO_TWITTER_B.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;30
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.usenix.org/conference/atc22/presentation/jansen"
+                        open
+                      >
+                        <summary class="article-expander__title">Co-Opting Linux Processes for High-Performance Network Simulation (2022)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.usenix.org/conference/atc22/presentation/jansen">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://magworld.pw/episodes/computer/"
+                        open
+                      >
+                        <summary class="article-expander__title">Mag Computer: A Mag History of RAM (1960–2025)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://magworld.pw/episodes/computer/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;24
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.3gpp.org/specifications-technologies/releases/release-19"
+                        open
+                      >
+                        <summary class="article-expander__title">3GPP Version 19</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.3gpp.org/specifications-technologies/releases/release-19">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;10
                                   min&hairsp;)</span>
                             </span>
@@ -392,24 +560,34 @@ That single fact — logged in: works, logged out: doesn&#x27;t — turned out t
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b"
+                        data-accordion-key="https://alexwlchan.net/2026/non-breaking-code/"
                         open
                       >
-                        <summary class="article-expander__title">Deploying Strapi on a Kubernetes Cluster</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b">
+                        <summary class="article-expander__title">Preventing line breaks in  elements</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://alexwlchan.net/2026/non-breaking-code/">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fz689q5ms0w6zdgpj3jtf.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://alexwlchan.net/images/profile_green_sq.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Strapi is a headless CMS with an intuitive admin dashboard, custom content types, and role-based permissions, well-suited to Kubernetes for its scalability and multi-environment support. This guide builds a Strapi app, containerizes it, and deploys it to Kubernetes behind an Nginx Ingress Controller with cert-manager TLS.
-Prerequisites: a Kubernetes cluster with kubectl/helm configured, a PostgreSQL database, Docker on your workstation, a domain (this guide uses strapi.example.com) pointed at the ingress load balancer once provisioned.
-1. Install Node.js:
-$ curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-$ sudo apt install -y nodejs
-
-2. Configure Git if not already set up:
-$ git config --global user.name &quot;Your Full Name&quot;
-$ git config --global user.email &quot;email@example.com&quot;
-…</span>
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;2
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.timdbg.com/posts/writing-a-debugger-from-scratch-part-1/"
+                        open
+                      >
+                        <summary class="article-expander__title">Writing a Debugger from Scratch</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.timdbg.com/posts/writing-a-debugger-from-scratch-part-1/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
                             </span>
@@ -421,34 +599,346 @@ $ git config --global user.email &quot;email@example.com&quot;
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a"
+                        data-accordion-key="https://shi-yan.github.io/webgpuunleashed/"
                         open
                       >
-                        <summary class="article-expander__title">Deploying MariaDB on Kubernetes</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a">
+                        <summary class="article-expander__title">WebGPU Unleashed: A Practical Tutorial</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://shi-yan.github.io/webgpuunleashed/">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fcaag3dyzb9e3m4axfpas.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="/webgpuunleashed/meta.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>MariaDB is a popular open-source relational database. Running it on Kubernetes gets you portability across environments, CI/CD integration, and automated backup/recovery alongside the usual scalability and high-availability benefits. This guide sets up persistent storage, deploys MariaDB as a StatefulSet, exposes it via a Service, and covers scaling.
-Prerequisites: a Kubernetes cluster with at least 3 nodes and kubectl configured against it.
-1. Define a PersistentVolume:
-$ nano mariadb-pv.yaml
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-    name: mariadb-pv
-spec:
-    capacity:
-        storage: 10Gi
-    accessModes:
-        - ReadWriteOnce
-    persistentVolumeReclaimPolicy: Retain
-    hostPath:
-        path: /mnt/data/mariadb
-
-Retain keeps the data if the PV is deleted; hostPath backs …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf"
+                        open
+                      >
+                        <summary class="article-expander__title">Open Weights and American AI Leadership [pdf]</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;28
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://github.com/OptiJuegos/pvz-ps2"
+                        open
+                      >
+                        <summary class="article-expander__title">Plants vs. Zombies for PlayStation 2</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/OptiJuegos/pvz-ps2">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://opengraph.githubassets.com/debc3d92a0f0ffe46bb679b0c0db568cb1e50b6ef44a77211b4a37524ff22ec7/OptiJuegos/pvz-ps2" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;13
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html"
+                        open
+                      >
+                        <summary class="article-expander__title">Interview with a Maintainer</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://nesbitt.io/images/boxes.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dmarcguard.io/blog/pci-dss/"
+                        open
+                      >
+                        <summary class="article-expander__title">PCI DSS DMARC Requirement: What Section 5.4.1 Requires</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dmarcguard.io/blog/pci-dss/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://dmarcguard.io/og/blog/pci-dss.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;20
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://eugene-andrienko.com/2026-07-05-my-emacs-configuration-dired.html"
+                        open
+                      >
+                        <summary class="article-expander__title">My Emacs Configuration (Dired)</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://eugene-andrienko.com/2026-07-05-my-emacs-configuration-dired.html">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://eugene-andrienko.com//static/images/image.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;19
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://timharek.no/blog/kaizen-4/"
+                        open
+                      >
+                        <summary class="article-expander__title">Kaizen #4: Overhauled Homelab</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://timharek.no/blog/kaizen-4/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://discuss.haiku-os.org/t/haiku-nvidia-porting-nvidia-driver-for-turing-gpus/16520?page&#x3D;18"
+                        open
+                      >
+                        <summary class="article-expander__title">Half-Life 2 running natively on HaikuOS</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://discuss.haiku-os.org/t/haiku-nvidia-porting-nvidia-driver-for-turing-gpus/16520?page&#x3D;18">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://discuss.haiku-os.org/uploads/default/optimized/2X/9/9c440cbe1c11442b3d5ada83710d761520283f2b_2_1024x576.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing"
+                        open
+                      >
+                        <summary class="article-expander__title">Em dashes are fucking amazing</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://hhh.hn/hanwha-github-token/"
+                        open
+                      >
+                        <summary class="article-expander__title">My security camera shipped a GitHub admin token in its login page</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://hhh.hn/hanwha-github-token/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://technicshistory.com/2026/07/24/the-ibm-pc-part-1-arrival/"
+                        open
+                      >
+                        <summary class="article-expander__title">The IBM PC, Part 1: Arrival</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://technicshistory.com/2026/07/24/the-ibm-pc-part-1-arrival/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://technicshistory.com/wp-content/uploads/2026/07/ibm-pc-5150-print-ad-1.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;25
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.gameoftrees.org/"
+                        open
+                      >
+                        <summary class="article-expander__title">Game of Trees – Git-based version control from OpenBSD folks</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.gameoftrees.org/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/"
+                        open
+                      >
+                        <summary class="article-expander__title">IRGC Claims It Destroyed Amazon&#x27;s Bahrain Data Center</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://houseofsaud.com/wp-content/uploads/2026/07/data-center-server-hall-aws-bahrain.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;49
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://bfl.ai/blog/flux-3-mimic"
+                        open
+                      >
+                        <summary class="article-expander__title">Flux 3 X Mimic: The Next Generation of Video-Action Models</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://bfl.ai/blog/flux-3-mimic">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://bfl.ai/api/og/blog/flux-3-mimic" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;32
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://ziggit.dev/t/buz-a-drop-in-replacement-for-bun-using-modern-zig-with-sub-1s-incremental-builds/16891"
+                        open
+                      >
+                        <summary class="article-expander__title">Buz – A fork of Bun using modern Zig, with sub-1s incremental builds</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://ziggit.dev/t/buz-a-drop-in-replacement-for-bun-using-modern-zig-with-sub-1s-incremental-builds/16891">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://ziggit.dev/uploads/default/original/1X/3417db0e8abaf83a355700b91efd528025492487.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://glyphack.com/attention/"
+                        open
+                      >
+                        <summary class="article-expander__title">It&#x27;s getting harder to focus every day</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://glyphack.com/attention/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://bfl.ai/blog/flux-3"
+                        open
+                      >
+                        <summary class="article-expander__title">Flux 3</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://bfl.ai/blog/flux-3">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://bfl.ai/api/og/blog/flux-3" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;26
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://platform.claude.com/cookbook/"
+                        open
+                      >
+                        <summary class="article-expander__title">Claude Cookbook</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://platform.claude.com/cookbook/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://platform.claude.com/cookbook/og/homepage.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -473,6 +963,46 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
+                        data-accordion-key="c381c9bd-28d1-4560-a5f6-939df282fb07"
+                        open
+                      >
+                        <summary class="article-expander__title">Senate Dems should accept the victory they won on Trump&#x27;s crypto limits: White House</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2026/07/24/senate-dems-should-accept-the-victory-they-won-on-trump-s-crypto-limits-white-house">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/aefcf277cef626f81400c28bb3aab27f340fe892-2048x1152.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>U.S. Senate Democrats got President Donald Trump to accept potential limits on his lucrative crypto dealings, but they say the Clarity Act&#x27;s restrictions aren&#x27;t enough.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;47
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="c13635ed-62bb-4b90-b7e5-401c316fc318"
+                        open
+                      >
+                        <summary class="article-expander__title">Sam Altman-backed World Network secures $52.5 million in fresh funding to fight online AI deepfakes</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/07/24/sam-altman-backed-world-network-secures-fresh-funding-to-fight-online-ai-deepfakes">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/06376b1ba03e98ad44ec3cf3c34231075cdf9af8-1920x1080.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The project is moving away from basic network expansion to focus entirely on integrating its biometric screening devices across enterprise software suites.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;42
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
                         data-accordion-key="b057ef88-8bfd-43fd-97d7-9bdf656db27e"
                         open
                       >
@@ -482,7 +1012,7 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/26685777b02289720baed417998ab31c5110fd17-1920x1080.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>LMAX is working with Morgan Stanley and investment bank KBW to assess its options, which could lead to a sale or a public offering.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;42
+                                &ensp;<span class="article-reading-time">(&hairsp;43
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -602,7 +1132,7 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/3cf0677948ced50fe8451fcff4d0119ea2ace0bd-2570x996.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Bitcoin&#x27;s $70,000 and $72,000 call strikes on Deribit have accumulated nearly $5 billion in open interest, with calls outnumbering puts by a significant margin.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;43
+                                &ensp;<span class="article-reading-time">(&hairsp;44
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -642,7 +1172,7 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/7e0ff2c03c64259807e3b48d0db88b0f53862031-3200x1800.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>The Singapore-based company once controlled nearly a fifth of Bitcoin&#x27;s global hashrate. Now it owes $173 million and is selling off what&#x27;s left.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;40
+                                &ensp;<span class="article-reading-time">(&hairsp;41
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -702,7 +1232,7 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/d3506ff39d45db35003443c2101d31505f57539c-1920x1080.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>The complaint claims BitMEX designed a system to retain customer collateral and alleges an internal desk accessed private user data during server freezes.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;41
+                                &ensp;<span class="article-reading-time">(&hairsp;42
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -722,7 +1252,7 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/616e44316b00e97fa939ff279c0fd6447b7188ac-2916x1518.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Michael Saylor&#x27;s Strategy — under continued pressure in this crypto bear market — released a new set of metrics to judge company performance.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;47
+                                &ensp;<span class="article-reading-time">(&hairsp;50
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -762,7 +1292,7 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/ae0a096246871f868542edd025af448d189d9fa4-2177x1110.png?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>The South Korean financial giant says its Korbit – soon to be rebranded as Digital X – is just the starting point for a broader ecosystem that connects RWAs, stablecoins and digital assets.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;42
+                                &ensp;<span class="article-reading-time">(&hairsp;43
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -783,480 +1313,6 @@ Retain keeps the data if the PV is deleted; hostPath backs …</span>
                             <span class="media-object__text">
                               <span>The Magnificent Seven had their worst day since April 2025 after Alphabet and Tesla spooked investors on AI spending. Bitcoin fell less than 1%, and dogecoin led the majors lower.</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;42
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.usenix.org/conference/atc22/presentation/jansen"
-                        open
-                      >
-                        <summary class="article-expander__title">Co-Opting Linux Processes for High-Performance Network Simulation (2022)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.usenix.org/conference/atc22/presentation/jansen">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://magworld.pw/episodes/computer/"
-                        open
-                      >
-                        <summary class="article-expander__title">Mag Computer: A Mag History of RAM (1960–2025)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://magworld.pw/episodes/computer/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;24
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.3gpp.org/specifications-technologies/releases/release-19"
-                        open
-                      >
-                        <summary class="article-expander__title">3GPP Version 19</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.3gpp.org/specifications-technologies/releases/release-19">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf"
-                        open
-                      >
-                        <summary class="article-expander__title">Open Weights and American AI Leadership [pdf]</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;28
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html"
-                        open
-                      >
-                        <summary class="article-expander__title">Interview with a Maintainer</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://nesbitt.io/images/boxes.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://timharek.no/blog/kaizen-4/"
-                        open
-                      >
-                        <summary class="article-expander__title">Kaizen #4: Overhauled Homelab</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://timharek.no/blog/kaizen-4/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://andreafontana.it/en/birth-god-israel-yahweh-el.html"
-                        open
-                      >
-                        <summary class="article-expander__title">How the God of Israel Was Born</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://andreafontana.it/en/birth-god-israel-yahweh-el.html">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://andreafontana.it/pictures/soleb_temple_yhwh-social.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;20
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.patreon.com/jackconte/posts/painful-update-164628951"
-                        open
-                      >
-                        <summary class="article-expander__title">Patreon laying off 20% of staff</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.patreon.com/jackconte/posts/painful-update-164628951">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing"
-                        open
-                      >
-                        <summary class="article-expander__title">Em dashes are fucking amazing</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing"
-                        open
-                      >
-                        <summary class="article-expander__title">Why is programming so captivating, yet so agonizing?</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://kkcktdhgzddmdjdjoenc.supabase.co/storage/v1/object/public/media/images/095cd835-7364-458b-b833-183e3e64c9a8/3e6840af1080.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;14
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://hhh.hn/hanwha-github-token/"
-                        open
-                      >
-                        <summary class="article-expander__title">My security camera shipped a GitHub admin token in its login page</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://hhh.hn/hanwha-github-token/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;4
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://technicshistory.com/2026/07/24/the-ibm-pc-part-1-arrival/"
-                        open
-                      >
-                        <summary class="article-expander__title">The IBM PC, Part 1: Arrival</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://technicshistory.com/2026/07/24/the-ibm-pc-part-1-arrival/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://technicshistory.com/wp-content/uploads/2026/07/ibm-pc-5150-print-ad-1.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;25
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.gameoftrees.org/"
-                        open
-                      >
-                        <summary class="article-expander__title">Game of Trees – Git-based version control from OpenBSD folks</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.gameoftrees.org/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://alexklos.ca/blog/how-do-we-stop-vibe-coding"
-                        open
-                      >
-                        <summary class="article-expander__title">How Do We Stop Vibe Coding?</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://alexklos.ca/blog/how-do-we-stop-vibe-coding">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://alexklos.ca/blog/how-do-we-stop-vibe-coding/opengraph-image?9ad58c81dd8dc782" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;20
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/"
-                        open
-                      >
-                        <summary class="article-expander__title">IRGC Claims It Destroyed Amazon&#x27;s Bahrain Data Center</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://houseofsaud.com/wp-content/uploads/2026/07/data-center-server-hall-aws-bahrain.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;49
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://bfl.ai/blog/flux-3-mimic"
-                        open
-                      >
-                        <summary class="article-expander__title">Flux 3 X Mimic: The Next Generation of Video-Action Models</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://bfl.ai/blog/flux-3-mimic">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://bfl.ai/api/og/blog/flux-3-mimic" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;32
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://ziggit.dev/t/buz-a-drop-in-replacement-for-bun-using-modern-zig-with-sub-1s-incremental-builds/16891"
-                        open
-                      >
-                        <summary class="article-expander__title">Buz – A fork of Bun using modern Zig, with sub-1s incremental builds</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://ziggit.dev/t/buz-a-drop-in-replacement-for-bun-using-modern-zig-with-sub-1s-incremental-builds/16891">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://ziggit.dev/uploads/default/original/1X/3417db0e8abaf83a355700b91efd528025492487.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;4
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://sliplane.io/blog/hetzner-inference"
-                        open
-                      >
-                        <summary class="article-expander__title">Hetzner is working on LLM Inference</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://sliplane.io/blog/hetzner-inference">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://sliplane.io/images/blog/hetzner-inference/cover.webp" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;13
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://ptrchm.com/posts/nothing-works-and-everyone-is-euphoric/"
-                        open
-                      >
-                        <summary class="article-expander__title">Nothing works and everyone is euphoric</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://ptrchm.com/posts/nothing-works-and-everyone-is-euphoric/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;3
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://book-prize-index.vercel.app/"
-                        open
-                      >
-                        <summary class="article-expander__title">The Book Prize Index</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://book-prize-index.vercel.app/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;137
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://glyphack.com/attention/"
-                        open
-                      >
-                        <summary class="article-expander__title">It&#x27;s getting harder to focus every day</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://glyphack.com/attention/">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://chipsandcheese.com/p/amds-instinct-mi455x-aiming-for-the"
-                        open
-                      >
-                        <summary class="article-expander__title">AMD&#x27;s Instinct MI455X: Aiming for the Sun</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://chipsandcheese.com/p/amds-instinct-mi455x-aiming-for-the">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://substackcdn.com/image/fetch/$s_!vm_9!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5aed42bb-f239-4316-89ea-e12fcafad025_964x1156.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;15
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://bfl.ai/blog/flux-3"
-                        open
-                      >
-                        <summary class="article-expander__title">Flux 3</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://bfl.ai/blog/flux-3">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://bfl.ai/api/og/blog/flux-3" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;26
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://platform.claude.com/cookbook/"
-                        open
-                      >
-                        <summary class="article-expander__title">Claude Cookbook</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://platform.claude.com/cookbook/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://platform.claude.com/cookbook/og/homepage.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1803,46 +1859,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="95299012-d79d-4c50-8284-754356a8bc49"
-                        open
-                      >
-                        <summary class="article-expander__title">Goldman Sachs CEO backs Clarity Act despite banking industry&#x27;s concerns over stablecoin rules</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2026/07/23/goldman-sachs-ceo-backs-clarity-act-despite-banking-industry-s-concerns-over-stablecoin-rules">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/c8c2bea5d82e1ca3893570623f6ec6b87f44a9d6-4032x3024.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The Goldman Sachs CEO said the crypto market structure bill would create a more stable regulatory framework, breaking with other major bank leaders who oppose key stablecoin provisions.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;42
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="57d1dd94-ef74-420b-9265-fc6878e7e2da"
-                        open
-                      >
-                        <summary class="article-expander__title">The KIDS Act is way worse than digital carding — it is a mass surveillance system</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/opinion/2026/07/23/the-kids-act-is-way-worse-than-digital-carding-it-is-a-mass-surveillance-system">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/edabfbf40cfe402a63d12b3d9608d7ce6aeba356-4906x3678.jpg?auto&#x3D;format&amp;w&#x3D;960&amp;h&#x3D;540&amp;crop&#x3D;focalpoint&amp;fit&#x3D;clip&amp;q&#x3D;75&amp;fm&#x3D;jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The fact that lawmakers are even contemplating a bill that would create a surveillance and censorship regime should be a wake-up call for everyone who values privacy and free expression, argues Electronic Frontier Foundation&#x27;s India McKinney.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;45
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -1869,25 +1885,8 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;35
+                                &ensp;<span class="article-reading-time">(&hairsp;36
                                   min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your"
-                        open
-                      >
-                        <summary class="article-expander__title">Writing by hand is good for your brain</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
                             </span>
                           </div>
                         </a>
@@ -2213,40 +2212,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
                     class="source-heading__name"
                     data-action="toggle-accordions"
                     title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/43081j/tangleflow"
-                        open
-                      >
-                        <summary class="article-expander__title">Tangleflow: Converts GitHub Actions workflows to tangled workflows and back</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/43081j/tangleflow">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/4e5ca661ad569e649f11cd09a22da0153b958cdd5c049f8783cf97f0d54c0db3/43081j/tangleflow" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
                   >Quicknode Blog</button>
                   <a class="source-heading__link" href="https://www.quicknode.com/blog">Open</a>
                 </h3>
@@ -2283,8 +2248,8 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-07-21 datetime="2026-07-21T18:23:49.000Z">2026-07-21</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-07-21 datetime="2026-07-21T18:23:49.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-07-21 datetime="2026-07-21T16:22:17.000Z">2026-07-21</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-07-21 datetime="2026-07-21T16:22:17.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -2303,23 +2268,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://chillphysicsenjoyer.substack.com/p/computational-chemistry-locally"
-                        open
-                      >
-                        <summary class="article-expander__title">Computational chemistry, Locally? My rant on SSH</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://chillphysicsenjoyer.substack.com/p/computational-chemistry-locally">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.airbus.com/en/newsroom/stories/2026-07-how-the-a321xlr-is-redefining-single-aisle-comfort-for-passengers"
                         open
                       >
@@ -2330,6 +2278,25 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://s3.us-west-1.wasabisys.com/luminist/EB/S/Simak%20-%20So%20Bright%20the%20Vision.pdf"
+                        open
+                      >
+                        <summary class="article-expander__title">So bright the vision (1956) a story about machines writing instead of humans [pdf]</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://s3.us-west-1.wasabisys.com/luminist/EB/S/Simak%20-%20So%20Bright%20the%20Vision.pdf">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;289
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2527,8 +2494,8 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/30102703301">
-        <time id="build-timestamp" datetime="2026-07-24T14:51:13.290Z">2026-07-24T14:51:13.290Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/30108973626">
+        <time id="build-timestamp" datetime="2026-07-24T16:34:17.646Z">2026-07-24T16:34:17.646Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
