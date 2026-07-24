@@ -1,108 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-24T12:24:09.439Z</id>
+    <id>urn:2026-07-24T14:51:13.313Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-24T12:24:09.439Z</updated>
+    <updated>2026-07-24T14:51:13.313Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-24T12:23:24.000Z</updated>
+        <updated>2026-07-24T14:50:27.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[# From JavaScript to Node.js: Understanding What Really Happens Behind the Scenes (Part 4.3A.1)]]></title>
-        <id>https://dev.to/sudhanshu_code_b8ef988ceb/-from-javascript-to-nodejs-understanding-what-really-happens-behind-the-scenes-part-1o8i</id>
-        <link href="https://dev.to/sudhanshu_code_b8ef988ceb/-from-javascript-to-nodejs-understanding-what-really-happens-behind-the-scenes-part-1o8i"/>
-        <updated>2026-07-24T12:17:23.000Z</updated>
-        <summary type="html"><![CDATA[# Module Resolution Algorithm (Part 1): How Node.js Finds the Right Module
-In the previous article, we explored one of the most fascinating parts of Node.js—the hidden Module Wrapper Function. We learned that every CommonJS module is wrapped inside a function before execution, and we also discovered that require() is not a JavaScript feature. It is provided by the Node.js runtime.
-But a very important mystery still remains.
-When we write:
-const fs = require("fs");
+        <title type="html"><![CDATA[CDR与retimer是什么关系]]></title>
+        <id>https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm</id>
+        <link href="https://dev.to/zhhk1h/cdryu-retimershi-shi-yao-guan-xi-4ccm"/>
+        <updated>2026-07-24T14:38:31.000Z</updated>
+        <summary type="html"><![CDATA[深度解析：CDR 与 Retimer 在高速互联架构中的“共生与博弈”
 
-or
-const math = require("./math");
 
-how does Node.js know where these modules are located?
-How does it decide whether "fs" is a built-in module or a file inside your project?
-Why does require("./math") work even if you don't write .js?
-And what happens internally before your code starts executing?
-The answer lies inside one of N…]]></summary>
+在高速信号处理领域，CDR（Clock and Data Recovery，时钟数据恢复）与 Retimer（重定时器） 并非简单的对等关系，而是“核心算法单元”与“完整系统级解决方案”的层级关系。
+要理解两者的本质，必须打破“它们只是用来修补信号”的肤浅认知。以下是基于千万级深度图谱的维度拆解：
+CDR（时钟数据恢复）： 
+“心脏”。其本质是一个数学滤波与锁相环（PLL）系统。它并不关心信号的完整内容，只负责从充满噪声的随机比特流中，通过相位检测（PD）提取出原始发送端的时钟频率，并以此为基准，将模糊的电压跳变重新“对齐”为逻辑电平。
+  局限性： CDR 是被动执行者，它仅负责“读准”，不负责“修补”。
+Retimer（重定时器）： 
+“全能外科医生”。Retimer 的内部架构中必然包含一个高性能 CDR，但它多出了核心的 Decision Feedback Equalization（DFE，判决反馈均衡） 和 重传（Retransmission） 模块。
+  关键差异： Retimer 会将输入的模拟信号完全“数字化”为干净的比特流，然后使用一个全新的、抖动极小的时钟源重新发送。它切断了抖动的累积链条。
+在 112G/224G PAM4 的高速互联时代，信号衰减不再是线性的，而是指数级的。
+  抖动（Jitter）的“熵增”效应：
+单纯的 CDR 只能跟随输入信号的抖动。如果输入端的抖动已经超过了判决阈值，CDR 就会“跟着错”。而 Retimer 通过“接收 -> 清理 -> 再生”的闭环逻辑，实现了抖动的重置（Jitter Reset），有效地降低了系统误码率（BER）。
+  插入损耗与通道覆盖：
+由于 PCB 材质和铜线损耗，信号在传输 20-30dB 后几乎无法辨识。Retimer 相当于在长距离传输中设置了“信号补给站”，它不仅恢复数据，还通过预加重（Pre-emphasis）技术补偿了后续通道的损耗。
+
+
+
+特性维度
+CDR (核心模块)
+Retimer (系统级芯片)
+
+
+
+
+功能定位
+时钟捕获与同步
+信号再生与协议处理
+
+
+数据处理
+模拟/数字混合信号处理
+完整的数字域重构
+
+
+抖动处理
+仅做追踪，不消除累积
+彻底消除抖动累积 (Jitter Reset)
+
+
+硬件复杂度
+较低，常集成在 SerDes 内
+极高，包含复杂的 DSP 与 DFE
+
+
+应用场景
+短距离、内部集成链路
+长距离、背板传输、PCIe 扩展
+
+
+
+从 Lantea.ai 的数据视角观察，Retimer 与 CDR 的关系正在发生范式转移：
+ 从“物理层”走向“协议层”： 现代 Retimer 不再仅仅是物理层芯片，它们正在集成 PCIe/CXL 协议感知能力。它们不仅在修补信号，还在监测链路的握手状态，甚至参与流控。
+ “重定时”即“算力中继”： 在 AI 集群中，Retimer 正在演变成数据链路的“边缘计算节点”。它们通过 DFE 自适应算法，实时分析通道环境，甚至能够预测链路失效的前兆。
+ CDR 的“隐形化”： 未来的 CDR 将完全嵌入到高密度 DSP 架构中，不再作为一个独立的“组件”存在，而是作为系统级芯片（SoC）内部的一个基础数学算子。
+CDR 是 Retimer 的基石，而 Retimer 是 CDR 的进化形态。 
+如果你在设计一个高速互联系统，CDR 是你为了保证通信而必须支付的“基础成本”，而 Retimer 是为了跨越物理极限、实现超大规模互联而必须部署的“架构红利”。 随着信号速率突破 224Gbps，Retimer 将从“选配”变为“标配”。]]></summary>
         <author>
-            <name>Sudhanshu code</name>
+            <name>zhhk1h</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The AI Wasn't Hallucinating. Our Architecture Was.]]></title>
-        <id>https://dev.to/imhardikmehta/the-ai-wasnt-hallucinating-our-architecture-was-1f14</id>
-        <link href="https://dev.to/imhardikmehta/the-ai-wasnt-hallucinating-our-architecture-was-1f14"/>
-        <updated>2026-07-24T12:12:42.000Z</updated>
-        <summary type="html"><![CDATA[The AI Wasn't Hallucinating. Our Architecture Was.
-Everyone talks about choosing the right model.
-Very few people talk about building the right architecture around it.
-I learned that lesson the hard way.
-It started with a successful prototype
-We were building an AI-powered validation engine.
-The first proof of concept looked fantastic.
-The system analyzed the application, generated validation scenarios, executed them automatically, and produced results that looked surprisingly accurate.
-Like every engineer after a successful demo, I thought:
-"We're closer to production than I expected."
-Then we connected it to a real enterprise application.
-Everything changed.
-The model wasn't wrong. It was guessing.
-The AI started making assumptions.
-Some were reasonable.
-Most were technically incorrect.
+        <title type="html"><![CDATA[Testing the Proof System: Negative Controls and Dependency Evidence in Ota]]></title>
+        <id>https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp</id>
+        <link href="https://dev.to/otaready/testing-the-proof-system-negative-controls-and-dependency-evidence-in-ota-38mp"/>
+        <updated>2026-07-24T14:37:52.000Z</updated>
+        <summary type="html"><![CDATA[A green call does not prove the dependency mattered
+
+
+A service can be reachable without being exercised. An application can call a dependency without
+Flatten those outcomes into one green or red status and a proof system will eventually claim more
+Ota 1.6.24 separates three levels:
+reachable: the selected path reached a declared dependency boundary;
+exercised: a finite observer recovered evidence produced through that dependency in the current
+proof transaction;
+fault_tested: a separate control proved the same obligation failed for the declared
+missing-effect reason.
+Each level answers a different question. None may be inferred from a command label or exit code.
+The runtime workflow declares the positive observation and the negative control independently:
+workflows:
+  app-proof:
+    run:
 …]]></summary>
         <author>
-            <name>Hardik Mehta</name>
+            <name>Bobai Kato</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I built foku — a minimal pomodoro timer with no ads, no account, no clutter]]></title>
-        <id>https://dev.to/baransel/i-built-foku-a-minimal-pomodoro-timer-with-no-ads-no-account-no-clutter-3fc</id>
-        <link href="https://dev.to/baransel/i-built-foku-a-minimal-pomodoro-timer-with-no-ads-no-account-no-clutter-3fc"/>
-        <updated>2026-07-24T12:10:20.000Z</updated>
-        <summary type="html"><![CDATA[Every pomodoro app I tried wanted something from me before letting me work: create an account, sit through ads, sync to a cloud I didn't ask for, or explore features I'd never touch. All I wanted was a timer.
-So I built foku — a minimal pomodoro timer for iOS and Android. Open it, hit start, focus. That's the whole app.
-Pomodoro made simple — classic 25/5 out of the box
-History & stats — every session tracked locally, streaks included
-Home screen widget — your streak without opening the app
-Works fully offline — your data lives on your device, nowhere else
-Light & dark themes
-The free version covers everything above. There's a one-time lifetime Pro unlock (custom timers, full stats, themes, minimal mode, auto-start) — no subscription. I'm tired of those too.
-For the devs wondering what's under the hood:
-Flutter — one codebase, both stores, including the home screen widgets
-Riverpod for state management
-go_router for navigation
-SQLite (sqflite) for local session history — no backend at all
-home_widget for the iOS/Android widgets
-RevenueCat for the lifetime unlock
-The "no account" part isn't a marketing line — there's literally no server. Session history is a local SQLite database. If the app ever disappears, your data is still yours.
-The hardest part wasn't the timer. It was resisting the urge to add things. Every productivity app dies the same death: feature by feature, until the timer is buried under a dashboard. Saying no to my own ideas was the real work.
-foku is free on iOS and Android: baransel.dev/foku
-I'd genuinely rather have your honest feedback than your download — what's missing, what's annoying, what you'd change. Comments are open.]]></summary>
+        <title type="html"><![CDATA[Institutional crypto trading platform LMAX is exploring sale, IPO]]></title>
+        <id>b057ef88-8bfd-43fd-97d7-9bdf656db27e</id>
+        <link href="https://www.coindesk.com/business/2026/05/22/institutional-crypto-trading-platform-lmax-is-exploring-sale-ipo"/>
+        <updated>2026-07-24T14:36:16.000Z</updated>
+        <summary type="html"><![CDATA[LMAX is working with Morgan Stanley and investment bank KBW to assess its options, which could lead to a sale or a public offering.]]></summary>
         <author>
-            <name>Baransel</name>
+            <name>Will Canny</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA['World Models' Will Be the Next Buzzword. The Man Saying That Just Raised $1B to Build One.]]></title>
-        <id>https://dev.to/p0rt/world-models-will-be-the-next-buzzword-the-man-saying-that-just-raised-1b-to-build-one-4oih</id>
-        <link href="https://dev.to/p0rt/world-models-will-be-the-next-buzzword-the-man-saying-that-just-raised-1b-to-build-one-4oih"/>
-        <updated>2026-07-24T12:10:03.000Z</updated>
-        <summary type="html"><![CDATA[In March, the CEO of a research lab with zero products closed a $1.03 billion seed round — the largest in European history. Then he told TechCrunch that "'world models' will be the next buzzword," predicting that within six months every company would slap the label on itself to raise money.
-The CEO is Alexandre LeBrun. The lab is AMI Labs, Paris. The chairman is Yann LeCun. And LeBrun was right on schedule: VCs have pushed roughly $3B into the category since.
-When the person behind the biggest bet in a space tells you the space is about to become a content-free buzzword, that's the frame worth keeping. The question isn't whether "world model" gets diluted — it will. The question is whether there's a real, testable architectural disagreement underneath the label.
-There is. This post is the …]]></summary>
+        <title type="html"><![CDATA[Investing in multi-agent AI safety research]]></title>
+        <id>https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l</id>
+        <link href="https://dev.to/googleai/investing-in-multi-agent-ai-safety-research-312l"/>
+        <updated>2026-07-24T14:35:41.000Z</updated>
+        <summary type="html"><![CDATA[Scaling AI Safety Research for a Multi-Agent World
+
+
+For the past decade, we've focused on making individual AI models more capable, helpful and safe. Now, Google DeepMind — together with Schmidt Sciences, the Cooperative AI Foundation, the Advanced Research and Invention Agency, and supported by Google.org — has announced a new technical research funding call of up to $10M for researchers worldwide.
+As AI technology scales, we're entering a new era. Soon, millions of AI agents — built by different organizations — will interact across digital environments, communicating, negotiating and transacting with one another.
+When these systems interact, they must do so safely and predictably. This shift creates a vital opportunity: we can strengthen the safety and stability of the entire AI ecosyst…]]></summary>
         <author>
-            <name>Sergei Parfenov</name>
+            <name>Gemini Team</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AI-Generated Code: Anatomy of Security Vulnerabilities and the Cost]]></title>
+        <id>https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c</id>
+        <link href="https://dev.to/merbayerp/ai-generated-code-anatomy-of-security-vulnerabilities-and-the-cost-577c"/>
+        <updated>2026-07-24T14:34:28.000Z</updated>
+        <summary type="html"><![CDATA[A few weeks ago, while working on AI-generated code snippets we had added to our projects, we encountered an unexpected security vulnerability. This incident forced us to re-evaluate the risks and costs associated with AI code generation tools, which are rapidly adopted for their promise of increased efficiency. Now, we must not only verify the correctness of the code but also question its origin and security posture. In this post, I will dissect the anatomy of security vulnerabilities in AI-generated code, understand why they emerge, and most importantly, address the hidden costs of remediating these vulnerabilities.
+AI-powered code generators have changed the game in software development. The efficiency they offer in automating repetitive tasks, accelerating prototyping, and even providi…]]></summary>
+        <author>
+            <name>Mustafa ERBAY</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[From Vague Understanding to Working Truth: Governed Externalized Sensemaking]]></title>
+        <id>https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7</id>
+        <link href="https://dev.to/davidvk89/from-vague-understanding-to-working-truth-governed-externalized-sensemaking-18n7"/>
+        <updated>2026-07-24T14:34:03.000Z</updated>
+        <summary type="html"><![CDATA[From Vague Understanding to Working Truth: Governed Externalized Sensemaking
+
+
+This is a pre-polish article about a captured working model.
+It came out of practical work on Myriuna Worlds, not from an academic research program. I was building, documenting, reviewing, and trying to keep a large AI-assisted project from dissolving into scattered notes, unfinished thoughts, and repeated re-discovery.
+The model that emerged is called:
+Governed Externalized Sensemaking
+The short version:
+Governed Externalized Sensemaking is a human-governed AI-assisted learning workflow where unstable early understanding is externalized into inspectable artifacts, tested through reframing and role-based metacognitive pressure, recorded as traceable provenance, exposed to external feedback, reviewed for authorit…]]></summary>
+        <author>
+            <name>davidvk89</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Integrating LLMs into Production: Practical Patterns and Pitfalls]]></title>
+        <id>https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j</id>
+        <link href="https://dev.to/developerzai/integrating-llms-into-production-practical-patterns-and-pitfalls-596j"/>
+        <updated>2026-07-24T14:32:19.000Z</updated>
+        <summary type="html"><![CDATA[Integrating LLMs into Production: Practical Patterns and Pitfalls
+
+
+TL;DR – Deploying large language models (LLMs) in a live product requires careful handling of latency, cost, and safety. This article walks through proven patterns, code snippets, and common pitfalls, drawing on real‑world experience from building AI‑powered SaaS features at developerz.ai.
+LLMs enable features such as:
+Dynamic content generation (e.g., marketing copy, code snippets)
+Semantic search and retrieval‑augmented generation (RAG)
+Conversational assistants that understand domain‑specific terminology
+For early‑stage products, the ability to prototype these capabilities quickly can be a differentiator. However, the raw model is only a building block; the surrounding engineering determines whether the feature is relia…]]></summary>
+        <author>
+            <name>developerz.ai</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why I Built a Browser Audio Workspace That Shows Its Internal Signal]]></title>
+        <id>https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9</id>
+        <link href="https://dev.to/bifrostbinaural/why-i-built-a-browser-audio-workspace-that-shows-its-internal-signal-2da9"/>
+        <updated>2026-07-24T14:29:22.000Z</updated>
+        <summary type="html"><![CDATA[Fixed audio tracks are convenient, but they hide almost every decision from the listener. You press play and receive a finished result. You cannot inspect the carrier frequencies, see the beat difference, or change the signal while it is running.
+That lack of visibility was the reason I started building BIFROST.
+BIFROST is a browser-based workspace that generates binaural audio and amplitude modulation in real time. It is not a medical device, and I am not claiming that a particular frequency produces a guaranteed effect. My goal is narrower: give people direct control over the audio signal and make the current state understandable.
+I wanted the experience to answer three questions without forcing the user to trust a black box:
+What is being generated right now?
+Which values can I change w…]]></summary>
+        <author>
+            <name>BIFROST</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Co-Opting Linux Processes for High-Performance Network Simulation (2022)]]></title>
+        <id>https://www.usenix.org/conference/atc22/presentation/jansen</id>
+        <link href="https://www.usenix.org/conference/atc22/presentation/jansen"/>
+        <updated>2026-07-24T14:28:38.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mag Computer: A Mag History of RAM (1960–2025)]]></title>
+        <id>https://magworld.pw/episodes/computer/</id>
+        <link href="https://magworld.pw/episodes/computer/"/>
+        <updated>2026-07-24T14:26:09.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I wanted free subdomains for my project. Ended up building my own registry in Python (and fighting DNS, Git and Cloudflare along the way)]]></title>
+        <id>https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl</id>
+        <link href="https://dev.to/ilyap358/i-wanted-free-subdomains-for-my-project-ended-up-building-my-own-registry-in-python-and-fighting-2hnl"/>
+        <updated>2026-07-24T14:25:43.000Z</updated>
+        <summary type="html"><![CDATA[I registered fluxcast.dev for my Linux casting project (FluxCast). One apex record was enough, the rest of the subdomains were just wasting away.
+Then I remembered is-a.dev. The idea of getting free subdomains through a simple GitHub PR looked so good that I decided to build my own version.
+It wasn’t.
+First I needed proper validation. I wrote a bunch of checks using pytest. Blocking private IPs was easy with ipaddress, but catching duplicate keys in JSON was trickier, Python’s json.loads silently keeps only the last value. If I hadn’t caught that, someone could have hidden malicious records in a PR.
+The real fluxcast.dev landing page was already live. I was terrified of accidentally deleting it with my sync script. So I made every managed record carry the tag managed-by:fluxcast-domains. T…]]></summary>
+        <author>
+            <name>Illium</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[3GPP Version 19]]></title>
+        <id>https://www.3gpp.org/specifications-technologies/releases/release-19</id>
+        <link href="https://www.3gpp.org/specifications-technologies/releases/release-19"/>
+        <updated>2026-07-24T14:23:39.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying Kubernetes Dashboard and Managing Cluster Resources]]></title>
+        <id>https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426</id>
+        <link href="https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426"/>
+        <updated>2026-07-24T14:19:09.000Z</updated>
+        <summary type="html"><![CDATA[Kubernetes Dashboard is an open-source web GUI for managing cluster resources (CronJobs, DaemonSets, Deployments, Pods, ReplicaSets, StatefulSets) deploying apps, and monitoring cluster health in real time. This guide installs it via Helm, sets up admin and read-only RBAC access, secures it behind Nginx Ingress with cert-manager TLS, and deploys a sample app from the UI.
+Prerequisites: a Kubernetes cluster with kubectl configured, and Helm installed on your workstation.
+$ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+$ helm repo update
+$ helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+$ kubectl get all -n kubernetes-dashboard
+
+Confirm pods, services, and replicasets are up.
+The Dash…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Case of the Disappearing Free Trial]]></title>
+        <id>https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2</id>
+        <link href="https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2"/>
+        <updated>2026-07-24T14:18:17.000Z</updated>
+        <summary type="html"><![CDATA[A debugging story about WooCommerce Subscriptions, caching red herrings, and one deliberate line of code that quietly broke a conversion funnel.
+A client's fitness membership site offers a 7-day free trial on its subscription products. Simple enough: sign up, browse the workout library free for a week, get charged automatically after — standard WooCommerce Subscriptions behavior.
+Except guests visiting the site couldn't see the trial at all. The product page just showed the regular monthly price. No trial messaging, no "$0 due today." And when a guest actually went through checkout, they were charged the full price immediately — no 7-day grace period in sight.
+Logged-in users saw the trial just fine. Every time.
+That single fact — logged in: works, logged out: doesn't — turned out to be bo…]]></summary>
+        <author>
+            <name>Vicente G. Reyes</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying Strapi on a Kubernetes Cluster]]></title>
+        <id>https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b</id>
+        <link href="https://dev.to/vultr/deploying-strapi-on-a-kubernetes-cluster-384b"/>
+        <updated>2026-07-24T14:17:45.000Z</updated>
+        <summary type="html"><![CDATA[Strapi is a headless CMS with an intuitive admin dashboard, custom content types, and role-based permissions, well-suited to Kubernetes for its scalability and multi-environment support. This guide builds a Strapi app, containerizes it, and deploys it to Kubernetes behind an Nginx Ingress Controller with cert-manager TLS.
+Prerequisites: a Kubernetes cluster with kubectl/helm configured, a PostgreSQL database, Docker on your workstation, a domain (this guide uses strapi.example.com) pointed at the ingress load balancer once provisioned.
+1. Install Node.js:
+$ curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+$ sudo apt install -y nodejs
+
+2. Configure Git if not already set up:
+$ git config --global user.name "Your Full Name"
+$ git config --global user.email "email@example.com"
+…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying MariaDB on Kubernetes]]></title>
+        <id>https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a</id>
+        <link href="https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a"/>
+        <updated>2026-07-24T14:16:12.000Z</updated>
+        <summary type="html"><![CDATA[MariaDB is a popular open-source relational database. Running it on Kubernetes gets you portability across environments, CI/CD integration, and automated backup/recovery alongside the usual scalability and high-availability benefits. This guide sets up persistent storage, deploys MariaDB as a StatefulSet, exposes it via a Service, and covers scaling.
+Prerequisites: a Kubernetes cluster with at least 3 nodes and kubectl configured against it.
+1. Define a PersistentVolume:
+$ nano mariadb-pv.yaml
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: mariadb-pv
+spec:
+    capacity:
+        storage: 10Gi
+    accessModes:
+        - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Retain
+    hostPath:
+        path: /mnt/data/mariadb
+
+Retain keeps the data if the PV is deleted; hostPath backs …]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Open Weights and American AI Leadership [pdf]]]></title>
+        <id>https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf</id>
+        <link href="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf"/>
+        <updated>2026-07-24T13:58:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Interview with a Maintainer]]></title>
+        <id>https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html</id>
+        <link href="https://nesbitt.io/2026/07/24/interview-with-a-maintainer.html"/>
+        <updated>2026-07-24T13:51:48.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Kaizen #4: Overhauled Homelab]]></title>
+        <id>https://timharek.no/blog/kaizen-4/</id>
+        <link href="https://timharek.no/blog/kaizen-4/"/>
+        <updated>2026-07-24T13:46:40.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Saylor and team overhaul Strategy's bitcoin metrics as bear market persists]]></title>
+        <id>e8c8be9f-1ea8-4121-9b53-d6e3881e5947</id>
+        <link href="https://www.coindesk.com/markets/2026/07/24/saylor-and-team-overhaul-strategy-s-bitcoin-metrics-as-bear-market-persists"/>
+        <updated>2026-07-24T13:15:15.000Z</updated>
+        <summary type="html"><![CDATA[New framework gives common shareholders a clearer view of net bitcoin exposure after preferred stock and convertible debt obligations]]></summary>
+        <author>
+            <name>James Van Straten</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How the God of Israel Was Born]]></title>
+        <id>https://andreafontana.it/en/birth-god-israel-yahweh-el.html</id>
+        <link href="https://andreafontana.it/en/birth-god-israel-yahweh-el.html"/>
+        <updated>2026-07-24T13:14:58.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Brazilian farmers tokenized dairy cows to get loans, bypassing bank lending limits]]></title>
+        <id>85f3cd8e-4dcc-48c7-b1f8-12610dcda6dc</id>
+        <link href="https://www.coindesk.com/markets/2026/07/24/brazilian-farmers-tokenized-dairy-cows-to-get-loans-bypassing-bank-lending-limits"/>
+        <updated>2026-07-24T13:03:03.000Z</updated>
+        <summary type="html"><![CDATA[Smart collars monitor herd health in real time to prevent fraud, allowing local agricultural businesses to secure thousands in funding backed by livestock.]]></summary>
+        <author>
+            <name>Olivier Acuna</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Patreon laying off 20% of staff]]></title>
+        <id>https://www.patreon.com/jackconte/posts/painful-update-164628951</id>
+        <link href="https://www.patreon.com/jackconte/posts/painful-update-164628951"/>
+        <updated>2026-07-24T13:02:49.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Em dashes are fucking amazing]]></title>
+        <id>https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing</id>
+        <link href="https://psychotechnology.substack.com/p/em-dashes-are-fucking-amazing"/>
+        <updated>2026-07-24T12:40:27.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why is programming so captivating, yet so agonizing?]]></title>
+        <id>https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing</id>
+        <link href="https://elsewhere.news/en/zhenfund/why-is-programming-so-captivating-yet-so-agonizing"/>
+        <updated>2026-07-24T12:15:11.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -116,228 +419,6 @@ There is. This post is the …]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Arrays Explained from Memory to Big O (With Real Benchmarks)]]></title>
-        <id>https://dev.to/arpan_singh_121/arrays-explained-from-memory-to-big-o-with-real-benchmarks-4g8</id>
-        <link href="https://dev.to/arpan_singh_121/arrays-explained-from-memory-to-big-o-with-real-benchmarks-4g8"/>
-        <updated>2026-07-24T12:08:55.000Z</updated>
-        <summary type="html"><![CDATA[This Loop Should Delete Three Items. It Deletes Two.
-
-
-
-
-
-scores = [45, 30, 88, 92, 15, 67]
-
-for score in scores:
-    if score < 50:
-        scores.remove(score)
-
-print(scores)
-
-
-Read that and guess the output. Three values are under 50: 45, 30, 15. So the obvious guess is [88, 92, 67].
-Run it, and Python prints [30, 88, 92, 67].
-30 survives. Nothing crashed, no exception, no warning. The code just quietly kept a value it was explicitly told to remove.
-Swap the language and the bug follows you:
-const scores = [45, 30, 88, 92, 15, 67];
-
-for (let i = 0; i < scores.length; i++) {
-  if (scores[i] < 50) {
-    scores.splice(i, 1);
-  }
-}
-
-console.log(scores);
-
-
-Same input, same wrong survivor: [ 30, 88, 92, 67 ].
-Two different languages, two different removal methods, the exact same failure. That…]]></summary>
-        <author>
-            <name>Arpan Singh</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why Some Next.js Sites Show Empty HTML in Page Source (It's Not a Bug)]]></title>
-        <id>https://dev.to/joodi/why-some-nextjs-sites-show-empty-html-in-page-source-its-not-a-bug-gjb</id>
-        <link href="https://dev.to/joodi/why-some-nextjs-sites-show-empty-html-in-page-source-its-not-a-bug-gjb"/>
-        <updated>2026-07-24T12:07:49.000Z</updated>
-        <summary type="html"><![CDATA[Why do some large websites show almost empty HTML in "View Page Source" even when built with Next.js?
-
-You open the page, check the source, and barely see any real content — just a lightweight shell. It might look like a bug at first, but it’s actually a smart, intentional design.
-What’s happening under the hood?
-For regular users: The server sends a minimal HTML shell + JavaScript. The actual content loads on the client side (CSR). This keeps the server load low and improves real-user performance.
-For search engine crawlers (Googlebot, etc.): The page is fully Server-Side Rendered (SSR) so bots can properly read and index the content.
-Why this hybrid approach?
-export const dynamic = 'force-dynamic'
-Middleware or Edge Functions for bot detection
-Tools like Botd (by FingerprintJS) — which is much more accurate than simple User-Agent checking.
-Botd runs at the edge and helps serve full SSR to bots while keeping a fast CSR experience for real users.
-Modern web development isn’t about choosing SSR or CSR — it’s about choosing the right strategy for each page.
-Have you worked with Dynamic Rendering or hybrid approaches? Which strategy do you prefer in your projects?]]></summary>
-        <author>
-            <name>Joodi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[From JavaScript to Node.js: Understanding What Really Happens Behind the Scenes (Part 4.1)]]></title>
-        <id>https://dev.to/sudhanshu_code_b8ef988ceb/from-javascript-to-nodejs-understanding-what-really-happens-behind-the-scenes-part-41-3ohl</id>
-        <link href="https://dev.to/sudhanshu_code_b8ef988ceb/from-javascript-to-nodejs-understanding-what-really-happens-behind-the-scenes-part-41-3ohl"/>
-        <updated>2026-07-24T12:07:15.000Z</updated>
-        <summary type="html"><![CDATA[Node.js Modules Explained from Scratch — Why Do Modules Even Exist?
-If you've been writing Node.js for even a few days, you've probably seen code like this:
-const fs = require("fs");
-Or maybe you've written your own module:
-const math = require("./math");
-Most tutorials stop here.
-They teach how to use require(), but very few explain why modules exist in the first place.
-In this article, we're not going to start with require().
-Instead, we're going to start with a much more fundamental question.
-Why were modules invented at all?
-Because once you understand that, everything else in Node.js modules starts making sense.
-Imagine Building Everything in One File
-Let's say you're creating a banking application.
-At first, everything feels simple.
-function login() {}
-function logout() {}
-function t…]]></summary>
-        <author>
-            <name>Sudhanshu code</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[From JavaScript to Node.js: Understanding What Really Happens Behind the Scenes (Part 3)]]></title>
-        <id>https://dev.to/sudhanshu_code_b8ef988ceb/from-javascript-to-nodejs-understanding-what-really-happens-behind-the-scenes-part-3-34gj</id>
-        <link href="https://dev.to/sudhanshu_code_b8ef988ceb/from-javascript-to-nodejs-understanding-what-really-happens-behind-the-scenes-part-3-34gj"/>
-        <updated>2026-07-24T12:05:20.000Z</updated>
-        <summary type="html"><![CDATA[From JavaScript to Node.js: Understanding What Really Happens Behind the Scenes (Part 3)
-
-
-
-  
-  
-  Synchronous vs Asynchronous Node.js: What Really Happens Inside fs.readFile()?
-
-
-In the previous article, we learned that Node.js is much more than the V8 engine.
-We discovered that a simple file operation travels through multiple layers:
-JavaScript
-    ↓
-V8 Engine
-    ↓
-Node APIs
-    ↓
-C++ Bindings
-    ↓
-libuv
-    ↓
-Operating System
-    ↓
-Hardware
-
-But one important question still remains unanswered.
-If reading a file requires communicating with the operating system and the storage device...
-Why doesn't Node.js freeze while waiting for the file?
-To answer that, we first need to understand one of the most important ideas in computer science.
-Most tutorials define blocking like this:
-"Blockin…]]></summary>
-        <author>
-            <name>Sudhanshu code</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What actually breaks when you deploy an AI-built app]]></title>
-        <id>https://dev.to/actuant/what-actually-happens-when-you-ship-an-ai-built-app-50f3</id>
-        <link href="https://dev.to/actuant/what-actually-happens-when-you-ship-an-ai-built-app-50f3"/>
-        <updated>2026-07-24T12:04:15.000Z</updated>
-        <summary type="html"><![CDATA[I ran launch audits on 20 AI-built apps, Lovable, Bolt, v0, a couple of Cursor builds. Same checks on each, run against the live deployed URL, not the code. These were the most common problems:
-14/20 had a canonical tag pointing at the wrong domain. Usually the builder's preview URL. The site works fine on the custom domain, but it's telling Google the real version lives at something.lovable.app.
-Your domain never ranks and you'd never know why.
-12/20 had broken or missing basic SEO. No meta description, no OG image (so every shared link is a grey rectangle), or a sitemap listing pages that 404.
-9/20 had analytics installed but not firing. Added early, then the AI rewrote the layout and dropped the snippet, or it fires on the homepage and nowhere else. Traffic arrives, you learn nothing.
-7/20 had no way for anyone to contact them. No email, no form, nothing. Someone wants to pay you and can't tell you.
-5/20 had an open database. Row level security off, so the anon key that ships in the bundle can read whatever it wants. This is the scary one and it takes 30 seconds to check.
-2/20 had an actual secret key in the client bundle. Pasted in at 2am to make something work, then shipped to every visitor's browser.
-And the one that applied to all 20: nothing was watching any of this. 
-Every prompt is a redeploy, and any redeploy can reintroduce all of the above.
-Your app doesn't email you when its meta description disappears.
-None of these are exotic. The AI tools are judged on whether the app runs, so that's what they're good at. Nobody's judging what a real browser actually loads at your real domain, and that gap is where launches die quietly.
-I found all of this with a tool I'm building called Actuant (https://www.actuant.dev), it audits your deployed app in a cloud browser and watches it after you ship.
-Join the waitlist (https://www.actuant.dev/early-access) if you want it on your app.]]></summary>
-        <author>
-            <name>Actuant</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Top AI Papers on Hugging Face - 2026-07-24]]></title>
-        <id>https://dev.to/y_hnhnhan_2f26de65ffcc4/top-ai-papers-on-hugging-face-2026-07-24-152k</id>
-        <link href="https://dev.to/y_hnhnhan_2f26de65ffcc4/top-ai-papers-on-hugging-face-2026-07-24-152k"/>
-        <updated>2026-07-24T12:01:41.000Z</updated>
-        <summary type="html"><![CDATA[10 paper AI nổi bật nhất trên Hugging Face hôm nay: từ self-improving agent đến world renderer thời gian thực
-
-
-Hôm nay, danh sách paper được upvote cao nhất trên Hugging Face cho thấy một bức tranh rất rõ về xu hướng AI hiện tại: agent nghiên cứu tự cải thiện, khả năng hiểu và điều khiển mô hình sinh, rendering/generative world model tốc độ cao, LLM hậu huấn luyện quy mô lớn, và benchmark mới cho embodied AI, giáo dục, thị giác không giám sát, spatial reasoning, video generation.
-Bài viết này sẽ tóm tắt 10 paper theo 4 góc nhìn cho mỗi bài:
-Bài toán
-Ý tưởng
-Điểm mới
-Ứng dụng thực tế
-Paper: 2607.21461
-
-
-GitHub: https://github.com/VectorSpaceLab/arex-model
-
-
-Project: https://vectorspacelab.github.io/arex-model/
-
-
-
-
-  
-  
-  Bài toán
-
-
-Các AI agent làm “deep research” hiện nay thường bị giới …]]></summary>
-        <author>
-            <name>Y Hành Nhan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Introducing Sheetmusic4J, a Java(FX) Library to Render and Interact with Sheet Music]]></title>
-        <id>https://dev.to/fdelporte/introducing-sheetmusic4j-a-javafx-library-to-render-and-interact-with-sheet-music-48dk</id>
-        <link href="https://dev.to/fdelporte/introducing-sheetmusic4j-a-javafx-library-to-render-and-interact-with-sheet-music-48dk"/>
-        <updated>2026-07-24T12:01:13.000Z</updated>
-        <summary type="html"><![CDATA[I'm building MelodyMatrix with my son, an application to look at and play along with music. The app already shows a song in different views: falling blocks, chords, guitar views, and many more. Now we want a Learn section, a view that helps someone practice piano by following the actual sheet music while it plays.
-
-A static PDF of the sheet doesn't work for that. Great PDF viewer components exist for JavaFX, but a PDF has no connection to what's playing. Nothing highlights the current note, nothing marks the current position in the song. I looked for a JavaFX library that renders sheet music and lets code interact with it: jump to a position, highlight a note, follow playback. I couldn't find one, so I built it.
-  
-  
-
-
-
-  
-  
-  Same Approach as Lottie4J
-
-
-The problem matched one I'd alrea…]]></summary>
-        <author>
-            <name>Frank Delporte</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Advanced Server-Side Caching Patterns in Next.js for Scalable Applications]]></title>
-        <id>https://dev.to/tamizuddin/advanced-server-side-caching-patterns-in-nextjs-for-scalable-applications-97c</id>
-        <link href="https://dev.to/tamizuddin/advanced-server-side-caching-patterns-in-nextjs-for-scalable-applications-97c"/>
-        <updated>2026-07-24T12:00:49.000Z</updated>
-        <summary type="html"><![CDATA[Originally published on tamiz.pro.
-Next.js has become a powerhouse for building performant web applications, thanks to its hybrid rendering capabilities. While client-side caching (like service workers or HTTP cache headers) is crucial, optimizing the server-side is equally vital for scaling applications, especially when dealing with frequent data fetches, complex computations, or high concurrency. This deep dive explores advanced server-side caching patterns within a Next.js context, focusing on strategies that go beyond the built-in fetch caching.
-Next.js applications often interact with external data sources (databases, APIs) or perform server-intensive operations during Server-Side Rendering (SSR), Incremental Static Regeneration (ISR), or API route execution. Without proper caching, e…]]></summary>
-        <author>
-            <name>Tamiz Uddin</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[EU hits Russia with massive 21st sanctions package targeting $120B crypto network]]></title>
         <id>fa17116a-1e8a-46a4-9caa-1c0c90cbf0ff</id>
         <link href="https://www.coindesk.com/policy/2026/07/24/eu-hits-russia-with-massive-21st-sanctions-package-targeting-usd120b-crypto-network"/>
@@ -348,6 +429,16 @@ Next.js applications often interact with external data sources (databases, APIs)
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[My security camera shipped a GitHub admin token in its login page]]></title>
+        <id>https://hhh.hn/hanwha-github-token/</id>
+        <link href="https://hhh.hn/hanwha-github-token/"/>
+        <updated>2026-07-24T11:54:41.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Crypto market maker B2C2 held sale talks with multiple potential buyers]]></title>
         <id>9381dc26-722b-4bff-a3ab-c78a5c1285cb</id>
         <link href="https://www.coindesk.com/business/2026/06/29/crypto-market-maker-b2c2-held-sale-talks-with-multiple-potential-buyers"/>
@@ -355,26 +446,6 @@ Next.js applications often interact with external data sources (databases, APIs)
         <summary type="html"><![CDATA[The SBI-owned crypto trading firm is said to have attracted takeover interest from a number of suitors over the past 18 months, but valuation has been a sticking point.]]></summary>
         <author>
             <name>Will Canny</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[German battery maker Varta files insolvency applications]]></title>
-        <id>https://www.reuters.com/business/german-battery-maker-varta-files-insolvency-applications-2026-07-24/</id>
-        <link href="https://www.reuters.com/business/german-battery-maker-varta-files-insolvency-applications-2026-07-24/"/>
-        <updated>2026-07-24T11:46:55.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The case for MUDs in modern times]]></title>
-        <id>https://www.andrewzigler.com/feed/the-case-for-muds-in-modern-times</id>
-        <link href="https://www.andrewzigler.com/feed/the-case-for-muds-in-modern-times"/>
-        <updated>2026-07-24T11:46:40.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -481,6 +552,16 @@ The post Gigabyte Z890 Aorus Elite Duo X Review: Mid-Range Board With Lots Of Co
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[How Do We Stop Vibe Coding?]]></title>
+        <id>https://alexklos.ca/blog/how-do-we-stop-vibe-coding</id>
+        <link href="https://alexklos.ca/blog/how-do-we-stop-vibe-coding"/>
+        <updated>2026-07-24T10:12:39.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[India orders takedown of Jack Dorsey’s bitcoin-linked messaging app Bitchat]]></title>
         <id>2bd5d216-aae6-4a1e-a82f-a7766d785665</id>
         <link href="https://www.coindesk.com/tech/2026/07/24/india-orders-takedown-of-jack-dorsey-s-bitcoin-linked-messaging-app-bitchat"/>
@@ -491,26 +572,6 @@ The post Gigabyte Z890 Aorus Elite Duo X Review: Mid-Range Board With Lots Of Co
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Launching Health in ChatGPT to US Users]]></title>
-        <id>https://openai.com/index/health-in-chatgpt/</id>
-        <link href="https://openai.com/index/health-in-chatgpt/"/>
-        <updated>2026-07-24T10:09:36.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: Audio Player with "Binaural Beats" tuned to the same key as your music]]></title>
-        <id>https://github.com/henrygabriels/binaural-studio</id>
-        <link href="https://github.com/henrygabriels/binaural-studio"/>
-        <updated>2026-07-24T10:01:39.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[BitMEX faces proposed class-action suit for theft, insider trading as crypto exchange shuts down]]></title>
         <id>9f3a0791-94c8-4ea9-a508-dc7f4dd1adbf</id>
         <link href="https://www.coindesk.com/business/2026/07/24/bitmex-faces-proposed-class-action-suit-for-theft-insider-trading-as-crypto-exchange-shuts-down"/>
@@ -518,6 +579,16 @@ The post Gigabyte Z890 Aorus Elite Duo X Review: Mid-Range Board With Lots Of Co
         <summary type="html"><![CDATA[The complaint claims BitMEX designed a system to retain customer collateral and alleges an internal desk accessed private user data during server freezes.]]></summary>
         <author>
             <name>Francisco Rodrigues</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IRGC Claims It Destroyed Amazon's Bahrain Data Center]]></title>
+        <id>https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/</id>
+        <link href="https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/"/>
+        <updated>2026-07-24T09:52:58.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -583,16 +654,6 @@ The post Samsung Wallet Now Supports Maybank MAE Scan & Pay appeared first on Lo
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The day Steve Jobs dissed me in a keynote (2010)]]></title>
-        <id>https://sive.rs/itunes</id>
-        <link href="https://sive.rs/itunes"/>
-        <updated>2026-07-24T09:07:44.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Tecno Pova 8 5G Officially Lands In Malaysia With New Alive Matrix Display]]></title>
         <id>https://www.lowyat.net/?p=399657</id>
         <link href="https://www.lowyat.net/2026/399657/tecno-pova-8-5g-malaysia-2/"/>
@@ -624,11 +685,11 @@ The post Tecno Pova 8 5G Officially Lands In Malaysia With New Alive Matrix Disp
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Live updates: Dogecoin and ether lead pullback as investors digest tech earnings]]></title>
+        <title type="html"><![CDATA[Live updates: Bitcoin gives up gains, falls below $64,000 as stocks retreat]]></title>
         <id>56618d36-440a-4c95-8f52-85c98149c7f2</id>
         <link href="https://www.coindesk.com/tech/2026/07/24/live-updates-dogecoin-and-ether-lead-pullback-as-investors-digest-tech-earnings"/>
         <updated>2026-07-24T07:22:26.000Z</updated>
-        <summary type="html"><![CDATA[Dogecoin dropped 4.5% and ether 2.5%, leading a broad but shallow retreat across the majors, though most remain higher on the week ahead of next week's Fed meeting.]]></summary>
+        <summary type="html"><![CDATA[Michael Saylor's Strategy — under continued pressure in this crypto bear market — released a new set of metrics to judge company performance.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
         </author>
@@ -653,16 +714,6 @@ The post Alleged Images Of OPPO Find X10 Series Appear Online appeared first on 
 The post YouTuber Gets Snapdragon X Elite Laptop To Run NVIDIA RTX 4060 via eGPU appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>John Law</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The PImpl idiom and the C++26 std:indirect type]]></title>
-        <id>https://mariusbancila.ro/blog/2026/07/23/the-pimpl-idiom-and-the-cpp26-stdindirect-type/</id>
-        <link href="https://mariusbancila.ro/blog/2026/07/23/the-pimpl-idiom-and-the-cpp26-stdindirect-type/"/>
-        <updated>2026-07-24T07:02:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -798,16 +849,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why Sony can't bring back its classic Walkman models]]></title>
-        <id>https://obsoletesony.substack.com/p/why-sony-cant-bring-back-classic-walkman</id>
-        <link href="https://obsoletesony.substack.com/p/why-sony-cant-bring-back-classic-walkman"/>
-        <updated>2026-07-23T18:08:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Product Experiment Counterfactual Methods for Estimating the Effects of AI Prompt Engineering]]></title>
         <id>6a624877953fb9a0375f9238</id>
         <link href="https://www.freecodecamp.org/news/counterfactual-meta-learners-for-llm-prompt-decisions/"/>
@@ -838,16 +879,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What happened to TheNumbers.com]]></title>
-        <id>https://stephenfollows.com/p/what-just-happened-to-thenumberscom-should-worry-us-all</id>
-        <link href="https://stephenfollows.com/p/what-just-happened-to-thenumberscom-should-worry-us-all"/>
-        <updated>2026-07-23T16:53:33.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The SEC settles with Coinbase over its missing Gary Gensler texts]]></title>
         <id>671764c7-fb5c-4f95-8c5d-adf3c6e735b6</id>
         <link href="https://www.coindesk.com/policy/2026/07/23/sec-agrees-to-end-lawsuit-over-missing-ethereum-records-will-pay-usd150-000-in-fees"/>
@@ -855,36 +886,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         <summary type="html"><![CDATA[A new court status report reveals the agency will pay a flat fee to resolve a two-year fight over what former Chair Gary Gensler knew about Ethereum.]]></summary>
         <author>
             <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why Software Factories Fail (or: harness engineering is not enough)]]></title>
-        <id>https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md</id>
-        <link href="https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md"/>
-        <updated>2026-07-23T15:18:48.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Startup founders urge U.S. government not to shut off Chinese open weight AI]]></title>
-        <id>https://www.politico.com/news/2026/07/22/startup-founders-urge-trump-not-to-shut-off-chinese-open-weight-ai-01008992</id>
-        <link href="https://www.politico.com/news/2026/07/22/startup-founders-urge-trump-not-to-shut-off-chinese-open-weight-ai-01008992"/>
-        <updated>2026-07-23T15:18:40.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: Palmier Pro – Open-source macOS video editor built for AI]]></title>
-        <id>https://github.com/palmier-io/palmier-pro</id>
-        <link href="https://github.com/palmier-io/palmier-pro"/>
-        <updated>2026-07-23T15:11:37.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -902,16 +903,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         <id>https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your</id>
         <link href="https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your"/>
         <updated>2026-07-23T14:24:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I regret migrating to Codeberg]]></title>
-        <id>https://xn--gckvb8fzb.com/i-regret-migrating-to-codeberg/</id>
-        <link href="https://xn--gckvb8fzb.com/i-regret-migrating-to-codeberg/"/>
-        <updated>2026-07-23T14:06:47.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -978,16 +969,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[BlackRock, Coinbase, Strategy in a new group pledging $15 million to prepare Bitcoin for quantum threats]]></title>
-        <id>8927ed87-ad5c-425e-84ed-b82ddd4bf5af</id>
-        <link href="https://www.coindesk.com/business/2026/07/23/blackrock-coinbase-strategy-in-group-pledging-usd15-million-to-prepare-bitcoin-for-quantum-threats"/>
-        <updated>2026-07-23T12:54:27.000Z</updated>
-        <summary type="html"><![CDATA[Members will direct funding independently, with the consortium taking no role in Bitcoin governance or protocol decisions.]]></summary>
-        <author>
-            <name>Francisco Rodrigues</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Download: energy transmission and US threats against Chinese AI]]></title>
         <id>https://www.technologyreview.com/?p=1140753</id>
         <link href="https://www.technologyreview.com/2026/07/23/1140753/the-download-energy-transmission-and-us-threats-chinese-ai/"/>
@@ -1005,26 +986,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         <summary type="html"><![CDATA[Designing and developing a new medicine is an expensive, failure-prone scientific challenge. A new drug can take many years to develop, at the cost of a significant investment. And even then, most possible candidates never reach the patient. For biologic medicines, therapies made from engineered proteins rather than synthetic chemistry (which are often used to…]]></summary>
         <author>
             <name>MIT Technology Review Insights</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Abu Dhabi's Mubadala Capital joins tokenization push as Coinbase takes stake in onchain fund]]></title>
-        <id>1def96f1-5f55-480a-a4b2-f1710cb9b723</id>
-        <link href="https://www.coindesk.com/business/2026/07/23/abu-dhabi-s-mubadala-capital-joins-tokenization-push-as-coinbase-takes-stake-in-onchain-fund"/>
-        <updated>2026-07-23T12:00:00.000Z</updated>
-        <summary type="html"><![CDATA[The sovereign wealth-backed asset manager tapped KAIO to bring one of its private market funds onchain across Base, Solana and Sui networks.]]></summary>
-        <author>
-            <name>Krisztian Sandor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Polymarket to challenge France’s nationwide website block]]></title>
-        <id>b6b5eaec-e1d9-45b3-87c2-4427fef2c4e3</id>
-        <link href="https://www.coindesk.com/policy/2026/07/23/polymarket-to-challenge-france-s-nationwide-website-block"/>
-        <updated>2026-07-23T11:53:53.000Z</updated>
-        <summary type="html"><![CDATA[France’s regulator has said the platform still promoted illegal gambling and cited loss, identity-check and market-manipulation risks.]]></summary>
-        <author>
-            <name>Francisco Rodrigues</name>
         </author>
     </entry>
     <entry>
@@ -1098,16 +1059,6 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Beam Engine]]></title>
-        <id>https://glinscott.github.io/beam-engine/</id>
-        <link href="https://glinscott.github.io/beam-engine/"/>
-        <updated>2026-07-22T14:16:44.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Download: NASA’s new space telescope and OpenAI’s autonomous hacker]]></title>
         <id>https://www.technologyreview.com/?p=1140717</id>
         <link href="https://www.technologyreview.com/2026/07/22/1140717/the-download-nasa-space-telescope-openai-hugging-face-hack/"/>
@@ -1158,6 +1109,16 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Latest Airbus Single Aisle Aircraft Innovations]]></title>
+        <id>https://www.airbus.com/en/newsroom/stories/2026-07-how-the-a321xlr-is-redefining-single-aisle-comfort-for-passengers</id>
+        <link href="https://www.airbus.com/en/newsroom/stories/2026-07-how-the-a321xlr-is-redefining-single-aisle-comfort-for-passengers"/>
+        <updated>2026-07-21T16:22:17.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[The Download: Chinese AI divides the White House, and a record copyright payout]]></title>
         <id>https://www.technologyreview.com/?p=1140685</id>
         <link href="https://www.technologyreview.com/2026/07/21/1140685/the-download-chinese-ai-divides-white-house-anthropic-copyright-settlement/"/>
@@ -1188,20 +1149,10 @@ The post LG Agrees To Remove Automatic Install of Adware From Monitors After Mic
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I could do that in a weekend (2016)]]></title>
-        <id>https://danluu.com/sounds-easy/</id>
-        <link href="https://danluu.com/sounds-easy/"/>
-        <updated>2026-07-20T17:55:09.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What else do people draw on gradient.horse?]]></title>
-        <id>https://rybakov.com/blog/what_else_do_people_draw_on_gradient-copy.horse/</id>
-        <link href="https://rybakov.com/blog/what_else_do_people_draw_on_gradient-copy.horse/"/>
-        <updated>2026-07-18T15:28:56.000Z</updated>
+        <title type="html"><![CDATA[India's first privately-developed rocket reaches orbit on dramatic debut launch]]></title>
+        <id>https://arstechnica.com/space/2026/07/indias-first-privately-developed-rocket-reaches-orbit-on-dramatic-debut-launch/</id>
+        <link href="https://arstechnica.com/space/2026/07/indias-first-privately-developed-rocket-reaches-orbit-on-dramatic-debut-launch/"/>
+        <updated>2026-07-20T02:43:54.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
