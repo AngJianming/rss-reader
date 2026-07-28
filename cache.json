@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/monorepo-8-duan-tong-bu-kai-fa-turborepo-pnpm-workspace-shi-zhan-1g7k",
-          "author": "李春川",
-          "description": "Monorepo 8 端同步开发:Turborepo + pnpm Workspace 实战\n\n\n\n做一个 AI 应用,产品经理说要上 Web、小程序、桌面端、浏览器插件、CLI、移动端 6 个端,加上 API 和 AI 服务共 8 个工程。是开 8 个仓库各干各的,还是用一个 monorepo 统管?IHUI-AI 选了后者。本文是我们在 8 端 monorepo 上用 Turborepo + pnpm Workspace 的工程总结,包含构建编排、依赖管理、跨端类型安全、CI 优化的完整实践。\n8 个端开 8 个仓库,会遇到:\n类型重复:同一个 User 类型在 8 个仓库各定义一份,字段一改全端爆炸\nAPI 契约漂移:API 仓库改了字段,Web 仓库不知道,上线就 500\nUI 组件重复:按钮、对话框、消息气泡在 5 个端各实现一次,设计稿一变全端追改\n发布协调难:types 仓库发了 v2,要等所有下游仓库升级,期间线上两个版本并存\nCI 重复:8 个仓库各跑一遍 lint/typecheck/test,共享代码却无法增量\n┌─────────────────────────────────────────────────┐\n│              IHUI-AI Monorepo                   │\n│  ┌──────────────────────────────────────────┐   │\n│  │  packages/ (共享:types/ui/auth/db/config)│   │\n│  └──────────────────────────────────────────┘   │\n│  ┌──────────────────────────────────────────┐   │\n│  │  apps/ (8 端…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/monorepo-8-duan-tong-bu-kai-fa-turborepo-pnpm-workspace-shi-zhan-1g7k",
-          "publishedOn": "2026-07-28T05:38:41.000Z",
-          "wordCount": 2806,
-          "title": "Monorepo 8 端同步开发:Turborepo + pnpm Workspace 实战",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F3loc7rmekyz8ta6mes2z.png"
+          "id": "https://dev.to/acrdev/deja-de-hacer-despliegues-manuales-cicd-basico-con-github-actions-40j9",
+          "author": "Asier Caballero",
+          "description": "Deja de hacer despliegues manuales: CI/CD básico con GitHub Actions\n\n\nSi todavía copias archivos por SCP o subes carpetas por FTP en julio de 2026, por favor, para. No tiene sentido. GitHub Actions es el estándar de facto y si no lo usas, estás perdiendo el tiempo que podrías dedicar a cosas más interesantes.\nVamos al grano. Un pipeline no es magia. Es solo un script que se ejecuta en una máquina virtual de GitHub cada vez que haces un git push.\nTodo se basa en eventos. Puedes disparar tu pipeline cuando haces un push a main, cuando abres un Pull Request, o incluso a una hora específica.\nGitHub te presta una máquina (el \"Runner\"). Tú le dices qué hacer en un archivo YAML dentro de .github/workflows/.\nCrea el archivo .github/workflows/ci.yml en tu repositorio. Este es un ejemplo para una ap…",
+          "link": "https://dev.to/acrdev/deja-de-hacer-despliegues-manuales-cicd-basico-con-github-actions-40j9",
+          "publishedOn": "2026-07-28T08:21:02.000Z",
+          "wordCount": 2191,
+          "title": "Deja de hacer despliegues manuales: CI/CD básico con GitHub Actions",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fnrzg7gq0cg8zttq08nj5.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/langgraph-agent-bian-pai-mo-shi-6-chong-sheng-chan-ji-multi-agent-jia-gou-eme",
-          "author": "李春川",
-          "description": "LangGraph Agent 编排模式:6 种生产级 Multi-Agent 架构\n\n\n\n单个 LLM agent 能力有限:它会被长任务搞晕、会在多步推理中失忆、会把所有职责搅成一团。生产级的 AI 系统需要多个 agent 分工协作——但「多个 agent 怎么协作」本身就是个难题。LangGraph 把 agent 编排建模成「状态图」,让复杂协作变得可调试、可持久化、可观测。本文是 IHUI-AI 在 apps/ai-service/app/graphs/ 落地 6 种编排模式的工程总结。\n很多人分不清 LangChain 和 LangGraph。\nLangChain 的核心抽象是 Chain——线性的步骤序列:\n[输入] → [Prompt 模板] → [LLM] → [输出解析] → [输出]\n\n适合简单任务,但遇到「根据结果决定下一步走哪」「循环直到满足条件」就力不从心。\nLangGraph 把执行流建模成有向图:\n节点(Node):一个函数,接收 state,返回 state 更新\n边(Edge):节点间的转移,可以是固定的或带条件的\n状态(State):在节点间流转的共享数据,用 TypedDict 定义\n\n\n\n\n       ┌─────────┐\n       │  start  │\n       └────┬────┘\n            ▼\n       ┌─────────┐    条件    ┌─────────┐\n       │ router  │ ─────────▶ │ agent_a │\n       └────┬────┘            └─────────┘\n            │ 条件\n            ▼\n       ┌─────────┐\n       │ agent_b │\n       └───…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/langgraph-agent-bian-pai-mo-shi-6-chong-sheng-chan-ji-multi-agent-jia-gou-eme",
-          "publishedOn": "2026-07-28T05:38:33.000Z",
-          "wordCount": 2780,
-          "title": "LangGraph Agent 编排模式:6 种生产级 Multi-Agent 架构",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fb8af9o9u7d0ctw822fgm.png"
+          "id": "https://dev.to/demivalerith/what-if-your-release-notes-had-to-survive-a-playtest-37b8",
+          "author": "Demi Valerith",
+          "description": "A release note usually has one job: tell readers what changed. For a small developer tool, that can leave a gap between reading about a feature and understanding why it matters. Screenshots help, but they are passive; a demo often needs more setup than the feature it explains.\nThat gap is interesting when the update itself has a tight, learnable interaction. Could a changelog be designed as a tiny thing someone plays through, rather than a page they skim?\nhtmx 4.0 was released as a Game Boy cartridge. On July 27, the related Hacker News post was observed at rank three with 338 points and 105 comments. Those are a point-in-time discussion snapshot, not evidence of a broad market or demand for game-like release notes. The useful part is more concrete: the release made the format memorable by…",
+          "link": "https://dev.to/demivalerith/what-if-your-release-notes-had-to-survive-a-playtest-37b8",
+          "publishedOn": "2026-07-28T08:18:07.000Z",
+          "wordCount": 1979,
+          "title": "What If Your Release Notes Had to Survive a Playtest?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fraytally.com%2Fog%2Fen%2Fcard%2F2026-07-27-htmx-4-0-the-first-javascript-library-to-release-exclusively.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/mcp-xie-yi-shi-xian-zhi-nan-cong-ling-gou-jian-sheng-chan-ji-ai-gong-ju-sheng-tai-1pl",
-          "author": "李春川",
-          "description": "MCP 协议实现指南:从零构建生产级 AI 工具生态\n\n\n\n当 LLM 不再只是「聊天机器人」,而是要查数据库、发邮件、调内部 API 时,工具调用就成了 AI 应用的命脉。Anthropic 在 2024 年开源的 Model Context Protocol (MCP),正在成为 AI 工具生态的「USB-C 接口」。本文是 IHUI-AI 在生产环境落地 MCP 的完整工程总结。\nModel Context Protocol(简称 MCP)是 Anthropic 于 2024 年 11 月开源的开放协议,目标是标准化 AI 应用与外部工具/数据源之间的连接方式。\n在 MCP 出现之前,每个 AI 应用都要为每个工具写一份适配代码:\n┌─────────┐    自定义协议 A    ┌──────────┐\n│  App 1  │ ──────────────────▶│ Tool GPT │\n└─────────┘                    └──────────┘\n┌─────────┐    自定义协议 B    ┌──────────┐\n│  App 2  │ ──────────────────▶│ Tool GPT │\n└─────────┘                    └──────────┘\n\nM 个应用 × N 个工具 = M×N 份适配代码,这是典型的「集成地狱」。\nMCP 的解法是引入一个标准协议层:\n┌─────────┐                  ┌──────────┐\n│  App 1  │ ──┐          ┌──▶│ Tool A   │\n└─────────┘   │          │   └──────────┘\n┌─────────┐   │  ┌───────┐   ┌────────…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/mcp-xie-yi-shi-xian-zhi-nan-cong-ling-gou-jian-sheng-chan-ji-ai-gong-ju-sheng-tai-1pl",
-          "publishedOn": "2026-07-28T05:38:23.000Z",
-          "wordCount": 3263,
-          "title": "MCP 协议实现指南:从零构建生产级 AI 工具生态",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F864tt7q5lj4s87loi7vu.png"
+          "id": "https://dev.to/anthonymax/how-cursor-browseract-handles-dynamic-pages-without-brittle-selectors-dh4",
+          "author": "Anthony Max",
+          "description": "TL;DR\n\n\nModern web applications change constantly. Components are re-rendered, generated attributes may differ between builds. Even when the UI looks identical, browser automation can fail because it still relies on assumptions captured before the page changed.\nIn this article, I used Cursor with BrowserAct CLI to test a dynamic project filter. Instead of relying on unreliable selectors, Cursor used BrowserAct to inspect the current page state and complete the task without relying on brittle selectors.\nThe goal wasn't to eliminate the DOM or replace Playwright. The goal was to give an AI agent a reliable inspect → act → reassess loop that works on modern, dynamic websites.\nWell, let's get started! 🏎️\nA browser test can run successfully for weeks and suddenly fail after a harmless frontend…",
+          "link": "https://dev.to/anthonymax/how-cursor-browseract-handles-dynamic-pages-without-brittle-selectors-dh4",
+          "publishedOn": "2026-07-28T08:17:28.000Z",
+          "wordCount": 2783,
+          "title": "How Cursor + BrowserAct Handles Dynamic Pages Without Brittle Selectors 💎",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fn2wh287x84devdzxhvp5.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/kai-yuan-xiang-mu-de-7-chong-saas-bian-xian-mo-shi-cong-open-core-dao-api-ji-fei-4l60",
-          "author": "李春川",
-          "description": "开源项目的 7 种 SaaS 变现模式:从 Open Core 到 API 计费\n\n\n\n「开源」和「赚钱」并不矛盾。GitLab、HashiCorp、Supabase、Vercel 都从开源项目起步,各自走出不同的变现路径。本文梳理 7 种被市场验证过的开源 SaaS 变现模式,以及 IHUI-AI 是如何组合它们的。\n开源不是「免费送代码」,而是「用免费换信任,用信任换付费意愿」。它的商业逻辑建立在三个事实之上:\n用户能看代码 → 信任度高 → 转化率比闭源高 3-5 倍。\n社区传播 → 获客成本接近零。\n客户自己能部署 → 不付钱的用户不消耗你的运维成本。\n难点在于:如何把「能用」和「想付费」之间画一条不越界的线。\n做法:核心开源(Apache 2.0 / MIT),企业必需功能(SSO、审计、RBAC、合规)闭源收费。\n案例:GitLab CE / EE、Supabase、Sentry。\n适用:企业版有明确合规需求的功能。\n# IHUI-AI 的 Open Core 边界\nopen_source:\n  - 8 端代码(Web/API/AI-service/CLI/...)\n  - 基础 Agent 编排\n  - MCP 客户端/服务端\n  - RAG 知识库\nenterprise:\n  - 多租户 SSO(SAML / OIDC)\n  - 审计日志合规导出\n  - 高级 RBAC 与权限审批流\n  - 私有化部署支持\n\n做法:用户可以自己部署,但「让官方帮你跑」要付费。\n案例:Vercel(Next.js)、Supabase Cloud、Railway。\n适用:用户怕运维、想要 SLA、不想自己升级。\n定价参考:成本 = 基础设施成本 × 1.5-3,订阅起步价 $19-49/月。\n做法:同一份代码,企业版加授权 + 高级特性 + 法律保障。\n案例:Mattermos…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/kai-yuan-xiang-mu-de-7-chong-saas-bian-xian-mo-shi-cong-open-core-dao-api-ji-fei-4l60",
-          "publishedOn": "2026-07-28T05:38:18.000Z",
-          "wordCount": 1667,
-          "title": "开源项目的 7 种 SaaS 变现模式:从 Open Core 到 API 计费",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhzuj5m8lrnb3h8ejach2.png"
+          "id": "https://dev.to/waseverinlabs/why-a-pricing-page-can-come-before-payment-integration-21ep",
+          "author": "WaseverinLabs",
+          "description": "A recent update to WASEVERIN Image Converter introduced a public Pricing page.\nThe image converter remains free, and payments are not enabled yet. The page currently explains what users can access today and previews a possible Pro plan for future features.\nThis raises a useful product question:\nShould a SaaS product publish pricing before its payment system is ready?\nThe answer can be yes, as long as the difference between current and planned functionality is clear.\nA Pricing page communicates the product structure:\nWhat is available for free\nWhat may be included in a paid plan\nHow much that plan may cost\nWhether the plan can currently be purchased\nA payment system has a different responsibility. It handles checkout, payment confirmation, subscription status and access to paid features.\nSe…",
+          "link": "https://dev.to/waseverinlabs/why-a-pricing-page-can-come-before-payment-integration-21ep",
+          "publishedOn": "2026-07-28T08:15:46.000Z",
+          "wordCount": 1757,
+          "title": "Why a Pricing Page Can Come Before Payment Integration",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F5xtd1w80df14g9odmpu4.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/ai-agent-shi-chang-she-ji-rang-agent-xiang-app-yang-bei-jiao-yi-yu-bian-pai-1n67",
-          "author": "李春川",
-          "description": "AI Agent 市场设计:让 Agent 像 App 一样被交易与编排\n\n\n\nApp Store 把「软件」变成了可被一键购买、安装、评分的商品,AI 时代对应的实体是「Agent」。一个 Agent = 一段可被复用的提示词 + 工具集 + 知识库 + 模型路由配置。本文讲清楚一个 Agent 市场需要哪些核心机制,以及 IHUI-AI 的实现路径。\n不是所有对话 prompt 都能成为商品。一个可上架的 Agent 必须满足:\n可独立运行:用户购买后能立刻用,不需要再写代码。\n可复用:不同用户用同一个 Agent 都能得到稳定结果。\n可定价:有明确的使用边界(次数 / 时长 / 调用规模)。\n可评估:有客观的质量指标(成功率 / 满意度 / 失败率)。\nIHUI-AI 用一份 schema 描述可上架的 Agent:\nconst MarketplaceAgentSchema = z.object({\n  id: z.string().uuid(),\n  name: z.string(),\n  description: \"z.string(),\"\n  // 核心能力\n  systemPrompt: z.string(),\n  tools: z.array(z.string()),         // 引用工具/MCP server\n  knowledgeBases: z.array(z.string()),// 绑定 RAG 知识库\n  modelRouting: z.object({\n    default: z.string(),               // 默认模型\n    fallback: z.string().optional(),   // 降级模型\n  }),\n  // 定价\n  pricing: z.object({\n    model: z.…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/ai-agent-shi-chang-she-ji-rang-agent-xiang-app-yang-bei-jiao-yi-yu-bian-pai-1n67",
-          "publishedOn": "2026-07-28T05:38:15.000Z",
-          "wordCount": 1740,
-          "title": "AI Agent 市场设计:让 Agent 像 App 一样被交易与编排",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fcn37zqqsvmc12sf5l7s2.png"
+          "id": "https://dev.to/shrirang_8770f57b6607952a/i-built-a-python-compiler-that-runs-in-browser-using-webassembly-26if",
+          "author": "shrirang",
+          "description": "\"I recently built PyPlayground — \nThe interesting part is it runs \nHow it works:\nTech stack:\nTry it here:\nPyplayground \nWould love feedback from \nthe dev community! 🙏",
+          "link": "https://dev.to/shrirang_8770f57b6607952a/i-built-a-python-compiler-that-runs-in-browser-using-webassembly-26if",
+          "publishedOn": "2026-07-28T08:10:46.000Z",
+          "wordCount": 1501,
+          "title": "\"I built a Python compiler that runs in browser using WebAssembly\"",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzggbxaeuqi2ap5hn6z45.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/8-duan-tong-yuan-jia-gou-she-ji-mo-shi-monorepo-gong-xiang-bao-de-gong-cheng-fang-fa-lun-2b07",
-          "author": "李春川",
-          "description": "8 端同源架构设计模式:Monorepo + 共享包的工程方法论\n\n\n\n一个产品要在 8 个端(Web、API、AI-service、桌面、扩展、移动、小程序、CLI)同时上线,传统做法是 8 个仓库,改一个 API 要协调 8 次。本文讲 IHUI-AI 用 Monorepo + 共享包的设计模式,把跨端协同成本降到接近零。\nAI 产品天然是全端的:用户在桌面写 prompt,在手机查结果,在小程序里给客户演示,在浏览器扩展里截屏发问,在 CLI 里批量跑。任何一端缺失,体验都断裂。\n8 端同源意味着三件事:\n代码同源:8 端共享类型定义、UI 组件、API schema、数据库 schema。\n链路同源:跨端调用无契约漂移,改一个 API,8 端立刻感知。\n验证同源:8 端的 typecheck + build + test 全绿才算交付。\n\n\n\n方案\n优点\n缺点\n\n\n\n\nNx\n配置丰富,生态成熟\n学习曲线陡,小项目过度设计\n\n\nLerna\n老牌方案\n已停止维护,慢\n\n\npnpm workspace + Turborepo\n极快、零配置、原生 TS\n缺少 Nx 的高级依赖图分析\n\n\n\nIHUI-AI 选 pnpm + Turborepo 的核心理由:\npnpm 的硬链接:8 个端都依赖 React,node_modules 不重复占盘。\nTurborepo 的内容哈希缓存:改 apps/web 不会触发 apps/api 的 rebuild。\n零运行时开销:不引入额外框架,纯构建工具。\nIHUI-AI/\n├── apps/\n│   ├── web/            # Next.js 15\n│   ├── api/            # Fastify 5\n│   ├── ai-service/     # FastAPI + LangGraph\n│   ├─…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/8-duan-tong-yuan-jia-gou-she-ji-mo-shi-monorepo-gong-xiang-bao-de-gong-cheng-fang-fa-lun-2b07",
-          "publishedOn": "2026-07-28T05:38:11.000Z",
-          "wordCount": 1812,
-          "title": "8 端同源架构设计模式:Monorepo + 共享包的工程方法论",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fuwtg8cvuxu81w9qwx5or.png"
+          "id": "https://dev.to/dragosbln/did-it-check-or-did-it-guess-testing-a-tool-whose-output-is-written-by-an-llm-1i4c",
+          "author": "Bilaniuc Dragos",
+          "description": "My first AI tool was ready, and in typical AI-era fashion, I rushed to publish it. After all, it worked. Or at least when I ran it, the output looked right to me.\nBut one scenario kept haunting me: I recommend it to a client, they run it and challenge one of its findings. Then they ask \"What makes it trustworthy? Did it check, or did it guess? How do you know?\" \nI didn't have a good answer. \"My prompt was really good\" - not quite what you'd expect from a senior architect.\nThis article is about building a better answer, and how building it changes the tool itself.\nI built an AI tool for auditing calcification in production auth systems. Its purpose stems from a real-world problem I encountered while working on a large-scale platform, which I described in Part 1. After dealing with it, I for…",
+          "link": "https://dev.to/dragosbln/did-it-check-or-did-it-guess-testing-a-tool-whose-output-is-written-by-an-llm-1i4c",
+          "publishedOn": "2026-07-28T08:10:31.000Z",
+          "wordCount": 6442,
+          "title": "Did it check, or did it guess? Testing a tool whose output is written by an LLM",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fpzk9a7kanfqt7iqu2f1p.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/rag-zhi-shi-ku-cong-ling-dao-shi-xian-5-bu-ba-wen-dang-bian-cheng-ke-dui-hua-de-ai-da-nao-19h3",
-          "author": "李春川",
-          "description": "RAG 知识库从零到一实现:5 步把文档变成可对话的 AI 大脑\n\n\n\n直接把整份文档塞进 LLM 上下文,既贵又容易幻觉。RAG(Retrieval-Augmented Generation,检索增强生成)通过「先检索后回答」的方式,让 AI 只看相关片段就能给出可追溯的答案。本文按 5 个工程步骤,讲清楚一个生产级 RAG 知识库从 0 到 1 的落地路径。\n知识截止:模型训练到某个时间点就停了,之后的事不知道。\n私有知识盲区:你公司的内部文档、客户合同、产品手册,模型从没见过。\n幻觉:不知道也硬编,越像真的越危险。\nRAG 的核心思路:不改模型参数,只改输入。把「用户问题」+「从知识库里检索到的相关片段」一起喂给 LLM,让它基于片段回答,并把片段来源标注出来。\n支持格式越多越好(IHUI-AI 支持 PDF / Word / Markdown / HTML / TXT / PPT),核心是用统一接口抽出纯文本:\ndef parse_document(file_path: Path) -> list[DocumentChunk]:\n    parser = PARSER_REGISTRY[file_path.suffix]   # .pdf → PyMuPDF, .docx → python-docx\n    raw_text = parser.extract(file_path)\n    cleaned = normalize_whitespace(remove_boilerplate(raw_text))\n    return split_to_chunks(cleaned)\n\n坑点:扫描版 PDF 必须先 OCR;Word 里的表格用 python-docx 读会丢结构,需要专门处理 table 节点。\n分块直接决定检索质量。常见三种策略:\n\n\n\n策略\n实现\n适…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/rag-zhi-shi-ku-cong-ling-dao-shi-xian-5-bu-ba-wen-dang-bian-cheng-ke-dui-hua-de-ai-da-nao-19h3",
-          "publishedOn": "2026-07-28T05:38:07.000Z",
-          "wordCount": 1710,
-          "title": "RAG 知识库从零到一实现:5 步把文档变成可对话的 AI 大脑",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fbaxzbz01tx9wx4xgghxn.png"
+          "id": "https://dev.to/vknull/73049-dates-through-a-numerology-rule-mostly-mod-9-and-33s-rarity-depends-on-when-you-reduce-2993",
+          "author": "vk",
+          "description": "The usual headline is that 33 is the rarest Life Path, about half a percent. Half a percent of what, reduced in which order? Change the order, to another convention inside the same master-preserving school, and 33 turns up 2,186 times instead of 393. Same rule, same dates, 5.6x.\nLife Path is a digit-reduction rule mapping a birth date to a small integer. It predicts nothing. But it is a deterministic function over a finite domain, which means you never have to sample it. You can just run the whole thing. We did: every date from 1900-01-01 to 2099-12-31, exactly 73,049 dates.\nThe other result is duller and it goes first, because it disarms most of what gets written about this distribution. Six of the twelve values land within four dates of each other, near one ninth apiece. That is not a di…",
+          "link": "https://dev.to/vknull/73049-dates-through-a-numerology-rule-mostly-mod-9-and-33s-rarity-depends-on-when-you-reduce-2993",
+          "publishedOn": "2026-07-28T08:10:04.000Z",
+          "wordCount": 2903,
+          "title": "73,049 dates through a numerology rule: mostly mod 9, and 33's rarity depends on when you reduce",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F87t82f0fgf8msmusxexz.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/mcp-xie-yi-shen-du-jie-xi-cong-function-call-dao-tong-yong-gong-ju-diao-yong-biao-zhun-41pd",
-          "author": "李春川",
-          "description": "MCP 协议深度解析:从 Function Call 到通用工具调用标准\n\n\n\nModel Context Protocol(简称 MCP)是 Anthropic 在 2024 年底开源的协议,目标是把「AI 调用外部工具」从各家自定义的接口,统一成一种像 USB-C 一样的标准。本文从协议原理出发,讲清 MCP 与 Function Call 的本质差异,以及 IHUI-AI 项目里 MCP 客户端 + 服务端的双向实现。\n很多人把 MCP 类比成「Function Call 的下一代」,这是误解。Function Call 是模型能力:LLM 输出一段 JSON,由应用层去执行。MCP 是协议层:它规定「工具如何被发现、如何被描述、如何被调用、如何被注销」,与具体模型解耦。\n打个比方:Function Call 是「插头形状」,MCP 是「USB-C 协议」。前者每家厂商一个样,后者让任何设备都能插。\n\n\n\n原语\n作用\n类比\n\n\n\n\ntools\n可被 LLM 调用的函数\nAPI endpoint\n\n\nresources\n可被读取的数据源(只读)\nGET 资源\n\n\nprompts\n可复用的提示词模板\n函数库\n\n\n\n三者通过同一个 MCP server 暴露,客户端在连接时通过 listTools / listResources / listPrompts 动态发现,而不是写死在代码里。\nMCP 底层基于 JSON-RPC 2.0,支持两种传输:\nstdio:子进程模式,client 启动 server,通过标准输入输出交换 JSON-RPC 消息。\nHTTP+SSE:远程模式,server 暴露 HTTP 端点,client 通过 SSE 接收推送。\n\n\n\n\n// client → server:list tools\n{\"jsonrpc\":\"2.0\",\"id\":1,\"me…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/mcp-xie-yi-shen-du-jie-xi-cong-function-call-dao-tong-yong-gong-ju-diao-yong-biao-zhun-41pd",
-          "publishedOn": "2026-07-28T05:38:03.000Z",
-          "wordCount": 1670,
-          "title": "MCP 协议深度解析:从 Function Call 到通用工具调用标准",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fk5secg1fdsvxk8elqw2s.png"
+          "id": "https://dev.to/hirodeath/drizzles-with-is-not-a-join-peeking-at-the-sql-it-actually-generates-57el",
+          "author": "hiro@",
+          "description": "This is a translation of my original article in Japanese: Qiita\nI run the backends of two side projects on Drizzle + Cloudflare D1, and I realized I had never actually checked what SQL the relational queries API (db.query.xxx.findMany({ with: ... })) produces.\nIs it a JOIN? Or does it quietly turn into N+1 queries? I wired up a logger and measured it, and the answer was neither. Drizzle compiles the whole thing into a single SQL statement built from correlated subqueries and json_group_array. No matter how deep you nest relations, the query count stays at one.\nThis post walks through the actual SQL, pasted as measured.\nFetching a relation in Drizzle looks like this:\n// Fetch members of an organization, with user info attached\nconst members = await db.query.memberships.findMany({\n  where: e…",
+          "link": "https://dev.to/hirodeath/drizzles-with-is-not-a-join-peeking-at-the-sql-it-actually-generates-57el",
+          "publishedOn": "2026-07-28T08:08:03.000Z",
+          "wordCount": 2304,
+          "title": "Drizzle's `with` is not a JOIN: peeking at the SQL it actually generates",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fd5sb11j401yppsjruh6h.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/kai-yuan-xiang-mu-ru-he-zheng-qian-ihui-ai-de-7-da-ying-li-mo-shi-she-ji-4k8b",
-          "author": "李春川",
-          "description": "开源项目如何挣钱:IHUI AI 的 7 大盈利模式设计\n\n\n\n\"我开源了 6 个月,GitHub 5k star,但银行账户快见底了。\"——某 AI 项目作者在 Twitter 倒苦水。\n\"我用 IHUI AI 替代了 ChatGPT Team + Claude Code + Notion AI,月省 $60+。\"——IHUI AI 用户在知乎评论。\n开源项目的最大悖论:star 不能当饭吃。本文讲 IHUI AI 作为 Apache 2.0 开源 AI 操作系统,如何设计 7 大盈利模式让开源可持续。这不是 PPT,是真实在跑的商业闭环。\n开源项目挣钱有 4 个经典坑:\n写了 3 年开源,贡献者上百,但没人付费。维护成本越来越高,作者最终 burnout,项目死掉。代表:无数个 2018 年的 Vue 插件作者。\n用了 MIT/Apache 2.0,云厂商直接 fork 闭源卖钱,你拿不到一分钱。代表:Elastic vs AWS(MongoDB / Redis 都被白嫖过)。\n价格定太高,中小企业用不起,转头用 ChatGPT;定太低,覆盖不了成本。代表:无数个国产 LLM 工具定价 ¥9.9/月,卖得越多亏得越多。\nSaaS 订阅是基础,但 LLM 应用毛利薄(模型 API 成本占 60%+),纯订阅天花板低。需要叠加高毛利模式:私有化、定制、市场分成。\n\n\n\n#\n模式\n客单价\n毛利率\n占比(目标)\n\n\n\n\n1\n\nSaaS 订阅(Free/Pro/Team/Enterprise)\n¥49-199/月\n35%\n50%\n\n\n2\n私有化部署\n¥2999-99000/年起\n80%\n20%\n\n\n3\n\nAPI 计费(按 token)\n按量\n40%\n15%\n\n\n4\n企业定制开发\n¥50k-500k/项目\n60%\n10%\n\n\n5\nAgent 市场分成\n15% 抽成\n100%\n3%\n…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/kai-yuan-xiang-mu-ru-he-zheng-qian-ihui-ai-de-7-da-ying-li-mo-shi-she-ji-4k8b",
-          "publishedOn": "2026-07-28T05:37:59.000Z",
-          "wordCount": 2599,
-          "title": "开源项目如何挣钱:IHUI AI 的 7 大盈利模式设计",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Foyutxr6sx68hvyt35rx4.png"
+          "id": "https://dev.to/acrdev/acrdev-article-l6c",
+          "author": "Asier Caballero",
+          "description": "Si estás harto de hacer git push y luego entrar al servidor por SSH a hacer un git pull y reiniciar manualmente el proceso, ya tienes la mitad del camino andado. Estás listo para dejar de ser un operario de tu propio código y empezar a delegar en GitHub Actions.\nA mediados de 2026, la realidad es que si tu pipeline no está automatizado, estás perdiendo tiempo valioso. GitHub Actions ha madurado un montón. Ya no es solo esa herramienta \"curiosa\" que probamos hace años; es el estándar de facto. Vamos a montar un flujo de trabajo serio sin marearte con teoría innecesaria.\nTodo empieza en la carpeta .github/workflows/. Ahí es donde viven tus automatizaciones. Cada archivo .yaml en ese directorio es un workflow independiente. Olvídate de herramientas externas; esto vive pegado a tu repo, lo que…",
+          "link": "https://dev.to/acrdev/acrdev-article-l6c",
+          "publishedOn": "2026-07-28T08:07:01.000Z",
+          "wordCount": 2254,
+          "title": "CI/CD pipelines",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fjt6bwry11ttv6a4lvrc6.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/cong-0-dao-1-gou-jian-qi-ye-ji-rag-zhi-shi-ku-pgvector-wen-dang-qie-pian-hun-he-jian-suo-3hc2",
-          "author": "李春川",
-          "description": "从 0 到 1 构建企业级 RAG 知识库:pgvector + 文档切片 + 混合检索\n\n\n\n你给公司搭了个 AI 助手,接入了 GPT-4o。员工问\"2025 年 Q3 销售政策\",AI 编了一段\"销售政策\"。法务一看,全是幻觉——Q3 政策根本不是这样。员工问\"产品 X 的退货流程\",AI 又编。CTO 怒了:\"我们花了几百万搭 AI,连公司内部文档都不知道?\"\n这就是 LLM 的致命伤:它不知道你的企业内部知识。微调太贵、太慢,且无法实时更新。解法是 RAG(Retrieval-Augmented Generation,检索增强生成)。本文讲 IHUI AI 如何用 pgvector + 混合检索构建企业级 RAG,支持多模态、权限隔离、引用溯源。\n网上 RAG demo 看起来都很简单:把文档切片 → embedding → 存向量库 → 查询时算余弦相似度 → top-K 塞进 prompt。但企业级落地,你会撞上 4 堵墙:\n按 500 字符硬切:把\"订单\"概念切成两半,前半段说\"订单创建\",后半段说\"订单状态\",两段单独都检索不到。\n按段落切:不同段落长度差异巨大,有的段落 50 字太短,有的 5000 字超 context。\n表格/代码块被切碎:Markdown 表格切成 4 段,每段都是乱码。\n用户问\"退款\",向量库返回 top-5 是\"还款\"、\"退货\"、\"账单\"、\"汇款\"、\"赔付\"——意思相近但不是退款政策。向量相似 ≠ 语义匹配。\nPDF 里有图表、扫描件、公式。纯文本 RAG 直接把图表当图片丢了,但图表里恰恰是关键信息(如价格表)。\nA 部门的文档 B 部门不能看,但 RAG 一检索全暴露了。员工问\"薪酬体系\",HR 内部文档被检索出来给普通员工看了。\n\n\n\n维度\npgvector\nPinecone\nMilvus\n\n\n\n\n部署成本\n已有 PG,0…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/cong-0-dao-1-gou-jian-qi-ye-ji-rag-zhi-shi-ku-pgvector-wen-dang-qie-pian-hun-he-jian-suo-3hc2",
-          "publishedOn": "2026-07-28T05:37:55.000Z",
-          "wordCount": 2928,
-          "title": "从 0 到 1 构建企业级 RAG 知识库:pgvector + 文档切片 + 混合检索",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fkzq7hway623j5hgq0pyo.png"
+          "id": "https://dev.to/axel_6225c422a7f5ddb4eb30/ibm-watsonx-code-assistant-alternatives-in-2026-what-replaced-it-and-what-to-choose-1em4",
+          "author": "Axel",
+          "description": "Last updated: July 2026\nBy Axel Misson.\nIBM watsonx Code Assistant has become part of IBM Bob, IBM's enterprise AI coding agent: the old product page now redirects there, and Bob carries its modernization features forward, including a premium Java modernization package. Teams searching for alternatives in 2026 usually want one of four things: a dedicated migration platform (Modelcode's Morph), deterministic mass refactoring (Moderne), architectural decomposition (vFunction), or a different general assistant (Amazon Q Developer). The right pick depends on the shape of the work.\nIf you evaluated watsonx Code Assistant in the past and are re-evaluating now, the landscape shifted under the name. IBM's watsonx Code Assistant page redirects to IBM Bob, described as an enterprise AI coding agent.…",
+          "link": "https://dev.to/axel_6225c422a7f5ddb4eb30/ibm-watsonx-code-assistant-alternatives-in-2026-what-replaced-it-and-what-to-choose-1em4",
+          "publishedOn": "2026-07-28T08:05:20.000Z",
+          "wordCount": 2380,
+          "title": "IBM watsonx Code Assistant Alternatives in 2026: What Replaced It and What to Choose",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F7jglshohx5hw7e5puaac.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/mcp-xie-yi-ji-cheng-shi-zhan-rang-ai-agent-diao-yong-ren-yi-gong-ju-4fjo",
-          "author": "李春川",
-          "description": "MCP 协议集成实战:让 AI Agent 调用任意工具\n\n\n\n你让 AI 帮你订张机票。AI 说:\"我是语言模型,无法访问外部系统。\"你换个 Agent 产品,它说自己能订,但要你把密码给它,还得给它管理员权限。你犹豫了。\nLLM 的下一个十年战争不是模型本身,而是工具调用。Anthropic 在 2024 年底开源了 Model Context Protocol (MCP),把「AI 调用外部工具」标准化了。本文讲 IHUI AI 如何在 8 端全栈 AI 操作系统里集成 MCP,让 Agent 真正能干活。\nLLM 应用最尴尬的现状:模型很聪明,但被关在玻璃箱子里。\nOpenAI Function Calling:tools + tool_calls\n\nAnthropic Tool Use:tool_use block\nLangChain Tools:BaseTool 类\nAutoGen Tools:@tool 装饰器\nCoze / Dify:可视化插件\n你写了一个\"查询订单\"工具,要适配 5 个框架,写 5 份代码。\nA 公司写了个\"查询天气\"工具,只能在自己的 Agent 里用。B 公司想复用,要从头实现。整个行业在重复造轮子。\nAgent 要查数据库,你给它 DB 账号;它要发邮件,你给它 SMTP 密码;它要操作 GitHub,你给它 PAT。一个 prompt injection 攻击,你的生产数据库就裸奔了。\nAgent 跑你写的代码片段,直接在你服务器上 eval()?生产环境分分钟被搞挂。\nModel Context Protocol 是 Anthropic 主导、开源的 AI 工具调用协议。它的核心思想:把工具/资源/Prompt 暴露成标准 server,任何 MCP-compatible client 都能调用。\n类比:MCP 之于 AI Age…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/mcp-xie-yi-ji-cheng-shi-zhan-rang-ai-agent-diao-yong-ren-yi-gong-ju-4fjo",
-          "publishedOn": "2026-07-28T05:37:51.000Z",
-          "wordCount": 2579,
-          "title": "MCP 协议集成实战:让 AI Agent 调用任意工具",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fpss0qo05y2cubha79rki.png"
+          "id": "https://dev.to/tomi431/automating-weekly-product-research-with-claude-and-mcp-2plo",
+          "author": "Tomi431",
+          "description": "Automating Weekly Product Research With Claude and MCP\n\n\nEvery Monday you open 4 tools, run the same queries, compile the same spreadsheet. You have been doing this for years. What if your AI did it for you in 30 seconds?\nThat is the promise of connecting Claude to live marketplace data through MCP -- the Model Context Protocol. Instead of logging into multiple dashboards, exporting CSV files, and stitching together a market picture by hand, you ask Claude one question and get a structured answer backed by real-time data. No switching tabs. No copy-paste. No pivot tables at 8 AM.\nThis article walks through how it works, what you can build with it, and how to set it up in under five minutes using the open-source sorftime-seller-agent MCP server.\nAsk any marketplace seller what Monday mornin…",
+          "link": "https://dev.to/tomi431/automating-weekly-product-research-with-claude-and-mcp-2plo",
+          "publishedOn": "2026-07-28T08:01:41.000Z",
+          "wordCount": 2600,
+          "title": "Automating Weekly Product Research With Claude and MCP",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fyjvcldr0iltphhr3up7c.png"
         },
         {
-          "id": "https://dev.to/_fd4c731d8fc551b91150a/176-da-mo-xing-tong-diao-du-litellm-langgraph-ru-he-rang-openaiclaudeqwendeepseek-jian-qie-huan-ol3",
-          "author": "李春川",
-          "description": "176 大模型统一调度:LiteLLM + LangGraph 如何让 OpenAI/Claude/Qwen/DeepSeek 一键切换\n\n\n\n凌晨 3 点,你的 AI 应用挂了。原因:OpenAI 调整了 gpt-4o 的响应字段,你的代码写死了 data.choices[0].message.content,现在偶发返回 refusal。你想临时切到 Claude 顶一下,结果发现 Claude 的 SDK 完全不一样,要改 17 处代码。运维同学哭出声。\n这是 LLM 应用最经典的痛:模型厂商 API 各搞一套,切换成本极高。本文讲 IHUI AI 如何用 LiteLLM + LangGraph 把 176 个模型统一成一个接口,实现一键切换、自动降级、成本控制。\n主流大模型厂商,每家 API 都不一样:\n\n\n\n厂商\nSDK\n字段名\n流式协议\nFunction Call\n多模态\n\n\n\n\nOpenAI\nopenai\nchoices[0].message.content\nSSE\ntool_calls\nURL/Bus64\n\n\nAnthropic\n@anthropic-ai/sdk\ncontent[0].text\nSSE(不同结构)\n\ntool_use block\nbase64 only\n\n\n通义千问\ndashscope\noutput.text\n自定义事件\ntools\nURL\n\n\nDeepSeek\n兼容 OpenAI\n同 OpenAI\n同 OpenAI\n同 OpenAI\n暂不支持\n\n\n智谱 GLM\nzhipuai\nchoices[0].message.content\nSSE\ntools\nURL/base64\n\n\n文心一言\n@baidubce\nresult\n流式 JSON\nfunctions\nURL\n\n\n豆包\nvolcengine-python-sdk\nchoices[0].m…",
-          "link": "https://dev.to/_fd4c731d8fc551b91150a/176-da-mo-xing-tong-diao-du-litellm-langgraph-ru-he-rang-openaiclaudeqwendeepseek-jian-qie-huan-ol3",
-          "publishedOn": "2026-07-28T05:37:47.000Z",
-          "wordCount": 2454,
-          "title": "176 大模型统一调度:LiteLLM + LangGraph 如何让 OpenAI/Claude/Qwen/DeepSeek 一键切换",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fj1xwzl32v4j27bj8eko3.png"
+          "id": "https://dev.to/qingluan/python-packaging-how-to-publish-your-first-pip-package-3791",
+          "author": "qing",
+          "description": "Python Packaging: How to Publish Your First pip Package\n\n\ntags: python, packaging, opensource, tutorial\ntags: python, packaging, opensource, tutorial\ntags: python, packaging, opensource, tutorial\nMaking Your Code Shareable: A Step-by-Step Guide to Publishing Your First pip Package\nHave you ever written a Python script that solves a problem you wish someone else had also thought of? Or created a utility function that streamlines a tedious task? If so, you're not alone. Many Python developers face the dilemma of wanting to share their code with the world, but aren't sure how to make it easily accessible to others. This is where Python packaging comes in – a way to distribute, share, and collaborate on code through the popular pip package manager.\nBefore you begin, ensure you have the latest …",
+          "link": "https://dev.to/qingluan/python-packaging-how-to-publish-your-first-pip-package-3791",
+          "publishedOn": "2026-07-28T08:00:12.000Z",
+          "wordCount": 2097,
+          "title": "Python Packaging: How to Publish Your First pip Package",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fcawv4rnntw00ujc4yi9u.png"
         }
       ]
     },
@@ -252,12 +252,32 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://www.data.jma.go.jp/multi/quake/quake_detail.html?eventID=20260728163528&lang=en",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.data.jma.go.jp/multi/quake/quake_detail.html?eventID=20260728163528&lang=en",
+          "publishedOn": "2026-07-28T07:44:24.000Z",
+          "wordCount": 27,
+          "title": "7.1 Earthquake in Japan",
+          "imageUrl": null
+        },
+        {
+          "id": "https://arsastronomica.com/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://arsastronomica.com/",
+          "publishedOn": "2026-07-28T05:25:34.000Z",
+          "wordCount": 2196,
+          "title": "Ars Astronomica – English translations of rare Hebrew and Latin astronomy texts",
+          "imageUrl": "https://arsastronomica.com/logo-with-name.png"
+        },
+        {
           "id": "https://www.fermionresearch.com/models/neutrino-8b/",
           "author": null,
           "description": "Comments",
           "link": "https://www.fermionresearch.com/models/neutrino-8b/",
           "publishedOn": "2026-07-28T04:49:54.000Z",
-          "wordCount": 6288,
+          "wordCount": 6379,
           "title": "Neutrino-1 8B",
           "imageUrl": "https://fermionresearch.com/images/og/neutrino-8b.jpg"
         },
@@ -270,16 +290,6 @@
           "wordCount": 827,
           "title": "PyTorch: A Reference Language",
           "imageUrl": null
-        },
-        {
-          "id": "https://thedecisionlab.com/biases/the-illusion-of-explanatory-depth",
-          "author": null,
-          "description": "Comments",
-          "link": "https://thedecisionlab.com/biases/the-illusion-of-explanatory-depth",
-          "publishedOn": "2026-07-28T04:00:41.000Z",
-          "wordCount": 25845,
-          "title": "Why do we think we understand the world more than we actually do?",
-          "imageUrl": "https://images.prismic.io/thedecisionlab/aDCUCSdWJ-7kSgJP_image3.png?auto=format,compress"
         },
         {
           "id": "https://golemui.com/blog/the-age-of-token-efficiency/",
@@ -308,7 +318,7 @@
           "link": "https://www.lrb.co.uk/the-paper/v48/n14/emily-wilson/an-uncomplicated-man",
           "publishedOn": "2026-07-28T02:35:28.000Z",
           "wordCount": 10630,
-          "title": "An Uncomplicated Man",
+          "title": "An Uncomplicated Man – A review of The Odyssey, directed by Christopher Nolan",
           "imageUrl": "https://www.lrb.co.uk/storage/social_image/images/1/2/1/4/31104121-1-eng-GB/db43a83754bf-The-Odyssey-Damon-Zendaya.jpg"
         },
         {
@@ -332,16 +342,6 @@
           "imageUrl": "https://fermisense.com/when-machines-take-the-wheel/og.png?v=2"
         },
         {
-          "id": "https://jacob.gold/posts/residential-proxies-are-a-national-security-threat/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://jacob.gold/posts/residential-proxies-are-a-national-security-threat/",
-          "publishedOn": "2026-07-28T01:51:18.000Z",
-          "wordCount": 1241,
-          "title": "Residential Proxies Are a National Security Threat",
-          "imageUrl": "https://jacob.gold/images/residential-proxies-are-a-national-security-threat.png"
-        },
-        {
           "id": "https://support.apple.com/guide/iphone/iphone-comfortably-riding-a-vehicle-iph55564cb22/ios",
           "author": null,
           "description": "Comments",
@@ -352,34 +352,14 @@
           "imageUrl": null
         },
         {
-          "id": "https://arxiv.org/abs/2607.05283",
-          "author": null,
-          "description": "Comments",
-          "link": "https://arxiv.org/abs/2607.05283",
-          "publishedOn": "2026-07-27T23:46:15.000Z",
-          "wordCount": 566,
-          "title": "The Burau representation of the braid group is faithful for n = 4",
-          "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
-        },
-        {
           "id": "https://nypost.com/2026/07/26/us-news/netflix-exec-goes-ballistic-after-being-fired-for-stunning-trust-exercise-confession-at-retreat-suit/",
           "author": null,
           "description": "Comments",
           "link": "https://nypost.com/2026/07/26/us-news/netflix-exec-goes-ballistic-after-being-fired-for-stunning-trust-exercise-confession-at-retreat-suit/",
           "publishedOn": "2026-07-27T23:21:37.000Z",
-          "wordCount": 9362,
+          "wordCount": 9357,
           "title": "Netflix employee fired for sharing personal details in retreat trust exercise",
           "imageUrl": "https://nypost.com/wp-content/uploads/sites/2/2026/07/netflix-exec-ketamine-firing-trust-exercise-comp.jpg?quality=75&strip=all&w=1200"
-        },
-        {
-          "id": "https://spacedaily.com/sd-v-astronauts-returning-from-six-month-missions-describe-a-persistent-observer-sensation-the-feeling-of-watching-their-own-lives-from-a-half-step-outside-the-frame-weeks-after-theyr/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://spacedaily.com/sd-v-astronauts-returning-from-six-month-missions-describe-a-persistent-observer-sensation-the-feeling-of-watching-their-own-lives-from-a-half-step-outside-the-frame-weeks-after-theyr/",
-          "publishedOn": "2026-07-27T23:19:19.000Z",
-          "wordCount": 2995,
-          "title": "Astronauts describe persistent 'observer' sensation after 6 month missions",
-          "imageUrl": "https://spacedaily.com/wp-content/uploads/2026/06/astronauts-returning-from-six-month-miss.jpg"
         },
         {
           "id": "https://dconf.org/2026/index.html",
@@ -397,7 +377,7 @@
           "description": "Comments",
           "link": "https://github.com/allyourcodebase",
           "publishedOn": "2026-07-27T23:09:50.000Z",
-          "wordCount": 1784,
+          "wordCount": 1748,
           "title": "C/C++ projects packaged for Zig",
           "imageUrl": "https://avatars.githubusercontent.com/u/146390816?s=280&v=4"
         },
@@ -419,7 +399,7 @@
           "publishedOn": "2026-07-27T22:37:52.000Z",
           "wordCount": 13624,
           "title": "Benchmarking Opus 5 on SlopCodeBench",
-          "imageUrl": "https://opengraph.githubassets.com/e98bd9ce757cd651c2a5dbe97bb06479ef97453107acf73f582c6fbc786ea8ea/humanlayer/advanced-context-engineering-for-coding-agents"
+          "imageUrl": "https://opengraph.githubassets.com/763844a78480cc4dc99f08ba92eadf1ffb4a232443516d608d07aac121f8b6a9/humanlayer/advanced-context-engineering-for-coding-agents"
         },
         {
           "id": "https://www.anthropic.com/news/position-open-weights-models",
@@ -459,17 +439,27 @@
           "publishedOn": "2026-07-27T18:36:02.000Z",
           "wordCount": 5021,
           "title": "Show HN: Yap – OSS on-device voice dictation for macOS with no model to download",
-          "imageUrl": "https://opengraph.githubassets.com/607c32c1938780140001ab8a84ba8ba8b113d17b95d6fae1bde556d1175283d1/FrigadeHQ/yap"
+          "imageUrl": "https://opengraph.githubassets.com/49fa8996bb1474423897f62d2d325f2d22e4a543ec13b588748c8da097a96b67/FrigadeHQ/yap"
         },
         {
-          "id": "https://up.codes/careers?utm_source=HN",
+          "id": "https://arxiv.org/abs/math/0411418",
           "author": null,
           "description": "Comments",
-          "link": "https://up.codes/careers?utm_source=HN",
-          "publishedOn": "2026-07-27T17:02:41.000Z",
-          "wordCount": 10,
-          "title": "UpCodes (YC S17) is hiring remote AE's to help make buildings cheaper",
-          "imageUrl": "https://up.codes/img/upcodes-og-twitter-image.png"
+          "link": "https://arxiv.org/abs/math/0411418",
+          "publishedOn": "2026-07-27T15:40:17.000Z",
+          "wordCount": 504,
+          "title": "How real are real numbers? (2004)",
+          "imageUrl": "/static/browse/0.3.4/images/arxiv-logo-fb.png"
+        },
+        {
+          "id": "https://pagedout.institute/download/PagedOut_009.pdf",
+          "author": null,
+          "description": "Comments",
+          "link": "https://pagedout.institute/download/PagedOut_009.pdf",
+          "publishedOn": "2026-07-27T14:22:34.000Z",
+          "wordCount": 717339,
+          "title": "Paged Out #9 [pdf]",
+          "imageUrl": null
         },
         {
           "id": "https://trevoraleo.substack.com/p/three-theses-on-the-literacy-crisis",
@@ -512,6 +502,16 @@
           "imageUrl": "https://gpusolutions.net/wp-content/uploads/2024/07/RTX2080Ti22GB.webp"
         },
         {
+          "id": "https://www.makonea.com/en-US/blog/programming-languages-are-authoring-tools-for-platforms",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.makonea.com/en-US/blog/programming-languages-are-authoring-tools-for-platforms",
+          "publishedOn": "2026-07-24T12:21:32.000Z",
+          "wordCount": 71836,
+          "title": "Programming Languages Are Authoring Tools for Platforms",
+          "imageUrl": "https://bucket-vuivxs.s3.ap-northeast-2.amazonaws.com/uploads/847a03d4195f62cf.png"
+        },
+        {
           "id": "https://harpers.org/archive/2026/08/a-dying-art-john-semley-mortuary-sciences-competition/",
           "author": null,
           "description": "Comments",
@@ -542,14 +542,14 @@
           "imageUrl": "https://gpuopen.com/images/rt_massive_teaser_gamma_featured.C4yHI1jh.jpg"
         },
         {
-          "id": "https://cen.acs.org/materials/adhesives/glue-bonds-nonstick-surfaces-wipes-clean/104/web/2026/07",
+          "id": "https://psyll.com/articles/technology/why-copper-still-rules-the-motherboard-trace",
           "author": null,
           "description": "Comments",
-          "link": "https://cen.acs.org/materials/adhesives/glue-bonds-nonstick-surfaces-wipes-clean/104/web/2026/07",
-          "publishedOn": "2026-07-23T13:08:52.000Z",
-          "wordCount": 6879,
-          "title": "Glue bonds to nonstick surfaces and wipes clean with ethanol",
-          "imageUrl": "https://s7d1.scene7.com/is/image/CENODS/News--Powerful-adhesive-binds-to-Teflon--can-be-wiped-clean---534105:Widescreen?$responsive$&qlt=90,0&resMode=sharp2&fmt=webp"
+          "link": "https://psyll.com/articles/technology/why-copper-still-rules-the-motherboard-trace",
+          "publishedOn": "2026-07-23T06:43:47.000Z",
+          "wordCount": 5078,
+          "title": "Why copper still rules the motherboard trace",
+          "imageUrl": "https://psyll.com/assets/image/why-copper-still-rules-the-motherboard-trace.jpg"
         }
       ]
     },
@@ -558,6 +558,26 @@
       "feedUrl": "https://www.lowyat.net/feed/",
       "siteUrl": "https://www.lowyat.net",
       "articles": [
+        {
+          "id": "https://www.lowyat.net/?p=399905",
+          "author": "John Law",
+          "description": "News portal Notebookcheck claims to have gotten first-hand information regarding Qualcomm’s next-generation Snapdragon 8 Elite Gen 6 chipset. Not only that, but the site also claims to have gotten the measurements and die size of said chipset. Supposedly, the die size of the alleged Snapdragon 8 Elite Gen 6 measures 21.2 x 14mm, putting the […]\nThe post Qualcomm Snapdragon 8 Elite Gen 6 SoC Rumoured To Support AI Upscaling And Frame Generation appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/399905/qualcomm-snapdragon-8-elite-gen-6-rumour/",
+          "publishedOn": "2026-07-28T07:18:29.000Z",
+          "wordCount": 14158,
+          "title": "Qualcomm Snapdragon 8 Elite Gen 6 SoC Rumoured To Support AI Upscaling And Frame Generation",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/09/Qualcomm-Snapdragon-8-Elite-Gen-5-1-1024x768.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=399888",
+          "author": "Ian Chee",
+          "description": "Some bad news for local Tesla drivers. The company has started charging for its Destination Chargers, which have been free for nearly three years since the first locations in Malaysia went live in late 2023. Now, it costs RM0.88 per kWh at these chargers, according to the company’s mobile app’s listings of available charging stations. […]\nThe post Tesla Destination Chargers In Malaysia Now Cost RM0.88 For 11kW AC Charging appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/399888/tesla-destination-chargers-rm0-88/",
+          "publishedOn": "2026-07-28T07:01:34.000Z",
+          "wordCount": 14047,
+          "title": "Tesla Destination Chargers In Malaysia Now Cost RM0.88 For 11kW AC Charging",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/07/Tesla-Destination-Charger-RM0.88.webp"
+        },
         {
           "id": "https://www.lowyat.net/?p=399889",
           "author": "Nurul Kamil",
@@ -637,26 +657,6 @@
           "wordCount": 14291,
           "title": "Pokemon Card Stores In Japan To Use Facial Recognition, Because Scalpers",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/07/pokemon-card-store-japan-official_01.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=399823",
-          "author": "Nurul Kamil",
-          "description": "Steam Workshop was conceived as a platform for users to create and share content for games and applications on Steam. Unfortunately, it can also serve as a way for malicious actors to distribute malware to unsuspecting players, which is what happened to indie game Meccha Chameleon over the weekend. A vulnerability, which has since been […]\nThe post Meccha Chameleon Update 3.1.0 Fixes Steam Maps Plagued By Malware appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/399823/meccha-chameleon-malware-maps/",
-          "publishedOn": "2026-07-27T09:52:41.000Z",
-          "wordCount": 14114,
-          "title": "Meccha Chameleon Update 3.1.0 Fixes Steam Maps Plagued By Malware",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/07/meccha-chameleon-malware-1.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=399770",
-          "author": "Ian Chee",
-          "description": "The memory shortage crisis continues to be a thing, affecting prices of devices that make use of it. Smartphones are naturally among those that will be hit pretty hard, and we’re expecting to see the effects with more upcoming launches. Those on the lower end are not exactly free either, and now Samsung, a producer […]\nThe post Samsung Malaysia Raises Prices For Galaxy A07, A17 appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/399770/samsung-raises-prices-galaxy-a07-a17/",
-          "publishedOn": "2026-07-27T09:21:00.000Z",
-          "wordCount": 14018,
-          "title": "Samsung Malaysia Raises Prices For Galaxy A07, A17",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/12/samsung-galaxy-a17-gemini-live_08.webp"
         }
       ]
     },
@@ -779,12 +779,42 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "c73f844c-221c-40f6-b772-d2fdbc2123b0",
+          "author": "Ian Allison",
+          "description": "Weeks ago, the U.S. CFTC opened the gates for crypto perps with its first listing approval, but major derivatives player CME is fighting back against what it sees as a diversion from the law.",
+          "link": "https://www.coindesk.com/policy/2026/07/28/inside-the-cme-and-cftc-s-battle-over-onchain-perpetual-futures",
+          "publishedOn": "2026-07-28T08:00:00.000Z",
+          "wordCount": 11477,
+          "title": "Inside the CME and CFTC’s battle over onchain perpetual futures",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ecb3e09e9bcac13f09e64db05960e0e87a7c5e09-5138x3500.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
+        },
+        {
+          "id": "c1e16da9-8cc4-4059-8930-c68932082df2",
+          "author": "Omkar Godbole",
+          "description": "The Hong Kong Monetary Authority published a whitepaper on the quantum preparedness of Hong Kong’s banking industry and its first Quantum Preparedness Index.",
+          "link": "https://www.coindesk.com/markets/2026/07/28/hong-kong-s-central-bank-puts-a-number-on-lenders-quantum-preparedness-it-s-very-low",
+          "publishedOn": "2026-07-28T07:55:41.000Z",
+          "wordCount": 12856,
+          "title": "Hong Kong’s central bank puts a number on lenders' quantum preparedness. It's very low.",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/e660c532346d919f78f3c393c6d9e50cfb205d01-3840x2160.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
+        },
+        {
+          "id": "2db25a23-a6de-422a-9b75-b79c209d8d53",
+          "author": "Omkar Godbole",
+          "description": "It's a risk-off day. Still, bitcoin is holding better than Nasdaq and Asian equity markets.",
+          "link": "https://www.coindesk.com/markets/2026/07/28/bitcoin-recovers-from-asian-session-lows-nasdaq-futures-remain-under-pressure",
+          "publishedOn": "2026-07-28T07:46:22.000Z",
+          "wordCount": 11103,
+          "title": "Live updates: Bitcoin recovers from Asian session lows; Nasdaq futures remain under pressure",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/7df47bc493288e9906477fe85bd7ea2906e4e186-3200x1800.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
+        },
+        {
           "id": "8938db01-eeea-485d-84ce-b5fcde5337d5",
           "author": "Omkar Godbole",
           "description": "Leader in cryptocurrency, Bitcoin, Ethereum, XRP, blockchain, DeFi, digital finance and Web 3.0 news with analysis, video and live price updates.",
           "link": "https://www.coindesk.com/markets/2026/07/28/bitcoin-slides-2-after-u-s-close-while-korea-s-kospi-plunges-10",
           "publishedOn": "2026-07-28T04:32:39.000Z",
-          "wordCount": 12740,
+          "wordCount": 12736,
           "title": "Bitcoin slides 2% after U.S. close while Korea’s Kospi plunges 10%",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/af5533562893e00a029eaace0996b96eacade301-1905x1072.jpg?auto=format&q=75"
         },
@@ -794,7 +824,7 @@
           "description": "The majority leader is pursuing floor time for unrelated bills as the crypto industry waits for its policy effort to get its chance for votes.",
           "link": "https://www.coindesk.com/policy/2026/07/27/u-s-senate-puts-off-crypto-clarity-act-for-now-as-it-focuses-limited-bandwidth-elsewhere",
           "publishedOn": "2026-07-27T23:55:16.000Z",
-          "wordCount": 13488,
+          "wordCount": 13489,
           "title": "U.S. Senate puts off crypto Clarity Act for now as it focuses limited bandwidth elsewhere",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/eb8dcd6a8ff7a00d092a7e659c13193ec9cd42ea-1920x1080.jpg?auto=format&q=75"
         },
@@ -804,7 +834,7 @@
           "description": "A federal judge ruled that Minnesota's law criminalizing prediction markets would probably violate the federal Commodity Exchange Act.",
           "link": "https://www.coindesk.com/policy/2026/07/27/kalshi-polymarket-win-pause-against-minnesota-s-prediction-market-ban",
           "publishedOn": "2026-07-27T23:29:38.000Z",
-          "wordCount": 12169,
+          "wordCount": 12170,
           "title": "Kalshi, Polymarket win pause against Minnesota's prediction market ban",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f8247ad03ed0ee80d0bc837f451e14221f8fa7f3-1900x1067.png?auto=format&q=75"
         },
@@ -814,7 +844,7 @@
           "description": "BTC held near $65,000 even as Nvidia and AI stocks fell sharply. This week's Fed decision could determine whether bitcoin finally breaks higher or revisits June's lows, analysts said.",
           "link": "https://www.coindesk.com/markets/2026/07/27/bitcoin-shrugs-off-ai-selloff-but-high-stakes-fed-meeting-could-determine-what-s-next",
           "publishedOn": "2026-07-27T19:55:45.000Z",
-          "wordCount": 12967,
+          "wordCount": 12957,
           "title": "Bitcoin shrugs off AI selloff but high-stakes Fed meeting could determine what's next",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3ab7bae0f5eca3344d78fd14752f64216f38f16a-2130x1186.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -834,7 +864,7 @@
           "description": "The crypto trading platform said the layoffs reflect a strategic shift toward its fast-growing enterprise business.",
           "link": "https://www.coindesk.com/business/2026/07/27/digital-asset-trading-platform-uphold-cuts-17-of-global-headcount-as-crypto-winter-bites",
           "publishedOn": "2026-07-27T16:47:06.000Z",
-          "wordCount": 12367,
+          "wordCount": 12358,
           "title": "Digital asset trading platform Uphold cuts 17% of global headcount as crypto winter bites",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/af5533562893e00a029eaace0996b96eacade301-1905x1072.jpg?auto=format&q=75"
         },
@@ -854,7 +884,7 @@
           "description": "The deal gives Fanatics control of its own prediction market infrastructure as event-based trading gains traction across sports, finance and crypto.",
           "link": "https://www.coindesk.com/markets/2026/07/27/fanatics-buys-regulated-exchange-in-bid-to-grow-prediction-markets-business",
           "publishedOn": "2026-07-27T14:46:10.000Z",
-          "wordCount": 12501,
+          "wordCount": 12111,
           "title": "Fanatics buys regulated exchange in bid to grow prediction markets business",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/87753819b04abf141210dc917dfa7a4e14fbf29a-5358x3652.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -864,7 +894,7 @@
           "description": "The Swiss bank is exploring multiple paths to the public markets, though discussions are ongoing and no final decision has been made.",
           "link": "https://www.coindesk.com/business/2026/07/27/cantor-is-advising-crypto-bank-amina-on-path-to-potential-public-listing",
           "publishedOn": "2026-07-27T14:36:30.000Z",
-          "wordCount": 12537,
+          "wordCount": 12531,
           "title": "Cantor is advising crypto bank AMINA on path to potential public listing",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/981f113099a5d95dd101524386439043bf2a255f-6000x4000.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -874,7 +904,7 @@
           "description": "The liquid staking protocol is consolidating 8 million ETH and requiring its professional node operators to post bonds for the first time.",
           "link": "https://www.coindesk.com/tech/2026/07/27/lido-begins-moving-usd16-5-billion-in-staked-ether-to-cut-validator-count-by-a-third",
           "publishedOn": "2026-07-27T14:00:00.000Z",
-          "wordCount": 12504,
+          "wordCount": 12513,
           "title": "Lido begins moving $16.5 billion in staked ether to cut validator count by a third",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6334f8835e037221b298cb9aea44cd8f5b69ddc0-1920x1080.png?auto=format&q=75"
         },
@@ -884,7 +914,7 @@
           "description": "Bitkub was the victim of a cyberattack in May 2021, which led to hacks stealing 1.7 billion baht across 16 different digital assets.",
           "link": "https://www.coindesk.com/policy/2026/07/27/thailand-s-sec-alleges-bitkub-concealed-cyberattack-that-led-to-usd50-million-hack",
           "publishedOn": "2026-07-27T13:32:16.000Z",
-          "wordCount": 11888,
+          "wordCount": 11898,
           "title": "Thailand's SEC alleges Bitkub concealed cyberattack that led to $50 million hack",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2ff11efd63b3586d84e43397e95166d87d433586-2499x1449.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -894,7 +924,7 @@
           "description": "The chipmaker and 36 other companies say defenders need AI they can run themselves. Major AI players OpenAI, Anthropic and Google are not among them.",
           "link": "https://www.coindesk.com/tech/2026/07/27/nvidia-forms-37-member-ai-security-alliance-without-openai-anthropic-or-google",
           "publishedOn": "2026-07-27T13:25:58.000Z",
-          "wordCount": 12493,
+          "wordCount": 12633,
           "title": "Nvidia forms 37-member AI security alliance without OpenAI, Anthropic or Google",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6fdec8ec82f015c92ad42adb9f14635c3eda7574-1500x1000.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -904,7 +934,7 @@
           "description": "The license broadens the BlackRock tokenization partner's offering as regulators weigh rules for onchain investment products.",
           "link": "https://www.coindesk.com/business/2026/07/27/securitize-builds-wall-street-credentials-with-sec-adviser-license-as-tokenization-expands",
           "publishedOn": "2026-07-27T13:00:00.000Z",
-          "wordCount": 12190,
+          "wordCount": 12184,
           "title": "Securitize builds Wall Street credentials with SEC adviser license as tokenization expands",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0df058fe321b648948d8a5b690588aaafbb157fe-2048x1152.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -914,7 +944,7 @@
           "description": "Around-the-clock crypto markets are forcing Wall Street to reevaluate one of its oldest assumptions: that weekends are for waiting.",
           "link": "https://www.coindesk.com/markets/2026/07/27/crypto-is-rewriting-how-wall-street-traders-spend-their-weekends",
           "publishedOn": "2026-07-27T13:00:00.000Z",
-          "wordCount": 12835,
+          "wordCount": 12848,
           "title": "Crypto is rewriting how Wall Street traders spend their weekends",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b92bb96ac6790d4f43e19a7ae2b7adc6e5b95c18-4245x2839.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -924,7 +954,7 @@
           "description": "The Ethereum treasury company added nearly 10,000 ETH while expanding its stock buyback, citing ether outperforming bitcoin is sending a bullish signal.",
           "link": "https://www.coindesk.com/business/2026/07/27/bitmine-buys-more-ether-as-tom-lee-says-rising-eth-btc-ratio-points-to-stronger-crypto-prices",
           "publishedOn": "2026-07-27T12:55:57.000Z",
-          "wordCount": 12668,
+          "wordCount": 12655,
           "title": "Bitmine buys more ether as Tom Lee says rising ETH/BTC ratio points to stronger crypto prices",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9d7bd39b2982649e7e43cc0537c507eb62abc21c-2048x1152.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -934,7 +964,7 @@
           "description": "The portfolio covers blockchain technology, banking, insurance, and cloud security, though the financial terms of the deal were not disclosed.",
           "link": "https://www.coindesk.com/business/2026/07/27/circle-buys-nearly-1-000-blockchain-patents-from-ibm",
           "publishedOn": "2026-07-27T12:47:04.000Z",
-          "wordCount": 11950,
+          "wordCount": 11947,
           "title": "Circle buys nearly 1,000 blockchain patents from IBM",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5f61380b84bd743d5cc20af71ca3aee62434a9a5-1920x1080.png?auto=format&q=75"
         },
@@ -944,7 +974,7 @@
           "description": "The company last week raised $544.5 million in cash via sales of its common stock.",
           "link": "https://www.coindesk.com/markets/2026/07/27/michael-saylor-s-strategy-boosted-cash-reserve-to-usd3-75-billion",
           "publishedOn": "2026-07-27T12:12:54.000Z",
-          "wordCount": 11651,
+          "wordCount": 11638,
           "title": "Michael Saylor's Strategy boosted cash reserve to $3.75 billion, repurchased $25 million of STRC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/733a7a8d00f57da03f583adfe61788a201fbc9ca-3000x2104.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -954,7 +984,7 @@
           "description": "The put/call ratio has fallen to about 0.52 from 0.76 in late June, and one-week downside protection has collapsed in price. The options market is positioned for a quiet week that contains an FOMC decision.",
           "link": "https://www.coindesk.com/markets/2026/07/27/bitcoin-options-traders-are-dropping-their-hedges-going-into-the-fed-meeting",
           "publishedOn": "2026-07-27T11:53:18.000Z",
-          "wordCount": 12895,
+          "wordCount": 12875,
           "title": "Bitcoin options traders are dropping their hedges going into the Fed meeting",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/abfc53cb8936b0ca235301bd25a7729a38804863-4928x3264.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -964,7 +994,7 @@
           "description": "Your day-ahead look for July 27, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/07/27/ballooning-u-s-debt-sends-investors-to-bitcoin-gold-to-shelter-from-dollar-devaluation",
           "publishedOn": "2026-07-27T11:15:00.000Z",
-          "wordCount": 13322,
+          "wordCount": 13309,
           "title": "Ballooning U.S. debt sends investors to bitcoin, gold to shelter from dollar devaluation",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/80da2f00868990a0c7d6b1977ab9e547140f89a4-1920x1080.jpg?auto=format&q=75"
         },
@@ -974,7 +1004,7 @@
           "description": "The vast majority of the activity was concentrated in BlackRock’s IBIT product accounting for nearly $415 million of the outflows.",
           "link": "https://www.coindesk.com/markets/2026/07/27/bitcoin-etfs-record-third-consecutive-weekly-inflows-despite-losses-of-usd465-million-to-end-week",
           "publishedOn": "2026-07-27T11:04:39.000Z",
-          "wordCount": 12256,
+          "wordCount": 12236,
           "title": "Bitcoin ETFs post third straight weekly inflows despite $465 million in late-week losses",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2b98bcccd6bcaeba3ad4dedaad933838a0eea500-837x381.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -994,39 +1024,9 @@
           "description": "Brent crude plunged 7% after the U.S. and Iran paused Strait of Hormuz strikes, lifting equities and DeFi tokens while bitcoin held near $65,000 ahead of a pivotal Fed decision Wednesday.",
           "link": "https://www.coindesk.com/markets/2026/07/27/crypto-steadies-as-iran-u-s-pause-sends-oil-tumbling-lifts-risk-assets",
           "publishedOn": "2026-07-27T10:35:04.000Z",
-          "wordCount": 13975,
+          "wordCount": 13955,
           "title": "Crypto steadies as Iran-U.S. pause sends oil tumbling, lifts risk assets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ca86898e3fc861b16500cb83d3e5b32ee0347565-1852x976.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
-        },
-        {
-          "id": "37ed4176-6dcc-494a-ac89-b6f1cd822d2d",
-          "author": "Francisco Rodrigues",
-          "description": "Your look at what's coming in the week starting July 27.",
-          "link": "https://www.coindesk.com/markets/2026/07/27/interest-rates-in-u-s-u-k-japan-and-coinbase-strategy-earnings-crypto-week-ahead",
-          "publishedOn": "2026-07-27T09:43:58.000Z",
-          "wordCount": 12712,
-          "title": "Interest rates in U.S., U.K., Japan and Coinbase, Strategy earnings: Crypto Week Ahead",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/aff32b708a5b4266e041a4eb460baa2d9236e4bb-3973x2235.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
-        },
-        {
-          "id": "3ddfeb13-2916-4901-9fee-1edaae97e6ba",
-          "author": "Shaurya Malwa",
-          "description": "The decentralized data storage company says operations continue and proposes that token holders take equity in the restructured business — an unusual arrangement in bankruptcy.",
-          "link": "https://www.coindesk.com/business/2026/07/27/cloud-data-firm-storj-files-for-chapter-11-extending-a-week-of-crypto-failures-token-slides-16",
-          "publishedOn": "2026-07-27T09:15:43.000Z",
-          "wordCount": 12759,
-          "title": "Cloud data firm Storj files for Chapter 11, extending a week of crypto failures. Token slides 16%",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8d684c2d735259a97e84723fb072716dab0c5fed-3456x2298.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
-        },
-        {
-          "id": "fd8b09e6-4542-4308-8d04-96e18013c74f",
-          "author": "Shaurya Malwa",
-          "description": "CoinEx's Jeff Ko sees bitcoin staying range-bound near $65,000 while retreating oil, a 4.7% 10-year yield and a week of mega-cap earnings set the tone.",
-          "link": "https://www.coindesk.com/markets/2026/07/27/live-updates-ether-leads-crypto-higher-as-bitcoin-trades-around-usd65-500",
-          "publishedOn": "2026-07-27T06:43:34.000Z",
-          "wordCount": 18378,
-          "title": "Live updates: Bitcoin gives up early gains, holds near $65,000 as AI stocks skid",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3ab7bae0f5eca3344d78fd14752f64216f38f16a-2130x1186.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         }
       ]
     },
@@ -1046,7 +1046,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-07-28T05:42:10.000Z",
+          "publishedOn": "2026-07-28T08:25:10.000Z",
           "wordCount": 4213,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
