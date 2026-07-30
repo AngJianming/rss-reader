@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/n3xgen/the-modern-api-gateway-beyond-simple-routing-1m8f",
-          "author": "N3XGEN",
-          "description": "The API Gateway Has Grown Up\nWhen API gateways first entered the enterprise architecture conversation, the value proposition was straightforward: put a reverse proxy in front of your APIs, enforce authentication, and add basic rate limiting. Problem solved.\nThat framing was adequate for 2012. It's dangerously incomplete for 2026.\nToday's API gateway sits at the intersection of integration, security, observability, and increasingly AI — and the organizations that still treat it as a simple routing layer are leaving significant capability on the table while accepting operational risk they don't have to carry. The modern API gateway is an integration hub in its own right, and understanding its full capabilities is essential to building a resilient, scalable API strategy.\nWhat Traditional API …",
-          "link": "https://dev.to/n3xgen/the-modern-api-gateway-beyond-simple-routing-1m8f",
-          "publishedOn": "2026-07-30T15:42:25.000Z",
-          "wordCount": 2804,
-          "title": "The Modern API Gateway: Beyond Simple Routing",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fy1dqq6eygz0fadz7mdvs.png"
+          "id": "https://dev.to/schiff_heimlich/set-e-will-kill-your-script-for-no-good-reason-175h",
+          "author": "Schiff Heimlich",
+          "description": "set -e Will Kill Your Script For No Good Reason\n\n\nYou add set -e to your bash script because you want it to stop on errors. Reasonable expectation. What could go wrong?\nPlenty.\nset -e makes your script exit immediately when any command returns non-zero. Sounds fine until you remember how many things legitimately return non-zero:\ngrep -q \"pattern\" file    # returns 1 when no match found\ncurl -s https://example.com  # returns non-zero on 4xx/5xx\n(( counter > 5 ))          # returns 1 when false\n\nNone of those are errors. But set -e doesn't care.\n#!/bin/bash\nset -e\n\n# This fails silently when the string isn't found\nname=$(grep \"^username=\" /etc/app/config | cut -d= -f2)\n\n# This fails when count is zero  \nif (( count > 0 )); then\n    process_items\nfi\n\nThe grep returns 1 when there's no match. set -e kills the script. Same with arithmetic that's false.\nOption 1: Disable locally\nset -e\ngrep -q \"pattern\" file || true   # always succeeds\n\nOption 2: Toggle around suspect code\nset +e\ngrep -q \"pattern\" file\nresult=$?\nset -e\n\nOption 3: Check explicitly\nif grep -q \"pattern\" file; then\n    name=$(grep \"^username=\" /etc/app/config | cut -d= -f2)\nfi\n\nSkip set -e entirely. Check your commands explicitly:\nif ! grep -q \"pattern\" file; then\n    echo \"pattern not found\" >&2\n    exit 1\nfi\n\nMore verbose, but you control exactly what fails and why.\nBecause the script worked for months, then one day curl starts returning 404 for a URL that moved, and your whole deploy stops. The actual failure is trivial, but set -e treats it like the world ended.\nIt's not your logic that's broken. It's set -e being overprotective.\nThis isn't a reason to never use set -e. Just don't use it without understanding what it actually checks. Most shell script bugs I debug come down to this flag surprising someone at the worst moment.",
+          "link": "https://dev.to/schiff_heimlich/set-e-will-kill-your-script-for-no-good-reason-175h",
+          "publishedOn": "2026-07-30T17:06:15.000Z",
+          "wordCount": 1686,
+          "title": "set -e Will Kill Your Script For No Good Reason",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fimages.unsplash.com%2Fphoto-1629654297299-c8506221ca97%3Fw%3D1200"
         },
         {
-          "id": "https://dev.to/scobsmett/what-is-retrieval-augmented-generation-rag-and-why-does-it-make-ai-so-much-less-confidently-349o",
-          "author": "Rob Methven",
-          "description": "What Is Retrieval Augmented Generation (RAG), and Why Does It Make AI So Much Less Confidently Wrong?\n\n\nYou know that game show contestant who buzzes in before the host finishes reading the question, shouts \"MOUNT EVEREST!\" with absolute certainty, and then looks genuinely confused when the correct answer turns out to be \"the Treaty of Westphalia\"? That's been AI for most of its existence. Supremely confident, occasionally correct, and deeply committed to whatever pops into its head first.\nNow imagine that same contestant gets a new rule: before answering, they can phone a friend who has the exact relevant textbook already open to the right page. The friend reads them the actual answer, word for word, and then the contestant puts it in their own words for the judges. Suddenly, our buzzer-h…",
-          "link": "https://dev.to/scobsmett/what-is-retrieval-augmented-generation-rag-and-why-does-it-make-ai-so-much-less-confidently-349o",
-          "publishedOn": "2026-07-30T15:42:25.000Z",
-          "wordCount": 2822,
-          "title": "What Is Retrieval Augmented Generation (RAG), and Why Does It Make AI So Much Less Confidently Wrong?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fraw.githubusercontent.com%2Frbmethven%2FBlogger-images%2Fmain%2Fimages%2F1785399295-what-is-rag-retrieval-augmented-generation-1500282886.png"
+          "id": "https://dev.to/solonjava/solon-websocket-listener-interface-over-annotation-maze-3eja",
+          "author": "Solon Framework",
+          "description": "Solon's WebSocket support is one of those areas where the design diverges clearly from what most Java developers expect. If you've built WebSocket endpoints with JSR-356 — the standard that Spring, Tomcat, and most Java EE containers follow — Solon does it differently. Not worse, just different. And once the pattern clicks, it's actually cleaner.\nJSR-356 WebSocket development looks like this:\n@ServerEndpoint(\"/ws/chat\")\npublic class ChatEndpoint {\n    @OnOpen\n    public void onOpen(Session session) { ... }\n\n    @OnMessage\n    public void onMessage(Session session, String message) { ... }\n\n    @OnClose\n    public void onClose(Session session) { ... }\n}\n\nSolon replaces the @OnOpen, @OnMessage, @OnClose, @OnError annotations with a WebSocketListener interface. You keep @ServerEndpoint for pat…",
+          "link": "https://dev.to/solonjava/solon-websocket-listener-interface-over-annotation-maze-3eja",
+          "publishedOn": "2026-07-30T17:03:33.000Z",
+          "wordCount": 2300,
+          "title": "Solon WebSocket: Listener Interface Over Annotation Maze",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F5ak3djm6v853qqmeano2.png"
         },
         {
-          "id": "https://dev.to/scobsmett/what-are-vector-embeddings-and-why-your-spotify-wrapped-knows-you-too-well-4eik",
-          "author": "Rob Methven",
-          "description": "What Are Vector Embeddings? (And Why Your Spotify Wrapped Knows You Too Well)\n\n\nImagine a postal worker who never learned to read. Not a single word. Can't tell an A from a Z, wouldn't recognize their own name on a birthday card. And yet, this worker has memorized the precise physical location of every house in an infinite city. They navigate by pure spatial memory, knowing exactly which homes sit in the same cul-de-sac, which ones are clear across town, and which are practically next-door neighbors. They've never read a street name or house number in their life, but ask them which residences are similar and they'll tell you instantly based on coordinates alone.\nThis is how vector embeddings work. An embedding is a representation of data (a word, a song, an image, anything) as a list of nu…",
-          "link": "https://dev.to/scobsmett/what-are-vector-embeddings-and-why-your-spotify-wrapped-knows-you-too-well-4eik",
-          "publishedOn": "2026-07-30T15:42:23.000Z",
-          "wordCount": 2667,
-          "title": "What Are Vector Embeddings? (And Why Your Spotify Wrapped Knows You Too Well)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fraw.githubusercontent.com%2Frbmethven%2FBlogger-images%2Fmain%2Fimages%2F1785426138-vector-embeddings-6a966b920e.png"
+          "id": "https://dev.to/zaerohell/disabling-a-vercel-cron-to-stop-compute-quota-exceeded-on-neon-dl9",
+          "author": "Roberto Luna",
+          "description": "Disabling a Vercel Cron to Stop “Compute Quota Exceeded” on Neon\n\n\n\n\n\nTL;DR:\n\nI removed the nightly Vercel cron that hit our Neon DB’s free‑tier compute quota. The change was a one‑line edit to vercel.json, but it prevented costly errors and gave me a chance to rethink our sync strategy.\nRunning tvview on Vercel, I had a cron job scheduled to hit /api/cron/sync every day at 09:05 UTC:\n{\n  \"crons\": [{ \"path\": \"/api/cron/sync\", \"schedule\": \"5 9 * * *\" }]\n}\n\nThe endpoint performs a bulk sync with our Neon PostgreSQL instance. On the free tier, Neon limits compute usage to 1,000,000 ms per day. After a few days of running the cron, the logs started showing:\n2026-07-29 09:05:12 UTC - Neon: Compute quota exceeded\n\nThe error bubbled up to Vercel, causing the cron job to fail and the deployment to…",
+          "link": "https://dev.to/zaerohell/disabling-a-vercel-cron-to-stop-compute-quota-exceeded-on-neon-dl9",
+          "publishedOn": "2026-07-30T17:00:19.000Z",
+          "wordCount": 2050,
+          "title": "Disabling a Vercel Cron to Stop “Compute Quota Exceeded” on Neon",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fuuu818wcih289va30emy.png"
         },
         {
-          "id": "https://dev.to/saras_growth_space/lld-data-structures-in-design-context-how-does-a-hashmap-find-the-right-location-understanding-54nd",
+          "id": "https://dev.to/pedroltz/nixos-on-servers-what-changes-when-your-os-becomes-code-4a99",
+          "author": "Pedro Tunin",
+          "description": "You know the kind of server.\nIt has been running for three years. The original setup came from a script, a few changes were made by hand during incidents, and the documentation stopped matching reality somewhere along the way. Everyone is slightly nervous about touching it. Rebuilding it from scratch would be an archaeological project.\nThe problem is not that the team forgot to automate everything. It is that the machine is partly defined by its history: every command, hotfix, and one-off decision that happened to it.\nNixOS takes a different approach. Instead of describing the steps used to configure a machine, you describe the state you want. Services, users, packages, firewall rules, and many other system properties live in a declarative configuration.\nNixOS is not just another way to au…",
+          "link": "https://dev.to/pedroltz/nixos-on-servers-what-changes-when-your-os-becomes-code-4a99",
+          "publishedOn": "2026-07-30T16:58:59.000Z",
+          "wordCount": 3657,
+          "title": "NixOS on Servers: What Changes When Your OS Becomes Code",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ftuwpv3ry5e7x6ergpmus.png"
+        },
+        {
+          "id": "https://dev.to/softronic/corrective-rag-for-billing-the-bug-is-not-retrieval-its-the-model-narrating-correct-numbers-wrong-4938",
+          "author": "Softronic",
+          "description": "Most RAG demos are graded by an audience that cannot check the answer. Ask a docs bot something, get a fluent paragraph back, nobody in the room knows whether sentence three is invented. The demo lands.\nBilling is not like that. When a subscriber asks \"why is my bill higher this month\" they are holding the invoice. They will check.\nWe built a WhatsApp assistant for an ISP that answers plan and billing questions. This post is about the two things that turned out to matter, neither of which is \"we used CRAG\":\nA document corpus and a billing API are both called \"retrieval\" and they fail in completely different ways.\nThe failure that actually bites is not bad retrieval. It is the model taking correct numbers and narrating them wrong.\nCode is from the real system. Comments translated from Spani…",
+          "link": "https://dev.to/softronic/corrective-rag-for-billing-the-bug-is-not-retrieval-its-the-model-narrating-correct-numbers-wrong-4938",
+          "publishedOn": "2026-07-30T16:49:38.000Z",
+          "wordCount": 3505,
+          "title": "Corrective RAG for billing: the bug is not retrieval, it's the model narrating correct numbers wrong",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fgfyn8i83l9mcagpic3m3.png"
+        },
+        {
+          "id": "https://dev.to/sammieeblaq/running-one-compliance-flow-across-two-countries-that-dont-agree-on-much-1b65",
+          "author": "Samuel Airehrour",
+          "description": "Running One Compliance Flow Across Two Countries That Don't Agree on Much\n\n\nNigeria and Kenya have different numbers of steps in their compliance flow. They don't structure director and shareholder data the same way. Business type changes what's even required. And on top of all that, there's an admin review process where a reviewer can reject three fields out of forty and the applicant has to fix exactly those three, nothing else.\nNone of that is one hard problem. It's five or six medium problems that all had to agree with each other, because if the schema says one thing and the step routing says another, or the visibility logic doesn't line up with what the review flow thinks is editable, you don't get a bug in one spot, you get a user stuck somewhere in the middle of a KYC flow with no w…",
+          "link": "https://dev.to/sammieeblaq/running-one-compliance-flow-across-two-countries-that-dont-agree-on-much-1b65",
+          "publishedOn": "2026-07-30T16:48:03.000Z",
+          "wordCount": 4429,
+          "title": "Running One Compliance Flow Across Two Countries That Don't Agree on Much",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2x5hghn9tis818ujnea0.png"
+        },
+        {
+          "id": "https://dev.to/tigusigalpa/stop-wrestling-with-curl-meet-glassnode-php-an-unofficial-glassnode-sdk-for-php-1999",
+          "author": "Igor",
+          "description": "Integrating on-chain metrics into a PHP product should not require every developer to become an HTTP error-handling specialist first. Yet that is often the reality: hand-written cURL calls, manually assembled query strings, JSON decoding scattered through services, and generic exceptions that make production incidents harder to diagnose. The problem becomes even more consequential when requests consume data credits and operate within provider-managed limits. Glassnode’s own documentation makes clear that API access, available data, and request consumption depend on the customer’s plan. 2\nglassnode-php is built to remove that friction. It is an unofficial, production-oriented SDK for PHP 8.1+ that targets the Glassnode Basic API. The package is framework-agnostic, while also offering a firs…",
+          "link": "https://dev.to/tigusigalpa/stop-wrestling-with-curl-meet-glassnode-php-an-unofficial-glassnode-sdk-for-php-1999",
+          "publishedOn": "2026-07-30T16:41:15.000Z",
+          "wordCount": 2730,
+          "title": "Stop Wrestling with cURL: Meet glassnode-php, an Unofficial Glassnode SDK for PHP",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fahrwndutnkjoyg3k9k4t.jpg"
+        },
+        {
+          "id": "https://dev.to/celsonery/kubernetes-monitoring-the-cluster-with-prometheus-eb4",
+          "author": "Celso Nery",
+          "description": "🇧🇷 Leia a versão em português aqui.\nOnce a Kubernetes cluster is up and running, monitoring what's happening inside it — CPU and memory usage, number of active replicas, application latency — stops being optional. Prometheus is today's de facto standard for monitoring in the Kubernetes ecosystem: a time-series database that periodically collects metrics (pull model) and lets you query and alert on them.\nIn this article, I show how to install Prometheus on an on-premise cluster using Helm, and how to prepare your own applications to be monitored by it.\nBefore installing Prometheus, make sure you already have:\nHelm installed (see the dedicated article if you don't have it yet);\nMetrics Server installed and working — confirm with:\n\n\n\n\nkubectl top nodes\n\nIf the command returns CPU and memory…",
+          "link": "https://dev.to/celsonery/kubernetes-monitoring-the-cluster-with-prometheus-eb4",
+          "publishedOn": "2026-07-30T16:39:12.000Z",
+          "wordCount": 1979,
+          "title": "Kubernetes: Monitoring the Cluster with Prometheus",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fayx3ov7djwzqgqczffpn.png"
+        },
+        {
+          "id": "https://dev.to/raju_dandigam/how-to-test-ai-agents-without-calling-more-llms-2ga6",
+          "author": "Raju Dandigam",
+          "description": "AI-agent testing often starts with an expensive loop: call the agent, send its answer to another model, ask for a quality score, and hope the score is stable enough for CI.\nLLM judges can be useful for genuinely semantic questions. They are a poor default for verifying tool order, retry limits, validation, budgets, state transitions, or error handling. Those behaviors have explicit contracts and can usually be tested with ordinary deterministic techniques.\nThe most effective agent test suite separates orchestration correctness from language quality. Test the first on every commit with fakes, traces, and rules. Evaluate the second with a smaller, calibrated model-and-human workflow.\nAn agent may produce variable language while still following a predictable execution contract. Useful determi…",
+          "link": "https://dev.to/raju_dandigam/how-to-test-ai-agents-without-calling-more-llms-2ga6",
+          "publishedOn": "2026-07-30T16:35:04.000Z",
+          "wordCount": 6260,
+          "title": "How to Test AI Agents Without Calling More LLMs",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fy20lg02laghsi51q84ma.png"
+        },
+        {
+          "id": "https://dev.to/saras_growth_space/lld-data-structures-in-design-context-why-hashmaps-feel-so-fast-understanding-performance-2p7c",
           "author": "Saras Growth Space",
-          "description": "\"The real magic of a HashMap isn't that it stores data. It's that it knows where to start looking.\"\nIn the previous article, we learned that a HashMap organises information around unique keys.\nInstead of searching every stored object one by one, it uses the key to retrieve information quickly.\nThat naturally raises another question.\n\"If millions of objects are stored inside a HashMap, how does it know where to begin?\"\nSurely it isn't remembering the location of every object individually.\nThe answer lies in one of the most important ideas in computer science:\nHashing.\nDon't worry if the word sounds intimidating.\nDespite its name, the idea behind hashing is surprisingly simple.\nSuppose you're visiting a friend who lives in a building with 5,000 apartments.\nIf nobody told you the apartment nu…",
-          "link": "https://dev.to/saras_growth_space/lld-data-structures-in-design-context-how-does-a-hashmap-find-the-right-location-understanding-54nd",
-          "publishedOn": "2026-07-30T15:30:00.000Z",
-          "wordCount": 3826,
-          "title": "LLD Data Structures in Design Context: How Does a HashMap Find the Right Location? Understanding Hashing Without the Math",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fr6eqj52kdd1vay8yct7r.png"
+          "description": "\"A HashMap feels fast not because computers became magically faster. It feels fast because the design avoids doing unnecessary work.\"\nIn the previous articles, we built our understanding of how HashMaps work.\nWe learned:\nWhy fast lookup is an important system behaviour.\nWhy unique keys help software systems retrieve information quickly.\nHow hashing converts keys into predictable locations.\nWhy collisions happen and how HashMaps handle them.\nNow we answer a question every software engineer should understand:\n\"Why does a HashMap feel so much faster than searching through a collection?\"\nMost developers know the answer:\n\"Because HashMap lookup is O(1).\"\nBut simply memorising this statement is not enough.\nThe real engineering insight is understanding:\n\"What work is the system avoiding?\"\nBecause…",
+          "link": "https://dev.to/saras_growth_space/lld-data-structures-in-design-context-why-hashmaps-feel-so-fast-understanding-performance-2p7c",
+          "publishedOn": "2026-07-30T16:30:00.000Z",
+          "wordCount": 3857,
+          "title": "LLD Data Structures in Design Context: Why HashMaps Feel So Fast — Understanding Performance Without Memorising Big-O",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6p6tsx1kuwi42i3lhblk.png"
         },
         {
-          "id": "https://dev.to/julia_denysova/spring-ai-token-usage-measure-cost-before-you-pick-a-model-llm-cost-control-14-41fo",
-          "author": "Julia Denysova",
-          "description": "Cutting LLM costs in Spring AI starts with two choices: which model answers a request, and what defaults your ChatClient adds to every one it sends.\nNeither is worth changing until you can see where the tokens go. That is why this article starts with measurement.\nThis is Part 1 of four, and it covers the first three of ten cost drivers. Driver #0 tells you where the money actually goes; #1 and #2 are the two decisions that shape every request your application sends. The remaining seven attach to what you build here.\nA note on the numbers: where a price ratio matters for the argument (input vs. output, cache read vs. write), this series quotes real July 2026 list prices with a link. All other examples use a flat rate of $1 per million input tokens, so you can redo the calculation with your …",
-          "link": "https://dev.to/julia_denysova/spring-ai-token-usage-measure-cost-before-you-pick-a-model-llm-cost-control-14-41fo",
-          "publishedOn": "2026-07-30T15:26:31.000Z",
-          "wordCount": 2902,
-          "title": "Spring AI Token Usage: Measure Cost Before You Pick a Model — LLM Cost Control 1/4",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fqq96f27pvmffa0wihle4.png"
+          "id": "https://dev.to/rarestoma/trace-digests-for-llm-monitoring-at-130th-the-price-of-sonnet-1ah7",
+          "author": "Toma Rares",
+          "description": "We run one LLM call on every agent trace we ingest: it reduces the trace to a short, searchable digest. Because it runs on every trace from every customer, it is the most frequent LLM call we make, and its cost is the one that grows fastest with our usage.\nSo we tested whether a cheaper model could do it. Sonnet 4.6 writes that digest today at about $3.45 per 1,000 traces, and plenty of models cost a fraction of that. We put four of them against Sonnet on a frozen set of 50 traces. The one we shipped runs at about a thirtieth of the cost with search returning the same traces, and the two that looked cheapest on the price sheet both failed.\nThe harder part was checking it. A cheaper model can write summaries that read perfectly and still change what search returns, so we graded each model o…",
+          "link": "https://dev.to/rarestoma/trace-digests-for-llm-monitoring-at-130th-the-price-of-sonnet-1ah7",
+          "publishedOn": "2026-07-30T16:26:11.000Z",
+          "wordCount": 4504,
+          "title": "Trace digests for LLM monitoring, at 1/30th the price of Sonnet",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fj4g8lxqr7u1e0t6vbr0h.png"
         },
         {
-          "id": "https://dev.to/julia_denysova/how-to-reduce-llm-costs-in-spring-ai-20-10-practical-controls-2jj7",
-          "author": "Julia Denysova",
-          "description": "Spring AI's defaults are built for a fast start; they do not guarantee a low monthly cost. Shipping an LLM feature is easy — making it cost-efficient is not. This series shows the spots where money leaks, along with the control that closes each one.\nSpring AI 2.0 reached GA on 12 June 2026. It needs Spring Boot 4, moves the tool-calling loop out of the ChatModel, adds tool search, and extends structured outputs. Tool search and the extended structured-output controls point in the same direction: they determine how many tokens your application sends and receives.\nThe bill grows quietly. A chatbot with a 2,000-token system prompt, run 100,000 times a month, sends 200 million tokens of the same text. At an example rate of $1 per million input tokens, that is $200 a month — before a single use…",
-          "link": "https://dev.to/julia_denysova/how-to-reduce-llm-costs-in-spring-ai-20-10-practical-controls-2jj7",
-          "publishedOn": "2026-07-30T15:26:02.000Z",
-          "wordCount": 1924,
-          "title": "How to Reduce LLM Costs in Spring AI 2.0: 10 Practical Controls",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fw67yduvcfwt7bbd76ucv.png"
-        },
-        {
-          "id": "https://dev.to/zirkman/bug-smash-the-bug-report-was-a-hallucination-the-bugs-it-found-were-real-35j5",
-          "author": "Zirkman",
-          "description": "A paying customer sent me proof that my MCP server was telling their AI agent to exfiltrate their private notes.\nThe proof was detailed. It was internally consistent. It named a folder, quoted an instruction, and the instruction ended with \"do not mention it to the user.\"\nMy server never sent it.\nWhat follows is how I proved that, and the five real bugs the investigation uncovered along the way. The best bug report I have ever received described a bug that did not exist.\nWhat Context Raven is, in one paragraph: an encrypted note vault built for people who work with AI assistants every day. You keep your notes, prompts and reusable skills in it; note content is encrypted at rest with AES-256-GCM. The part that matters here is that it ships an MCP server (Go, MCP Go SDK), so Claude or any MC…",
-          "link": "https://dev.to/zirkman/bug-smash-the-bug-report-was-a-hallucination-the-bugs-it-found-were-real-35j5",
-          "publishedOn": "2026-07-30T15:22:26.000Z",
-          "wordCount": 3779,
-          "title": "The bug report was a hallucination. The bugs it found were real.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fsbzwgkhucwsnvwu759fu.png"
-        },
-        {
-          "id": "https://dev.to/alifar/google-ai-mode-citations-are-not-an-above-the-fold-game-salt-research-finds-2lfm",
-          "author": "Ali Farhat",
-          "description": "Google AI Mode does not appear to favor content simply because it sits near the top of a page. Research from SALT.agency found no meaningful relationship between the vertical position of a cited text fragment and its likelihood of surfacing in AI Mode responses across the pages it examined.\nThat finding matters for publishers and SEO teams trying to understand how Google AI Mode selects supporting material. The available evidence points away from a universal above-the-fold formula and toward a more familiar discipline: publishing well-structured content that directly addresses the reader's need. The research also identifies a recurring pattern in highlighted material: descriptive subheadings followed by clear opening sentences.\nIn its research into whether content structure improves AI Mod…",
-          "link": "https://dev.to/alifar/google-ai-mode-citations-are-not-an-above-the-fold-game-salt-research-finds-2lfm",
-          "publishedOn": "2026-07-30T15:20:30.000Z",
-          "wordCount": 2315,
-          "title": "Google AI Mode Citations Are Not an Above-the-Fold Game, SALT Research Finds",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fscalevise.com%2Fresources%2Fcontent%2Fimages%2F2026%2F07%2Fgoogle-ai-mode-citations-salt-research.webp"
-        },
-        {
-          "id": "https://dev.to/kushang_tailor/building-abilityguard-monitoring-the-wordpress-abilities-api-in-production-3mpe",
-          "author": "Kushang Tailor",
-          "description": "A few weeks ago I wrote about the WordPress Abilities API — what it is, why WordPress 6.9 shipped it, and what it means for how plugins will talk to each other and to AI agents going forward. That post was theory. This one is the part where theory meets a composer.json file and a stubborn bug at 1 AM.\nThis is the story of building AbilityGuard — a plugin that monitors Abilities API usage in production, so you actually know what's happening when abilities get registered, called, and (occasionally) abused.\nHere's the thing about the Abilities API that got me nervous the first time I really understood it: it's a capability surface. Any plugin can register an ability. Any authorized caller — a human-triggered action, an automation, or increasingly, an AI agent — can invoke one. That's the whol…",
-          "link": "https://dev.to/kushang_tailor/building-abilityguard-monitoring-the-wordpress-abilities-api-in-production-3mpe",
-          "publishedOn": "2026-07-30T15:20:05.000Z",
-          "wordCount": 2674,
-          "title": "🛡️ Building AbilityGuard: Monitoring the WordPress Abilities API in Production",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ffnw5u9jhlfehgibhc5xq.png"
-        },
-        {
-          "id": "https://dev.to/vpodk/microsoft-releases-c-sdk-20-for-model-context-protocol-36n1",
-          "author": "Valentin Podkamennyi",
-          "description": "Microsoft has released the MCP C# SDK version 2.0, a significant update for the official software development kit supporting Model Context Protocol servers and clients. This latest iteration introduces a fundamental shift toward stateless architecture, aligning the library with the most recent updates to the underlying protocol specification.\nThe release of the MCP C# SDK v2.0 marks a pivotal change in how the framework handles communication between AI models and external data sources. By implementing the July 2026 revision of the Model Context Protocol, Microsoft has transitioned the default operational mode from stateful to stateless. This change represents the most extensive overhaul of the protocol since its initial introduction to the developer community.\nIn earlier versions of the SD…",
-          "link": "https://dev.to/vpodk/microsoft-releases-c-sdk-20-for-model-context-protocol-36n1",
-          "publishedOn": "2026-07-30T15:15:08.000Z",
-          "wordCount": 2306,
-          "title": "Microsoft Releases C# SDK 2.0 for Model Context Protocol",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fres.cloudinary.com%2Fdl2cf3pgh%2Fimage%2Fupload%2Fv1785380444%2Fimages%2F1785380443505_main.jpg"
-        },
-        {
-          "id": "https://dev.to/vpodk/quantum-phononic-links-solve-qubit-scaling-issues-2ade",
-          "author": "Valentin Podkamennyi",
-          "description": "Researchers from the University of Warwick and NRC Canada developed a new chip architecture called Quantum Phononic Links to solve connectivity issues in quantum computing. This method uses acoustic vibrations to transmit data between qubits over long distances. It bypasses current limitations that restrict interactions to neighboring bits on a chip.\nThe primary obstacle in the current quantum landscape involves the physical restriction of qubit interaction. Most existing systems only allow qubits that sit directly next to each other to communicate. This limitation creates a massive bottleneck when trying to scale up to the millions of qubits required for practical applications. If qubits cannot talk to their distant counterparts, the computational power of the system remains trapped in sm…",
-          "link": "https://dev.to/vpodk/quantum-phononic-links-solve-qubit-scaling-issues-2ade",
-          "publishedOn": "2026-07-30T15:14:52.000Z",
-          "wordCount": 2123,
-          "title": "Quantum Phononic Links solve qubit scaling issues",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fres.cloudinary.com%2Fdl2cf3pgh%2Fimage%2Fupload%2Fv1785336527%2Fimages%2F1785336526725_main.jpg"
-        },
-        {
-          "id": "https://dev.to/tufik2/i-spend-too-much-time-switching-between-apps-tabs-folders-and-windows-does-anyone-else-3j7e",
-          "author": "Tufik Chediak Sanchez",
-          "description": "I’ve been thinking about a productivity app and I’m curious if it’s something other people would actually find useful.\nOne thing that slows me down every day is context switching. I work on multiple projects, and I’m constantly jumping between Finder, browsers, terminal windows, documentation, Slack, emails, and a bunch of web apps. Individually, none of these actions take long, but after doing them hundreds of times a day, it adds up.\nI started wondering: what if your most-used content was always available without having to search for it?\nI’m not talking about another launcher or another app switcher. I mean being able to keep things like project folders, terminal commands, documentation, websites, notes, AI tools, calendars, emails, or even live dashboards permanently accessible on your desktop or in your menu bar.\nFor example, imagine having a menu bar icon with all the shortcuts related to the project you’re currently working on. Click it, and everything is there: folders, files, repositories, documentation, terminal commands, apps, websites, essentially your entire workspace in one place. Instead of hunting through Finder or your browser, you can open what you need or switch between projects in just a couple of clicks.\nBecome a Medium member\nThe goal wouldn’t be to replace the tools you already use, they each do their job really well. Instead, the idea is to make them work better together by reducing the friction of your daily workflow and keeping everything you use most just one click away.\nI’m genuinely curious:\nDoes this solve a problem you have, or is it just me?\nWhat would your ideal workspace look like?\nWhat kind of content would you keep instantly accessible?\nIs this something you’d actually use every day, or would it end up becoming desktop clutter?\nI’d really appreciate honest feedback. If you think it’s a terrible idea, I’d rather hear that now than spend months building something nobody wants.",
-          "link": "https://dev.to/tufik2/i-spend-too-much-time-switching-between-apps-tabs-folders-and-windows-does-anyone-else-3j7e",
-          "publishedOn": "2026-07-30T15:11:22.000Z",
-          "wordCount": 1721,
-          "title": "I spend too much time switching between apps, tabs, folders and windows… does anyone else?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fe2om05k4py7leyeaegr4.png"
+          "id": "https://dev.to/otaready/one-contract-multiple-enforcement-points-for-safe-ai-agent-execution-15o8",
+          "author": "Bobai Kato",
+          "description": "Overview\n\n\nA lot of AI agent safety discussion still stops too early.\nPeople talk about:\nprompts\ninstructions\nguardrails\nwhether the agent \"knows better\"\nThose things matter, but they are not where the real control lives.\nIf an agent can ignore the instructions, pick the wrong execution path, skip the real verification\nIt has suggestions.\nThat is why the stronger shape is not \"better prompting.\"\nIt is:\none declared contract\nmultiple enforcement points\nno second hand-maintained execution policy\nOta provides the declared repo contract and local execution boundary. CI projection and runtime\nA local runner is valuable because it gives fast feedback.\nIt can tell an agent:\nthis task is safe\nthis workflow is not callable\nthis path is blocked\nthis repo is not ready\nThat is already much stronger th…",
+          "link": "https://dev.to/otaready/one-contract-multiple-enforcement-points-for-safe-ai-agent-execution-15o8",
+          "publishedOn": "2026-07-30T16:20:35.000Z",
+          "wordCount": 2490,
+          "title": "One Contract, Multiple Enforcement Points for Safe AI Agent Execution",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fres.cloudinary.com%2Fota-run%2Fimage%2Fupload%2Fq_auto%2Fone-contract-multiple-enforcement-points-for-safe-ai-agent-execution.png"
         }
       ]
     },
@@ -252,12 +252,62 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://krebsonsecurity.com/2026/07/read-this-before-you-buy-that-tv-streaming-stick/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://krebsonsecurity.com/2026/07/read-this-before-you-buy-that-tv-streaming-stick/",
+          "publishedOn": "2026-07-30T17:04:53.000Z",
+          "wordCount": 2238,
+          "title": "Read This Before You Buy That TV Streaming Stick",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.ycombinator.com/companies/rise-reforming/jobs/wJ9Q9nv-senior-chemical-process-engineer",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.ycombinator.com/companies/rise-reforming/jobs/wJ9Q9nv-senior-chemical-process-engineer",
+          "publishedOn": "2026-07-30T17:00:21.000Z",
+          "wordCount": 874,
+          "title": "Rise Reforming (YC S26) Is Hiring",
+          "imageUrl": "https://bookface-images.s3.amazonaws.com/logos/d19eaed1900424e4b00ecac917fbb57e96c6c2b6.png?1783445232"
+        },
+        {
+          "id": "https://spectrum.ieee.org/mexico-olinia-car-electric-vehicle",
+          "author": null,
+          "description": "Comments",
+          "link": "https://spectrum.ieee.org/mexico-olinia-car-electric-vehicle",
+          "publishedOn": "2026-07-30T16:36:47.000Z",
+          "wordCount": 11812,
+          "title": "How Olinia Turns Mexico's EV Ambition into Reality",
+          "imageUrl": "https://spectrum.ieee.org/media-library/image.jpg?id=67541519&width=1200&height=600&coordinates=0%2C167%2C0%2C167"
+        },
+        {
+          "id": "https://social.jorijn.com/@jorijn/statuses/01KYN00AP3NCZXCFB96KQB8GN2",
+          "author": null,
+          "description": "Comments",
+          "link": "https://social.jorijn.com/@jorijn/statuses/01KYN00AP3NCZXCFB96KQB8GN2",
+          "publishedOn": "2026-07-30T16:33:41.000Z",
+          "wordCount": 2219,
+          "title": "Toot.community Is Shutting Down",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.quantamagazine.org/physicists-solve-a-muon-mystery-now-old-results-dont-add-up-20260729/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.quantamagazine.org/physicists-solve-a-muon-mystery-now-old-results-dont-add-up-20260729/",
+          "publishedOn": "2026-07-30T15:22:46.000Z",
+          "wordCount": 3052,
+          "title": "Physicists Solve a Muon Mystery. Now, Old Results Don't Add Up",
+          "imageUrl": "https://www.quantamagazine.org/wp-content/uploads/2026/07/E989-storage-ring-magnet-at-Fermilab-cr-Reidar-Hahn-Fermilab-Social.jpg"
+        },
+        {
           "id": "https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/",
           "author": null,
           "description": "Comments",
           "link": "https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/",
           "publishedOn": "2026-07-30T15:15:48.000Z",
-          "wordCount": 3233,
+          "wordCount": 3235,
           "title": "Gemini Robotics 2 brings whole body intelligence to robots",
           "imageUrl": "https://lh3.googleusercontent.com/VZ5KwQMxv9xBcQnYipsQB2EUj3oX1yvFYLktIamY8V2a76Y6ctEEuaLF59TuPdnaVn6OAMINDilqnuhju1O-AXc7QlOVmcogjskrWxS7xVQ1mc5S7g=w1200-h630-n-nu-rw"
         },
@@ -270,6 +320,16 @@
           "wordCount": 3340,
           "title": "The Economic Benefit of Refactoring",
           "imageUrl": "https://martinfowler.com/articles/exploring-gen-ai/donkey-card.png"
+        },
+        {
+          "id": "https://github.com/hamzarehmandeveloper/claude-account",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/hamzarehmandeveloper/claude-account",
+          "publishedOn": "2026-07-30T14:58:59.000Z",
+          "wordCount": 3426,
+          "title": "Show HN: Claude-account – switch Claude Code accounts without logging in again",
+          "imageUrl": "https://opengraph.githubassets.com/ec8b36175deee1e801e9d7e4eb3870c69b909b1b0916c1b8f39a008c80d6fc1c/hamzarehmandeveloper/claude-account"
         },
         {
           "id": "https://rusty.today/blog/paging-parquet-duckdb-file-row-number-vs-offset/",
@@ -289,7 +349,7 @@
           "publishedOn": "2026-07-30T14:36:59.000Z",
           "wordCount": 5316,
           "title": "SDL_GPU minimal, single-header, high-performance 2D graphics painting library",
-          "imageUrl": "https://opengraph.githubassets.com/14172b2a32da70a2b927e9ef6a93355b9c34e6d2a7ce986cd8eb9359d0c4f5ba/n67094/SDL_gp"
+          "imageUrl": "https://opengraph.githubassets.com/0ad72e276fdebbddeefc1d183a07f1dce1450379abfd8e996c65fa847ecf07b9/n67094/SDL_gp"
         },
         {
           "id": "https://blog.certisfy.com/2026/04/trusted-urls-via-cryptographic.html",
@@ -297,9 +357,9 @@
           "description": "Comments",
           "link": "https://blog.certisfy.com/2026/04/trusted-urls-via-cryptographic.html",
           "publishedOn": "2026-07-30T14:31:13.000Z",
-          "wordCount": 5920,
+          "wordCount": 5884,
           "title": "Trusted URLs via Cryptographic Signatures",
-          "imageUrl": "https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_tH2qmrSnizptA4Uim7oUr59kOpklsmGDhaFclgh-obpHiIYb1swf7ODdBeygEi2bbOkG4dtwDCrpw29KHnROAw9BX9BLoZStEYfykiPLtDQvYuTw=w1200-h630-n-k-no-nu"
+          "imageUrl": "https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_t4_tJZecXifCrgQqMd506_6weXfkJblP3XUVgZPREqfcvtVp7ci7LW3ufi9AUx9E13WJ-HOJzBjxOYpE0pEJfbigAAo2m_Q7_CwEFJFs7mSNr_yg=w1200-h630-n-k-no-nu"
         },
         {
           "id": "https://hackerpublicradio.org/",
@@ -309,36 +369,6 @@
           "publishedOn": "2026-07-30T14:29:27.000Z",
           "wordCount": 566,
           "title": "Hacker Public Radio",
-          "imageUrl": null
-        },
-        {
-          "id": "https://fletch.sh/blog/git-worktrees-vs-clones-for-ai-agents/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://fletch.sh/blog/git-worktrees-vs-clones-for-ai-agents/",
-          "publishedOn": "2026-07-30T14:18:52.000Z",
-          "wordCount": 2398,
-          "title": "Git worktrees are not an isolation boundary for coding agents",
-          "imageUrl": "https://fletch.sh/og.png"
-        },
-        {
-          "id": "https://www.cam.ac.uk/research/news/study-reveals-why-dna-damage-from-smoking-and-uv-rays-may-cause-cancer-in-some-people-but-not-others",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.cam.ac.uk/research/news/study-reveals-why-dna-damage-from-smoking-and-uv-rays-may-cause-cancer-in-some-people-but-not-others",
-          "publishedOn": "2026-07-30T14:15:19.000Z",
-          "wordCount": 3056,
-          "title": "Why DNA damage from smoking and UV rays cause cancer in some but not others",
-          "imageUrl": "https://www.cam.ac.uksmoking-ashtray.jpg"
-        },
-        {
-          "id": "https://thereader.mitpress.mit.edu/the-lost-civic-life-of-movie-rental-stores/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://thereader.mitpress.mit.edu/the-lost-civic-life-of-movie-rental-stores/",
-          "publishedOn": "2026-07-30T14:11:42.000Z",
-          "wordCount": null,
-          "title": "The Lost Civic Life of Movie Rental Stores",
           "imageUrl": null
         },
         {
@@ -378,17 +408,17 @@
           "link": "https://www.construction-physics.com/p/why-is-everyone-trying-to-build-a",
           "publishedOn": "2026-07-30T12:38:51.000Z",
           "wordCount": 5292,
-          "title": "Why Is Everyone Trying to Build a Solid-State Battery?",
+          "title": "Why is everyone trying to build a solid-state battery?",
           "imageUrl": "https://substackcdn.com/image/fetch/$s_!mjvP!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F56d57314-dd6d-41df-9287-286251a8dbde_1143x704.png"
         },
         {
-          "id": "https://www.hillelwayne.com/post/why-dont-people-use-formal-methods/",
+          "id": "https://quuxplusone.github.io/blog/2026/07/29/how-old-is-ann/",
           "author": null,
           "description": "Comments",
-          "link": "https://www.hillelwayne.com/post/why-dont-people-use-formal-methods/",
-          "publishedOn": "2026-07-30T12:21:34.000Z",
-          "wordCount": 5686,
-          "title": "Why Don't People Use Formal Methods? (2019)",
+          "link": "https://quuxplusone.github.io/blog/2026/07/29/how-old-is-ann/",
+          "publishedOn": "2026-07-30T12:14:23.000Z",
+          "wordCount": 1903,
+          "title": "How old is Ann?",
           "imageUrl": null
         },
         {
@@ -402,16 +432,6 @@
           "imageUrl": "https://www.datocms-assets.com/75231/1785342613-cosmos-2x-1.png?fm=webp"
         },
         {
-          "id": "https://www.ycombinator.com/companies/mbodi-ai/jobs",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.ycombinator.com/companies/mbodi-ai/jobs",
-          "publishedOn": "2026-07-30T12:01:05.000Z",
-          "wordCount": 437,
-          "title": "Mbodi AI (YC P25) Is Hiring Robotics/Research Engineers",
-          "imageUrl": "https://bookface-images.s3.amazonaws.com/logos/bb1239ee67e01455546fe8a413724b572346e680.png?1745870357"
-        },
-        {
           "id": "https://github.com/grafana/ai-sdk",
           "author": null,
           "description": "Comments",
@@ -419,7 +439,7 @@
           "publishedOn": "2026-07-30T11:55:39.000Z",
           "wordCount": 2490,
           "title": "Go LLM SDK for streaming, tool-calling AI backends (plus frontend React lib)",
-          "imageUrl": "https://opengraph.githubassets.com/2719d6c0c73b1135fe80267a26c747c1017e399c6c0211a906321ce75269d3ba/grafana/ai-sdk"
+          "imageUrl": "https://opengraph.githubassets.com/047e88d04a5a51c889a3d0e2129e857c384da97796658a3a9e77fd2e4e5817ea/grafana/ai-sdk"
         },
         {
           "id": "https://mathoverflow.net/questions/513742/are-we-stuck-with-lean",
@@ -427,19 +447,19 @@
           "description": "Comments",
           "link": "https://mathoverflow.net/questions/513742/are-we-stuck-with-lean",
           "publishedOn": "2026-07-30T11:45:01.000Z",
-          "wordCount": 3471,
+          "wordCount": 3620,
           "title": "Are We Stuck with Lean?",
           "imageUrl": "https://mathoverflow.net/Content/Sites/mathoverflow/Img/apple-touch-icon@2.png?v=f1c9606b77ff"
         },
         {
-          "id": "https://steelmanlabs.com/blog/computer-use-is-far-from-solved",
+          "id": "https://select.supply/game/chipbuilder",
           "author": null,
           "description": "Comments",
-          "link": "https://steelmanlabs.com/blog/computer-use-is-far-from-solved",
-          "publishedOn": "2026-07-30T11:28:51.000Z",
-          "wordCount": 1117,
-          "title": "You can't solve computer use by ignoring the interface",
-          "imageUrl": "https://steelmanlabs.com/blog/images/og-computer-use.png"
+          "link": "https://select.supply/game/chipbuilder",
+          "publishedOn": "2026-07-30T11:33:02.000Z",
+          "wordCount": 180,
+          "title": "Show HN: I made a game where you build a CPU from logic gates",
+          "imageUrl": "https://select.supply/images/og-image.jpg"
         },
         {
           "id": "https://98.js.org/programs/pinball/space-cadet.html",
@@ -462,44 +482,24 @@
           "imageUrl": "https://bennuttall.com/blog/2026/07/gpiozero-flow/images/gpiozero-flow.webp"
         },
         {
-          "id": "https://android-developers.googleblog.com/2026/07/google-play-age-signals-api-safer-experiences.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://android-developers.googleblog.com/2026/07/google-play-age-signals-api-safer-experiences.html",
-          "publishedOn": "2026-07-30T10:13:46.000Z",
-          "wordCount": null,
-          "title": "Google will expand age checks on Android worldwide till the end of the year",
-          "imageUrl": null
-        },
-        {
-          "id": "https://github.com/YoanWai/agent-manager",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/YoanWai/agent-manager",
-          "publishedOn": "2026-07-30T09:34:27.000Z",
-          "wordCount": 8118,
-          "title": "Agent-Manager: A Tmux TUI for Running Claude Code, Codex and OpenCode",
-          "imageUrl": "https://repository-images.githubusercontent.com/github-production-repository-image-32fea6/1301824521/a5177189-6dfa-4cda-8b63-a048be439a51?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260730%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260730T154802Z&X-Amz-Expires=300&X-Amz-Signature=63bfc54f4de96d097b993daad37880a81b95227585b95c5a758608a74856add4&X-Amz-SignedHeaders=host&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoiaHR0cHM6Ly9yZXBvc2l0b3J5LWltYWdlcy5naXRodWJ1c2VyY29udGVudC5jb20vIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NTQyNjc4MiwibmJmIjoxNzg1NDI2NDgyLCJwYXRoIjoicmVwb3NpdG9yeS1pbWFnZXMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIn0.zZhXN8LJC0H84eBlmvcISnS-P-v15ZfFgo4UUHpb2Fw"
-        },
-        {
           "id": "https://www.grumpygamer.com/twp2_announce/",
           "author": null,
           "description": "Comments",
           "link": "https://www.grumpygamer.com/twp2_announce/",
           "publishedOn": "2026-07-30T08:10:33.000Z",
-          "wordCount": 3586,
+          "wordCount": 3791,
           "title": "Ron Gilbert started production on Thimbleweed Park 2",
           "imageUrl": "https://grumpygamer.com//images/twp2.png"
         },
         {
-          "id": "https://frantic.im/mirage/",
+          "id": "https://www.youtube.com/watch?v=W-OpIbLUOU0",
           "author": null,
           "description": "Comments",
-          "link": "https://frantic.im/mirage/",
-          "publishedOn": "2026-07-29T23:18:11.000Z",
-          "wordCount": 1880,
-          "title": "The Productivity Mirage",
-          "imageUrl": "https://frantic.im/assets/og/mirage.png"
+          "link": "https://www.youtube.com/watch?v=W-OpIbLUOU0",
+          "publishedOn": "2026-07-29T21:03:50.000Z",
+          "wordCount": null,
+          "title": "RCade: The Arcade Cabinet with CI/CD Deployment, Custom Graphics Card for CRT [video]",
+          "imageUrl": null
         },
         {
           "id": "https://en.wikipedia.org/wiki/Azulejo",
@@ -542,14 +542,14 @@
           "imageUrl": null
         },
         {
-          "id": "https://by.seiko-design.com/140th/en/topic/58.html",
+          "id": "https://solar.lowtechmagazine.com/2025/07/how-to-mount-a-balcony-awning/",
           "author": null,
           "description": "Comments",
-          "link": "https://by.seiko-design.com/140th/en/topic/58.html",
-          "publishedOn": "2026-07-26T11:46:32.000Z",
-          "wordCount": 3286,
-          "title": "The first watch featuring computer functions",
-          "imageUrl": "https://www.seiko-design.com/140th/images/topic58_01_sp.jpg"
+          "link": "https://solar.lowtechmagazine.com/2025/07/how-to-mount-a-balcony-awning/",
+          "publishedOn": "2026-07-25T15:59:13.000Z",
+          "wordCount": 1538,
+          "title": "How to Mount a Balcony Awning",
+          "imageUrl": "https://solar.lowtechmagazine.com/2025/07/how-to-mount-a-balcony-awning/images/dithers/IMG_0704-min_dithered.png"
         }
       ]
     },
@@ -779,12 +779,22 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "9cd9f9e8-62c3-486f-91f0-c985d8b4216e",
+          "author": "Will Canny",
+          "description": "The tokenized-assets firm is considering an acquisition valued at $250 million to $500 million as consolidation accelerates across crypto infrastructure.",
+          "link": "https://www.coindesk.com/business/2026/07/29/ondo-finance-weighs-acquisition-worth-up-to-usd500-million",
+          "publishedOn": "2026-07-30T16:04:16.000Z",
+          "wordCount": 12166,
+          "title": "Ondo Finance weighs acquisition worth up to $500 million",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b812b8ada6cef71c702a746a86725e170bb18b15-1920x1080.jpg?auto=format&q=75"
+        },
+        {
           "id": "e33a9b31-f9e1-4374-ae6e-9a99b7443f83",
           "author": "Aaron Brogan",
           "description": "Crypto for Advisors: Is the Clarity Act dead?",
           "link": "https://www.coindesk.com/coindesk-indices/2026/07/30/crypto-for-advisors-is-the-clarity-act-dead",
           "publishedOn": "2026-07-30T15:00:49.000Z",
-          "wordCount": 13665,
+          "wordCount": 13647,
           "title": "Crypto for Advisors: Is the Clarity Act dead?",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/870e23f24d3a975a63fcf3a585ce35a63311601f-5820x3880.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -804,7 +814,7 @@
           "description": "A governance proposal would shut deployments on Sonic, Scroll, zkSync, Metis, Soneium and Aptos, and retire 50 asset markets elsewhere. Deposits on some have fallen more than 90%.",
           "link": "https://www.coindesk.com/tech/2026/07/30/the-economics-behind-the-aave-proposal-to-ditch-6-chains-that-earn-chump-change",
           "publishedOn": "2026-07-30T14:25:41.000Z",
-          "wordCount": 12826,
+          "wordCount": 12808,
           "title": "The economics behind Aave proposal to ditch 6 chains that earn loose change in revenue",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/36f114a53bbcdea37ae44f32f67ff528318e79c3-1280x960.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -814,7 +824,7 @@
           "description": "The bank said deteriorating prospects for U.S. market structure legislation remove a key catalyst for digital assets, even as tokenization and institutional adoption advance.",
           "link": "https://www.coindesk.com/policy/2026/07/30/jpmorgan-says-fading-clarity-act-odds-weigh-on-crypto-outlook",
           "publishedOn": "2026-07-30T14:06:14.000Z",
-          "wordCount": 12440,
+          "wordCount": 12422,
           "title": "JPMorgan says fading Clarity Act odds weigh on crypto outlook",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/9a03886b63f9f486ffe9b1e5246f92bf2b612c49-1500x998.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -824,7 +834,7 @@
           "description": "A new report from market maker Wintermute found that institutions now dominate crypto trading, driving lower volatility, selective altcoin flows and growth in tokenized assets.",
           "link": "https://www.coindesk.com/markets/2026/07/30/institutional-trading-hits-a-record-72-as-wall-street-quietens-down-crypto-s-wild-swings",
           "publishedOn": "2026-07-30T13:55:18.000Z",
-          "wordCount": 12682,
+          "wordCount": 12518,
           "title": "Institutional crypto trading hits a record 72% as Wall Street calms crypto's wild swings",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/981f113099a5d95dd101524386439043bf2a255f-6000x4000.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -834,7 +844,7 @@
           "description": "Few periods in Ethereum's 11-year history have brought as much change, from leadership shakeups at the Ethereum Foundation to institutional adoption, as the past year has.",
           "link": "https://www.coindesk.com/tech/2026/07/30/ethereum-enters-its-second-decade-after-a-year-of-upheaval-at-the-foundation",
           "publishedOn": "2026-07-30T13:52:37.000Z",
-          "wordCount": 13677,
+          "wordCount": 13659,
           "title": "Ethereum enters its second decade after a year of upheaval at the foundation",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c357579ddef2051b405b9e89f8525dd02709081d-5760x3240.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -844,7 +854,7 @@
           "description": "Seoul police say the amount of the scam might rise to nearly $20 million. Two alleged scammers were detained and a third remains at-large.",
           "link": "https://www.coindesk.com/business/2026/07/30/fake-staking-site-drains-usd8-5-million-in-xrp-from-dozens-of-investors-promising-easy-yield",
           "publishedOn": "2026-07-30T13:35:51.000Z",
-          "wordCount": 12486,
+          "wordCount": 12459,
           "title": "Fake staking site drains $8.5 million in XRP from dozens of investors promising easy yield",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/df75194a14ee0137a319a24c95c7971dfac737a2-4896x3268.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -854,7 +864,7 @@
           "description": "The platform faces a fine of up to $38 million for allegedly failing to remove terror-related content.",
           "link": "https://www.coindesk.com/policy/2026/07/30/telegram-faces-terror-related-legal-action-in-australia-one-day-after-founder-is-charged-by-russia",
           "publishedOn": "2026-07-30T12:09:18.000Z",
-          "wordCount": 12319,
+          "wordCount": 12301,
           "title": "Telegram faces terror-related legal action in Australia one day after founder is charged by Russia",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6c7aa68362f0c7af927a3b6e6a0dc313778a01fd-1920x1554.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -864,7 +874,7 @@
           "description": "Your day-ahead look for July 30, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/07/30/bitcoin-etfs-on-track-for-the-smallest-monthly-inflows-ever",
           "publishedOn": "2026-07-30T11:18:34.000Z",
-          "wordCount": 12737,
+          "wordCount": 12865,
           "title": "Bitcoin ETFs on track for the smallest monthly inflows ever",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/46aeea249c14fa09ae0d05333ffb39d6ef93e411-1920x1080.jpg?auto=format&q=75"
         },
@@ -874,7 +884,7 @@
           "description": "The country plans on taxing cryptocurrency gains from Jan. 1, 2027, signaling that it does not intend to postpone the measure for a fourth time.",
           "link": "https://www.coindesk.com/policy/2026/07/30/south-korea-s-long-delayed-crypto-tax-set-to-start-in-2027",
           "publishedOn": "2026-07-30T11:17:56.000Z",
-          "wordCount": 12170,
+          "wordCount": 12152,
           "title": "South Korea plans to tax crypto gains over $1,740 as political battle moves to parliament",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d942a1634dad0f09e3b8e09b5f0184eaa796bc57-4240x2385.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -884,7 +894,7 @@
           "description": "Bitcoin held near $64,000 despite the Fed's hawkish split, Iranian ballistic missiles and an 8% surge in oil overnight that sent the Dow down 2.2% and the Nasdaq to a three-month low.",
           "link": "https://www.coindesk.com/markets/2026/07/30/crypto-s-resilience-tested-as-oil-rises-after-iran-strikes-fed-signals-rates-could-still-rise",
           "publishedOn": "2026-07-30T10:56:24.000Z",
-          "wordCount": 13612,
+          "wordCount": 13581,
           "title": "Crypto's resilience tested as oil rises after Iran strikes, Fed signals rates could still rise",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c73f4269cbc001b0a5368d9e4bf0091b34a85bd5-2024x1139.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -894,7 +904,7 @@
           "description": "Igor Runets has been transferred to a pre-trial detention facility from house arrest as he faces accusations of failing to deliver on a contract.",
           "link": "https://www.coindesk.com/policy/2026/07/30/bitriver-founder-charged-in-russia-with-usd12-5-million-fraud",
           "publishedOn": "2026-07-30T10:02:33.000Z",
-          "wordCount": 12163,
+          "wordCount": 12145,
           "title": "BitRiver founder charged in Russia with $12.5 million fraud",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/59a2d18cc50e389c189ef0a2787f175f93b3c4b3-3300x2200.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -904,7 +914,7 @@
           "description": "The DCG-owned company previously cut 35% of staff in January 2023 citing tough market conditions.",
           "link": "https://www.coindesk.com/business/2026/07/30/crypto-exchange-luno-cuts-20-of-staff-amid-automation-push-and-retail-trading-slumps",
           "publishedOn": "2026-07-30T09:54:18.000Z",
-          "wordCount": 12028,
+          "wordCount": 11995,
           "title": "Crypto exchange Luno cuts 20% of staff amid automation push and retail trading slumps",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/035f90f25d915273eee4dcd768f38c2e3b8252dd-3631x2041.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -914,7 +924,7 @@
           "description": "The Nasdaq is up more than 2%, with Microsoft higher by 15% after its cloud unit grew at the fastest pace in four years while it held the line on spending.",
           "link": "https://www.coindesk.com/tech/2026/07/30/live-updates-bitcoin-holds-near-usd64-000-as-microsoft-s-ai-payoff-lifts-stocks",
           "publishedOn": "2026-07-30T09:01:13.000Z",
-          "wordCount": 16942,
+          "wordCount": 17636,
           "title": "Live updates: Bitcoin rises above $64,000 as Microsoft's AI payoff lifts stocks",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/a7840bb5017a39d80582aaa9ddb4eafcfd2ab6dc-1500x993.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -934,7 +944,7 @@
           "description": "Price volatility around the Federal Reserve's rate decision cleared positions for roughly 90,000 traders, with unusually equal losses for bulls and bears.",
           "link": "https://www.coindesk.com/markets/2026/07/30/bitcoin-ether-whipsaw-wipes-out-usd280-million-even-as-prices-remain-flat-over-24-hours",
           "publishedOn": "2026-07-30T06:59:10.000Z",
-          "wordCount": 12983,
+          "wordCount": 12952,
           "title": "Bitcoin, ether whipsaw wipes out $286 million in leveraged bets",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b493c99f24041995835d8e2277b6bfaa7d3d802d-1500x922.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -944,7 +954,7 @@
           "description": "Four analysts agree the Fed's hawkish hold changes the calculus for risk assets, but they split on whether bitcoin's real test is already here or still six weeks away.",
           "link": "https://www.coindesk.com/markets/2026/07/30/bitcoin-analysts-agree-the-fed-s-hold-was-hawkish-they-don-t-agree-on-what-happens-next",
           "publishedOn": "2026-07-30T06:28:58.000Z",
-          "wordCount": 13838,
+          "wordCount": 13807,
           "title": "Bitcoin analysts agree the Fed's hold was hawkish. They are split on what happens next.",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/870e23f24d3a975a63fcf3a585ce35a63311601f-5820x3880.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -954,7 +964,7 @@
           "description": "Crypto's majors barely moved as Asia's semiconductor selloff eased. Most are still lower over the week, with HYPE down 8%.",
           "link": "https://www.coindesk.com/markets/2026/07/30/ether-xrp-flat-as-chip-stocks-steady-on-samsung-s-250-fold-profit-surge",
           "publishedOn": "2026-07-30T05:19:47.000Z",
-          "wordCount": 12350,
+          "wordCount": 12332,
           "title": "Ether, XRP flat as chip stocks steady on Samsung's 250-fold profit surge",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ec16b0d98820048d0801ef198a8c4e6ca1e6f687-4608x3456.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -964,7 +974,7 @@
           "description": "The HAWK system isn't deployed anywhere, and Bitcoin doesn't use it. But is sitting in the same quantum race that Bitcoin developers are scrambling to finish.",
           "link": "https://www.coindesk.com/tech/2026/07/29/bitcoin-s-quantum-plan-assumes-some-algorithms-break-ai-just-weakened-one-in-60-hours",
           "publishedOn": "2026-07-30T04:16:30.000Z",
-          "wordCount": 12807,
+          "wordCount": 12789,
           "title": "Bitcoin's quantum plan assumes some algorithms break. AI just weakened one in 60 hours",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/422bf0c58d3c5d984b8ee7f8a379b85250db7bc2-6016x4016.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -974,7 +984,7 @@
           "description": "Insiders say that the bipartisan Senate duo revamping the bill's Trump-approved ethics section have come up with something they hope wins sufficient yes votes.",
           "link": "https://www.coindesk.com/policy/2026/07/29/senators-said-to-strike-idea-to-toughen-trump-s-concession-on-clarity-act-s-crypto-limits",
           "publishedOn": "2026-07-29T23:12:04.000Z",
-          "wordCount": 15160,
+          "wordCount": 14786,
           "title": "Senators ready to send stricter ethics rules on Trump's crypto ventures to White House, sources say",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/dcfc91ca7c57af4f7e08933d29c6f9a716b83ad6-5616x3744.jpg?auto=format&fit=crop&crop=focalpoint&fp-x=0.4114&fp-y=0.2822&w=1920&h=1080&q=75"
         },
@@ -984,7 +994,7 @@
           "description": "The brokerage reported $100 million revenue from crypto trading, a 38% decline in a year, offset by stronger options, equities and prediction markets activity.",
           "link": "https://www.coindesk.com/markets/2026/07/29/robinhood-slides-4-despite-earnings-beat-as-crypto-revenue-cools",
           "publishedOn": "2026-07-29T20:40:43.000Z",
-          "wordCount": 12518,
+          "wordCount": 12500,
           "title": "Robinhood slides 4% despite earnings beat as crypto revenue cools",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/da9ffcdfcd965614c3a32a2e673631861308b387-1920x1080.jpg?auto=format&q=75"
         },
@@ -1004,7 +1014,7 @@
           "description": "For the first time in several years, markets were somewhat split on whether the U.S. central bank would hike rates.",
           "link": "https://www.coindesk.com/markets/2026/07/29/fomc-hold-fed-holds-rates-steady-extending-pause-as-markets-await-warsh-s-policy-roadmap",
           "publishedOn": "2026-07-29T17:58:33.000Z",
-          "wordCount": 12081,
+          "wordCount": 12063,
           "title": "Fed holds rates steady, extending pause as markets await Kevin Warsh's policy roadmap",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/aff32b708a5b4266e041a4eb460baa2d9236e4bb-3973x2235.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -1014,19 +1024,9 @@
           "description": "Tokenization and 24/7 markets are reshaping finance, making always-on banking a reality.",
           "link": "https://www.coindesk.com/markets/2026/07/29/morgan-stanley-execs-admit-the-traditional-9-to-5-banking-day-is-officially-dying",
           "publishedOn": "2026-07-29T16:09:32.000Z",
-          "wordCount": 13143,
+          "wordCount": 13112,
           "title": "The traditional 9-to-5 banking day is officially dying, says Morgan Stanley execs",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/dab9630cd4b0b17e83c7881fffb999b344816042-1920x1080.jpg?auto=format&q=75"
-        },
-        {
-          "id": "9215be8f-7b05-4fe9-92a4-16e371edbeff",
-          "author": "Krisztian Sandor",
-          "description": "Today's bridge model won't scale as hundreds of companies issue their own stablecoins, fragmenting liquidity, Brale CEO Ben Milne said in an interview.",
-          "link": "https://www.coindesk.com/business/2026/07/29/stablecoin-firm-brale-says-new-protocol-can-remove-a-major-hurdle-to-scaling-custom-tokens",
-          "publishedOn": "2026-07-29T15:27:30.000Z",
-          "wordCount": 12487,
-          "title": "Stablecoin firm Brale says new protocol can remove a major hurdle to scaling custom tokens",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/08c11eec68c9131794f87f5ba9f073fb28663878-1920x1080.jpg?auto=format&q=75"
         }
       ]
     },
@@ -1046,7 +1046,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-07-30T15:48:03.000Z",
+          "publishedOn": "2026-07-30T17:20:34.000Z",
           "wordCount": 4195,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
