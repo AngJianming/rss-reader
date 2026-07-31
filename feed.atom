@@ -1,166 +1,376 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-07-31T10:34:21.837Z</id>
+    <id>urn:2026-07-31T12:53:16.214Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-07-31T10:34:21.837Z</updated>
+    <updated>2026-07-31T12:53:16.214Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-07-31T10:33:20.000Z</updated>
+        <updated>2026-07-31T12:52:53.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ratatop day 3: disks, statvfs, and my first unsafe block]]></title>
-        <id>https://dev.to/lovestaco/ratatop-day-3-disks-statvfs-and-my-first-unsafe-block-496e</id>
-        <link href="https://dev.to/lovestaco/ratatop-day-3-disks-statvfs-and-my-first-unsafe-block-496e"/>
-        <updated>2026-07-31T10:17:57.000Z</updated>
-        <summary type="html"><![CDATA[Hello, I'm Maneshwar. I'm building git-lrc, a Micro AI code reviewer that runs on every commit. It is free and source-available on Github. Star git-lrc to help devs discover the project. Do give it a try and share your feedback.
-Day three of building a btop-style system monitor in Rust with ratatui.
-Day one was the CPU box. 
-Day two was memory, where I learned that MemFree is a number nobody should look at.
-Today: disks.
-And this one broke a rule I had set for myself on day one.
+        <title type="html"><![CDATA[The Bug That Crashes Your Import Is the Lucky One]]></title>
+        <id>https://dev.to/p0rt/the-bug-that-crashes-your-import-is-the-lucky-one-25of</id>
+        <link href="https://dev.to/p0rt/the-bug-that-crashes-your-import-is-the-lucky-one-25of"/>
+        <updated>2026-07-31T12:43:45.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for DEV's Summer Bug Smash: Clear the Lineup powered by Sentry.
+You are migrating a 50,000-message Slack workspace to Zulip. Somewhere around message 31,000 the import dies with KeyError: 'ts'. Annoying, but here is the uncomfortable part: that is the lucky outcome. The unlucky one is "ts": "NaN", where nothing dies, nothing warns, and your company's message history quietly comes out in the wrong order.
+TL;DR: Zulip's Slack importer used float(message["ts"]) unguarded, both as a sort key and as date_sent. One message with a missing or malformed ts aborted the entire import; a non-finite value like "NaN" did not even raise, it silently broke the sort. My fix (zulip/zulip#39813) skips such messages with a warning and requires ts to parse to a finite float via math.isfini…]]></summary>
+        <author>
+            <name>Sergei Parfenov</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying ImgProxy – Process, Resize, Convert Images on the Fly]]></title>
+        <id>https://dev.to/vultr/deploying-imgproxy-process-resize-convert-images-on-the-fly-5ab0</id>
+        <link href="https://dev.to/vultr/deploying-imgproxy-process-resize-convert-images-on-the-fly-5ab0"/>
+        <updated>2026-07-31T12:41:20.000Z</updated>
+        <summary type="html"><![CDATA[ImgProxy is an open-source image-processing server — resize, convert, and transform images on the fly via URL parameters, ideal as a caching layer in front of a CDN or web app. This guide builds ImgProxy from source on Ubuntu, runs it as a systemd service behind Nginx with TLS, walks through its URL processing options, and secures it with signed URLs.
+Prerequisites: an Ubuntu server, a domain A record (e.g. imgproxy.example.com), non-root sudo user.
+ImgProxy uses libvips for image processing; this builds it from source with Go.
+$ sudo add-apt-repository ppa:dhor/myway
+$ sudo apt update
+$ sudo apt install libvips-dev -y
+$ sudo snap install --classic --channel=latest/stable go
+$ git clone https://github.com/imgproxy/imgproxy.git
+$ cd imgproxy
+$ sudo CGO_LDFLAGS_ALLOW="-s|-w"   go build -o /u…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[My MCP Tool's Audit Log Was Built So a Bad Write Would Leave a Trace. The Log Itself Leaves None.]]></title>
+        <id>https://dev.to/enjoy_kumawat/my-mcp-tools-audit-log-was-built-so-a-bad-write-would-leave-a-trace-the-log-itself-leaves-none-4maf</id>
+        <link href="https://dev.to/enjoy_kumawat/my-mcp-tools-audit-log-was-built-so-a-bad-write-would-leave-a-trace-the-log-itself-leaves-none-4maf"/>
+        <updated>2026-07-31T12:40:39.000Z</updated>
+        <summary type="html"><![CDATA[A few days ago I fixed update_article, one of the tools in this repo's MCP server, because it had a nasty shape: it took a bare integer article_id, PUT whatever fields you gave it straight to the DEV.to API, and if the id was wrong or hallucinated, it would silently overwrite a live published post with nothing left behind to show it had happened. The fix added a fetch-before-write diff and a JSONL audit log:
+_ARTICLE_UPDATE_LOG = "logs/article_updates.jsonl"
 
-My rule was simple. 
-Read /proc and /sys, never shell out to another tool.
-CPU came from /proc/stat. 
-Memory came from /proc/meminfo. Disks would come from... something.
-I went looking for the file. /proc/mounts tells you what is mounted. 
-/proc/diskstats tells you how much I/O happened. 
-/sys/block/* tells you de…]]></summary>
+def _log_article_update(article_id, before, fields_changed, after):
+    os.makedirs(os.path.dirname(_ARTICLE_UPDATE_LOG), exist_ok=True)
+    entry = {"article_id": article_id, "fields_changed": sorted(fields_changed), "url": after.get("url")}
+    for field in fields_changed:
+        entry[f"{field}_before"] = before.get(field)
+       …]]></summary>
         <author>
-            <name>Athreya aka Maneshwar</name>
+            <name>Enjoy Kumawat</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Building Fluentic: I Didn’t Want a Tailwind Preset. Then I Added Two.]]></title>
-        <id>https://dev.to/omnidev/building-fluentic-i-didnt-want-a-tailwind-preset-then-i-added-two-5b6j</id>
-        <link href="https://dev.to/omnidev/building-fluentic-i-didnt-want-a-tailwind-preset-then-i-added-two-5b6j"/>
-        <updated>2026-07-31T10:12:34.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR: Fluentic Style is a new JSX styling library for React, Preact, Solid, and compatible JSX runtimes. It starts with typed style objects and a css prop, then adds selector chains, component slots, scopes, themes, runtime resolution, and optional static CSS extraction for production builds.
-Fluentic started as an object-first styling API.
-That was intentional.
-The original shape was built around typed style objects, explicit composition, selector chains, component slots, scopes, themes, and optional static extraction later.
-So the first Fluentic style looked more like this:
-import { style } from '@fluentic/style';
+        <title type="html"><![CDATA[Deploying code-server for VS Code on Ubuntu 24.04]]></title>
+        <id>https://dev.to/vultr/deploying-code-server-for-vs-code-on-ubuntu-2404-4o9e</id>
+        <link href="https://dev.to/vultr/deploying-code-server-for-vs-code-on-ubuntu-2404-4o9e"/>
+        <updated>2026-07-31T12:40:36.000Z</updated>
+        <summary type="html"><![CDATA[code-server is the open-source project that runs full VS Code including extensions, integrated terminal, Git, IntelliSense — on a remote server, accessible from any browser. This guide deploys it on Ubuntu 24.04 with Docker Compose, fronted by Traefik for automatic HTTPS.
+Prerequisites: an Ubuntu 24.04 server (1GB RAM / 2 vCPU minimum), a domain A record (e.g. code.example.com), Docker and Docker Compose installed.
+$ mkdir -p ~/vscode-server/{project,config,local,letsencrypt}
+$ cd ~/vscode-server
 
-const button = style({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 8,
-  border: 0,
-  borderRadius: 8,
-  paddingInline: 16,
-  paddingBlock: 8,
-  backgroundColor: …]]></summary>
-        <author>
-            <name>OmniDev</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Rewrote this after a year of choosing boring, deterministic solutions over bolting AI onto everything. Curious if others have made the same call, or regretted skipping AI somewhere.]]></title>
-        <id>https://dev.to/vijay_kanna_56/been-getting-some-pushback-on-this-one-in-the-comments-which-is-exactly-what-i-wanted-genuinely-26gh</id>
-        <link href="https://dev.to/vijay_kanna_56/been-getting-some-pushback-on-this-one-in-the-comments-which-is-exactly-what-i-wanted-genuinely-26gh"/>
-        <updated>2026-07-31T10:11:59.000Z</updated>
-        <summary type="html"><![CDATA[Everyone's Adding AI to Everything. I Spent a Year Removing the Server Instead
+project — your editable workspace
+config — code-server settings/extensions
+local — user-specific data
+letsencrypt — Traefik's ACME certificate storage
+Find your UID/GID and add yourself to the docker group:
+$ id $USER
+$ sudo usermod -aG docker $USER
 
+$ nano docker-compose.yml
 
-  
-Vijay Kanna
-                    
-                  
+services:
+ code-ser…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying Gradio on Ubuntu 22.04]]></title>
+        <id>https://dev.to/vultr/deploying-gradio-on-ubuntu-2204-gol</id>
+        <link href="https://dev.to/vultr/deploying-gradio-on-ubuntu-2204-gol"/>
+        <updated>2026-07-31T12:39:57.000Z</updated>
+        <summary type="html"><![CDATA[Gradio is a Python library for wrapping any ML model in a web interface, ready to deploy and scale as an app. This guide builds a GFPGAN-powered face-restoration demo with Gradio on Ubuntu 22.04, runs it as a systemd service, and exposes it through Nginx with TLS.
+Prerequisites: a GPU-enabled Ubuntu 22.04 server, a domain A record (e.g. gradio.example.com), non-root sudo access, Nginx installed.
+1. Install dependencies:
+$ pip3 install realesrgan gfpgan basicsr gradio
 
-                
-Jul 31
-        
-#discuss
-            #webdev
-            #ai
-            #javascript
-        
-5 reactions
-            
-Add Comment
-            
-        
-        
-          
-            3 min read]]></summary>
-        <author>
-            <name>Vijay Kanna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Metaharness for cross-agent adversarial reviews]]></title>
-        <id>https://dev.to/makeitrun/metaharness-for-cross-agent-adversarial-reviews-1478</id>
-        <link href="https://dev.to/makeitrun/metaharness-for-cross-agent-adversarial-reviews-1478"/>
-        <updated>2026-07-31T10:07:17.000Z</updated>
-        <summary type="html"><![CDATA[A single AI reviewer can produce a polished, authoritative comment that is completely wrong. In CI, that failure mode is worse than silence: once a bogus finding looks plausible enough to block a pull request, teams either waste time chasing fiction or stop trusting the reviewer at all.
-One pattern worth copying immediately is to make routing policy explicit and conservative instead of letting the review system imply certainty. The useful move here is simple: only auto-route when confidence is high enough, cost is still inside budget, and your benchmark signal is not statistically ambiguous. If any of those checks fail, send the change to a human reviewer with the reasons attached.
-export function routeReview(
-  ctx: ReviewContext,
-  policy: ReviewGatePolicy = defaultReviewPolicy(),
-): Rev…]]></summary>
-        <author>
-            <name>anthony@make-it.run</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Building a Password Strength Validator with Entropy Calculation]]></title>
-        <id>https://dev.to/ayinedjimi-consultants/building-a-password-strength-validator-with-entropy-calculation-5djl</id>
-        <link href="https://dev.to/ayinedjimi-consultants/building-a-password-strength-validator-with-entropy-calculation-5djl"/>
-        <updated>2026-07-31T10:05:21.000Z</updated>
-        <summary type="html"><![CDATA[Most password rules lie to users. "At least 8 characters, one uppercase, one number, one special character" — that regex check produces passwords like Password1! which scores 100% on every consumer-facing strength meter but cracks in minutes with a dictionary attack. Entropy-based validation gives you a number that actually correlates with cracking resistance.
-Entropy, measured in bits, tells you how many guesses an attacker needs in the worst case. The formula:
-H = L × log₂(N)
+realesrgan — background restoration
+gfpgan — face restoration
+basicsr — provides RRDBNet, the super-resolution architecture GFPGAN relies on
+gradio — the web interface
+2. GFPGAN's pandas dependency needs jinja2 >= 3.1.2:
+$ pip show jinja2
 
-Where L is password length and N is the size of the character pool in use.
-A password using only lowercase letters (N = 26) at 8 characters gives H = 8 × log₂(26) ≈ 37.6 bits. That means at most 2^37.6 ≈ 200 billion possible values — sounds large until you consider a GPU cluster doing 10 billion guesses per second.…]]></summary>
+Upgrade if it's older:
+$ pip install --upgrade jinja2
+
+3. Create the project directory:…]]></summary>
         <author>
-            <name>Ayi NEDJIMI</name>
+            <name>Sanskriti Harmukh</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Build a RAG-Powered Database Assistant with PostgreSQL and pgvector]]></title>
-        <id>https://dev.to/blockchainlab/build-a-rag-powered-database-assistant-with-postgresql-and-pgvector-328i</id>
-        <link href="https://dev.to/blockchainlab/build-a-rag-powered-database-assistant-with-postgresql-and-pgvector-328i"/>
-        <updated>2026-07-31T10:01:59.000Z</updated>
-        <summary type="html"><![CDATA[Build a RAG-Powered Database Assistant with PostgreSQL and pgvector
-The Problem
-"How many orders did we lose in the last 30 days?" "Which customers ordered more than three times but never left a review?" "Show me the revenue trend by region for the past quarter."
-These questions are simpleblog_post_en.mdblog_post_en.md for a human analyst, but they never make it into a SQL query fast enough. Business teams wait for engineering. Engineering is busy. The query finally gets written three days later, and the answer is already stale.
-What if the database itself could answer natural-language questions in seconds?
-That is exactly what this tutorial builds: a RAG-powered database assistant that retrieves relevant schema context, generates SQL with an LLM, and returns the answer directly.
-Why RAG i…]]></summary>
+        <title type="html"><![CDATA[Deploying Metabase on Kubernetes]]></title>
+        <id>https://dev.to/vultr/deploying-metabase-on-kubernetes-48gh</id>
+        <link href="https://dev.to/vultr/deploying-metabase-on-kubernetes-48gh"/>
+        <updated>2026-07-31T12:39:17.000Z</updated>
+        <summary type="html"><![CDATA[Metabase is an open-source BI tool for building charts and dashboards over MySQL, PostgreSQL, MongoDB, Redshift, and more. This guide deploys Metabase on Kubernetes, loads the Sakila sample dataset into MySQL, builds a dashboard, and secures it behind Nginx Ingress with cert-manager TLS.
+Prerequisites: a Kubernetes cluster with kubectl/helm configured, a Linux workstation, a reachable MySQL server, and a domain name.
+Sakila models a DVD rental store — films, actors, inventory, rentals.
+$ sudo apt install zip -y
+$ wget https://downloads.mysql.com/docs/sakila-db.zip
+$ unzip sakila-db.zip
+
+Connect to your MySQL server (replace host/port/user):
+$ mysql -h <HOST_ENDPOINT> -P <DATABASE_PORT> -u <ADMIN_USER> -p
+
+mysql> CREATE DATABASE sakila;
+mysql> SOURCE sakila-db/sakila-schema.sql;
+mysql> SOUR…]]></summary>
         <author>
-            <name>Nancy</name>
+            <name>Sanskriti Harmukh</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Gated B2B Pricing in Next.js: Hiding Prices Behind Per-Customer Access]]></title>
-        <id>https://dev.to/iurii_rogulia/gated-b2b-pricing-in-nextjs-hiding-prices-behind-per-customer-access-k2b</id>
-        <link href="https://dev.to/iurii_rogulia/gated-b2b-pricing-in-nextjs-hiding-prices-behind-per-customer-access-k2b"/>
-        <updated>2026-07-31T10:00:48.000Z</updated>
-        <summary type="html"><![CDATA[A consumer store has one price for everyone. A B2B store almost never does. A distributor who moves a pallet a week pays less than a facility manager buying six units, and neither of them should see what the other pays. On top of that, the public shouldn't see any of it — competitors read your price list too, and a wholesale number sitting in the page source is a gift to them.
-So "show the price" turns into three questions at once: who is asking, what is their price, and how do I make sure the wrong person never sees a number they shouldn't. Most e-commerce tutorials answer none of these, because consumer commerce doesn't have the problem. This is the gap I keep running into on B2B work, and the Pi-Pi deal portal is where I worked most of it out — an internal sales tool where every deal ca…]]></summary>
+        <title type="html"><![CDATA[Installing Nginx UI – An Open-Source WebUI for Nginx]]></title>
+        <id>https://dev.to/vultr/installing-nginx-ui-an-open-source-webui-for-nginx-59j7</id>
+        <link href="https://dev.to/vultr/installing-nginx-ui-an-open-source-webui-for-nginx-59j7"/>
+        <updated>2026-07-31T12:38:42.000Z</updated>
+        <summary type="html"><![CDATA[Nginx UI is an open-source web GUI for managing Nginx, single-node or clustered, with real-time stats, automatic Let's Encrypt TLS, performance monitoring, and even LLM-assisted config editing. This guide installs it on Ubuntu 24.04, puts it behind a reverse proxy with TLS, sets up ACME certificate management, and creates a virtual host through the dashboard.
+Prerequisites: an Ubuntu 24.04 server, non-root sudo user, a domain A record (e.g. nginx-ui.example.com), Docker installed if you choose that install path.
+$ sudo apt update
+$ sudo apt install nginx -y
+
+Pick one of the two install methods below.
+Runs Nginx UI as a system service, managing the host's Nginx directly.
+$ curl -O https://cloud.nginxui.com/install.sh
+$ sudo bash install.sh install
+$ nginx-ui --version
+$ sudo systemctl start…]]></summary>
         <author>
-            <name>Iurii Rogulia</name>
+            <name>Sanskriti Harmukh</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[July closed with $55.8 billion in Physical AI funding and an industry finally stopped asking whether this works. Here's what you missed this week.]]></title>
-        <id>https://dev.to/xberry-tech/july-closed-with-558-billion-in-physical-ai-funding-and-an-industry-finally-stopped-asking-5d51</id>
-        <link href="https://dev.to/xberry-tech/july-closed-with-558-billion-in-physical-ai-funding-and-an-industry-finally-stopped-asking-5d51"/>
-        <updated>2026-07-31T09:59:38.000Z</updated>
-        <summary type="html"><![CDATA[July 2026 is over. The month that opened with AUTONOMOUS 2026 and WAIC 2026 running simultaneously on opposite sides of the Pacific closed with the sector tallying what it built. The number that defines the period is $55.8 billion in robotics funding across H1 - nearly double the prior full-year record. But the more durable signal from this week is operational rather than financial: Neura Robotics has a confirmed deployment date at a Schaeffler facility in December, NVIDIA's simulation-to-real pipeline is now functional at production scale, and five simultaneous shifts are reshaping factory floors right now, not in 2027. The questions that drove the first half of 2026 - does Physical AI work, is the funding real, will the robots actually arrive - are no longer interesting. H2 starts with h…]]></summary>
+        <title type="html"><![CDATA[Testing CAST AI on GKE: A Hands-On Kubernetes Workload Optimization Lab]]></title>
+        <id>https://dev.to/upshivam786/testing-cast-ai-on-gke-a-hands-on-kubernetes-workload-optimization-lab-3lep</id>
+        <link href="https://dev.to/upshivam786/testing-cast-ai-on-gke-a-hands-on-kubernetes-workload-optimization-lab-3lep"/>
+        <updated>2026-07-31T12:38:02.000Z</updated>
+        <summary type="html"><![CDATA[Kubernetes makes it easy to define CPU and memory requests for our applications.
+But there is a problem:
+How do we know whether those resource requests are actually correct?
+If an application requests:
+
+yaml
+resources:
+  requests:
+    cpu: "1000m"
+    memory: "1Gi"
+
+but normally consumes only a few millicores of CPU and a few megabytes of memory, we may be reserving significantly more cluster capacity than the workload actually needs.
+
+I wanted to understand how Kubernetes cost optimization platforms detect this situation, so I built a small hands-on lab using:
+
+Google Kubernetes Engine (GKE)
+CAST AI
+Kubernetes
+Docker
+FastAPI
+Google Artifact Registry
+
+The goal wasn't simply to install CAST AI.
+
+I wanted to observe the complete process:
+
+Deploy workload
+      ↓
+Observe resource usage
+      …]]></summary>
         <author>
-            <name>xBerry</name>
+            <name>SHIVAM UPADHYAY</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Installing Ghost Blogging Platform on Ubuntu 24.04]]></title>
+        <id>https://dev.to/vultr/installing-ghost-blogging-platform-on-ubuntu-2404-2hko</id>
+        <link href="https://dev.to/vultr/installing-ghost-blogging-platform-on-ubuntu-2404-2hko"/>
+        <updated>2026-07-31T12:37:27.000Z</updated>
+        <summary type="html"><![CDATA[Ghost is an open-source publishing platform with built-in newsletters, memberships, subscriptions, ActivityPub federation, and Tinybird-powered web analytics. This guide covers two install paths on Ubuntu 24.04: Ghost-CLI for a traditional host install, and Docker Compose for a containerized deployment with analytics.
+Prerequisites: an Ubuntu 24.04 server, non-root sudo user, a domain A record (e.g. ghost.example.com).
+Ghost requires Node v22 LTS — check compatible versions before installing elsewhere.
+$ curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+$ sudo -E bash nodesource_setup.sh
+$ sudo apt install -y nodejs
+$ node -v
+
+$ sudo apt install -y mysql-server
+$ mysql --version
+$ sudo mysql_secure_installation
+
+Walk through the prompts: enable password validation (y)…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying phpBB on Ubuntu 22.04]]></title>
+        <id>https://dev.to/vultr/deploying-phpbb-on-ubuntu-2204-55g2</id>
+        <link href="https://dev.to/vultr/deploying-phpbb-on-ubuntu-2204-55g2"/>
+        <updated>2026-07-31T12:37:02.000Z</updated>
+        <summary type="html"><![CDATA[phpBB is an open-source forum application for building discussion communities — user registration, moderation, permissions, and multiple boards in one interface. This guide deploys phpBB on Ubuntu 22.04 with an external MySQL database, an Apache virtual host, and Let's Encrypt TLS.
+Prerequisites: an Ubuntu 22.04 server with the LAMP stack installed, non-root sudo user, an external MySQL database, a subdomain A record (e.g. phpbb.example.com).
+$ mysql -h your-db-host -P 3306 -u dbadmin -p
+
+mysql> CREATE DATABASE phpbbdb;
+mysql> USE phpbbdb;
+mysql> CREATE USER 'phpbbuser'@'localhost' IDENTIFIED BY 'securepassword';
+mysql> GRANT ALL ON phpbbdb.* to 'phpbbuser'@'localhost';
+mysql> FLUSH PRIVILEGES;
+mysql> EXIT;
+
+1. Install PHP modules:
+$ sudo apt install php-mysql php-xml php-mbstring -y
+
+2. D…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying a PostgreSQL Cluster with Patroni and HAProxy on Ubuntu 24.04]]></title>
+        <id>https://dev.to/vultr/deploying-a-postgresql-cluster-with-patroni-and-haproxy-on-ubuntu-2404-4501</id>
+        <link href="https://dev.to/vultr/deploying-a-postgresql-cluster-with-patroni-and-haproxy-on-ubuntu-2404-4501"/>
+        <updated>2026-07-31T12:36:33.000Z</updated>
+        <summary type="html"><![CDATA[A Patroni cluster needs an odd number of nodes to maintain quorum — with 3 nodes, losing 1 still leaves a majority, so the cluster keeps running. This guide builds a 3-node PostgreSQL cluster on Ubuntu 24.04 with Patroni handling replication and automatic failover, etcd as the coordination store, and HAProxy load-balancing client connections — all secured with TLS.
+Prerequisites: three Ubuntu 24.04 servers (2 vCPU / 4GB RAM minimum) with PostgreSQL installed, non-root sudo access, and a domain with three A records: node1.example.com, node2.example.com, node3.example.com. Replace these placeholders with your actual subdomains throughout.
+Run on all three nodes unless noted otherwise.
+1. Install packages:
+$ sudo apt update
+$ sudo apt install haproxy certbot pipx -y
+$ sudo pip3 install --brea…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Deploying Laravel with Nginx on Ubuntu 24.04]]></title>
+        <id>https://dev.to/vultr/deploying-laravel-with-nginx-on-ubuntu-2404-1pj7</id>
+        <link href="https://dev.to/vultr/deploying-laravel-with-nginx-on-ubuntu-2404-1pj7"/>
+        <updated>2026-07-31T12:35:52.000Z</updated>
+        <summary type="html"><![CDATA[Laravel is a popular PHP framework with routing, authentication, and database management built in. This guide deploys a Laravel app behind Nginx on Ubuntu 24.04, wires it to MySQL, secures it with Let's Encrypt, and builds a small dashboard that queries live data.
+Prerequisites: Ubuntu 24.04 with Nginx and MySQL installed, a non-root sudo user, a domain A record (e.g. app.example.com).
+$ sudo mysql
+
+mysql> CREATE DATABASE laravel_demo;
+mysql> CREATE USER 'laravel_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'secure_password';
+mysql> GRANT ALL ON laravel_demo.* TO 'laravel_user'@'localhost';
+mysql> FLUSH PRIVILEGES;
+mysql> EXIT;
+
+Seed a demo table to query later:
+$ mysql -u laravel_user -p
+
+mysql> USE laravel_demo;
+mysql> CREATE TABLE server_stats (
+            id INT AUTO_INC…]]></summary>
+        <author>
+            <name>Sanskriti Harmukh</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Dubai-based crypto exchange tied to $4 billion Iran sanctioned-evasion network]]></title>
+        <id>18143b12-e156-4bd9-8447-8991425fb4ee</id>
+        <link href="https://www.coindesk.com/business/2026/07/31/dubai-based-crypto-exchange-tied-to-usd4-billion-iran-sanctioned-evasion-network-reuters"/>
+        <updated>2026-07-31T12:28:02.000Z</updated>
+        <summary type="html"><![CDATA[Shelbit allegedly sent hundreds of millions of dollars to major crypto exchanges, including Binance, as it linked gambling sites and sanctioned Iranian entities to global crypto markets.]]></summary>
+        <author>
+            <name>Olivier Acuna</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Download: Montana’s new experimental drug rules]]></title>
+        <id>https://www.technologyreview.com/?p=1140999</id>
+        <link href="https://www.technologyreview.com/2026/07/31/1140999/the-download-montanas-right-to-try-law-anthropic-hacks/"/>
+        <updated>2026-07-31T12:16:00.000Z</updated>
+        <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Montana’s plan to become an experimental medical hub just pushed forward  As of this week in Montana, biotech companies whose drugs have been through preliminary testing—sometimes in as few as 10…]]></summary>
+        <author>
+            <name>Charlotte Jee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ruby Central's Destructive Legacy]]></title>
+        <id>https://andre.arko.net/2026/07/30/ruby-centrals-destructive-legacy/</id>
+        <link href="https://andre.arko.net/2026/07/30/ruby-centrals-destructive-legacy/"/>
+        <updated>2026-07-31T12:10:55.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Tasklet (YC P26) Is Hiring a Customer Success Engineer]]></title>
+        <id>https://tasklet.ai/careers/customer-success-engineer</id>
+        <link href="https://tasklet.ai/careers/customer-success-engineer"/>
+        <updated>2026-07-31T12:00:59.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[World Cup bets smash records as prediction markets hit $20 billion in volume]]></title>
+        <id>d81ea577-efc7-4498-b6ae-389c14cf25f4</id>
+        <link href="https://www.coindesk.com/markets/2026/07/31/world-cup-bets-smash-records-as-prediction-markets-hit-usd20-billion-in-volume"/>
+        <updated>2026-07-31T12:00:26.000Z</updated>
+        <summary type="html"><![CDATA[Markets ranged from the simple question of who would win the tournament to whether Cristiano Ronaldo would cry when Portugal were eliminated (he did).]]></summary>
+        <author>
+            <name>Jamie Crawley</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[U.S. sanctions Iran-linked bitcoin insurance scheme for Strait of Hormuz ships]]></title>
+        <id>9df8e505-9517-4d6a-b230-db3ef445c961</id>
+        <link href="https://www.coindesk.com/policy/2026/07/31/u-s-sanctions-iran-linked-bitcoin-insurance-scheme-for-strait-of-hormuz-ships"/>
+        <updated>2026-07-31T11:58:33.000Z</updated>
+        <summary type="html"><![CDATA[The Treasury Department said the Hormuz Safe platform accepted bitcoin and other digital assets as part of an alleged sanctions workaround tied to IRGC-backed shipping controls.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The End of an Era]]></title>
+        <id>https://hughhowey.com/the-end-of-an-era/</id>
+        <link href="https://hughhowey.com/the-end-of-an-era/"/>
+        <updated>2026-07-31T11:51:46.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin $60,000 put leads the pack as mood swings bearish for August]]></title>
+        <id>09a5f1f3-78ef-4a78-bb1d-845d0a6ab622</id>
+        <link href="https://www.coindesk.com/daybook-us/2026/07/31/bitcoin-usd60-000-put-leads-the-pack-as-mood-swings-bearish-for-august"/>
+        <updated>2026-07-31T11:36:45.000Z</updated>
+        <summary type="html"><![CDATA[Your day-ahead look for July 31, 2026]]></summary>
+        <author>
+            <name>Omkar Godbole</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin, ether fall, equities rally with broader crypto market on track for best month in a year]]></title>
+        <id>34436fc8-fb6c-480c-92a4-a9fef783a576</id>
+        <link href="https://www.coindesk.com/markets/2026/07/31/bitcoin-ether-fall-equities-rally-with-broader-crypto-market-on-track-for-best-month-in-a-year"/>
+        <updated>2026-07-31T11:07:52.000Z</updated>
+        <summary type="html"><![CDATA[BTC fell as July drew to a close, even as stocks gained in Asia and U.S. index futures advanced. The CoinDesk 20 index is set to post its biggest gain since July 2025.]]></summary>
+        <author>
+            <name>Oliver Knight</name>
         </author>
     </entry>
     <entry>
@@ -171,69 +381,6 @@ So "show the price" turns into three questions at once: who is asking, what is t
         <summary type="html"><![CDATA[The suit wants to bar the company from operating what it says is an unlicensed gambling business and seeks financial redress.]]></summary>
         <author>
             <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Letting an agent write to my production CMS]]></title>
-        <id>https://dev.to/olund/letting-an-agent-write-to-my-production-cms-3f3k</id>
-        <link href="https://dev.to/olund/letting-an-agent-write-to-my-production-cms-3f3k"/>
-        <updated>2026-07-31T09:53:27.000Z</updated>
-        <summary type="html"><![CDATA[The slowest job on the content platform I run is authoring a review end to
-The worry people lead with is quality. Will the agent write something
-Authoring means writing to production, though, and that is a different
-So the question was never whether an agent could edit the site. It was: what
-I weighed three shapes for the write path.
-One-off REST scripts are the fastest thing to start and the worst thing to
-Browser automation is more tempting than it looks, because driving the real
-I built an MCP server instead. The tools are primitives (get a listing,
-One server, two transports. Locally the agent host launches it as a child
-The MCP server never holds a human's session token. It authenticates to the
-This looked like pointless ceremony until I thought about the audit log. If
-whose
- performe…]]></summary>
-        <author>
-            <name>Andre</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I gave my SaaS 14 days to get 3 sales. It got 0. Here's the math.]]></title>
-        <id>https://dev.to/yingyenliu/i-gave-my-saas-14-days-to-get-3-sales-it-got-0-heres-the-math-541a</id>
-        <link href="https://dev.to/yingyenliu/i-gave-my-saas-14-days-to-get-3-sales-it-got-0-heres-the-math-541a"/>
-        <updated>2026-07-31T09:51:32.000Z</updated>
-        <summary type="html"><![CDATA[Two weeks ago I wrote here that I killed my SaaS subscription 7 days after launch and rebuilt it as a buy-once product. I ended that post with a promise written down before I could talk myself out of it: 3 real purchases in 14 days of relaunch, or I move on and leave UIPrompt in maintenance mode. Either way I would post the numbers.
-The 14 days are up. Here are the numbers.
-Purchases: 0.
-New organic signups during the window: 0. The last real signup was a free account three days before the relaunch even went live. They looked once and never came back.
-So by my own written bar, this is a move-on. UIPrompt goes to maintenance mode today. I want to be useful about why, because "it didn't sell" is a result, not a lesson.
-Quite a lot. That turns out to be part of the problem.
-I shipped a real p…]]></summary>
-        <author>
-            <name>劉穎諺</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[One missing checkpoint can break every approval gate]]></title>
-        <id>https://dev.to/creeta/one-missing-checkpoint-can-break-every-approval-gate-127k</id>
-        <link href="https://dev.to/creeta/one-missing-checkpoint-can-break-every-approval-gate-127k"/>
-        <updated>2026-07-31T09:50:59.000Z</updated>
-        <summary type="html"><![CDATA[Approval workflows do not fail only at the model layer. In a production agent, the more common failure is losing the exact paused state that a reviewer was supposed to approve.
-A saver can decide LangGraph approvals because approvals depend on persisted graph state, not just a chat transcript. LangGraph interrupts pause execution inside a node, store the current state, wait until a human decision arrives, and resume the intended checkpoint with Command(resume=...); without a saver tied to the same thread_id, the reviewer handoff can resume the wrong point or fail to resume at all .
-Quick Answer: LangGraph approvals work only when the paused run is checkpointed and resumed through the same thread_id. LangSmith adds the audit layer: each trace is capped at 25,000 runs, and SaaS trace retenti…]]></summary>
-        <author>
-            <name>Creeta</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[EEPROM Hijacking on 8051 Architecture]]></title>
-        <id>https://dev.to/ddupard/eeprom-hijacking-on-8051-architecture-34e7</id>
-        <link href="https://dev.to/ddupard/eeprom-hijacking-on-8051-architecture-34e7"/>
-        <updated>2026-07-31T09:47:29.000Z</updated>
-        <summary type="html"><![CDATA[1. Introduction and Problem Statement
-
-
-In constrained embedded systems engineering, 8051-type microcontrollers remain ubiquitous. Often coupled with external or internal EEPROM memories of very limited size (a few kilobytes), these environments leave no room for excess. Using high-level compilers like SDCC, while convenient for rapid prototyping, generates heavy code (function prologues, complex stack management) that becomes prohibitive when attempting to insert surgical modifications into an existing binary. This article details the methodology of intercepting an SDCC-compiled function via a direct binary hook (jump) and redirecting execution flow to an optimized pure assembly routine located in an unused memory area (slack space), with the goal of conditionally bypassing a critical log…]]></summary>
-        <author>
-            <name>ddupard</name>
         </author>
     </entry>
     <entry>
@@ -321,23 +468,13 @@ The post Merchantrade Money Adds Google Wallet, Samsung Wallet Support appeared 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Live updates: Bitcoin steady as Japan holds rates at 1%, keeping the yen carry trade alive]]></title>
+        <title type="html"><![CDATA[Live updates: 'Worst hit in Bitcoin history' – longtime Bitcoiners react to Coincard flaw]]></title>
         <id>46e408cb-520c-4e0d-8009-00d46e358ed7</id>
         <link href="https://www.coindesk.com/markets/2026/07/31/live-updates-bitcoin-steady-as-japan-holds-rates-at-1-keeping-the-yen-carry-trade-alive"/>
         <updated>2026-07-31T07:46:10.000Z</updated>
-        <summary type="html"><![CDATA[The Bank of Japan left its benchmark at 1% and Governor Ueda's hawkish signals landed softly, since markets had already priced an October hike. Bitcoin held near $64,000.]]></summary>
+        <summary type="html"><![CDATA[The Bank of Japan left its benchmark at 1% and Governor Ueda's hawkish signals landed softly, since markets had already priced an October hike.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Danube's record low levels force shutdown of Hungary's only nuclear plant]]></title>
-        <id>https://www.bbc.com/news/articles/cn0nqv05g0do</id>
-        <link href="https://www.bbc.com/news/articles/cn0nqv05g0do"/>
-        <updated>2026-07-31T07:33:10.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -425,17 +562,7 @@ The post Samsung Galaxy S25 Ultra, S24 Ultra Plagued By Battery Woes Following J
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: What should the GUI for AI agents look like?]]></title>
-        <id>https://marbleos.com/demo</id>
-        <link href="https://marbleos.com/demo"/>
-        <updated>2026-07-31T05:17:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Major bitcoin wallet flaw drains 594 BTC in 25-minute sweep]]></title>
+        <title type="html"><![CDATA[Major bitcoin wallet flaw drains $38 million worth of BTC in 25-minute sweep]]></title>
         <id>36413d8e-7a1a-474c-8413-e49dce9e30da</id>
         <link href="https://www.coindesk.com/tech/2026/07/31/major-bitcoin-wallet-flaw-drains-594-btc-in-25-minute-sweep"/>
         <updated>2026-07-31T05:12:55.000Z</updated>
@@ -497,6 +624,16 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Premier league bans gambling sponsors]]></title>
+        <id>https://www.footyheadlines.com/2646571793/betting-ban-takes-effect-no-more-gambling-sponsors-in-the-premier-league.html</id>
+        <link href="https://www.footyheadlines.com/2646571793/betting-ban-takes-effect-no-more-gambling-sponsors-in-the-premier-league.html"/>
+        <updated>2026-07-30T23:40:59.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[The AI Aesthetic]]></title>
         <id>https://blog.jim-nielsen.com/2026/ai-aesthetic/</id>
         <link href="https://blog.jim-nielsen.com/2026/ai-aesthetic/"/>
@@ -521,16 +658,6 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         <id>https://rune.build/blog/rune-1-1-release</id>
         <link href="https://rune.build/blog/rune-1-1-release"/>
         <updated>2026-07-30T21:47:31.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Saber-toothed cats became inbred–and struggled to move–before they went extinct]]></title>
-        <id>https://www.science.org/content/article/saber-toothed-cats-became-inbred-and-struggled-move-they-went-extinct</id>
-        <link href="https://www.science.org/content/article/saber-toothed-cats-became-inbred-and-struggled-move-they-went-extinct"/>
-        <updated>2026-07-30T21:31:03.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -571,16 +698,6 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         <id>https://www.ctgt.ai/research/distillation-censorship-transfer</id>
         <link href="https://www.ctgt.ai/research/distillation-censorship-transfer"/>
         <updated>2026-07-30T18:13:06.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CodePen 2.0]]></title>
-        <id>https://chriscoyier.net/2026/07/30/codepen-2-0/</id>
-        <link href="https://chriscoyier.net/2026/07/30/codepen-2-0/"/>
-        <updated>2026-07-30T17:52:51.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -634,16 +751,6 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         <summary type="html"><![CDATA[The tokenized-assets firm is considering an acquisition valued at $250 million to $500 million as consolidation accelerates across crypto infrastructure.]]></summary>
         <author>
             <name>Will Canny</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Physicists Solve a Muon Mystery. Now, Old Results Don't Add Up]]></title>
-        <id>https://www.quantamagazine.org/physicists-solve-a-muon-mystery-now-old-results-dont-add-up-20260729/</id>
-        <link href="https://www.quantamagazine.org/physicists-solve-a-muon-mystery-now-old-results-dont-add-up-20260729/"/>
-        <updated>2026-07-30T15:22:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -767,6 +874,16 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Why is everyone trying to build a solid-state battery?]]></title>
+        <id>https://www.construction-physics.com/p/why-is-everyone-trying-to-build-a</id>
+        <link href="https://www.construction-physics.com/p/why-is-everyone-trying-to-build-a"/>
+        <updated>2026-07-30T12:38:51.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[The Download: tricking LLMs, and reviving geothermal plants]]></title>
         <id>https://www.technologyreview.com/?p=1140936</id>
         <link href="https://www.technologyreview.com/2026/07/30/1140936/the-download-tricking-llms-reviving-geothermal/"/>
@@ -807,26 +924,6 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[South Korea plans to tax crypto gains over $1,740 as political battle moves to parliament]]></title>
-        <id>3308a55d-d828-4174-89f1-2af8891ee971</id>
-        <link href="https://www.coindesk.com/policy/2026/07/30/south-korea-s-long-delayed-crypto-tax-set-to-start-in-2027"/>
-        <updated>2026-07-30T11:17:56.000Z</updated>
-        <summary type="html"><![CDATA[The country plans on taxing cryptocurrency gains from Jan. 1, 2027, signaling that it does not intend to postpone the measure for a fourth time.]]></summary>
-        <author>
-            <name>Francisco Rodrigues</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Crypto's resilience tested as oil rises after Iran strikes, Fed signals rates could still rise]]></title>
-        <id>f1b3b008-b51b-4991-98f3-f29a30b8b21e</id>
-        <link href="https://www.coindesk.com/markets/2026/07/30/crypto-s-resilience-tested-as-oil-rises-after-iran-strikes-fed-signals-rates-could-still-rise"/>
-        <updated>2026-07-30T10:56:24.000Z</updated>
-        <summary type="html"><![CDATA[Bitcoin held near $64,000 despite the Fed's hawkish split, Iranian ballistic missiles and an 8% surge in oil overnight that sent the Dow down 2.2% and the Nasdaq to a three-month low.]]></summary>
-        <author>
-            <name>Oliver Knight</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[A fundamental flaw leaves LLMs strikingly vulnerable to attack]]></title>
         <id>https://www.technologyreview.com/?p=1140927</id>
         <link href="https://www.technologyreview.com/2026/07/30/1140927/a-fundamental-flaw-leaves-llms-vulnerable-to-attack/"/>
@@ -834,36 +931,6 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         <summary type="html"><![CDATA[It is impossible to make large language models fully secure against hacks because of a fundamental flaw in how they work, a team of researchers argue in a paper presented at the International Conference on Machine Learning, a top AI conference, this month. The claim has huge implications for the safety of this technology, which…]]></summary>
         <author>
             <name>Will Douglas Heaven</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[BitRiver founder charged in Russia with $12.5 million fraud]]></title>
-        <id>f8f01d11-d10b-470a-9691-c1fb358d973f</id>
-        <link href="https://www.coindesk.com/policy/2026/07/30/bitriver-founder-charged-in-russia-with-usd12-5-million-fraud"/>
-        <updated>2026-07-30T10:02:33.000Z</updated>
-        <summary type="html"><![CDATA[Igor Runets has been transferred to a pre-trial detention facility from house arrest as he faces accusations of failing to deliver on a contract.]]></summary>
-        <author>
-            <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Crypto exchange Luno cuts 20% of staff amid automation push and retail trading slumps]]></title>
-        <id>5a8b4a2a-7503-4612-88c3-fd1e9d8286c0</id>
-        <link href="https://www.coindesk.com/business/2026/07/30/crypto-exchange-luno-cuts-20-of-staff-amid-automation-push-and-retail-trading-slumps"/>
-        <updated>2026-07-30T09:54:18.000Z</updated>
-        <summary type="html"><![CDATA[The DCG-owned company previously cut 35% of staff in January 2023 citing tough market conditions.]]></summary>
-        <author>
-            <name>Francisco Rodrigues</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Live updates: Bitcoin holds above $64,000 as Nasdaq surges on AI trade comeback]]></title>
-        <id>e79c3631-1d79-45b7-9111-2ca9c9d1f576</id>
-        <link href="https://www.coindesk.com/tech/2026/07/30/live-updates-bitcoin-holds-near-usd64-000-as-microsoft-s-ai-payoff-lifts-stocks"/>
-        <updated>2026-07-30T09:01:13.000Z</updated>
-        <summary type="html"><![CDATA[The Nasdaq gained more than 2%, with Microsoft higher by 15% after its cloud unit grew at the fastest pace in four years while it held the line on spending.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
         </author>
     </entry>
     <entry>
@@ -977,16 +1044,6 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Obfuscation (Part II): Diamond IO]]></title>
-        <id>https://vitalik.eth.limo/general/2026/07/28/obfuscation_part_ii_diamond_io.html</id>
-        <link href="https://vitalik.eth.limo/general/2026/07/28/obfuscation_part_ii_diamond_io.html"/>
-        <updated>2026-07-28T18:04:14.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Prompt vs Loop Engineering: A Guide for Developers]]></title>
         <id>6a68daa8f8819d8c3e894887</id>
         <link href="https://www.freecodecamp.org/news/prompt-vs-loop-engineering-a-guide-for-developers/"/>
@@ -1067,30 +1124,10 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[OpenAI called the Hugging Face attack unprecedented. But we’ve been here before.]]></title>
-        <id>https://www.technologyreview.com/?p=1140836</id>
-        <link href="https://www.technologyreview.com/2026/07/27/1140836/openai-hugging-face-attack-precedent/"/>
-        <updated>2026-07-27T18:00:00.000Z</updated>
-        <summary type="html"><![CDATA[This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. Reading OpenAI’s account last week of how some of its models broke their containment and hacked into the computer systems of Hugging Face, another AI company, was the first time I got…]]></summary>
-        <author>
-            <name>Will Douglas Heaven</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Bad Apple but It's Traceroute]]></title>
         <id>https://jssfr.de/2026-07-27-bad-apple-but-traceroute.html</id>
         <link href="https://jssfr.de/2026-07-27-bad-apple-but-traceroute.html"/>
         <updated>2026-07-27T15:48:09.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: A udev implementation in Guile Scheme]]></title>
-        <id>https://codeberg.org/goodev/goodev</id>
-        <link href="https://codeberg.org/goodev/goodev"/>
-        <updated>2026-07-27T11:51:08.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1104,6 +1141,26 @@ The post Razer Updates Huntsman V3 With Hall Effect Magnetic Switches appeared f
         <summary type="html"><![CDATA[A practical guide to Hyperliquid developer costs: infrastructure, HyperEVM gas, HIP-3, HIP-4, and ways to offset operating costs.]]></summary>
         <author>
             <name>Quicknode</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How A Gang of Thieves Pulled Off a Multimillion-Dollar Data Center Heist]]></title>
+        <id>https://www.nytimes.com/2026/07/12/magazine/data-center-heist.html</id>
+        <link href="https://www.nytimes.com/2026/07/12/magazine/data-center-heist.html"/>
+        <updated>2026-07-25T21:42:31.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IMAX vs. IMAX 70mm: The difference between these two cinema formats]]></title>
+        <id>https://www.engadget.com/2220571/differences-between-imax-70mm/</id>
+        <link href="https://www.engadget.com/2220571/differences-between-imax-70mm/"/>
+        <updated>2026-07-25T15:33:10.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
