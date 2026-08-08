@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-08 datetime="2026-08-08T19:24:19.000Z">2026-08-08</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-08 datetime="2026-08-08T19:24:19.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-08 datetime="2026-08-08T20:22:36.000Z">2026-08-08</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-08 datetime="2026-08-08T20:22:36.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -76,47 +76,20 @@
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/devopsdaily/one-key-for-claude-gpt-and-gemini-the-gateway-pattern-1319"
+                        data-accordion-key="https://dev.to/okazimirov/one-bad-kafka-record-shouldnt-crash-a-flink-stateful-functions-job-117"
                         open
                       >
-                        <summary class="article-expander__title">One Key for Claude, GPT, and Gemini: the Gateway Pattern</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/devopsdaily/one-key-for-claude-gpt-and-gemini-the-gateway-pattern-1319">
+                        <summary class="article-expander__title">One bad Kafka record shouldn&#x27;t crash a Flink Stateful Functions job</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/okazimirov/one-bad-kafka-record-shouldnt-crash-a-flink-stateful-functions-job-117">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ftb4qsvhffexqvbys6l5k.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fizhammtz5xrhkgpxhwv4.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>The moment an app talks to more than one model provider, the plumbing multiplies. OpenAI wants its key and its SDK. Anthropic wants a different key and a different SDK. Google wants a third of each. Now you have three secrets to store and rotate, three client libraries to keep updated, three billing relationships to reconcile, and conditional code that picks the right one. None of that is your product; it is the cost of wanting a choice of models.
-The AI gateway pattern removes it. You talk to one endpoint with one credential, and the gateway routes to whichever model you name. Because the endpoint is OpenAI-compatible, the code you already wrote for OpenAI reaches Claude and Gemini too, just by changing the model string. On Neon, the gateway credential is injected straight into your funct…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/corpdigest/your-companies-table-is-lying-to-you-about-when-things-happened-ge3"
-                        open
-                      >
-                        <summary class="article-expander__title">Your companies table is lying to you about when things happened</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/corpdigest/your-companies-table-is-lying-to-you-about-when-things-happened-ge3">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fnqvvlakjl6yi4b1acymy.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Every company dataset I have worked with stores history as scalar columns:
-founded_year   INT
-ceo_name       TEXT
-headquarters   TEXT
-revenue        BIGINT
+                              <span>What was broken
 
-Every one of those is a point-in-time fact pretending to be a permanent one. The moment you need to answer &quot;who was in charge when this happened&quot;, the schema has already thrown the answer away.
-Take Intel. Founded 18 July 1968 by Gordon Moore and Robert Noyce in Mountain View. If your row says founded_year &#x3D; 1968 and ceo_name &#x3D; , you have compressed nearly six decades into two fields that were never simultaneously true.
-Now try to answer:
-Who was running the company when the 4004 shipped in 1971?
-What was the headquarters when the IBM PC design win landed in 1981?
-Which leadership team owned the process-node slippa…</span>
+
+In Apache Stateful Functions, the routable Kafka ingress had no policy for malformed records. A record with a null key (there&#x27;s no function instance to route to) threw inside the deserializer. A tombstone (null value, normal on compacted topics) blew up as a bare NullPointerException from deep inside protobuf - no topic, no offset, no hint which record did it.
+Either way the whole Flink job died - every ingress, every topic, every function, not just the pipeline that read the record. And it looped: the poison record&#x27;s offset is never committed, so each restart re-reads it and dies again until the job parks at terminal FAILED.
+A Flink job runs many pipelines together and fails as a unit, so one producer bug on one topic takes down all of them - order tracking, notification…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
@@ -128,149 +101,16 @@ Which leadership team owned the process-node slippa…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/dhanushreddy29/how-to-build-ai-evals-for-tool-calling-agents-3h9d"
+                        data-accordion-key="https://dev.to/lizely/designing-a-solvability-gate-for-15-puzzle-implementations-2adb"
                         open
                       >
-                        <summary class="article-expander__title">How to Build AI Evals for Tool-Calling Agents</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dhanushreddy29/how-to-build-ai-evals-for-tool-calling-agents-3h9d">
+                        <summary class="article-expander__title">Designing a Solvability Gate for 15 Puzzle Implementations</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/lizely/designing-a-solvability-gate-for-15-puzzle-implementations-2adb">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ftwbfpjpi3yoiwg7x16u3.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fwww.lizecheng.net%2Fuploads%2Fbacklinks%2F33f79b78-35c7-45d4-a7a9-3bd509399930%2Fimage-1.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Every other week it feels like a new model shows up with a shiny score on some &quot;trust me bro&quot; benchmark. The numbers climb, people call it smarter, and suddenly you&#x27;re ready to switch. If you build applications on top of these models, you might catch yourself assuming that higher benchmark score means better agent performance. But benchmarks measure narrow skills under controlled conditions; your agent has a specific job to do. If you&#x27;re building a customer support agent, you don&#x27;t care about a few extra points on a reasoning test. You care about whether it calls the right tool, passes the right arguments, and avoids risky or redundant actions. That&#x27;s the behavior that actually matters.
-Testing a tool-calling agent means testing its decisions, not just its words. An agent can sound perfect…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;43
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/coderluii/your-agent-doesnt-have-a-memory-problem-it-has-an-uptime-problem-505l"
-                        open
-                      >
-                        <summary class="article-expander__title">Your agent doesn&#x27;t have a memory problem. It has an uptime problem.</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/coderluii/your-agent-doesnt-have-a-memory-problem-it-has-an-uptime-problem-505l">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fj9ccvhgtnkb4v2l5ts1s.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>There is a lot of good writing right now about agent memory. Vector stores, episodic recall, context compaction, memory layers, mem0. The framing is consistent: the model can reason but it cannot remember, so we bolt on a memory system and close the gap.
-I think a large share of what gets called a memory problem is not one. It is a machine that turned off.
-Those two failures feel identical from the chat window and they have nothing to do with each other.
-Semantic memory is the one everyone is building. What did the user tell me three weeks ago, what is in this codebase, what did we decide about the schema. Facts and context. Embeddings help. This is real work and I am not dismissing it.
-Execution state is where the agent actually was. Step seven of twelve. A dev server running on port 3000…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/timevolt/how-to-build-a-stock-market-trading-bot-in-python-channeling-your-inner-neo-5e0i"
-                        open
-                      >
-                        <summary class="article-expander__title">How to Build a Stock Market Trading Bot in Python: Channeling Your Inner Neo</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/timevolt/how-to-build-a-stock-market-trading-bot-in-python-channeling-your-inner-neo-5e0i">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F8lturs1xx3jz6rp2tre1.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The Quest Begins (The &quot;Why&quot;)
-
-
-Honestly, I was tired of staring at candlestick charts while my coffee went cold. I kept thinking, “What if I could automate the boring parts and let the machine do the heavy lifting while I focus on strategy?” It started as a lazy Sunday experiment—just a script that pulled the latest price for AAPL and printed it to the console. When I saw that number update in real‑time, I felt a tiny rush, like Neo dodging bullets in the Matrix for the first time. That moment sparked the question: Can I turn this into a real trading bot that actually places orders? The dragon I wanted to slay was the endless manual monitoring and the fear of missing a move because I blinked.
-The big “aha!” came when I stopped trying to build a monolithic script that did everything at once…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/dimabsvg/i-built-a-crypto-native-craigslist-with-manual-escrow-heres-why-and-how-4j8b"
-                        open
-                      >
-                        <summary class="article-expander__title">I Built a Crypto-Native Craigslist with Manual Escrow — Here&#x27;s Why and How</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dimabsvg/i-built-a-crypto-native-craigslist-with-manual-escrow-heres-why-and-how-4j8b">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F3w5w9eclmt7dmuguek2v.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The Problem
-
-
-There are millions of people holding crypto who want to spend it on real things —
-Telegram OTC chats → chaotic, no protection, scam-heavy
-Forum classifieds → threads get buried in hours
-P2P exchange sections → designed for fiat conversion, not commerce
-I decided to build a dedicated marketplace for this.
-CryptoBoard — a classifieds platform with Web3 wallet authentication.
-🔗 https://crypto.my-board.org/
-Auth: Wallet-only (MetaMask, Trust Wallet, WalletConnect). No backend user
-database with emails and passwords to get hacked.
-Listings: Icon-based instead of user-uploaded images. Keeps the UI clean
-and avoids the &quot;flea market&quot; look.
-Messaging: Built-in chat between buyers and sellers.
-Escrow: This is the interesting part (see below).
-Traditional escrow works like this:
-Buyer …</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/mtzanida/thinking-about-becoming-an-aws-community-builder-heres-what-you-should-know-15ci"
-                        open
-                      >
-                        <summary class="article-expander__title">Thinking About Becoming an AWS Community Builder? Here’s What You Should Know</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/mtzanida/thinking-about-becoming-an-aws-community-builder-heres-what-you-should-know-15ci">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzxet1mg88b31qsnkdb8x.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>When I first discovered the AWS Community Builders Program, I assumed it was mainly intended for established content creators, frequent conference speakers, or people who were already well known within the AWS community.
-I was wrong.
-The program is not about having the largest audience or knowing everything about AWS. It is about being genuinely curious, sharing what you learn, and helping others move forward in their cloud journeys.
-Today, I am proud to be part of the AWS Community Builders Program in the Serverless category.
-During my first year, I have probably learned far more than I have contributed. Between maternity leave, becoming a first-time mother, studying for an AWS certification, and trying to find a new rhythm, some of my community plans naturally moved more slowly than I ex…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/marcusykim/github-copilots-new-worktree-and-rewind-commands-a-beginners-ai-coding-experiment-checklist-1p2c"
-                        open
-                      >
-                        <summary class="article-expander__title">GitHub Copilot’s New /worktree and /rewind Commands: A Beginner’s AI Coding Experiment Checklist for 2026</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/marcusykim/github-copilots-new-worktree-and-rewind-commands-a-beginners-ai-coding-experiment-checklist-1p2c">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fgmaw4hh124oiw7r3b1ag.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>On August 7, 2026, GitHub published a Copilot update that looked like a bag of small conveniences: a /worktree command for isolated code experiments, /rewind for restoring a session and its files, /side in the Copilot app, and /btw in VS Code for asking a parallel question without interrupting the main task.
-I think those features point to one bigger problem in AI-assisted coding:
-Exploration contaminates the real project surprisingly fast.
-You ask an innocent question about a different database. The agent edits three configuration files to “show you.” You ask whether the screen would be cleaner with another navigation pattern. The agent starts refactoring the current layout. Ten minutes later, your working app has become a museum of half-decisions.
-The beginner mistake is not exploring. E…</span>
+                              <span>Every 15-puzzle implementation eventually hits the same quiet question: given a starting arrangement, can the player ever reach the goal? The answer is not obvious. Random shuffles fail roughly half the time, and a permissive build that lets the player play an unsolvable board wastes the user&#x27;s evening. A strict gate that blocks too many starts kills engagement. Engineers building or integrating a sliding-tile game need a clear, testable rule, plus a way to debug it when their version disagrees with a reference solver.
+This piece walks through the parity math behind the classic sliding puzzle, the edge cases that bite production code, and a short checklist you can drop into a code review. It is written for engineers, not for casual players — if you want the gameplay walkthrough, rules, and…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;10
                                   min&hairsp;)</span>
                             </span>
@@ -282,73 +122,22 @@ The beginner mistake is not exploring. E…</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/levi_enama_2026/mediax-ffmpegs-cooler-cousin-a99"
+                        data-accordion-key="https://dev.to/mithxcode/why-basic-rag-fails-in-production-and-how-adaptive-query-routing-fixes-it-5c1n"
                         open
                       >
-                        <summary class="article-expander__title">Mediax: FFmpeg&#x27;s Cooler Cousin 🚀</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/levi_enama_2026/mediax-ffmpegs-cooler-cousin-a99">
+                        <summary class="article-expander__title">Why Basic RAG Fails in Production and How Adaptive Query Routing Fixes It</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/mithxcode/why-basic-rag-fails-in-production-and-how-adaptive-query-routing-fixes-it-5c1n">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fmzdrgn9zrhmat72siohc.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fsnmr4m85g8pgw80ihc71.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>FFmpeg is powerful, but the syntax? A nightmare.
-So I built Mediax.
-36 intuitive verbs. Interactive TUI. One-line install.
-Convert, compress, trim, crop, rotate, add watermarks... all with simple commands.
-bash
-One-line install
-https://raw.githubusercontent.com/robert-sarah/mediax/main/install.sh | sh
-Cross-platform: Windows, macOS, Linux
-Open source (MIT)
-36 verbs for everything
-Audio: extract-audio, mute, volume, replace-audio
-Video: trim, crop, resize, rotate, flip, concat, split
-Effects: speed, reverse, blur, sharpen, fade-in, fade-out
-Advanced: watermark, subtitle, thumbnail, template, batch
-Examples
-mediax template video.mp4 insta_video.mp4 --platform instagram
-mediax extract-audio video.mp4 clip.mp3 --start 00:01:30 --duration 10
-mediax wtf video.mp4
-Mediax makes FFmpeg accessible for beginners and faster for pros.
-Try it today
-https://raw.githubusercontent.com/robert-sarah/mediax/main/install.sh | sh
-Contributions welcome! 🙏</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/scott_peterson_bf7b8ea3f7/free-zero-dependency-youtube-website-embed-self-hostable-phpjs-338h"
-                        open
-                      >
-                        <summary class="article-expander__title">Free, Zero-Dependency YouTube Website Embed (Self-Hostable PHP/JS)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/scott_peterson_bf7b8ea3f7/free-zero-dependency-youtube-website-embed-self-hostable-phpjs-338h">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fxb5t0kwc8cadbvwrdful.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Hey DEV community! 👋
-If you&#x27;ve ever tried to embed a dynamic YouTube channel feed, a live stream detector, or playlist carousel on a client site, you&#x27;ve probably run into two major issues:
-Expensive SaaS widgets that slap watermarks on your site unless you pay a monthly fee.
-Leaking your YouTube API Key directly in the frontend script.
-To solve this, we built YT Widget—a free, self-hostable, dependency-free JavaScript library that handles YouTube feeds, playlists, channel stats, and live stream status seamlessly.
-The project is fully open-source and ready for your production projects:
-Source Code &amp; Contributions: 
- / 
-        YT-Widget
-      
-    
-
-YT Widget — Free Open-Source YouTube Website Embed
-
-
-
-
-A free, self-hostable, dependency-free JavaScript library for embedding YouTube feeds, …</span>
+                              <span>Most developers build Retrieval-Augmented Generation (RAG) pipelines assuming every user query needs a vector search. In production, this naive approach fails in three distinct scenarios:
+Simple Queries: &quot;Hi&quot;, &quot;Who created this bot?&quot;, or general knowledge queries don&#x27;t need expensive vector database lookups.
+Ambiguous Queries: Vague user questions lead to noisy retrieval, diluting the LLM&#x27;s context window with irrelevant chunks.
+Out-of-Domain Queries: When the vector DB contains no relevant documents, naive RAG forces the LLM to hallucinate an answer based on poor context.
+In this guide, I’ll break down how to implement Adaptive RAG with Dynamic Query Routing using LangChain, Vector Stores (Pinecone/Chroma), and FastAPI.
+What is Adaptive RAG?
+graph TD
+Classify Intent: Determine whether the…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
@@ -360,36 +149,17 @@ A free, self-hostable, dependency-free JavaScript library for embedding YouTube 
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/levi_enama_2026/i-built-a-friendlier-ffmpeg-with-36-verbs-and-a-tui-and-its-one-line-to-install-1km7"
+                        data-accordion-key="https://dev.to/programmingcentral/the-invisible-threat-defending-against-indirect-prompt-injections-in-web-content-data-feeds-3ekn"
                         open
                       >
-                        <summary class="article-expander__title">I built a friendlier FFmpeg with 36 verbs and a TUI (and it&#x27;s one line to install)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/levi_enama_2026/i-built-a-friendlier-ffmpeg-with-36-verbs-and-a-tui-and-its-one-line-to-install-1km7">
+                        <summary class="article-expander__title">The Invisible Threat: Defending Against Indirect Prompt Injections in Web Content &amp; Data Feeds</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/programmingcentral/the-invisible-threat-defending-against-indirect-prompt-injections-in-web-content-data-feeds-3ekn">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Flhb4ucb7dso64chv1ajo.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fs92w88mktfu90zy3v2oc.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Mediax: FFmpeg&#x27;s Cooler Cousin 🚀
-So I built Mediax.
-36 intuitive verbs. Interactive TUI. One-line install.
-Convert, compress, trim, crop, rotate, add watermarks... all with simple commands.
-bash
-One-line install
-https://raw.githubusercontent.com/robert-sarah/mediax/main/install.sh | sh
-Cross-platform: Windows, macOS, Linux
-Open source (MIT)
-36 verbs for everything
-Audio: extract-audio, mute, volume, replace-audio
-Video: trim, crop, resize, rotate, flip, concat, split
-Effects: speed, reverse, blur, sharpen, fade-in, fade-out
-Advanced: watermark, subtitle, thumbnail, template, batch
-Examples
-mediax template video.mp4 insta_video.mp4 --platform instagram
-mediax extract-audio video.mp4 clip.mp3 --start 00:01:30 --duration 10
-mediax wtf video.mp4
-Mediax makes FFmpeg accessible for beginners and faster for pros.
-Try it today
-Contributions welcome! 🙏</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
+                              <span>The dawn of autonomous agentic systems—specifically those empowered by the Model Context Protocol (MCP) and vision-driven browser automation—has fundamentally transformed the architectural landscape of modern software engineering. We have shifted our design paradigms from deterministic control flow graphs to probabilistic, state-seeking orchestration loops. In this paradigm, Large Language Models (LLMs) do not merely compute textual responses; they act as sovereign reasoning engines that consume untrusted data feeds, evaluate environmental states, and invoke external toolsets to achieve high-level goals. 
+However, this unprecedented autonomy introduces a terrifying class of systemic vulnerabilities: Indirect Prompt Injection (IPI). Unlike classic direct prompt injections, where a malicious…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;15
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -400,25 +170,377 @@ Contributions welcome! 🙏</span>
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/kolovsky/i-built-a-korean-fire-noodle-stall-in-pure-css-and-you-can-eat-it-475m"
+                        data-accordion-key="https://dev.to/michaelnocito/data-driven-thresholds-picking-cutoffs-you-can-defend-lf"
                         open
                       >
-                        <summary class="article-expander__title">I built a Korean fire-noodle stall in pure CSS — and you can eat it</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/kolovsky/i-built-a-korean-fire-noodle-stall-in-pure-css-and-you-can-eat-it-475m">
+                        <summary class="article-expander__title">Data-Driven Thresholds: Picking Cutoffs You Can Defend</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/michaelnocito/data-driven-thresholds-picking-cutoffs-you-can-defend-lf">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fczgn8zgs6mb2iei9z1ta.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F3hahhmbm2fiqlzskr3sv.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>This is a submission for Frontend Challenge - Comfort Food Edition, CSS Art.
-Hello all, I want to share my favorite dish — Buldak (Korean fire noodles). I don&#x27;t eat it that often lately since it&#x27;s pretty spicy, but I recommend trying it if you&#x27;ve never had Korean food before. Cheers.
-Instead of just drawing a bowl, I built a whole Korean street stall (포차 / pocha) where you assemble your own pot: toss in toppings from a side-dish tray, pick your heat level with chili peppers, and — when it&#x27;s ready — eat it.
+                              <span>Every real analysis runs into the same quiet decision, over and over: where do you draw the line? How many reviews before a rating is trustworthy? How many purchases before a customer counts as &quot;active&quot;? How many chart appearances before an artist counts as &quot;known&quot;? These cutoffs shape every result downstream — and the difference between an amateur and a professional is not which number they pick. It&#x27;s whether they can defend it. This guide covers the method, the classic statistical trap that makes floors mandatory, and worked examples from open projects.
+Method one: it feels right. &quot;Let&#x27;s say 100 reviews minimum.&quot; Round number, sounds reasonable, took four seconds. Method two: ask the data. Measure how the values actually distribute, count what each candidate cutoff keeps and discards, th…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/michaelnocito/how-to-handle-large-datasets-4olg"
+                        open
+                      >
+                        <summary class="article-expander__title">How to Handle Large Datasets</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/michaelnocito/how-to-handle-large-datasets-4olg">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F52qj2ckr9kddem3c9vpf.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>You double-click a data file and Excel spins, freezes, or tells you it cannot open it. Real-world datasets are often far bigger than a spreadsheet can hold, and every beginner hits this wall the first time they grab a serious dataset. This guide is what to do next. It covers how to recognize a &quot;large&quot; dataset, and why you move it into a database. It then lists the handful of real-world quirks that trip everyone up on the way.
+New to databases? This guide assumes you can create a SQLite database and import a CSV. If you have not done that yet, start with How to Set Up a SQL Database (about 15 minutes), then come back here.
+Put a number on it before you read the list. How many rows does a file need before a spreadsheet stops being the right tool? Your guess is probably too high, and knowing …</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/michaelnocito/how-to-set-up-a-sql-database-for-beginners-1dij"
+                        open
+                      >
+                        <summary class="article-expander__title">How to Set Up a SQL Database for Beginners</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/michaelnocito/how-to-set-up-a-sql-database-for-beginners-1dij">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fywgwooy2530x1xbh6eys.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Every SQL tutorial assumes your data is already &quot;in a database.&quot; Nobody explains the step in between. This guide is that step. You&#x27;ll get a data file, create your first real database on your own computer, load the file into it, and run your first query. It takes two desktop tools and zero server setup.
+You do not need to bring your own data. Step 1 gives you a file to download, and every query in this guide runs against it.
+If you are still weighing up which engine to put on your machine, the one-question version of that decision is in which SQL database should you install. Everyone else can start at step 1.
+Say what you think a database is, in one sentence, before you read the next one. Whatever you pictured, the real answer for this guide is smaller and less intimidating than that.
+A dat…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/michaelnocito/your-first-analysis-is-the-role-you-are-targeting-4j9d"
+                        open
+                      >
+                        <summary class="article-expander__title">Your First Analysis Is the Role You Are Targeting</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/michaelnocito/your-first-analysis-is-the-role-you-are-targeting-4j9d">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9gnvbz258l45i8jx2vyc.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>By the end of this you will have picked one role and know the next five things to read. That is the whole point. People spend six months learning tools in no particular order because they never decided what job they were learning them for.
+Deciding is itself an analysis. You have a question, &quot;which of these jobs should I aim at&quot;, and you have data: what the work is, what it pays, how many of these jobs exist, and how hard it is to get the first one. Work the question the way you would work any other.
+Do this now: read the nine roles, pick one, and write the name of it somewhere you will see tomorrow. Everything after that is easier because of it. 
+Before the numbers, a question. Why would a median be more useful to you than an average? Have a go before you read on.
+Because averages get dra…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;14
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/j4kh/inside-pythons-match-statement-the-unleashed-power-of-structural-pattern-matching-syntax-4kh0"
+                        open
+                      >
+                        <summary class="article-expander__title">Inside Python&#x27;s match Statement: The unleashed power of Structural Pattern Matching Syntax</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/j4kh/inside-pythons-match-statement-the-unleashed-power-of-structural-pattern-matching-syntax-4kh0">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fiau90jwiay3okw8v3glc.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>When Python 3.10 introduced structural pattern matching (match/case syntax), there was an excitement and confusion in the community. In first days, I was one of those confused people (confused of other people&#x27;s excitement). I was looking at match/case in Python as something similar to switch/case in other languages: a glorified if-elif-else chain. But soon I realized it as a much more powerful feature than simple switch/case.
+Now that we have reached a point where all minimum Python versions with active support is 3.10, I thought I can give it a try to use match/case in my codes. But as soon as I started using this syntax, I started realising it has a much deeper links to the language syntax than I thought. In this post, I want to tell you about these findings.
+Let’s start with a trivial m…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/naserrasouli/what-is-codebase-memory-mcp-structural-memory-for-coding-agents-9j3"
+                        open
+                      >
+                        <summary class="article-expander__title">What Is Codebase Memory MCP? Structural Memory for Coding Agents</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/naserrasouli/what-is-codebase-memory-mcp-structural-memory-for-coding-agents-9j3">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fqxiulemnc8nrbxqqz281.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Why Codebase Memory MCP?
 
 
-
-
-Things to try:
-Tap the side dishes — each topping gets tossed into the pot with a little arc and a squash landing, and the dish gets a red 담김 (&quot;added&quot;) stamp
-Crank the heat to 핵불닭 (nuclear) — the sauce saturates, bubbles boil faster, flames erupt under the pot, the pot starts trembli…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
+As frontend projects grow, understanding the relationships between components, hooks, stores, services, and APIs becomes harder for coding agents. Tools such as Claude Code, Codex, or Cursor may need to search and open several files just to answer a simple question. Codebase Memory MCP builds a knowledge graph of the project so those relationships are stored ahead of time and agents can understand the codebase faster.
+Read More:
+Personal blog
+Codebase Memory MCP is an MCP server for structural codebase analysis. It indexes source code and stores relationships between different parts of the project as a graph.
+GitHub repository: DeusData/codebase-memory-mcp
+In a frontend project, graph nodes can represent components, functions, hooks, modules, and routes, while ed…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/gde/from-raw-signals-to-blocsignal-taming-reactivity-for-enterprise-scale-2cmi"
+                        open
+                      >
+                        <summary class="article-expander__title">From Raw Signals to BlocSignal: Taming Reactivity for Enterprise Scale</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gde/from-raw-signals-to-blocsignal-taming-reactivity-for-enterprise-scale-2cmi">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fpdzc8j8p62srfinyn8rp.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>By Randal L. Schwartz &amp; the BlocSignal Team
+State management in Flutter and Dart has arrived at an intriguing crossroads.
+In a previous article, Why ValueNotifier Fails at Scale: The Non-Composability Problem (and How Signals Fix It), we explored how moving from Flutter&#x27;s built-in ValueNotifier / ChangeNotifier to Signal-based reactive primitives (signal(), computed(), effect()) solves the non-composability wall. Signals brought fine-grained reactivity, sub-millisecond updates, automatic dependency tracking, and 0ms microtask queue latency.
+However, as enterprise teams and large client projects adopted raw signals, a new &quot;pitfall of freedom&quot; emerged:
+&quot;When any UI widget can read, write, or overwrite .value on a global signal from anywhere in the codebase, architecture breaks down.&quot;
+Unstruc…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/dd8888/microsofts-skill-recorder-raises-questions-on-automation-reliability-6ao"
+                        open
+                      >
+                        <summary class="article-expander__title">Microsoft’s Skill-Recorder Raises Questions on Automation Reliability</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dd8888/microsofts-skill-recorder-raises-questions-on-automation-reliability-6ao">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fdr1z3o4l25eb56nsuc64.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Microsoft&#x27;s new Skill-Recorder application has surfaced as a way to streamline developers&#x27; workflows by capturing on-screen activities and reconstructing them into reusable automation scripts. The tool, which uses the GitHub Copilot CLI, aims to help users create skills for Microsoft Scout, Copilot Cowork, or Copilot Studio. With over 2,500 stars on GitHub, it clearly has garnered interest. Yet, as promising as this sounds, it also leads to significant questions about reliability, the potential for misuse, and the risks of overdependence on AI automation.
+The Skill-Recorder app is designed to record a developer&#x27;s on-screen work session, employing the capabilities of GitHub Copilot CLI to interpret the recorded actions. The outcome is an automated sequence that can be saved and reused acros…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
+                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="06da46c3-13df-4ca2-974b-872532aa9d51"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin hits block 961,632 as the controversial BIP-110 soft fork attempt begins</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/07/frame-bitcoin-s-bip-110-enters-mandatory-signaling-with-less-than-3-miner-support">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/150bd8fd2754dee0949457a7279cad6ca896ec75-6000x4000.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The proposal has scant support from bitcoin miners and influential commentators have also voiced their opposition.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;42
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="8f611c07-1487-4493-88bc-16782b545004"
+                        open
+                      >
+                        <summary class="article-expander__title">Hardware wallet sales in Russia more than double as new crypto rules near</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/08/08/hardware-wallet-sales-in-russia-more-than-double-as-new-crypto-rules-near">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/30976665dd7fa778eff16c38318b48d658559cdb-1920x1282.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Wildberries’ average price for hardware wallets fell 13% to 7,900 rubles, and M.Video broadened its range of products, though neither retailer identified the driving force behind the renewed demand.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;42
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="2cc324a9-ff55-4066-9b07-27149764effe"
+                        open
+                      >
+                        <summary class="article-expander__title">Brazil&#x27;s central bank orders exchanges to delay large crypto transfers abroad</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/08/08/brazil-s-central-bank-orders-exchanges-to-delay-large-crypto-transfers-abroad">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/a010b6e8d5d9fab88360e6939414f5b12c6bf695-1920x1272.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The rule applies to transfers above $10,000 and smaller transactions flagged as risky by exchanges.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;41
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="8d4aa7ee-b1f0-456f-a717-583bac7236f3"
+                        open
+                      >
+                        <summary class="article-expander__title">Trillions in institutional money to flow into bitcoin, says Bitwise&#x27;s Matt Hougan</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/08/08/trillions-in-institutional-money-to-flow-into-bitcoin-says-bitwise-s-matt-hougan">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/18172463a019e513e643fd2ed9ab0e0806baf68b-1440x810.jpg?auto&#x3D;format&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The digital asset manager&#x27;s CIO says large capital pools control up to $200 trillion globally, and just a 1% shift toward bitcoin could unlock massive long-term growth.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;44
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="d4657021-5fb6-42cc-8280-08112d62e864"
+                        open
+                      >
+                        <summary class="article-expander__title">Why trillion-dollar asset manager T. Rowe Price put memecoins in its crypto ETF</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/08/06/why-trillion-dollar-asset-manager-t-rowe-price-put-memecoins-in-its-crypto-etf">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/20ab5a9646b9489023b2430751cd56fc03709f8d-2048x1152.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The $1.9 trillion asset manager says excluding established memecoins on principle would undermine its active approach to crypto investing.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;47
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="1589c4df-04dc-4877-ada6-f63a971dc964"
+                        open
+                      >
+                        <summary class="article-expander__title">U.S. Senate opens first stage of crypto Clarity Act voting to give bill a chance next month</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2026/08/08/u-s-senate-opens-first-stage-of-crypto-clarity-act-voting-to-give-bill-a-chance-next-month">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/a6f02ef703e994951b57b8fa5172c8f10bfe45ac-5508x3672.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>The majority leader opened the multi-stage process the Senate follows when trying to get a bill over its 60-vote hurdle, so it&#x27;s still got a shot in September.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;48
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="7b904ebd-e6fa-464e-89b1-f45889b2e1ef"
+                        open
+                      >
+                        <summary class="article-expander__title">Another Bitcoin infrastructure exploit hits, this time draining Lightning payment servers</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/08/another-bitcoin-infrastructure-exploit-hits-this-time-draining-merchant-lightning-nodes">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/f2f6731511c468648ae94fe05f6331efb1318c2f-1500x1071.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>BTCPay told users running LND to update immediately or take servers offline after attackers stole credentials that can control Lightning wallets and move funds.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;44
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="bad3d78d-92f7-4e7a-a8aa-8b860dc602e5"
+                        open
+                      >
+                        <summary class="article-expander__title">New XRP Ledger amendments target $530 million in tokenized Wall Street assets</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/07/new-xrp-ledger-amendments-target-usd530-million-in-tokenized-wall-street-assets">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/7062083f3eac875ac832f0c15d78be2612e57afe-1440x810.jpg?auto&#x3D;format&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>A new XRPL amendment proposal would let institutions encrypt token balances and transfer amounts while still giving issuers, auditors and regulators selective access.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;45
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="0dc4df21-8fe1-4e38-b5c7-7f2af95faf25"
+                        open
+                      >
+                        <summary class="article-expander__title">Bitcoin holders risk losing real BTC if they sell coins from BIP-110 fork, says developer</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/08/bitcoin-holders-risk-losing-real-btc-if-they-sell-coins-from-bip-110-fork-says-developer">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/61a9559ef27c28600826f6691b0424ccfd776182-1500x1000.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>If a minority chain appears this weekend, buyers could replay signed fork-coin sales on bitcoin itself, making doing nothing the safest move until the chains can be separated.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;45
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -505,7 +627,7 @@ Crank the heat to 핵불닭 (nuclear) — the sauce saturates, bubbles boil fast
                         <summary class="article-expander__title">LinkedIn Feed Blocker</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/andrewpollack/linkedin-feed-blocker">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/a0feed6ae6cde64cb4478fd54449682cf8619d1734f6d190720e86bfd310fe6e/andrewpollack/linkedin-feed-blocker" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/edda4037972bf2e6d13576e5c60f33ee317f6fd7e71d0a4be2b0e4a56df31f0e/andrewpollack/linkedin-feed-blocker" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;7
@@ -568,7 +690,26 @@ Crank the heat to 핵불닭 (nuclear) — the sauce saturates, bubbles boil fast
                               <img src="https://hackaday.com/wp-content/uploads/2026/08/XPS-v-Neo-Jeff-feat.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;13
+                                &ensp;<span class="article-reading-time">(&hairsp;15
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://code.claude.com/docs/en/cross-session-messaging"
+                        open
+                      >
+                        <summary class="article-expander__title">Message your other Claude Code sessions</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://code.claude.com/docs/en/cross-session-messaging">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -645,7 +786,7 @@ Crank the heat to 핵불닭 (nuclear) — the sauce saturates, bubbles boil fast
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                &ensp;<span class="article-reading-time">(&hairsp;11
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -759,184 +900,10 @@ Crank the heat to 핵불닭 (nuclear) — the sauce saturates, bubbles boil fast
                         <summary class="article-expander__title">Hardware backdoors in some x86 CPUs</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/xoreaxeaxeax/rosenbridge">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/4b8235caa34849c442b05e1ecec2da3df862e0b8e755a63f5e3fa6cf9ec7b767/xoreaxeaxeax/rosenbridge" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/fbe1c69a15cf825c160e76325179918101bdf4832c56590290ce5cfc4948f7a5/xoreaxeaxeax/rosenbridge" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;12
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
-                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="8f611c07-1487-4493-88bc-16782b545004"
-                        open
-                      >
-                        <summary class="article-expander__title">Hardware wallet sales in Russia more than double as new crypto rules near</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/08/08/hardware-wallet-sales-in-russia-more-than-double-as-new-crypto-rules-near">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/30976665dd7fa778eff16c38318b48d658559cdb-1920x1282.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Wildberries’ average price for hardware wallets fell 13% to 7,900 rubles, and M.Video broadened its range of products, though neither retailer identified the driving force behind the renewed demand.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;42
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="2cc324a9-ff55-4066-9b07-27149764effe"
-                        open
-                      >
-                        <summary class="article-expander__title">Brazil&#x27;s central bank orders exchanges to delay large crypto transfers abroad</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/08/08/brazil-s-central-bank-orders-exchanges-to-delay-large-crypto-transfers-abroad">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/a010b6e8d5d9fab88360e6939414f5b12c6bf695-1920x1272.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The rule applies to transfers above $10,000 and smaller transactions flagged as risky by exchanges.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;42
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="8d4aa7ee-b1f0-456f-a717-583bac7236f3"
-                        open
-                      >
-                        <summary class="article-expander__title">Trillions in institutional money to flow into bitcoin, says Bitwise&#x27;s Matt Hougan</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/08/08/trillions-in-institutional-money-to-flow-into-bitcoin-says-bitwise-s-matt-hougan">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/18172463a019e513e643fd2ed9ab0e0806baf68b-1440x810.jpg?auto&#x3D;format&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The digital asset manager&#x27;s CIO says large capital pools control up to $200 trillion globally, and just a 1% shift toward bitcoin could unlock massive long-term growth.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;44
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="d4657021-5fb6-42cc-8280-08112d62e864"
-                        open
-                      >
-                        <summary class="article-expander__title">Why trillion-dollar asset manager T. Rowe Price put memecoins in its crypto ETF</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/08/06/why-trillion-dollar-asset-manager-t-rowe-price-put-memecoins-in-its-crypto-etf">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/20ab5a9646b9489023b2430751cd56fc03709f8d-2048x1152.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The $1.9 trillion asset manager says excluding established memecoins on principle would undermine its active approach to crypto investing.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;47
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="1589c4df-04dc-4877-ada6-f63a971dc964"
-                        open
-                      >
-                        <summary class="article-expander__title">U.S. Senate opens first stage of crypto Clarity Act voting to give bill a chance next month</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/policy/2026/08/08/u-s-senate-opens-first-stage-of-crypto-clarity-act-voting-to-give-bill-a-chance-next-month">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/a6f02ef703e994951b57b8fa5172c8f10bfe45ac-5508x3672.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The majority leader opened the multi-stage process the Senate follows when trying to get a bill over its 60-vote hurdle, so it&#x27;s still got a shot in September.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;48
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="7b904ebd-e6fa-464e-89b1-f45889b2e1ef"
-                        open
-                      >
-                        <summary class="article-expander__title">Another Bitcoin infrastructure exploit hits, this time draining Lightning payment servers</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/08/another-bitcoin-infrastructure-exploit-hits-this-time-draining-merchant-lightning-nodes">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/f2f6731511c468648ae94fe05f6331efb1318c2f-1500x1071.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>BTCPay told users running LND to update immediately or take servers offline after attackers stole credentials that can control Lightning wallets and move funds.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;44
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="bad3d78d-92f7-4e7a-a8aa-8b860dc602e5"
-                        open
-                      >
-                        <summary class="article-expander__title">New XRP Ledger amendments target $530 million in tokenized Wall Street assets</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/07/new-xrp-ledger-amendments-target-usd530-million-in-tokenized-wall-street-assets">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/7062083f3eac875ac832f0c15d78be2612e57afe-1440x810.jpg?auto&#x3D;format&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>A new XRPL amendment proposal would let institutions encrypt token balances and transfer amounts while still giving issuers, auditors and regulators selective access.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;44
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="0dc4df21-8fe1-4e38-b5c7-7f2af95faf25"
-                        open
-                      >
-                        <summary class="article-expander__title">Bitcoin holders risk losing real BTC if they sell coins from BIP-110 fork, says developer</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/08/bitcoin-holders-risk-losing-real-btc-if-they-sell-coins-from-bip-110-fork-says-developer">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/61a9559ef27c28600826f6691b0424ccfd776182-1500x1000.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>If a minority chain appears this weekend, buyers could replay signed fork-coin sales on bitcoin itself, making doing nothing the safest move until the chains can be separated.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;45
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1118,7 +1085,7 @@ The post Samsung Galaxy S26 FE Leaks Again, Revealing All Colour Options appeare
                         <summary class="article-expander__title">Assembly Hall of Shame</summary>
                         <a class="article-summary-link article-summary-box-outer" href="https://github.com/xoreaxeaxeax/asm-hall-of-shame">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/70f7e8364133cc8aa06bdb4d4c2e2ace229722050667482779221fda027d0d6b/xoreaxeaxeax/asm-hall-of-shame" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://opengraph.githubassets.com/c61768d61370a5f82074abfbe0fa65f1bca2dbaba41a5e827ce2639dda906682/xoreaxeaxeax/asm-hall-of-shame" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;29
@@ -1315,7 +1282,7 @@ The post Samsung Galaxy S26 FE Leaks Again, Revealing All Colour Options appeare
                               <img src="https://cdn.sanity.io/images/s3y3vcno/production/1336be5f04368968b919876af2286e534602b7ac-3803x2139.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>After months of public warnings from onchain analysts, the prediction market is moving to time-weighted prices to make artificial price pushes too costly.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;45
+                                &ensp;<span class="article-reading-time">(&hairsp;44
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1496,26 +1463,6 @@ The post Samsung Galaxy S26 FE Leaks Again, Revealing All Colour Options appeare
                             <span class="media-object__text">
                               <span>The crypto market maker can now trade US stocks and options and support ETFs as crypto moves closer to traditional markets.</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;42
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="67dc0afc-a864-4b77-b4b7-d4eaf5820df5"
-                        open
-                      >
-                        <summary class="article-expander__title">Ethereum staking token weETH splits from restaking as rewards debate heats up</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/07/ethereum-staking-token-weeth-splits-from-restaking-as-rewards-debate-heats-up">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://cdn.sanity.io/images/s3y3vcno/production/75226292543672448cf8e2dd04e11059431479a1-1500x985.jpg?auto&#x3D;format&amp;fit&#x3D;crop&amp;crop&#x3D;focalpoint&amp;w&#x3D;1920&amp;h&#x3D;1080&amp;q&#x3D;75" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>The move separates ordinary Ethereum staking from higher-risk restaking exposure as a new proposal to cap validator rewards divides the staking sector.</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;43
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2017,8 +1964,8 @@ The post Steam Deck Owner Brought Floppy Disk Gaming Back To Life, Sort Of appea
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-05 datetime="2026-08-05T22:09:46.000Z">2026-08-05</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-05 datetime="2026-08-05T22:09:46.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-05 datetime="2026-08-05T21:44:42.000Z">2026-08-05</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-05 datetime="2026-08-05T21:44:42.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -2033,26 +1980,6 @@ The post Steam Deck Owner Brought Floppy Disk Gaming Back To Life, Sort Of appea
                   <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.wired.com/story/no-one-can-afford-to-make-myst-games-anymore/"
-                        open
-                      >
-                        <summary class="article-expander__title">No one can afford to make Myst games anymore</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.wired.com/story/no-one-can-afford-to-make-myst-games-anymore/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media.wired.com/photos/6a710474676aed0a72807008/191:100/w_1280,c_limit/Culture_Anglerfish&#x27;s%20Failure%20and%20the%20Collapse%20of%20Gaming%E2%80%99s%20Middle%20Market_v3.jpg" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;96
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -2233,11 +2160,62 @@ The post Steam Deck Owner Brought Floppy Disk Gaming Back To Life, Sort Of appea
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-04 datetime="2026-08-04T12:14:00.000Z">2026-08-04</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-04 datetime="2026-08-04T12:14:00.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-04 datetime="2026-08-04T15:03:23.000Z">2026-08-04</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-04 datetime="2026-08-04T15:03:23.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >Hacker News</button>
+                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.science.org/content/blog-post/preventing-misfolding-preventing-folding"
+                        open
+                      >
+                        <summary class="article-expander__title">Preventing Misfolding by Preventing Folding</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.science.org/content/blog-post/preventing-misfolding-preventing-folding">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://omnistrate.com/blog/byoc-anywhere-the-spectrum-of-bring-your-own-cloud-deployments"
+                        open
+                      >
+                        <summary class="article-expander__title">BYOC Is Not Just &#x27;Deploy into Their Cloud&#x27;</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://omnistrate.com/blog/byoc-anywhere-the-spectrum-of-bring-your-own-cloud-deployments">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://omnistrate.com/og/byoc-anywhere-the-spectrum-of-bring-your-own-cloud-deployments.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;20
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
             <li class="card__section">
               <section class="js-toggle-accordions-scope">
                 <h3 class="source-heading">
@@ -2263,40 +2241,6 @@ The post Steam Deck Owner Brought Floppy Disk Gaming Back To Life, Sort Of appea
                             <span class="media-object__text">
                               <span>This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Trump’s AI protectionism has come for robotics   —James O’Donnell  Humanoid robots usually elicit more cringe than awe: They stumble, kick children, and despite advances are still worse at using their hands than my toddler. It’s…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;21
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://omnistrate.com/blog/byoc-anywhere-the-spectrum-of-bring-your-own-cloud-deployments"
-                        open
-                      >
-                        <summary class="article-expander__title">BYOC Is Not Just &#x27;Deploy into Their Cloud&#x27;</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://omnistrate.com/blog/byoc-anywhere-the-spectrum-of-bring-your-own-cloud-deployments">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://omnistrate.com/og/byoc-anywhere-the-spectrum-of-bring-your-own-cloud-deployments.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;20
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2419,54 +2363,6 @@ The post Steam Deck Owner Brought Floppy Disk Gaming Back To Life, Sort Of appea
                             <span class="media-object__text">
                               <span>What is a DATCO? A plain guide to how digital asset treasury companies raise capital, deploy it, and the mNAV math behind their premiums.</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;26
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-        </ul>
-      </section>
-      <section class="daily-content js-toggle-accordions-scope">
-        <h2 class="daily-heading">
-          <button
-            class="daily-heading-toggle"
-            data-action="toggle-accordions"
-            title="Click to toggle the day, Ctrl + click to toggle all."
-          >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-02 datetime="2026-08-02T04:53:24.000Z">2026-08-02</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-02 datetime="2026-08-02T04:53:24.000Z"></time>
-          </button>
-        </h2>
-        <ul class="sources card">
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >Hacker News</button>
-                  <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/alfikpl/ao486"
-                        open
-                      >
-                        <summary class="article-expander__title">ao486: x86-compatible Verilog core implementing all features of a 486 SX (2014)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/alfikpl/ao486">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/741c2406d92c68616dbfc2a3f567c40430f81d37789ff2043df4ce6e2a92e99a/alfikpl/ao486" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;14
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -2624,8 +2520,8 @@ The post Steam Deck Owner Brought Floppy Disk Gaming Back To Life, Sort Of appea
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/31274333774">
-        <time id="build-timestamp" datetime="2026-08-08T19:24:43.604Z">2026-08-08T19:24:43.604Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/31276743265">
+        <time id="build-timestamp" datetime="2026-08-08T20:23:10.368Z">2026-08-08T20:23:10.368Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
