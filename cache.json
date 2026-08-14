@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/mads_hansen_27b33ebfee4c9/your-ai-did-not-change-the-metric-your-business-did-1o3d",
-          "author": "Mads Hansen",
-          "description": "Ask an AI assistant for MRR today and again next quarter.\nThe SQL can be valid both times while the answers use different definitions.\nFinance may have changed which plans count, how credits are handled, when cancellation becomes effective, or which exchange rate applies.\nIf the assistant returns only a number and a query, that semantic change disappears inside a plausible answer.\nA production metric needs an immutable version with:\npopulation and grain\nfilters and exclusions\ndimensions\ntimezone and cutoff\nsource systems\neffective dates\nimplementation and policy digests\nChoose the version deliberately: the definition used when the period was originally reported, today's restated definition, or an explicitly pinned version.\nBefore rollout, calculate old and new definitions over the same snapshot. Explain material cohort and dimension deltas. Keep historical versions reproducible.\nMetric version also belongs in cache keys, scheduled reports, exports, continuation tokens, and follow-up questions. Fresh rows do not make an old definition current.\nThe model may explain a metric. It should not invent the business semantics.\nFull guide: AI database answers need versioned metric definitions",
-          "link": "https://dev.to/mads_hansen_27b33ebfee4c9/your-ai-did-not-change-the-metric-your-business-did-1o3d",
-          "publishedOn": "2026-08-14T01:20:28.000Z",
-          "wordCount": 1487,
-          "title": "Your AI did not change the metric. Your business did.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fbuenemcoimt6wwewarpt.png"
+          "id": "https://dev.to/jinzewang/add-model-fallback-to-an-openai-compatible-nodejs-app-4634",
+          "author": "Jinze Wang",
+          "description": "A single model can be unavailable, rate-limited, or temporarily slow. If your application already uses an OpenAI-compatible API, a simple fallback can make testing more resilient without introducing another SDK.\nThis tutorial uses Node.js and the official OpenAI JavaScript package. It tries one model first and switches to a second model only when the first request fails.\nnpm install openai\n\nOn macOS or Linux:\nexport JINZEAI_API_KEY=\"your_api_key_here\"\n\nOn PowerShell:\n$env:JINZEAI_API_KEY=\"your_api_key_here\"\n\nNever commit a real API key. Rotate it immediately if it appears in a public repository, screenshot, or support message.\nimport OpenAI from \"openai\";\n\nconst client = new OpenAI({\n  baseURL: \"https://jinzeai.cc/v1\",\n  apiKey: process.env.JINZEAI_API_KEY,\n});\n\nconst models = [\"deepseek-c…",
+          "link": "https://dev.to/jinzewang/add-model-fallback-to-an-openai-compatible-nodejs-app-4634",
+          "publishedOn": "2026-08-14T03:35:25.000Z",
+          "wordCount": 1706,
+          "title": "Add Model Fallback to an OpenAI-Compatible Node.js App",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fyhxlfeeyu12z26dlv6ps.png"
         },
         {
-          "id": "https://dev.to/wenyu_zhang/i-filled-my-agents-wiki-with-contradictions-it-never-gave-a-wrong-answer-2ple",
-          "author": "Wenyu Zhang",
-          "description": "There's a comfortable assumption behind a lot of \"agent + knowledge base\" work: garbage in, garbage out. Feed an agent a messy, stale, duplicate-ridden wiki and it'll confidently tell users the wrong thing. So we invest in dedup, freshness, clean ingestion — to stop the agent from hallucinating.\nI built a small testbed to measure that assumption, and it's wrong. Or rather: it's wrong about how bad ingest hurts, and the real answer is more interesting — and harder to catch.\nI built a tiny agent that navigates a wiki the way a person does: it has a\nwiki_search tool and a wiki_read tool, it decides what to look up, reads a page, and answers. No vector database, no RAG injection — the agent navigates. (This is increasingly how capable models prefer to work: they know what they need better than…",
-          "link": "https://dev.to/wenyu_zhang/i-filled-my-agents-wiki-with-contradictions-it-never-gave-a-wrong-answer-2ple",
-          "publishedOn": "2026-08-14T00:46:04.000Z",
-          "wordCount": 2448,
-          "title": "I filled my agent's wiki with contradictions. It never gave a wrong answer.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0a6qr0h0hxj1qj8pqxcl.png"
+          "id": "https://dev.to/ink_gu/notes-from-getting-quickbooks-to-accept-a-generated-qbo-file-3k5i",
+          "author": "Gu",
+          "description": "I'm building a small tool that converts bank CSV files into .qbo files for QuickBooks (qbofile.com). When a generated file is wrong, QuickBooks rejects it with vague errors and the OFX spec doesn't tell you what QuickBooks actually checks. So I ran some experiments. Notes below, in case someone else hits the same wall.\n.qbo is Intuit's version of OFX 1.0.2, which is SGML. Leaf tags have no closing tag:\n<TRNAMT>-42.50\n<FITID>8f3a2b...\n\nOnly aggregate tags close. The file also needs a 9-line key:value header, then one blank line, then the body. Line endings are CRLF. My first bug was closing every tag like XML.\nQuickBooks checks <INTU.BID> against an internal list of banks that pay Intuit for Web Connect. I tested three variants on QuickBooks Desktop for Mac 2024:\n\n\n\nVariant\nResult\n\n\n\n\nNo <FI> block, no <INTU.BID>\n\nRejected: \"Missing bid data\"\n\n\nOnly <INTU.BID>\n\nAccepted\n\n\n\n<FI> block + <INTU.BID>\n\nAccepted\n\n\n\nSo the whole <FI> block (bank name, org id) can be dropped, but INTU.BID cannot. I have only tested the Mac version. If you know whether Windows versions behave the same, I'd like to hear.\nQuickBooks dedupes on FITID, not on date + amount. If a converter generates random FITIDs, re-importing an overlapping date range creates duplicate transactions. I hash account + date + amount + description, so the same transaction always gets the same FITID. Credit card statement cycles never match calendar months, so overlapping imports happen more often than I expected.\nThis one surprised me. No version of QuickBooks can produce a .qbo file. The format only goes one direction, from bank to QuickBooks. Every .qbo file in the world came from a bank's download button or from a converter.\nThat's what I have so far. The tool is free for single files and runs fully in the browser, nothing gets uploaded. I have only tested against QuickBooks Desktop — if you use QuickBooks Online, I'm interested in what its importer accepts.",
+          "link": "https://dev.to/ink_gu/notes-from-getting-quickbooks-to-accept-a-generated-qbo-file-3k5i",
+          "publishedOn": "2026-08-14T03:24:14.000Z",
+          "wordCount": 1692,
+          "title": "Notes from getting QuickBooks to accept a generated .qbo file",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6bs5ih6ek2eopbzaogdd.png"
         },
         {
-          "id": "https://dev.to/kenielzep97/they-matched-the-slogan-the-decision-lived-in-the-undefined-word-36o0",
-          "author": "Self-Correcting Systems",
-          "description": "Part two of: OpenAI Says Verified Defenders Get More Access. I'm Going to Test That.\nPart I started because I got refused.\nNot in a dramatic way. I was doing authorized defensive work, and the model wouldn't follow me into it. Twice, across two providers. The question I actually asked — the one that turned into a research lane — wasn't why did this happen to me. It was narrower and more annoying: what is the threshold? Somebody decided where the line sits. I wanted to know who, and on what basis.\nPart I built an instrument to measure that, published the design, and watched it fail its first independent break before collecting a single data point.\nPart I also ended with a promise:\nPart two examines the people who built this: what they said the future should be, and what they actually shippe…",
-          "link": "https://dev.to/kenielzep97/they-matched-the-slogan-the-decision-lived-in-the-undefined-word-36o0",
-          "publishedOn": "2026-08-14T00:38:26.000Z",
-          "wordCount": 6444,
-          "title": "They Matched The Slogan. The Decision Lived In The Undefined Word",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fs790xrlj76qzpm9u72xs.png"
+          "id": "https://dev.to/sem7ac/visual-studio-2026-debugger-detection-failure-5fip",
+          "author": "Christopher Semler",
+          "description": "This is a submission for DEV's Summer Bug Smash: Smash Stories powered by Sentry.\nI was building a Coding Activity Tracker to give me realistic timing for how long I actually spend coding — typing, reading, debugging, idle, everything. For that to work, it needed to know when Visual Studio was debugging anything, because breakpoints completely change how an app behaves.\nRunning the tracker standalone meant it had to detect external debugging sessions.\n\nDebugger.IsAttached only detects debugging of the current process, so standalone mode always reported “no debugger,” even when Visual Studio was actively debugging another project.\nThat single limitation broke the entire purpose of the tracker.\nThe tracker had to detect debugging even when it wasn’t the app being debugged.\nOnce it became obv…",
+          "link": "https://dev.to/sem7ac/visual-studio-2026-debugger-detection-failure-5fip",
+          "publishedOn": "2026-08-14T03:21:38.000Z",
+          "wordCount": 2049,
+          "title": "Visual Studio 2026 Debugger Detection Failure",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F5qechxzfggr7gquar4l7.png"
         },
         {
-          "id": "https://dev.to/o-o1112/pythonjsc-block-engine-v220-run-python-nodejs-lua-php-in-a-single-document-with-4hlb",
-          "author": "O-O1112",
-          "description": "Hi everyone,\nI want to share Block Engine v2.2.0, an open-source polyglot multi-runtime execution engine designed to eliminate the friction of combining multiple programming languages in software development.\nModern applications often leverage different languages for their unique strengths:\nPython for machine learning, data science, and analytics.\nNode.js for async Web APIs and NPM packages.\nLua for ultra-fast, lightweight embedded calculations (< 300KB RAM footprint).\nPHP for web string formatting and cryptographic hashing (hash, openssl).\nTraditionally, orchestrating these runtimes requires setting up microservices, gRPC, Docker containers, or manual JSON IPC file reading/writing. \nBlock Engine solves this by introducing a Zero-Dependency Polyglot Pipeline.\nYou write native code blocks (<py>, <js>, <lua>, <php>) inside a single .blkp document. Block Engine parses the AST, executes each runtime in isolated subprocesses, and automatically serializes and transfers state variables from one language to the next.\n\nhtml\n<py>\n# Python Stage: Compute analytics data\nraw_prices = [100.5, 102.1, 101.8, 105.4, 108.0]\nma5 = sum(raw_prices) / len(raw_prices)\nuser_name = \"Gemini Master\"\n</py>\n\n<js>\n// Node.js Stage: Automatically receives Python variables (user_name, ma5)\nconsole.log(`[Node.js] Received user: ${user_name}, MA5: ${ma5.toFixed(2)}`);\nvar final_score = Math.round(ma5);\n</js>\n\n<lua>\n-- Lua 5.4 Stage: High-speed recursive computation\nfunction fib(n)\n    if n <= 1 then return n end\n    return fib(n-1) + fib(n-2)\nend\nlua_result = fib(10)\n</lua>\n\n<php>\n// PHP 8 Stage: Cryptographic SHA-256 Signature\n$signature = hash('sha256', $user_name . '|' . $final_score);\necho \"[PHP] Audit SHA-256: \" . $signature . \"\\n\";\n</php>\nThis is the link: https://block-io.blockengine.workers.dev/",
-          "link": "https://dev.to/o-o1112/pythonjsc-block-engine-v220-run-python-nodejs-lua-php-in-a-single-document-with-4hlb",
-          "publishedOn": "2026-08-14T00:36:32.000Z",
-          "wordCount": 1923,
-          "title": "[Python/JS/C#] Block Engine v2.2.0: Run Python, Node.js, Lua & PHP in a single document with zero-config state pipeline",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Flrdhq9txv9pky1mit713.jpg"
+          "id": "https://dev.to/aomiqaza/zero-trust-ssh-access-blueprint-fido2-hardware-keys-ssh-certificate-authority-55gj",
+          "author": "Aomi Qaza",
+          "description": "Zero-Trust SSH Access Blueprint: FIDO2 Hardware Keys & SSH Certificate Authority\n\n\n\n\n\n\n  \n  \n  Executive Summary\n\n\nExecutive Summary & Key Security Takeaways\n← Back to Articles\nCyber Security • Zero Trust SSH\nBy Zyekh Abdul Qadir Jailani\n    Share\n    Download .md\n    Download .pdf\n\nZero-Trust Infrastructure Blueprint for FIDO2 Hardware Tokens & SSH Certificate Authority\nExecutive Summary & Key Security Takeaways\nEliminate Static Keys: Migrate from static authorized_keys deployment to short-lived SSH Certificates.\n\n\nFIDO2 Hardware Bound: Enforce ed25519-sk key pairs tied to physical security tokens (YubiKey/FIDO2).\n\n\nCentralized Authority: Use an offline SSH Certificate Authority (CA) to sign user access requests with automatic 8-hour expiration.\n\n\nZero Administrative Sprawl: Adding or rev…",
+          "link": "https://dev.to/aomiqaza/zero-trust-ssh-access-blueprint-fido2-hardware-keys-ssh-certificate-authority-55gj",
+          "publishedOn": "2026-08-14T03:21:24.000Z",
+          "wordCount": 2340,
+          "title": "Zero-Trust SSH Access Blueprint: FIDO2 Hardware Keys & SSH Certificate Authority",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzz1zcrl1xvo90s0mew0g.png"
         },
         {
-          "id": "https://dev.to/beck_moulton/snoring-secrets-fine-tuning-whisper-v3-to-identify-sleep-apnea-events-like-a-pro-4phj",
-          "author": "Beck_Moulton",
-          "description": "Have you ever wondered if that loud snoring is just a nuisance or a genuine health red flag? Sleep Apnea detection is traditionally done in uncomfortable sleep labs, but with the rise of AI-powered sleep monitoring, we can now turn a simple smartphone recording into a diagnostic-grade insight tool. \nIn this tutorial, we are diving deep into Whisper-v3 audio processing, leveraging machine learning for health to build a non-invasive acoustic monitor. By the end of this guide, you'll know how to take raw sleep audio, process it using audio signal processing techniques, and fine-tune OpenAI's Whisper-v3 to detect \"Apnea\" and \"Hypopnea\" events with high precision. 🚀\nWhile Whisper is famous for speech-to-text, its architectural backbone is a robust encoder-decoder Transformer trained on diverse…",
-          "link": "https://dev.to/beck_moulton/snoring-secrets-fine-tuning-whisper-v3-to-identify-sleep-apnea-events-like-a-pro-4phj",
-          "publishedOn": "2026-08-14T00:33:00.000Z",
-          "wordCount": 2188,
-          "title": "Snoring Secrets: Fine-Tuning Whisper-v3 to Identify Sleep Apnea Events Like a Pro",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fth32xzsvtmvrrp3ly7yj.png"
+          "id": "https://dev.to/hoangvibecode/hello-dev-how-im-blending-technical-seo-with-vibe-coding-to-build-tools-4ake",
+          "author": "Vo Viet Hoang",
+          "description": "Hey DEV Community! 👋\nI'm Hoang, a Technical SEO Specialist and Web Builder. \nI'm fascinated by the intersection of search engines, web technology, and AI. While I don't come from a formal Software Engineering background, I’ve been heavily leveraging AI-assisted development (Vibe Coding) to build custom web applications, utility tools, and micro-platforms.\nSEO & Entity Optimization: Deep diving into Schema markup, web infrastructure, and Knowledge Graphs.\nBuilding Micro-Tools: Creating custom PHP scripts, automated quiz systems, and web utilities powered by modern AI LLMs.\nServer Management: Migrating and optimizing web apps directly on Nginx setups for maximum performance.\nI joined DEV.to to share my journey as a non-traditional developer using AI tools to bring ideas to life fast, learn from experienced engineers, and discuss technical SEO best practices.\nLooking forward to connecting, sharing ideas, and learning with everyone here! Feel free to say hi or drop a line below! 🚀",
+          "link": "https://dev.to/hoangvibecode/hello-dev-how-im-blending-technical-seo-with-vibe-coding-to-build-tools-4ake",
+          "publishedOn": "2026-08-14T03:18:20.000Z",
+          "wordCount": 1512,
+          "title": "Hello DEV! How I'm Blending Technical SEO with Vibe Coding to Build Tools",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1oek9ql03azf57xrffaa.png"
         },
         {
-          "id": "https://dev.to/javascriptmick/loveyourclankerorg-4ap4",
-          "author": "Michael Dausmann",
-          "description": "I created an open web resource for Software Engineers.  \nhttps://loveyourclanker.org/\nIt highlights different patterns we can consciously choose use when interacting with our AI Coding tools (a.k.a 'Agents'... a.k.a 'Clankers') to stay in control, maintain quality and sensibly increase efficiency.\nI was prompted to do this (no pun intended) by observing some pretty alarming signals coming from this community.  Token leaderboards, engineers being encouraged to use tools to \"stay current\" or \"keep up\" or \"not be redundant\", engineers quitting tools entirely to stay sane, engineers leaving social gatherings to get back to their agents, engineers setting up whole systems that automate away human engineers and then calling that \"agentic engineering\".\nI'm hoping that if we normalise and share how we use the tools, and show that there are different ways where you maintain more control and agency (... pun?) that it might promote a better \nIf you find it helpful, share.  If you disagree or want to contribute, raise a PR or ping me.  It's all open and NFP.",
-          "link": "https://dev.to/javascriptmick/loveyourclankerorg-4ap4",
-          "publishedOn": "2026-08-14T00:27:17.000Z",
-          "wordCount": 1473,
-          "title": "loveyourclanker.org",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fdbv6hyfo8ey9rak7dz6w.png"
+          "id": "https://dev.to/niharikapujari/css-anchor-positioning-building-tooltips-without-javascript-positioning-hacks-2a7o",
+          "author": "Niharika Pujari",
+          "description": "Introduction\n\n\nPositioning a tooltip sounds simple.\nPut a small box next to a button. Done.\nBut anyone who has built one knows that it can quickly turn into:\nposition: absolute\ncalculating coordinates\nlistening for resize events\nhandling scrolling\nchecking whether the tooltip fits on screen\nand sometimes pulling in an entire positioning library\nModern CSS is starting to change that.\nCSS Anchor Positioning lets us position one element relative to another directly in CSS.\nLet's look at what that means with a very simple tooltip.\nCSS Anchor Positioning allows one element to act as an anchor and another element to position itself relative to that anchor.\nThink about UI components such as:\nTooltips\nDropdown menus\nPopovers\nContext menus\nFloating labels\nThese elements usually need to appear next …",
+          "link": "https://dev.to/niharikapujari/css-anchor-positioning-building-tooltips-without-javascript-positioning-hacks-2a7o",
+          "publishedOn": "2026-08-14T03:16:17.000Z",
+          "wordCount": 3568,
+          "title": "CSS Anchor Positioning: Building Tooltips Without JavaScript Positioning Hacks",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fngizo7ipqcdfwolzl5q3.png"
         },
         {
-          "id": "https://dev.to/futhgar/moving-scheduled-llm-curation-from-cloud-apis-to-local-models-4i69",
-          "author": "Guatu",
-          "description": "Scheduled LLM curation is the least glamorous agent workload you run. A cron job wakes up at 3am, reads a pile of memory, asks a model to dedupe it, summarize it, re-rank it, and writes the result back. Nobody is watching. There's no chat window, no streaming tokens, no human to click a button. It just has to work, quietly, every night.\nThat \"nobody is watching\" part is exactly what makes the cloud-versus-local decision harder than it looks. When you have a human in the loop, a failed API call throws an error you can see and retry. In a headless cron context, the same failure turns into a job that hangs on an approval prompt no one will ever answer, or a pod that curated three months of context into an emptyDir that vanished on restart.\nI've run curation both ways: nightly jobs hitting a h…",
-          "link": "https://dev.to/futhgar/moving-scheduled-llm-curation-from-cloud-apis-to-local-models-4i69",
-          "publishedOn": "2026-08-14T00:15:50.000Z",
-          "wordCount": 3615,
-          "title": "Moving Scheduled LLM Curation from Cloud APIs to Local Models",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fguatulabs.dev%2Fog%2Fmoving-scheduled-llm-curation-from-cloud-apis-to-local-models.png"
+          "id": "https://dev.to/darshilsomani019/token-bucket-vs-sliding-window-building-rate-limiters-that-actually-hold-under-load-4h7i",
+          "author": "Darshil Somani",
+          "description": "Rate limiting sounds like a solved problem until you actually implement one and watch it fail in a way your load test didn't predict: legitimate bursts getting rejected, or a limiter that lets through 2x its stated limit at window boundaries. The failure modes are specific enough that it's worth working through the two dominant algorithms — token bucket and sliding window — with actual code, not just the diagrams.\nThe naive approach almost everyone reaches for first is a fixed window counter: pick a window size (say, 60 seconds), count requests in that window, reset the counter when the window rolls over.\nimport time\n\nclass FixedWindowLimiter:\n    def __init__(self, limit: int, window_seconds: int):\n        self.limit = limit\n        self.window_seconds = window_seconds\n        self.count …",
+          "link": "https://dev.to/darshilsomani019/token-bucket-vs-sliding-window-building-rate-limiters-that-actually-hold-under-load-4h7i",
+          "publishedOn": "2026-08-14T03:14:12.000Z",
+          "wordCount": 2768,
+          "title": "Token Bucket vs. Sliding Window: Building Rate Limiters That Actually Hold Under Load",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F79sa6tgbvpygbu2j9sip.png"
         },
         {
-          "id": "https://dev.to/dobybaxter127/a-floor-beneath-every-person-design-choices-in-the-first-social-resource-floor-blueprint-2hb5",
-          "author": "Doby Baxter",
-          "description": "TL;DR — I've been building the Social Resource Floor: an open blueprint for coordinating one person's access to basic survival resources — food, housing, energy, healthcare, and more — across many independent providers, so that reaching those resources is grounded in being human rather than in financial access. The first blueprint version is now complete: language-neutral schemas, prose specifications, a reference implementation, and a first adapter. This post is about the engineering choices behind it, and the reasons for each — how it stays a contract rather than a product, how it keeps personal data out of the coordination layer, why it binds to existing standards instead of inventing new ones, and how I check that the contracts are implementation-independent rather than just claiming t…",
-          "link": "https://dev.to/dobybaxter127/a-floor-beneath-every-person-design-choices-in-the-first-social-resource-floor-blueprint-2hb5",
-          "publishedOn": "2026-08-14T00:12:29.000Z",
-          "wordCount": 3747,
-          "title": "A Floor Beneath Every Person: Design Choices in the First Social Resource Floor Blueprint",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F5kxd2x8zvwaf494bmv0s.png"
+          "id": "https://dev.to/vaughnknight3189/support-catalog-backfill-moderate-existing-posts-and-comments-in-a-nodejs-bulk-job-1jei",
+          "author": "VaughnKnight3189",
+          "description": "Per-tenant cost visibility changes the design: don't begin with parallel API calls; begin with a durable ledger that ties every classification result and usage record to a tenant, policy version, and source item. For a customer-support catalog backfill, the practical choice is a bounded Node.js worker that reads existing posts and comments, classifies them through a replaceable adapter, checkpoints each result, and exports tenant-scoped JSONL.\nShort answer: make the ledger the product of the job and the LLM call one restartable step inside it.\nThat ordering matters when support conversations contain messy product descriptions such as “the small blue charger for the old tablet.” The moderation label decides whether the text is safe to reuse; the enrichment labels connect it to a catalog can…",
+          "link": "https://dev.to/vaughnknight3189/support-catalog-backfill-moderate-existing-posts-and-comments-in-a-nodejs-bulk-job-1jei",
+          "publishedOn": "2026-08-14T03:10:54.000Z",
+          "wordCount": 2920,
+          "title": "Support Catalog Backfill: Moderate Existing Posts and Comments in a Node.js Bulk Job",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fh0ow6hll4jo0192hrnti.png"
         },
         {
-          "id": "https://dev.to/rivenor85/upload-moderation-nodejs-nsfw-violence-hate-symbol-classification-json-fallback-2fga",
-          "author": "Rivenor85",
-          "description": "Short answer: for media support tickets that include an image, keep classification, policy enforcement, and tenant cost accounting as three separate steps. Send the image to a multimodal chat model with a strict JSON Schema, validate the returned object locally, and send invalid or uncertain cases to review. The fallback is a queue, not a guess.\nThat design matters because a support agent is usually triaging a complaint, not publishing a photo. The same upload might be evidence of a violent broadcast, a screenshot containing a hate symbol, or an ordinary account avatar. A boolean called safe throws away the context that the agent needs.\nKeep it boring.\nStart with a versioned taxonomy. For this media workflow, I would keep nsfw, violence, and hate_symbols as separate observations, add uncer…",
-          "link": "https://dev.to/rivenor85/upload-moderation-nodejs-nsfw-violence-hate-symbol-classification-json-fallback-2fga",
-          "publishedOn": "2026-08-14T00:08:29.000Z",
-          "wordCount": 2756,
-          "title": "Upload Moderation: Node.js NSFW, Violence, Hate-Symbol Classification + JSON Fallback",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0o38zk67c61mo4nxe3ss.png"
+          "id": "https://dev.to/jaisurya/hoisting-1o35",
+          "author": "Jaisurya",
+          "description": "Hoisting in JavaScript is the engine’s behavior of moving declarations to the top of their scope (global or local) before execution. Because of hoisting, you can reference functions or variables in your code before the lines where they are defined.\n1.Function Declaration\nhello(); //Output: hello!\nfunction hello(){\n   console.log(\"hello!\")\n}\n\n2.var Declaration\nconsole.log(num); //Output: undefined\nvar num = 10;\nconsole.log(num); //Output: 10",
+          "link": "https://dev.to/jaisurya/hoisting-1o35",
+          "publishedOn": "2026-08-14T03:10:17.000Z",
+          "wordCount": 1403,
+          "title": "Hoisting",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fqtkwb4bvkwro10n1ga63.png"
         },
         {
-          "id": "https://dev.to/gurayta/dokuz-sanal-sunucu-uc-platform-bir-kota-duvari-karakter-videosu-hattini-kurmak-bolum-2-30ma",
-          "author": "Guray",
-          "description": "Birinci bölümde bir haber sitesinin yayın akışını ajana devrettiğimi yazmıştım. O yazıdan sonra sistemin en kırılgan yerini kurdum: sosyal medyaya konuşan sanal sunucular. Dokuz kategorinin dokuz karakteri var, her biri kendi videosuyla kendi bölümünü tanıtıyor.\nBu yazı o hattın kurulum günlüğü. İçinde çalışan kod da var, çöpe giden yedi deneme de.\nStatik bir yazı linkini X'e atınca ölçüm net: kart önizlemesi görünür, kimse durmaz. Dikey videoda konuşan bir insan varsa akış duruyor. Elimde gerçek sunucu yok, o yüzden karakterleri üretiyoruz: Elif (bilim, psikoloji), Arda (oyun), Doruk (doğa ve kamp), Dr. Sinan (tıp), Defne (kitap), Süreyya (tarot), Meriç (dünya basını), Elvan (arkeoloji), Duru (güzellik).\nKural basit ve sabit: kategori → karakter eşlemesi değişmez. Aynı etiket her zaman ay…",
-          "link": "https://dev.to/gurayta/dokuz-sanal-sunucu-uc-platform-bir-kota-duvari-karakter-videosu-hattini-kurmak-bolum-2-30ma",
-          "publishedOn": "2026-08-14T00:08:18.000Z",
-          "wordCount": 2821,
-          "title": "Dokuz sanal sunucu, üç platform, bir kota duvarı: karakter videosu hattını kurmak (Bölüm 2)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F8w4uycahxrkkf3e9f41b.png"
+          "id": "https://dev.to/kientndev/how-we-built-an-instant-ai-security-code-auditor-in-nextjs-convex-i9i",
+          "author": "Kien Tran",
+          "description": "🚀 How We Built an Instant AI Security & Code Auditor in Next.js & Convex\n\n\nWhen building security or code auditing tools, speed is everything. Developers won't wait 45 seconds for a bloated PDF report—they want instant feedback on potential bugs, security leaks, or bad practices.\nOver the last week, we've been building BugZ AI, a lightweight scanner designed to analyze code repos and security links in under 5 seconds. \nHere is a breakdown of our stack and the architecture choices behind keeping real-time scans ultra-fast.\n💡 Build in Public Update: We hit 175 total developer visits today on Day 4 of building out in the open!\nFrontend: Next.js 15 (App Router) + Tailwind CSS\nBackend & Database: Convex (for real-time reactive updates without manual polling)\nAuth: Clerk\nMobile Sync: Capacitor (wrapping web assets into native Android)\nThe biggest challenge was stream handling. Instead of waiting for the entire LLM response to complete before rendering analysis to the UI, we used Convex's real-time mutations paired with edge streaming. \nThis lets the user paste a link or snippet and see initial vulnerability checks pop up in real-time within < 20 seconds.\nKeep the UI distraction-free: Developers hate bloated dashboards when a single search bar will do the job.\nReal-time > Batch: Showing progress indicators reduces drop-off rates significantly compared to static loader spinners.\nIf you want to run a quick audit on your project or test a link, check out the live demo here: [INSERT YOUR BUGZ AI LINK HERE]\nI'd love to hear your feedback on the scanning speed and response accuracy. What features would make this a daily part of your dev workflow?",
+          "link": "https://dev.to/kientndev/how-we-built-an-instant-ai-security-code-auditor-in-nextjs-convex-i9i",
+          "publishedOn": "2026-08-14T03:07:44.000Z",
+          "wordCount": 2019,
+          "title": "How We Built an Instant AI Security & Code Auditor in Next.js & Convex",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fic49kbzl8fnfbv9g3jh6.png"
         },
         {
-          "id": "https://dev.to/stillrefactoring01/building-a-project-while-fighting-shiny-object-syndrome-2536",
-          "author": "stillrefactoring",
-          "description": "Hello World! - Building a Project While Fighting Shiny Object Syndrome\n\n\nLet's start simple.\nHere is the definition pulled straight from Wikipedia: \nShiny Object Syndrome is the situation where people focus undue attention on an idea that is new and trendy, yet drop it in its entirety as soon as something new can take its place.\nIn my own words, I would describe it as chasing the novelty and the rush of starting a new project only to lose interest when I hit the not-so-fun parts.\nI don't know. My guess would be that I have a lot of ideas that I want to see tangible results from fast. Like, for example:\nI want to see my app right in front of me in one or two sessions at most.\nI have a lot of energy for one week straight to work on my new idea, and then I lose interest at the first boring pa…",
-          "link": "https://dev.to/stillrefactoring01/building-a-project-while-fighting-shiny-object-syndrome-2536",
-          "publishedOn": "2026-08-14T00:02:16.000Z",
-          "wordCount": 1824,
-          "title": "Building a Project While Fighting Shiny Object Syndrome",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F8sw71p4r6qwk5tvpjelg.png"
+          "id": "https://dev.to/dalenguyen/rich-results-shopping-and-ai-mode-what-google-merchant-center-actually-gets-you-5fem",
+          "author": "Dale Nguyen",
+          "description": "Ruby Rose Bloom sells one-of-a-kind vintage — a self-hosted storefront, no Shopify, no marketplace underneath it. Search Console's \"Merchant opportunities\" report told me 3 active products weren't showing up on the Shopping tab, and I went looking for the setting to fix. There wasn't one. What I actually found, three days of digging later, is that \"get into Merchant Center\" is not one thing — it's several different surfaces, each fed by a different mechanism, and the one everyone talks about (the Shopping tab) turned out to be the least interesting of them.\nThis post is the question I actually had, answered with screenshots taken today: I have a storefront. What does getting into Merchant Center buy me, and where do my products actually end up?\nIt also has an ending I didn't plan. After th…",
+          "link": "https://dev.to/dalenguyen/rich-results-shopping-and-ai-mode-what-google-merchant-center-actually-gets-you-5fem",
+          "publishedOn": "2026-08-14T03:02:00.000Z",
+          "wordCount": 6206,
+          "title": "Rich Results, Shopping, and AI Mode: What Google Merchant Center Actually Gets You",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ff10uq0nqcyh2hk6ez9mw.png"
         },
         {
-          "id": "https://dev.to/ruralocity/work-in-progress-updates-on-my-new-book-testing-rails-from-scratch-5f83",
-          "author": "Aaron Sumner",
-          "description": "Hello! It has been a couple of months since I announced my latest project, Testing Rails from Scratch:  A practical, (mostly) out-of-the-box approach to test-driven development in Ruby on Rails. The book is a thought experiment of sorts, as I revisit the default Rails testing stack after years of RSpec. I've been incrementally exploring the defaults and building tests from the foundational building block, on to more complex test cases and tools. This is the same approach I took to learn RSpec to begin with, and the same approach I took in the RSpec book on which Testing Rails from Scratch is based.\n\nIt's been slower-going than I'd planned due to unexpected life circumstances this summer, so I wanted to share what is available now, and what's left.\nQuick plug for anyone still holding off: I…",
-          "link": "https://dev.to/ruralocity/work-in-progress-updates-on-my-new-book-testing-rails-from-scratch-5f83",
-          "publishedOn": "2026-08-14T00:02:00.000Z",
-          "wordCount": 1818,
-          "title": "Work-in-progress updates on my new book, Testing Rails from Scratch",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fleftofthe.dev%2Ftesting-from-scratch-book%2Fbanner-devto.jpg"
+          "id": "https://dev.to/anoymask/jwr-a-real-time-phaas-using-websockets-to-monitor-victim-input-and-remotely-control-screen-ol6",
+          "author": "Anoymask",
+          "description": "JWR: A Real-Time PhaaS Using WebSockets to Monitor Victim Input and Remotely Control Screen Transitions\n\n\n\n  \n  \n  1. Basic Information\n\n\n\n\nSeverity: High\nArticle Title: Dissecting the JWR phishing framework\nPublisher: Cisco Talos Blog\nPublication Date: 2026-08-13\nOriginal Source: https://blog.talosintelligence.com/dissecting-the-jwr-phishing-framework/\n\n\nRelated Sources: Talos IOC repository (linked in the original article)\nRelated Entities: JWR, The Outsider, Outsider Enterprise, Shopify, WooCommerce, PayPal, Apple, Klarna, Vue.js, WebSocket\nJWR is not a static credential-stealing page. It is a Chinese-language PhaaS (Phishing-as-a-Service) that uses AES-CTR encrypted WebSockets to stream credit card details and credentials to attackers as the victim types them. The attacker uses over 40…",
+          "link": "https://dev.to/anoymask/jwr-a-real-time-phaas-using-websockets-to-monitor-victim-input-and-remotely-control-screen-ol6",
+          "publishedOn": "2026-08-14T03:01:26.000Z",
+          "wordCount": 2561,
+          "title": "JWR: A Real-Time PhaaS Using WebSockets to Monitor Victim Input and Remotely Control Screen Transitions",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Frny5uq0fg70e4aaxnyo6.png"
         }
       ]
     },
@@ -144,6 +144,26 @@
       "feedUrl": "https://www.freecodecamp.org/news/rss/",
       "siteUrl": "https://www.freecodecamp.org/news/",
       "articles": [
+        {
+          "id": "6a7e4a380ee61c58fa48acb3",
+          "author": "Hugo Teijiz",
+          "description": "I have seen legacy migrations considered successful because the old framework disappeared from the repository. Six months later, the team was still dealing with the same coupling, the same unclear bus",
+          "link": "https://www.freecodecamp.org/news/modernize-legacy-applications-with-ai/",
+          "publishedOn": "2026-08-13T22:50:32.000Z",
+          "wordCount": 4518,
+          "title": "How to Modernize a Legacy Application with AI Without Turning It Into a Rewrite",
+          "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/2eb7ca1a-00d1-4dd4-a4a0-2f64eeb40388.png"
+        },
+        {
+          "id": "6a7e49f74e7ef3bb34dc60ba",
+          "author": "Jay Mehta",
+          "description": "Building AI agents with raw LLM SDKs works fine for prototypes until you need structured outputs, testable code, and production reliability. The gap shows up in a predictable way. Your notebook code w",
+          "link": "https://www.freecodecamp.org/news/building-agents-with-pydantic-ai/",
+          "publishedOn": "2026-08-13T21:30:00.000Z",
+          "wordCount": 5923,
+          "title": "How to Build Production-Grade Agents with Pydantic AI",
+          "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/39375594-36fd-4ef4-9b5f-c2fcd3fd5197.png"
+        },
         {
           "id": "6a7e08ac157d6ad1bb83d9cf",
           "author": "Vaibhav Gupta",
@@ -223,26 +243,6 @@
           "wordCount": 9286,
           "title": "How to Build an AI Agent with Per-User OAuth Access [Full Handbook]",
           "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/889cf8c8-41f9-4dec-aa5f-128cb24f0082.png"
-        },
-        {
-          "id": "6a7c94929716b929062beeb1",
-          "author": "Bhavin Sheth",
-          "description": "PDF editing isn't limited to adding signatures or merging documents. Sometimes you simply want to improve the appearance of a PDF by increasing brightness, boosting contrast, adding blur, converting i",
-          "link": "https://www.freecodecamp.org/news/build-pdf-filter-studio-javascript/",
-          "publishedOn": "2026-08-12T15:43:14.000Z",
-          "wordCount": 3826,
-          "title": "How to Build a Browser-Based PDF Filter Studio with JavaScript",
-          "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/b1fef698-f2b8-4fa3-a3e0-0cb0fc7e88a6.png"
-        },
-        {
-          "id": "6a7b522a304c202420dfd496",
-          "author": "Rudrendu Paul",
-          "description": "Causal inference for LLM-based AI features is no longer theoretical. Airbnb, Netflix, Lyft, and Uber have published detailed engineering blog posts describing exactly how they measure the causal impac",
-          "link": "https://www.freecodecamp.org/news/causal-inference-at-scale-with-case-studies/",
-          "publishedOn": "2026-08-11T16:47:38.000Z",
-          "wordCount": 8027,
-          "title": "Product Experimentation at Scale: How Airbnb, Netflix, Lyft, and Uber run Causal Inference on LLM-Based AI Features",
-          "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/2d445aeb-4ed9-40c4-9c91-c6e701a1325a.png"
         }
       ]
     },
@@ -251,6 +251,16 @@
       "feedUrl": "https://news.ycombinator.com/rss",
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
+        {
+          "id": "https://www.theguardian.com/us-news/2026/aug/13/us-government-spied-anti-ice-protesters",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.theguardian.com/us-news/2026/aug/13/us-government-spied-anti-ice-protesters",
+          "publishedOn": "2026-08-14T02:39:10.000Z",
+          "wordCount": 4972,
+          "title": "US conducted mass spying campaign against leftwing and anti-ICE protesters",
+          "imageUrl": "https://i.guim.co.uk/img/media/8aa8f9f5eba781c6d1cb935745b1134a91fe96fe/500_0_4500_3600/master/4500.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=b2eb3827e62dfa46ebf97a9e3ba63991"
+        },
         {
           "id": "https://atproto.com/blog/introducing-bluesky-protocol-services",
           "author": null,
@@ -282,23 +292,13 @@
           "imageUrl": "https://www.seangoedecke.com/og-image.jpg"
         },
         {
-          "id": "https://declaude.org/watermarking/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://declaude.org/watermarking/",
-          "publishedOn": "2026-08-13T23:16:55.000Z",
-          "wordCount": 4838,
-          "title": "How AI text watermarking works",
-          "imageUrl": "https://declaude.org/watermarking/og.png?v=2"
-        },
-        {
           "id": "https://gruhn.me/blog/2026-08-13/",
           "author": null,
           "description": "Comments",
           "link": "https://gruhn.me/blog/2026-08-13/",
           "publishedOn": "2026-08-13T20:14:17.000Z",
           "wordCount": 434,
-          "title": "NP-Overrated",
+          "title": "NP-overrated",
           "imageUrl": null
         },
         {
@@ -337,9 +337,9 @@
           "description": "Comments",
           "link": "https://github.com/systemd/systemd/issues/40262",
           "publishedOn": "2026-08-13T18:41:01.000Z",
-          "wordCount": 9150,
+          "wordCount": 9159,
           "title": "Single log line is 49KB+ (ext4) / 110KB+ (btrfs) of systemd-journald disk writes",
-          "imageUrl": "https://repository-images.githubusercontent.com/32873313/aa4c3b00-128e-11ea-8853-4f32296220f0"
+          "imageUrl": "https://opengraph.githubassets.com/169b4cf7f7acd0a50333b2750966738620d9644ab4ce462e67bda2341060784a/systemd/systemd/issues/40262"
         },
         {
           "id": "https://themech.net/2026/08/hello-me-its-been-a-while/",
@@ -347,9 +347,9 @@
           "description": "Comments",
           "link": "https://themech.net/2026/08/hello-me-its-been-a-while/",
           "publishedOn": "2026-08-13T18:37:18.000Z",
-          "wordCount": 3210,
+          "wordCount": null,
           "title": "Hello, me. It's been a while",
-          "imageUrl": "https://secure.gravatar.com/avatar/10ab3895f5f788f14b825d1269010060?s=32&d=mm&r=g"
+          "imageUrl": null
         },
         {
           "id": "https://www.cerebras.ai/blog/accelerating-gpt-5-6-sol-ultrafast-with-openai",
@@ -402,16 +402,6 @@
           "imageUrl": null
         },
         {
-          "id": "https://szha.ai/blog/compute-optimal-is-not-cluster-optimal/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://szha.ai/blog/compute-optimal-is-not-cluster-optimal/",
-          "publishedOn": "2026-08-13T17:40:09.000Z",
-          "wordCount": 3309,
-          "title": "Compute-optimal is not cluster-optimal",
-          "imageUrl": "https://szha.ai/blog/compute-optimal-is-not-cluster-optimal/fig1a-flops-budget-boundary.png"
-        },
-        {
           "id": "https://domenkozar.com/2026/08/13/i-want-extern-fil-c/",
           "author": null,
           "description": "Comments",
@@ -457,7 +447,7 @@
           "description": "Comments",
           "link": "https://oxide.computer/blog/kubernetes-on-oxide",
           "publishedOn": "2026-08-13T14:26:41.000Z",
-          "wordCount": 5559,
+          "wordCount": 6940,
           "title": "Kubernetes on Oxide: How customer needs shaped our integrations",
           "imageUrl": "https://oxide-computer-rceaiok2a-oxidecomputer.vercel.app/img/meta/og-blog.png"
         },
@@ -469,7 +459,17 @@
           "publishedOn": "2026-08-13T14:17:13.000Z",
           "wordCount": 19294,
           "title": "Spaghettifying DRAM",
-          "imageUrl": "https://opengraph.githubassets.com/9d91d818a4fe6d29c557657aa031e5f48b6fc2de2f1211497219caff6e131fc6/xoreaxeaxeax/skitter-creek-bath-salts"
+          "imageUrl": "https://opengraph.githubassets.com/d0bd49fae9723651c85e0140ab483cda35d3b2de45103f76965486a90362b635/xoreaxeaxeax/skitter-creek-bath-salts"
+        },
+        {
+          "id": "https://ordinaryabundance.com/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://ordinaryabundance.com/",
+          "publishedOn": "2026-08-13T13:39:41.000Z",
+          "wordCount": 6701,
+          "title": "Ordinary abundance",
+          "imageUrl": "https://ordinaryabundance.com/assets/abundance-room-v8.jpg"
         },
         {
           "id": "https://current.org/2026/08/nine-pbs-sues-iron-mountain-over-blocked-access-to-archival-data/",
@@ -477,7 +477,7 @@
           "description": "Comments",
           "link": "https://current.org/2026/08/nine-pbs-sues-iron-mountain-over-blocked-access-to-archival-data/",
           "publishedOn": "2026-08-13T13:14:12.000Z",
-          "wordCount": 6915,
+          "wordCount": 6933,
           "title": "Nine PBS sues Iron Mountain over blocked access to archival data",
           "imageUrl": "https://current.org/wp-content/uploads/2026/08/Denver_CO_City_and_County_Building_IMG_5541-crop-scaled-e1786478301201.jpeg"
         },
@@ -502,16 +502,6 @@
           "imageUrl": "assets/demo.jpg"
         },
         {
-          "id": "https://nick.zoic.org/art/smooth-move-taming-trajectories-with-polynomials/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://nick.zoic.org/art/smooth-move-taming-trajectories-with-polynomials/",
-          "publishedOn": "2026-08-10T15:06:15.000Z",
-          "wordCount": 2959,
-          "title": "Smooth Move: Taming Trajectories with Polynomials",
-          "imageUrl": null
-        },
-        {
           "id": "https://sebsite.pw/w/20260810-c89ambiguity.html",
           "author": null,
           "description": "Comments",
@@ -530,6 +520,16 @@
           "wordCount": 1858,
           "title": "Idol Mahjong Final Romance: A Slideshow Disguised as a Video Game",
           "imageUrl": "https://nicole.express/assets/img/romance/title.png"
+        },
+        {
+          "id": "https://www.youtube.com/watch?v=nNXzQ7V1S_k",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.youtube.com/watch?v=nNXzQ7V1S_k",
+          "publishedOn": "2026-08-09T16:16:56.000Z",
+          "wordCount": null,
+          "title": "The Legend of the Novell NE2000 [video]",
+          "imageUrl": null
         },
         {
           "id": "https://www.forth.org/literature/noble.html",
@@ -558,6 +558,36 @@
       "feedUrl": "https://www.lowyat.net/feed/",
       "siteUrl": "https://www.lowyat.net",
       "articles": [
+        {
+          "id": "https://www.lowyat.net/?p=401507",
+          "author": "Kiran Ganesan",
+          "description": "The launch of Apple’s MacBook Neo shook the market up in a significant way. Not only did it make the bitten fruit company’s competitors reconsider their strategies, but it also proved that customers still have an appetite for a humble budget laptop. However, if a Windows Latest report is to be believed, the MacBook Neo […]\nThe post Leaked IdeaPad Vibe Is Lenovo’s Response To The MacBook Neo appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/401507/leaked-ideapad-vibe-lenovo-macbook-neo/",
+          "publishedOn": "2026-08-14T03:42:40.000Z",
+          "wordCount": 14335,
+          "title": "Leaked IdeaPad Vibe Is Lenovo’s Response To The MacBook Neo",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/Leaked-Lenovo-IdeaPad-Vibe-1.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=401493",
+          "author": "Nurul Kamil",
+          "description": "Following a few unofficial appearances, the DJI Osmo 360 II has made its debut in China. The sequel to the drone maker’s first 360-degree camera retains the familiar compact build, as already seen in prior leaks. That said, the new model introduces a selection of improvements and enhancements. To start, the device has adopted an […]\nThe post DJI Osmo 360 II Officially Launched In China With 8K60 Recording appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/401493/dji-osmo-360-ii-china/",
+          "publishedOn": "2026-08-14T03:10:46.000Z",
+          "wordCount": 14152,
+          "title": "DJI Osmo 360 II Officially Launched In China With 8K60 Recording",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/dji-osmo-360-ii-china-1.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=401487",
+          "author": "Heirul Kamel",
+          "description": "The ticketing page for the Formula 1 (F1) Gulf Air Bahrain Grand Prix at the Sepang International Circuit is now back online, confirming the ticket prices that were briefly leaked earlier this week. This means Malaysian fans can indeed get three-day passes for the relocated race from as little as RM200, provided they meet the […]\nThe post F1 Bahrain GP Ticket Prices Now Official; Prior Leak Accurate appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/401487/f1-bahrain-sepang-tickets-official/",
+          "publishedOn": "2026-08-14T02:25:14.000Z",
+          "wordCount": 14236,
+          "title": "F1 Bahrain GP Ticket Prices Now Official; Prior Leak Accurate",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/07/sepang-international-circuit-f1-3.webp"
+        },
         {
           "id": "https://www.lowyat.net/?p=401449",
           "author": "Ian Chee",
@@ -627,36 +657,6 @@
           "wordCount": 14295,
           "title": "Intel CEO Eyes A Return To Memory; Hints At Memory-CPU Architecture",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/08/intel-ceo-lip-bu-tan-1.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=401335",
-          "author": "Heirul Kamel",
-          "description": "When it comes to handheld gaming PCs (no, I refuse to call them consoles when they have Windows installed), having a touchpad and a built-in kickstand are among the key criteria I look for. After considering various options, including the many models we have reviewed, I eventually decided to settle on the 2023 Lenovo Legion […]\nThe post Lenovo Legion Go 2 Long-Term Review: Versatility, Still Unmatched appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/401335/lenovo-legion-go-2-long-term-review/",
-          "publishedOn": "2026-08-13T06:20:49.000Z",
-          "wordCount": 15927,
-          "title": "Lenovo Legion Go 2 Long-Term Review: Versatility, Still Unmatched",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/lenovo-legion-go-2-review_10.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=401402",
-          "author": "John Law",
-          "description": "Zotac recently turned 20 years old and to celebrate, it launched a 20th anniversary edition of its GeForce RTX 5080 Solid Core OC graphics card. As per the name, the card is from a currently existing lineup, just in a different colourway. The new colourway, in this case, is a titanium colour finish, which is […]\nThe post Zotac Launches 20th Anniversary Edition RTX 5080 Solid Core OC appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/401402/zotac-launches-20th-anniversary-edition-rtx-5080-solid-core-oc/",
-          "publishedOn": "2026-08-13T05:58:18.000Z",
-          "wordCount": 14057,
-          "title": "Zotac Launches 20th Anniversary Edition RTX 5080 Solid Core OC",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/ZT-B50800J2S-10P-image01-1240x856.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=401393",
-          "author": "Nurul Kamil",
-          "description": "The nubia A77 5G has officially launched in Malaysia as the brand’s newest addition to its smartphone lineup. Conceived as an accessible 5G-enabled device, it features a sleek yet durable design and a selection of everyday AI-driven features. Starting with the exterior, the new handset sports a 6.75-inch HD+ waterdrop display with a 120Hz refresh […]\nThe post nubia A77 5G Launched In Malaysia With 50MP Camera, Everyday AI Features appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/401393/nubia-a77-5g-malaysia/",
-          "publishedOn": "2026-08-13T04:49:22.000Z",
-          "wordCount": 14128,
-          "title": "nubia A77 5G Launched In Malaysia With 50MP Camera, Everyday AI Features",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/nubia-a77-5g-1.webp"
         }
       ]
     },
@@ -784,7 +784,7 @@
           "description": "The SEC was ready to release at least some part of the innovation exemption alongside its now-canceled open meeting for \"Reg Crypto\" on Friday.",
           "link": "https://www.coindesk.com/policy/2026/08/13/u-s-sec-to-again-delay-innovation-exemption-for-tokenization-amid-wall-street-white-house-concerns",
           "publishedOn": "2026-08-13T23:09:14.000Z",
-          "wordCount": 13924,
+          "wordCount": 13923,
           "title": "U.S. SEC to again delay 'innovation exemption' for tokenization amid Wall Street, White House concerns",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/027ad48cfa40c0b6f4997f516abebf656a10a0e9-720x406.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -794,7 +794,7 @@
           "description": "The first major crypto rule to be proposed by the U.S. Securities and Exchange Commission will have to wait a bit longer after a sudden postponement.",
           "link": "https://www.coindesk.com/policy/2026/08/13/sec-cancels-long-awaited-proposal-of-reg-crypto-postponing-meeting-without-new-date",
           "publishedOn": "2026-08-13T22:18:07.000Z",
-          "wordCount": 12805,
+          "wordCount": 12804,
           "title": "SEC cancels long-awaited proposal of Reg Crypto, postponing meeting without new date",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/090e5c77bf9a39a85f3ba365ccf65e1cbecb6a4f-3781x2129.jpg?auto=format&fit=crop&crop=focalpoint&fp-x=0.526&fp-y=0.8214&w=1920&h=1080&q=75"
         },
@@ -804,7 +804,7 @@
           "description": "KPMG U.S. examined Tether's books and even counted its gold bars as the $180 billion USDT issuer said it completed its long-promised financial audit.",
           "link": "https://www.coindesk.com/business/2026/08/13/tether-says-it-completed-long-promised-big-four-audit-of-finances-behind-usd180-billion-usdt-stablecoin",
           "publishedOn": "2026-08-13T18:26:21.000Z",
-          "wordCount": 13251,
+          "wordCount": 13250,
           "title": "Tether says it completed long-promised 'Big Four' audit of finances behind $180 billion USDT stablecoin",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bfd80702a660a5deef3d056a315228038910dde5-1405x790.jpg?auto=format&q=75"
         },
@@ -814,7 +814,7 @@
           "description": "The thesis is that high yields on long-term U.S. Treasuries make non-yielding assets like bitcoin less attractive.",
           "link": "https://www.coindesk.com/markets/2026/08/13/forecasts-for-usd1-million-bitcoin-price-likely-look-too-ambitious-key-ratio-suggests",
           "publishedOn": "2026-08-13T17:43:25.000Z",
-          "wordCount": 13164,
+          "wordCount": 13163,
           "title": "Forecasts for $1 million bitcoin price likely look too ambitious, key ratio suggests",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/acf831401ea851c7551eb13183b3f53d9be886a8-7146x4766.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -824,7 +824,7 @@
           "description": "The incident marks the first time Trezor customers' shipping addresses were exposed.",
           "link": "https://www.coindesk.com/tech/2026/08/13/trezor-warns-14-000-users-after-fulfilment-partner-suffers-data-breach",
           "publishedOn": "2026-08-13T17:10:57.000Z",
-          "wordCount": 13286,
+          "wordCount": 13285,
           "title": "Trezor warns 14,000 customers after fulfilment partner suffers data breach",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/71a0ed456470eda07e70c0505f537f85cdd80d1e-1280x853.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -834,7 +834,7 @@
           "description": "You’re reading Crypto for Advisors, CoinDesk’s weekly newsletter that unpacks digital assets for financial advisors. Subscribe here to get it every Thursday.",
           "link": "https://www.coindesk.com/coindesk-indices/2026/08/12/crypto-for-advisors-the-crypto-advice-gap",
           "publishedOn": "2026-08-13T15:00:00.000Z",
-          "wordCount": 14344,
+          "wordCount": 14343,
           "title": "Crypto for Advisors: The crypto advice gap",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/f4e8f319b4bdb33570deba7727241b4dc16db4b9-4032x2688.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -844,7 +844,7 @@
           "description": "The institutional crypto liquidity provider is bringing on the former Schroders Wealth Management Asia chairman as it targets family offices and asset managers across the region.",
           "link": "https://www.coindesk.com/business/2026/08/13/b2c2-taps-schroders-veteran-to-chase-asia-s-growing-crypto-wealth",
           "publishedOn": "2026-08-13T14:43:38.000Z",
-          "wordCount": 12780,
+          "wordCount": 12779,
           "title": "B2C2 taps Schroders veteran to chase Asia’s growing crypto wealth",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/dfcf333f60f7e3c344d0104116ea77b35ddd3a27-500x300.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -854,7 +854,7 @@
           "description": "The prediction-market platform raised $1 billion at a $22 billion valuation in May and is now discussing a new round that could nearly double that figure.",
           "link": "https://www.coindesk.com/business/2026/08/13/kalshi-in-talks-with-sequoia-wellington-for-usd750-million-fund-raise-at-usd40-billion-valuation",
           "publishedOn": "2026-08-13T14:16:06.000Z",
-          "wordCount": 12754,
+          "wordCount": 12984,
           "title": "Kalshi in talks with Sequoia, Wellington for $750 million fund raise at $40 billion valuation",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/368ce0eda7ae6af4eae76521bfbcf1266458caa2-3228x2368.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -864,7 +864,7 @@
           "description": "The online bank cut full-year revenue and profit forecasts after first-half crypto trading levels slumped.",
           "link": "https://www.coindesk.com/business/2026/08/13/swissquote-cuts-full-year-guidance-as-1h-crypto-income-plunges-shares-slide",
           "publishedOn": "2026-08-13T13:41:32.000Z",
-          "wordCount": 12576,
+          "wordCount": 12575,
           "title": "Swissquote cuts full-year guidance as 1H crypto income plunges, shares slide",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/837fe64380b9dc3d548255d2d567d2589dbb7250-1920x1080.jpg?auto=format&q=75"
         },
@@ -874,7 +874,7 @@
           "description": "A South Korean court sentenced the head of centralized finance (CeFi) lender Delio to 15 years in prison for embezzling digital assets from more than 1,100 customers.",
           "link": "https://www.coindesk.com/business/2026/08/13/crypto-platform-operator-gets-15-year-prison-sentence-in-south-korea-due-to-usd50-million-scam",
           "publishedOn": "2026-08-13T13:37:56.000Z",
-          "wordCount": 13010,
+          "wordCount": 13009,
           "title": "Crypto platform operator gets 15-year prison sentence in South Korea due to $50 million scam",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ab6526a6112137a16ade76be0e301939e1434fb8-6240x3996.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -884,7 +884,7 @@
           "description": "The tokenization-focused lender posted $226 million in quarterly revenue as blockchain loan marketplace volume jumped to $4.3 billion.",
           "link": "https://www.coindesk.com/business/2026/08/13/figure-revenue-doubles-as-blockchain-loan-marketplace-volumes-surge",
           "publishedOn": "2026-08-13T13:29:28.000Z",
-          "wordCount": 12445,
+          "wordCount": 12444,
           "title": "Figure revenue doubles as blockchain loan marketplace volumes surge",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ee247e62da82d97876607b4f2519c646a3889bb0-2048x1365.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -894,7 +894,7 @@
           "description": "Bullish's second-quarter loss of $280 million was mostly attributable to a $244.6 million markdown on the company’s bitcoin holdings.",
           "link": "https://www.coindesk.com/business/2026/08/13/bullish-reports-usd280-million-q2-net-loss-as-crypto-trading-slows",
           "publishedOn": "2026-08-13T12:09:58.000Z",
-          "wordCount": 12796,
+          "wordCount": 12795,
           "title": "Bullish shares surge 14% as subscription revenue offsets digital asset slowdown",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b34011cfaa53d38c5532f32d0f94249c60ffc8f3-5134x2888.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -904,7 +904,7 @@
           "description": "Your day-ahead look for Aug. 13, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/08/13/strategy-metaplanet-unrealized-bitcoin-losses-highlight-risk-of-concentrating-on-just-one-token",
           "publishedOn": "2026-08-13T11:35:53.000Z",
-          "wordCount": 13537,
+          "wordCount": 13536,
           "title": "Strategy, Metaplanet unrealized bitcoin losses highlight risk of concentrating on just one token",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/45f6f9b38718e6b14ae6bd76d4d513717e5edecc-1500x844.jpg?auto=format&q=75"
         },
@@ -914,7 +914,7 @@
           "description": "Crypto markets remain in a low volatility holding pattern, trading in a tight range following Wednesday's CPI report.",
           "link": "https://www.coindesk.com/markets/2026/08/13/bitcoin-holds-steady-near-usd64-000-as-monero-hyperliquid-outperform",
           "publishedOn": "2026-08-13T11:02:43.000Z",
-          "wordCount": 13154,
+          "wordCount": 13153,
           "title": "Bitcoin holds steady near $64,000 as monero, hyperliquid outperform",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ba7672d4f2121273de99ff0b2b3822f98d720778-1756x988.jpg?auto=format&q=75"
         },
@@ -924,7 +924,7 @@
           "description": "MUFG is preparing a proof-of-concept for onchain JGB transactions using the Canton network.",
           "link": "https://www.coindesk.com/business/2026/08/13/mufg-to-test-real-time-blockchain-settlement-for-japanese-government-bond-trades",
           "publishedOn": "2026-08-13T10:15:32.000Z",
-          "wordCount": 12246,
+          "wordCount": 12245,
           "title": "MUFG to test real-time blockchain settlement for Japanese government bond trades",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8ffa2d62fbee889a39cf3506a9fb9ed7ab545c85-1500x888.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -934,7 +934,7 @@
           "description": "DIGY11 aims for annual distributions matching Brazil’s interbank rate plus 3–5 percentage points, net of costs, though investors' actual returns are not guaranteed.",
           "link": "https://www.coindesk.com/business/2026/08/13/brazil-s-largest-bitcoin-treasury-firm-plans-etf-with-95-allocation-to-strategy-s-strc",
           "publishedOn": "2026-08-13T09:39:52.000Z",
-          "wordCount": 13001,
+          "wordCount": 13000,
           "title": "Brazil’s largest bitcoin treasury firm plans ETF with 95% allocation to Strategy's STRC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/052b07b4d18fa2bfb84d0c75c429af8b04f89c8b-5472x3078.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -944,7 +944,7 @@
           "description": "An in-depth analysis of the U.S. CPI released Wednesday suggests the underlying price pressures remain sticky.",
           "link": "https://www.coindesk.com/tech/2026/08/13/live-markets-u-s-inflation-is-stickier-than-july-s-mild-cpi-suggests",
           "publishedOn": "2026-08-13T09:18:19.000Z",
-          "wordCount": 17501,
+          "wordCount": 17500,
           "title": "Live updates: Bitcoin slips back even as Fed rate hike expectations dwindle",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8f2d1e697d155bc3963c5a14cfdf6d427890ced9-2894x1510.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -954,7 +954,7 @@
           "description": "The inaugural unsecured bonds offer annual interest of up to 4.3%, while exposing investors to metaplanet’s credit and bitcoin-linked balance-sheet risks",
           "link": "https://www.coindesk.com/markets/2026/08/13/bitcoin-treasury-company-metaplanet-unveils-bitbonds-with-usd1-3-million-private-debt-sale",
           "publishedOn": "2026-08-13T09:14:15.000Z",
-          "wordCount": 12688,
+          "wordCount": 12541,
           "title": "Bitcoin treasury company Metaplanet unveils BitBonds with $1.3 million private debt sale",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/55974d1b7b39174a9aabbaadda8b7ede8581ec0a-6000x4000.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -964,7 +964,7 @@
           "description": "Metaplanet CEO dismisses bitcoin sale rumors, confirms 43,000 BTC holdings",
           "link": "https://www.coindesk.com/markets/2026/08/13/metaplanet-denies-selling-bitcoin-worth-usd320-million",
           "publishedOn": "2026-08-13T05:34:48.000Z",
-          "wordCount": 12645,
+          "wordCount": 12644,
           "title": "Metaplanet denies selling bitcoin worth $320 million",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/44d0294c484d8706555e882705c55e5a13f13e91-1192x628.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -974,7 +974,7 @@
           "description": "Coinbase, Block, BitGo and dozens of others signed a letter arguing that safety guardrails on frontier models are blocking legitimate security work while adversaries face no such limits.",
           "link": "https://www.coindesk.com/tech/2026/08/13/bitcoin-firms-ask-ai-labs-for-same-tools-attackers-already-have",
           "publishedOn": "2026-08-13T05:21:21.000Z",
-          "wordCount": 12911,
+          "wordCount": 12910,
           "title": "Bitcoin firms ask AI labs for same tools attackers already have",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/eeb54516a3b0a19f03d51ee5552619fa13b3be71-1920x1440.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -984,7 +984,7 @@
           "description": "Futures positioning has rebuilt to levels last seen when dogecoin traded at three times today's price, and more than three accounts are betting on a rebound for every one betting against.",
           "link": "https://www.coindesk.com/markets/2026/08/13/speculation-on-dogecoin-is-back-to-october-2025-levels-the-price-is-down-70",
           "publishedOn": "2026-08-13T04:06:16.000Z",
-          "wordCount": 13221,
+          "wordCount": 13220,
           "title": "Speculation on dogecoin is back to October 2025 levels. The price is down 70%",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/2af70fa2f5209029fd0a8f7ac7524c5b60b2ba81-1920x1080.png?auto=format&q=75"
         },
@@ -994,7 +994,7 @@
           "description": "An in-line inflation print removed a tail risk but gave BTC little reason to rally, leaving Jackson Hole, jobs data and the next CPI release as the market’s next catalysts.",
           "link": "https://www.coindesk.com/markets/2026/08/13/bitcoin-slips-near-usd63-500-as-traders-look-past-cpi-to-fed-s-next-tests",
           "publishedOn": "2026-08-13T03:39:06.000Z",
-          "wordCount": 12995,
+          "wordCount": 12994,
           "title": "Bitcoin slips near $63,500 as traders look past CPI to Fed’s next tests",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b2197931706e07b90e7d6508d64a10a39dff3e40-2842x1488.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -1004,7 +1004,7 @@
           "description": "The U.S. regulator of platforms such as Kalshi and Polymarket suggests the industry is getting into bad compliance habits that may allow for market abuse.",
           "link": "https://www.coindesk.com/policy/2026/08/12/prediction-markets-should-dial-back-faulty-filings-for-incentives-to-boost-trading-cftc",
           "publishedOn": "2026-08-12T23:16:53.000Z",
-          "wordCount": 12854,
+          "wordCount": 12853,
           "title": "Prediction markets should dial back faulty filings for incentives to boost trading: CFTC",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ba52f7bccf2ae307a3c4c7efe5945ed295f5380d-4032x2268.jpg?auto=format&fit=crop&crop=focalpoint&fp-x=0.5102&fp-y=0.5659&w=1920&h=1080&q=75"
         },
@@ -1014,7 +1014,7 @@
           "description": "Tokenized assets hit a record and trading activity jumped, but revenue slipped in the firm’s first earnings report since going public.",
           "link": "https://www.coindesk.com/markets/2026/08/12/securitize-falls-20-after-earnings-miss-as-tokenization-revenue-falls-short",
           "publishedOn": "2026-08-12T22:26:24.000Z",
-          "wordCount": 12549,
+          "wordCount": 12548,
           "title": "Securitize falls 20% after earnings miss as tokenization revenue falls short",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0df058fe321b648948d8a5b690588aaafbb157fe-2048x1152.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -1024,7 +1024,7 @@
           "description": "Zerohash, which handles crypto plumbing for Morgan Stanley's E*Trade, said it's planning on re-filing and hoping for a swift resolution.",
           "link": "https://www.coindesk.com/policy/2026/08/12/morgan-stanley-s-infrastructure-partner-zerohash-rebuffed-in-pitch-to-be-u-s-trust-bank",
           "publishedOn": "2026-08-12T22:11:09.000Z",
-          "wordCount": 14127,
+          "wordCount": 14126,
           "title": "Morgan Stanley's infrastructure partner Zerohash rebuffed in pitch to be U.S. trust bank",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/7150e9147434709d0f26c49d26f21b2219558bef-2803x1577.jpg?auto=format&fit=crop&crop=focalpoint&fp-x=0.4598&fp-y=0.3145&w=1920&h=1080&q=75"
         }
@@ -1046,7 +1046,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-08-14T01:26:40.000Z",
+          "publishedOn": "2026-08-14T04:01:52.000Z",
           "wordCount": 4287,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
