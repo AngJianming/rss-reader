@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/dc_c2ad9d5e16/why-your-csv-diff-tool-is-lying-to-you-and-how-to-fix-it-24jm",
-          "author": "DC",
-          "description": "If you’ve ever diffed two CSV exports and gotten a wall of red, only to realize nothing actually changed — you’ve hit the same problem I kept running into.\nMost diff tools compare files line by line. That works fine for code, but it falls apart on tabular data the moment a single row gets inserted, deleted, or reordered anywhere in the file. Every row after that point shifts position, and a position-based diff reports all of them as “changed” — even though the underlying data is identical.\nHere’s a minimal example of the problem:\nid,name,status\nid,name,status\nThe fix: match rows by identity, not position.\nI built a diff that detects a likely key column automatically (id, _id, key, slug, code, name — whatever’s actually present) and matches rows across both files by that value instead of line number. Reordering, insertions, and deletions stop generating noise. You see exactly three things: rows added, rows removed, and cells that genuinely changed on a row that exists in both files.\nThe same principle applies to JSON and XML — array items get matched by a detected key field rather than array index, so reordering an array in an API response doesn’t produce a diff full of false changes either.\nThat grew into a small toolkit:\n• Conversion — JSON↔CSV, JSON↔XML, flatten/unflatten nested structures\n• Diffing — JSON, CSV, XML, all key-aware as above\n• Schema tooling — generate a JSON Schema from a sample, validate data against one, or render it straight to a TypeScript interface or Zod schema\n• Access — a browser tool (nothing uploaded, runs entirely client-side), a CLI (npx recast-cli, works offline), and a GitHub Action for CI\n\nFree tier covers everything above with reasonable size limits — it’s at tryrecast.app if you want to try it on your own data.\nCurious whether others have hit this same reordering problem and what you used to work around it — Beyond Compare, a custom script, something else?\nTry it: http://tryrecast.app",
-          "link": "https://dev.to/dc_c2ad9d5e16/why-your-csv-diff-tool-is-lying-to-you-and-how-to-fix-it-24jm",
-          "publishedOn": "2026-08-16T08:01:45.000Z",
-          "wordCount": 1610,
-          "title": "Why your CSV diff tool is lying to you (and how to fix it)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fxjubztjr7mm9f9fmlj84.png"
+          "id": "https://dev.to/amitfeldman/i-re-scanned-the-launches-i-flagged-last-week-heres-who-actually-shipped-the-fixes-514k",
+          "author": "Amit Feldman",
+          "description": "For the past two weeks I've been running passive, read-only security scans on products that launch here on dev.to, and posting the findings publicly with the concrete fix for each. No pitch in the first touch — the scan is the conversation, and I always offer a free re-scan once fixes are deployed.\nThe part I didn't expect: how many makers actually shipped the fixes. This is the verification roundup — real before/after numbers from the re-scans.\nThe headline finding from the broader sweep hasn't changed: the most common failure is a missing Content-Security-Policy — roughly 7 in 10 launches — followed by missing HSTS. Both are one-line fixes. Almost nobody ships them on day one.\nThe fastest turnaround so far. Loop (Next.js on Vercel) launched with 7 passed / 5 warnings / 4 failures: no CSP…",
+          "link": "https://dev.to/amitfeldman/i-re-scanned-the-launches-i-flagged-last-week-heres-who-actually-shipped-the-fixes-514k",
+          "publishedOn": "2026-08-16T09:05:27.000Z",
+          "wordCount": 1928,
+          "title": "I re-scanned the launches I flagged last week — here's who actually shipped the fixes",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fdvg2tefofbp4mmbrm23n.png"
         },
         {
-          "id": "https://dev.to/ranaharoon3222/letting-an-llm-call-your-apis-without-losing-sleep-3fa4",
-          "author": "Haroon Ahmad",
-          "description": "The first time I gave a language model access to a real API, it worked perfectly in the demo. It looked up an order, summarized the status, and everyone in the meeting nodded. Two weeks later, in production, the same setup tried to issue the same refund three times in a row because a timeout made it think the first attempt failed.\nNothing was \"wrong\" with the model. Everything was wrong with how I had wired it up.\nFunction calling (or tool calling, same thing) is the moment your LLM stops being a text generator and becomes an actor in your system. Most tutorials stop at the happy path: define a function, pass the schema, watch the model call it. That gets you a demo. This article is about everything after the demo.\nHere is the mental model that changed how I build these systems: designing …",
-          "link": "https://dev.to/ranaharoon3222/letting-an-llm-call-your-apis-without-losing-sleep-3fa4",
-          "publishedOn": "2026-08-16T08:01:16.000Z",
-          "wordCount": 2942,
-          "title": "Letting an LLM call your APIs without losing sleep",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F7xyfto6az7bt6yj1hgbh.png"
+          "id": "https://dev.to/caseymarlin/whats-actually-inside-an-eml-file-and-how-to-read-one-without-outlook-3jp1",
+          "author": "Casey Marlin",
+          "description": "Someone forwards you an email as a .eml attachment. You double-click it,\nis\nDespite the scary-looking contents, a .eml file is a plain-text file in\nMIME format (RFC 5322 + RFC 2045). Open one in a text editor and the\nFrom: Alice <alice@example.com>\nTo: Bob <bob@example.com>\nSubject: Q3 numbers\nDate: Tue, 12 Aug 2026 09:14:00 +0000\nMIME-Version: 1.0\nContent-Type: multipart/mixed; boundary=\"_boundary_42\"\n\n--_boundary_42\nContent-Type: text/html; charset=\"utf-8\"\nContent-Transfer-Encoding: quoted-printable\n\n<p>Here are the numbers you asked for.</p>\n\n--_boundary_42\nContent-Type: application/pdf; name=\"report.pdf\"\nContent-Transfer-Encoding: base64\nContent-Disposition: attachment; filename=\"report.pdf\"\n\nJVBERi0xLjQKJc... (base64 continues)\n--_boundary_42--\n\nThree things to notice:\nHeaders come fi…",
+          "link": "https://dev.to/caseymarlin/whats-actually-inside-an-eml-file-and-how-to-read-one-without-outlook-3jp1",
+          "publishedOn": "2026-08-16T09:03:55.000Z",
+          "wordCount": 1873,
+          "title": "What's actually inside an .eml file (and how to read one without Outlook)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fugtuwhc92a59bt88crmr.png"
         },
         {
-          "id": "https://dev.to/nodevguy/you-are-the-shadow-ai-your-security-team-is-worried-about-7fa",
-          "author": "Mr Recruiter",
-          "description": "Quick self-check. In the past month, have you:\nPasted a stack trace containing internal hostnames into a personal ChatGPT account?\nIf yes to any: congratulations, you're shadow AI. Not the abstract corporate-risk version from LinkedIn posts. The literal, specific thing showing up in breach reports.\nI say this without judgment, because the numbers make it clear this is everyone. Verizon's 2026 DBIR found regular AI use on corporate devices went from 15% to 45% in one year, and 67% of that runs through personal accounts the company can't see. Developers sit at the top of that curve. We adopted first, we adopted hardest, and we have the most sensitive stuff to paste.\nThis stopped being theoretical in May\nTwo data points moved this from \"security team hand-wringing\" to \"documented reality\" for…",
-          "link": "https://dev.to/nodevguy/you-are-the-shadow-ai-your-security-team-is-worried-about-7fa",
-          "publishedOn": "2026-08-16T08:00:41.000Z",
-          "wordCount": 2268,
-          "title": "You Are the Shadow AI Your Security Team Is Worried About",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1amp3hwjfo0svcl4kl0y.png"
+          "id": "https://dev.to/pawanatoshi/i-fixed-a-modal-that-said-accessible-but-wasnt-3bei",
+          "author": "Pawan Satoshi",
+          "description": "This is a submission for DEV's Summer Bug Smash: Clear the Lineup powered by Sentry.\nThe Comfort Table is an interactive comfort-food editorial experience originally built for the DEV Frontend Challenge.\nVisitors can discover comfort dishes through mood and moment, explore a global menu, and open detailed dish stories inside a custom modal.\nThe project uses semantic HTML, responsive CSS, vanilla JavaScript, visible focus states, aria-pressed, aria-live, reduced-motion support, and touch-friendly interactions.\nThe bug was in the custom dish-details modal.\nThe component declared itself with role=\"dialog\" and aria-modal=\"true\", but its behavior did not fully satisfy what those semantics promised.\nThe visual modal worked, but the focus-management lifecycle was incomplete.\nA robust modal needs …",
+          "link": "https://dev.to/pawanatoshi/i-fixed-a-modal-that-said-accessible-but-wasnt-3bei",
+          "publishedOn": "2026-08-16T09:01:33.000Z",
+          "wordCount": 1851,
+          "title": "I Fixed a Modal That Said “Accessible” But Wasn’t",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fsv4qab0xk876h45t3mo6.png"
         },
         {
-          "id": "https://dev.to/nodevguy/your-coding-agents-supply-chain-is-a-mess-heres-how-to-harden-it-40fa",
-          "author": "Mr Recruiter",
-          "description": "In March, a backdoored version of LiteLLM sat on PyPI for about three hours. It got downloaded roughly 47,000 times in that window.\nIf you don't know LiteLLM, check your lockfile. It's the model gateway underneath CrewAI, DSPy, Microsoft GraphRAG, and a pile of other agent frameworks. There's a decent chance it's in your dependency tree without you ever having typed pip install litellm. Anyone who pulled an update during those three hours also pulled in an autonomous attack bot.\nI want to walk through what actually went wrong across the agent ecosystem this year, because the pattern is consistent, and then give you the hardening steps I'd do this week if I were running agents in anything close to production.\nThe pattern: attackers poison what your agent trusts\nNobody is brute-forcing your …",
-          "link": "https://dev.to/nodevguy/your-coding-agents-supply-chain-is-a-mess-heres-how-to-harden-it-40fa",
-          "publishedOn": "2026-08-16T07:57:33.000Z",
-          "wordCount": 2345,
-          "title": "Your Coding Agent's Supply Chain Is a Mess. Here's How to Harden It.",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fk9gkty1009shpbhf0h1e.png"
+          "id": "https://dev.to/pdf4me/one-mcp-server-three-config-schemas-wiring-pdf4me-into-cursor-vs-code-claude-desktop-windsurf-2j5c",
+          "author": "PDF4me",
+          "description": "Five MCP clients. One server command. Three different config schemas.\nThat last part is the bit worth knowing before you wire a document API into an agent, because when you get it wrong nothing errors loudly. The server simply does not appear.\nEverything below comes from PDF4me's MCP getting started guide, read in full on 16 August 2026.\nThe server is a single command:\nuvx pdf4me-mcp\n\nThe guide is explicit that this is shared, and says to use the same server command in all clients. Five clients are named: Cursor, VS Code, Claude Desktop, Windsurf, and Continue, with Continue covering both VS Code and JetBrains.\nuvx ships with UV, so UV is the one prerequisite beyond a PDF4me API key. On Windows that is a PowerShell one-liner, on macOS and Linux it is available through brew, pipx or pip. Th…",
+          "link": "https://dev.to/pdf4me/one-mcp-server-three-config-schemas-wiring-pdf4me-into-cursor-vs-code-claude-desktop-windsurf-2j5c",
+          "publishedOn": "2026-08-16T09:01:01.000Z",
+          "wordCount": 2353,
+          "title": "One MCP Server, Three Config Schemas: Wiring PDF4me Into Cursor, VS Code, Claude Desktop, Windsurf and Continue",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fg0tbne78owz6lad9fa40.png"
         },
         {
-          "id": "https://dev.to/sanjeev_tripathisanjeev_/building-a-100-in-browser-image-compressor-converter-with-zero-server-uploads-21i0",
-          "author": "Sanjeev Tripathi Sanjeev",
-          "description": "Most online image compressors require uploading photos to remote cloud servers. For private identity documents, signatures, or personal images, this introduces unnecessary privacy concerns.\nTo address this, I built PixelQuick — a lightweight, entirely client-side image utility that runs strictly within the browser using vanilla JavaScript and the HTML5 Canvas API.\nZero Server Uploads: Processing happens entirely in local RAM; files never touch a remote backend.\nExact Size Limits: Auto-compresses images to exact targets (e.g., 20 KB, 50 KB, 100 KB) commonly required for online forms and portals.\nFormat Conversion: Fast conversion between JPG, PNG, WEBP, and PDF.\nAspect Ratio & Dimensions: Built-in passport size (35x45 mm) and standard presets.\nOffline QR Code Utility: Quick generator running offline.\nThe core compression relies on the HTML5 <canvas> element and canvas.toBlob():\n\njavascript\nconst canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n\n// Draw resized image\ncanvas.width = targetWidth;\ncanvas.height = targetHeight;\nctx.drawImage(img, 0, 0, targetWidth, targetHeight);\n\n// Export with controlled quality\ncanvas.toBlob((blob) => {\n  const compressedUrl = URL.createObjectURL(blob);\n  // Download or preview\n}, 'image/jpeg', quality);\n\n### Try It Out\nYou can try the live tool here: [PixelQuick](https://pixelquick.netlify.app/)",
-          "link": "https://dev.to/sanjeev_tripathisanjeev_/building-a-100-in-browser-image-compressor-converter-with-zero-server-uploads-21i0",
-          "publishedOn": "2026-08-16T07:54:06.000Z",
-          "wordCount": 1462,
-          "title": "Building a 100% In-Browser Image Compressor & Converter with Zero Server Uploads",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fm4j1u59aundb7eohc958.png"
+          "id": "https://dev.to/wiseai/sushi-rs-svg-sushi-components-for-rust-frontends-2n1o",
+          "author": "Mahmoud Harmouch",
+          "description": "Sup Guys 👋!\nI am back! It has been a long time no see!\nSo I came across the Frontend Challenge: Comfort Food Edition on dev.to, and I thought: \"Hey, what if I build a Rust crate that lets you render SVG sushi directly in your WASM frontend? How hard can it be?\"\n(Famous last words. The borrow checker immediately disagreed.)\n\nBut spoiler: we made it. And so, Sushi RS was born.\nNow, you might be wondering: \"Of all comfort foods: pizza, ramen, mac and cheese, a warm bowl of existential dread, why sushi?\"\nFair question.\nThe answer is personal, and a little dark, in the way that good sushi always has a little bit of wasabi hiding underneath.\nI wrote a long-form post called Who Am I? that goes deep into my life, my mental health journey, and the concept of what I called sushicide 🍣, a metaphor …",
+          "link": "https://dev.to/wiseai/sushi-rs-svg-sushi-components-for-rust-frontends-2n1o",
+          "publishedOn": "2026-08-16T08:57:35.000Z",
+          "wordCount": 3323,
+          "title": "🍣 Sushi RS: SVG Sushi Components for Rust Frontends.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fm5clqpp89ytvrlh3u23p.webp"
         },
         {
-          "id": "https://dev.to/huzky30g/i-got-tired-of-alt-tabbing-to-a-real-terminal-so-i-built-my-ai-a-front-door-2h78",
-          "author": "Huzky",
-          "description": "So you're deep in a session with Claude Code or Cursor, everything's flowing, and then it hits a wall:\n\"I can't install this package system-wide, I don't have sudo.\"\nAnd you're sitting right there, hands on the keyboard, perfectly willing to run that one command yourself. But instead you have to stop, alt-tab to a real terminal, type it out, come back, and re-explain what just happened so the agent can pick up where it left off. Every time. All day.\nThe sandbox isn't wrong, by the way. You want your AI boxed in — nobody wants an agent that can quietly touch /etc or fiddle with firewall rules on its own initiative. The problem isn't that the sandbox exists. It's that there's no door in it. No way to say \"yes, this one, go ahead\" without leaving the conversation entirely.\nThat's the whole re…",
-          "link": "https://dev.to/huzky30g/i-got-tired-of-alt-tabbing-to-a-real-terminal-so-i-built-my-ai-a-front-door-2h78",
-          "publishedOn": "2026-08-16T07:48:36.000Z",
-          "wordCount": 1956,
-          "title": "I Got Tired of Alt-Tabbing to a Real Terminal, So I Built My AI a Front Door",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1qemeb5tvq8dntz1dmfn.png"
+          "id": "https://dev.to/arpa/new-open-source-avatar-gives-your-ai-agents-a-face-1h94",
+          "author": "Ross Peili",
+          "description": "Talking to a voice model today often feels like speaking into a well-lit void. The answers can be sharp, the TTS can sound human, and still something is missing: there is no presence on the desk. No glance when the model starts. No small gesture when a thought lands. Just a waveform, a chat log, or a black window that happens to speak.\nThat gap is why we built AVATAR — an open-source desktop companion from ARPA Hellenic Logical Systems that puts a VRM character on your screen, moves it with VRMA motion, and lipsyncs to live audio. It is not another chatbot. It is a thin, local-first presenter: your agents, tools, and listening habits stay yours; AVATAR gives them a body to occupy while you work.\n\nAVATAR runs primarily as an Electron transparent, always-on-top overlay on Windows. You drag a…",
+          "link": "https://dev.to/arpa/new-open-source-avatar-gives-your-ai-agents-a-face-1h94",
+          "publishedOn": "2026-08-16T08:51:01.000Z",
+          "wordCount": 1954,
+          "title": "New open-source AVATAR gives your AI agents a face",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhrzbrt3xmjnh6ltpnfb6.png"
         },
         {
-          "id": "https://dev.to/themodernweb/i-built-a-production-e-commerce-system-heres-what-i-learned-3f8a",
-          "author": "Modern Web",
-          "description": "E-commerce projects at first glance look simple — search products, add them to a cart, checkout, complete the payment, done.\nI thought the same. I recently built an e-commerce system, and it started with the simple problems we all know. But when I started questioning how the actual system works in production, I learned so many things that I think you would find helpful.\nMost of us think of an e-commerce project as a beginner project and categorize it as boring. But if you think about it, e-commerce is one of the best projects that covers most of the topics a beginner needs to start with full-stack development.\nFrontend storefront\nBackend APIs\nA dedicated Content Management System\nSecure authentication\nProtecting user data with proper authorization\nDatabase design\nInventory system\nConcurren…",
-          "link": "https://dev.to/themodernweb/i-built-a-production-e-commerce-system-heres-what-i-learned-3f8a",
-          "publishedOn": "2026-08-16T07:41:15.000Z",
-          "wordCount": 2070,
-          "title": "I Built a Production E-commerce System — Here’s What I Learned",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fdjswydj8l8hszkg0uqal.png"
+          "id": "https://dev.to/hackrs_6393/make-free-model-requests-idempotent-before-you-add-retries-3mi2",
+          "author": "Dakota Huang",
+          "description": "Add retries only after the request knows what it already did. Free model endpoints and free servers fail in the worst place: after the work may have run but before you receive the response.\nDisclosure: This article was prepared as part of MonkeyCode's product outreach. I rely on two operator-supplied availability claims only: MonkeyCode has free model access and a free server option.\nThe workflow below is a client-side guard, not a provider guarantee.\nA free server worker can be recycled mid-request.\nA free model endpoint can time out after generation.\nA retry can duplicate a downstream write or return a mixed JSON payload.\nA plain timeout does not tell you whether the provider already ran the request.\nThe rule is boring but useful: keep request intent, raw response, and accepted result se…",
+          "link": "https://dev.to/hackrs_6393/make-free-model-requests-idempotent-before-you-add-retries-3mi2",
+          "publishedOn": "2026-08-16T08:50:55.000Z",
+          "wordCount": 2069,
+          "title": "Make Free Model Requests Idempotent Before You Add Retries",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2b9jfrxi1no8bsgve08p.png"
         },
         {
-          "id": "https://dev.to/ali_hamza_589ec7b3eb6688d/day-176-of-learning-mern-stack-1b88",
-          "author": "Ali Hamza",
-          "description": "Hello Dev Community! 👋\nIt is officially Day 176 of my full-stack engineering track! Today, I explored advanced type-safety mechanics in TypeScript: Type Assertions (as), unknown vs any, and the never type for exhaustive checks! 📘⚡\nHere is how these strict type features make applications bulletproof against runtime failures.\nAs captured in my code editor setup (index.ts):\nas Keyword)\n\n\n\nOverrode default compiler inference when working with DOM elements and JSON.parse() results:\n\ntypescript\n  const element = document.querySelector('Element') as HTMLInputElement;\n  const bookObject = JSON.parse(stringBook) as Book;",
-          "link": "https://dev.to/ali_hamza_589ec7b3eb6688d/day-176-of-learning-mern-stack-1b88",
-          "publishedOn": "2026-08-16T07:38:56.000Z",
-          "wordCount": 1345,
-          "title": "Day 176 of Learning MERN Stack",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2kj0dthg6f1q5ew52b33.png"
+          "id": "https://dev.to/rpi1337/demystifying-vector-distance-in-postgresql-40ol",
+          "author": "💻 Arpad Kish 💻",
+          "description": "A look into sliding window comparisons for image analysis.\nWhen you need to perform complex similarity comparisons inside a database, you often have to bridge the gap between application-level data structures (like JSON) and low-level math (like vectors).\nThe PostgreSQL snippet provided is a classic example of this bridge. It sets up the foundation for a sliding window comparison—a technique where you analyze overlapping sequences of data—by extracting features from a JSON payload and calculating how \"far apart\" two sets of image data are using Euclidean distance.\nBefore you can compare two sets of data, you have to format them into a mathematical structure. The get_vector_values function handles this transformation.\nThis function takes a JSONB array of objects (the cluster_vector) and fla…",
+          "link": "https://dev.to/rpi1337/demystifying-vector-distance-in-postgresql-40ol",
+          "publishedOn": "2026-08-16T08:50:55.000Z",
+          "wordCount": 1733,
+          "title": "Demystifying Vector Distance in PostgreSQL",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Flcn1fg94auet45uz56bf.png"
         },
         {
-          "id": "https://dev.to/typeclash/why-your-wpm-plateaus-and-what-actually-breaks-it-5a94",
-          "author": "Typeclash",
-          "description": "Every typist hits the same wall. You go from 40 to 55 WPM in a few weeks of casual practice, then you stall. You keep typing every day, the number doesn't move, and the internet's advice (\"just practice more\") stops working. Here's why, and what actually breaks the plateau.\nWhen people say they're \"stuck,\" they usually mean their peak speed hasn't moved. But peak speed was never the bottleneck - it's how fast you recover from a miss that determines your average.\nWatch a 40 WPM typist and an 80 WPM typist type the same paragraph. Their peak keystroke speed in a clean run is often closer than you'd expect. The real gap is what happens after an error: the 40 WPM typist pauses, looks at the screen, backspaces, and restarts the word. The 80 WPM typist's fingers keep moving almost without a brea…",
-          "link": "https://dev.to/typeclash/why-your-wpm-plateaus-and-what-actually-breaks-it-5a94",
-          "publishedOn": "2026-08-16T07:38:51.000Z",
-          "wordCount": 1901,
-          "title": "Why Your WPM Plateaus (And What Actually Breaks It)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhom5lgqayafnx4dq942f.jpg"
+          "id": "https://dev.to/boris_zhguchev_c13ea7f707/what-zig-felt-like-coming-from-rust-2bg9",
+          "author": "Boris Zhguchev",
+          "description": "Intro\n\n\nI've spent the last 7 years as a Rust developer, working mostly on open source projects,\nOne caveat worth stating up front: my experience with Zig begins with this project.\nTo make the comparison fair, I decided to reimplement something I'd already built in Rust,\njsonpath-rust),\nzig-jsonpath.\nThe first thing that caught me off guard — and honestly, who would've expected this to be the memorable part — was IDE support, or the near-total lack of it. I'd been using RustRover for Rust and various JetBrains flavors for other languages, and Zig, by comparison, offered little beyond syntax highlighting and basic autocompletion. It wasn't exactly surprising, but it did force me back to basics: learning to work with the language largely from the command line. What started as a drawback turn…",
+          "link": "https://dev.to/boris_zhguchev_c13ea7f707/what-zig-felt-like-coming-from-rust-2bg9",
+          "publishedOn": "2026-08-16T08:50:17.000Z",
+          "wordCount": 3924,
+          "title": "What Zig felt like, coming from Rust",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F4wkiflmus8dt53b14ig0.png"
         },
         {
-          "id": "https://dev.to/dev_hajare_d11ce990734a91/agentic-ai-for-production-support-moving-from-alerts-to-intelligent-incident-resolution-d9g",
-          "author": "Dev Hajare",
-          "description": "Agentic AI for Production Support: Moving from Alerts to Intelligent Incident Resolution\n\n\nProduction support today is still highly dependent on engineers.\nAn alert comes in → engineer checks logs → searches previous incidents → identifies possible RCA → validates the solution → takes action.\nWhile working on this problem, I started exploring a simple question:\nCan Agentic AI reduce this dependency without giving AI uncontrolled access to production?\nThis is the idea behind my Agentic Production Support project.\nThe basic flow I am building is:\nIncident → Clean Layer → RAG → AI Agent → RCA → Validation → Human Approval → Action\nInstead of sending every incident directly to an LLM, the system first prepares and controls the context.\nRAG (Retrieval-Augmented Generation) searches historical i…",
-          "link": "https://dev.to/dev_hajare_d11ce990734a91/agentic-ai-for-production-support-moving-from-alerts-to-intelligent-incident-resolution-d9g",
-          "publishedOn": "2026-08-16T07:37:27.000Z",
-          "wordCount": 1668,
-          "title": "Agentic AI for Production Support: Moving from Alerts to Intelligent Incident Resolution",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F09hol4gxp9nva6312ox8.png"
+          "id": "https://dev.to/amrshadid/go-dicom-a-pure-go-dicom-library-and-cli-no-cgo-17ij",
+          "author": "Amr shadid",
+          "description": "If you work in Go and you need to handle medical images, your options until now were unpleasant. Bind to dcmtk or DCMTK-derived C libraries and accept CGO — losing static builds, easy cross-compilation, and a good chunk of your deployment simplicity. Shell out to a Python process running pydicom. Or write the parts of the DICOM standard you need yourself, which is how a lot of hospital integrations quietly end up with a half-finished parser in an internal repo.\nI built go-dicom because I hit that wall on a medical imaging platform I maintain. It is a complete DICOM implementation in pure Go — files, pixels, and the network protocol — with no C dependencies at all.\ngo get github.com/amrshadid/go-dicom\n\nOr, for the CLI:\ncurl -fsSL https://raw.githubusercontent.com/amrshadid/go-dicom/main/ins…",
+          "link": "https://dev.to/amrshadid/go-dicom-a-pure-go-dicom-library-and-cli-no-cgo-17ij",
+          "publishedOn": "2026-08-16T08:49:38.000Z",
+          "wordCount": 2651,
+          "title": "go-dicom — a pure Go DICOM library and CLI, no CGO",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F8qd1y72qu2lmtr0rdfky.png"
         },
         {
-          "id": "https://dev.to/seasonkoh/ai-agents-can-find-products-the-hard-part-starts-after-buy-2m10",
-          "author": "WebAZ",
-          "description": "AI agents can already search catalogs, compare options, and recommend a product.\nThat is useful, but it is not commerce.\nCommerce begins when the recommendation becomes a commitment:\nWho approved the purchase?\nWhere does the money go?\nWhat state is the order in?\nWhich product variant and inventory snapshot did the buyer accept?\nWhat evidence survives if fulfillment fails?\nHow does a return reach the right address?\nMost agent demos stop before these questions. WebAZ is an open-source protocol trying to make the messy part after \"buy\" explicit, inspectable, and usable by both humans and AI agents.\nWebAZ now runs two real settlement rails. On neither rail does WebAZ take custody of the principal.\nThe buyer pays the seller directly, off-platform. WebAZ records the payment-instruction snapshot,…",
-          "link": "https://dev.to/seasonkoh/ai-agents-can-find-products-the-hard-part-starts-after-buy-2m10",
-          "publishedOn": "2026-08-16T07:35:35.000Z",
-          "wordCount": 1848,
-          "title": "AI Agents Can Find Products. The Hard Part Starts After \"Buy.\"",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6jw6ax42e0k5ydxqa161.png"
+          "id": "https://dev.to/leonardmwilu139/starting-my-journey-with-data-science-and-ai-analytics-what-ive-learned-so-far-2dcf",
+          "author": "Leonard Mwilu",
+          "description": "Hello DEV Community! 👋\nI'm starting a new chapter in my career journey and wanted to document my progress here. I recently enrolled in LUXDEV (Data Science and AI Analytics Cohort 9 2026), and I'm excited to share my first updates!\nI wanted to build a rock-solid foundation in Data Science and get certified instead of learning randomly without structure. My goal is to understand data analysis, structuring and how to deduce information from cleaned data, using this to make predictions and decisions.\nHere is a quick summary of what I've tackled in the first couple of modules:\nGit and GitHub: Installed and set up Git on my laptop  and linked it with my existing GitHub account.\nDBeaver and Postgress: Installed Postgress and DBeaver. Used DBeaver to create DB on Postgress.\nAiven: Created an account on Aiven Site. Created two services MySQl and Postgress. Linked both database with DBeaver for ease management.\nDBeaver is a Open Source Database management tool\nAiven is a online(cloud) platform for creating database and more and gives free usage for 1 DB at a time for learning purposes.\nLearned about this site DEV Its the first time to hear about it\n\n\n\n\n  \n  \n  🚀 What's Next\n\n\nThis 2nd week we dive into the real deal now that we are set.\nI'd love to connect with others currently taking Data Science & AI Analytics or learning Data Engineering. Leave a comment below or drop your favorite learning tips!",
+          "link": "https://dev.to/leonardmwilu139/starting-my-journey-with-data-science-and-ai-analytics-what-ive-learned-so-far-2dcf",
+          "publishedOn": "2026-08-16T08:47:04.000Z",
+          "wordCount": 1549,
+          "title": "Starting My Journey with Data Science and AI Analytics: What I've Learned So Far",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0yfq7ucbb3h6w9kxyexl.png"
         },
         {
-          "id": "https://dev.to/nochili/why-ai-influencers-need-a-character-system-not-another-image-generator-4a12",
-          "author": "no-chili",
-          "description": "A convincing AI influencer is not just a good portrait. It is a character that stays recognizable across posts, campaigns, and formats.\nThat sounds obvious, but most image-generation workflows begin from a blank prompt every time. The result may look impressive in isolation while the face, styling, tone, or audience changes from one asset to the next.\nFor a reusable virtual creator, continuity has several layers:\nVisual identity: facial features, hair, proportions, wardrobe, and recurring details\nCreative direction: aesthetic, lighting, locations, and camera language\nVoice: personality, vocabulary, and the way the character addresses an audience\nPositioning: niche, target audience, and the topics the character should or should not cover\nIf those details live only inside a long prompt, they…",
-          "link": "https://dev.to/nochili/why-ai-influencers-need-a-character-system-not-another-image-generator-4a12",
-          "publishedOn": "2026-08-16T07:35:33.000Z",
-          "wordCount": 1621,
-          "title": "Why AI influencers need a character system, not another image generator",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fy4e2wdxqkgvnbz0ymr1f.png"
+          "id": "https://dev.to/anas_sheikh_2/stop-wrapping-everything-in-use-client-its-quietly-killing-your-nextjs-performance-21e0",
+          "author": "Anas Sheikh",
+          "description": "Open ten random Next.js App Router projects on GitHub right now. I'd bet real money that at least seven of them have a 'use client' directive sitting at the top of a page component that never needed to be there in the first place, quietly shipping way more JavaScript to the browser than the page actually requires.\nThis is not a hypothetical problem. I've audited client projects where removing three unnecessary 'use client' directives cut the initial JS bundle by more than a third. Nobody put them there maliciously. Everybody put them there out of habit, muscle memory from the Pages Router days, or because one small interactive piece \"made it easier\" to just mark the whole file client-side instead of extracting it.\nThe App Router defaults to Server Components. No JavaScript for that compone…",
+          "link": "https://dev.to/anas_sheikh_2/stop-wrapping-everything-in-use-client-its-quietly-killing-your-nextjs-performance-21e0",
+          "publishedOn": "2026-08-16T08:35:59.000Z",
+          "wordCount": 2124,
+          "title": "Stop Wrapping Everything in 'use client'. It's Quietly Killing Your Next.js Performance.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fe4yto3mujauir1f8i53t.png"
         }
       ]
     },
@@ -262,16 +262,6 @@
           "imageUrl": null
         },
         {
-          "id": "https://github.com/jitpass/jit",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/jitpass/jit",
-          "publishedOn": "2026-08-16T06:55:04.000Z",
-          "wordCount": 7106,
-          "title": "Show HN: Laptop is the last place your secrets are still in plaintext",
-          "imageUrl": "https://opengraph.githubassets.com/b4c64c05072c1794a815210ea55262ccba0b6c1626baa92b0b34fff1c1880948/jitpass/jit"
-        },
-        {
           "id": "https://www.falstad.com/mathphysics.html",
           "author": null,
           "description": "Comments",
@@ -279,16 +269,6 @@
           "publishedOn": "2026-08-16T04:19:32.000Z",
           "wordCount": 790,
           "title": "Falstad Math and Physics Simulations",
-          "imageUrl": null
-        },
-        {
-          "id": "https://nntaleb.substack.com/p/have-another-drink",
-          "author": null,
-          "description": "Comments",
-          "link": "https://nntaleb.substack.com/p/have-another-drink",
-          "publishedOn": "2026-08-16T03:23:34.000Z",
-          "wordCount": null,
-          "title": "Government sponsored study on alcohol doesn't stand up to scrutiny",
           "imageUrl": null
         },
         {
@@ -339,7 +319,7 @@
           "publishedOn": "2026-08-15T23:54:35.000Z",
           "wordCount": 3723,
           "title": "Tea5767-Radio-Tuner",
-          "imageUrl": "https://opengraph.githubassets.com/74a264d372bf857fd7d0cc4753828166ad262102c68f87dbcb55aa706d7e391f/turtushig22-blip/tea5767-radio-tuner"
+          "imageUrl": "https://opengraph.githubassets.com/2f8034873ed5f7b2f1b948f5bbcf4bdf97ac25151ba89214ff3b1b9d14c8e0c2/turtushig22-blip/tea5767-radio-tuner"
         },
         {
           "id": "https://arxiv.org/abs/2608.13122",
@@ -422,6 +402,16 @@
           "imageUrl": null
         },
         {
+          "id": "https://github.com/wmww/tawc",
+          "author": null,
+          "description": "Comments",
+          "link": "https://github.com/wmww/tawc",
+          "publishedOn": "2026-08-15T18:34:26.000Z",
+          "wordCount": 2218,
+          "title": "Tess's Android Wayland Compositor",
+          "imageUrl": "https://opengraph.githubassets.com/f087a676d6eed41a88aee298441f6b9e674b2c4a28eff98fe7761e2684126726/wmww/tawc"
+        },
+        {
           "id": "https://www.ycombinator.com/companies/voltair/jobs/sSOD2Ox-flight-test-engineer",
           "author": null,
           "description": "Comments",
@@ -492,14 +482,14 @@
           "imageUrl": "https://bipluk.com/static/dithered_knob_og.gif"
         },
         {
-          "id": "https://ikouchiha47.github.io/2026/08/12/concurrency-and-gc.html",
+          "id": "https://ovidem.com/impulsetracker/",
           "author": null,
           "description": "Comments",
-          "link": "https://ikouchiha47.github.io/2026/08/12/concurrency-and-gc.html",
-          "publishedOn": "2026-08-12T17:16:11.000Z",
-          "wordCount": 13311,
-          "title": "Not sure where I am going with this garbage collection rabbit hole",
-          "imageUrl": null
+          "link": "https://ovidem.com/impulsetracker/",
+          "publishedOn": "2026-08-12T10:35:20.000Z",
+          "wordCount": 421,
+          "title": "Impulse Tracker",
+          "imageUrl": "https://ovidem.com/img/impulse-tracker-cover.png"
         },
         {
           "id": "https://notebook.link/blog/numba-in-the-browser/",
@@ -522,14 +512,24 @@
           "imageUrl": "https://dlcdnwebimgs.asus.com/gain/36fca81d-66d4-4a3a-9fa3-05976be35494/"
         },
         {
-          "id": "https://blog.pickcode.io/program-with-paint-brushes-not-pencils/",
+          "id": "https://longreads.com/2026/08/11/obituaries-new-york-times-sam-roberts/",
           "author": null,
           "description": "Comments",
-          "link": "https://blog.pickcode.io/program-with-paint-brushes-not-pencils/",
-          "publishedOn": "2026-08-11T15:30:04.000Z",
-          "wordCount": 1124,
-          "title": "Program with Paint Brushes, Not Pencils",
-          "imageUrl": "https://storage.ghost.io/c/ff/c8/ffc87243-666a-4489-b21f-5bf85949035b/content/images/size/w1200/2026/07/Screenshot-2026-07-23-at-9.24.48---AM.png"
+          "link": "https://longreads.com/2026/08/11/obituaries-new-york-times-sam-roberts/",
+          "publishedOn": "2026-08-11T19:16:04.000Z",
+          "wordCount": 9545,
+          "title": "Speaking for the Dead",
+          "imageUrl": "https://i0.wp.com/longreads.com/wp-content/uploads/2026/08/Roberts_Excerpt_Header.png?fit=2400%2C1400&quality=80&ssl=1"
+        },
+        {
+          "id": "https://master.dev/blog/something-nobody-told-you-about-the-image-element-it-can-overflow/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://master.dev/blog/something-nobody-told-you-about-the-image-element-it-can-overflow/",
+          "publishedOn": "2026-08-11T17:16:38.000Z",
+          "wordCount": 2204,
+          "title": "An image can overflow",
+          "imageUrl": "https://master.dev/blog/wp-json/social-image-generator/v1/image/10580"
         },
         {
           "id": "https://lapcatsoftware.com/articles/2026/8/3.html",
@@ -558,6 +558,16 @@
       "feedUrl": "https://www.lowyat.net/feed/",
       "siteUrl": "https://www.lowyat.net",
       "articles": [
+        {
+          "id": "https://www.lowyat.net/?p=401689",
+          "author": "Heirul Kamel",
+          "description": "Sony’s decision to stop producing physical game discs for new PlayStation releases from January 2028 has understandably raised concerns that digital games could become more expensive. With physical retailers and the second-hand market no longer competing with the PlayStation Store, the expectation is that publishers will have less reason to offer discounts. However, former Square […]\nThe post Former Square Enix Exec: Killing Discs Could Make PlayStation Digital Games Cheaper appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/401689/playstation-killing-discs-digital-games-cheaper/",
+          "publishedOn": "2026-08-16T09:11:29.000Z",
+          "wordCount": 14186,
+          "title": "Former Square Enix Exec: Killing Discs Could Make PlayStation Digital Games Cheaper",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/pexels-cottonbro-studio-sony-playstation-disc-1.webp"
+        },
         {
           "id": "https://www.lowyat.net/?p=401682",
           "author": "Nurul Kamil",
@@ -604,7 +614,7 @@
           "description": "A Redditor on the Nubia subreddit transformed their Snapdragon 8 Elite smartphone into a “gaming PC” by slapping two CPU coolers on it. According to them, it all began with a “stupidly simple question”: How far could they push a smartphone if they stop treating it like a smartphone? The phone in Redditor ntsow’s experiment […]\nThe post Redditor Cools And Games With Snapdragon 8 Elite Smartphone By Slapping Two CPU Coolers On It appeared first on Lowyat.NET.",
           "link": "https://www.lowyat.net/2026/401646/redditor-cools-and-games-with-snapdragon-8-elite-smartphone-by-slapping-two-cpu-coolers-on-it/",
           "publishedOn": "2026-08-15T08:45:02.000Z",
-          "wordCount": 14160,
+          "wordCount": 14161,
           "title": "Redditor Cools And Games With Snapdragon 8 Elite Smartphone By Slapping Two CPU Coolers On It",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/Snapdragon-8-Elite-2-CPU-coolers-custom-1-side-1240x551.webp"
         },
@@ -647,16 +657,6 @@
           "wordCount": 14177,
           "title": "NVIDIA RTX 5090 Owner Made A Cutout In Side Panel For 12VHPWR Cable, Still Burns Out",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/RTX-5090-Cutout-Mesh-1-1240x763.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=401576",
-          "author": "Ian Chee",
-          "description": "A Proton-branded DC charger for EVs is probably not something that you’d expect to see outside of a dealership for the eMAS electric cars. That may change at some point later this year, as Proton New Energy Technology (Pro-NET) chief branding officer Salawati Mohd Yusoff hinted at the brand’s intention to develop its own branded […]\nThe post Proton-Branded Public DC Chargers May Roll Out This Year appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/401576/proton-branded-dc-chargers-this-year/",
-          "publishedOn": "2026-08-14T10:58:37.000Z",
-          "wordCount": 14057,
-          "title": "Proton-Branded Public DC Chargers May Roll Out This Year",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/06/proton-emas-7-premium-plus-launch-klims-2026_01.webp"
         }
       ]
     },
@@ -844,7 +844,7 @@
           "description": "Centrally controlled, permission-only networks have a role to play in finance, but need a transparent, open base to reap the benefits blockchain technology offers.",
           "link": "https://www.coindesk.com/business/2026/08/15/wall-street-s-private-blockchain-obsession-is-a-race-to-the-bottom-ethereum-advocate-raman-warns",
           "publishedOn": "2026-08-15T12:00:00.000Z",
-          "wordCount": 13640,
+          "wordCount": 13786,
           "title": "Wall Street's private blockchain obsession is a 'race to the bottom,' Ethereum advocate Raman warns",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/054e8b00cc0763cb2f60b81628edb94088c7ec52-4032x2268.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -874,7 +874,7 @@
           "description": "Bullish, Coinbase, and Circle were among the names lower on Friday after the regulatory setback.",
           "link": "https://www.coindesk.com/markets/2026/08/14/tokenization-stocks-slip-as-sec-delay-puts-speed-bump-in-crypto-s-wall-street-push",
           "publishedOn": "2026-08-14T17:48:04.000Z",
-          "wordCount": 13154,
+          "wordCount": 13299,
           "title": "Tokenization stocks slip as SEC delay puts 'speed bump' in crypto’s Wall Street push",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/981f113099a5d95dd101524386439043bf2a255f-6000x4000.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -894,7 +894,7 @@
           "description": "Bank Leumi customers will be able to trade bitcoin, ether and solana through the bank’s investment app from early 2027.",
           "link": "https://www.coindesk.com/markets/2026/08/14/israel-s-largest-bank-partners-with-galaxy-for-crypto-trading",
           "publishedOn": "2026-08-14T13:51:37.000Z",
-          "wordCount": 13107,
+          "wordCount": 13100,
           "title": "Israel’s largest bank to offer crypto trading with Galaxy",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/8142dec16a595aba3e6c3f1bb742b14314bedc43-1440x810.jpg?auto=format&q=75"
         },
@@ -994,7 +994,7 @@
           "description": "The first major crypto rule to be proposed by the U.S. Securities and Exchange Commission will have to wait a bit longer after a sudden postponement.",
           "link": "https://www.coindesk.com/policy/2026/08/13/sec-cancels-long-awaited-proposal-of-reg-crypto-postponing-meeting-without-new-date",
           "publishedOn": "2026-08-13T22:18:07.000Z",
-          "wordCount": 12875,
+          "wordCount": 13132,
           "title": "SEC cancels long-awaited proposal of Reg Crypto, postponing meeting without new date",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/090e5c77bf9a39a85f3ba365ccf65e1cbecb6a4f-3781x2129.jpg?auto=format&fit=crop&crop=focalpoint&fp-x=0.526&fp-y=0.8214&w=1920&h=1080&q=75"
         },
@@ -1046,7 +1046,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-08-16T08:21:52.000Z",
+          "publishedOn": "2026-08-16T09:21:39.000Z",
           "wordCount": 4272,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
