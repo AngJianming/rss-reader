@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/codemaster_121482/refactoring-the-views-system-in-your-gift-4kno",
-          "author": "Seif Ahmed",
-          "description": "In the past, link views were cached in Redis. After 10 seconds, all the views were flushed using a manual loop. \nThe old flow looked like this: \nLoop through every key (ID). \nUpdate its views separately via updateOne. \nMove to the next until the loop ends. \nN+1 Problem: As the number of key operations grows, it runs many separate trips. Under very heavy traffic, the system can run out of resources and crash. \nDuplicated Views: In this old flow, I never cleared the views, even after flushing them. This caused a duplicated view count. \nNo Validation: The system never checked if there were keys to update or not, running unnecessary empty operations. \nInstead of running many separate updateOne operations, we group them into bulk operations using bulkWrite. This way, if we have 100 links viewed, we run 1 operation, unlike the 100 operation in the old system. \nRun hGetAll to get views.\nCheck if there is valid data to process. If not, skip this operation entirely. \nMap the ID operations (Lightweight for niche apps like ours. I'm not trying to build something for billions, but a quick markdown previewer for devs like you). \nSend the request to the database and update with bulkWrite. \nIf the request reaches the database and is acknowledged, delete the old views. This guarantees that if the server crashes midway, the data is not lost\nNote: I added ordered: false because, by default, if one operation fails, the remaining operations are not executed and previous ones are not rolled back. \nIf you liked your 🎁, please consider giving it a star on GitHub",
-          "link": "https://dev.to/codemaster_121482/refactoring-the-views-system-in-your-gift-4kno",
-          "publishedOn": "2026-08-18T10:16:11.000Z",
-          "wordCount": 1544,
-          "title": "Refactoring the views system in YOUR gift!",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Feayd2ubp9dn0x3a2ceyt.png"
+          "id": "https://dev.to/sukkergris/the-art-of-starting-a-new-project-l7",
+          "author": "Theodor Heiselberg",
+          "description": "Even as the AI apocalypse overtakes most projects, cluttering your repositories with .md-files to instruct the harness, I believe that having an intuitive grasp of a solid software foundation still brings real value to your organization.\nIn this series I'll share my two sents on how to address this when starting a new project from scratch.\nI'll mainly be addressing my own turf, which involves the following technologies:\nLinux\nGit\nDocker\n\n\ndevcontainer for development\nDocker Compose for both development and production\nNginx\n.NET\nLit and Web Components (My second choice)\nVite\nNote\nYARP\nBash for scripting\nThese days, I use a random VPS for both testing and hosting. But most of the approaches sketched here will be fully applicable on any cloud provider.\nBut no matter which technologies or hosting environment you choose, a few foundational things should be solved in every project you start:\nFormatting\nLinting\nTesting strategy (Unit, Integration, E2E)\nSecret and configuration management\nContinuous Integration and Continuous Deployment (CI/CD)\nObservability (Logging, metrics, and tracing)\nDependency management\n\n\nNuGet\nnpm\nEtc.\nTo kick things off, I'll start by addressing something most developers avoid like the plague: code formatting.",
+          "link": "https://dev.to/sukkergris/the-art-of-starting-a-new-project-l7",
+          "publishedOn": "2026-08-18T11:15:10.000Z",
+          "wordCount": 1450,
+          "title": "The Art of Starting a New Project",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzsa4vfjxoocjz6q9zz5i.png"
         },
         {
-          "id": "https://dev.to/apogeewatcher/ttfb-wont-go-down-server-side-culprits-beyond-the-theme-410h",
-          "author": "Apogee Watcher",
-          "description": "You moved the site behind a CDN, trimmed the theme, deferred scripts, and ran a caching plugin. PageSpeed Insights still flags a high Time to First Byte on the homepage, and the waterfall shows most of the wait in Waiting (TTFB) rather than DNS or TLS. The next ticket proposes a bigger hosting plan; in our experience that upgrade often treats the symptom while the origin keeps doing too much work per request, or background jobs steal capacity when real visitors arrive.\nWhat follows is a server-side checklist for WordPress and PHP stacks when you need to reduce TTFB after delivery-layer fixes. We focus on origin compute and scheduling: cron, workers, cache, database, and maintenance plugins. For DNS, TLS, HTTP, and CDN cache rules, start with Network Performance for Web Teams: DNS, TLS, HTT…",
-          "link": "https://dev.to/apogeewatcher/ttfb-wont-go-down-server-side-culprits-beyond-the-theme-410h",
-          "publishedOn": "2026-08-18T10:14:52.000Z",
-          "wordCount": 3547,
-          "title": "TTFB Won't Go Down? Server-Side Culprits Beyond the Theme",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fcdn.apogeewatcher.com%2Fstorage%2Fblog-images%2F5ydVxHdurjatyquQ.png"
+          "id": "https://dev.to/lakshman-ai/how-i-built-a-nist-ai-rmf-compliant-rag-system-for-regulated-domains-jch",
+          "author": "Lakshman Pandey",
+          "description": "How I Built a NIST AI RMF-Compliant Production RAG System\n\n\nBy Lakshman Pandey | August 2026\nI shipped a production RAG (retrieval-augmented generation) system serving UK arts and culture clients. This article documents how the system implements NIST AI Risk Management Framework controls, with real decisions, trade-offs, and measurable outcomes.\nTL;DR:\nDesigned for low-risk retrieval-grounded use cases\nAll decisions documented in ADRs (Architecture Decision Records)\nCosts $0.003-0.005 per query, $25/month infrastructure\nEU data residency (GDPR-ready)\nEval framework prevents quality degradation\nStack:\nFrontend: Streamlit Cloud\nVector DB: Supabase pgvector (EU-West-2)\nEmbeddings: Voyage AI (1024 dimensions)\nLLM: Claude Haiku 4.5 (direct REST API)\nObservability: Langfuse\nIntegration: MCP serv…",
+          "link": "https://dev.to/lakshman-ai/how-i-built-a-nist-ai-rmf-compliant-rag-system-for-regulated-domains-jch",
+          "publishedOn": "2026-08-18T11:15:09.000Z",
+          "wordCount": 2414,
+          "title": "How I Built a NIST AI RMF-Compliant RAG System for Regulated Domains",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fsmuvfbqekczvud6yyzav.png"
         },
         {
-          "id": "https://dev.to/trixsec/nooa-deep-dive-nvidias-pythonic-ai-agents-framework-with-practical-implementations-df3",
-          "author": "Trix Cyrus",
-          "description": "Author: TrixSec\nIn July 2026, NVIDIA unveiled NOOA (NVIDIA Object-Oriented Agents), an open-source framework that redefines AI agents as single Python classes. By unifying capabilities, state, prompts, and memory into a cohesive interface, NOOA addresses the fragmentation in agent development while delivering performance, inspectability, and security.\nThis guide explores NOOA’s architecture, benchmarks, and practical implementations—including a full code walkthrough of a cybersecurity agent.\nNOOA’s Core Philosophy\nSix Key Capabilities with Examples\nMemory System: SQLite Knowledge Graphs\nPerformance: Benchmarks and Optimizations\nSecurity: Sandboxing and Validation\nBuilding a Cybersecurity Agent: Step-by-Step\nComparison with LangGraph, AutoGen, and CrewAI\nGetting Started: Installation and Se…",
-          "link": "https://dev.to/trixsec/nooa-deep-dive-nvidias-pythonic-ai-agents-framework-with-practical-implementations-df3",
-          "publishedOn": "2026-08-18T10:13:31.000Z",
-          "wordCount": 2835,
-          "title": "NOOA Deep Dive: NVIDIA’s Pythonic AI Agents Framework with Practical Implementations",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzgyfd3xox32k0ibru94k.png"
+          "id": "https://dev.to/saint_vandora/three-ways-to-monitor-prepaid-api-balances-excel-python-cron-power-automate-eja",
+          "author": "FOLASAYO SAMUEL OLAYEMI",
+          "description": "If you run a platform that depends on prepaid APIs, SMS gateways, identity verification, and airtime, you already know the failure mode. The wallet runs dry at 2am, verifications start failing, and nobody notices until a customer complains.\nMy manager asked for something simple: check the balances three times a day and write them down. That request turned into three working solutions of increasing automation and a pile of undocumented gotchas that cost me an afternoon.\nThis post covers all three, with the full code, so you can pick whichever fits your setup.\nAnything in <ANGLE BRACKETS> is a value you replace with your own. I've used placeholders instead of the real names from my workplace:\n\n\n\nPlaceholder\nReplace with\n\n\n\n\n<FOLDER>\nThe folder holding your files\n\n\n<WORKBOOK>\nYour Excel file …",
+          "link": "https://dev.to/saint_vandora/three-ways-to-monitor-prepaid-api-balances-excel-python-cron-power-automate-eja",
+          "publishedOn": "2026-08-18T11:14:57.000Z",
+          "wordCount": 5823,
+          "title": "Three Ways to Monitor Prepaid API Balances (Excel, Python + Cron, Power Automate)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fmqq6axuxorqo0z1uwl35.png"
         },
         {
-          "id": "https://dev.to/casperday11/the-1-million-token-trap-why-i-built-a-bi-temporal-memory-engine-for-ai-agents-11pl",
-          "author": "Somay",
-          "description": "Every team building AI agents right now faces the exact same wall: Context Degradation. \nThe industry is currently obsessed with massive context windows. We hear about 1-million or 2-million token limits and assume the \"memory problem\" is solved. But there is a fatal difference between how much data an LLM can hold and how well it processes that data. \nShoving 50 dense research papers into a standard vector database doesn't give an AI better memory—it creates a noisy, contradictory mess where old facts either get permanently overwritten or blindly appended, causing the agent to hallucinate.\nI realized that for complex, autonomous AI, memory cannot just be a bolted-on vector database. Memory has to be the product itself. \nTo solve this, I built PaperPlanes—a stateful research assistant buil…",
-          "link": "https://dev.to/casperday11/the-1-million-token-trap-why-i-built-a-bi-temporal-memory-engine-for-ai-agents-11pl",
-          "publishedOn": "2026-08-18T10:12:21.000Z",
-          "wordCount": 1841,
-          "title": "The \"1 Million Token\" Trap: Why I Built a Bi-Temporal Memory Engine for AI Agents",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ffo275nhs8ucey1ekyrsx.png"
+          "id": "https://dev.to/sachinpk/cybersecurity-from-zero-to-hero-2-threats-vulnerabilities-and-risk-are-not-the-same-thing-55n6",
+          "author": "sachin k",
+          "description": "Welcome back to Cybersecurity from Zero to Hero, the series where I learn security from scratch and write it down while the confusion is still fresh. In post one we met the CIA Triad, the three promises every security control exists to protect. Today we learn the three words that describe how those promises get broken.\nHere is the problem. Security articles throw around threat, vulnerability and risk as if they were synonyms. They are not. Once I finally separated them, every security article I read became twice as clear, and I could suddenly follow conversations that used to sound like noise.\n🏠 The house analogy that made it stick\n*Imagine your house.\n\nA threat is anything out there that could cause harm. The burglar walking through your neighborhood. The storm forming offshore. The thre…",
+          "link": "https://dev.to/sachinpk/cybersecurity-from-zero-to-hero-2-threats-vulnerabilities-and-risk-are-not-the-same-thing-55n6",
+          "publishedOn": "2026-08-18T11:14:57.000Z",
+          "wordCount": 2080,
+          "title": "Cybersecurity from Zero to Hero #2: Threats, Vulnerabilities and Risk Are Not the Same Thing",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F90wbumbu8gzm70zls065.png"
         },
         {
-          "id": "https://dev.to/petteri_pucilowski_7ec755/we-had-45-subscribers-and-had-sent-them-zero-emails-25jk",
-          "author": "Petteri Pucilowski",
-          "description": "We had 45 people on our email list and had sent them, in total, zero emails.\nNot zero this month. Zero ever. I found it while checking something else, and the reason is boring enough that I suspect it is sitting in your app too.\nOur subscribe endpoint did exactly what I wrote it to do:\n@router.post(\"/newsletter/subscribe\")\nasync def subscribe(request: Request, body: SubscribeBody) -> dict:\n    ...\n    result = await resend_audience_client.add_contact(\n        audience_id=settings.resend_newsletter_audience_id,\n        email=email,\n    )\n    return {\"ok\": True}\n\nAdd the contact to the audience, return 200. That is a complete, correct, tested implementation of \"subscribe\". It is also the whole bug, because nothing else in the system ever mails that audience except a weekly broadcast I had pa…",
-          "link": "https://dev.to/petteri_pucilowski_7ec755/we-had-45-subscribers-and-had-sent-them-zero-emails-25jk",
-          "publishedOn": "2026-08-18T10:06:19.000Z",
-          "wordCount": 2499,
-          "title": "We had 45 subscribers and had sent them zero emails",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6m7nl51f5ycw2g9huw1h.png"
+          "id": "https://dev.to/sukkergris/the-art-of-code-formatting-16gj",
+          "author": "Theodor Heiselberg",
+          "description": "The Problem\n\n\nMost developers would rather spend three hours debating tabs versus spaces in a pull request than spend three minutes configuring a tool to just handle it for them.\nWithout addressing this, every IDE will apply its own conflicting defaults, let alone ensuring the project formats consistently across different operating systems.\nRelying on individual editor settings across a diverse technology stack is a guaranteed recipe for noisy Git diffs.\nIf you try to solve this by manually sharing IDE-specific formatting configurations for Visual Studio, Rider, and VS Code, you will quickly find that the job is never actually finished.\nIt becomes an endless cycle of tweaking. Someone updates their editor, a new extension changes a default behavior, or a developer switches platforms, and s…",
+          "link": "https://dev.to/sukkergris/the-art-of-code-formatting-16gj",
+          "publishedOn": "2026-08-18T11:14:34.000Z",
+          "wordCount": null,
+          "title": "The Art of Code Formatting",
+          "imageUrl": null
         },
         {
-          "id": "https://dev.to/ayinedjimi-consultants/building-a-kubernetes-security-audit-tool-with-go-4dnm",
-          "author": "Ayi NEDJIMI",
-          "description": "Most Kubernetes clusters ship with insecure defaults that nobody touches until something goes wrong. A misconfigured Pod security context, a container running as root, missing resource limits — these are the first things an attacker looks for after gaining access. Writing a Go tool that connects directly to the Kubernetes API lets you catch these issues automatically, before your next audit or incident.\nA typical cluster has dozens of potential misconfigurations. For this tool, we focus on the controls most frequently violated in the wild:\nContainers running as root (UID 0)\nPrivileged containers (privileged: true)\nMissing resource limits (CPU and memory)\nPods with hostNetwork: true or hostPID: true\n\nMissing readOnlyRootFilesystem\n\n\nallowPrivilegeEscalation set to true (which is the Kuberne…",
-          "link": "https://dev.to/ayinedjimi-consultants/building-a-kubernetes-security-audit-tool-with-go-4dnm",
-          "publishedOn": "2026-08-18T10:05:28.000Z",
-          "wordCount": 2406,
-          "title": "Building a Kubernetes Security Audit Tool with Go",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fynqytkaapac2lqcaaxqa.png"
+          "id": "https://dev.to/noders/hackcanton-season-2-recap-from-75-teams-to-10k-100k-cc-in-rewards-262i",
+          "author": "NODERS",
+          "description": "Hackathons usually look clean in retrospect. You see the opening announcement, a few screenshots, finalists on a livestream, then a winners post with trophy emojis.\nThe actual build is much less tidy.\nAPIs fail. Product scope grows faster than the codebase. Teams discover that the feature they spent four days building does not solve the problem they started with. Someone eventually asks the uncomfortable question: would this product lose anything if we removed the blockchain entirely?\nHackCanton Season 2 spent a lot of time in that territory.\nMore than 360 builders from 60+ countries entered the program, with 75+ teams appearing across the wider participation funnel. Thirty projects reached judging. Eighteen made the live Grand Final.\nThe strongest submissions had one thing in common: Cant…",
+          "link": "https://dev.to/noders/hackcanton-season-2-recap-from-75-teams-to-10k-100k-cc-in-rewards-262i",
+          "publishedOn": "2026-08-18T11:14:24.000Z",
+          "wordCount": 4555,
+          "title": "HackCanton Season 2 Recap: From 75+ Teams to $10K + 100K CC in Rewards",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fyf4lcynntlyjyvoox8xs.png"
         },
         {
-          "id": "https://dev.to/timevolt/websocket-real-time-apps-building-chat-like-its-the-matrix-5ha0",
-          "author": "Timevolt",
-          "description": "The Quest Begins (The \"Why\")\n\n\nEver felt like you’re stuck in a refresh‑loop hell, hammering F5 just to see if someone replied to your message? I’ve been there. A few months ago I was building a simple internal tool for my team—a place where devs could drop quick status updates and get instant feedback. The first version used plain AJAX polling: every 2 seconds the client begged the server, “Anything new?” It worked… until the team grew. Suddenly we were spamming the server with hundreds of requests per minute, the UI felt jittery, and the poor DevOps guy started side‑eyeing our logs. That’s when the realization hit: we needed a true two‑way conversation, not a never‑ending game of “are we there yet?”. Enter WebSockets—the magical tunnel that lets client and server chat whenever they have …",
-          "link": "https://dev.to/timevolt/websocket-real-time-apps-building-chat-like-its-the-matrix-5ha0",
-          "publishedOn": "2026-08-18T10:04:05.000Z",
-          "wordCount": 2462,
-          "title": "WebSocket Real-Time Apps: Building Chat Like It's the Matrix",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fo9ml18sgp6ir1vw6j6nc.png"
+          "id": "https://dev.to/shashi_bsavarn_03038d7d7/predicting-cpu-spikes-2355",
+          "author": "Shashi Bhushan Savarn",
+          "description": "Predictive System Health Checks: What I Learned Testing ARIMA, SARIMA, and Prophet on Infrastructure Metrics\nWhen building a system health check layer, knowing the current CPU, memory, or disk usage is only half the battle. If your dashboard says \"CPU is at 85%,\" you are missing critical context. Is that a normal Tuesday morning spike? Or is it a runaway process that will crash the server in twenty minutes?\nTo build an intelligent, predictive health check layer for my application, I decided to move past reactive thresholds. I ran a series of head-to-head experiments using three heavy hitters in time-series forecasting: ARIMA, SARIMA, and Facebook Prophet.\nI tested them against diverse, real-world infrastructure shapes—ranging from daily 9-to-5 spikes to slow-burning memory leaks.\nThe Tech …",
+          "link": "https://dev.to/shashi_bsavarn_03038d7d7/predicting-cpu-spikes-2355",
+          "publishedOn": "2026-08-18T11:09:47.000Z",
+          "wordCount": 2205,
+          "title": "Predicting CPU Spikes",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fykwwh5h15t6x0a6ydc3n.png"
         },
         {
-          "id": "https://dev.to/sushyam_nagallapati/observability-for-ai-infrastructure-what-to-monitor-beyond-cpu-and-memory-2o4j",
-          "author": "Sushyam Nagallapati",
-          "description": "Thanks for taking the time to read. If you’ve worked with AI infrastructure or observability, I’d love to hear your experience in the comments.\nIn Part 2 of AI Infrastructure for Cloud Engineers, we looked at how GPUs, scheduling, autoscaling, and model serving change the way AI workloads run on Kubernetes.\nRead Part 2: Running AI Workloads on Kubernetes: GPUs, Scheduling, Scaling, and Model Serving\nGetting an AI workload into production is only the beginning.\nOnce users depend on it, the questions change:\nIs the platform healthy?\nAre GPUs being used efficiently?\nWhy is inference slowing down?\nAre requests building up in a queue?\nIs the model producing tokens fast enough?\nWhich dependency is causing the delay?\nA Kubernetes dashboard showing healthy Pods cannot answer all of these questions…",
-          "link": "https://dev.to/sushyam_nagallapati/observability-for-ai-infrastructure-what-to-monitor-beyond-cpu-and-memory-2o4j",
-          "publishedOn": "2026-08-18T10:00:00.000Z",
-          "wordCount": 3233,
-          "title": "Observability for AI Infrastructure: What to Monitor Beyond CPU and Memory",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fifxagl3a7yp7mchgxsco.png"
+          "id": "https://dev.to/akhourianmolkumar/i-built-atlock-v4-because-i-wanted-windows-security-to-feel-simpler-4o99",
+          "author": "Akhouri Anmol Kumar",
+          "description": "A few months ago, I had a simple idea:\nWhat if I could put several useful Windows security tools into one portable application?\nNot another complicated enterprise dashboard.\nNot another app that requires an account before you can even use it.\nJust a Windows application you can download, open, configure, and use.\nThat idea became ATLOCK.\nAnd today, I'm working on ATLOCK v4. 🚀\n🛡️ So... What Does ATLOCK Actually Do?\nATLOCK brings several security-focused features together:\n🔒 System Lockdown\n🛡️ NTFS/ACL File Protection\n🔑 Local Password Vault\n📸 Intruder Ops\n🔔 Security Alerts\n⚙️ Portable\n💡 But The Feature List Isn't The Interesting Part\nThe part I'm most proud of is the philosophy behind it.\nI wanted ATLOCK to be local-first.\nThat means asking:\nDoes this feature actually need my data to …",
+          "link": "https://dev.to/akhourianmolkumar/i-built-atlock-v4-because-i-wanted-windows-security-to-feel-simpler-4o99",
+          "publishedOn": "2026-08-18T11:08:41.000Z",
+          "wordCount": 1847,
+          "title": "🔒 I Built ATLOCK v4 Because I Wanted Windows Security to Feel Simpler",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fluang486hhe6hai5qlb6.png"
         },
         {
-          "id": "https://dev.to/epilot/we-locked-ourselves-out-of-production-1n22",
-          "author": "Viljami Kuosmanen",
-          "description": "A few months back an engineer was setting up a build pipeline with an AI coding agent. The agent held production AWS credentials. It created a CloudFormation stack in production, then \"cleaned up\" by deleting it. Straight in prod, outside CI/CD.\nOur monitoring caught it immediately. An alert fired the moment the change happened: deployment in the production account by a role that is not part of the approved CI/CD pipeline.\nNothing broke. The engineer had confirmed each step, and detection worked exactly as designed. But detection is not prevention. If the agent had deleted the wrong stack, the alert would have fired too. And everyone would be having a really bad day.\nNothing happened but the moment scared me enough to take a step back to rethink how we deal with engineer production access.…",
-          "link": "https://dev.to/epilot/we-locked-ourselves-out-of-production-1n22",
-          "publishedOn": "2026-08-18T09:56:47.000Z",
-          "wordCount": 2711,
-          "title": "We Locked Ourselves Out of Production",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Frw1xzhoicwklbq8z5o8g.png"
+          "id": "https://dev.to/omtajne/i-built-pkgdiet-a-cli-to-clean-up-your-npm-dependencies-4f41",
+          "author": "Om Tajne",
+          "description": "Ever looked at your package.json and wondered:\nDo I actually need all these dependencies?\nI built PkgDiet to help answer that.\nRun:\nnpx pkgdiet\nPkgDiet checks your project for:\n🗑️ Unused dependencies\nInstead of only asking \"Is this dependency used?\", PkgDiet tries to answer:\n\"Is this dependency worth keeping?\"\nTry it:\nnpx pkgdiet\n⭐ GitHub: github.com/om-tajne/pkgdiet\nI'd love feedback from the javascript community — what feature should I add next? 👇",
+          "link": "https://dev.to/omtajne/i-built-pkgdiet-a-cli-to-clean-up-your-npm-dependencies-4f41",
+          "publishedOn": "2026-08-18T11:07:11.000Z",
+          "wordCount": 1344,
+          "title": "I Built PkgDiet — A CLI to Clean Up Your npm Dependencies 🥗",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2bpfpd82gaxvt1i1v281.png"
         },
         {
-          "id": "https://dev.to/morpheus-vera/distributed-locking-in-practice-guarantees-failure-scenarios-and-better-alternatives-24-809",
-          "author": "Venkatesan Ramar",
-          "description": "In this article, we'll explore the mechanisms to solve the coordination problem. \n8. Introducing Leases\nTo address the problem of permanent ownership, distributed systems typically replace it with temporary ownership.\nThis concept is known as a lease.\nInstead of granting indefinite control over a resource, the coordination service assigns ownership for a limited period of time.\nRather than stating, “You own this resource until you explicitly release it,” the system instead says, “You own this resource for the next 30 seconds.”\nThis changes the interaction model significantly.\nAcquire Lease\n       |\n       v\nExecute Work\n       |\n       v\nRenew Lease\n       |\n       v\nContinue Processing\n\nAs long as the application remains healthy, it periodically renews the lease to maintain ownership. If …",
-          "link": "https://dev.to/morpheus-vera/distributed-locking-in-practice-guarantees-failure-scenarios-and-better-alternatives-24-809",
-          "publishedOn": "2026-08-18T09:48:00.000Z",
-          "wordCount": 3361,
-          "title": "Distributed Locking in Practice: Guarantees, Failure Scenarios and Better Alternatives (2/4)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Famakihq479rkdsc3q6ge.png"
+          "id": "https://dev.to/james_anderson_h/inside-the-tokenizer-why-the-same-prompt-costs-different-amounts-on-every-model-31m5",
+          "author": "James Anderson",
+          "description": "If you build with LLMs, you pay by the token. Not by the word, not by the character — the token. And yet most of us treat the tokenizer as a black box: text goes in, a number comes out, the bill arrives.\nThat black box is worth opening. Once you understand how tokenization works, a lot of otherwise-mysterious LLM behavior starts to make sense: why the same sentence costs 3 tokens on Claude and 4 on GPT, why your Spanish chatbot costs more than the English one, why models are weirdly bad at arithmetic, why some prompt styles quietly burn your budget — and, crucially, how to actually calculate what a feature will cost before you ship it.\nLet's open it.\nA token is not a word and not a character. It's a chunk of text — usually a subword — that the model treats as a single unit. Before a model …",
+          "link": "https://dev.to/james_anderson_h/inside-the-tokenizer-why-the-same-prompt-costs-different-amounts-on-every-model-31m5",
+          "publishedOn": "2026-08-18T11:06:50.000Z",
+          "wordCount": 3346,
+          "title": "Inside the Tokenizer: Why the Same Prompt Costs Different Amounts on Every Model",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F4eboly9i2gha85fiaa2v.png"
         },
         {
-          "id": "https://dev.to/alifar/eu-updates-teacher-guidelines-for-digital-literacy-and-ai-driven-disinformation-3h0i",
-          "author": "Ali Farhat",
-          "description": "The European Commission has updated its guidelines for teachers and educators on tackling disinformation and promoting digital literacy, extending the guidance to address generative AI, influencer dynamics and prebunking. The refresh gives schools and education professionals new materials for helping young people assess online information and build resilience against misleading content.\nThe revised guidance sits within the EU's Digital Education Action Plan (2021-2027). According to the European Commission publication record for the updated guidelines, the Directorate-General for Education, Youth, Sport and Culture released the updated publication on 4 June 2026.\nThe update matters because the information environment facing pupils has changed substantially since the original guidance was i…",
-          "link": "https://dev.to/alifar/eu-updates-teacher-guidelines-for-digital-literacy-and-ai-driven-disinformation-3h0i",
-          "publishedOn": "2026-08-18T09:45:30.000Z",
-          "wordCount": 2258,
-          "title": "EU Updates Teacher Guidelines for Digital Literacy and AI-Driven Disinformation",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fscalevise.com%2Fresources%2Fcontent%2Fimages%2F2026%2F08%2Feu-updates-digital-literacy-disinformation-guidelines-teachers.webp"
+          "id": "https://dev.to/lovestaco/cosp-the-prompting-trick-where-your-llm-grades-its-own-homework-40lf",
+          "author": "Athreya aka Maneshwar",
+          "description": "Hello, I'm Maneshwar. I'm building git-lrc, a Micro AI code reviewer that runs on every commit. It is free and source-available on Github. Star git-lrc to help devs discover the project. Do give it a try and share your feedback.\nA friendly, deep-ish dive into Consistency-based Self-adaptive Prompting (COSP), where LLMs build their own in-context examples with zero labels.\nIf you have ever tried to squeeze better reasoning out of a large language model, you have probably lived through one of these two nightmares.\nNightmare one: you go full few-shot. \nYou handcraft a few beautiful, worked-out examples, paste them into the prompt, and the model suddenly gets smart. \nExcept now you have to do that for every single task, and if you pick slightly different examples the accuracy wobbles like a sh…",
+          "link": "https://dev.to/lovestaco/cosp-the-prompting-trick-where-your-llm-grades-its-own-homework-40lf",
+          "publishedOn": "2026-08-18T11:06:36.000Z",
+          "wordCount": 2861,
+          "title": "COSP: The Prompting Trick Where Your LLM Grades Its Own Homework",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fp1lg5k8obe6qgir9vwe9.png"
         },
         {
-          "id": "https://dev.to/shell_qa/checklist-onboarding-end-to-end-automation-frameworks-to-harness-ci-2jmb",
-          "author": "Shell QA",
-          "description": "Successfully onboarding an automated test suite to Harness CI requires configuring infrastructure placeholders, secrets, pipelines, and branch protection rules.\nHere is a 10-step checklist to help you onboard your end-to-end (E2E) automation pipelines seamlessly.\nStep 1: Replace Infrastructure Placeholders\nEnsure your pipeline YAML definitions (e.g., .harness/e2e-poc.yaml and .harness/e2e-regression-parallel.yaml) contain your specific environment values:\nORG_ID: Harness Organization Identifier\n\n\nPROJECT_ID: Harness Project Identifier\n\n\nGIT_CONNECTOR: Harness Git Connector for GitHub Enterprise access\n\n\nAPP_REPO_NAME: Target repository in owner/repo format\n\n\nK8S_CONNECTOR: Kubernetes connector for build infrastructure\n\n\nK8S_NAMESPACE: Kubernetes namespace where build pods run\n\n\n\nStep 2: Co…",
-          "link": "https://dev.to/shell_qa/checklist-onboarding-end-to-end-automation-frameworks-to-harness-ci-2jmb",
-          "publishedOn": "2026-08-18T09:44:13.000Z",
-          "wordCount": 1546,
-          "title": "Checklist: Onboarding End-to-End Automation Frameworks to Harness CI",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6914qo6tzoz9ts88nfqy.png"
+          "id": "https://dev.to/bhu_kalki/sql-definitions-10j6",
+          "author": "Er. Bhupendra",
+          "description": "Haan, overall tumhare concepts sahi hain. Bas interview ke liye definitions ko thoda precise aur language ko clean karna hai. Main tumhare notes ko 4–5 years experience level ke interview answer ke according correct kar raha hoon.\nJOIN is used to combine data from two or more tables based on a related column or join condition.\nExample:\norders.customer_id = customers.id\n1. INNER JOIN\nonly the records that have matching values in both tables.\nA mein 5 rows aur B mein 5 rows hain, but only 3 match → result mein 3 matching rows.\n2. LEFT JOIN\nAll matching records from both tables\nAll records from the left table\nIf there is no match in right table → right-side columns become NULL\n\n\n\n3. RIGHT JOIN\nall records from the right table are preserved.\n4. FULL OUTER JOIN\nAll matching records\nAll unmatche…",
+          "link": "https://dev.to/bhu_kalki/sql-definitions-10j6",
+          "publishedOn": "2026-08-18T11:02:17.000Z",
+          "wordCount": 2418,
+          "title": "SQL DEFINITIONS:",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fp1q5xf7h4ehnpwyp6yiw.png"
         }
       ]
     },
@@ -252,6 +252,16 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://www.theregister.com/ai-and-ml/2026/08/18/google-buys-crashed-airline-spirits-data-at-auction-because-ai/5288962",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.theregister.com/ai-and-ml/2026/08/18/google-buys-crashed-airline-spirits-data-at-auction-because-ai/5288962",
+          "publishedOn": "2026-08-18T10:13:28.000Z",
+          "wordCount": 7365,
+          "title": "Google buys crashed airline Spirit's data at auction, because AI",
+          "imageUrl": "https://image.theregister.com/5273664.jpg?imageId=5273664&x=0&y=0&cropw=100&croph=100&panox=0&panoy=0&panow=100&panoh=100&width=1200&height=683"
+        },
+        {
           "id": "https://pixelcluster.dev/VRAM-Overcommit/",
           "author": null,
           "description": "Comments",
@@ -270,6 +280,16 @@
           "wordCount": 185,
           "title": "Rethinking Database Programming",
           "imageUrl": null
+        },
+        {
+          "id": "https://en.andros.dev/blog/54572bc7/finger-the-1971-social-network-that-never-died/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://en.andros.dev/blog/54572bc7/finger-the-1971-social-network-that-never-died/",
+          "publishedOn": "2026-08-18T07:21:35.000Z",
+          "wordCount": 3697,
+          "title": "Finger: Social network that never died",
+          "imageUrl": "https://img.andros.dev/rH0oYj_cZ0wTERmKJDdUQxzQ45Y=/600x0/filters:format(avif):quality(85)/https://andros.dev/media/thumbnails/franco-antonio-giovanella-Lzys6r1xFD8-unsplash.jpg"
         },
         {
           "id": "https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791%2826%2900405-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666379126004052%3Fshowall%3Dtrue",
@@ -362,22 +382,12 @@
           "imageUrl": "https://substackcdn.com/image/fetch/$s_!v6i6!,f_auto,q_auto:best,fl_progressive:steep/https%3A%2F%2Frickmanelius.substack.com%2Ftwitter%2Fsubscribe-card.jpg%3Fv%3D-1034328908%26version%3D9"
         },
         {
-          "id": "https://www.bbc.com/news/articles/c8xnwqe00v1o",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.bbc.com/news/articles/c8xnwqe00v1o",
-          "publishedOn": "2026-08-17T19:25:11.000Z",
-          "wordCount": 7967,
-          "title": "India has paved the way for charging merchants a fee on UPI transactions",
-          "imageUrl": "https://ichef.bbci.co.uk/news/1024/branded_news/250b/live/07d59750-96ed-11f1-bdf3-57bf9a99cb46.jpg"
-        },
-        {
           "id": "https://www.newyorker.com/culture/photo-booth/the-lonely-men-at-the-end-of-the-world",
           "author": null,
           "description": "Comments",
           "link": "https://www.newyorker.com/culture/photo-booth/the-lonely-men-at-the-end-of-the-world",
           "publishedOn": "2026-08-17T18:34:09.000Z",
-          "wordCount": 20103,
+          "wordCount": 19909,
           "title": "Los Puesteros, solitary men who look after ranches and livestock in Patagonia",
           "imageUrl": "https://media.newyorker.com/photos/6a7f7fc939cfd25116c026de/16:9/w_1280,c_limit/Zatarain-Coiron_17.jpg"
         },
@@ -420,16 +430,6 @@
           "wordCount": 6689,
           "title": "Judge sets framework for Nine PBS to retrieve archival data",
           "imageUrl": "https://current.org/wp-content/uploads/2026/08/Gavel-iStock-2248362348-e1786652801546.jpg"
-        },
-        {
-          "id": "https://speko.ai/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://speko.ai/",
-          "publishedOn": "2026-08-17T15:36:18.000Z",
-          "wordCount": 1332,
-          "title": "Launch HN: Speko (YC S26) – OpenRouter for Voice AI",
-          "imageUrl": "https://speko.ai/opengraph-image?b1c5b7b39189286b"
         },
         {
           "id": "https://www.wiz.io/blog/red-agent-snowflake-copilot-cicd-bug",
@@ -482,6 +482,16 @@
           "imageUrl": "https://irz.fr/og/en/openclimbing-open-guide-en.png"
         },
         {
+          "id": "https://808bits.com/articles/threshold-signing-ceremony-in-your-browser/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://808bits.com/articles/threshold-signing-ceremony-in-your-browser/",
+          "publishedOn": "2026-08-15T23:20:09.000Z",
+          "wordCount": 1706,
+          "title": "The key that never exists: a threshold signing ceremony in the browser",
+          "imageUrl": null
+        },
+        {
           "id": "https://www.youtube.com/watch?v=xoTFywZpPcc",
           "author": null,
           "description": "Comments",
@@ -522,16 +532,6 @@
           "imageUrl": "https://www.rainydaygc.com/tournaments/signature-tournament.png"
         },
         {
-          "id": "https://www.nature.com/articles/d41586-026-02498-1",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.nature.com/articles/d41586-026-02498-1",
-          "publishedOn": "2026-08-12T14:26:41.000Z",
-          "wordCount": 3334,
-          "title": "A particle made of force: physicists say they've found mysterious 'glueball'",
-          "imageUrl": "https://media.nature.com/lw1200/magazine-assets/d41586-026-02498-1/d41586-026-02498-1_53111266.jpg"
-        },
-        {
           "id": "https://en.wikipedia.org/wiki/Olo_(color)",
           "author": null,
           "description": "Comments",
@@ -558,6 +558,36 @@
       "feedUrl": "https://www.lowyat.net/feed/",
       "siteUrl": "https://www.lowyat.net",
       "articles": [
+        {
+          "id": "https://www.lowyat.net/?p=401881",
+          "author": "Heirul Kamel",
+          "description": "The new Huawei MatePad Air (2026) is now officially available in Malaysia. Weighing just 509g and measuring 5.3mm thick, the new device is positioned as one of the brand’s lighter and slimmer tablets in its class. It features a full-metal body with a narrow 4.69mm bezel, and is available in Airy Blue, White and Sakura […]\nThe post Huawei MatePad Air (2026) Officially Launches In Malaysia appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/401881/huawei-matepad-air-2026-launch-malaysia/",
+          "publishedOn": "2026-08-18T10:44:51.000Z",
+          "wordCount": 14076,
+          "title": "Huawei MatePad Air (2026) Officially Launches In Malaysia",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/huawei-matepad-air-2026-launch-malaysia_11.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=401882",
+          "author": "Kiran Ganesan",
+          "description": "Though CMF doesn’t plan on launching a new smartphone this year, it has been keeping itself busy by unveiling other products instead. Previously, the Nothing sub-brand just launched its first-ever clip-on buds. Now, it has just released a brand-new teaser of, what appears to be, another TWS product. Based on the official teaser that was […]\nThe post CMF Teases New TWS Earbuds, Potentially Buds 2 Successor appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/401882/cmf-teases-tws-earbuds-buds-2-successor/",
+          "publishedOn": "2026-08-18T10:41:12.000Z",
+          "wordCount": 14009,
+          "title": "CMF Teases New TWS Earbuds, Potentially Buds 2 Successor",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/CMF-Teased-Buds-1240x992.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=401850",
+          "author": "Ian Chee",
+          "description": "A few months back, ASUS announced a couple of ProArt OLED displays in Malaysia, or perhaps more accurately, one display that’s available in two sizes. The company has done so again, this time introducing the ProArt Display OLED PA279CDV and PA329CDV. These monitors are also noted to be Mac-friendly, as well as featuring automatic KVM […]\nThe post ASUS Announces More ProArt OLED Displays In Malaysia appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/401850/asus-more-proart-oled-displays-malaysia/",
+          "publishedOn": "2026-08-18T10:31:36.000Z",
+          "wordCount": 14049,
+          "title": "ASUS Announces More ProArt OLED Displays In Malaysia",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/ASUS-ProArt-OLED-PA279CDV-PA329CDV.webp"
+        },
         {
           "id": "https://www.lowyat.net/?p=401868",
           "author": "John Law",
@@ -627,36 +657,6 @@
           "wordCount": 14229,
           "title": "Xiaomi 18 Series Could Be Split Into Two Launches In China This Year",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/03/xiaomi-17-Pro-series-hands-on_07.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=401838",
-          "author": "Ian Chee",
-          "description": "Samsung introduced the wide-body Galaxy Z Fold8 this year as a sort of new form factor, and moved up the standard Fold to the Ultra. It looks like the South Korean tech giant is trying to do the same again next year, and introduce another wide form factor foldable to its lineup. This could bring […]\nThe post Samsung May Announce Up To Five Foldables In 2027 appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/401838/samsung-up-to-five-foldables-2027/",
-          "publishedOn": "2026-08-18T04:05:20.000Z",
-          "wordCount": 14073,
-          "title": "Samsung May Announce Up To Five Foldables In 2027",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/07/Samsung-Galaxy-Z-Fold8-Ultra-vs-Fold8.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=401831",
-          "author": "Heirul Kamel",
-          "description": "Apple’s rumoured camera-equipped AirPods have received their clearest indication of an imminent launch yet, with a short demo video discovered in the latest macOS Tahoe 26.7 release candidate. The video appears to demonstrate how the earbuds could use their cameras with Apple’s Visual Intelligence features, potentially allowing Siri to understand what the wearer is looking […]\nThe post Apple’s Camera-Equipped AirPods Appear Via macOS Leak appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/401831/apple-camera-airpods-macos-leak/",
-          "publishedOn": "2026-08-18T03:20:55.000Z",
-          "wordCount": 14205,
-          "title": "Apple’s Camera-Equipped AirPods Appear Via macOS Leak",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/apple-camera-equipped-airpods-leak-1.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=401813",
-          "author": "Kiran Ganesan",
-          "description": "Going through the Royal Malaysian Customs Department (JKDM) when you’re travelling can be quite tricky, especially if you’re not familiar with all the laws and regulations. To help ease this problem, the government agency has officially launched its new KIRA Chatbot and Live Chat facilities today on its official website. The government body explained through […]\nThe post Customs Officially Launches Its New KIRA Chatbot, Live Chat Features On Its Website appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/401813/customs-kira-chatbot-live-chat-features/",
-          "publishedOn": "2026-08-17T11:12:34.000Z",
-          "wordCount": 14060,
-          "title": "Customs Officially Launches Its New KIRA Chatbot, Live Chat Features On Its Website",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/08/Customs-KIRA-Chatbot-Live-Chat13.webp"
         }
       ]
     },
@@ -672,6 +672,16 @@
       "siteUrl": "https://www.technologyreview.com",
       "articles": [
         {
+          "id": "https://www.technologyreview.com/?p=1142226",
+          "author": "Eileen Guo",
+          "description": "AI companies like Anthropic and OpenAI regularly publish reports on how people are using products like Claude and ChatGPT, but they only release the data they want us to see, AI researchers say.  “There is no independent source to corroborate it,” says Anka Reuel, a Computer Science PhD candidate at the Stanford Trustworthy AI Research…",
+          "link": "https://www.technologyreview.com/2026/08/18/1142226/how-people-use-ai/",
+          "publishedOn": "2026-08-18T10:06:43.000Z",
+          "wordCount": 7015,
+          "title": "We still don’t know how people are really using AI",
+          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/08/arm-around2.jpg?resize=1200,600"
+        },
+        {
           "id": "https://www.technologyreview.com/?p=1141614",
           "author": "Becky Ferreira",
           "description": "When the four astronauts on board NASA’s Artemis II swung around the moon earlier this year, they set a new record for the farthest humans have ever ventured from Earth, surpassing the distance set by Apollo 13 in 1972 by some 4,000 miles.  While no space mission can live up to the historic touchdown of…",
@@ -680,6 +690,16 @@
           "wordCount": 11091,
           "title": "The role of the astronaut is in flux",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/08/art002e009287large.jpg?resize=1200,600"
+        },
+        {
+          "id": "https://www.technologyreview.com/?p=1142188",
+          "author": "Michelle Kim",
+          "description": "The AI industry’s boldest promise right now is that AI will soon improve itself, with almost no need for human oversight. LLMs can already write code, generate synthetic data for training, and optimize the computer chips they run on. Forecasts of explosive AI progress predict that what researchers call recursive self-improvement is on the horizon. …",
+          "link": "https://www.technologyreview.com/2026/08/18/1142188/ai-recursive-self-improvement/",
+          "publishedOn": "2026-08-18T09:00:00.000Z",
+          "wordCount": 7474,
+          "title": "AI’s recursive self-improvement might not come so quickly after all",
+          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/08/research-target2a.jpg?resize=1200,600"
         },
         {
           "id": "https://www.technologyreview.com/?p=1142200",
@@ -750,26 +770,6 @@
           "wordCount": 5490,
           "title": "Job titles of the future: Space travel agent",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/08/space.jpeg?resize=1200,600"
-        },
-        {
-          "id": "https://www.technologyreview.com/?p=1141919",
-          "author": "Jessica Hamzelou",
-          "description": "This week I spoke to scientists who have found a way to turn male mouse embryos female. They’ve developed a CRISPR-based approach to essentially cut out the Y chromosome. It allowed them to create female clones of male mice. That’s right: female animals that are genetically identical to males, except for the missing Y chromosome.…",
-          "link": "https://www.technologyreview.com/2026/08/14/1141919/cloning-save-species-or-make-human-organ-sacks/",
-          "publishedOn": "2026-08-14T09:00:00.000Z",
-          "wordCount": 6284,
-          "title": "Cloning could be used to save species—or make human “organ sacks”",
-          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/08/clone-mice.jpg?resize=1200,600"
-        },
-        {
-          "id": "https://www.technologyreview.com/?p=1141399",
-          "author": "MIT Technology Review",
-          "description": "Listen to the session or watch below The “censorship-industrial complex” is an idea that a network of government, tech, and research groups is collaborating to suppress conservative online speech. This was fodder for the right-wing information sphere for years—then it began making its way into US policy. Watch a conversation exploring how it started, where…",
-          "link": "https://www.technologyreview.com/2026/08/13/1141399/roundtables-inside-the-censorship-industrial-complex-idea-shaping-us-policy/",
-          "publishedOn": "2026-08-13T21:00:00.000Z",
-          "wordCount": 4855,
-          "title": "Roundtables: Inside the “Censorship-Industrial Complex” Idea Shaping US Policy",
-          "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/08/August.26_Roundtables_Thumb.png?resize=1200,600"
         }
       ]
     },
@@ -779,12 +779,32 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "2eb134f2-c437-45ef-a347-2f9f0968a8e4",
+          "author": "Francisco Rodrigues",
+          "description": "Regulators rejected Polymarket's defense regarding its P2P nature, arguing the platform manages market rules and facilitates crypto-based gambling activity.",
+          "link": "https://www.coindesk.com/business/2026/08/18/south-korea-joins-more-than-30-jurisdictions-restricting-polymarket-access",
+          "publishedOn": "2026-08-18T11:05:56.000Z",
+          "wordCount": 12534,
+          "title": "South Korea joins more than 30 jurisdictions restricting Polymarket access",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d942a1634dad0f09e3b8e09b5f0184eaa796bc57-4240x2385.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
+        },
+        {
+          "id": "3d574672-d35c-4a33-8b88-d368cce0868c",
+          "author": "Oliver Knight",
+          "description": "BTC has dropped 0.6% since midnight UTC as Nasdaq 100 futures slip 1.1%, with the FOMC's July meeting minutes and a White House crypto summit both due Wednesday.",
+          "link": "https://www.coindesk.com/markets/2026/08/18/bitcoin-pauses-at-usd64-000-as-rising-yields-oil-drag-equities-lower",
+          "publishedOn": "2026-08-18T10:38:56.000Z",
+          "wordCount": 14095,
+          "title": "Bitcoin pauses at $64,000 as rising yields, oil drag equities lower",
+          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/634eb6a3a714cb9a6e21fb25881f970f578e82b1-1932x1087.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
+        },
+        {
           "id": "b5f36899-b124-46ed-b7c1-e418af524e79",
           "author": "Omkar Godbole",
           "description": "BTC outperformed Wall Street on Monday, breaking its recent pattern of lagging behind U.S. stocks.",
           "link": "https://www.coindesk.com/markets/2026/08/18/bitcoin-scored-a-rare-win-over-s-and-p-500-on-monday",
           "publishedOn": "2026-08-18T10:01:23.000Z",
-          "wordCount": 12768,
+          "wordCount": 12879,
           "title": "Bitcoin scores a rare win over S&P 500 with 2.6% rise versus 0.5% fall",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/536d7d5e6cfaca6de1f092a21de7b4cf4d742687-1500x750.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -794,7 +814,7 @@
           "description": "The 30-year Treasury yield hit its highest since 2007 and Brent topped $91 as the US-Iran conflict escalates, pressuring stocks. Bitcoin is holding its range, for now.",
           "link": "https://www.coindesk.com/tech/2026/08/18/live-updates-bitcoin-holds-usd64-000-as-surging-yields-and-oil-drain-risk-appetite",
           "publishedOn": "2026-08-18T08:16:11.000Z",
-          "wordCount": 13159,
+          "wordCount": 13561,
           "title": "Live updates: Bitcoin holds $64,000 as surging yields and oil drain risk appetite",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/4c0689c2d5fe97c36365f4d88811b0aa0648c90f-2800x1470.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -804,7 +824,7 @@
           "description": "Bulls are stacking longs, liquidity is thinning and one key level could trigger large liquidations.",
           "link": "https://www.coindesk.com/markets/2026/08/18/the-bitcoin-price-level-where-leveraged-bulls-could-get-whacked",
           "publishedOn": "2026-08-18T05:55:43.000Z",
-          "wordCount": 13304,
+          "wordCount": 13405,
           "title": "The bitcoin price level where leveraged bulls could get whacked",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/04f05b5cd4023bff86ebd19b9d5981356f50f8eb-8640x5760.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -814,7 +834,7 @@
           "description": "Jeonbuk Bank will use Ripple’s 24/7 cross-border payment service for business remittances, but it is unknown whether the flows will use XRP or Ripple’s RLUSD stablecoin.",
           "link": "https://www.coindesk.com/markets/2026/08/18/xrp-slips-below-usd1-even-as-korean-regional-bank-adopts-ripple-payments",
           "publishedOn": "2026-08-18T05:34:32.000Z",
-          "wordCount": 12983,
+          "wordCount": 12965,
           "title": "XRP sinks below $1 for first time since 2024 even as Korean bank adopts Ripple Payments",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b7d512ba660aea0dd60d8f3f58b1ae6ddd1786d8-1920x1282.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -824,7 +844,7 @@
           "description": "The program came three months before investor unlocks begin, with MON trading below its public-sale price and most of the token supply still outside circulation.",
           "link": "https://www.coindesk.com/markets/2026/08/18/monad-an-ethereum-rival-offered-early-investors-up-to-usd60-million-to-cash-out-almost-all-said-no",
           "publishedOn": "2026-08-18T05:18:18.000Z",
-          "wordCount": 13012,
+          "wordCount": 12999,
           "title": "Monad, an Ethereum rival, offered early investors up to $60 million to cash out. Almost all said no",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d6da4b040c7d5a2d1670209f241d8b091e0b80a3-1500x1004.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -834,7 +854,7 @@
           "description": "Miners have cut their computing power by a fifth over three quarters to make room for AI, and Venice's token jumped 10% after the company said it crossed $100 million in annualised revenue.",
           "link": "https://www.coindesk.com/markets/2026/08/18/bitcoin-climbs-above-usd64-000-while-most-majors-slip",
           "publishedOn": "2026-08-18T04:32:38.000Z",
-          "wordCount": 12987,
+          "wordCount": 12974,
           "title": "Bitcoin climbs above $64,000 while most majors slip",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d1da7dc81bdeb62967c50f138ab1a3e5b4aea59f-4032x3024.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -844,7 +864,7 @@
           "description": "Payward will use Anthropic’s cybersecurity model to hunt vulnerabilities and share open-source findings.",
           "link": "https://www.coindesk.com/tech/2026/08/17/kraken-parent-payward-joins-anthropic-s-project-glasswing-for-ai-security-push",
           "publishedOn": "2026-08-17T22:12:00.000Z",
-          "wordCount": 12635,
+          "wordCount": 12639,
           "title": "Kraken parent Payward joins Anthropic’s Project Glasswing for AI security push",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/60eaa4392d735a85d254d5ac89ec08baf0b7a62e-2048x1152.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -854,7 +874,7 @@
           "description": "Strategy is prioritizing STRC, cash reserves, and its credit business over stock buybacks, Executive Chairman Michael Saylor said Monday.",
           "link": "https://www.coindesk.com/markets/2026/08/17/saylor-says-share-buyback-isn-t-a-priority-as-it-builds-its-usd4-8-billion-cash-reserve-though-a-possibility",
           "publishedOn": "2026-08-17T18:53:47.000Z",
-          "wordCount": 13521,
+          "wordCount": 13478,
           "title": "Saylor says share buyback isn’t priority as Strategy builds $4.8 billion cash reserve",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/dd98498dbda09f933fbeac48aac3591d14c0deee-3018x1697.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -864,7 +884,7 @@
           "description": "Sheldon Lee said a Chinese-language X account making the claims was hacked. Users want wallets, assets and liabilities disclosed.",
           "link": "https://www.coindesk.com/business/2026/08/17/bitmart-founder-dismisses-calls-for-audit-as-users-report-blocked-funds-unpaid-employees",
           "publishedOn": "2026-08-17T16:40:08.000Z",
-          "wordCount": 13208,
+          "wordCount": 13206,
           "title": "BitMart founder dismisses calls for audit as users report blocked funds, unpaid employees",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/49be1ebccbc9a0cf5576123027361e2caf08bc8e-5999x3999.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -874,7 +894,7 @@
           "description": "The protocol pioneered decentralized finance lending, but assets locked have tumbled from a peak five years ago. Now it's looking to attract institutions after retail traders lost interest.",
           "link": "https://www.coindesk.com/business/2026/08/17/compound-bets-usd52-million-new-leadership-team-in-switch-to-institutional-focus",
           "publishedOn": "2026-08-17T15:32:30.000Z",
-          "wordCount": 13300,
+          "wordCount": 13295,
           "title": "Compound bets $52 million, new leadership team in switch to institutional focus",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/aac953c37e936eeb60a44601fb6cd14c49de9097-6000x3375.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -884,7 +904,7 @@
           "description": "The Treasury proposal would establish some of the core definitions and jurisdictions in the law Congress completed last year.",
           "link": "https://www.coindesk.com/policy/2026/08/17/u-s-treasury-department-proposes-genius-act-stablecoin-rule",
           "publishedOn": "2026-08-17T14:44:29.000Z",
-          "wordCount": 13144,
+          "wordCount": 13133,
           "title": "U.S. Treasury Department proposes GENIUS Act stablecoin rule",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/650ce5f7005eed4049392c0fccafc962427f5d39-2880x1620.jpg?auto=format&fit=crop&crop=focalpoint&fp-x=0.5013&fp-y=0.5125&w=1920&h=1080&q=75"
         },
@@ -894,7 +914,7 @@
           "description": "A community built on verification spent five years outsourcing its judgment to one man, writes Foundation CEO Zach Herbert.",
           "link": "https://www.coindesk.com/opinion/2026/08/17/the-coldcard-hack-proves-reputation-is-not-a-security-model",
           "publishedOn": "2026-08-17T14:09:46.000Z",
-          "wordCount": 13816,
+          "wordCount": 13659,
           "title": "The Coldcard hack proves reputation is not a security model",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/db2191038c41eae1bd0b4fd13d8435563fede3f0-5760x3840.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -904,7 +924,7 @@
           "description": "The crypto treasury company bought another 9,926 ETH last week, extending a buying streak that began in June 2025.",
           "link": "https://www.coindesk.com/markets/2026/08/17/tom-lee-s-bitmine-now-owns-4-8-of-ethereum-supply-after-latest-eth-purchase",
           "publishedOn": "2026-08-17T14:04:21.000Z",
-          "wordCount": 12336,
+          "wordCount": 12308,
           "title": "Tom Lee's Bitmine now owns 4.8% of Ethereum supply after latest ETH purchase",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/bafb99c8f61830de7b03162ff11769973ea3ef0d-758x528.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -914,7 +934,7 @@
           "description": "Crypto’s favorite maxim, “don’t trust, verify” wasn’t followed in the case of Coldcard’s code.",
           "link": "https://www.coindesk.com/tech/2026/08/17/how-a-bug-in-coldcard-s-code-went-unnoticed-for-years-leading-to-usd100-million-in-hacked-funds",
           "publishedOn": "2026-08-17T13:57:11.000Z",
-          "wordCount": 15105,
+          "wordCount": 15094,
           "title": "How a bug in Coldcard’s code went unnoticed for years, leading to $100 million in hacked funds",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/12e37e900c244207ee7d3c014d2582d3970768ea-5207x3470.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -924,7 +944,7 @@
           "description": "Led by Executive Chairman Michael Saylor, the company raised $333.7 million via the sale of common stock.",
           "link": "https://www.coindesk.com/markets/2026/08/17/no-change-in-bitcoin-holdings-as-strategy-lifted-dollar-reserve-and-bought-back-more-strc-last-week",
           "publishedOn": "2026-08-17T12:19:45.000Z",
-          "wordCount": 12636,
+          "wordCount": 12384,
           "title": "No change in bitcoin holdings as Strategy boosted dollar reserve, bought back more STRC last week",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/d00d58cb37e792985dd1a2d7a5b976dca32d84c0-720x406.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -934,7 +954,7 @@
           "description": "Developers are narrowing the list for the Hegotá upgrade, including a package to change how wallets approve and pay for transactions, giving developers of privacy apps more of the tools they need inside Ethereum itself.",
           "link": "https://www.coindesk.com/tech/2026/08/17/ethereum-s-next-big-upgrade-has-66-proposals-including-a-major-privacy-fix",
           "publishedOn": "2026-08-17T12:02:10.000Z",
-          "wordCount": 13422,
+          "wordCount": 13411,
           "title": "Ethereum’s next big upgrade has 66 proposals, including a major privacy fix",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/ab9ea8c9d8346f05438e6f0a8739ddc6e4639afa-1920x1242.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -944,7 +964,7 @@
           "description": "Funds and digital assets were not touched, but names, bank account details, and national ID numbers may have been exposed in what the company says was a wider global attack.",
           "link": "https://www.coindesk.com/tech/2026/08/17/israel-s-largest-crypto-broker-bits-of-gold-hit-by-data-breach-affecting-200-000-customers",
           "publishedOn": "2026-08-17T11:59:23.000Z",
-          "wordCount": 12847,
+          "wordCount": 12836,
           "title": "Israel’s largest crypto broker Bits of Gold hit by data breach affecting 200,000 customers",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/c18c9af8ef94bcbc9a17fac89a01b83bfc76fd8f-5472x3648.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -954,7 +974,7 @@
           "description": "Bitcoin’s implied volatility is near a seasonal floor, but options continue to price substantially more movement than the market is delivering.",
           "link": "https://www.coindesk.com/markets/2026/08/17/bitcoin-options-remain-expensive-despite-summer-calm-here-s-why-it-matters",
           "publishedOn": "2026-08-17T11:43:02.000Z",
-          "wordCount": 13102,
+          "wordCount": 13064,
           "title": "Bitcoin options remain expensive despite summer calm. Here's why it matters",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/7244d49b1561d08b7e690395788cd116e7eba326-1534x969.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -964,7 +984,7 @@
           "description": "Your day-ahead look for Aug. 17, 2026",
           "link": "https://www.coindesk.com/daybook-us/2026/08/17/bitcoin-s-biggest-holders-strategy-and-metaplanet-are-betting-on-math-not-price",
           "publishedOn": "2026-08-17T11:28:41.000Z",
-          "wordCount": 13638,
+          "wordCount": 13617,
           "title": "Bitcoin's biggest holders, Strategy and Metaplanet, are betting on math, not price",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/dd98498dbda09f933fbeac48aac3591d14c0deee-3018x1697.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -974,7 +994,7 @@
           "description": "The fine stems from Bitpanda failing to submit a mandatory white paper 20 days before publication and omitting required disclosures in marketing materials.",
           "link": "https://www.coindesk.com/business/2026/08/17/bitpanda-fined-eur70-000-in-austria-s-first-published-mica-enforcement-case",
           "publishedOn": "2026-08-17T10:52:31.000Z",
-          "wordCount": 12767,
+          "wordCount": 12584,
           "title": "Bitpanda fined 70,000 euros in Austria’s first published MiCA enforcement case",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/3d31087719ea61c734a8480fe0b22b81ce04e124-5617x3745.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -984,7 +1004,7 @@
           "description": "The price of bitcoin tracked a bounce in equities, but a $390 million ETF outflow streak and 10% odds on landmark crypto legislation leave markets searching for direction.",
           "link": "https://www.coindesk.com/markets/2026/08/17/bitcoin-tracks-equity-bounce-but-usd390-million-etf-outflow-week-keeps-bulls-on-back-foot",
           "publishedOn": "2026-08-17T09:59:55.000Z",
-          "wordCount": 14276,
+          "wordCount": 14216,
           "title": "Bitcoin tracks equity bounce, but $390 million ETF outflow week keeps bulls on back foot",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/072aa0e22a4a9752f75bfba8e6a0ab43ea93c267-1874x1054.jpg?auto=format&q=75"
         },
@@ -994,7 +1014,7 @@
           "description": "Binance says it cooperates with lawful requests, despite exiting the Russian market in 2023 to improve its compliance strategy.",
           "link": "https://www.coindesk.com/policy/2026/08/17/binance-handed-user-data-to-russia-that-led-to-a-ukrainian-donor-s-arrest",
           "publishedOn": "2026-08-17T09:16:14.000Z",
-          "wordCount": 12669,
+          "wordCount": 12658,
           "title": "Binance handed user data to Russia that led to a Ukrainian donor's arrest",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/6afa7aee3dd3e7c1e37e3929a4ac24b7cebaccdd-6000x4000.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         },
@@ -1004,29 +1024,9 @@
           "description": "Your look at what's coming in the week starting Aug. 17",
           "link": "https://www.coindesk.com/markets/2026/08/17/coinbase-circle-usdc-collaboration-fomc-minutes-oil-price-crypto-week-ahead",
           "publishedOn": "2026-08-17T09:13:02.000Z",
-          "wordCount": 13439,
+          "wordCount": 13401,
           "title": "Coinbase-Circle USDC collaboration, FOMC minutes, oil price: Crypto Week Ahead",
           "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/0738e13835f743ba2e3a2f26f7579b27661d1eac-4608x2592.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
-        },
-        {
-          "id": "62cf034a-9b60-4dac-a50a-dce251a29acb",
-          "author": "Shaurya Malwa",
-          "description": "Shipping through the Strait of Hormuz has ground to a near halt as the 60-day truce lapses with no deal, reviving the oil-price risk that has capped crypto all summer. ETF flows, meanwhile, are quietly turning.",
-          "link": "https://www.coindesk.com/markets/2026/08/17/live-updates-bitcoin-flat-near-usd63-500-but-the-flows-have-quietly-turned",
-          "publishedOn": "2026-08-17T08:38:26.000Z",
-          "wordCount": 19734,
-          "title": "Live updates: Bitcoin rises above $64,000 as big AI compute deals continue to roll in",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/b66a30b7d73c95906e302ba57b2fb431ed414a19-2280x1284.png?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
-        },
-        {
-          "id": "1188ee6a-583d-46fb-bc94-2f35e8a621b4",
-          "author": "Omkar Godbole",
-          "description": "Soft economic data has Goldman Sachs doubting a September rate increase, offering good news for bitcoin bulls.",
-          "link": "https://www.coindesk.com/markets/2026/08/17/september-fed-interest-rate-increase-is-very-unlikely-goldman-sachs-says",
-          "publishedOn": "2026-08-17T08:16:11.000Z",
-          "wordCount": 12985,
-          "title": "September Fed interest-rate increase is 'very unlikely,' Goldman Sachs says",
-          "imageUrl": "https://cdn.sanity.io/images/s3y3vcno/production/5d6318fcf727fdad3c48795af8e50e1dddc15465-1440x1080.jpg?auto=format&fit=crop&crop=focalpoint&w=1920&h=1080&q=75"
         }
       ]
     },
@@ -1046,7 +1046,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-08-18T10:22:01.000Z",
+          "publishedOn": "2026-08-18T11:20:13.000Z",
           "wordCount": 4272,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
