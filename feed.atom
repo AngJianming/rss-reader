@@ -1,252 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-08-21T18:29:06.205Z</id>
+    <id>urn:2026-08-21T19:22:00.829Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-08-21T18:29:06.205Z</updated>
+    <updated>2026-08-21T19:22:00.829Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-08-21T18:28:34.000Z</updated>
+        <updated>2026-08-21T19:21:31.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Running Vault on OpenShift with HCP Vault Auto-Unseal: Lessons Learned]]></title>
-        <id>https://dev.to/methridge/running-vault-on-openshift-with-hcp-vault-auto-unseal-lessons-learned-2j1h</id>
-        <link href="https://dev.to/methridge/running-vault-on-openshift-with-hcp-vault-auto-unseal-lessons-learned-2j1h"/>
-        <updated>2026-08-21T18:15:34.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
+        <title type="html"><![CDATA[I Deployed Google's Online Boutique on AWS EKS — Full Production Setup, Zero App Code Changes]]></title>
+        <id>https://dev.to/vijaya_bollu/i-deployed-googles-online-boutique-on-aws-eks-full-production-setup-zero-app-code-changes-4aal</id>
+        <link href="https://dev.to/vijaya_bollu/i-deployed-googles-online-boutique-on-aws-eks-full-production-setup-zero-app-code-changes-4aal"/>
+        <updated>2026-08-21T19:17:52.000Z</updated>
+        <summary type="html"><![CDATA[The Setup
 
 
-I recently set up a three-node Vault Enterprise HA cluster on OpenShift, using
-This post covers the four main challenge areas I hit: getting IPC_LOCK right
-The deployment is GitOps-managed via ArgoCD using a three-source Helm pattern:
-Vault requires the IPC_LOCK Linux capability so it can call mlockall() to
-restricted-v2 Security Context Constraint (SCC), which doesn't
-IPC_LOCK in its allowed capabilities.
-I discovered this the hard way when all three pods went into CrashLoopBackOff
-Upstream image (docker.io/hashicorp/vault-enterprise): Vault starts,
-calls mlockall(), gets EPERM, and exits with:
-
-
-
-  Vault requires the IPC_LOCK capability
-
-Red Hat partner image (registry.connect.redhat.com/hashicorp/vault-enterprise):
-The binary ships with cap_ipc_lock+ep set via setcap. Whe…]]></summary>
+Google's Online Boutique is an open-source 11-service e-commerce demo — Go, Python, Node.js, C#, and Java, all communicating over gRPC. It ships designed for GKE. The task here: build a complete production AWS platform around it — Terraform, EKS, ECR, IAM, Helm, GitHub Actions — without changing a single line of the application source.
+The application layer stays exactly as Google shipped it. Everything else gets built from scratch.
+Seven Terraform files, each with one job:
+terraform-aws/
+├── vpc.tf         → VPC, 3 AZs, public + private subnets, NAT Gateway
+├── eks.tf         → EKS 1.30, cluster "online-boutique-production", 2× t3.small nodes
+├── ecr.tf         → 12 ECR repos, one per service, image scan on push
+├── iam.tf         → IRSA roles, least-privilege, no node-wide IA…]]></summary>
         <author>
-            <name>Michael Ethridge</name>
+            <name>Vijaya Rajeev Bollu</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Running Terraform Enterprise Active-Active on OpenShift: Lessons Learned]]></title>
-        <id>https://dev.to/methridge/running-terraform-enterprise-active-active-on-openshift-lessons-learned-53o8</id>
-        <link href="https://dev.to/methridge/running-terraform-enterprise-active-active-on-openshift-lessons-learned-53o8"/>
-        <updated>2026-08-21T18:15:33.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-In my last post, I covered the four
-The deployment follows the same GitOps pattern as Vault: ArgoCD, a three-source
-This post covers five things that caught me off guard: TFE's hard refusal to
-TFE's active-active mode replicates its Rails processes across multiple pods
-CrashLoopBackOff while the two existing pods stayed healthy:
-startup check failed: check=upgrade ... TFE version (2.0.4) is not
-inter-compatible with system version (2.0.2), to upgrade to this version
-active TFE versions must be stopped
-
-The root cause is the Helm chart's default RollingUpdate strategy with
-maxSurge: 25% — it starts the new-version pod alongside the two
-The fix is to pin the Deployment to Recreate:
-# values.yaml
-strategy:
-  type: Recreate
-
-Recreate tears down all pods before bringing any of th…]]></summary>
+        <title type="html"><![CDATA[Polyglot persistence was the mistake. Postgres was always enough.]]></title>
+        <id>https://dev.to/adioof/polyglot-persistence-was-the-mistake-postgres-was-always-enough-g41</id>
+        <link href="https://dev.to/adioof/polyglot-persistence-was-the-mistake-postgres-was-always-enough-g41"/>
+        <updated>2026-08-21T19:16:42.000Z</updated>
+        <summary type="html"><![CDATA[Four databases in one would be great if you had a reason for needing them.
+That used to be our technology combination some time ago. It still causes me emotional pain when I remember. We had Mongo for handling documents, Redis for caching, Elasticsearch for searching, and then some obscure vector database for the new fancy AI features that every developer needed immediately.
+We removed everything. Only Postgres is being used now.
+The justification was always based on using the most suitable solution for a particular problem. It may seem like a good engineering approach, but in reality, it just means that you will have to monitor and maintain four control planes.
+It was Martin Fowler who coined the term back in November 2011, stating that "any decent sized enterprise will have a variety of …]]></summary>
         <author>
-            <name>Michael Ethridge</name>
+            <name>Aditya Agarwal</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How I Structure a Terraform Module]]></title>
-        <id>https://dev.to/methridge/how-i-structure-a-terraform-module-2gl2</id>
-        <link href="https://dev.to/methridge/how-i-structure-a-terraform-module-2gl2"/>
-        <updated>2026-08-21T18:15:32.000Z</updated>
-        <summary type="html"><![CDATA[Introduction
-
-
-Open a Terraform repository you have never seen before. There is a good chance
-main.tf with eight hundred lines in it, a
-variables.tf where required and optional inputs are shuffled together in
-README.md that documented the inputs accurately about four months ago.
-None of that is anybody's fault. Terraform doesn't care how you arrange your
-.tf in a directory gets concatenated before
-main.tf because they're
-I'm not a developer by trade. I don't have the muscle memory that lets someone
-This post is that layout, and the reasoning behind each piece of it. Every
-HashiCorp style guide,
-Everything below is scaffolded in
-terraform-module-template,
-data.tf, locals.tf, providers.tf, terraform.tf, backend.tf,
-variables.tf, and outputs.tf always exist, even when empty.
-Resources live in…]]></summary>
-        <author>
-            <name>Michael Ethridge</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[As Engineers, LLMs should pay us for tokens usage.]]></title>
-        <id>https://dev.to/wiseai/as-engineers-llms-should-pay-us-for-tokens-usage-11ic</id>
-        <link href="https://dev.to/wiseai/as-engineers-llms-should-pay-us-for-tokens-usage-11ic"/>
-        <updated>2026-08-21T18:12:55.000Z</updated>
-        <summary type="html"><![CDATA[This post was originally published on the main website on Apr 7 2026. I am reposting it here for SEO reasons and enabling humble bumble discussions with the DEV community. Feel free to engage with this post and i am available to respond during weekends. Sorry about the spam posting all the blogs in one day. I forgor about my dev account <3!
+        <title type="html"><![CDATA[Intelligence at Rest]]></title>
+        <id>https://dev.to/wiseai/intelligence-at-rest-43co</id>
+        <link href="https://dev.to/wiseai/intelligence-at-rest-43co"/>
+        <updated>2026-08-21T19:15:44.000Z</updated>
+        <summary type="html"><![CDATA[This post was originally published on the main website on Jul 18 2026. I am reposting it here for SEO reasons and enabling humble bumble discussions with the DEV community. Feel free to engage with this post and i am available to respond during weekends. Sorry about the spam posting all the blogs in one day. I forgor about my dev account <3!
 Hey everyone 👋,
-In my previous posts, I talked about who I am, about the Russians killing God, and about the emptiness of a life filled with suffering. I talked about how the most powerful AI systems in the world were built by minds trained in a godless tradition, how they took God's skin and wrapped it around a machine, and how the whole world now prays to it without knowing. Today, I want to talk about something that follows directly from all of that…]]></summary>
+There is a question that has been embedded in everything I have written here, hiding underneath the arguments about language models and hiring algorithms and the machinery of modern tech, and I have never stated it plainly until now. Not because I was avoiding it, but because I did not have the right words for it. The question is this: what is intelligence when it is not doing anything? Not when it is generating text, not when it is sc…]]></summary>
         <author>
             <name>Mahmoud Harmouch</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[UniSin - LinkdIn Post Scheduler]]></title>
-        <id>https://dev.to/sameermistrii/unisin-linkdin-post-scheduler-10jh</id>
-        <link href="https://dev.to/sameermistrii/unisin-linkdin-post-scheduler-10jh"/>
-        <updated>2026-08-21T18:10:54.000Z</updated>
-        <summary type="html"><![CDATA[Hey hunters  — I’m Sameer, maker of UniSin.
-I built this because I kept meaning to post on LinkedIn and then… not posting. The native composer is fine for one update. It is terrible if you want a week of posts sitting in a queue and going out at a time you already picked.
-The problem I was solving: stay consistent without living in LinkedIn, and without using scrapers or “engagement bots” that get accounts restricted. UniSin uses LinkedIn’s official API only. You add a date and time, write the post, and it publishes when the slot is due.
-What changed while building it: I started with fancy schedule templates. What I actually needed was simpler — pick a day, pick a time, put a post in that slot, see the queue. Also learned the hard way that “scheduled” and “published” are not the same as “the clock hit that time.” If the worker is not running, the post just sits there. So the product is honest about that: official API, visible queue, you can still hit Post now.
-It’s open source and I’m using it on my own profile.
-Live: https://unisin.in
-https://github.com/Sameermistrii/Linkdin_Automation
-If you try it, tell me what broke. That is more useful than a generic “congrats on the launch.”]]></summary>
+        <title type="html"><![CDATA[Best AI Coding Assistants for Sublime Text in 2026]]></title>
+        <id>https://dev.to/jawuilp/best-ai-coding-assistants-for-sublime-text-in-2026-4960</id>
+        <link href="https://dev.to/jawuilp/best-ai-coding-assistants-for-sublime-text-in-2026-4960"/>
+        <updated>2026-08-21T19:15:38.000Z</updated>
+        <summary type="html"><![CDATA[Sublime Text remains one of the fastest and most lightweight code editors available, but for years AI tooling has been much stronger in editors such as VS Code, Cursor, and JetBrains IDEs.
+That is starting to change.
+Sublime Text's AI ecosystem is still relatively small, but in 2026 there are several interesting options representing very different ways of coding with AI: autocomplete, LLM chat, pair programming, and external coding agents.
+In this article, I compare four of the most relevant approaches currently available for Sublime Text.
+Disclosure: I am the developer of Limitcode, one of the tools included in this comparison. I have tried to keep the article focused on each tool's capabilities and the workflow it is designed for.
+
+
+
+AI assistant
+Best for
+Chat
+File editing
+Project-wide a…]]></summary>
         <author>
-            <name>Sameer Mistry</name>
+            <name>Jawuil Pineda</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Your Rust Code Proves You Don't Understand Memory]]></title>
-        <id>https://dev.to/xxxn3m3s1sxxx/your-rust-code-proves-you-dont-understand-memory-4lo9</id>
-        <link href="https://dev.to/xxxn3m3s1sxxx/your-rust-code-proves-you-dont-understand-memory-4lo9"/>
-        <updated>2026-08-21T18:10:33.000Z</updated>
-        <summary type="html"><![CDATA[Your Rust Code Proves You Don't Understand Memory
+        <title type="html"><![CDATA[I miss the pre-AI Mossad agents.]]></title>
+        <id>https://dev.to/wiseai/i-miss-the-pre-ai-mossad-agents-1ka1</id>
+        <link href="https://dev.to/wiseai/i-miss-the-pre-ai-mossad-agents-1ka1"/>
+        <updated>2026-08-21T19:13:27.000Z</updated>
+        <summary type="html"><![CDATA[This post was originally published on the main website on Jul 16 2026. I am reposting it here for SEO reasons and enabling humble bumble discussions with the DEV community. Feel free to engage with this post and i am available to respond during weekends. Sorry about the spam posting all the blogs in one day. I forgor about my dev account <3!
+Hey everyone 👋,
+I keep talking about AI and how it destroyed careers, livelihoods, and entire industries, and most of you who have been reading these posts know by now that I am not being dramatic when I say that. I wrote in Technology Has Destroyed My Livelihood about how machines came for our jobs while we were busy celebrating how clever the machines were. I wrote in As Engineers, LLMs Should Pay Us for Token Usage about how we feed these systems e…]]></summary>
+        <author>
+            <name>Mahmoud Harmouch</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Managed Kubernetes Across AWS, Azure, and GCP Simultaneously — Here's What Nobody Tells You]]></title>
+        <id>https://dev.to/prateek_srivastava_6a5661/i-managed-kubernetes-across-aws-azure-and-gcp-simultaneously-heres-what-nobody-tells-you-2g69</id>
+        <link href="https://dev.to/prateek_srivastava_6a5661/i-managed-kubernetes-across-aws-azure-and-gcp-simultaneously-heres-what-nobody-tells-you-2g69"/>
+        <updated>2026-08-21T19:11:46.000Z</updated>
+        <summary type="html"><![CDATA[The day the same Helm chart behaved differently on three clouds in the same hour was the day I stopped trusting "cloud-agnostic" as a real thing.
+Nobody plans to manage Kubernetes on three clouds at the same time. It happens gradually — an acquisition brings an Azure footprint, a new business unit commits to GCP, and you already run EKS. Then one morning a page fires and you're staring at three terminal windows, three different cluster behaviours, one very angry incident bridge.
+I've spent the better part of two years in exactly that situation. What follows isn't a comparison chart you can find on any vendor blog. It's the stuff I learned the hard way — the silent differences that don't show up until something breaks in production at 2 AM.
+📟 The Incident That Started It All
+We deployed th…]]></summary>
+        <author>
+            <name>Prateek Srivastava</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Smashing eBPF Buffer Leaks: Achieving Zero-Drop Telemetry with Python & Google AI Studio]]></title>
+        <id>https://dev.to/solomon1029/smashing-ebpf-buffer-leaks-achieving-zero-drop-telemetry-with-rust-google-ai-studio-14e5</id>
+        <link href="https://dev.to/solomon1029/smashing-ebpf-buffer-leaks-achieving-zero-drop-telemetry-with-rust-google-ai-studio-14e5"/>
+        <updated>2026-08-21T19:08:42.000Z</updated>
+        <summary type="html"><![CDATA[Smashing eBPF Buffer Leaks: Achieving Zero-Drop Telemetry with Python & Google AI Studio
 
 
-You chose Rust because the internet told you it was the future. Now your codebase is 6x longer and you still cannot ship.
-The borrow checker is not a feature. It is a gatekeeper that charges you in hours.
-You spend more time fighting the compiler than writing actual logic. The lifetime annotations pile up. The reference rules multiply. The code becomes a maze of ownership transfers that nobody can follow.
-That signature is not safety. That is a subscription model for your time.
-Rust promises safety. What it delivers is a productivity tax that nobody admits to paying.
-Compilation time: Your Rust project takes 5 minutes to compile. Your Go project takes 5 seconds.
-Learning curve: Junior devs spend months learning lifetimes instead of shipping features.
-Code length: Simple operations become 10x longer with ownership annotations.
-Rust is excellent for:
-Systems programming
-Performance-critical code
-Embedded devices
-WebAssembly
-Rust is terrible for:
-CLI tools
-CRUD applications
-Quick prototypes
-Anything where development speed matters more than runtime speed
-Your borrow checker obsession is a personality trait, not a technical choice.
-If you cannot explain why you need Rust for your specific use case, you are probably using it wrong.
-What has been your experience with Rust? Share your thoughts in the comments.]]></summary>
+This is a submission for DEV's Summer Bug Smash: Clear the Lineup powered by Sentry.
+VirgilFlow is a lightweight, low-overhead system infrastructure defense tool written in Python and eBPF (using bcc / libbpf). It monitors kernel-level ring buffers to trace agent-to-agent IPC communications, detecting unauthorized syscall hijacking or abnormal telemetry streams across autonomous infrastructure nodes in real-time.
+Under high packet delivery rates, the eBPF kernel space probe failed to flush allocated ring-buffer entries properly. This created a kernel socket buffer queue buildup (sk_buff), causing kernel thread lockups and dropping up to 28% of telemetry traces sent to the Python user-space daemon.
+Th…]]></summary>
+        <author>
+            <name>Emani Sai Shanmukha Srinivas</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[If You Can't Build AGI, Then Why Should We Hire You?]]></title>
+        <id>https://dev.to/wiseai/if-you-cant-build-agi-then-why-should-we-hire-you-b87</id>
+        <link href="https://dev.to/wiseai/if-you-cant-build-agi-then-why-should-we-hire-you-b87"/>
+        <updated>2026-08-21T19:07:40.000Z</updated>
+        <summary type="html"><![CDATA[This post was originally published on the main website on May 14 2026. I am reposting it here for SEO reasons and enabling humble bumble discussions with the DEV community. Feel free to engage with this post and i am available to respond during weekends. Sorry about the spam posting all the blogs in one day. I forgor about my dev account <3!
+Hey everyone 👋,
+It is fascinating how a single job interview question can encapsulate the defining neurosis of an entire industry. For months, I have been watching the engineering world collectively panic over a new filter masquerading as a baseline requirement: if you aren't actively building artificial general intelligence, why exactly are you here? While my piece Just Don't Pick Up the Brush explored the isolation of holding deep technical competen…]]></summary>
+        <author>
+            <name>Mahmoud Harmouch</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Give your AI sub-agent a budget, not your keys]]></title>
+        <id>https://dev.to/grantor/give-your-ai-sub-agent-a-budget-not-your-keys-2e7h</id>
+        <link href="https://dev.to/grantor/give-your-ai-sub-agent-a-budget-not-your-keys-2e7h"/>
+        <updated>2026-08-21T19:06:18.000Z</updated>
+        <summary type="html"><![CDATA[Spawn a sub-agent in CrewAI, LangGraph, AutoGen, or a Claude sub-agent
+We accept this because handing a child less than everything has been
+Here's a different shape, as an MCP server you run locally:
+npx -y @grantor/mcp serve
+# or wire it into Claude Code:
+claude mcp add grantor-mcp -- npx -y @grantor/mcp serve
+
+That gives any MCP-speaking framework five tools. The whole model fits in
+grant    {tools: ["search","fetch"], max_uses: 20, ttl_secs: 3600}
+         → {child_id: "…", sub: "…"}          # a bounded child identity
+
+check    {child_id, tool: "search"}
+         → {allow: true, remaining_uses: 19}   # gate EVERY action on this
+
+check    {child_id, tool: "write"}
+         → {allow: false, code: "CapabilityDenied"}   # not granted → denied
+
+delegate {parent: child_id, tools: ["search"],…]]></summary>
+        <author>
+            <name>Grantor</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Told My LLM Critic to Be Adversarial. It Started Blocking Plans for Being 'Not Thorough Enough.']]></title>
+        <id>https://dev.to/debashish_ghosal/i-told-my-llm-critic-to-be-adversarial-it-started-blocking-plans-for-being-not-thorough-enough-172</id>
+        <link href="https://dev.to/debashish_ghosal/i-told-my-llm-critic-to-be-adversarial-it-started-blocking-plans-for-being-not-thorough-enough-172"/>
+        <updated>2026-08-21T19:05:56.000Z</updated>
+        <summary type="html"><![CDATA[This is article 2 in a series about building PlannerCritic, an open-source engine where one LLM writes a plan and a second LLM reviews it. Article 1 is here — it covers the 157-goal field test and what it found. This one is about a specific bug that taught me something about LLM judgment.
+The critic was supposed to catch unsafe plans. Instead it blocked plans for being incomplete. The fix was a frozenset.
+I gave the critic this system prompt:
+You are an adversarial plan reviewer.
+
+Six words. Seemed fine at the time.
+After running 16 strict goals, every single one escalated. Not because the plans were unsafe. Because the critic was blocking on completeness concerns — "this plan could also cover edge case X" — instead of concrete defects.
+The annoying part: the critic was technically doing i…]]></summary>
+        <author>
+            <name>Debashish Ghosal</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Ghost in the Graph: Catching Unbounded Recursion & Taint Drift with Gemini 1.5 Pro]]></title>
+        <id>https://dev.to/solomon1029/the-ghost-in-the-graph-catching-unbounded-recursion-taint-drift-with-gemini-15-pro-4bbb</id>
+        <link href="https://dev.to/solomon1029/the-ghost-in-the-graph-catching-unbounded-recursion-taint-drift-with-gemini-15-pro-4bbb"/>
+        <updated>2026-08-21T19:05:41.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for DEV's Summer Bug Smash: Smash Stories powered by Sentry.
+FluxTrace is an open-source real-time financial security engine designed to trace illicit funds across graph databases (Neo4j) using Dynamic Taint Scores. It ingests thousands of dynamic financial events per second, mapping transaction topologies and assigning risk scores to connected wallets to expose complex money laundering schemes before funds can be laundered through mixers.
+During high-throughput synthetic testing, our telemetry pipeline began silently degrading under dense cyclic transaction topologies (e.g., wallet circular routing or "smurfing" rings).
+The issues manifested as:
+Unbounded Memory Accumulation: Worker processes experienced exponential memory growth $O(2^N)$, triggering Out-Of-Memory (OO…]]></summary>
+        <author>
+            <name>Emani Sai Shanmukha Srinivas</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stop Using Docker In Production — Here's Why]]></title>
+        <id>https://dev.to/xxxn3m3s1sxxx/stop-using-docker-in-production-heres-why-6af</id>
+        <link href="https://dev.to/xxxn3m3s1sxxx/stop-using-docker-in-production-heres-why-6af"/>
+        <updated>2026-08-21T19:04:49.000Z</updated>
+        <summary type="html"><![CDATA[Docker has become the default for deploying applications. But here's the uncomfortable truth: most teams are using Docker wrong, and it's costing them time, money, and sanity.
+Docker was designed for microservices at scale. Yet teams with 3 developers and a single monolith are containerizing everything. The result?
+30-minute build times for a simple PHP app
+17 layers of abstraction between you and your code
+Docker Compose files longer than your actual application
+Network debugging that requires a PhD in overlay drivers
+Let me be clear: Docker solves real problems. But only specific ones:
+Multi-service architectures with 5+ independent services
+Cross-team environments where consistent runtime matters
+CI/CD pipelines that need reproducible builds
+Local development for complex stacks (databases, caches, queues)
+For everything else, you're paying a tax:
+
+
+
+Scenario
+Docker Overhead
+Alternative
+
+
+
+
+Single Python API
+High
+venv + systemd
+
+
+Static frontend
+Extreme
+nginx + CDN
+
+
+PHP monolith
+High
+PHP-FPM + nginx
+
+
+Small team (<5 devs)
+Medium
+Direct deployment
+
+
+
+Every layer of abstraction has a cost. Docker adds:
+Debugging complexity (logs, networking, volumes)
+Build time (image layers, caching, registry)
+Security surface (container escapes, vulnerable base images)
+Cognitive load (when did your team last read Docker docs?)
+Start simple. Deploy directly to a VPS first.
+Add Docker only when you feel the pain. Not before.
+Use Docker for development, not production. Local consistency ≠ production complexity.
+If you must container, use distroless images. Fewer layers = fewer problems.
+Docker is a tool, not a religion. The best engineers I know use the simplest solution that works. Sometimes that's Docker. Often it's not.
+Stop containerizing everything. Start thinking about what you're actually solving.
+What's your Docker horror story? I've got a whole folder of docker-compose.yml files I'd love to burn.]]></summary>
         <author>
             <name>xxxn3m3s1sxxx</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Small Models Are Coming for the Cloud — And the Data Is Damning]]></title>
-        <id>https://dev.to/thegatewayguy/small-models-are-coming-for-the-cloud-and-the-data-is-damning-3g6f</id>
-        <link href="https://dev.to/thegatewayguy/small-models-are-coming-for-the-cloud-and-the-data-is-damning-3g6f"/>
-        <updated>2026-08-21T18:09:59.000Z</updated>
-        <summary type="html"><![CDATA[A Stanford research team just published a paper that should make every hyperscaler investor uncomfortable. They benchmarked small language models (SLMs) — models you can run on a high-end laptop or desktop — against cloud-based frontier LLMs. The results are striking.
-"If their results are true, then we will hardly need any data centres in the future, and the hyperscalers are wasting hundreds of billions of dollars in investments."
-The team (Saad-Falson et al., 2026) ran SLMs (Qwen 3, Gemma 3, GPT-OSS, Granite 4.0) on local hardware — Nvidia and Apple M4 chips — against ChatGPT 5, Claude Sonnet 4.5, and Gemini 2.5 Pro:
-Chat tasks: SLMs match or beat LLMs in 98.6% of cases across domains
-Reasoning tasks: SLMs match or beat LLMs in 62.5% of cases — and climbing fast
-Weighted average (realist…]]></summary>
+        <title type="html"><![CDATA[Pass the Clarity Act]]></title>
+        <id>309d6b73-c8d5-4705-9f0c-6ac345b048ff</id>
+        <link href="https://www.coindesk.com/opinion/2026/08/21/pass-the-clarity-act"/>
+        <updated>2026-08-21T19:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Reopening a settled provision four weeks before a vote would sink the bill, argues Summer Mersinger, CEO of the Blockchain Association.]]></summary>
         <author>
-            <name>Andrew Kew</name>
+            <name>Summer Mersinger</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Local LLM Stack in 2026: What Actually Works]]></title>
-        <id>https://dev.to/thegatewayguy/the-local-llm-stack-in-2026-what-actually-works-ib1</id>
-        <link href="https://dev.to/thegatewayguy/the-local-llm-stack-in-2026-what-actually-works-ib1"/>
-        <updated>2026-08-21T18:09:34.000Z</updated>
-        <summary type="html"><![CDATA[Running a language model locally used to be a hobbyist experiment. In 2026, it's a viable engineering decision for a growing slice of real workloads — and the tooling has finally caught up. StorageReview just published a comprehensive roundup of what actually works, with one useful caveat upfront:
-"Roughly a third of the tools you will find recommended in a search result today are dead, and most of the pages recommending them have not noticed."
-That makes this kind of maintained, hardware-grounded list genuinely valuable. Here's what you need to know.
-Before picking tools, pick your memory tier. This is the decision that determines what model class you can run:
-16–32GB unified / 16GB VRAM → 7–8B models. Chat, summarization, single-file code. Most of what most people do.
-24–32GB VRAM / 48GB…]]></summary>
+        <title type="html"><![CDATA[Scientists release biggest 2D map of the universe]]></title>
+        <id>https://newscenter.lbl.gov/2026/08/10/scientists-release-biggest-2d-map-of-the-universe/</id>
+        <link href="https://newscenter.lbl.gov/2026/08/10/scientists-release-biggest-2d-map-of-the-universe/"/>
+        <updated>2026-08-21T18:36:34.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Andrew Kew</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Design a Notification System: The Four-Point Answer, and the Duplicate-Send Trap]]></title>
-        <id>https://dev.to/vahid_aghajani_60ce9dbec9/design-a-notification-system-the-four-point-answer-and-the-duplicate-send-trap-hkc</id>
-        <link href="https://dev.to/vahid_aghajani_60ce9dbec9/design-a-notification-system-the-four-point-answer-and-the-duplicate-send-trap-hkc"/>
-        <updated>2026-08-21T18:08:41.000Z</updated>
-        <summary type="html"><![CDATA[📺 Prefer to watch? 90-second YouTube Short · 💬 Telegram
-Originally published on software-engineer-blog.com.
-"Design a notification system" is one of the most common system-design interview questions, and one of the easiest to answer badly — because it sounds like a feature question.
-It is not. The interviewer is asking whether you treat notification as shared infrastructure that every other service calls, or as code each service bolts on for itself. Everything else in the answer follows from that one choice.
-Candidates who miss it start describing SendGrid. Candidates who get it start describing a boundary.
-Here is the whole answer, in the order one event travels.
-Your order service publishes an event:
-order.shipped   { "user_id": 4192, "order_id": 8871 }
-
-That is all it does. It does no…]]></summary>
-        <author>
-            <name>Vahid Aghajani</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Token Optimization: What We Learned the Hard Way]]></title>
-        <id>https://dev.to/forgeflows/token-optimization-what-we-learned-the-hard-way-36pg</id>
-        <link href="https://dev.to/forgeflows/token-optimization-what-we-learned-the-hard-way-36pg"/>
-        <updated>2026-08-21T18:08:13.000Z</updated>
-        <summary type="html"><![CDATA[What We Set Out to Build
-
-
-In 2026, token budgets are no longer an afterthought. According to McKinsey's The State of AI in 2024, organizations are increasingly prioritizing API cost optimization as a critical factor in scaling AI deployments, with token reduction becoming central to enterprise AI strategy. We felt this pressure directly when we started building multi-step LLM pipelines in n8n: the first version of our Autonomous SDR Researcher was burning through context windows at a rate that made the unit economics unworkable.
-The goal was straightforward: build a pipeline that researches leads, drafts outreach, and generates sales collateral without requiring a human to babysit each step. The assumption was that throwing a capable reasoning model at every task would produce the best ou…]]></summary>
-        <author>
-            <name>ForgeWorkflows</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[It is always the Russians]]></title>
-        <id>https://dev.to/wiseai/it-is-always-the-russians-49pg</id>
-        <link href="https://dev.to/wiseai/it-is-always-the-russians-49pg"/>
-        <updated>2026-08-21T18:07:34.000Z</updated>
-        <summary type="html"><![CDATA[This post was originally published on the main website on Apr 7 2026. I am reposting it here for SEO reasons and enabling humble bumble discussions with the DEV community. Feel free to engage with this post and i am available to respond during weekends. Sorry about the spam posting all the blogs in one day. I forgor about my dev account <3!
-🚨 Important Note: I know this post might make me sound like a conspiracy theorist, but I'm simply sharing my observations and asking you to keep an open mind. As a software engineer, I'm fascinated by the history of AI and its unexpected ties to the Cold War, and I want to share how my childhood dreams still haunt me today. I know ego is often criticized in engineering, but without it, we'd have no technological progress. I've already lost everything, …]]></summary>
-        <author>
-            <name>Mahmoud Harmouch</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why AI Agents Need a Pre-Execution Guard]]></title>
-        <id>https://dev.to/forgeflows/why-ai-agents-need-a-pre-execution-guard-1cnj</id>
-        <link href="https://dev.to/forgeflows/why-ai-agents-need-a-pre-execution-guard-1cnj"/>
-        <updated>2026-08-21T18:06:32.000Z</updated>
-        <summary type="html"><![CDATA[The Problem Is Not the Model. It's the Missing Gate.
-
-
-In 2026, autonomous pipelines are no longer experimental. According to McKinsey's State of AI 2024 report, 72% of organizations now use AI in at least one business function, up from 50% in previous years. Most of those deployments involve some degree of autonomous execution: a reasoning node that calls an API, a pipeline that writes to a database, a build process that touches production infrastructure. The capability is real. The safety layer, in most cases, is not.
-The failure mode is specific. An LLM receives an ambiguous instruction, interprets it literally, and executes a destructive command before any human sees what's about to happen. No confirmation step. No rollback. Just a dropped table, a wiped S3 bucket, or a secret written …]]></summary>
-        <author>
-            <name>ForgeWorkflows</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -264,16 +294,6 @@ The failure mode is specific. An LLM receives an ambiguous instruction, interpre
         <id>https://nooneshappy.com/article/when-the-shortage-is-the-strategy/</id>
         <link href="https://nooneshappy.com/article/when-the-shortage-is-the-strategy/"/>
         <updated>2026-08-21T17:31:15.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Galactic Compass 2: now with new augmented reality mode]]></title>
-        <id>https://interconnected.org/home/2026/08/21/galactic</id>
-        <link href="https://interconnected.org/home/2026/08/21/galactic"/>
-        <updated>2026-08-21T17:30:38.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -360,40 +380,10 @@ The failure mode is specific. An LLM receives an ambiguous instruction, interpre
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[LLMs are proof that Unix won]]></title>
-        <id>https://bastian.rieck.me/blog/2026/unix/</id>
-        <link href="https://bastian.rieck.me/blog/2026/unix/"/>
-        <updated>2026-08-21T15:59:16.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How we made a text-to-speech model respond in sub-50 ms]]></title>
         <id>https://nari-labs.com/blog/qwen3-tts-speed-cost-frontier/</id>
         <link href="https://nari-labs.com/blog/qwen3-tts-speed-cost-frontier/"/>
         <updated>2026-08-21T15:51:10.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[New York’s office market is home to the most tech workers: CBRE report]]></title>
-        <id>https://www.cnbc.com/2026/08/21/new-york-san-francisco-tech-talent-cbre.html</id>
-        <link href="https://www.cnbc.com/2026/08/21/new-york-san-francisco-tech-talent-cbre.html"/>
-        <updated>2026-08-21T15:36:16.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Cancer-related mortality among US pilots and flight attendants]]></title>
-        <id>https://www.cnn.com/2026/08/19/health/flight-attendants-pilots-radiation-cancer-deaths</id>
-        <link href="https://www.cnn.com/2026/08/19/health/flight-attendants-pilots-radiation-cancer-deaths"/>
-        <updated>2026-08-21T15:23:32.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -420,20 +410,10 @@ The failure mode is specific. An LLM receives an ambiguous instruction, interpre
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Code Obfuscation via Local Mixing]]></title>
-        <id>https://vitalik.eth.limo/general/2026/08/21/obfuscation_part_iii_local_mixing.html</id>
-        <link href="https://vitalik.eth.limo/general/2026/08/21/obfuscation_part_iii_local_mixing.html"/>
-        <updated>2026-08-21T15:11:10.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How I came to write that paper with Leslie Lamport]]></title>
-        <id>https://lawrencecpaulson.github.io//2026/08/21/Lamport.html</id>
-        <link href="https://lawrencecpaulson.github.io//2026/08/21/Lamport.html"/>
-        <updated>2026-08-21T14:46:01.000Z</updated>
+        <title type="html"><![CDATA[Claudette: Make Claude stop talking like a BuzzFeed article]]></title>
+        <id>https://github.com/adnanakil/nobuzz/blob/main/README.md</id>
+        <link href="https://github.com/adnanakil/nobuzz/blob/main/README.md"/>
+        <updated>2026-08-21T14:31:52.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -490,16 +470,6 @@ The failure mode is specific. An LLM receives an ambiguous instruction, interpre
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[DuckDB V2 PEG-based SQL parser]]></title>
-        <id>https://duckdb.org/2026/08/20/duckdb-20-peg-parser</id>
-        <link href="https://duckdb.org/2026/08/20/duckdb-20-peg-parser"/>
-        <updated>2026-08-21T12:52:25.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Coldcard ships firmware after $114 million bitcoin theft; says AI helped catch more bugs]]></title>
         <id>7a6d9657-6103-496f-bc1a-9df95788e261</id>
         <link href="https://www.coindesk.com/tech/2026/08/21/coldcard-ships-firmware-after-usd114-million-bitcoin-theft-says-ai-helped-catch-more-bugs"/>
@@ -507,6 +477,16 @@ The failure mode is specific. An LLM receives an ambiguous instruction, interpre
         <summary type="html"><![CDATA[Three weeks of review turned up problems unrelated to the flaw that cost users $114 million, but updating still does not make a compromised wallet safe.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Felony charges for citizen deleting phone data at US Border]]></title>
+        <id>https://www.nytimes.com/2026/08/21/us/politics/samuel-tunick-deleted-phone-felony.html</id>
+        <link href="https://www.nytimes.com/2026/08/21/us/politics/samuel-tunick-deleted-phone-felony.html"/>
+        <updated>2026-08-21T12:10:13.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -524,6 +504,16 @@ The failure mode is specific. An LLM receives an ambiguous instruction, interpre
         <id>https://theconsensus.dev/p/2026/08/16/transactions-in-cassandra.html</id>
         <link href="https://theconsensus.dev/p/2026/08/16/transactions-in-cassandra.html"/>
         <updated>2026-08-21T12:08:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I'm becoming AI-blind]]></title>
+        <id>https://cymerys.com/w/im-becoming-ai-blind</id>
+        <link href="https://cymerys.com/w/im-becoming-ai-blind"/>
+        <updated>2026-08-21T11:48:05.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -810,16 +800,6 @@ The post Sennheiser Unveils Momentum True Wireless 5; Features Replaceable Batte
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How orchids inspired the work of Charles Darwin]]></title>
-        <id>https://lithub.com/how-orchids-inspired-the-groundbreaking-work-of-charles-darwin/</id>
-        <link href="https://lithub.com/how-orchids-inspired-the-groundbreaking-work-of-charles-darwin/"/>
-        <updated>2026-08-20T19:41:32.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[U.S. CFTC chief puts staff on notice to create crypto regulations if Clarity Act fails]]></title>
         <id>fe29c8e3-8d8b-41ee-a526-3cb5aa0e4f43</id>
         <link href="https://www.coindesk.com/policy/2026/08/20/u-s-cftc-chief-puts-staff-on-notice-to-create-crypto-regulations-if-clarity-act-fails"/>
@@ -897,6 +877,16 @@ The post Sennheiser Unveils Momentum True Wireless 5; Features Replaceable Batte
         <summary type="html"><![CDATA[Banks are moving deposits on-chain using permissioned systems, not open ones. See why privacy and compliance dictate this path in this week's newsletter.]]></summary>
         <author>
             <name>Laurie Rosini</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A look under our trunk: what's in our compute]]></title>
+        <id>https://waymo.com/blog/2026/08/look-under-our-trunk/</id>
+        <link href="https://waymo.com/blog/2026/08/look-under-our-trunk/"/>
+        <updated>2026-08-20T14:13:45.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -997,16 +987,6 @@ The post Sennheiser Unveils Momentum True Wireless 5; Features Replaceable Batte
         <summary type="html"><![CDATA[Each day, an airline transports tens of thousands of passengers on hundreds of flights. Often these are not straightforward point-to-point routes, with passengers requiring multiple connections. The airline can consider potentially hundreds of variables to price each of these journeys: demand, season, time of day, current events, global markets, and competitor airline activity to name…]]></summary>
         <author>
             <name>MIT Technology Review Insights</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Elon Musk's X is exploring stablecoins to pay influencers and content providers]]></title>
-        <id>d45965a2-9d6d-42e7-acc8-4a6d97f2f93f</id>
-        <link href="https://www.coindesk.com/business/2026/08/20/elon-musk-s-x-is-exploring-stablecoins-to-pay-influencers-and-content-providers"/>
-        <updated>2026-08-20T09:40:25.000Z</updated>
-        <summary type="html"><![CDATA[Conversations with X are ongoing, according to a person who also works with other social media platforms testing stablecoins to pay influencers.]]></summary>
-        <author>
-            <name>Ian Allison</name>
         </author>
     </entry>
     <entry>
@@ -1112,10 +1092,40 @@ The questions enterprise technology leaders are asking have changed. As organiza
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[The coolest anti-surveillance tools at Defcon [video]]]></title>
+        <id>https://www.youtube.com/watch?v=-2uAsJ5EPAw</id>
+        <link href="https://www.youtube.com/watch?v=-2uAsJ5EPAw"/>
+        <updated>2026-08-18T14:49:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Shoehorn – Quantize any model down to run on your machine]]></title>
+        <id>https://notactuallytreyanastasio.github.io/shoehorn/</id>
+        <link href="https://notactuallytreyanastasio.github.io/shoehorn/"/>
+        <updated>2026-08-18T14:29:20.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Does whispering to agents in docs help?]]></title>
         <id>https://passo.uno/if-you-are-an-agent-read-this/</id>
         <link href="https://passo.uno/if-you-are-an-agent-read-this/"/>
         <updated>2026-08-17T14:16:41.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[People of ACM – Russ Cox]]></title>
+        <id>https://www.acm.org/articles/people-of-acm/2026/russ-cox</id>
+        <link href="https://www.acm.org/articles/people-of-acm/2026/russ-cox"/>
+        <updated>2026-08-17T07:12:15.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
