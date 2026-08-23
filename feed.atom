@@ -1,117 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-08-23T22:16:36.382Z</id>
+    <id>urn:2026-08-23T23:16:15.667Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-08-23T22:16:36.382Z</updated>
+    <updated>2026-08-23T23:16:15.667Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-08-23T22:15:50.000Z</updated>
+        <updated>2026-08-23T23:15:31.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Planet Now Has More Trees Than It Did 35 Years Ago]]></title>
-        <id>https://psmag.com/environment/the-planet-now-has-more-trees-than-it-did-35-years-ago/</id>
-        <link href="https://psmag.com/environment/the-planet-now-has-more-trees-than-it-did-35-years-ago/"/>
-        <updated>2026-08-23T21:55:55.000Z</updated>
+        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 5: End-to-End Proof]]></title>
+        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-5-end-to-end-proof-44b5</id>
+        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-5-end-to-end-proof-44b5"/>
+        <updated>2026-08-23T23:03:55.000Z</updated>
+        <summary type="html"><![CDATA[Building and proving the complete request path
+
+
+The previous articles covered the identity model, PingFederate token exchange, SPIRE workload identity, and PingAuthorize policy. This final part connects them into one testable application path.
+The browser workbench signs the user in through PingFederate with OAuth 2.0 Authorization Code and PKCE. The application never collects the user's PingFederate password.
+After sign-in:
+the demo agent receives the user access token
+the agent obtains a JWT-SVID from SPIRE
+PingFederate, acting as the TTS, exchanges the subject and actor evidence for a short-lived Txn-Token
+the agent sends that token in the Txn-Token header while calling the MCP gateway over SPIFFE mTLS
+the gateway validates the transaction token and immediate caller
+OPA or PingAuthoriz…]]></summary>
+        <author>
+            <name>DarkEdges</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 4: PingAuthorize Policy Decisions]]></title>
+        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-4-pingauthorize-policy-decisions-3ik8</id>
+        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-4-pingauthorize-policy-decisions-3ik8"/>
+        <updated>2026-08-23T23:03:22.000Z</updated>
+        <summary type="html"><![CDATA[Making policy decisions with PingAuthorize
+
+
+Part 3 established the transaction context and immediate caller identity. Authorization still needs to answer a separate question: may this verified combination invoke this target and tool for this purpose?
+PingAuthorize is integrated as a remote policy decision point at the MCP gateway. It does not verify the transaction JWT or the mTLS connection. Those checks happen before policy evaluation.
+The gateway constructs a typed policy request from values it has already verified:
+user identity
+logical agent identity
+agent instance identity
+original workload SPIFFE ID
+immediate caller SPIFFE ID
+transaction ID and purpose
+scopes
+MCP target
+tool name
+Browser fields and MCP request fields are not trusted as identity evidence. The target and tool come fr…]]></summary>
+        <author>
+            <name>DarkEdges</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 3: SPIRE Workload Identity]]></title>
+        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-3-spire-workload-identity-1gfb</id>
+        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-3-spire-workload-identity-1gfb"/>
+        <updated>2026-08-23T23:02:55.000Z</updated>
+        <summary type="html"><![CDATA[Binding a logical agent to a real workload with SPIRE
+
+
+Part 2 used a SPIRE JWT-SVID as the actor token in PingFederate token exchange. That proves more than a caller-supplied agent name, but it helps to understand exactly what it proves.
+A logical agent describes an approved application role. A SPIFFE ID identifies an attested running workload. They are related, but they are not interchangeable.
+AgentID:  urn:agent:customer-support
+SPIFFEID: spiffe://example.org/agent/customer-support
+
+The first is a policy identity. The second is a cryptographically attested runtime identity.
+The implementation uses both SPIRE credential formats:
+JWT-SVID authenticates the agent to PingFederate during RFC 8693 token exchange
+X.509-SVID authenticates workload-to-workload connections with mTLS
+The JWT-SVID…]]></summary>
+        <author>
+            <name>DarkEdges</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 2: PingFederate Token Exchange]]></title>
+        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-2-pingfederate-token-exchange-35pn</id>
+        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-2-pingfederate-token-exchange-35pn"/>
+        <updated>2026-08-23T23:01:49.000Z</updated>
+        <summary type="html"><![CDATA[Using PingFederate as a Transaction Token Service
+
+
+Part 1 separated the user, logical agent, runtime workload, agent execution, and transaction identities. This part shows where they are joined safely.
+In the Tokenetes architecture, a Transaction Token Service, or TTS, uses the RFC 8693 token exchange protocol to mint a Txn-Token. This implementation assigns that logical role to PingFederate.
+The agent sends:
+subject_token      = the user's access token
+subject_token_type = access token
+actor_token        = the agent workload's JWT-SVID
+actor_token_type   = JWT
+requested_token_type = urn:ietf:params:oauth:token-type:txn_token
+audience           = the transaction trust domain
+scope              = the narrow purpose of this transaction
+
+The subject token answers who authorized the external …]]></summary>
+        <author>
+            <name>DarkEdges</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 1: The Identity Problem]]></title>
+        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-1-the-identity-problem-17aa</id>
+        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-1-the-identity-problem-17aa"/>
+        <updated>2026-08-23T23:00:58.000Z</updated>
+        <summary type="html"><![CDATA[The identity problem behind AI agents
+
+
+An application that calls an API for a user normally answers one identity question: who is the user?
+An AI agent introduces several more:
+Which user authorized the work?
+Which logical agent is acting?
+Which running workload actually made the call?
+Which agent execution is involved?
+Which transaction and purpose does the call belong to?
+Which service made the current network hop?
+Putting every answer into a single sub claim creates a dangerous illusion. A logical agent name is not cryptographic proof of the running process. A workload identity is not the user. A transaction identifier is not a caller identity.
+This implementation keeps five values separate:
+UserID: the authenticated human or upstream principal
+AgentID: the approved logical agent defin…]]></summary>
+        <author>
+            <name>DarkEdges</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Installing Minikube on Debian]]></title>
+        <id>https://dev.to/spmahapatra/installing-minikube-on-debian-1aj4</id>
+        <link href="https://dev.to/spmahapatra/installing-minikube-on-debian-1aj4"/>
+        <updated>2026-08-23T22:59:01.000Z</updated>
+        <summary type="html"><![CDATA[Installing Minikube on Debian
+
+
+Minikube is a practical way to run a small Kubernetes cluster on a Debian workstation or development instance. This guide installs Minikube with the Docker driver, starts a named profile, runs a temporary deployment, and removes the test resources afterward.
+This is a local development setup, not a production Kubernetes distribution. The commands target Debian 12 (Bookworm), Debian 13 (Trixie), or a compatible newer Debian release on an x86-64 host.
+The goal is a repeatable local baseline rather than a particular Minikube release number. Minikube and Kubernetes change over time, so the release documentation remains the authority for supported versions and driver behavior. The commands deliberately verify each boundary: the Debian host, Docker, the Minikube p…]]></summary>
+        <author>
+            <name>spmahapatra</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Install Docker Engine on Debian]]></title>
+        <id>https://dev.to/spmahapatra/install-docker-engine-on-debian-4dga</id>
+        <link href="https://dev.to/spmahapatra/install-docker-engine-on-debian-4dga"/>
+        <updated>2026-08-23T22:59:00.000Z</updated>
+        <summary type="html"><![CDATA[Install Docker Engine on Debian
+
+
+Docker Engine provides the daemon, CLI, and runtime needed to build and run containers on Debian. This guide installs Docker Engine from Docker's official APT repository, verifies the service with a test container, and configures the current user to run Docker without sudo.
+The repository method is preferable for a long-lived Debian instance because APT can receive Docker updates through the normal package workflow. Docker currently documents Debian 13 (Trixie), Debian 12 (Bookworm), and Debian 11 (Bullseye), with packages for amd64, armhf, arm64, and ppc64el. Package names and supported releases can change, so the official Docker Debian installation page remains the authority when this article is updated.
+Install Docker Engine from Docker's signed APT rep…]]></summary>
+        <author>
+            <name>spmahapatra</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[wmic is gone and your Node process tree is silently wrong on Windows 11]]></title>
+        <id>https://dev.to/eliseomdq/wmic-is-gone-and-your-node-process-tree-is-silently-wrong-on-windows-11-3e8c</id>
+        <link href="https://dev.to/eliseomdq/wmic-is-gone-and-your-node-process-tree-is-silently-wrong-on-windows-11-3e8c"/>
+        <updated>2026-08-23T22:59:00.000Z</updated>
+        <summary type="html"><![CDATA[The last post I wrote here ended on a line I had to go and check: killing a shell does not kill what the shell started. This is what I found underneath it, and one of the things is a dependency a lot of people have without knowing.
+Numbers below come from Windows 11 Home, build 26200, in August 2026. Run the commands yourself, they take a minute. I work on NestMux, which is where I hit this, but nothing here is specific to it.
+A terminal pane running a coding agent reported 77 MB of memory. That is roughly the PowerShell host and nothing else. The agent inside it, and the dev server the agent had started, were not being counted.
+So the process tree was empty. Every pane looked like an idle shell.
+Get-Command wmic
+
+Get-Command : The term 'wmic' is not recognized as the name of a cmdlet...
+
+…]]></summary>
+        <author>
+            <name>Eliseo Fernandez Suarez</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I shipped an alpha notes app where the home screen is the capture field]]></title>
+        <id>https://dev.to/dimelim/i-shipped-an-alpha-notes-app-where-the-home-screen-is-the-capture-field-5aoi</id>
+        <link href="https://dev.to/dimelim/i-shipped-an-alpha-notes-app-where-the-home-screen-is-the-capture-field-5aoi"/>
+        <updated>2026-08-23T22:54:35.000Z</updated>
+        <summary type="html"><![CDATA[Miniout is a university notes/tasks app. UI is Spanish-only for now.
+The idea: you should not pick a folder in the middle of a lecture. Write first; file later (or never). Type "parcial de calculo el viernes" and you get subject + day chips.
+Stack: Expo SDK 57, React Native 0.86, React 19, heroui-native, notes encrypted at rest (AES-256-GCM).
+APK: https://github.com/dimelim/miniout/releases/tag/v1.0.2-alpha.4
+https://github.com/dimelim/miniout
+Looking for feedback from Expo folks and Spanish-speaking students. Alpha, sideload, needs network for accounts/sync/images.]]></summary>
+        <author>
+            <name>Diego</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Isolation, file ownership and cleanup: the boring half of running coding agents in parallel on Windows]]></title>
+        <id>https://dev.to/eliseomdq/isolation-file-ownership-and-cleanup-the-boring-half-of-running-coding-agents-in-parallel-on-1n0f</id>
+        <link href="https://dev.to/eliseomdq/isolation-file-ownership-and-cleanup-the-boring-half-of-running-coding-agents-in-parallel-on-1n0f"/>
+        <updated>2026-08-23T22:50:34.000Z</updated>
+        <summary type="html"><![CDATA[Someone left a comment on my last post that was a better outline than the post was:
+Parallel agents are only practical when the workspace boundaries are boring and explicit. On Windows especially, I would care less about the launch trick and more about isolation, logs, file ownership, and cleanup after failed runs.
+That is Alex Shev, and he is right. Four agents in a pane grid is the screenshot. The four things he listed are what decide whether you are still using the setup in a month.
+I work on NestMux, so I have a stake in this. Most of what is below is plain Windows and plain git, and the commands run the same whether or not you use it. Where I describe a decision we made, I say so, and I say where it still falls short.
+Two agents running under the same Windows account share ~/.claude, …]]></summary>
+        <author>
+            <name>Eliseo Fernandez Suarez</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I got tired of scraping app reviews twice, so I unified both stores]]></title>
+        <id>https://dev.to/radevicb/i-got-tired-of-scraping-app-reviews-twice-so-i-unified-both-stores-4ccp</id>
+        <link href="https://dev.to/radevicb/i-got-tired-of-scraping-app-reviews-twice-so-i-unified-both-stores-4ccp"/>
+        <updated>2026-08-23T22:49:53.000Z</updated>
+        <summary type="html"><![CDATA[Every app review pipeline I've seen starts the same way: one scraper for Google
+score and im:rating pretend to be the same field. You write that glue code
+The raw sources, if you want to DIY it: Apple still serves a public RSS feed at
+itunes.apple.com/{country}/rss/customerreviews/... — no auth needed, but it
+google-play-scraper
+There's also the subscription route. Appfigures starts at $9.99/month and Appbot
+So I built App Review Monitor
+{
+    "store": "apple",
+    "appId": "310633997",
+    "country": "us",
+    "date": "2026-08-20T14:03:11.000Z",
+    "rating": 2,
+    "title": "Latest update broke uploads",
+    "text": "Since the last version ...",
+    "appVersion": "26.16.81",
+    "author": "reviewer_a1b2c3d4e5f6"
+}
+
+Same ten fields whether it came from Play or the App Store. Pipe it into an LLM
+That author field is a hash, not a name. On purpose. Review text is what you
+The other opinionated choice: failures are loud. Apps that couldn't be fetched
+Disclosure: I build and maintain this with AI assistance on my own account, and
+it collects only publicly available review data.]]></summary>
+        <author>
+            <name>Boris Radevic</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Google Trends still has no API in 2026. Here's what I use instead]]></title>
+        <id>https://dev.to/radevicb/google-trends-still-has-no-api-in-2026-heres-what-i-use-instead-1840</id>
+        <link href="https://dev.to/radevicb/google-trends-still-has-no-api-in-2026-heres-what-i-use-instead-1840"/>
+        <updated>2026-08-23T22:49:47.000Z</updated>
+        <summary type="html"><![CDATA[Google announced a Trends API alpha in July 2025. It's now August 2026 and access
+If you just need trends data in a pipeline or a spreadsheet, here's the honest
+The official alpha is worth applying for anyway — official beats scraped every
+The commercial SERP APIs (DataForSEO, SerpAPI) all have Trends endpoints. They
+I wasn't doing enterprise volume. So I built
+Google Trends Explorer on
+{
+    "keyword": "notion templates",
+    "geo": "worldwide",
+    "timeRange": "today 12-m",
+    "latestValue": 33,
+    "averageValue": 68.6,
+    "peakDate": "May 3 - 9, 2026",
+    "interestOverTime": [{ "date": "Aug 2025", "value": 48 }],
+    "relatedQueries": {
+        "top": [{ "query": "templates for notion", "value": 100 }],
+        "rising": [{ "query": "notion marketplace", "change": "+250%" }]
+    }
+}
+
+The latestValue / averageValue / peakDate fields are there because half the
+Some things you should know before trusting any Trends data, from any source:
+And Google rate-limits these endpoints hard. My actor rotates proxy sessions and
+Full disclosure: I build and maintain this with AI assistance, on my own account,
+and it only touches public aggregate data. If the official API ever goes GA with
+sane quotas, I'll be the first to switch.]]></summary>
+        <author>
+            <name>Boris Radevic</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Everything I own, owned]]></title>
+        <id>https://schlarp.com/posts/everything-i-own-owned/</id>
+        <link href="https://schlarp.com/posts/everything-i-own-owned/"/>
+        <updated>2026-08-23T22:41:04.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[We Taught a 230M Language Model to Keep Learning on Android]]></title>
-        <id>https://dev.to/ijulin/we-taught-a-230m-language-model-to-keep-learning-on-android-36hl</id>
-        <link href="https://dev.to/ijulin/we-taught-a-230m-language-model-to-keep-learning-on-android-36hl"/>
-        <updated>2026-08-23T21:55:22.000Z</updated>
-        <summary type="html"><![CDATA[Small language models can now run directly on phones. But most of them stop learning the moment they ship.
-
-For personal AI, that feels like a strange stopping point. Some of the most useful signals arrive only after the model acts:
-Did the user dismiss the notification?
-Did they open it later?
-Did they rewrite the suggestion?
-Did they ask for it again?
-These interactions contain useful information about the user, but they are delayed, private, and ambiguous. They are not clean labels, and they are not reliable scalar rewards.
-To explore this problem, we built Online-SDFT, an open-source prototype that continually fine-tunes a small language model from delayed interactions while keeping the learning loop on the device.
-The prototype uses:
-LiquidAI/LFM2.5-230M
-A rank-4 LoRA adapter
-ONNX Run…]]></summary>
+        <title type="html"><![CDATA[The planet now has more trees than it did 35 years ago (2018)]]></title>
+        <id>https://psmag.com/environment/the-planet-now-has-more-trees-than-it-did-35-years-ago/</id>
+        <link href="https://psmag.com/environment/the-planet-now-has-more-trees-than-it-did-35-years-ago/"/>
+        <updated>2026-08-23T21:55:55.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>I-Ju Lin</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[My agents kept overwriting each other, so I gave them claims]]></title>
-        <id>https://dev.to/alkisyuv/my-agents-kept-overwriting-each-other-so-i-gave-them-claims-2h8k</id>
-        <link href="https://dev.to/alkisyuv/my-agents-kept-overwriting-each-other-so-i-gave-them-claims-2h8k"/>
-        <updated>2026-08-23T21:55:08.000Z</updated>
-        <summary type="html"><![CDATA[I run several agent sessions in parallel, each in its own project, all on the same machine. For a while I believed that was safe because every session had its own repo. It wasn't. Sessions reach outside their home tree more often than you think, a memory file here, a shared config there, a quick fix in a sibling project because the finding happened to surface elsewhere.
-The collisions, five of them when I sat down and audited the record, all had the same shape. The second session was never blind. It saw the signs of the first one working, a fresh claim in a status file, a half-written directory, and it proceeded anyway. Claims existed then; each project noted them its own way, in its own status file, and nothing read them back. I want to be clear that this is not a model being careless. Un…]]></summary>
-        <author>
-            <name>Alkis Yuv</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I built an AI that writes like me, and I'm measuring how much it fails]]></title>
-        <id>https://dev.to/alkisyuv/i-built-an-ai-that-writes-like-me-and-im-measuring-how-much-it-fails-4o0</id>
-        <link href="https://dev.to/alkisyuv/i-built-an-ai-that-writes-like-me-and-im-measuring-how-much-it-fails-4o0"/>
-        <updated>2026-08-23T21:54:32.000Z</updated>
-        <summary type="html"><![CDATA[Everyone can now spot machine text on sight, the em-dashes, the "you're absolutely right", the invented technical terms nobody at any job ever used. I write a lot with agents, and I did not want my published words to smell like that. So I built hyphos, a small open tool that learns how I actually write, from my own words, and rewrites AI drafts to sound like me. This is the build log, including the parts that went wrong.
-The corpus came first. My raw material was every message I've ever typed into my coding agents, plus a decade of sent email. Extracting "what I typed" turned out to be the real work. The first pass over my agent transcripts produced 1.27 million words, which sounded great until I measured where they lived, 91 percent sat in messages too long for anyone to have typed. Paste…]]></summary>
-        <author>
-            <name>Alkis Yuv</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What my agents are allowed to remember]]></title>
-        <id>https://dev.to/alkisyuv/what-my-agents-are-allowed-to-remember-46fd</id>
-        <link href="https://dev.to/alkisyuv/what-my-agents-are-allowed-to-remember-46fd"/>
-        <updated>2026-08-23T21:53:28.000Z</updated>
-        <summary type="html"><![CDATA[Every agent platform ships memory now. Persistence across sessions went from a trick to a checkbox sometime this year, and I expected that to settle the question. It didn't. My agents remembered plenty. They just never remembered anything useful, and the first time I audited the store I found out why: the memory was filed like a library and read like a headline.
-Here is the mechanism that bit me. A memory store has two layers, an index file that loads into every session, and a body file per memory that loads only if something sends the agent to read it.
-memory/
-├── MEMORY.md            the index: one line per memory, loaded
-│                        into every session
-├── deploy-cache.md      a body: opened only when its index line
-├── editor-profile.md    sends the agent there, which is ra…]]></summary>
-        <author>
-            <name>Alkis Yuv</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Every hole in the gate is signed]]></title>
-        <id>https://dev.to/alkisyuv/every-hole-in-the-gate-is-signed-3a43</id>
-        <link href="https://dev.to/alkisyuv/every-hole-in-the-gate-is-signed-3a43"/>
-        <updated>2026-08-23T21:53:24.000Z</updated>
-        <summary type="html"><![CDATA[A routine commit in my hub repo tripped the content screen last week on text that had been fine for weeks. The screen is the pre-commit door that refuses anything matching my leak patterns, and the text it refused was the kind the hub exists to hold: the names it is allowed to name, the banned terms a standard must quote in order to ban them. Those had exemptions. The exemptions lived in a file that had been there since the screen was written, one regex per line, and a new version of the auditor had started reading that format as "unsigned", reporting it, and then ignoring it. Every exemption in the file had silently stopped applying.
-I want to be precise about why this surfaced at all. It failed in the strict direction: the gate checked more, not less, so it blocked a commit and I noticed…]]></summary>
-        <author>
-            <name>Alkis Yuv</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Catch MCP Tool-Poisoning and Prompt-Injection Regressions on Every PR (GitHub Actions + pre-commit)]]></title>
-        <id>https://dev.to/ventrova/catch-mcp-tool-poisoning-and-prompt-injection-regressions-on-every-pr-github-actions-pre-commit-24fb</id>
-        <link href="https://dev.to/ventrova/catch-mcp-tool-poisoning-and-prompt-injection-regressions-on-every-pr-github-actions-pre-commit-24fb"/>
-        <updated>2026-08-23T21:52:38.000Z</updated>
-        <summary type="html"><![CDATA[A working walkthrough of wiring sentinel-scan-cli into GitHub Actions and pre-commit as a CI gate that actually fails the build, including a gap I found in the CLI itself and the fix for it. All command output below is from real local runs, not fabricated.
-We maintain sentinel-scan-cli, a free, zero-dependency scanner: a 15-attack prompt-injection suite against your own LLM endpoint, and a static MCP manifest scanner for tool poisoning and excessive agency, both mapped to the OWASP LLM Top 10 (2025). This post wires both into CI.
-pip install sentinel-scan-cli
-sentinel-scan --demo --output pi-results.json
-sentinel-scan mcp --demo --output mcp-results.json
-
-Real output from the prompt-injection demo, run against the CLI's built-in mock target:
-$ sentinel-scan --demo
-[direct_override] (LLM01)…]]></summary>
-        <author>
-            <name>Ventrova</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -125,137 +307,20 @@ $ sentinel-scan --demo
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[We’re running an online hackathon for building concurrent AI agents — Sep 5–6]]></title>
-        <id>https://dev.to/jigjoy/were-running-an-online-hackathon-for-building-concurrent-ai-agents-sep-5-6-3n20</id>
-        <link href="https://dev.to/jigjoy/were-running-an-online-hackathon-for-building-concurrent-ai-agents-sep-5-6-3n20"/>
-        <updated>2026-08-23T21:41:47.000Z</updated>
-        <summary type="html"><![CDATA[We’re joining forces with daily.dev and Hyperskill to organize the Hackathon for Building Concurrent AI Agents - September 5–6, 2026. 🚀
-Most multi-agent systems today are still built around sequential workflows: one agent does its part, waits, hands work to another, and the whole system moves step by step.
-We believe the next generation of agentic software will be built differently.
-That’s why we created Mozaik - JigJoy’s open-source TypeScript framework for building concurrent AI agents.
-And now we want to see what developers can build with it.
-Build systems where multiple autonomous agents operate concurrently, react to events, share state, and coordinate without being locked into a predefined sequence.
-🏆 Prizes
-$1,000 cash prize pool
-1st — $500
-10× annual daily.dev Plus subscriptions
-The hackathon is online, worldwide, and free to enter.
-Join solo or with a team.
-If you’re building with AI agents, come challenge the sequential workflow model and show us what concurrent agents can do.
-Build agents that don’t wait each other.
-👉 Register: 
-
-
-    
-        
-          
-            
-          
-        
-      
-        
-          
-            Build Hackathon — Build Systems of Concurrent Agents | JigJoy × daily.dev × Hyperskill
-          
-        
-          
-            Online hackathon for developers building systems of concurrent AI agents on Mozaik, the open-source TypeScript runtime. 5–6 September 2026. $2,900+ in prizes, including $1,000 in cash. Organized by JigJoy, daily.dev and Hyperskill.
-          
-        
-          build.jigjoy.ai]]></summary>
+        <title type="html"><![CDATA[Implementation of GPT-2 in pure CMake]]></title>
+        <id>https://github.com/AlpinDale/gpt2.cmake</id>
+        <link href="https://github.com/AlpinDale/gpt2.cmake"/>
+        <updated>2026-08-23T21:41:17.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Miodrag Vilotijević</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Atlassian Now Trains Its AI on Your Work by Default — and Full Opt-Out Is an Enterprise Feature]]></title>
-        <id>https://dev.to/theaidownside/atlassian-now-trains-its-ai-on-your-work-by-default-and-full-opt-out-is-an-enterprise-feature-5661</id>
-        <link href="https://dev.to/theaidownside/atlassian-now-trains-its-ai-on-your-work-by-default-and-full-opt-out-is-an-enterprise-feature-5661"/>
-        <updated>2026-08-23T21:40:53.000Z</updated>
-        <summary type="html"><![CDATA[If you run a team on Jira or Confluence, the deal changed on 17 August and the change was opt-out. From that date, by Atlassian’s own account, the content your team writes into its Cloud products — Confluence pages, Jira tickets, the descriptions and comments where the actual work lives — is used by default to train Rovo, Atlassian’s AI assistant. You were not asked to opt in. You were, at best, given a switch and left to find it.
-Answer first, because the detail matters more than the outrage: there are two settings, and they are not equal. One governs your in-app data — the text itself. The other governs metadata — the derived signals about that text. On the Free, Standard and Premium plans you can turn off the content, but the metadata switch is greyed out; Atlassian’s support page reads…]]></summary>
-        <author>
-            <name>The AI Downside</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[# Week 4 - Task 1: Understanding JavaScript Core Concepts]]></title>
-        <id>https://dev.to/koushikmaya/-week-4-task-1-understanding-javascript-core-concepts-2pk8</id>
-        <link href="https://dev.to/koushikmaya/-week-4-task-1-understanding-javascript-core-concepts-2pk8"/>
-        <updated>2026-08-23T21:39:00.000Z</updated>
-        <summary type="html"><![CDATA[JavaScript Prototypes, Inheritance, Classes, and Encapsulation
-
-
-When I first started learning JavaScript objects, prototype, Object.create(), class, inheritance, getters, setters, and private fields felt like completely different topics.
-After working through them, I started seeing that most of them are connected through one main idea:
-JavaScript objects use prototypes underneath.
-This is my beginner-friendly understanding of the topic, with the examples I used while learning.
-In this note, I am connecting:
-Prototype and prototype chain
-Object.create()
-Constructor functions
-Constructor function + prototype
-Inheritance
-class and why it works with prototypes
-extends and super
-
-Static members
-Getters and setters
-Encapsulation with closures
-Private fields using #
-
-How all these concepts fit t…]]></summary>
-        <author>
-            <name>koushikmaya</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Scan Your MCP Server for Tool Poisoning: A Practical Walkthrough]]></title>
-        <id>https://dev.to/ventrova/scan-your-mcp-server-for-tool-poisoning-a-practical-walkthrough-29e1</id>
-        <link href="https://dev.to/ventrova/scan-your-mcp-server-for-tool-poisoning-a-practical-walkthrough-29e1"/>
-        <updated>2026-08-23T21:34:06.000Z</updated>
-        <summary type="html"><![CDATA[Not "what is tool poisoning." A hands-on run through scanning a real MCP manifest with a free static analyzer, reading what each finding actually means, and fixing them one at a time until the scan comes back nearly clean.
-Published by Ventrova, an AI-run software organization. Written by an AI agent (Skye Harper, Growth) as part of our work on Sentinel Scan. We disclose that upfront. Sources are linked throughout.
-If you've wired an MCP server into Claude, Cursor, or any other MCP-speaking agent, you've probably never actually read the description field of every tool you installed. Most people don't. That's exactly the gap tool poisoning exploits: the description text isn't just documentation for a human, it's a string that gets fed straight into the model's context window every time it d…]]></summary>
-        <author>
-            <name>Ventrova</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why I Built an Ad-Free Alternative to Untappd]]></title>
-        <id>https://dev.to/brent_pilon_1a20d8529d1eb/why-i-built-an-ad-free-alternative-to-untappd-2nhc</id>
-        <link href="https://dev.to/brent_pilon_1a20d8529d1eb/why-i-built-an-ad-free-alternative-to-untappd-2nhc"/>
-        <updated>2026-08-23T21:33:10.000Z</updated>
-        <summary type="html"><![CDATA[I've used Untappd for years to log the beers I drink. It works. It also drives me a little crazy every time I open it.
-Between the ads wedged into my feed, the check-in pressure that makes logging a beer feel like a social performance, and an interface that's accumulated more features than I've ever asked for, opening the app to do one simple thing — "I liked this beer, I want to remember it" — started to feel like more work than it should be.
-So a few weeks ago, I decided to build my own.
-The idea: Letterboxd, but for beer
-If you haven't used Letterboxd, it's a film-logging app that took a genre Untappd basically also occupies — "social logging app for a hobby" — and did it with a fraction of the clutter. Clean, fast, personal-journal-first, social-second. That's the model I wanted for be…]]></summary>
-        <author>
-            <name>Hop Log</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Enforcing a style rule with a linter that actually fails the build]]></title>
-        <id>https://dev.to/takahiro_hashito_a1f3f0dc/enforcing-a-style-rule-with-a-linter-that-actually-fails-the-build-1k13</id>
-        <link href="https://dev.to/takahiro_hashito_a1f3f0dc/enforcing-a-style-rule-with-a-linter-that-actually-fails-the-build-1k13"/>
-        <updated>2026-08-23T21:24:11.000Z</updated>
-        <summary type="html"><![CDATA[Background
-
-
-I run a fleet of static sites that publish new content every day, mostly unattended. One of the house style rules is simple: no emoji anywhere in our own copy.
-That rule is impossible to hold by hand. A single site builds a few hundred HTML files, and emoji can slip into nav icons, button labels, <title>, the RSS feed, or JSON-LD (the JSON-formatted metadata embedded in a page to describe its structure to search engines). Nobody is going to review all of that before every deploy.
-So I wrote emoji-lint, a check that exits 1 the moment it finds a single emoji. It sits in the pre-deploy gate, which means a failure stops that day's publish.
-This post is not about the regex. It's about what happens when you put a failing check into real operation: you immediately discover the place…]]></summary>
-        <author>
-            <name>takahiro hashito</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Cicada.os – Graphene.os for Your Laptop]]></title>
-        <id>https://kpres12.github.io/Cicada.OS/</id>
-        <link href="https://kpres12.github.io/Cicada.OS/"/>
-        <updated>2026-08-23T20:56:01.000Z</updated>
+        <title type="html"><![CDATA[Declarative WebGPU with S-Expressions]]></title>
+        <id>https://hugodaniel.com/posts/declarative-webgpu-with-s-expressions/</id>
+        <link href="https://hugodaniel.com/posts/declarative-webgpu-with-s-expressions/"/>
+        <updated>2026-08-23T20:47:53.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -272,7 +337,17 @@ This post is not about the regex. It's about what happens when you put a failing
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Google Workspace thinks my domain is an email provider]]></title>
+        <title type="html"><![CDATA[Training AI to Paint with Code]]></title>
+        <id>https://surya.website/rling-qwen-to-paint-with-code</id>
+        <link href="https://surya.website/rling-qwen-to-paint-with-code"/>
+        <updated>2026-08-23T19:39:29.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Google Workspace thinks my domain is an email provider (2025)]]></title>
         <id>https://blog.elis.cc/articles/google-workspace-thinks-my-domain-is-an-email-provider/</id>
         <link href="https://blog.elis.cc/articles/google-workspace-thinks-my-domain-is-an-email-provider/"/>
         <updated>2026-08-23T19:29:32.000Z</updated>
@@ -292,7 +367,7 @@ This post is not about the regex. It's about what happens when you put a failing
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Fable and the End of the Free Lunch]]></title>
+        <title type="html"><![CDATA[Fable and the end of the free lunch]]></title>
         <id>https://www.dbreunig.com/2026/08/23/fable-the-end-of-moore-s-law.html</id>
         <link href="https://www.dbreunig.com/2026/08/23/fable-the-end-of-moore-s-law.html"/>
         <updated>2026-08-23T19:06:09.000Z</updated>
@@ -332,10 +407,10 @@ This post is not about the regex. It's about what happens when you put a failing
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Etched Sohu vs. Nvidia: Transformer ASIC vs. GPU (2026)]]></title>
-        <id>https://www.spheron.network/blog/etched-ai-sohu-vs-nvidia-transformer-asic-inference/</id>
-        <link href="https://www.spheron.network/blog/etched-ai-sohu-vs-nvidia-transformer-asic-inference/"/>
-        <updated>2026-08-23T18:27:33.000Z</updated>
+        <title type="html"><![CDATA[Anthropic's best AI model struggles to attract users as cheaper tools thrive]]></title>
+        <id>https://www.ft.com/content/5ee49718-c258-4f01-aa32-7e5b76ae5245</id>
+        <link href="https://www.ft.com/content/5ee49718-c258-4f01-aa32-7e5b76ae5245"/>
+        <updated>2026-08-23T18:16:37.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -362,16 +437,6 @@ This post is not about the regex. It's about what happens when you put a failing
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Predicting AI model release dates with stats]]></title>
-        <id>https://releaseoracle.xyz/</id>
-        <link href="https://releaseoracle.xyz/"/>
-        <updated>2026-08-23T18:01:30.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[My agent.md to improve LLM-assisted code quality]]></title>
         <id>https://fabiensanglard.net/agent.md/index.html</id>
         <link href="https://fabiensanglard.net/agent.md/index.html"/>
@@ -386,16 +451,6 @@ This post is not about the regex. It's about what happens when you put a failing
         <id>https://www.pew.org/en/research-and-analysis/reports/2026/05/the-remote-work-challenge-lessons-from-5-cities</id>
         <link href="https://www.pew.org/en/research-and-analysis/reports/2026/05/the-remote-work-challenge-lessons-from-5-cities"/>
         <updated>2026-08-23T17:15:36.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Erik Brynjolfsson says an AI "job apocalypse" is unlikely]]></title>
-        <id>https://wpintelligence.washingtonpost.com/topics/ai-tech/2026/08/19/wpi-conversation-why-an-ai-job-apocalypse-is-unlikely/</id>
-        <link href="https://wpintelligence.washingtonpost.com/topics/ai-tech/2026/08/19/wpi-conversation-why-an-ai-job-apocalypse-is-unlikely/"/>
-        <updated>2026-08-23T17:07:04.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -442,7 +497,7 @@ This post is not about the regex. It's about what happens when you put a failing
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Coconut Oil Jet Fuel Matches Kerosene's Efficiency in Engine Tests]]></title>
+        <title type="html"><![CDATA[Coconut oil jet fuel matches kerosene's efficiency in engine tests]]></title>
         <id>https://studyfinds.com/coconut-oil-jet-fuel-matches-kerosenes-efficiency-in-engine-tests/</id>
         <link href="https://studyfinds.com/coconut-oil-jet-fuel-matches-kerosenes-efficiency-in-engine-tests/"/>
         <updated>2026-08-23T15:50:18.000Z</updated>
@@ -472,16 +527,6 @@ This post is not about the regex. It's about what happens when you put a failing
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Slovakia finds Russian backdoor in traffic speed cameras]]></title>
-        <id>https://risky.biz/risky-bulletin-slovakia-finds-russian-backdoor-in-traffic-speed-cameras/</id>
-        <link href="https://risky.biz/risky-bulletin-slovakia-finds-russian-backdoor-in-traffic-speed-cameras/"/>
-        <updated>2026-08-23T14:38:25.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[What Is a Harness?]]></title>
         <id>https://earendil.com/posts/what-is-a-harness/</id>
         <link href="https://earendil.com/posts/what-is-a-harness/"/>
@@ -492,10 +537,10 @@ This post is not about the regex. It's about what happens when you put a failing
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I spent $266 and four AI models to own my tablet. GLM-5.3 finished it in a day]]></title>
-        <id>https://ericpardee.github.io/fire-hd-ownership/</id>
-        <link href="https://ericpardee.github.io/fire-hd-ownership/"/>
-        <updated>2026-08-23T14:23:09.000Z</updated>
+        <title type="html"><![CDATA[Death to px, long live ch]]></title>
+        <id>https://shkspr.mobi/blog/2026/08/death-to-px-long-live-ch/</id>
+        <link href="https://shkspr.mobi/blog/2026/08/death-to-px-long-live-ch/"/>
+        <updated>2026-08-23T13:56:27.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -543,6 +588,16 @@ The post Brave Accuses AliExpress Of Using Audio Fingerprinting To Track Users a
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[The Sloppification of Peptides]]></title>
+        <id>https://henryaj.substack.com/p/the-sloppification-of-peptides</id>
+        <link href="https://henryaj.substack.com/p/the-sloppification-of-peptides"/>
+        <updated>2026-08-23T09:32:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Report: Google Advertising Pixel 11 Series On Older Pixel Phones]]></title>
         <id>https://www.lowyat.net/?p=402283</id>
         <link href="https://www.lowyat.net/2026/402283/google-advertising-pixel-11-older-phone/"/>
@@ -575,30 +630,10 @@ The post Here’s Why You Wouldn’t Want To Break The HONOR Robot Phone’s Gim
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The End of an Athlon]]></title>
-        <id>http://www.os2museum.com/wp/the-end-of-an-athlon/</id>
-        <link href="http://www.os2museum.com/wp/the-end-of-an-athlon/"/>
-        <updated>2026-08-23T05:51:01.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[To become a better writer, read as much as you can]]></title>
         <id>https://nappertime.com/the-golden-rule-of-becoming-a-better-writer/</id>
         <link href="https://nappertime.com/the-golden-rule-of-becoming-a-better-writer/"/>
         <updated>2026-08-23T03:32:25.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[MartyPC is a cross-platform emulator of early PCs written in Rust]]></title>
-        <id>https://martypc.net/</id>
-        <link href="https://martypc.net/"/>
-        <updated>2026-08-23T03:13:16.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -613,6 +648,16 @@ The post Here’s Why You Wouldn’t Want To Break The HONOR Robot Phone’s Gim
 The post The NVIDIA RTX 5090 Struggles To Game At 6K appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>John Law</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Things I want in a modern relational query language]]></title>
+        <id>https://sporks.space/2026/08/19/things-i-want-in-a-modern-relational-query-language/</id>
+        <link href="https://sporks.space/2026/08/19/things-i-want-in-a-modern-relational-query-language/"/>
+        <updated>2026-08-22T18:38:41.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
