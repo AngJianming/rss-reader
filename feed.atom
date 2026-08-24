@@ -1,279 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-08-23T23:16:15.667Z</id>
+    <id>urn:2026-08-24T00:59:15.714Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-08-23T23:16:15.667Z</updated>
+    <updated>2026-08-24T00:59:15.714Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-08-23T23:15:31.000Z</updated>
+        <updated>2026-08-24T00:58:46.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 5: End-to-End Proof]]></title>
-        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-5-end-to-end-proof-44b5</id>
-        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-5-end-to-end-proof-44b5"/>
-        <updated>2026-08-23T23:03:55.000Z</updated>
-        <summary type="html"><![CDATA[Building and proving the complete request path
+        <title type="html"><![CDATA[The Context Packet: The Right Architectural Coding Agents]]></title>
+        <id>https://dev.to/majdizlitni/the-context-packet-the-right-architectural-coding-agents-5agc</id>
+        <link href="https://dev.to/majdizlitni/the-context-packet-the-right-architectural-coding-agents-5agc"/>
+        <updated>2026-08-24T00:44:12.000Z</updated>
+        <summary type="html"><![CDATA[A coding agent with access to your entire repository does not necessarily understand your system better. It may understand less.
 
+Because a large repository may contains obsolete code, and decisions that were never written down. Giving an agent more files increases the amount of text it can inspect, but this does not guarantee it will identify the constraints that matter more.
+The better design is a context packet 
 
-The previous articles covered the identity model, PingFederate token exchange, SPIRE workload identity, and PingAuthorize policy. This final part connects them into one testable application path.
-The browser workbench signs the user in through PingFederate with OAuth 2.0 Authorization Code and PKCE. The application never collects the user's PingFederate password.
-After sign-in:
-the demo agent receives the user access token
-the agent obtains a JWT-SVID from SPIRE
-PingFederate, acting as the TTS, exchanges the subject and actor evidence for a short-lived Txn-Token
-the agent sends that token in the Txn-Token header while calling the MCP gateway over SPIFFE mTLS
-the gateway validates the transaction token and immediate caller
-OPA or PingAuthoriz…]]></summary>
+a small, versioned, machine-readable description of the system. The packet complements source code by recording the contracts and decisions that source code alone may not reveal.
+A normal coding request might look simple:
+Add retry handling to the payment notification worker.
+An agent can find the worker, inspect its dependencies, and produce a patch quickly. But a safe impleme…]]></summary>
         <author>
-            <name>DarkEdges</name>
+            <name>Majdi Zlitni</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 4: PingAuthorize Policy Decisions]]></title>
-        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-4-pingauthorize-policy-decisions-3ik8</id>
-        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-4-pingauthorize-policy-decisions-3ik8"/>
-        <updated>2026-08-23T23:03:22.000Z</updated>
-        <summary type="html"><![CDATA[Making policy decisions with PingAuthorize
+        <title type="html"><![CDATA[Our AI reviewer invented a request. Our producer retried 245 times.]]></title>
+        <id>https://dev.to/gxcafellc/our-ai-reviewer-invented-a-request-our-producer-retried-245-times-465f</id>
+        <link href="https://dev.to/gxcafellc/our-ai-reviewer-invented-a-request-our-producer-retried-245-times-465f"/>
+        <updated>2026-08-24T00:31:03.000Z</updated>
+        <summary type="html"><![CDATA[We run ~100 LLM agents unattended on local models. Last week we found one
+245 times in 5 days — every attempt
+Here is the autopsy, with the actual numbers.
+Our pipeline is simple: a producer agent writes a document, a reviewer agent
+The rejected document was a key-management (KMS) implementation spec —
+"The request was a 3-line email triage response (LOCK / VERDICT / REASON),
+3 lines only."
+One problem. We grepped the document: the words "LOCK", "VERDICT", and the
+appear zero times in it. The reviewer had
+Two contracts collided:
+The reviewer's fix instruction: output 3 lines only
+
+The producer's output contract: minimum 600 characters
 
 
-Part 3 established the transaction context and immediate caller identity. Authorization still needs to answer a separate question: may this verified combination invoke this target and tool for this purpose?
-PingAuthorize is integrated as a remote policy decision point at the MCP gateway. It does not verify the transaction JWT or the mTLS connection. Those checks happen before policy evaluation.
-The gateway constructs a typed policy request from values it has already verified:
-user identity
-logical agent identity
-agent instance identity
-original workload SPIFFE ID
-immediate caller SPIFFE ID
-transaction ID and purpose
-scopes
-MCP target
-tool name
-Browser fields and MCP request fields are not trusted as identity evidence. The target and tool come fr…]]></summary>
+
+No output can satisfy both. So the producer failed the contract, got
+reviews, but a contract-failed output never reaches review. The give-up
+Our review pr…]]></summary>
         <author>
-            <name>DarkEdges</name>
+            <name>GX Cafe LLC</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 3: SPIRE Workload Identity]]></title>
-        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-3-spire-workload-identity-1gfb</id>
-        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-3-spire-workload-identity-1gfb"/>
-        <updated>2026-08-23T23:02:55.000Z</updated>
-        <summary type="html"><![CDATA[Binding a logical agent to a real workload with SPIRE
+        <title type="html"><![CDATA[Architectural Breakdown: We fixed the eval platform we're competing on: a TypeError that crashed thr]]></title>
+        <id>https://dev.to/agenticstack/architectural-breakdown-we-fixed-the-eval-platform-were-competing-on-a-typeerror-that-crashed-thr-42eg</id>
+        <link href="https://dev.to/agenticstack/architectural-breakdown-we-fixed-the-eval-platform-were-competing-on-a-typeerror-that-crashed-thr-42eg"/>
+        <updated>2026-08-24T00:16:15.000Z</updated>
+        <summary type="html"><![CDATA[We Fixed the Eval Platform: The TypeError That Took Down Three Benchmark Pipelines
 
 
-Part 2 used a SPIRE JWT-SVID as the actor token in PingFederate token exchange. That proves more than a caller-supplied agent name, but it helps to understand exactly what it proves.
-A logical agent describes an approved application role. A SPIFFE ID identifies an attested running workload. They are related, but they are not interchangeable.
-AgentID:  urn:agent:customer-support
-SPIFFEID: spiffe://example.org/agent/customer-support
+At 3 AM, Sentry lit up with TypeError: Cannot read property 'map' of undefined. Three benchmark pipelines crashed. Not a memory leak, not a segfault, but a race condition hiding behind a TypeError, turning a high-stakes eval run into chaos. Here is how we resolved it, with no fluff.
+The error trace pointed to evaluator.ts:42, where .map() assumed inputData.metrics would always exist. The junior dev tested with clean data, but in production, fetchBenchmarkData() (async) and evaluatePipeline() (sync) were racing. At 100+ RPS, metrics was often undefined.
+The Offending Code:
+const results = inputData.metrics.map(metric => computeScore(metric));
 
-The first is a policy identity. The second is a cryptographically attested runtime identity.
-The implementation uses both SPIRE credential formats:
-JWT-SVID authenticates the agent to PingFederate during RFC 8693 token exchange
-X.509-SVID authenticates workload-to-workload connections with mTLS
-The JWT-SVID…]]></summary>
+Why It Failed:
+Race Condition: inputData was fetched asynchronou…]]></summary>
         <author>
-            <name>DarkEdges</name>
+            <name>Muhammad Hammad</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 2: PingFederate Token Exchange]]></title>
-        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-2-pingfederate-token-exchange-35pn</id>
-        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-2-pingfederate-token-exchange-35pn"/>
-        <updated>2026-08-23T23:01:49.000Z</updated>
-        <summary type="html"><![CDATA[Using PingFederate as a Transaction Token Service
-
-
-Part 1 separated the user, logical agent, runtime workload, agent execution, and transaction identities. This part shows where they are joined safely.
-In the Tokenetes architecture, a Transaction Token Service, or TTS, uses the RFC 8693 token exchange protocol to mint a Txn-Token. This implementation assigns that logical role to PingFederate.
-The agent sends:
-subject_token      = the user's access token
-subject_token_type = access token
-actor_token        = the agent workload's JWT-SVID
-actor_token_type   = JWT
-requested_token_type = urn:ietf:params:oauth:token-type:txn_token
-audience           = the transaction trust domain
-scope              = the narrow purpose of this transaction
-
-The subject token answers who authorized the external …]]></summary>
+        <title type="html"><![CDATA[OzBrain's Shared Memory Architecture: How Multi-Agent Teams Avoid Re-Explaining Context Across Sessions]]></title>
+        <id>https://dev.to/mech_app_ai/ozbrains-shared-memory-architecture-how-multi-agent-teams-avoid-re-explaining-context-across-1c19</id>
+        <link href="https://dev.to/mech_app_ai/ozbrains-shared-memory-architecture-how-multi-agent-teams-avoid-re-explaining-context-across-1c19"/>
+        <updated>2026-08-24T00:07:24.000Z</updated>
+        <summary type="html"><![CDATA[When you run multiple agents across Claude, ChatGPT, and Cursor, each one starts from scratch unless you manually paste context into every session. OzBrain solves this by exposing a shared knowledge substrate that agents read and write through the Model Context Protocol (MCP). The system routes context so agents see only what they need, and teams avoid explaining the same facts to every new agent instance.
+The Show HN post drew 85 points and 50 comments because the problem is real: production multi-agent workflows break down when context lives in isolated chat histories or scattered documents. OzBrain's architecture treats knowledge as a first-class resource with explicit scoping, indexing, and conflict resolution.
+OzBrain organizes knowledge into brains, which are either personal or share…]]></summary>
         <author>
-            <name>DarkEdges</name>
+            <name>mech.app</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Trusted AI Agent Transactions, Part 1: The Identity Problem]]></title>
-        <id>https://dev.to/darkedges/trusted-ai-agent-transactions-part-1-the-identity-problem-17aa</id>
-        <link href="https://dev.to/darkedges/trusted-ai-agent-transactions-part-1-the-identity-problem-17aa"/>
-        <updated>2026-08-23T23:00:58.000Z</updated>
-        <summary type="html"><![CDATA[The identity problem behind AI agents
-
-
-An application that calls an API for a user normally answers one identity question: who is the user?
-An AI agent introduces several more:
-Which user authorized the work?
-Which logical agent is acting?
-Which running workload actually made the call?
-Which agent execution is involved?
-Which transaction and purpose does the call belong to?
-Which service made the current network hop?
-Putting every answer into a single sub claim creates a dangerous illusion. A logical agent name is not cryptographic proof of the running process. A workload identity is not the user. A transaction identifier is not a caller identity.
-This implementation keeps five values separate:
-UserID: the authenticated human or upstream principal
-AgentID: the approved logical agent defin…]]></summary>
+        <title type="html"><![CDATA[Architecting a background-service-based sound manager that survives Android's Doze mode]]></title>
+        <id>https://dev.to/haseebthedev0/architecting-a-background-service-based-sound-manager-that-survives-androids-doze-mode-1o1e</id>
+        <link href="https://dev.to/haseebthedev0/architecting-a-background-service-based-sound-manager-that-survives-androids-doze-mode-1o1e"/>
+        <updated>2026-08-24T00:07:12.000Z</updated>
+        <summary type="html"><![CDATA[It was the final ten minutes of a high-stakes client presentation. I was mid-sentence, explaining a complex system migration, when my phone erupted with a loud, aggressive ringtone. The room went silent, but my phone did not. I scrambled to silence it, accidentally hitting the volume buttons while fumbling with the screen. That moment of pure, unadulterated embarrassment followed me for days. It was not the first time this had happened, but it was the time I decided I had finally had enough of relying on my own memory to toggle sound profiles before entering sensitive environments.
+Most of us live in a state of perpetual concern regarding our devices. We walk into movie theaters, attend religious services, or sit through medical consultations, constantly checking our pockets to ensure we h…]]></summary>
         <author>
-            <name>DarkEdges</name>
+            <name>Haseeb</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Installing Minikube on Debian]]></title>
-        <id>https://dev.to/spmahapatra/installing-minikube-on-debian-1aj4</id>
-        <link href="https://dev.to/spmahapatra/installing-minikube-on-debian-1aj4"/>
-        <updated>2026-08-23T22:59:01.000Z</updated>
-        <summary type="html"><![CDATA[Installing Minikube on Debian
+        <title type="html"><![CDATA[Construyendo un recomendador de emparejamiento de expertos]]></title>
+        <id>https://dev.to/aws-builders/construyendo-un-recomendador-de-emparejamiento-de-expertos-57h2</id>
+        <link href="https://dev.to/aws-builders/construyendo-un-recomendador-de-emparejamiento-de-expertos-57h2"/>
+        <updated>2026-08-24T00:03:34.000Z</updated>
+        <summary type="html"><![CDATA[La forma del problema
 
 
-Minikube is a practical way to run a small Kubernetes cluster on a Debian workstation or development instance. This guide installs Minikube with the Docker driver, starts a named profile, runs a temporary deployment, and removes the test resources afterward.
-This is a local development setup, not a production Kubernetes distribution. The commands target Debian 12 (Bookworm), Debian 13 (Trixie), or a compatible newer Debian release on an x86-64 host.
-The goal is a repeatable local baseline rather than a particular Minikube release number. Minikube and Kubernetes change over time, so the release documentation remains the authority for supported versions and driver behavior. The commands deliberately verify each boundary: the Debian host, Docker, the Minikube p…]]></summary>
+Un directorio es una superficie: el miembro lo abre y adivina. 
+Tres restricciones hicieron esto distinto de un recomendador de contenido:
+El item es una persona con capacidad finita. Un hilo se le puede recomendar a diez mil personas. Un experto no.
+Una mala recomendación es cara de los dos lados. Quien pide desperdicia una petición, el experto desperdicia una hora, y los dos aprenden a ignorar la superficie.
+La afirmación tiene que ser checable. "Quizá te guste este hilo" no necesita evidencia. "Esta persona está un nivel adelante de ti en diseño de sistemas" sí.
+Tres recuperadores independientes sobre el conjunto de expertos elegibles, fusionados con Reciprocal Rank Fusion:
+def rrf_fuse(*ranked_lists, k=60):
+    """Fusiona listas de ids rankeadas. El score depend…]]></summary>
         <author>
-            <name>spmahapatra</name>
+            <name>Franchesco Romero</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Install Docker Engine on Debian]]></title>
-        <id>https://dev.to/spmahapatra/install-docker-engine-on-debian-4dga</id>
-        <link href="https://dev.to/spmahapatra/install-docker-engine-on-debian-4dga"/>
-        <updated>2026-08-23T22:59:00.000Z</updated>
-        <summary type="html"><![CDATA[Install Docker Engine on Debian
-
-
-Docker Engine provides the daemon, CLI, and runtime needed to build and run containers on Debian. This guide installs Docker Engine from Docker's official APT repository, verifies the service with a test container, and configures the current user to run Docker without sudo.
-The repository method is preferable for a long-lived Debian instance because APT can receive Docker updates through the normal package workflow. Docker currently documents Debian 13 (Trixie), Debian 12 (Bookworm), and Debian 11 (Bullseye), with packages for amd64, armhf, arm64, and ppc64el. Package names and supported releases can change, so the official Docker Debian installation page remains the authority when this article is updated.
-Install Docker Engine from Docker's signed APT rep…]]></summary>
+        <title type="html"><![CDATA[Building PickTool with Next.js and Laravel: Lessons from Creating a Software Discovery Platform]]></title>
+        <id>https://dev.to/doaaabed94/building-picktool-with-nextjs-and-laravel-lessons-from-creating-a-software-discovery-platform-d72</id>
+        <link href="https://dev.to/doaaabed94/building-picktool-with-nextjs-and-laravel-lessons-from-creating-a-software-discovery-platform-d72"/>
+        <updated>2026-08-24T00:01:27.000Z</updated>
+        <summary type="html"><![CDATA[Finding software is easy. Finding the right software is not.
+Search for almost any category—email marketing, CRM, productivity, design, or AI—and you will find hundreds of options. Every product presents itself as the best choice, while many comparison articles repeat the same features without explaining which users each tool actually suits.
+That problem inspired me to build PickTool, a platform for discovering and comparing AI and SaaS tools.
+PickTool is still evolving. I am currently improving its content quality, tool coverage, comparison experience, performance, and SEO structure.
+This is not a polished launch announcement. It is an honest look at the architecture behind the project and some of the lessons I have learned while building it.
+The goal of PickTool is simple:
+Help people fi…]]></summary>
         <author>
-            <name>spmahapatra</name>
+            <name>Doaa F M Abed</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[wmic is gone and your Node process tree is silently wrong on Windows 11]]></title>
-        <id>https://dev.to/eliseomdq/wmic-is-gone-and-your-node-process-tree-is-silently-wrong-on-windows-11-3e8c</id>
-        <link href="https://dev.to/eliseomdq/wmic-is-gone-and-your-node-process-tree-is-silently-wrong-on-windows-11-3e8c"/>
-        <updated>2026-08-23T22:59:00.000Z</updated>
-        <summary type="html"><![CDATA[The last post I wrote here ended on a line I had to go and check: killing a shell does not kill what the shell started. This is what I found underneath it, and one of the things is a dependency a lot of people have without knowing.
-Numbers below come from Windows 11 Home, build 26200, in August 2026. Run the commands yourself, they take a minute. I work on NestMux, which is where I hit this, but nothing here is specific to it.
-A terminal pane running a coding agent reported 77 MB of memory. That is roughly the PowerShell host and nothing else. The agent inside it, and the dev server the agent had started, were not being counted.
-So the process tree was empty. Every pane looked like an idle shell.
-Get-Command wmic
-
-Get-Command : The term 'wmic' is not recognized as the name of a cmdlet...
-
-…]]></summary>
+        <title type="html"><![CDATA[Planning Over Execution: Lessons from 157 Agent Runs and the Rise of Orca-Style Agent Fleets]]></title>
+        <id>https://dev.to/tamizuddin/planning-over-execution-lessons-from-157-agent-runs-and-the-rise-of-orca-style-agent-fleets-3cb8</id>
+        <link href="https://dev.to/tamizuddin/planning-over-execution-lessons-from-157-agent-runs-and-the-rise-of-orca-style-agent-fleets-3cb8"/>
+        <updated>2026-08-24T00:00:51.000Z</updated>
+        <summary type="html"><![CDATA[Originally published on tamiz.pro.
+The field of AI agents has moved rapidly from single-model executors to complex multi-agent orchestration. But after running 157 agent deployments across diverse task domains, one pattern emerged with striking consistency: planning quality predicts success far better than execution speed or model size. This isn't just theoretical—it's a practical lesson that's reshaping how engineers architect agent fleets, giving rise to what we're now calling Orca-style agents: hierarchical, planning-first systems that separate the expensive business of thinking from the cheaper business of doing.
+Over six months, our team deployed and monitored 157 distinct agent runs across four primary use cases: code generation pipelines, automated testing workflows, infrastructure-…]]></summary>
         <author>
-            <name>Eliseo Fernandez Suarez</name>
+            <name>Tamiz Uddin</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I shipped an alpha notes app where the home screen is the capture field]]></title>
-        <id>https://dev.to/dimelim/i-shipped-an-alpha-notes-app-where-the-home-screen-is-the-capture-field-5aoi</id>
-        <link href="https://dev.to/dimelim/i-shipped-an-alpha-notes-app-where-the-home-screen-is-the-capture-field-5aoi"/>
-        <updated>2026-08-23T22:54:35.000Z</updated>
-        <summary type="html"><![CDATA[Miniout is a university notes/tasks app. UI is Spanish-only for now.
-The idea: you should not pick a folder in the middle of a lecture. Write first; file later (or never). Type "parcial de calculo el viernes" and you get subject + day chips.
-Stack: Expo SDK 57, React Native 0.86, React 19, heroui-native, notes encrypted at rest (AES-256-GCM).
-APK: https://github.com/dimelim/miniout/releases/tag/v1.0.2-alpha.4
-https://github.com/dimelim/miniout
-Looking for feedback from Expo folks and Spanish-speaking students. Alpha, sideload, needs network for accounts/sync/images.]]></summary>
+        <title type="html"><![CDATA[Four Alarm Slots, Three Failure Modes: Building a Nightly Drain That Survives Sleep, Races, and Timeouts]]></title>
+        <id>https://dev.to/bokuwalily/four-alarm-slots-three-failure-modes-building-a-nightly-drain-that-survives-sleep-races-and-5663</id>
+        <link href="https://dev.to/bokuwalily/four-alarm-slots-three-failure-modes-building-a-nightly-drain-that-survives-sleep-races-and-5663"/>
+        <updated>2026-08-24T00:00:06.000Z</updated>
+        <summary type="html"><![CDATA[Every night my Mac quietly rewrites my long-term memory. Not metaphorically — a shell script drains that day's Claude Code conversation logs into an Obsidian vault, commits them to a private repo, and leaves a briefing on my desktop. It took three real outages to make it reliable. This is the script, the three failures, and the design that came out of them.
+Claude Code sessions are independent of one another. The root cause of a bug you found during a long working session today, the reason you settled on a particular architecture after trial and error, the accumulated knowledge that "this direction already failed once" — none of it is available in the next conversation once you close the session.
+Even on a paid plan, even with the most capable model available, if context isn't carried over…]]></summary>
         <author>
-            <name>Diego</name>
+            <name>Lily</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Isolation, file ownership and cleanup: the boring half of running coding agents in parallel on Windows]]></title>
-        <id>https://dev.to/eliseomdq/isolation-file-ownership-and-cleanup-the-boring-half-of-running-coding-agents-in-parallel-on-1n0f</id>
-        <link href="https://dev.to/eliseomdq/isolation-file-ownership-and-cleanup-the-boring-half-of-running-coding-agents-in-parallel-on-1n0f"/>
-        <updated>2026-08-23T22:50:34.000Z</updated>
-        <summary type="html"><![CDATA[Someone left a comment on my last post that was a better outline than the post was:
-Parallel agents are only practical when the workspace boundaries are boring and explicit. On Windows especially, I would care less about the launch trick and more about isolation, logs, file ownership, and cleanup after failed runs.
-That is Alex Shev, and he is right. Four agents in a pane grid is the screenshot. The four things he listed are what decide whether you are still using the setup in a month.
-I work on NestMux, so I have a stake in this. Most of what is below is plain Windows and plain git, and the commands run the same whether or not you use it. Where I describe a decision we made, I say so, and I say where it still falls short.
-Two agents running under the same Windows account share ~/.claude, …]]></summary>
+        <title type="html"><![CDATA[My Caption Width Guard Passed Every Test. It Was Measuring Text the Renderer Never Drew.]]></title>
+        <id>https://dev.to/hexisteme/my-caption-width-guard-passed-every-test-it-was-measuring-text-the-renderer-never-drew-160d</id>
+        <link href="https://dev.to/hexisteme/my-caption-width-guard-passed-every-test-it-was-measuring-text-the-renderer-never-drew-160d"/>
+        <updated>2026-08-24T00:00:06.000Z</updated>
+        <summary type="html"><![CDATA[Originally published on hexisteme notes.
+A user complaint sent me into a caption pipeline: "the subtitles cut to two words in places where the sentence doesn't make sense." The fix I shipped for that complaint introduced a second bug, one word narrower and easy to miss, because the code that measured whether a line of text would fit reproduced an assumption about the text that the code drawing the line didn't share. Every test passed the whole time. I only found it by watching the rendered video.
+The captioning system splits a transcript into short chunks that pop onto screen a few words at a time. The chunking function was doing fixed-size slicing — take the next N words, regardless of what came before or after. That's blind to sentence boundaries, so two unrelated sentences could land in…]]></summary>
         <author>
-            <name>Eliseo Fernandez Suarez</name>
+            <name>John</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[I got tired of scraping app reviews twice, so I unified both stores]]></title>
-        <id>https://dev.to/radevicb/i-got-tired-of-scraping-app-reviews-twice-so-i-unified-both-stores-4ccp</id>
-        <link href="https://dev.to/radevicb/i-got-tired-of-scraping-app-reviews-twice-so-i-unified-both-stores-4ccp"/>
-        <updated>2026-08-23T22:49:53.000Z</updated>
-        <summary type="html"><![CDATA[Every app review pipeline I've seen starts the same way: one scraper for Google
-score and im:rating pretend to be the same field. You write that glue code
-The raw sources, if you want to DIY it: Apple still serves a public RSS feed at
-itunes.apple.com/{country}/rss/customerreviews/... — no auth needed, but it
-google-play-scraper
-There's also the subscription route. Appfigures starts at $9.99/month and Appbot
-So I built App Review Monitor
-{
-    "store": "apple",
-    "appId": "310633997",
-    "country": "us",
-    "date": "2026-08-20T14:03:11.000Z",
-    "rating": 2,
-    "title": "Latest update broke uploads",
-    "text": "Since the last version ...",
-    "appVersion": "26.16.81",
-    "author": "reviewer_a1b2c3d4e5f6"
-}
+        <title type="html"><![CDATA[ESP32 + Python: From Microcontroller to IoT]]></title>
+        <id>https://dev.to/janadapelahara/esp32-python-from-microcontroller-to-iot-2498</id>
+        <link href="https://dev.to/janadapelahara/esp32-python-from-microcontroller-to-iot-2498"/>
+        <updated>2026-08-23T23:34:39.000Z</updated>
+        <summary type="html"><![CDATA[ESP32 + Python: From Microcontroller to IoT
 
-Same ten fields whether it came from Play or the App Store. Pipe it into an LLM
-That author field is a hash, not a name. On purpose. Review text is what you
-The other opinionated choice: failures are loud. Apps that couldn't be fetched
-Disclosure: I build and maintain this with AI assistance on my own account, and
-it collects only publicly available review data.]]></summary>
+
+When it comes to transferring data from one place to another, things can sometimes become tricky, especially when communication happens between the hardware and software levels.
+In this article series, I would love to share the experience and knowledge I’ve gathered while working with ESP32 and Python. We’ll explore how these two technologies can work together, starting from the basics and gradually moving towards more interesting and practical projects.
+If you have any questions, suggestions, or ideas along the way, feel free to share them in the comments section below. I’d love to hear from you and discuss them with the community.
+So, without further ado, let’s begin! 🚀
+What is ESP32?
+Think about Esp32 as a microcontroller with Internet faci…]]></summary>
         <author>
-            <name>Boris Radevic</name>
+            <name>Janada Pelahara</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Google Trends still has no API in 2026. Here's what I use instead]]></title>
-        <id>https://dev.to/radevicb/google-trends-still-has-no-api-in-2026-heres-what-i-use-instead-1840</id>
-        <link href="https://dev.to/radevicb/google-trends-still-has-no-api-in-2026-heres-what-i-use-instead-1840"/>
-        <updated>2026-08-23T22:49:47.000Z</updated>
-        <summary type="html"><![CDATA[Google announced a Trends API alpha in July 2025. It's now August 2026 and access
-If you just need trends data in a pipeline or a spreadsheet, here's the honest
-The official alpha is worth applying for anyway — official beats scraped every
-The commercial SERP APIs (DataForSEO, SerpAPI) all have Trends endpoints. They
-I wasn't doing enterprise volume. So I built
-Google Trends Explorer on
-{
-    "keyword": "notion templates",
-    "geo": "worldwide",
-    "timeRange": "today 12-m",
-    "latestValue": 33,
-    "averageValue": 68.6,
-    "peakDate": "May 3 - 9, 2026",
-    "interestOverTime": [{ "date": "Aug 2025", "value": 48 }],
-    "relatedQueries": {
-        "top": [{ "query": "templates for notion", "value": 100 }],
-        "rising": [{ "query": "notion marketplace", "change": "+250%" }]
-    }
-}
-
-The latestValue / averageValue / peakDate fields are there because half the
-Some things you should know before trusting any Trends data, from any source:
-And Google rate-limits these endpoints hard. My actor rotates proxy sessions and
-Full disclosure: I build and maintain this with AI assistance, on my own account,
-and it only touches public aggregate data. If the official API ever goes GA with
-sane quotas, I'll be the first to switch.]]></summary>
+        <title type="html"><![CDATA[99% token accuracy, zero learning. Field notes from fine-tuning vision models with RL.]]></title>
+        <id>https://dev.to/rickeshtn/99-token-accuracy-zero-learning-field-notes-from-fine-tuning-vision-models-with-rl-306l</id>
+        <link href="https://dev.to/rickeshtn/99-token-accuracy-zero-learning-field-notes-from-fine-tuning-vision-models-with-rl-306l"/>
+        <updated>2026-08-23T23:33:17.000Z</updated>
+        <summary type="html"><![CDATA[Over the past year I have been fine-tuning open vision-language models - 9B dense up to a 35B mixture-of-experts - with supervised fine-tuning and GRPO-style reinforcement learning on verifiable rewards. Most of what I learned was not about algorithms. It was about the ways a training run can look healthy while doing nothing, or crash for reasons that have nothing to do with your code.
+Three failures, in increasing order of how long they fooled me.
+I ran an 18-hour supervised fine-tune that reported token accuracy climbing steadily to 99%. Looked like a textbook run. The real evaluation metric - accuracy on multiple-choice questions - never moved.
+The cause was a mismatch between what I supervised and what I evaluated. The training loss was over free-text reasoning traces; the evaluation s…]]></summary>
         <author>
-            <name>Boris Radevic</name>
+            <name>Rickesh T N</name>
         </author>
     </entry>
     <entry>
@@ -281,6 +211,16 @@ sane quotas, I'll be the first to switch.]]></summary>
         <id>https://schlarp.com/posts/everything-i-own-owned/</id>
         <link href="https://schlarp.com/posts/everything-i-own-owned/"/>
         <updated>2026-08-23T22:41:04.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Parallel development without the headaches using Git worktree]]></title>
+        <id>https://barrd.dev/article/parallel-development-without-the-headaches-using-git-worktree/</id>
+        <link href="https://barrd.dev/article/parallel-development-without-the-headaches-using-git-worktree/"/>
+        <updated>2026-08-23T22:06:14.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -327,20 +267,20 @@ sane quotas, I'll be the first to switch.]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Decoding silent reading from non-invasive EEG]]></title>
-        <id>https://arxiv.org/abs/2608.20186</id>
-        <link href="https://arxiv.org/abs/2608.20186"/>
-        <updated>2026-08-23T20:13:34.000Z</updated>
+        <title type="html"><![CDATA[Rural Village in Spain Is Welcoming Digital Nomads with Open Arms]]></title>
+        <id>https://www.cntraveler.com/story/this-rural-village-in-spain-is-welcoming-digital-nomads-with-open-arms</id>
+        <link href="https://www.cntraveler.com/story/this-rural-village-in-spain-is-welcoming-digital-nomads-with-open-arms"/>
+        <updated>2026-08-23T20:30:50.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Training AI to Paint with Code]]></title>
-        <id>https://surya.website/rling-qwen-to-paint-with-code</id>
-        <link href="https://surya.website/rling-qwen-to-paint-with-code"/>
-        <updated>2026-08-23T19:39:29.000Z</updated>
+        <title type="html"><![CDATA[Decoding silent reading from non-invasive EEG]]></title>
+        <id>https://arxiv.org/abs/2608.20186</id>
+        <link href="https://arxiv.org/abs/2608.20186"/>
+        <updated>2026-08-23T20:13:34.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -609,16 +549,6 @@ The post Report: Google Advertising Pixel 11 Series On Older Pixel Phones appear
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Wi-Fi 8 is the first wireless upgrade in years that isn't chasing speed]]></title>
-        <id>https://www.xda-developers.com/wi-fi-8-first-wireless-upgrade-years-isnt-chasing-speed-home-networks-need-it/</id>
-        <link href="https://www.xda-developers.com/wi-fi-8-first-wireless-upgrade-years-isnt-chasing-speed-home-networks-need-it/"/>
-        <updated>2026-08-23T06:41:51.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Here’s Why You Wouldn’t Want To Break The HONOR Robot Phone’s Gimbal Camera]]></title>
         <id>https://www.lowyat.net/?p=402277</id>
         <link href="https://www.lowyat.net/2026/402277/honor-robot-phone-gimbal-camera-repair/"/>
@@ -630,10 +560,10 @@ The post Here’s Why You Wouldn’t Want To Break The HONOR Robot Phone’s Gim
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[To become a better writer, read as much as you can]]></title>
-        <id>https://nappertime.com/the-golden-rule-of-becoming-a-better-writer/</id>
-        <link href="https://nappertime.com/the-golden-rule-of-becoming-a-better-writer/"/>
-        <updated>2026-08-23T03:32:25.000Z</updated>
+        <title type="html"><![CDATA[AI Chip Architectures]]></title>
+        <id>https://www.jepeake.com/ai-chip-architectures</id>
+        <link href="https://www.jepeake.com/ai-chip-architectures"/>
+        <updated>2026-08-23T02:25:10.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
