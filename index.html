@@ -22,8 +22,8 @@
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-30 datetime="2026-08-30T12:31:27.000Z">2026-08-30</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-30 datetime="2026-08-30T12:31:27.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-30 datetime="2026-08-30T17:08:28.000Z">2026-08-30</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-30 datetime="2026-08-30T17:08:28.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -68,412 +68,6 @@
                     class="source-heading__name"
                     data-action="toggle-accordions"
                     title="Click to toggle the source, Ctrl + click to toggle all."
-                  >DEV Community</button>
-                  <a class="source-heading__link" href="https://dev.to">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/dannydoes_2abdf9c/flash-loan-attack-vector-analysis-blackrock-buidl-ef1"
-                        open
-                      >
-                        <summary class="article-expander__title">Flash Loan Attack Vector Analysis: BlackRock BUIDL</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dannydoes_2abdf9c/flash-loan-attack-vector-analysis-blackrock-buidl-ef1">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhz16qpvgc2pflp8fck29.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Flash Loan Attack Vector Analysis: BlackRock BUIDL
-
-
-Target Protocol: BlackRock BUIDL (TVL: $3599.3M)
-Protocol: BlackRock BUIDL (Backed USD Institutional Digital Liquidity)
-Chain: Ethereum Mainnet / Layer 2s (via bridging)
-TVL Context: ~$3.6B
-Date: October 26, 2023
-Auditor: Senior DeFi Security Research Team
-BlackRock BUIDL is a tokenized money market fund that provides institutional-grade exposure to short-term U.S. Treasury bills. Unlike traditional DeFi protocols that rely on algorithmic interest rates or complex liquidity pools, BUIDL’s value proposition is anchored to the underlying off-chain assets (T-Bills) and the redemption mechanism managed by BlackRock.
-This report focuses specifically on Flash Loan Attack Vectors. Given the nature of BUIDL as a non-rebalancing, non-lending, and…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/saji1970/i-dna-encode-my-encrypted-database-before-writing-it-to-disk-heres-why-and-why-its-not-3fa3"
-                        open
-                      >
-                        <summary class="article-expander__title">I DNA-encode my encrypted database before writing it to disk - here&#x27;s why (and why it&#x27;s not &quot;quantum&quot; anything)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/saji1970/i-dna-encode-my-encrypted-database-before-writing-it-to-disk-heres-why-and-why-its-not-3fa3">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fnot6ip5mei0uuswpo7pd.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Every value in my little embedded key-value store gets encrypted, then
-This is mdc-lite, a ~348KB embeddable encrypted key-value store I
-ModelDB,
-Every put() call does this, in order:
-Pack [key_len][key_bytes][value_bytes] into one plaintext buffer.
-Encrypt the whole thing with XChaCha20-Poly1305 (a 256-bit key you
-supply - the crate never generates or stores key material itself;
-real key custody belongs to the platform&#x27;s secure hardware, iOS
-Secure Enclave or Android Keystore).
-DNA-encode the resulting [nonce][ciphertext][tag] blob: 2 bits per
-base, 00→A 01→C 10→G 11→T. Every byte maps to exactly 4 bases, so
-there&#x27;s no padding ambiguity on decode.
-Write the ACGT text to disk, atomically (temp file + rename).
-Filenames are keyed BLAKE3 hashes of the logical key, not the key name
-
-rust
-pub fn put(&amp;self, key: &amp;str, value: &amp;[u8]) -&gt; Result {
-    let mut plaintext &#x3D; Vec::new();
-    plaintext.extend_from_slice(&amp;(key.len() as u16).to_le_bytes());
-    plaintext.extend_from_slice(key.as_bytes());
-    plaintext.extend_from_slice(value);
-
-    let nonce &#x3D; XChaCha20Poly1305::generate_nonce(&amp;mut OsRng);
-    let ciphertext &#x3D; self.cipher().encrypt(&amp;nonce, plaintext.as_ref())?;
-
-    let mut record &#x3D; nonce.to_vec();
-    record.extend_from_slice(&amp;ciphertext);
-    let acgt_text &#x3D; dna::encode(&amp;record); // &lt;- the actual bytes on disk
-
-    fs::write(tmp_path, &amp;acgt_text)?;
-    fs::rename(tmp_path, final_path)?;
-    Ok(())
-}</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/ragibcs/ddkaarphaail-bildder-bhetrer-jaadu-inttaarmiddiyyett-leyyaar-o-kyaashin-mekaanijm-building-magic-behind-159c"
-                        open
-                      >
-                        <summary class="article-expander__title">ডকারফাইল বিল্ডের ভেতরের জাদু: ইন্টারমিডিয়েট লেয়ার ও ক্যাশিং মেকানিজম (Building Magic Behind Dockerfile)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/ragibcs/ddkaarphaail-bildder-bhetrer-jaadu-inttaarmiddiyyett-leyyaar-o-kyaashin-mekaanijm-building-magic-behind-159c">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fahjrh18stdg9op7vqql3.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>ডকারে কমান্ড লিখে ইমেজ তৈরি করা সহজ হলেও, docker build ব্যাকগ্রাউন্ডে কীভাবে কাজ করে এবং কেন কিছু বিল্ড চোখের পলকে হয়ে যায় আর কিছু বিল্ডে দীর্ঘ সময় লাগে—তা জানা একজন দক্ষ ইঞ্জিনিয়ার বা DevOps প্রফেশনালের জন্য অত্যন্ত জরুরি।
-এই ব্লগে আমরা ডকারফাইল বিল্ডের অভ্যন্তরীণ জীবনচক্র, টেম্পোরারি কন্টেইনার মেকানিজম, ইন্টারমিডিয়েট লেয়ার এবং ডকার ক্যাশিংয়ের আসল কৌশল বিস্তারিতভাবে উন্মোচন করব।
-যখন টার্মিনালে docker build -t go_server:1.0.0 . কমান্ড দেওয়া হয়, ডকার প্রতিটি লাইনের জন্য নিচের ৪টি ধাপ চক্রাকারে সম্পন্ন করে:
-┌────────────────────────────────────────────────────────────────────────┐
-│                        প্রতিটি লাইনের এক্সিকিউশন সাইকেল                │
-├────────────────────────────────────────────────────────────────────────┤
-│  ধাপ ১: পূর্ববর্তী লেয়ারের ইমেজ থেকে টেম্পোরারি কন্টেইনার তৈর…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/andreas_mller_2fd27cf578/why-developing-a-love-for-reading-is-one-of-the-greatest-things-for-your-dev-career-36c6"
-                        open
-                      >
-                        <summary class="article-expander__title">Why developing a love for reading is one of the greatest things for your dev career</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/andreas_mller_2fd27cf578/why-developing-a-love-for-reading-is-one-of-the-greatest-things-for-your-dev-career-36c6">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ftjt6srpefma4kr2o0axn.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I&#x27;m just starting out on my frontend learning journey right now, and I noticed something while reading about CSS on MDN: I love to read.
-This is not news to me. Over the last 7 years, I read many fantasy novels with 500 pages or more, among them series as large as the &quot;Wheel of time&quot; series and the &quot;Stormlight Archives&quot;. I love to read. I grew up in a family of readers, and it is one of the things I am most grateful for in my life.
-But I never realized that it is probably one of the biggest reasons for my success as a software developer as well. In this article, I want to go into the reasons why I think this is true.
-First, our job is to read and write. Aside from communicating in person or over Zoom calls, that&#x27;s all we do, day in and day out. This won&#x27;t even change with AI. So what if we…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/vystartasv/help-wanted-validate-a-sharepoint-requests-approvals-spfx-sample-30ca"
-                        open
-                      >
-                        <summary class="article-expander__title">Help wanted: validate a SharePoint Requests &amp; Approvals SPFx sample</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vystartasv/help-wanted-validate-a-sharepoint-requests-approvals-spfx-sample-30ca">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Firvisdmdfwz3kn83i2zh.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Help wanted: validate a SharePoint Requests &amp; Approvals SPFx sample
-
-
-I have opened a new SharePoint Framework sample for a small, list-backed Requests &amp; Approvals inbox:
-Pull request: https://github.com/pnp/sp-dev-fx-webparts/pull/6475
-The sample targets common SMB/SME approval scenarios without introducing a workflow engine or additional service dependencies. It uses React 17, Fluent UI v9, PnPjs v4, and SPFx 1.23.2.
-Loads pending requests assigned to the signed-in user.
-Reads requests from a configurable SharePoint list.
-Shows request details in an accessible interface.
-Supports approve and reject actions.
-Requires a non-whitespace comment when rejecting.
-Refreshes the queue after a completed decision.
-Includes loading, empty, retry, error, keyboard, and status-announcement states.
-The README documents the exact list schema, permissions, field mapping, status values, concurrency limitation, and non-goals.
-Could someone with access to a SharePoint Online tenant please try the sample and report back on:
-Creating a small list using the documented schema.
-Assigning pending requests to the signed-in user.
-Loading, empty, details, approve, and reject behavior.
-Rejection-comment validation.
-Keyboard operation and narrow-viewport rendering.
-Any setup or permission issues.
-One or two representative screenshots for the README.
-Dummy data is fine. Please remove or blur tenant names, site URLs, user names, request details, and all other sensitive information before sharing screenshots.
-The code builds and tests locally, but I do not currently have a tenant available for end-to-end validation. Tenant feedback and screenshots would materially help complete the pull request.
-Thank you to anyone who can spare the time to test it.
-
-
-  
-  
-  sharepoint #spfx #opensource #react</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/abdullahinnit/i-built-an-ai-agent-that-negotiates-my-bills-for-me-heres-everything-that-went-wrong-560l"
-                        open
-                      >
-                        <summary class="article-expander__title">I Built an AI Agent That Negotiates My Bills For Me, Here&#x27;s Everything That Went Wrong</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/abdullahinnit/i-built-an-ai-agent-that-negotiates-my-bills-for-me-heres-everything-that-went-wrong-560l">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fdw8k35hdcw154q80dt7r.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>This post showcases my journey of the All Things Agentic Hackathon.
-I&#x27;m a second semester software engineering student, and a few weeks ago I had an idea I couldn&#x27;t stop thinking about, what if an AI agent could actually haggle on my behalf, the way I never have the nerve to on a retention call?
-That idea became Haggle, an agent that researches real competitor pricing, then negotiates round by round against a second AI playing a subscription service&#x27;s retention department, until it lands a deal or walks away. Built on Gemini 3.5 Flash, Google ADK 2.0, and the A2A (Agent-to-Agent) protocol, for the All Things Agentic Hackathon&#x27;s Taskmaster track.
-The idea took an afternoon. Getting it actually working took a lot longer, and almost none of the hard parts were about AI. Here&#x27;s what actually h…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/tamizuddin/beyond-the-cloud-bound-why-local-first-and-client-side-privacy-are-the-developers-new-os-209e"
-                        open
-                      >
-                        <summary class="article-expander__title">Beyond the Cloud Bound: Why Local-First and Client-Side Privacy Are the Developer&#x27;s New OS</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/tamizuddin/beyond-the-cloud-bound-why-local-first-and-client-side-privacy-are-the-developers-new-os-209e">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fa268eknuqptaa7orsu3h.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Originally published on tamiz.pro.
-Look around the modern developer&#x27;s desktop. It is cluttered with floating panels that whisper, listen, and watch. They promise to revolutionize our workflows through AI, but at what cost? We have traded the efficiency of code generation for the surrender of our data sovereignty. We have accepted the latency of round-trips to distant data centers as the tax we pay for intelligence. But as we move from autonomous agents to true autonomy, a critical architectural pivot is emerging—one that prioritizes local-first execution and client-side privacy over the seductive convenience of the cloud-bound model.
-For too long, the industry has conflated &quot;intelligence&quot; with &quot;cloud API calls.&quot; Every query sent to an LLM API is a data breach waiting to happen. Your code s…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/dannydoes_2abdf9c/gas-optimization-audit-kucoin-54e4"
-                        open
-                      >
-                        <summary class="article-expander__title">Gas Optimization Audit: KuCoin</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dannydoes_2abdf9c/gas-optimization-audit-kucoin-54e4">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fkeaiz9mcqp0oqqm8mzxf.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Gas Optimization Audit: KuCoin
-
-
-Target Protocol: KuCoin (TVL: $3289.9M)
-KuCoin (Ethereum &amp; L2) – $3.29 B TVL
-
-Date: 30 August 2026
-
-Prepared by: [Your Name] – Senior DeFi Security Researcher &amp; Smart‑Contract Auditor  
-KuCoin’s suite of on‑chain contracts (spot‑exchange router, margin‑engine, staking vaults, cross‑chain bridge, and governance) processes &gt; $1 B of daily transaction volume across Ethereum L1 and multiple L2s (Arbitrum, Optimism, zkSync). The current gas‑cost profile is ≈ 30 % higher than the industry benchmark for comparable functionality, which translates into excessive user fees, reduced competitiveness on L2, and an inflated cost of governance proposals.
-Our audit scoped all production‑grade contracts (≈ 250 k lines of Solidity) and focused on gas‑efficiency, transaction‑…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;9
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/brennhill/how-to-build-a-good-human-in-the-loop-for-ai-email-and-outbound-messaging-14pa"
-                        open
-                      >
-                        <summary class="article-expander__title">How to Build a Good Human-in-the-Loop for AI Email and Outbound Messaging</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/brennhill/how-to-build-a-good-human-in-the-loop-for-ai-email-and-outbound-messaging-14pa">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Flooprails.dev%2Fog-article-hitl-email-agents.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>A good human in the loop for AI email is more than a confirmation dialog on every draft. You want controls that make a wrong send cheap to undo, cap how far it can reach, and put a real human gate only on the sends a person can actually catch in time. The question driving all of LoopRails applies here too: can a human realistically catch this mistake before it lands? If the agent is about to send one internal draft, a short undo window beats a click. If it is about to blast 10,000 customers, no human reads fast enough, so you prevent the bad outcome with caps and approval rather than a rubber stamp. This article shows how to grade outbound actions, match controls to each grade, and avoid the two failure modes that kill oversight: auto-sending with no undo, and gating so much that people st…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;11
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/sigei/git-workflow-17ge"
-                        open
-                      >
-                        <summary class="article-expander__title">Git workflow</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/sigei/git-workflow-17ge">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fo0f3lyfgmb2bnhzycczh.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Git workflow: Working Directory, Staging, Commit and Push
-
-
-This will demonstrate how to create folders, files, and pushing a data set to Github using Git. 
-Create a folder in desktop
-Barta@DESKTOP-I97ED39 MINGW64 /c/One Drive/onedrive/desktop
-$ mkdir Car-Imports-Analysis
-
-Create a data folder inside Car-Imports-Analysis
-Barta@DESKTOP-I97ED39 MINGW64 /c/One Drive/onedrive/desktop/Car-Imports-Analysis
-$ mkdir data
-
-Create a file inside Car-Imports-Analysis
-Barta@DESKTOP-I97ED39 MINGW64 /c/One Drive/onedrive/desktop/Car-Imports-Analysis
-$ touch README.md
-
-Add content to README.md file
-Barta@DESKTOP-I97ED39 MINGW64 /c/One Drive/onedrive/desktop/Car-Imports-Analysis
-$ echo &quot;#Car-Imports-Analysis&quot; &gt;README.md
-
-
-Used Nano terminal text editor to write the texts and display in README.md file. 
-Bar…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;6
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/satvik8954/building-data-watchdog-a-two-gate-approval-agent-on-trueforge-3aoe"
-                        open
-                      >
-                        <summary class="article-expander__title">Building Data Watchdog: A Two-Gate Approval Agent on TrueForge</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/satvik8954/building-data-watchdog-a-two-gate-approval-agent-on-trueforge-3aoe">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fqgmps5u9xjd7vso3nww7.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I went into the WeMakeDevs Agent Harness Hackathon wanting to build something using TrueForge&#x27;s approval-gate system properly — not just have a model promise to &quot;ask before doing things,&quot; but actually have the harness enforce that pause. Here&#x27;s how it went, dead ends included.
-Starting point: the Approval-Gated Assistant
-The hackathon&#x27;s example ideas list a simple starting point: an agent that drafts something (an email, a ticket) and pauses before doing anything irreversible. I picked Gmail as the connected tool, since I already had an account.
-That turned out to be the first wall. Gmail&#x27;s MCP server requires a Google Cloud OAuth Client set up on the developer side, and even after wiring up the OAuth consent screen, scopes, and redirect URI, TrueForge&#x27;s connector kept failing with a DCR (…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dev.to/mrleonix/how-i-built-an-ai-planning-tribunal-in-a-weekend-by-orchestrating-ai-agents-16md"
-                        open
-                      >
-                        <summary class="article-expander__title">How I built an AI planning tribunal in a weekend by orchestrating AI agents</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/mrleonix/how-i-built-an-ai-planning-tribunal-in-a-weekend-by-orchestrating-ai-agents-16md">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F73wtka1qdqnpvtahxqy5.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>I spent this weekend building Setback for Google&#x27;s All Things Agentic Hackathon: a tool that turns a resident&#x27;s plain-language objection to a nearby development application into a real, legally-relevant council submission, and just as importantly, honestly refuses the parts that aren&#x27;t. Disclosure: this was created for entering that hackathon, and most of the actual typing was done by AI coding agents that I orchestrated rather than by me line-by-line. That&#x27;s the part I actually want to write about.
-The problem itself is mundane and real. NSW planning law only lets a council weigh a specific, fairly short list of things when it reviews a development application next door to you: overshadowing, privacy, height and bulk, heritage, a handful of others. A falling property value isn&#x27;t on that l…</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;7
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
-                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
-                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
-                </h3>
-                <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="5fc01376-dd40-4306-96bf-a34649f054bd"
-                        open
-                      >
-                        <summary class="article-expander__title">Crypto market makers are cashing in on bitcoin&#x27;s rally - without betting on direction</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/08/28/crypto-market-makers-are-cashing-in-on-bitcoin-s-rally-without-betting-on-direction">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>As bitcoin surges back above $80,000, sophisticated trading firms are quietly collecting yield rather than making directional bet.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                </section>
-              </section>
-            </li>
-            <li class="card__section">
-              <section class="js-toggle-accordions-scope">
-                <h3 class="source-heading">
-                  <button
-                    class="source-heading__name"
-                    data-action="toggle-accordions"
-                    title="Click to toggle the source, Ctrl + click to toggle all."
                   >Hacker News</button>
                   <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
                 </h3>
@@ -482,16 +76,16 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.abc.net.au/news/2026-08-29/fair-work-commission-condemns-ai-legal-advice/107089766"
+                        data-accordion-key="https://www.artie.com/careers?ashby_jid&#x3D;e87b84d2-78b3-41a3-937a-47e83643cdf1"
                         open
                       >
-                        <summary class="article-expander__title">Fair Work Commission condemns &#x27;plain wrong&#x27; AI legal advice</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.abc.net.au/news/2026-08-29/fair-work-commission-condemns-ai-legal-advice/107089766">
+                        <summary class="article-expander__title">Artie (YC S23) Is Hiring Technical AES</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.artie.com/careers?ashby_jid&#x3D;e87b84d2-78b3-41a3-937a-47e83643cdf1">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://live-production.wcms.abc-cdn.net.au/228704f43c5a1c7837340c945eedf7b2?impolicy&#x3D;wcms_watermark_news&amp;cropH&#x3D;1687&amp;cropW&#x3D;3000&amp;xPos&#x3D;0&amp;yPos&#x3D;88&amp;width&#x3D;862&amp;height&#x3D;485&amp;imformat&#x3D;generic" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://www.artie.com/opengraph-image.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;14
+                                &ensp;<span class="article-reading-time">(&hairsp;1
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -502,15 +96,32 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://git.zx2c4.com/spark/about/"
+                        data-accordion-key="https://komoroske.com/slime-mold/"
                         open
                       >
-                        <summary class="article-expander__title">Spark: Sparklines in your shell</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://git.zx2c4.com/spark/about/">
+                        <summary class="article-expander__title">Coordination Headwind: How Organizations Are Like Slime Molds</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://komoroske.com/slime-mold/">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;8
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.haiku-os.org/news/2026-08-26_haiku_r1_beta6"
+                        open
+                      >
+                        <summary class="article-expander__title">Haiku R1/beta6 has been released</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.haiku-os.org/news/2026-08-26_haiku_r1_beta6">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;1
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -521,31 +132,11 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/AniketWathore/bolnee-chat"
+                        data-accordion-key="https://0xcc.io/posts/omarchy-root-creds/"
                         open
                       >
-                        <summary class="article-expander__title">Show HN: Bolnee-Chat – Self Hosted Chatbot Integration in Your Business Website</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/AniketWathore/bolnee-chat">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/978cd0fe826c7abf2a6d484f5a9e544335cc35020cb453799e8d003654b1713f/AniketWathore/bolnee-chat" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;22
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://blog.lyc8503.net/en/post/dn42-2-dnet/"
-                        open
-                      >
-                        <summary class="article-expander__title">Everyone Should Build Their Own Network Stack</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://blog.lyc8503.net/en/post/dn42-2-dnet/">
+                        <summary class="article-expander__title">Omarchy: Any User Process Can Escalate to Root</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://0xcc.io/posts/omarchy-root-creds/">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
@@ -560,16 +151,210 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.theregister.com/security/2026/08/30/turns-out-brits-would-quite-like-their-private-messages-to-stay-private/5292994"
+                        data-accordion-key="https://reclaimthenet.org/eu-protecteu-strategy-encryption-backdoor-law-enforcement"
                         open
                       >
-                        <summary class="article-expander__title">Brits would quite like their private messages to stay private</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.theregister.com/security/2026/08/30/turns-out-brits-would-quite-like-their-private-messages-to-stay-private/5292994">
+                        <summary class="article-expander__title">European Commission Revives Push for Encryption Backdoors in ProtectEU Strategy</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://reclaimthenet.org/eu-protecteu-strategy-encryption-backdoor-law-enforcement">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://image.theregister.com/255047.jpg?imageId&#x3D;255047&amp;x&#x3D;0&amp;y&#x3D;0&amp;cropw&#x3D;100&amp;croph&#x3D;100&amp;panox&#x3D;0&amp;panoy&#x3D;0&amp;panow&#x3D;100&amp;panoh&#x3D;100&amp;width&#x3D;1200&amp;height&#x3D;683" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media.reclaimthenet.org/2025/04/eu-encrpt-scaled.jpg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;4
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://ziglang.org/devlog/2026/#2026-08-27"
+                        open
+                      >
+                        <summary class="article-expander__title">Zig: Pointer Stability for ArrayLists</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://ziglang.org/devlog/2026/#2026-08-27">
+                          <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;26
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://fortune.com/2026/08/29/europe-summer-drought-desertification-threat-rivers-fish/"
+                        open
+                      >
+                        <summary class="article-expander__title">Europe&#x27;s summer drought is so extreme that desertification is a growing threat</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://fortune.com/2026/08/29/europe-summer-drought-desertification-threat-rivers-fish/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://fortune.com/img-assets/wp-content/uploads/2026/08/AP26240395440798-e1788040359606.jpg?resize&#x3D;1200,600" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;26
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://thezvi.wordpress.com/2026/08/29/metr-and-redwood-offer-holy-postmortem-of-the-huggingface-hack/"
+                        open
+                      >
+                        <summary class="article-expander__title">METR and Redwood Offer Holy %^ Postmortem of the HuggingFace Hack</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://thezvi.wordpress.com/2026/08/29/metr-and-redwood-offer-holy-postmortem-of-the-huggingface-hack/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://substackcdn.com/image/fetch/$s_!uYUs!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0cc30c40-6f58-47f2-9c84-ef327a4d89e5_1672x941.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;46
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://github.com/anthropics/claude-code/issues/66504"
+                        open
+                      >
+                        <summary class="article-expander__title">Claude Session URL appended to commit messages and PR descriptions by default</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/anthropics/claude-code/issues/66504">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://opengraph.githubassets.com/2884f64401bafb07eaa81bbdf6c533901ee1308959cbddb271eb912ab0122ebf/anthropics/claude-code/issues/66504" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;8
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://github.com/fugue-labs/monty-go"
+                        open
+                      >
+                        <summary class="article-expander__title">monty-go: Pure-Go wrapper for Pydantic&#x27;s Monty Python Interpreter</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/fugue-labs/monty-go">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://opengraph.githubassets.com/8d1f96f38603f2cfcff1ed7fdfcb1562de8f4a61b5d9719af789eaf5b34b1fa6/fugue-labs/monty-go" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;22
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://smoores.dev/post/automating_immersive_reading/"
+                        open
+                      >
+                        <summary class="article-expander__title">Automating Immersive Reading</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://smoores.dev/post/automating_immersive_reading/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;45
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.muppetlabs.com/~breadbox/software/windows.html"
+                        open
+                      >
+                        <summary class="article-expander__title">An implementation of Conway&#x27;s Game of Life for Windows 3.1x and later</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.muppetlabs.com/~breadbox/software/windows.html">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;1
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://greenlightning.eu/diy/hacking-ikea-furniture/"
+                        open
+                      >
+                        <summary class="article-expander__title">Hacking IKEA Furniture</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://greenlightning.eu/diy/hacking-ikea-furniture/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://fzakaria.com/2026/08/28/one-flake-to-rule-them-all"
+                        open
+                      >
+                        <summary class="article-expander__title">One Nix flake to rule them all</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://fzakaria.com/2026/08/28/one-flake-to-rule-them-all">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://blog.lyc8503.net/en/post/dn42-2-dnet/"
+                        open
+                      >
+                        <summary class="article-expander__title">Building my own network stack</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://blog.lyc8503.net/en/post/dn42-2-dnet/">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;3
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -620,26 +405,6 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://chipsandcheese.com/p/hot-chips-2026-xcena-and-samsungs"
-                        open
-                      >
-                        <summary class="article-expander__title">Xcena and Samsung&#x27;s Near Memory Compute CXL Device</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://chipsandcheese.com/p/hot-chips-2026-xcena-and-samsungs">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://substackcdn.com/image/fetch/$s_!rmOv!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc4f3c070-692f-4557-9569-ea6f1d9fb689_1273x713.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;21
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.tomshardware.com/software/linux/california-lawmakers-unanimously-pass-linux-exemption-from-age-verification-law-software-distributed-under-the-gpl-mit-bsd-and-apache-licenses-are-exempt"
                         open
                       >
@@ -660,15 +425,53 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://freecore.org/"
+                        data-accordion-key="https://danluu.com/bug-blind/"
                         open
                       >
-                        <summary class="article-expander__title">FreeCORE TrueNAS Core – Continued</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://freecore.org/">
+                        <summary class="article-expander__title">Bug Blindness</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://danluu.com/bug-blind/">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://freecore.org/og.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;22
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >DEV Community</button>
+                  <a class="source-heading__link" href="https://dev.to">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/gateofai/langchain-csv-sqlite-analytics-safer-ai-foundation-1208"
+                        open
+                      >
+                        <summary class="article-expander__title">LangChain CSV SQLite Analytics: Safer AI Foundation</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gateofai/langchain-csv-sqlite-analytics-safer-ai-foundation-1208">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fgateofai.com%2Fwp-content%2Fuploads%2F2026%2F08%2FIMG_0166.jpeg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>🚀 Technical Briefing: This tutorial is part of our deep-dive series on Agentic Workflows at Gate of AI. For the full technical breakdown, interactive code sandbox, and the native Arabic translation, visit the original article here.
+Build a deterministic CSV-to-SQLite analytics foundation with guarded, read-only SQL. It is designed as a safe boundary that a LangChain-style agent can call after its framework and model integration have been verified against current official documentation.
+What this tutorial does—and does not verify
+The supplied research context identifies the general pattern of using LangChain agents with external tools and the broader use case of asking questions about CSV data. It does not provide trusted, current documentation for a particular LangChain release, OpenAI mo…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
                             </span>
                           </div>
                         </a>
@@ -678,15 +481,240 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.smithsonianmag.com/history/among-all-great-things-benjamin-franklin-invented-discovered-alter-egos-gave-him-most-freedom-180988824/"
+                        data-accordion-key="https://dev.to/secbyjasonmiller/synthid-removal-is-a-pip-install-now-no-watermark-found-proves-nothing-1106"
                         open
                       >
-                        <summary class="article-expander__title">Benjamin Franklin&#x27;s Alter Egos Gave Him the Most Freedom</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.smithsonianmag.com/history/among-all-great-things-benjamin-franklin-invented-discovered-alter-egos-gave-him-most-freedom-180988824/">
+                        <summary class="article-expander__title">SynthID removal is a pip install now. &quot;No watermark found&quot; proves nothing.</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/secbyjasonmiller/synthid-removal-is-a-pip-install-now-no-watermark-found-proves-nothing-1106">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://th-thumbnailer.cdn-si-edu.com/s3VfAO2IPf4YaadTHhqPGv3OSdA&#x3D;/fit-in/1600x0/filters:focal(3510x2557:3511x2558)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/64/be/64befdea-c6ae-4172-a2e7-6ef3d902941f/benjamin_franklin_illustration.jpg" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fpi5amni1g7znfijkkxcw.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Comments</span>
+                              <span>An open-source utility with 5.1k GitHub stars removes Google&#x27;s SynthID markers from AI-edited images, and its paid tier charges for exactly one thing: killing the invisible watermark that&#x27;s supposed to survive edits. If your review workflow treats a negative watermark result as exculpatory, that assumption is now a liability, and the exploit is a pip install.
+wiltodelta/remove-ai-watermarks is a Python library and CLI with 5.1k stars and 473 commits of iteration behind it. It handles images and video, and its target list names SynthID alongside C2PA, EXIF, IPTC, and XMP. The feature split shows where the engineering effort goes: stripping metadata and visible badges is the free, easy part, while removing the invisible watermark takes diffusion regeneration on a CUDA GPU. The hosted version…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/gateofai/nodejs-ai-workflow-with-bullmq-reliable-tutorial-540i"
+                        open
+                      >
+                        <summary class="article-expander__title">Node.js AI Workflow with BullMQ: Reliable Tutorial</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gateofai/nodejs-ai-workflow-with-bullmq-reliable-tutorial-540i">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fgateofai.com%2Fwp-content%2Fuploads%2F2026%2F08%2FIMG_0165.jpeg" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>🚀 Technical Briefing: This tutorial is part of our deep-dive series on Agentic Workflows at Gate of AI. For the full technical breakdown, interactive code sandbox, and the native Arabic translation, visit the original article here.
+Build a dependable Node.js AI workflow that accepts authenticated webhooks, stores work safely in PostgreSQL, processes jobs with BullMQ and Redis, calls OpenAI asynchronously, and returns a validated result.
+What You Will Build
+This tutorial builds a small, production-minded work-intake service. Another system sends a work item to POST /webhooks/work-items. The API validates the payload, stores it in PostgreSQL, adds a BullMQ job, and returns 202 Accepted without waiting for an AI response.
+A separate worker receives the job from Redis, loads the canonical rec…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/venelouis/open-source-journey-exploring-resources-for-rullst-3g94"
+                        open
+                      >
+                        <summary class="article-expander__title">🌍Open Source Journey: Exploring Resources for Rullst</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/venelouis/open-source-journey-exploring-resources-for-rullst-3g94">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fshk71qsvisrd5ryswa3j.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Maintaining an open-source project is a demanding journey that requires significant focus. The Claude for Open Source Program is a valuable initiative by Anthropic designed to support open-source maintainers with access to high-tier models. I have submitted the Rullst framework for consideration in this program, hoping to leverage its capabilities to further enhance our development workflows.
+I have officially submitted Rullst for this program. Below is a deep dive into the genesis of Rullst, its AI-driven evolution, and how access to these resources could align with our roadmap. 📈
+🧬 The Genesis: From Cloud Architect to Framework Founder
+The evolution was organic. My first crate, Rullst-Connect, was born from the necessity of implementing a robust &quot;Login with Google&quot; flow. Then, to manag…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;7
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/dannydoes_2abdf9c/yield-strategy-optimization-report-mexc-3c1g"
+                        open
+                      >
+                        <summary class="article-expander__title">Yield Strategy Optimization Report: MEXC</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/dannydoes_2abdf9c/yield-strategy-optimization-report-mexc-3c1g">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fste4ju0w1xv9acg3ivne.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Yield Strategy Optimization Report: MEXC
+
+
+Target Protocol: MEXC (TVL: $5264.2M)
+Yield Strategy Optimization Report – MEXC
+
+
+Protocol: MEXC (Ethereum &amp; L2) TVL: $5.264 B (≈ $5,264.2 M)
+
+Date: 30 August 2026
+
+Prepared by: Senior DeFi Security Researcher – Confidential  
+MEXC operates a suite of on‑chain yield products (Liquidity Mining, Staking‑as‑a‑Service, Leveraged Yield Farming, and Cross‑Chain Yield Portals) that collectively manage &gt; $5 B of user capital across Ethereum Mainnet, Optimism, Arbitrum, zkSync Era, and Polygon zkEVM.  
+Our deep‑dive assessment focused on the technical robustness of the smart‑contract architecture, oracle and data‑feed integrity, risk‑management logic (liquidation, rebalancing, and slippage controls), and operational exposure (upgradeability, governance, an…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/vancine-fan/one-endpoint-four-coding-models-a-practical-switching-workflow-58je"
+                        open
+                      >
+                        <summary class="article-expander__title">One Endpoint, Four Coding Models: A Practical Switching Workflow</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vancine-fan/one-endpoint-four-coding-models-a-practical-switching-workflow-58je">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F7ed462dhbbc216fyxope.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Disclosure: I work on Vancine, the API platform used in the examples below. This article was prepared with AI assistance and reviewed against the live product documentation.
+Coding agents do not always need the same model.
+One task may benefit from an experimental vision-capable model. Another may need a lightweight flash model for a fast edit-test loop. The integration problem is that evaluating several models often means managing different endpoints, credentials, and request formats.
+An OpenAI-compatible endpoint makes the comparison simpler: keep the client configuration fixed and change only the model field.
+This workflow uses four exact model IDs:
+hy4-preview
+deepseek-v4-flash-vision-exp
+glm-5.3-flash
+qwen3.8-flash
+They are available through the same base URL:
+https://vancine.com/v1
+
+…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;6
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/vystartasv/help-wanted-validate-a-react-document-metadata-review-spfx-sample-1404"
+                        open
+                      >
+                        <summary class="article-expander__title">Help wanted: validate a React document metadata review SPFx sample</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/vystartasv/help-wanted-validate-a-react-document-metadata-review-spfx-sample-1404">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fn1kjoqhfcpehfud1aay0.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Help wanted: validate a React document metadata review SPFx sample
+
+
+A new read-only React sample is ready for the PnP SharePoint Framework webparts repository:
+Pull request: https://github.com/pnp/sp-dev-fx-webparts/pull/6482
+
+Sample: samples/react-document-metadata-review/
+
+
+
+The web part reviews a bounded SharePoint document-library or folder view and highlights missing or invalid metadata. It supports required text, choice, and taxonomy field checks, then provides safe links for people to remediate the source documents.
+It deliberately performs no create, update, or delete operations. The README documents the SharePoint permissions, configuration format, and tenant validation steps.
+Local verification completed:
+13 deterministic Jest tests passed.
+SPFx DEBUG and SHIP builds passed.
+Production .sppkg packaging passed.
+Scope and security review found no secrets or unrelated changes.
+Could someone with a SharePoint Online tenant please test this against a representative document library and report back on the PR? Useful checks include metadata highlighting, folder scoping, taxonomy values, permission-denied and throttling behavior, safe links, keyboard access, and responsive layout. Real tenant screenshots would be especially helpful; none are fabricated here.
+Thank you for helping validate and improve this community sample.</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;5
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/gde/overcoming-darts-single-inheritance-wall-composable-cubitsignalmixin-blocsignalmixin-in-flutter-43bf"
+                        open
+                      >
+                        <summary class="article-expander__title">Overcoming Dart&#x27;s Single Inheritance Wall: Composable CubitSignalMixin &amp; BlocSignalMixin in Flutter</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/gde/overcoming-darts-single-inheritance-wall-composable-cubitsignalmixin-blocsignalmixin-in-flutter-43bf">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fjebxs3nyvxnupg3w0kbx.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Breaking Free from Dart&#x27;s Single Inheritance Constraint in State Management
+
+
+Every Dart and Flutter developer eventually runs headfirst into a fundamental language constraint: single inheritance.
+In Dart, a class can extend only one superclass.
+In greenfield tutorials, this is rarely an issue because classes start from a clean slate. But in real-world Flutter engineering, domain repositories, controllers, and services frequently already belong to an established inheritance hierarchy:
+A search field controller that must extend Flutter&#x27;s TextEditingController (which itself extends ValueNotifier).
+A view controller that extends ChangeNotifier or AnimationController.
+A domain repository that extends an enterprise BaseRepository, EntityStore, or microservices client.
+Histo…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/uehara/bringing-shared-foundations-into-one-place-merging-five-shared-repositories-into-one-495e"
+                        open
+                      >
+                        <summary class="article-expander__title">Bringing shared foundations into one place — merging five shared repositories into one</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/uehara/bringing-shared-foundations-into-one-place-merging-five-shared-repositories-into-one-495e">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fraw.githubusercontent.com%2FEarthLinkNetwork%2Fblog_public%2Fmain%2Fimages%2Fseries-008%2Fhero-devto-en.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>In June 2026, I had five separate repositories holding shared logic, scattered across my workspace. A utility toolkit, DynamoDB helpers, a rate limiter, a block-editor engine, and notifications. Each was born at a different time, was referenced from a different product, and had no consistency in its dependency direction or publish target. This article covers how I consolidated them into a single monorepo (one repository that holds multiple packages), how I redrew the boundary between &quot;the shared foundation (provider) and the products (consumer),&quot; and which design decision mattered most.
+Here are the conclusions first (reading the body takes about 7 minutes).
+Consolidate five scattered repositories into one place — I gathered the utilities, DynamoDB common, shared library, block editor, and…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;9
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://dev.to/hirdo/docker-for-developers-from-zero-to-production-ready-containers-8f8"
+                        open
+                      >
+                        <summary class="article-expander__title">Docker for Developers: From Zero to Production-Ready Containers</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/hirdo/docker-for-developers-from-zero-to-production-ready-containers-8f8">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2sydj5sm8ov678u2v78e.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Every modern developer encounters Docker eventually. You have likely run docker run -p 8080:80 nginx or copied a snippet from a README to get a local database running. But moving from blindly running commands to structuring production-grade container workflows requires a deeper understanding of how Docker operates under the hood.
+In this article, we will move beyond the basics of containerization. We will explore core container concepts, build a highly optimized multi-stage Dockerfile for a web application, orchestrate local environments with Docker Compose, and review production best practices that keep your images small and secure.
+Before writing code, let us clear up common misconceptions about Docker components.
+Image: A read-only template containing your application code, runtime, sys…</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;8
                                   min&hairsp;)</span>
                             </span>
@@ -698,16 +726,71 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://github.com/mk6i/open-oscar-server"
+                        data-accordion-key="https://dev.to/black_shadow_team/acai-chapter-7-workflow-orchestration-and-agent-execution-15im"
                         open
                       >
-                        <summary class="article-expander__title">Open Oscar Server: open-source server compatible with AIM and ICQ clients</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://github.com/mk6i/open-oscar-server">
+                        <summary class="article-expander__title">ACAI — Chapter 7: Workflow Orchestration and Agent Execution</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/black_shadow_team/acai-chapter-7-workflow-orchestration-and-agent-execution-15im">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://opengraph.githubassets.com/19f4443a1f51cf7165418b61de746bafb8a1edb85a800b9e5e93fdc8a5adae64/mk6i/open-oscar-server" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6voa7rukapqjprzdvx5w.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;16
+                              <span>ACAI —Workflow Orchestration and Agent Execution
+
+
+
+  
+  
+  7.1 Objective
+
+
+ACAI can now:
+Chapter 1 → Core API
+Chapter 2 → Planner
+Chapter 3 → Retrieval
+Chapter 4 → Memory
+Chapter 5 → Model Router
+Chapter 6 → Verification
+
+The next limitation is that a complex request may require multiple dependent operations.
+For example:
+&quot;Research a topic, summarize the evidence,
+compare the findings, and produce a report.&quot;
+
+This is not one simple task.
+It can be represented as:
+Research
+   ↓
+Collect Evidence
+   ↓
+Analyze
+   ↓
+Compare
+   ↓
+Write Report
+   ↓
+Verify
+
+Chapter 7 introduces a workflow engine that represents these operations as a task graph.
+The previous system was approximately:
+User
+ ↓
+Planner
+ ↓
+Router
+ ↓
+Model
+ ↓
+Verifier
+ ↓
+Response
+
+The new system becomes:
+User Goal
+    ↓
+Planner
+    ↓
+W…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;15
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -718,16 +801,86 @@ The problem itself is mundane and real. NSW planning law only lets a council wei
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://danluu.com/bug-blind/"
+                        data-accordion-key="https://dev.to/rahmannugar/reconcilation-in-payment-systems-4b64"
                         open
                       >
-                        <summary class="article-expander__title">Bug Blindness</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://danluu.com/bug-blind/">
+                        <summary class="article-expander__title">Reconcilation in Payment systems</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://dev.to/rahmannugar/reconcilation-in-payment-systems-4b64">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://media2.dev.to/dynamic/image/width&#x3D;1200,height&#x3D;627,fit&#x3D;cover,gravity&#x3D;auto,format&#x3D;auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0250m6qodw45b8v9712c.png" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Payment systems often look simple when everything is working. A user initiates a payment, the provider processes it, a webhook arrives, and the application updates the corresponding subscription, order, invoice, or wallet. But servers go down, webhooks arrive late, workers fail, and requests time out after money has already moved. When that happens, the provider may have the correct payment state while your application does not.
+Reconciliation is how a payment system discovers and repairs those gaps. This article explores why webhooks are not enough, how provider payments can be matched to internal records, how to handle out-of-order states, and how to build a safe, idempotent reconciliation flow.
+Payment Processing Failure Scenarios
+What Reconciliation Means in Payment Systems
+The Role an…</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;11
+                                  min&hairsp;)</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                </section>
+              </section>
+            </li>
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
+                <h3 class="source-heading">
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >CoinDesk: Bitcoin, Ethereum, Crypto News and Price Data</button>
+                  <a class="source-heading__link" href="https://www.coindesk.com/">Open</a>
+                </h3>
+                <section class="articles-per-source">
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="badaab49-10fc-4905-8abd-8643ec38af0c"
+                        open
+                      >
+                        <summary class="article-expander__title">Michael Saylor hints at first bitcoin purchase in two months as bitcoin nears $79,000</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/08/30/bitcoin-nears-usd79-000-as-michael-saylor-hints-at-first-bitcoin-purchase-in-two-months">
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;20
-                                  min&hairsp;)</span>
+                              <span>Bitcoin rebounds from Friday’s low as Strategy’s valuation expands and bitcoin dominance climbs above 60%.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="4370612f-a5cb-4cdc-8262-8722eccd5826"
+                        open
+                      >
+                        <summary class="article-expander__title">From Hawala to Swift: Inside the 1,000-year battle to move money safely</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/business/2026/08/30/from-hawala-to-swift-inside-the-1-000-year-battle-to-move-money-safely">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>Finance has spent centuries decoupling wealth from physical transport, but constantly erasing friction creates vectors for increasingly high-tech exploits.</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="5fc01376-dd40-4306-96bf-a34649f054bd"
+                        open
+                      >
+                        <summary class="article-expander__title">Crypto market makers are cashing in on bitcoin&#x27;s rally - without betting on direction</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/08/28/crypto-market-makers-are-cashing-in-on-bitcoin-s-rally-without-betting-on-direction">
+                          <div class="article-summary-box-inner media-object">
+                            <span class="media-object__text">
+                              <span>As bitcoin surges back above $80,000, sophisticated trading firms are quietly collecting yield rather than making directional bet.</span>
                             </span>
                           </div>
                         </a>
@@ -975,26 +1128,6 @@ The post Huawei Mate XT 2 Confirmed To Feature An Inward-Folding Design appeared
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.texastribune.org/2026/08/28/texas-flock-cameras-auto-insurance-fee-mvcpa-grants/"
-                        open
-                      >
-                        <summary class="article-expander__title">Lawmakers added $1 to car insurance policies. That money paid for Flock cameras</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.texastribune.org/2026/08/28/texas-flock-cameras-auto-insurance-fee-mvcpa-grants/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://i0.wp.com/www.texastribune.org/wp-content/uploads/2026/08/TT_FLOCK-MONEY-TEXAS_03-.jpg?quality&#x3D;100&amp;w&#x3D;1200&amp;h&#x3D;630&amp;ssl&#x3D;1" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;52
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/"
                         open
                       >
@@ -1015,33 +1148,16 @@ The post Huawei Mate XT 2 Confirmed To Feature An Inward-Folding Design appeared
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://dl.acm.org/doi/10.1145/3830438.3830958"
+                        data-accordion-key="https://people.kernel.org/monsieuricon/creepy-crawlies"
                         open
                       >
-                        <summary class="article-expander__title">Functional State Machines in Rust: Typestate and Newtype Patterns</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dl.acm.org/doi/10.1145/3830438.3830958">
+                        <summary class="article-expander__title">Creepy Crawlies</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://people.kernel.org/monsieuricon/creepy-crawlies">
                           <div class="article-summary-box-inner media-object">
+                              <img src="https://kaoti.ca/graphs/fig6-cpu-crawl-vs-clone.png" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://science.nasa.gov/mission/roman-space-telescope/"
-                        open
-                      >
-                        <summary class="article-expander__title">Nancy Grace Roman Space Telescope</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://science.nasa.gov/mission/roman-space-telescope/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://assets.science.nasa.gov/content/dam/science/missions/rst/spacecraft-illustrations/Roman_BeautyPass2026-med.png/jcr:content/renditions/cq5dam.web.1280.1280.png" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;10
+                                &ensp;<span class="article-reading-time">(&hairsp;6
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1052,16 +1168,16 @@ The post Huawei Mate XT 2 Confirmed To Feature An Inward-Folding Design appeared
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://chipsandcheese.com/p/hot-chips-2026-samsungs-processing"
+                        data-accordion-key="https://www.smithsonianmag.com/smart-news/when-fruit-is-scarce-these-monkeys-hunt-animals-the-behavior-may-offer-clues-about-the-origins-of-humans-meat-eating-habits-180989412/"
                         open
                       >
-                        <summary class="article-expander__title">Samsung&#x27;s Processing-in-Memory (PIM)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://chipsandcheese.com/p/hot-chips-2026-samsungs-processing">
+                        <summary class="article-expander__title">When fruit is scarce, these monkeys hunt animals</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.smithsonianmag.com/smart-news/when-fruit-is-scarce-these-monkeys-hunt-animals-the-behavior-may-offer-clues-about-the-origins-of-humans-meat-eating-habits-180989412/">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://substackcdn.com/image/fetch/$s_!wrBL!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb38cdff5-a0de-4ff3-9084-3ea98bfeeccb_1903x1063.png" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://th-thumbnailer.cdn-si-edu.com/x9ZOL3oIxuMkd9w6RBFVTSRCiGc&#x3D;/fit-in/1600x0/filters:focal(1936x1309:1937x1310)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/09/db/09dba898-5ce8-4705-a26f-94aa75051dc6/capuchin_birdprey.jpg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;23
+                                &ensp;<span class="article-reading-time">(&hairsp;7
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1423,40 +1539,6 @@ The post Modders Have Already Gotten NVIDIA DLSS 5 Working On RTX 40 Series GPUs
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Weakening profitability overshadowed a major milestone in IREN’s transformation into an AI cloud provider.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="5d5092a7-c28f-4918-8742-b593de43d9d0"
-                        open
-                      >
-                        <summary class="article-expander__title">Here’s why Warsh’s Jackson Hole speech is a major event for bitcoin and gold</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/markets/2026/08/28/here-s-why-warsh-s-jackson-hole-speech-is-a-major-event-for-bitcoin-and-gold">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Warsh’s Jackson Hole speech could shape expectations for Fed support of Treasury buybacks, with implications for bitcoin, gold and long-term yields.</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="180a76c4-66c5-47ba-b93a-776e3ae5c6c9"
-                        open
-                      >
-                        <summary class="article-expander__title">Solana’s faster disinflation plan leads vote as $800K burn proposal trails</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.coindesk.com/tech/2026/08/28/solana-s-faster-supply-cuts-lead-vote-while-usd800-000-daily-burn-plan-trails">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>All three proposals have cleared quorum, but a plan to slow new SOL creation is only narrowly passing while a separate vote to sharply increase token burns remains below the two-thirds support needed.</span>
                             </span>
                           </div>
                         </a>
@@ -1928,16 +2010,16 @@ The post Realme C100x Now Available For RM999 appeared first on Lowyat.NET.</spa
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://artificialanalysis.ai/hardware-inference-stack/mobile-phones"
+                        data-accordion-key="https://www.goto10retro.com/p/dads-custom-atari-peripherals"
                         open
                       >
-                        <summary class="article-expander__title">Benchmarking Pocket-Scale Inference</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://artificialanalysis.ai/hardware-inference-stack/mobile-phones">
+                        <summary class="article-expander__title">Dad&#x27;s Custom Atari Peripherals – By Jim Trageser</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.goto10retro.com/p/dads-custom-atari-peripherals">
                           <div class="article-summary-box-inner media-object">
-                              <img src="https://artificialanalysis.ai/opengraph-image.png?732728ccc2829321" loading="lazy" class="media-object__media article-image" />
+                              <img src="https://substackcdn.com/image/fetch/$s_!So6y!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0ae04100-f535-4b93-8349-7985a82efa77_4000x3000.jpeg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;19
+                                &ensp;<span class="article-reading-time">(&hairsp;12
                                   min&hairsp;)</span>
                             </span>
                           </div>
@@ -1956,6 +2038,26 @@ The post Realme C100x Now Available For RM999 appeared first on Lowyat.NET.</spa
                           <div class="article-summary-box-inner media-object">
                             <span class="media-object__text">
                               <span>Comments</span>
+                            </span>
+                          </div>
+                        </a>
+                      </details>
+                    </article>
+                    <article>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="https://www.scientificamerican.com/article/electric-rain-can-eat-through-metal/"
+                        open
+                      >
+                        <summary class="article-expander__title">Electric rain can eat through metal</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://www.scientificamerican.com/article/electric-rain-can-eat-through-metal/">
+                          <div class="article-summary-box-inner media-object">
+                              <img src="https://static.scientificamerican.com/dam/asset/a3ccc794-1a6f-4785-b66f-648e3ef9f918/Raindrops-3000.jpg?m&#x3D;1787762736.102&amp;w&#x3D;1200" loading="lazy" class="media-object__media article-image" />
+                            <span class="media-object__text">
+                              <span>Comments</span>
+                                &ensp;<span class="article-reading-time">(&hairsp;19
+                                  min&hairsp;)</span>
                             </span>
                           </div>
                         </a>
@@ -2212,25 +2314,6 @@ Consider a simple rule: Never open the car door. Followed literally, an agent co
                         </a>
                       </details>
                     </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://hitogata.neocities.org/POP-2000"
-                        open
-                      >
-                        <summary class="article-expander__title">Pop-2000, a lingua-franca POP-2 dialect</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://hitogata.neocities.org/POP-2000">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;5
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                 </section>
               </section>
             </li>
@@ -2319,45 +2402,6 @@ That gap creates a heavy cognitive load for human agents who must piece together
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html"
-                        open
-                      >
-                        <summary class="article-expander__title">Creating Teensy ELF Executables for Linux (Or, &quot;Size Is Everything&quot;) (1999)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;19
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://www.eveonline.com/news/view/the-move-to-python-3-begins"
-                        open
-                      >
-                        <summary class="article-expander__title">EVE Online moves to Python 3</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://www.eveonline.com/news/view/the-move-to-python-3-begins">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://images.ctfassets.net/7lhcm73ukv5p/6BrEmUHFq7uEWSrPzpV3HI/c885d66ada65315f14945778b85f691c/Screenshot_Copy_3_1920x1080.JPG?fm&#x3D;jpg&amp;w&#x3D;1200&amp;h&#x3D;630&amp;fit&#x3D;fill" loading="lazy" class="media-object__media article-image" />
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;12
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
                         data-accordion-key="https://blog.jupyter.org/jupytergis-0-16-new-visualization-capabilities-collaborative-story-maps-and-more-03e6b78bacc0"
                         open
                       >
@@ -2383,8 +2427,8 @@ That gap creates a heavy cognitive load for human agents who must piece together
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-24 datetime="2026-08-24T23:00:10.000Z">2026-08-24</time>
-            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-24 datetime="2026-08-24T23:00:10.000Z"></time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date=2026-08-24 datetime="2026-08-24T20:12:22.000Z">2026-08-24</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date=2026-08-24 datetime="2026-08-24T20:12:22.000Z"></time>
           </button>
         </h2>
         <ul class="sources card">
@@ -2399,25 +2443,6 @@ That gap creates a heavy cognitive load for human agents who must piece together
                   <a class="source-heading__link" href="https://news.ycombinator.com/">Open</a>
                 </h3>
                 <section class="articles-per-source">
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://dgl.cx/2020/06/sqlite-json-support"
-                        open
-                      >
-                        <summary class="article-expander__title">SQLite as a Document Database (2020)</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://dgl.cx/2020/06/sqlite-json-support">
-                          <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                                &ensp;<span class="article-reading-time">(&hairsp;2
-                                  min&hairsp;)</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
                     <article>
                       <details
                         class="article-expander"
@@ -2442,30 +2467,12 @@ That gap creates a heavy cognitive load for human agents who must piece together
                       <details
                         class="article-expander"
                         data-action="toggle-native-accordion"
-                        data-accordion-key="https://en.wikipedia.org/wiki/Glacier_mice"
+                        data-accordion-key="https://askmike.org/articles/ai-coding-lessons-in-the-90s-from-my-dad/"
                         open
                       >
-                        <summary class="article-expander__title">Glacier Mice</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://en.wikipedia.org/wiki/Glacier_mice">
+                        <summary class="article-expander__title">What my dad taught me about AI coding in the 90s</summary>
+                        <a class="article-summary-link article-summary-box-outer" href="https://askmike.org/articles/ai-coding-lessons-in-the-90s-from-my-dad/">
                           <div class="article-summary-box-inner media-object">
-                            <span class="media-object__text">
-                              <span>Comments</span>
-                            </span>
-                          </div>
-                        </a>
-                      </details>
-                    </article>
-                    <article>
-                      <details
-                        class="article-expander"
-                        data-action="toggle-native-accordion"
-                        data-accordion-key="https://zackbartel.com/blog/2026/08/tether/"
-                        open
-                      >
-                        <summary class="article-expander__title">Tether: iMessage, SMS, etc. on Linux</summary>
-                        <a class="article-summary-link article-summary-box-outer" href="https://zackbartel.com/blog/2026/08/tether/">
-                          <div class="article-summary-box-inner media-object">
-                              <img src="https://zackbartel.com/img/avatar.jpeg" loading="lazy" class="media-object__media article-image" />
                             <span class="media-object__text">
                               <span>Comments</span>
                                 &ensp;<span class="article-reading-time">(&hairsp;3
@@ -2626,8 +2633,8 @@ The questions enterprise technology leaders are asking have changed. As organiza
       </section>
 
     <footer>
-      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/33311702017">
-        <time id="build-timestamp" datetime="2026-08-30T12:31:59.544Z">2026-08-30T12:31:59.544Z</time>
+      <a class="footer-link" href="https://github.com/AngJianming/rss-reader/actions/runs/33324400884">
+        <time id="build-timestamp" datetime="2026-08-30T17:09:23.394Z">2026-08-30T17:09:23.394Z</time>
       </a>
       <a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed 1.15.1</a>
     </footer>
