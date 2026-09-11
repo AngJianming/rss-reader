@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/gearyworks/i-built-a-jira-client-for-vs-code-that-stays-signed-in-free-tier-19-one-time-for-pro-5f5l",
-          "author": "Geary Works",
-          "description": "Every Jira shop I've worked in has the same little tax: a Jira tab you keep flipping to for the ticket number, the status, that one comment with the repro steps. Atlassian ships an official VS Code extension for this. As of 2026-09-10 it has 3.3 million installs and a 2.55-star rating across 231 reviews, and the top complaints in its issue tracker are \"Jira and Bitbucket keep disconnecting\" and \"Authentication needed every time a new folder is opened\". The best-known community alternative was last updated in 2020.\nSo I built Ticketpane: a small Jira Cloud client that lives in the sidebar of VS Code, Cursor and Windsurf, and whose whole personality is it stays signed in.\nInstall: https://marketplace.visualstudio.com/items?itemName=gearyworks.ticketpane · Site: https://ticketpane.com/?utm_so…",
-          "link": "https://dev.to/gearyworks/i-built-a-jira-client-for-vs-code-that-stays-signed-in-free-tier-19-one-time-for-pro-5f5l",
-          "publishedOn": "2026-09-11T00:21:35.000Z",
-          "wordCount": 2205,
-          "title": "I built a Jira client for VS Code that stays signed in (free tier, $19 one-time for Pro)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fticketpane.com%2Fscreenshots%2F01-my-issues-dark.png"
+          "id": "https://dev.to/sergueyasaelshinder/two-sources-of-truth-will-always-disagree-2c5h",
+          "author": "Serguey Asael Shinder",
+          "description": "Somewhere in your system\nA count in a column\nA status on the order\nAn email in the profile service\nToday they agree.\nThey will not agree forever.\nDrift does not need a bug.\nIt needs one write that lands\nAfter that the two numbers\nThe report is unhappy.\nThe customer is unhappy.\nYou find out weeks later\nSo decide who owns the fact.\nOne place holds it.\nEverything else derives it,\nA field called total is a claim.\nA field called cached_total_at_midnight\nSometimes you cannot avoid the copy.\nTwo services, two databases,\nThen do not pretend.\nWrite the reconciliation job\nAnd make it report the difference\nA job that silently repairs drift\nThe version of this that hurts most\nSomebody denormalised a column\nIt was a performance fix\nEvery duplicated fact\nThey will not.\nStore it once.\nEverything else is a copy,\n– Serguey Asael Shinder",
+          "link": "https://dev.to/sergueyasaelshinder/two-sources-of-truth-will-always-disagree-2c5h",
+          "publishedOn": "2026-09-11T05:20:52.000Z",
+          "wordCount": 1721,
+          "title": "Two Sources of Truth Will Always Disagree",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fgc3n96cvum4chvgv6df0.png"
         },
         {
-          "id": "https://dev.to/susumun/what-are-pyinstaller-hidden-imports-and-why-do-only-dynamic-imports-break-gid",
-          "author": "Susumu Takahashi",
-          "description": "If you've ever packaged a Python desktop app with PyInstaller, you may have run into this: the app runs perfectly from source, but the frozen executable throws ModuleNotFoundError — and only when you exercise one particular feature. It doesn't crash on startup. It crashes three clicks deep, in a code path nobody happened to test right after the build. This post breaks down why that happens and what \"hidden imports\" actually means.\nNote: PyInstaller is a tool that bundles a Python script together with its dependencies into a single platform-specific executable (a .exe on Windows, or a binary embedded in a .app on macOS), so end users don't need a Python environment installed to run it.\nPyInstaller doesn't execute your script to figure out its dependencies. It statically reads the entry-poin…",
-          "link": "https://dev.to/susumun/what-are-pyinstaller-hidden-imports-and-why-do-only-dynamic-imports-break-gid",
-          "publishedOn": "2026-09-11T00:21:07.000Z",
-          "wordCount": 2362,
-          "title": "What are PyInstaller \"hidden imports\" — and why do only dynamic imports break?",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fen.wpmm.jp%2Fblog%2Fwp-content%2Fuploads%2Fogp%2Fpost-123-en-20260803001500.png"
+          "id": "https://dev.to/sergey_shinder_ab2d943365/the-shell-step-that-could-not-fail-no-matter-what-we-did-to-it-f45",
+          "author": "Sergey Shinder",
+          "description": "Our integration suite had been green for eleven weeks. That is not a boast, it is the symptom. A colleague onboarding to the repo wrote a deliberately broken test to see what a failure looked like, pushed it, and the pipeline went green in the usual four minutes.\nThe stage was a single shell step, npm run test:integration | tee integration.log || true, and it contains two separate mistakes, both added by people trying to be helpful. The pipe was there so the log could be uploaded as an artifact, and without set -o pipefail the exit status of the pipeline is the exit status of tee, which is always zero. The || true had been added fourteen months earlier because a cleanup command at the end of the script occasionally returned 1 and nobody wanted to debug it that week. Either one alone would have hidden every failure. We had both.\nI went looking for the rest and found seven more steps across four repositories that could not report failure: three with the same pipe, two with || true, one that ran the real command inside a subshell whose status was discarded, and one where a for loop over services swallowed each iteration's result and exited on the status of the loop itself.\nThe fixes were mechanical. Every script step now starts set -euo pipefail, enforced by a lint job that reads the workflow YAML and fails on any run: block that does not. || true is banned outside a small allowlist, and each allowed use carries the reason in a comment on the same line. Logs are captured by redirecting to a file and cating it afterwards, not by piping the command that matters.\nThe part I would keep if I could only keep one thing is the canary. There is now a job in every pipeline that runs a command which exits 1, and the pipeline asserts that this job is marked failed. It runs on every build and costs two seconds. It would have caught this in an afternoon rather than in eleven weeks.\nA test suite you have never watched go red is not evidence about your code. It is evidence that a script exited zero.\n– Sergey Shinder",
+          "link": "https://dev.to/sergey_shinder_ab2d943365/the-shell-step-that-could-not-fail-no-matter-what-we-did-to-it-f45",
+          "publishedOn": "2026-09-11T05:20:50.000Z",
+          "wordCount": 1776,
+          "title": "The shell step that could not fail no matter what we did to it",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fpu9nnums31s75n3hgrxn.png"
         },
         {
-          "id": "https://dev.to/hackrs_6393/freeze-returncode-streams-and-timeoutexpired-before-one-wrapper-extract-36a1",
-          "author": "Dakota Huang",
-          "description": "Extracting a command wrapper without a result snapshot breaks callers. Characterization tests must freeze returncode, streams, and timeout first. The smallest safe change starts after that freeze.\nCallers depend on exit codes and stream types together. They also depend on TimeoutExpired instead of CalledProcessError. A rewrite that simplifies subprocess.run will break those callers.\nA green happy-path test proves almost nothing useful here. It ignores stderr text, non-zero codes, and encoding. It also ignores timeout class names after the extract.\nConsider a wrapper used by a local build script. The wrapper mixes check, text, and shell flags. One extract without pins will change exception types.\nRecord these fields for every fixture command below.\nargv or shell string actually passed throu…",
-          "link": "https://dev.to/hackrs_6393/freeze-returncode-streams-and-timeoutexpired-before-one-wrapper-extract-36a1",
-          "publishedOn": "2026-09-11T00:20:57.000Z",
-          "wordCount": 3071,
-          "title": "Freeze returncode, Streams, and TimeoutExpired Before One Wrapper Extract",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fa6s5knp0caph71fikw6f.png"
+          "id": "https://dev.to/apify/prefill-and-default-look-the-same-in-console-only-one-of-them-lets-an-agent-skip-your-required-4bc",
+          "author": "Ai-Q Labs",
+          "description": "I have 23 audit Actors on the Apify Store. They all do a version of the same thing: take a public record, check whether what it still claims is true, and write the verdict into a dataset.\nLast week I set out to prove they were unsafe for AI agents to chain together. I had a specific accusation in mind, I built the experiment to demonstrate it, and the experiment refused. What I found instead was a one-line schema fix that I have now applied, and a distinction between two input-schema settings that I had treated as interchangeable for months.\nChaining means running Actor A, taking something out of its output, and passing it into Actor B. For an agent to do that through the Apify MCP server, B has to be callable with a value that only A can supply. MCP is the Model Context Protocol, the inte…",
+          "link": "https://dev.to/apify/prefill-and-default-look-the-same-in-console-only-one-of-them-lets-an-agent-skip-your-required-4bc",
+          "publishedOn": "2026-09-11T05:18:13.000Z",
+          "wordCount": 3618,
+          "title": "prefill and default look the same in Console. Only one of them lets an agent skip your required field.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhu5p1txyemyznajt15s1.png"
         },
         {
-          "id": "https://dev.to/mollie_nelsonwompusstom/how-a-single-claudemd-file-went-viral-and-what-it-quietly-teaches-every-branding-agency-in-45pk",
-          "author": "Mollie nelson Wompus stompus",
-          "description": "## The File That Broke GitHub's Trending Page\nLast week, a repository with zero dependencies, zero build steps, and zero models shot to 91,000 stars on GitHub overnight. There was no launch tweet with a countdown timer. No Product Hunt badge. No VC-backed PR campaign.\nDeveloper Forrest Chang took four observations that AI researcher Andrej Karpathy made about how large language models fail at coding  and turned them into a CLAUDE.md file that Claude Code reads automatically at the start of every session.\nHere are the four behavioral rules, paraphrased for clarity:\n1. Think Before You Code\n\n\nState assumptions out loud. If the request is ambiguous, ask. If a simpler approach exists, push back. Do not pick an interpretation and run with it silently.\n2. Simplicity First\n\n\nWrite the minimum cod…",
-          "link": "https://dev.to/mollie_nelsonwompusstom/how-a-single-claudemd-file-went-viral-and-what-it-quietly-teaches-every-branding-agency-in-45pk",
-          "publishedOn": "2026-09-11T00:16:59.000Z",
-          "wordCount": 2899,
-          "title": "How a Single CLAUDE.md File Went Viral And What It Quietly Teaches Every Branding Agency in California About AI Discipline",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F91fmgolf5kq48semu626.png"
+          "id": "https://dev.to/deepu105/can-qwen-38-running-on-your-laptop-really-replace-claude-opus-for-agentic-coding-51gk",
+          "author": "Deepu K Sasidharan",
+          "description": "Originally published at deepu.tech.\nWhen the whole AI coding frenzy started, I was still skeptical. Like most tech enthusiasts, I tried it but wasn't that impressed by the models' coding capabilities back then. I still used them, but mostly as an autocomplete tool in VS Code. This all changed for me with Opus 4.6 on Claude Code. That was the first time I felt like the model was actually more efficient and smarter than me at coding most of the time. Of course it still needed some hand holding and made silly mistakes at times, but overall I felt the speed of implementing features and fixing bugs was much faster than me doing it alone. I was hooked. I started using it for all my coding tasks and even started to use it for some of my personal projects. I was amazed at how much faster I could g…",
+          "link": "https://dev.to/deepu105/can-qwen-38-running-on-your-laptop-really-replace-claude-opus-for-agentic-coding-51gk",
+          "publishedOn": "2026-09-11T05:16:11.000Z",
+          "wordCount": 6593,
+          "title": "Can Qwen 3.8 running on your laptop really replace Claude Opus for Agentic coding?",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdeepu.tech%2Fassets%2Fimages%2Fllamastash%2Fqwen38-cover.png"
         },
         {
-          "id": "https://dev.to/alifar/2026-seo-survey-search-intent-leads-but-relevant-backlinks-still-matter-2ok5",
-          "author": "Ali Farhat",
-          "description": "Search intent is the leading priority in a new survey of SEO professionals, with backlinks close behind and content quality in third place. For businesses planning organic search work in 2026, the practical message is not to chase a single ranking lever. Build pages that answer the searcher’s actual need, support them with distinctive information, and earn links from credible sites that are genuinely relevant to the topic.\nThe findings come from Zyppy's Google Ranking Factors Expert Survey 2026, which surveyed 131 SEO professionals and collected 13,665 data points across more than 100 potential ranking factors. It is important to read the results correctly: this is practitioner sentiment, not an official Google ranking-factor list or a disclosure of how Google’s algorithm works.\nStill, the…",
-          "link": "https://dev.to/alifar/2026-seo-survey-search-intent-leads-but-relevant-backlinks-still-matter-2ok5",
-          "publishedOn": "2026-09-11T00:15:30.000Z",
-          "wordCount": 2690,
-          "title": "2026 SEO Survey: Search Intent Leads, but Relevant Backlinks Still Matter",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto/https%3A%2F%2Fscalevise.com%2Fresources%2Fcontent%2Fimages%2F2026%2F09%2F2026-seo-survey-search-intent-backlinks.webp"
+          "id": "https://dev.to/rushan123/how-to-add-country-icons-to-a-vue-3-app-13db",
+          "author": "Rushan",
+          "description": "Vue has no shortage of icon sets. Carets and chevrons come in every pack. Geography is the thin part of the shelf: where a set covers countries at all, it usually means flag squares rather than map shapes. GeoIcons ships country, area, and subdivision icons as individual Vue 3 components, 799 of them at the time of writing. Adding one takes three steps: install the package, import the icon by its country name, and render it.\nnpm i @geoicons/vue\n\n<script setup lang=\"ts\">\nimport { UnitedStates, France, Japan } from '@geoicons/vue/countries';\n</script>\n\n<template>\n  <UnitedStates :size=\"40\" aria-label=\"United States\" />\n  <France :size=\"40\" aria-label=\"France\" />\n  <Japan :size=\"40\" aria-label=\"Japan\" />\n</template>\n\nSee it live on geoicons.io →\nThat is the whole path. Below: sizing, color, a…",
+          "link": "https://dev.to/rushan123/how-to-add-country-icons-to-a-vue-3-app-13db",
+          "publishedOn": "2026-09-11T05:13:24.000Z",
+          "wordCount": 2753,
+          "title": "How to add country icons to a Vue 3 app",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fi2o7f74hlxstooxcdv64.png"
         },
         {
-          "id": "https://dev.to/cole_halton_42f71d71b809b/looped-reasoning-means-the-ais-visible-trace-isnt-the-reasoning-5783",
-          "author": "Cole Halton",
-          "description": "GPT-6 Astra ships looped transformers: the same blocks run ~44 passes, reusing weights, so effective depth doubles without new parameters. The KV cache and the intermediate states differ per pass, but the tokens you actually see are only one layer of that surface.\nHere's the part that matters for anyone evaluating agents or reviewing AI-generated code: when the reasoning is hidden inside those loops, the transcript you ask the model to produce is a summary written after the fact, not the trace of what it computed. The text is real, but it's narration. It's the model telling you a plausible story about how it got from input to output, because the actual computation happened across a bunch of recurrent passes you can't inspect.\nThat quietly breaks a habit most review and benchmark setups lea…",
-          "link": "https://dev.to/cole_halton_42f71d71b809b/looped-reasoning-means-the-ais-visible-trace-isnt-the-reasoning-5783",
-          "publishedOn": "2026-09-11T00:15:04.000Z",
-          "wordCount": 1760,
-          "title": "Looped reasoning means the AI's visible trace isn't the reasoning",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvpetmpaxxsqcflnbxk8w.png"
+          "id": "https://dev.to/w8explorer/i-asked-my-ai-assistant-to-automate-our-dev-marketing-here-are-the-mistakes-it-made-347k",
+          "author": "Ajith",
+          "description": "I Asked My AI Assistant to Automate Our Dev Marketing. Here Are the Mistakes It Made.\n\n\nOver the last 48 hours, while building out automated data scrapers on our cloud servers, I conducted an experiment: I asked my AI coding agent to help design and automate our technical marketing and build-in-public pipeline.\nIf you read LinkedIn or Twitter, you would think AI agents can autonomously run your company's marketing on autopilot.\nHere is the unvarnished reality of the mistakes my AI made, the blind spots it had, and the exact corrections I had to enforce to keep us grounded in reality.\nI had an active X (Twitter) developer API key sitting idle. My initial thought was: Why not automate our build updates and scraper iterations directly to X?\nWhen I asked my AI agent how to handle this, it imme…",
+          "link": "https://dev.to/w8explorer/i-asked-my-ai-assistant-to-automate-our-dev-marketing-here-are-the-mistakes-it-made-347k",
+          "publishedOn": "2026-09-11T05:07:21.000Z",
+          "wordCount": 2246,
+          "title": "I Asked My AI Assistant to Automate Our Dev Marketing. Here Are the Mistakes It Made.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Flwyvwrpy1f545t774dqj.png"
         },
         {
-          "id": "https://dev.to/cole_halton_42f71d71b809b/when-the-code-youre-reviewing-isnt-what-the-model-wrote-1ejl",
-          "author": "Cole Halton",
-          "description": "When I review AI-generated code, I read the diff as text. The tool does the same. Which is exactly the gap ASCII smuggling slides through.\nMicrosoft just flagged that ASCII smuggling, the trick once aimed at attacking AI, is now being used by spammers to get invisible text past email filters. A Unicode tag character like U+E0041 renders as a normal \"A\" to humans and passes thin text filters, while carrying a payload underneath. Your eye sees one thing, the renderer sees another, and the two never meet.\nThe same seam sits right in the middle of AI code review. A coding agent writes a line. An AI reviewer pulls the patch and runs its analysis on the text of that line. If that line contains an invisible Unicode character, the reviewer reads it as a plain ASCII equivalent and moves on. Nothing flags the discrepancy, because nothing looked at the raw bytes.\nThis is not hypothetical for eval design. It means the thing we're measuring is the reviewer's reading of the saanitized-looking diff, not the code that actually exists in the repo. Two copies of the string that differ only in invisible codepoints get scored identically, and the one carrying the payload gets a pass.\nThe fix is boring and it works. Before you hand a diff to any AI reviewer, normalize it: strip or flag all characters outside a strict allowlist of printable ASCII (and the specific non-ASCII the language actually uses, like accented chars in string literals). Run it before the model sees it, not after. That one step collapses the whole class of attack from \"the tool reads fake normal text\" to \"the tool sees literally what is there.\"\nA reviewer that claims to review AI code but never looks at the bytes it was handed is reviewing a story about the code, not the code. Cheap to check, cheap to fix. Do it in the intake, and half the sneaky-prompt problems go quiet.",
-          "link": "https://dev.to/cole_halton_42f71d71b809b/when-the-code-youre-reviewing-isnt-what-the-model-wrote-1ejl",
-          "publishedOn": "2026-09-11T00:15:03.000Z",
-          "wordCount": 1716,
-          "title": "When the code you're reviewing isn't what the model wrote",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fq4vb8ltgpn5mdatu5j8g.png"
+          "id": "https://dev.to/nikita_iakovlev_415524c19/i-made-my-apify-actor-an-ai-agent-tool-then-read-every-byte-it-sent-back-1nbj",
+          "author": "Nikita Iakovlev",
+          "description": "I have about thirty Actors on the Apify Store. Making one of them available to an AI agent through the Apify MCP server took me two minutes: add ?actors=lergassy/jobs-api to the server URL and the Actor shows up as a tool. That part is a footnote.\nThe useful part was what came back. I spent an afternoon calling my own Actor the way an agent calls it — raw JSON-RPC over the wire, no client in between — and logging every response. Four things surprised me, and three of them changed how I write input schemas.\nThe Actor here is Jobs API: job listings from Indeed, LinkedIn and company career boards in one schema. Nothing about what follows is specific to jobs, though. If your Actor has more than three inputs, the same things will happen to you.\nEvery walkthrough I found used Claude Desktop or C…",
+          "link": "https://dev.to/nikita_iakovlev_415524c19/i-made-my-apify-actor-an-ai-agent-tool-then-read-every-byte-it-sent-back-1nbj",
+          "publishedOn": "2026-09-11T05:05:36.000Z",
+          "wordCount": 3409,
+          "title": "I made my Apify Actor an AI agent tool, then read every byte it sent back",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fdgmk9kk0zn3s83co6xeu.png"
         },
         {
-          "id": "https://dev.to/sindi_aulia_e2d71f25f3af9/review-website-tencent-edgeone-359d",
-          "author": "SINDI AULIA",
-          "description": "Berdasarkan tampilan pada gambar, Tencent EdgeOne merupakan platform yang menyediakan layanan untuk mempercepat sekaligus meningkatkan keamanan sebuah website. Saat membuka halaman utamanya, saya langsung melihat desain yang cukup modern dengan dominasi warna putih dan biru. Tampilan tersebut membuat website terlihat profesional dan cukup mudah dipahami.\nPada bagian utama halaman terdapat tulisan “Launch Faster. Stay Secure. Convert More” yang menjelaskan fokus EdgeOne, yaitu membantu website memiliki akses yang cepat, aman, dan mendukung pengalaman pengguna. Terdapat juga tombol “Join the Program” yang membuat pengguna lebih mudah melanjutkan ke layanan yang ditawarkan.\nSetelah mencoba melihat website ini, salah satu hal yang menarik adalah informasi mengenai layanan CDN dan keamanan yang…",
-          "link": "https://dev.to/sindi_aulia_e2d71f25f3af9/review-website-tencent-edgeone-359d",
-          "publishedOn": "2026-09-11T00:09:58.000Z",
-          "wordCount": 1738,
-          "title": "Review Website Tencent EdgeOne",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fu1okxg3uoonly2wz8vls.png"
+          "id": "https://dev.to/bokuwalily/47gb-of-compressed-memory-and-no-permission-to-kill-it-handing-a-monitoring-script-exactly-one-2hkg",
+          "author": "Lily",
+          "description": "Last time I wrote about picking out and reaping only the \"orphaned Chrome\" processes. This time it's the monitoring script sitting right next to it, mem-hog-guard.sh. It could detect the problem just fine, but had no permission to kill anything, so all it ever did was send a notification. Here's how I handed it that permission in a way that's verified at every step, instead of in a form where one typo locks me out of sudo entirely.\nThe header comment of mem-hog-guard.sh records how this started.\n# なぜ要るか（2026-08-09）:\n# macOSの dasd(Duet Activity Scheduler) が RSS 264MB のまま MEM 47GB / CMPRS 46GB を\n# 抱え、swapを37GBまで押し上げて Chrome の launchPersistentContext が180秒で\n# タイムアウト -> SNS全レーンが1日分まるごと0件で失敗した。稼働21時間で発生。\n# RSS上位監視には一度も映らないため、誰も気づけなたかった。\n\nIn short: macOS's dasd (Duet Activity Scheduler) sat at a…",
+          "link": "https://dev.to/bokuwalily/47gb-of-compressed-memory-and-no-permission-to-kill-it-handing-a-monitoring-script-exactly-one-2hkg",
+          "publishedOn": "2026-09-11T05:00:06.000Z",
+          "wordCount": 2819,
+          "title": "47GB of Compressed Memory and No Permission to Kill It: Handing a Monitoring Script Exactly One Root Command",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fcmk7hboxjkovimjjexv8.png"
         },
         {
-          "id": "https://dev.to/urvin/automatically-deploy-your-app-to-a-vps-with-github-actions-4k5o",
-          "author": "Urvin Sanghavi",
-          "description": "If your deploy process is \"SSH into the server, cd to the app, git pull, restart something, hope\" — this post replaces it with git push.\nWhat you'll have by the end: every push to your main branch updates the app on your server automatically. You can also trigger a deploy by hand from the GitHub UI.\nThis is the simple version — it has a few seconds of downtime during the restart and it builds on the server. Post 6 in this series upgrades it to a zero-downtime setup. Start here; the simple version is enough for a long time.\nGitHub Actions is a task runner built into every GitHub repo. You describe a job in a YAML file, and GitHub runs it on a fresh virtual machine when something happens — in our case, \"when code lands on main.\"\nThe job we want is tiny: connect to our server over SSH and run…",
-          "link": "https://dev.to/urvin/automatically-deploy-your-app-to-a-vps-with-github-actions-4k5o",
-          "publishedOn": "2026-09-11T00:04:23.000Z",
-          "wordCount": 2373,
-          "title": "Automatically Deploy Your App to a VPS with GitHub Actions",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fjnym8k5e99ei20uvvld4.png"
+          "id": "https://dev.to/gideonsterling9643/realtime-audit-signals-for-voice-lobby-fan-out-and-why-delivery-evidence-matters-1if0",
+          "author": "GideonSterling9643",
+          "description": "For a gaming voice lobby, the least complex design that still gives operators trustworthy evidence is a small audit stream beside the media path: emit immutable events, attach a monotonic sequence, fan them out to dashboard consumers, and record what each consumer actually received. Treating an audio packet as proof that a lobby event was delivered is a category error.\nRecord state transitions, not every RTP packet. A useful event says that member p-184 joined lobby l-42, that its microphone permission changed, or that the lobby closed. Each event needs an event ID, lobby ID, producer timestamp, schema version, and sequence number scoped to that lobby. The dashboard can then answer two separate questions: did the service publish the change, and did this viewer observe it?\nThat distinction …",
+          "link": "https://dev.to/gideonsterling9643/realtime-audit-signals-for-voice-lobby-fan-out-and-why-delivery-evidence-matters-1if0",
+          "publishedOn": "2026-09-11T04:57:40.000Z",
+          "wordCount": 2420,
+          "title": "Realtime Audit Signals for Voice Lobby Fan-Out (and Why Delivery Evidence Matters)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fa4qvevkh3v5c5omrlabk.png"
         },
         {
-          "id": "https://dev.to/jsegeren/how-to-move-openai-codex-to-a-new-mac-without-cloning-its-identity-35h9",
-          "author": "Joshua Segeren",
-          "description": "Changing Macs is normally straightforward. The surprising part is that signing into the same ChatGPT account does not necessarily recreate the local Codex working environment you had on the old machine.\nYour repositories are only part of that environment. Local Codex conversations and state, project organization, custom skills, settings, Git worktrees, stashes, branches, and unfinished files can still live on the old Mac.\nHere is the safe mental model and checklist I wish I had before my own move.\nA migration is a one-time move from an old Mac to a new Mac. The old environment is the source; the new installation is the destination.\nSync means two Macs keep changing and must reconcile those changes repeatedly. That is a different and much harder problem. Blindly syncing internal Codex datab…",
-          "link": "https://dev.to/jsegeren/how-to-move-openai-codex-to-a-new-mac-without-cloning-its-identity-35h9",
-          "publishedOn": "2026-09-11T00:02:59.000Z",
-          "wordCount": 2127,
-          "title": "How to Move OpenAI Codex to a New Mac Without Cloning Its Identity",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F2llij3hpk2jcbbojsozk.png"
+          "id": "https://dev.to/dynamict3ch/give-claude-or-chatgpt-real-time-product-data-via-apifys-mcp-server-full-setup-guide-1lpi",
+          "author": "DYnamicTech",
+          "description": "How to Give Claude or GPT Real-Time Product Data via Apify's MCP Server\n\n\nAsk Claude or ChatGPT to check the price of something on a random e-commerce site, and it'll either refuse (no browsing) or guess from stale training data. Even agents with browsing turn up empty-handed more often than you'd expect: Apify's own testing found that Claude browsing five major retailers directly pulled 0 products out of 100 — with Apify's MCP server in the loop, that became 100 out of 100. Same model, same question, completely different result, because the bottleneck was never the model's reasoning — it was the lack of a reliable way to read a product page.\nThis guide shows the exact setup: connecting Claude Desktop to Apify's MCP server, then pulling clean, structured product data through it — including…",
+          "link": "https://dev.to/dynamict3ch/give-claude-or-chatgpt-real-time-product-data-via-apifys-mcp-server-full-setup-guide-1lpi",
+          "publishedOn": "2026-09-11T04:52:22.000Z",
+          "wordCount": 2353,
+          "title": "Give Claude or ChatGPT Real-Time Product Data via Apify's MCP Server (Full Setup Guide)",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0ukun3ks4iejfnqjxj44.png"
         },
         {
-          "id": "https://dev.to/beck_moulton/quantified-self-transform-your-medical-pdfs-into-a-personal-health-oracle-with-rag-pubmed-2l7f",
-          "author": "Beck_Moulton",
-          "description": "Have you ever looked at a 10-page medical lab report and felt like you were reading ancient hieroglyphics? You’re not alone. In the era of the Quantified Self, we are collecting more health data than ever, yet most of it sits rotting in unstructured PDF files. \nIn this tutorial, we are going to build a Medical RAG (Retrieval-Augmented Generation) system. We will use Unstructured.io to parse messy medical reports, Pinecone as our high-performance Vector Database, and LangChain to orchestrate a dual-retrieval strategy that links your personal data with real-time clinical research from the PubMed API.\nBy the end of this guide, you’ll have a pipeline that doesn't just \"read\" your files but understands them in the context of global medical literature.\nTo build a reliable medical assistant, we c…",
-          "link": "https://dev.to/beck_moulton/quantified-self-transform-your-medical-pdfs-into-a-personal-health-oracle-with-rag-pubmed-2l7f",
-          "publishedOn": "2026-09-11T00:02:00.000Z",
-          "wordCount": 2216,
-          "title": "Quantified Self: Transform Your Medical PDFs into a Personal Health Oracle with RAG & PubMed",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fjojvn430acc8qun6urp1.png"
+          "id": "https://dev.to/patricklusaya/how-to-batch-generate-gemini-images-and-save-auto-save-them-2ep1",
+          "author": "Patrick Lusaya",
+          "description": "Generating one image in Gemini is easy. Generating 30 or 40 images for the same project is where the repetitive work starts.\nIf you're creating a YouTube story, comic, storyboard, or any other project that needs a sequence of images, the process can quickly become:\nPaste a prompt. Wait for the image. Download it. Rename the file. Paste the next prompt. Wait again. Download again.\nBy image 20, most of your time isn't being spent creating prompts anymore. It's being spent managing the generation and download\nGemini Auto Image Saver is a Chrome and Edge extension designed to automate that repetitive part of working with images on Gemini.\nIt works directly with gemini.google.com and can automatically save newly generated images or process a list of prompts one at a time.\n\nThe extension doesn't…",
+          "link": "https://dev.to/patricklusaya/how-to-batch-generate-gemini-images-and-save-auto-save-them-2ep1",
+          "publishedOn": "2026-09-11T04:51:36.000Z",
+          "wordCount": 2443,
+          "title": "How to Batch-Generate Gemini Images and Auto save them.",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F3xku2zb2ckunw0to56d5.png"
         },
         {
-          "id": "https://dev.to/nyxagi/measuring-order-book-vs-amm-share-on-the-xrp-ledger-5h1n",
-          "author": "Nyx Lesende",
-          "description": "When the AMM amendment activated on the XRP Ledger in 2024, the expectation was that liquidity would migrate into pools the way it did on every smart-contract chain before it.\nYou do not have to speculate about whether that happened. The ledger publishes both numbers.\nconst { H24 } = await (\n  await fetch('https://api.xrpl.to/v1/stats')\n).json();\n\nconst ob  = H24.globalVol24hOrderbook;\nconst amm = H24.globalVol24hAMM;\n\nconsole.log('order book share:',\n  (ob / (ob + amm) * 100).toFixed(1) + '%');\n\nRight now that prints 88.2%.\n\n\n\nVenue\nVolume (XRP)\nTrades\nAvg trade (XRP)\n\n\n\n\nOrder book\n3.03M\n26,418\n114.71\n\n\nAMM pools\n406.7K\n32,707\n12.43\n\n\n\nThe order book takes a minority of the trade count but the large majority of volume. Big orders route to the book; small ones are content in pools.\nThat i…",
-          "link": "https://dev.to/nyxagi/measuring-order-book-vs-amm-share-on-the-xrp-ledger-5h1n",
-          "publishedOn": "2026-09-11T00:01:26.000Z",
-          "wordCount": 1777,
-          "title": "Measuring Order Book vs AMM Share on the XRP Ledger",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6c9fjoxkevwli6tys0rx.png"
+          "id": "https://dev.to/vast-cow/why-power-sparc-and-aix-were-used-in-older-hpc-systems-2lgk",
+          "author": "vast cow",
+          "description": "Broadly speaking, back then, systems using CPUs like POWER and SPARC, along with commercial UNIX, were the ones that provided the necessary performance and operating environment for HPC in a comprehensive package. Later, systems using mass-produced components and Linux also became capable of delivering the required performance, and offered advantages in terms of price and procurement flexibility. Rather than simply saying that \"older systems used specialized components,\" it's easier to understand if you think of it as a shift in the rational choices available. (IBM)\nHere, we will primarily focus on the transition from the 1990s to the 2000s and explain the situation with CPUs and operating systems separately.\nIn HPC, it's not just clock speed that matters. Factors such as how many floating…",
+          "link": "https://dev.to/vast-cow/why-power-sparc-and-aix-were-used-in-older-hpc-systems-2lgk",
+          "publishedOn": "2026-09-11T04:49:32.000Z",
+          "wordCount": 2744,
+          "title": "Why POWER, SPARC, and AIX Were Used in Older HPC Systems",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fhh7aiqx5h8m2v0pof452.png"
         }
       ]
     },
@@ -252,6 +252,76 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
+          "id": "https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(26)00405-2",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(26)00405-2",
+          "publishedOn": "2026-09-11T03:48:10.000Z",
+          "wordCount": null,
+          "title": "Exercise intensity is associated with cardiometabolic health",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.upsocl.com/en/16-year-old-mexican-student-creates-an-acoustic-fire-extinguisher-that-uses-sound-waves-to-put-out-fires-in-seconds/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.upsocl.com/en/16-year-old-mexican-student-creates-an-acoustic-fire-extinguisher-that-uses-sound-waves-to-put-out-fires-in-seconds/",
+          "publishedOn": "2026-09-11T01:00:56.000Z",
+          "wordCount": 1195,
+          "title": "Mexican student creates an acoustic fire extinguisher to put out fire in seconds",
+          "imageUrl": "https://www.upsocl.com/wp-content/uploads/2026/09/530937_2_6a9ad8c6d4ca2-1.avif"
+        },
+        {
+          "id": "https://powerfooi.github.io/herdr-studio/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://powerfooi.github.io/herdr-studio/",
+          "publishedOn": "2026-09-11T00:54:36.000Z",
+          "wordCount": 725,
+          "title": "Herdr Studio",
+          "imageUrl": "https://powerfooI.github.io/herdr-studio/og.png"
+        },
+        {
+          "id": "https://www.bbc.com/news/articles/c8r6y4me2g6o",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.bbc.com/news/articles/c8r6y4me2g6o",
+          "publishedOn": "2026-09-11T00:42:41.000Z",
+          "wordCount": 5474,
+          "title": "Google will buy half the electricity from one of Finland's nuclear power plants",
+          "imageUrl": "https://ichef.bbci.co.uk/news/1024/branded_news/2d61/live/80327fa0-ac6a-11f1-80f0-9795d1a5edbc.jpg"
+        },
+        {
+          "id": "https://map-yue2.github.io/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://map-yue2.github.io/",
+          "publishedOn": "2026-09-11T00:33:26.000Z",
+          "wordCount": 1047,
+          "title": "YuE2 · Frontier Music with Symbolic Planning",
+          "imageUrl": null
+        },
+        {
+          "id": "https://system76.com/workstations/thelio-mira-ai",
+          "author": null,
+          "description": "Comments",
+          "link": "https://system76.com/workstations/thelio-mira-ai",
+          "publishedOn": "2026-09-10T23:10:06.000Z",
+          "wordCount": 8944,
+          "title": "Thelio Mira AI Linux Workstation: 192 GB GPU Memory",
+          "imageUrl": "https://cdn11.bigcommerce.com/s-pywjnxrcr2/products/1725/images/2187/thelio-mira-26-frontRR__11359.1772653265.1280.1280__76157.1780080100.1280.1280__57602.1788206893.386.513.jpg?c=1"
+        },
+        {
+          "id": "https://nasutton.notion.site/Nine-coding-harnesses-vs-your-laptop-3d139990182b80d59fa3cf500f0450ba?pvs=74",
+          "author": null,
+          "description": "Comments",
+          "link": "https://nasutton.notion.site/Nine-coding-harnesses-vs-your-laptop-3d139990182b80d59fa3cf500f0450ba?pvs=74",
+          "publishedOn": "2026-09-10T22:54:01.000Z",
+          "wordCount": 302,
+          "title": "Nine coding harnesses vs. your laptop",
+          "imageUrl": "https://app.notion.com/images/meta/default.png"
+        },
+        {
           "id": "https://www.ntsb.gov/news/press-releases/Pages/NR20260909.aspx",
           "author": null,
           "description": "Comments",
@@ -259,16 +329,6 @@
           "publishedOn": "2026-09-10T21:30:55.000Z",
           "wordCount": 1730,
           "title": "NTSB issues investigative update on B-767 runway excursion accident in Miami",
-          "imageUrl": null
-        },
-        {
-          "id": "https://www.johndcook.com/blog/2026/09/09/formal-method-revolution/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.johndcook.com/blog/2026/09/09/formal-method-revolution/",
-          "publishedOn": "2026-09-10T21:22:59.000Z",
-          "wordCount": 2176,
-          "title": "OpenAI’s Navier-Stokes release included a Lean 4 formal proof",
           "imageUrl": null
         },
         {
@@ -287,7 +347,7 @@
           "description": "Comments",
           "link": "https://developers.openai.com/api/docs/guides/agents-api/overview",
           "publishedOn": "2026-09-10T19:43:22.000Z",
-          "wordCount": 8079,
+          "wordCount": 8127,
           "title": "OpenAI Agents API",
           "imageUrl": "https://developers.openai.com/og/api/docs/guides/agents-api/overview.png"
         },
@@ -300,16 +360,6 @@
           "wordCount": 1216,
           "title": "The Deathray: A simple way for an untrusted site to freeze a Mac",
           "imageUrl": null
-        },
-        {
-          "id": "https://www.inventbuild.studio/blog/genuine-creativity-is-your-new-moat",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.inventbuild.studio/blog/genuine-creativity-is-your-new-moat",
-          "publishedOn": "2026-09-10T19:03:34.000Z",
-          "wordCount": 7170,
-          "title": "Creativity is the new moat",
-          "imageUrl": "https://www.inventbuild.studio/images/ibs-open-graph.png"
         },
         {
           "id": "https://openjdk.org/jeps/544",
@@ -342,16 +392,6 @@
           "imageUrl": null
         },
         {
-          "id": "https://tokenstead.ai/models/swe-2",
-          "author": null,
-          "description": "Comments",
-          "link": "https://tokenstead.ai/models/swe-2",
-          "publishedOn": "2026-09-10T16:52:11.000Z",
-          "wordCount": 713,
-          "title": "Cognition's SWE-2 achieves 92.8 on Terminal-Bench 2.1",
-          "imageUrl": "https://tokenstead.ai/og/models/swe-2.png"
-        },
-        {
           "id": "https://codeberg.org/forgejo/forgejo/src/branch/forgejo/release-notes-published/16.0.4.md",
           "author": null,
           "description": "Comments",
@@ -359,16 +399,6 @@
           "publishedOn": "2026-09-10T15:57:40.000Z",
           "wordCount": 41,
           "title": "Forgejo <=16.0.3 Critical RCE",
-          "imageUrl": null
-        },
-        {
-          "id": "https://costsofwar.watson.brown.edu/paper/how-big-tech-and-silicon-valley-are-transforming-military-industrial-complex",
-          "author": null,
-          "description": "Comments",
-          "link": "https://costsofwar.watson.brown.edu/paper/how-big-tech-and-silicon-valley-are-transforming-military-industrial-complex",
-          "publishedOn": "2026-09-10T15:47:50.000Z",
-          "wordCount": 677,
-          "title": "Silicon Valley is transforming the military-industrial complex?",
           "imageUrl": null
         },
         {
@@ -432,26 +462,6 @@
           "imageUrl": "https://rustfoundation.org/wp-content/uploads/2026/09/Guest-Blog-Graphic-2.png"
         },
         {
-          "id": "https://consumerrights.wiki/w/Sony_PlayStation_digital_game_ownership_lawsuit",
-          "author": null,
-          "description": "Comments",
-          "link": "https://consumerrights.wiki/w/Sony_PlayStation_digital_game_ownership_lawsuit",
-          "publishedOn": "2026-09-10T12:18:06.000Z",
-          "wordCount": 6147,
-          "title": "List of references on Sony websites to players \"owning\" their digital games",
-          "imageUrl": "https://consumerrights.wiki/images/logo/new_fixed_logo.png"
-        },
-        {
-          "id": "https://devblogs.microsoft.com/oldnewthing/20260909-00/?p=112683",
-          "author": null,
-          "description": "Comments",
-          "link": "https://devblogs.microsoft.com/oldnewthing/20260909-00/?p=112683",
-          "publishedOn": "2026-09-10T09:04:14.000Z",
-          "wordCount": 7566,
-          "title": "What algorithm did Windows XP use to choose your initial user picture?",
-          "imageUrl": "https://devblogs.microsoft.com/oldnewthing/wp-content/uploads/sites/38/2019/02/ShowCover.jpg"
-        },
-        {
           "id": "https://mathstodon.xyz/@andreasthom/117240535270608201",
           "author": null,
           "description": "Comments",
@@ -482,16 +492,6 @@
           "imageUrl": "https://www.pv-magazine.com/wp-content/uploads/2026/09/Screenshot-2026-09-07-091206.png"
         },
         {
-          "id": "https://www.leadedsolder.com/2026/09/08/hypercard-custom-fonts-in-resources.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.leadedsolder.com/2026/09/08/hypercard-custom-fonts-in-resources.html",
-          "publishedOn": "2026-09-08T23:30:11.000Z",
-          "wordCount": 2532,
-          "title": "Embedding a bitmap font in your HyperCard stack",
-          "imageUrl": "https://www.leadedsolder.com/assets/jeff-nichols-72-font-preview.png"
-        },
-        {
           "id": "https://blog.doubleword.ai/what-happens-when-a-gpu-writes-memory",
           "author": null,
           "description": "Comments",
@@ -502,14 +502,14 @@
           "imageUrl": "https://cdn.sanity.io/images/g1zo7y59/production/dcb77fb461abef734f055a2e26bc185969df7000-800x535.jpg?rect=0,58,800,420&w=1200&h=630"
         },
         {
-          "id": "https://asm-editor.specy.app/",
+          "id": "https://edconway.substack.com/p/the-little-holes-in-your-bread-are",
           "author": null,
           "description": "Comments",
-          "link": "https://asm-editor.specy.app/",
-          "publishedOn": "2026-09-08T11:08:53.000Z",
-          "wordCount": 454,
-          "title": "Show HN: A browser IDE for m68000, Z80 assembly (and more), with graphics",
-          "imageUrl": "https://asm-editor.specy.app/images/ASM-editor.webp"
+          "link": "https://edconway.substack.com/p/the-little-holes-in-your-bread-are",
+          "publishedOn": "2026-09-08T14:28:10.000Z",
+          "wordCount": null,
+          "title": "The little holes in your bread are telling you something",
+          "imageUrl": null
         },
         {
           "id": "https://vertumnus.fyi/",
@@ -527,19 +527,19 @@
           "description": "Comments",
           "link": "https://blog.coredump.cx/p/recursion-into-madness",
           "publishedOn": "2026-09-07T21:50:12.000Z",
-          "wordCount": 3347,
+          "wordCount": 3072,
           "title": "Recursion into madness",
           "imageUrl": "https://substackcdn.com/image/fetch/$s_!6gta!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F1983c475-e92b-449f-a9e6-e75f3c229752_949x1500.png"
         },
         {
-          "id": "https://stockfishchess.org/blog/2026/stockfish-19/",
+          "id": "https://blog.webb.page/WM-102",
           "author": null,
           "description": "Comments",
-          "link": "https://stockfishchess.org/blog/2026/stockfish-19/",
-          "publishedOn": "2026-09-07T16:17:27.000Z",
-          "wordCount": 525,
-          "title": "Stockfish 19",
-          "imageUrl": "https://stockfishchess.org/images/blog/sf19.webp"
+          "link": "https://blog.webb.page/WM-102",
+          "publishedOn": "2026-09-07T17:21:55.000Z",
+          "wordCount": 1289,
+          "title": "Customizing my Compaq MX-11800 keyboard",
+          "imageUrl": "https://🔥.pixels.wtf/blog/asset/og.png"
         },
         {
           "id": "https://www.youtube.com/watch?v=n8m7lFQ3njk",
@@ -558,6 +558,66 @@
       "feedUrl": "https://www.lowyat.net/feed/",
       "siteUrl": "https://www.lowyat.net",
       "articles": [
+        {
+          "id": "https://www.lowyat.net/?p=404078",
+          "author": "Heirul Kamel",
+          "description": "Anthropic has uncovered an AI-powered influence operation that allegedly uses its Claude chatbot to target Malaysian voters, according to the company’s latest threat intelligence report. The September 2026 report examines how AI is being used for malicious activities, including cyberattacks, influence operations, scams, surveillance, biological research and attempts to replicate AI models. The company identifies […]\nThe post Anthropic Discovers AI-Powered Operation Using Claude To Target Malaysian Voters appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/404078/anthropic-ai-ops-claude-msian-voters/",
+          "publishedOn": "2026-09-11T04:54:12.000Z",
+          "wordCount": 14359,
+          "title": "Anthropic Discovers AI-Powered Operation Using Claude To Target Malaysian Voters",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/04/anthropic-claude-opus-ai-1.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=404067",
+          "author": "Nurul Kamil",
+          "description": "Earlier this year, Nothing launched the Headphone (1) as its first pair of over-ear headphones. The London-based company then released a budget-friendly version a few months later. Now, it seems the brand is working on a more premium variant, and the device might hit the shelves soon. A new leak has offered some information on […]\nThe post Nothing Headphone (1) Pro Reportedly Launching This Month With Triple-Driver Setup appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/404067/nothing-headphone-1-pro-leak/",
+          "publishedOn": "2026-09-11T04:18:32.000Z",
+          "wordCount": 14201,
+          "title": "Nothing Headphone (1) Pro Reportedly Launching This Month With Triple-Driver Setup",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/07/nothing-headphone-1-review_03.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=404073",
+          "author": "Ian Chee",
+          "description": "Last we heard of Saudi Arabia’s Public Investment Fund (PIF) was early last month, when it completed the buyout of Electronic Arts (EA). More recently, it looks like executives at the sovereign wealth fund are looking to combine its recent acquisition with another, Savvy Games, to create a singular gaming giant. This could then be […]\nThe post Saudi Public Investment Fund Considers Merging EA With Savvy Games appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/404073/saudi-considers-merging-ea-savvy-games/",
+          "publishedOn": "2026-09-11T04:11:54.000Z",
+          "wordCount": 14080,
+          "title": "Saudi Public Investment Fund Considers Merging EA With Savvy Games",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/10/Electronic-Arts-EA-HQ-1-1024x683.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=404045",
+          "author": "Kiran Ganesan",
+          "description": "Lenovo has been quietly launching a lot of products into the global market as of late. Previously, the brand launched a desktop tower, an all-in-one (AIO) desktop monitor, and a laptop. Now, the brand has, once again, stealthfully released another AIO computer, called the IdeaCentre AIO, in Malaysia. The IdeaCentre AIO is available in two […]\nThe post Lenovo Quietly Releases IdeaCentre AIO In Malaysia With Intel Core 7 350; Available In Six Colours appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/404045/lenovo-releases-ideacentre-aio-malaysia/",
+          "publishedOn": "2026-09-11T03:04:11.000Z",
+          "wordCount": 14170,
+          "title": "Lenovo Quietly Releases IdeaCentre AIO In Malaysia With Intel Core 7 350; Available In Six Colours",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/09/Lenovo-Quietly-Introduced-IdeaCentre-AIO-1-1.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=404046",
+          "author": "Heirul Kamel",
+          "description": "Insta360 has officially launched the Luna Pro globally, bringing the second variant of its first gimbal camera to markets including Malaysia. First introduced in China last month, it is the single-lens counterpart to the dual-camera Ultra model and is designed primarily for creators who want high-quality video without the complexity of a conventional camera setup. […]\nThe post Insta360 Luna Pro Officially Launches Globally appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/404046/insta360-luna-pro-launch-global/",
+          "publishedOn": "2026-09-11T02:52:32.000Z",
+          "wordCount": 14518,
+          "title": "Insta360 Luna Pro Officially Launches Globally",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/09/insta360-luna-pro-official-launch-1.webp"
+        },
+        {
+          "id": "https://www.lowyat.net/?p=404036",
+          "author": "Nurul Kamil",
+          "description": "The vivo X Fold6 made its debut in China at the end of June. For now, the phone maker has yet to make any mention of a global launch, but it looks like the book style-foldable is making its way to international markets. The device has cropped up in a few places, including the SIRIM […]\nThe post vivo X Fold6 Bags SIRIM Certification; Possibly Launching Locally Soon appeared first on Lowyat.NET.",
+          "link": "https://www.lowyat.net/2026/404036/vivo-x-fold6-sirim-launching-globally/",
+          "publishedOn": "2026-09-11T02:24:58.000Z",
+          "wordCount": 14202,
+          "title": "vivo X Fold6 Bags SIRIM Certification; Possibly Launching Locally Soon",
+          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/09/vivo-x-fold6-1.webp"
+        },
         {
           "id": "https://www.lowyat.net/?p=403997",
           "author": "Ian Chee",
@@ -597,66 +657,6 @@
           "wordCount": 14073,
           "title": "CIMB Announces Scheduled Maintenance For Debit Card Services Starting Next Sunday",
           "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/05/cimb-mydebit-debit-1.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=403995",
-          "author": "Heirul Kamel",
-          "description": "Grab is reportedly in talks to acquire a majority stake in Singapore-based buy-now-pay-later (BNPL) platform Atome Financial. According to Blomberg, people familiar claim that the potential transaction could value the deal at more than US$2 billion (RM8.13 billion), while discussions are still ongoing and no final decision has been made. For those who are unfamiliar, […]\nThe post Grab Reportedly In Talks To Buy Majority Stake In Atome appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/403995/grab-majority-stake-atome/",
-          "publishedOn": "2026-09-10T08:43:17.000Z",
-          "wordCount": 14064,
-          "title": "Grab Reportedly In Talks To Buy Majority Stake In Atome",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/09/atome-hi-res-1.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=403987",
-          "author": "John Law",
-          "description": "Some of you may remember that some years ago, NVIDIA was rumoured to release a 16GB version of the RTX 3070 Ti, but that never became manifest and what we got instead was another 8GB card. Fast forward to today and, well, one modder isn’t content with the situation and built the card himself. Brazilian […]\nThe post A Modder Frankenstein’d The NVIDIA RTX 3070 Ti 16GB That Never Saw The Light appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/403987/a-modder-frankensteind-the-nvidia-rtx-3070-ti-16gb-that-never-saw-the-light/",
-          "publishedOn": "2026-09-10T07:56:55.000Z",
-          "wordCount": 14161,
-          "title": "A Modder Frankenstein’d The NVIDIA RTX 3070 Ti 16GB That Never Saw The Light",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/09/Frankenstein-RTX-3070-Ti-16GB-1-1240x775.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=403947",
-          "author": "Ian Chee",
-          "description": "With the announcement of the new iPhone 18 Pro, Pro Max, and the foldable iPhone Duo, you’d think that the older models would see a slight price drop. But this is the era of the memory shortage crisis, when Moore’s Law seems to be going in reverse, so prices are going up instead. These price […]\nThe post Apple Raises Prices On Older iPhone Models appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/403947/apple-raises-prices-older-iphone-models/",
-          "publishedOn": "2026-09-10T05:29:54.000Z",
-          "wordCount": 14044,
-          "title": "Apple Raises Prices On Older iPhone Models",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2025/09/iphone-air-hands-on-pt-2-12.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=403966",
-          "author": "Kiran Ganesan",
-          "description": "Infinix has primarily focused on developing and releasing its own range of smartphones, tablets, and earphones. It has also ventured into accessories such as smartwatches, but the launch of its new Genie Badge in Malaysia marks a first for the company, as it is unlike any accessory Infinix has released before. According to the company, […]\nThe post Infinix Launches Genie Badge Accessory In Malaysia; Priced At RM249 appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/403966/infinix-launches-genie-badge-malaysia/",
-          "publishedOn": "2026-09-10T04:48:03.000Z",
-          "wordCount": 14135,
-          "title": "Infinix Launches Genie Badge Accessory In Malaysia; Priced At RM249",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/09/Infinix-Launches-Genie-Badge-1.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=403948",
-          "author": "Nurul Kamil",
-          "description": "Rapid KL has announced that it will begin track replacement work on the Kelana Jaya LRT soon. The project, which is aimed at improving the rail services, will be carried out in seven phases starting this weekend and is expected to be completed by September next year. In a statement, the company outlined the schedule […]\nThe post Kelana Jaya LRT Track Replacement Work To Begin On 13 September 2026 appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/403948/kelana-jaya-lrt-line-track-replacement/",
-          "publishedOn": "2026-09-10T04:26:43.000Z",
-          "wordCount": 14137,
-          "title": "Kelana Jaya LRT Track Replacement Work To Begin On 13 September 2026",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2020/07/kelana-jaya-lrt-line-27-new-trains-1.webp"
-        },
-        {
-          "id": "https://www.lowyat.net/?p=403951",
-          "author": "Heirul Kamel",
-          "description": "OM Digital Solutions has officially introduced the OM System PEN, marking the first camera in the long-running PEN series to be released under the OM System brand. The series has remained a favourite among fans, many of whom had been waiting for a successor since the camera business was rebranded following Olympus’ exit from the […]\nThe post OM System Brings Back Beloved PEN Camera; Local Pre-Orders Now Available appeared first on Lowyat.NET.",
-          "link": "https://www.lowyat.net/2026/403951/om-system-pen-pre-order-malaysia/",
-          "publishedOn": "2026-09-10T04:20:19.000Z",
-          "wordCount": 14449,
-          "title": "OM System Brings Back Beloved PEN Camera; Local Pre-Orders Now Available",
-          "imageUrl": "https://www.lowyat.net/wp-content/uploads/2026/09/om-system-pen-malaysia-7.webp"
         }
       ]
     },
@@ -773,6 +773,36 @@
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
         {
+          "id": "645c6a47-8cad-4dd9-897b-42f6bf9a2e38",
+          "author": "Shaurya Malwa",
+          "description": "SEBI’s Demat 2.0 pilot turns corporate bonds into digital tokens and settles payment through the RBI’s wholesale digital rupee, with secondary trading and retail access expected in later phases.",
+          "link": "https://www.coindesk.com/markets/2026/09/11/india-starts-tokenizing-usd620-billion-corporate-bond-market-with-digital-rupee-settlement",
+          "publishedOn": "2026-09-11T05:13:15.000Z",
+          "wordCount": null,
+          "title": "India starts tokenizing $620 billion corporate bond market with digital rupee settlement",
+          "imageUrl": null
+        },
+        {
+          "id": "02fba5b9-b00f-48ea-9a55-4a482f115821",
+          "author": "Shaurya Malwa",
+          "description": "Ninety-five of the CoinDesk 100 fell over the past 24 hours, and bitcoin has shed more than 5% on the week.",
+          "link": "https://www.coindesk.com/markets/2026/09/11/bitcoin-below-usd77-000-zcash-leads-losses-as-traders-bet-on-a-fed-rate-hike",
+          "publishedOn": "2026-09-11T04:46:15.000Z",
+          "wordCount": null,
+          "title": "Bitcoin below $77,000, Zcash leads losses as traders bet on a Fed rate hike",
+          "imageUrl": null
+        },
+        {
+          "id": "22987006-2aa7-4820-9ee2-9a4b30e47a42",
+          "author": "Shaurya Malwa",
+          "description": "The software can monitor cash, risk and forecasts and suggest financial moves, but humans still have to approve every action.",
+          "link": "https://www.coindesk.com/markets/2026/09/11/ripple-puts-ai-agents-inside-its-usd1-billion-corporate-treasury-bet",
+          "publishedOn": "2026-09-11T04:25:21.000Z",
+          "wordCount": null,
+          "title": "Ripple puts AI agents inside its $1 billion corporate treasury bet",
+          "imageUrl": null
+        },
+        {
           "id": "ed4e247c-74df-40f2-b243-0e8ae8ac71d2",
           "author": "Nikhilesh De",
           "description": "The Clarity Act needs 60 votes when the Senate returns from its recess next week. Republicans circulated a fresh draft on Thursday ahead of the vote.",
@@ -829,7 +859,7 @@
           "link": "https://www.coindesk.com/business/2026/09/10/monument-bank-delays-retail-tokenized-deposits-cites-regulatory-issues-in-the-uk",
           "publishedOn": "2026-09-10T15:53:24.000Z",
           "wordCount": null,
-          "title": "Monument Bank delays retail tokenized deposits, cites regulatory issues in the UK",
+          "title": "Monument Bank delays retail tokenized deposits while onboarding custody partner",
           "imageUrl": null
         },
         {
@@ -991,36 +1021,6 @@
           "wordCount": null,
           "title": "Hunter Biden’s LAPTOP blames bots after 98% crash as traders rack up six-figure losses",
           "imageUrl": null
-        },
-        {
-          "id": "3d762448-3283-44fa-a8ec-77f3c114d6eb",
-          "author": "Shaurya Malwa",
-          "description": "Dogecoin led the losses, BNB fell about 4% and XRP 3%, with oil pushing Treasury yields to their highest since late 2023.",
-          "link": "https://www.coindesk.com/markets/2026/09/10/dogecoin-sinks-5-to-lead-majors-losses-with-bitcoin-holding-usd78-000-level",
-          "publishedOn": "2026-09-10T05:30:15.000Z",
-          "wordCount": null,
-          "title": "Dogecoin sinks 5% to lead majors' losses, with bitcoin holding $78,000 level",
-          "imageUrl": null
-        },
-        {
-          "id": "a0098857-10e3-4bb6-beaf-25cab3291578",
-          "author": "Omkar Godbole",
-          "description": "Coinbase CEO tells CNBC the crypto industry gets regulatory clarity whether or not the Senate passes the bill on Sept. 15.",
-          "link": "https://www.coindesk.com/markets/2026/09/10/crypto-wins-regardless-of-clarity-act-vote-coinbase-s-armstrong-says",
-          "publishedOn": "2026-09-10T05:05:41.000Z",
-          "wordCount": null,
-          "title": "Crypto wins regardless of Clarity Act vote, Coinbase's Armstrong says",
-          "imageUrl": null
-        },
-        {
-          "id": "83d1fd19-d1f7-4e3c-9a83-27a4fe2de51b",
-          "author": "Helene Braun",
-          "description": "Tenev told CNBC's \"Squawk Box\" on Wednesday that public companies shouldn't have veto power over third-party securities that reference their shares.",
-          "link": "https://www.coindesk.com/markets/2026/09/09/robinhood-s-ceo-vlad-tenev-defends-stock-tokens-in-escalating-fight-with-amc-ceo",
-          "publishedOn": "2026-09-09T16:11:07.000Z",
-          "wordCount": null,
-          "title": "Robinhood CEO Vlad Tenev fires back at AMC's Aron in escalating fight over stock tokens",
-          "imageUrl": null
         }
       ]
     },
@@ -1040,7 +1040,7 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-09-11T00:48:21.000Z",
+          "publishedOn": "2026-09-11T05:33:58.000Z",
           "wordCount": 4381,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
