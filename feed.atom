@@ -1,18 +1,404 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-09-22T00:31:58.672Z</id>
+    <id>urn:2026-09-22T05:47:04.447Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-09-22T00:31:58.672Z</updated>
+    <updated>2026-09-22T05:47:04.447Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-09-22T00:31:28.000Z</updated>
+        <updated>2026-09-22T05:46:26.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Observability in Microsoft Foundry: Tracing Agent Runs, Continuous Evaluation, and the OpenTelemetry Data Plane]]></title>
+        <id>https://dev.to/monuminu/observability-in-microsoft-foundry-tracing-agent-runs-continuous-evaluation-and-the-4gp</id>
+        <link href="https://dev.to/monuminu/observability-in-microsoft-foundry-tracing-agent-runs-continuous-evaluation-and-the-4gp"/>
+        <updated>2026-09-22T05:39:35.000Z</updated>
+        <summary type="html"><![CDATA[Day 10 of the Microsoft Foundry 100 Days / 100 Blogs series.
+You shipped an agent. It calls a model, invokes two tools, retrieves a few documents, and returns an answer. It works in your dev loop. Three weeks later, a support ticket lands on your desk: "the assistant gave a wrong price for SKU-4471." You have no idea which of the six internal steps produced that number, whether the tool returned stale data, whether the model hallucinated over a truncated retrieval result, or whether a retry silently doubled a side effect. You have logs, but logs are flat — they don't tell you which LLM call belongs to which tool result, nested inside which user turn.
+This is the problem agent tracing exists to solve, and it's the problem this article is about: how Microsoft Foundry captures, stores, and le…]]></summary>
+        <author>
+            <name>Manoranjan Rajguru</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stabilizing a Real Node.js Platform: Privacy Fixes, Contract Tests, and Removing False Failures]]></title>
+        <id>https://dev.to/danielioni/stabilizing-a-real-nodejs-platform-privacy-fixes-contract-tests-and-removing-false-failures-1dep</id>
+        <link href="https://dev.to/danielioni/stabilizing-a-real-nodejs-platform-privacy-fixes-contract-tests-and-removing-false-failures-1dep"/>
+        <updated>2026-09-22T05:36:36.000Z</updated>
+        <summary type="html"><![CDATA[Stabilizing a Real Node.js Platform: Privacy Fixes, Contract Tests, and Removing False Failures
+When a project grows, test failures stop meaning just one thing. Some failures are real production bugs. Some are stale tests. Some come from architectural migrations that left old assumptions behind. Others reveal security or privacy boundaries that were never explicitly tested. And sometimes the worst possible fix is simply changing production code until a brittle assertion turns green.
+That is the stage we are currently going through with MyZubster.
+The goal is not simply to “make Jest green.” The real goal is to make sure the test suite describes the architecture that actually exists today, while using failures as evidence to find real bugs that would otherwise remain hidden.
+MyZubster now c…]]></summary>
+        <author>
+            <name>Daniel Ioni</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why your Docker images are too big (and how to fix it)]]></title>
+        <id>https://dev.to/eme_gug_0821b41b948be6516/why-your-docker-images-are-too-big-and-how-to-fix-it-3bc4</id>
+        <link href="https://dev.to/eme_gug_0821b41b948be6516/why-your-docker-images-are-too-big-and-how-to-fix-it-3bc4"/>
+        <updated>2026-09-22T05:36:18.000Z</updated>
+        <summary type="html"><![CDATA[I've seen production Docker images over 2GB. For a Node.js app. That's 10x larger than it needs to be. Here's how to shrink them.
+FROM node:20
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["node", "server.js"]
+
+This image: ~1.1GB. Why?
+node:20 base image: ~900MB (full Debian + build tools)
+node_modules with dev dependencies
+Source files, .git, tests, docs all included
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --production
+COPY . .
+CMD ["node", "server.js"]
+
+Image: ~150MB. node:20-alpine is ~130MB vs ~900MB.
+# Build stage
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Production stage
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+RUN npm ci --production && npm cache clean --force
+CMD ["node", "dist/server.js"]
+
+Image: ~100MB. Build tools and dev deps stay in the build stage.
+node_modules
+.git
+.env*
+*.md
+tests
+coverage
+.github
+docker-compose*.yml
+
+Without this, COPY . . copies everything — including .git (often 100MB+).
+# Bad: any code change invalidates npm install cache
+COPY . .
+RUN npm ci
+
+# Good: npm install only reruns when package.json changes
+COPY package*.json ./
+RUN npm ci --production
+COPY . .
+
+Docker caches layers. Put rarely-changing steps first.
+# Go example
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN CGO_ENABLED=0 go build -o /server .
+
+FROM gcr.io/distroless/static
+COPY --from=builder /server /server
+CMD ["/server"]
+
+Image: ~15MB. Distroless has no shell, no package manager — just your binary.
+
+
+
+Technique
+Typical Savings
+
+
+
+
+Alpine base
+-70%
+
+
+Multi-stage
+-30-50%
+
+
+.dockerignore
+-10-30%
+
+
+
+--production flag
+-20-40%
+
+
+Distroless
+-90% (compiled langs)
+
+
+
+docker images myapp
+docker history myapp:latest  # See each layer's size
+docker scout quickview myapp  # CVE scan + size analysis
+
+What's the smallest Docker image you've built? I got a Go API down to 8MB once.]]></summary>
+        <author>
+            <name>EME GUG</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why I stopped trusting model recall and built retrieval instead]]></title>
+        <id>https://dev.to/farzam_44ff1456106b3913c0/why-i-stopped-trusting-model-recall-and-built-retrieval-instead-2mce</id>
+        <link href="https://dev.to/farzam_44ff1456106b3913c0/why-i-stopped-trusting-model-recall-and-built-retrieval-instead-2mce"/>
+        <updated>2026-09-22T05:36:11.000Z</updated>
+        <summary type="html"><![CDATA[Most AI assistants answer from what the model "remembers" from training. That's fine for trivia. It's not fine when the answer has to match a company's actual, current material, and the model just confidently makes something up.
+The problem
+The approach
+Stack: Python, FastAPI, LangChain, OpenAI, Anthropic, Pinecone, Postgres, Docker
+Result: answers grounded in real content, delivered in Slack, running unattended on a schedule, with zero migration friction for the non-technical team maintaining it.
+The lesson: if your AI's accuracy depends on the model remembering correctly, you don't have an accuracy problem. You have a retrieval problem.
+Full breakdown → https://farzamazhar.com/#work]]></summary>
+        <author>
+            <name>Farzam</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[OAuth scopes are not your app's authorization model]]></title>
+        <id>https://dev.to/authbyexample1/oauth-scopes-are-not-your-apps-authorization-model-ak5</id>
+        <link href="https://dev.to/authbyexample1/oauth-scopes-are-not-your-apps-authorization-model-ak5"/>
+        <updated>2026-09-22T05:36:03.000Z</updated>
+        <summary type="html"><![CDATA[OAuth scopes answer: "what APIs may this token call?"
+They do not answer: "may this user read this document?"
+A token with documents:read can still be used against every document ID the holder can guess, unless your API binds subject + action + resource on every request.
+Treat scopes as a coarse gate on the credential. Keep resource-level authorization inside your app — RBAC/ReBAC/ABAC checks that use the authenticated subject from the token, not a client-supplied owner id.
+Same idea for "the JWT is valid": authentication succeeded. Authorization is a separate decision.]]></summary>
+        <author>
+            <name>Auth By Example</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Before You Watch Traffic, Define the Events Behind User Behavior]]></title>
+        <id>https://dev.to/linxi-ai/before-you-watch-traffic-define-the-events-behind-user-behavior-3jj5</id>
+        <link href="https://dev.to/linxi-ai/before-you-watch-traffic-define-the-events-behind-user-behavior-3jj5"/>
+        <updated>2026-09-22T05:35:31.000Z</updated>
+        <summary type="html"><![CDATA[After an AI-built website goes live, the analytics dashboard is often the first page the team opens. Visits, traffic sources, bounce rate, and time on page are useful—but they describe what happened without always explaining why.
+A page view does not tell you whether someone reached the feature section, opened pricing, started a form, submitted it, or clicked a button by mistake. Before collecting hundreds of anonymous clicks, define a few events that can support an actual decision.
+One visitor can leave after the hero, read a feature list, open pricing, start a form, submit it, or return later from another source. If every behavior becomes only a page view, the dashboard still leaves the team guessing.
+An event is useful when it supports a question:
+Did people reach the section that expla…]]></summary>
+        <author>
+            <name>Lin Xi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Never Use a Display Name for Authorization: Secure Anonymous Editing]]></title>
+        <id>https://dev.to/janarthanan_soundararajan/never-use-a-display-name-for-authorization-secure-anonymous-editing-1gn7</id>
+        <link href="https://dev.to/janarthanan_soundararajan/never-use-a-display-name-for-authorization-secure-anonymous-editing-1gn7"/>
+        <updated>2026-09-22T05:28:23.000Z</updated>
+        <summary type="html"><![CDATA[Public polls, surveys, and collaborative boards often ask participants for a name. The name helps other people understand who submitted each response.
+It should not grant permission to edit that response.
+A display name helps humans identify a participant. It does not prove that an incoming HTTP request came from the person who created the record. Treating identification as authorization creates a serious security flaw in applications that allow anonymous participation.
+Anonymous editing needs a separate credential. One practical option is a cryptographically random token stored in an HttpOnly cookie, with only its SHA-256 hash saved in the database.
+Consider a row of lockers. Each locker has a name written on it.
+The name helps you locate the correct locker. It cannot open the door. You s…]]></summary>
+        <author>
+            <name>Janarthanan Soundararajan (Jana)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Linux process that even SIGKILL can't kill]]></title>
+        <id>https://dev.to/aytidadev/the-linux-process-that-even-sigkill-cant-kill-418d</id>
+        <link href="https://dev.to/aytidadev/the-linux-process-that-even-sigkill-cant-kill-418d"/>
+        <updated>2026-09-22T05:28:04.000Z</updated>
+        <summary type="html"><![CDATA[URL: https://www.youtube.com/watch?v=TLaLW84egMk
+The short version, for anyone who'd rather read it:
+When a process exits, the kernel frees basically everything: address space, file descriptors, and it never schedules the task again. What stays is a small record — the PID, the exit status, and some CPU accounting — because the parent may still want to read it. That record is the zombie. SIGKILL does nothing to it because there's nothing left to kill; the kill(2) call even returns success.
+It's removed when the parent calls wait(). If the parent dies first, the children are reparented to the nearest ancestor marked as a subreaper (PR_SET_CHILD_SUBREAPER), and failing that to PID 1 of that PID namespace. The walk stops at the namespace boundary, so a process in a container is never adopted by anything on the host.
+The part that bites in production: in a container your application is PID 1, which makes it the reaper for everything inside. Plenty of apps never call wait() on processes they didn't spawn directly, so orphans accumulate as zombies until the pids cgroup limit is hit and nothing can fork. Fixes are tini / docker run --init, initProcessEnabled on ECS, or shareProcessNamespace on k8s so the pause container does the reaping.]]></summary>
+        <author>
+            <name>Aditya Raj</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Elon Musk's X brings bitcoin and stock trading closer to the timeline]]></title>
+        <id>a862c9b5-b9ba-4e03-ad89-f741048cf060</id>
+        <link href="https://www.coindesk.com/markets/2026/09/22/elon-musk-s-x-brings-bitcoin-and-stock-trading-closer-to-the-timeline"/>
+        <updated>2026-09-22T05:26:00.000Z</updated>
+        <summary type="html"><![CDATA[Elon Musk’s X lets U.S. users tap cashtags such as $BTC to view live charts and access Coinbase, Kraken and other trading platforms.]]></summary>
+        <author>
+            <name>Omkar Godbole</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[EveryCli : a natural-language command-line assistant]]></title>
+        <id>https://dev.to/euloge/everycli-a-natural-language-command-line-assistant-1ki9</id>
+        <link href="https://dev.to/euloge/everycli-a-natural-language-command-line-assistant-1ki9"/>
+        <updated>2026-09-22T05:24:31.000Z</updated>
+        <summary type="html"><![CDATA[Demo video
+The concept is simple: you describe what you want to do (English or French), and the tool finds the corresponding shell command within a local corpus. No browser, no API key, no network calls.
+Everything runs on your machine. The corpus covers Git, Docker, Compose, npm, SSH, Python, Linux, Bash, and Composer.
+The tool is fast and keyboard-driven, and also works in shell scripts. You can add your own commands with add, list, and remove.
+Recent additions: hybrid search (keyword + fuzzy matching), a warm daemon (~383ms search, ~33ms fallback), an interactive picker, --json and --shell modes.
+EveryCli never executes commands on your behalf. Results are shown for review, and --run always asks for confirmation.
+There are already good tools in this space. tldr and cheat are great for examples, while Warp and Fig offer deeper shell integration. EveryCli focuses on fast, bilingual, local search with a custom corpus you build over time.
+Pre-1.0. macOS installer and corpus tooling are next.
+Github
+Website + docs]]></summary>
+        <author>
+            <name>Euloge HOUESSOU</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stochastic Parrot or Alien Mind? What Really Is An LLM?]]></title>
+        <id>https://dev.to/marcobblk/stochastic-parrot-or-alien-mind-what-really-is-an-llm-4kjj</id>
+        <link href="https://dev.to/marcobblk/stochastic-parrot-or-alien-mind-what-really-is-an-llm-4kjj"/>
+        <updated>2026-09-22T05:23:51.000Z</updated>
+        <summary type="html"><![CDATA[Note: This article is a developer-focused adaptation of my original blog post in Italian. You can read the full, in-depth personal reflection here: Il pappagallo stocastico on Nospace.
+In the first piece of this series, I explained why, after 40 years spent between systems, code and infrastructure, this hype sounds familiar to me — I've seen it with Wintel, I've seen it with bloatware, I've seen it with every cycle that promises to rewrite the rules and ends up rewriting only the price of the hardware.
+But historical skepticism only solves half the problem. Underneath the question "haven't we seen this movie before?" there's a thornier one, one that piece didn't touch: what are these models we talk to all day, really?
+Some days ago I stumbled on a YouTube video by Salvatore Sanfilippo — @a…]]></summary>
+        <author>
+            <name>Marco Sbragi</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[14-Day Micro-SaaS Launch Blueprint: Tech Stack Selection & Rapid Prototyping]]></title>
+        <id>https://dev.to/mtahir27/14-day-micro-saas-launch-blueprint-tech-stack-selection-rapid-prototyping-331d</id>
+        <link href="https://dev.to/mtahir27/14-day-micro-saas-launch-blueprint-tech-stack-selection-rapid-prototyping-331d"/>
+        <updated>2026-09-22T05:23:30.000Z</updated>
+        <summary type="html"><![CDATA[Introduction & Industry Context
+
+
+In the competitive software landscape of 2026, the barrier to writing code has collapsed to near zero. Generative AI agents, sophisticated coding environments, and pre-trained models allow almost anyone to construct functional code blocks in seconds. Yet, despite this explosion of technical capability, the rate of successful Micro-SaaS product launches has not kept pace. The bottleneck has shifted from raw code production to strategic tech stack orchestration, security architecture, distribution, and rapid validation.
+For solopreneurs and tech agency owners, speed is the ultimate hedge against market irrelevance. Spending months engineering an abstractly perfect architectural masterpiece is a reliable recipe for capital depletion and psychological burnout.…]]></summary>
+        <author>
+            <name>Muhammad Tahir</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Resisting Mode Gravity: Why Bigger LLMs Produce Mediocre Output]]></title>
+        <id>https://dev.to/guobug/resisting-mode-gravity-why-bigger-llms-produce-mediocre-output-4if2</id>
+        <link href="https://dev.to/guobug/resisting-mode-gravity-why-bigger-llms-produce-mediocre-output-4if2"/>
+        <updated>2026-09-22T05:21:32.000Z</updated>
+        <summary type="html"><![CDATA[TL;DR: Swapping in a bigger, smarter frontier LLM rarely fixes substandard code or bland product designs. Without explicit anchor constraints, language models inherently collapse toward the statistical mode of the internet: polite, safe, and mediocre. This article deconstructs the physics of Mode Gravity, breaks down the Triple Lock-in Flywheel between human cognitive bias and RLHF sycophancy, and introduces an industrial architectural framework: shifting from Semantic Continuation to Differential Diffing, and decoupling the Model Engine from the Business Harness.
+"If we just upgrade from GPT-4o-mini to Claude 3.5 Sonnet or DeepSeek R1, our architecture and code quality will automatically 10x."
+This is arguably the most common, intuitive, and expensive fallacy in modern AI-assisted enginee…]]></summary>
+        <author>
+            <name>Guo Qiang</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Epson Officially Launches Lifestudio Grand Plus EH-LS970B Projector In Malaysia]]></title>
+        <id>https://www.lowyat.net/?p=404958</id>
+        <link href="https://www.lowyat.net/2026/404958/epson-launches-eh-ls970b-in-malaysia/"/>
+        <updated>2026-09-22T05:12:12.000Z</updated>
+        <summary type="html"><![CDATA[Epson has just launched the Lifestudio Grand Plus EH-LS970B, or the EH-LS970B for short, in the Malaysian market. As the name suggests, it is the latest addition to the company’s storied Lifestudio projectors, boasting 4K projection and AI-powered image processing. According to Epson, the EH-LS970B is designed to give consumers a bigger and more immersive […]
+The post Epson Officially Launches Lifestudio Grand Plus EH-LS970B Projector In Malaysia appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Kiran Ganesan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Dogecoin leads market rebound with 15% pump, bitcoin steady above $85,000]]></title>
+        <id>090b7181-5cff-434b-aec9-98ce18e173fa</id>
+        <link href="https://www.coindesk.com/markets/2026/09/22/dogecoin-leads-market-rebound-with-15-pump-bitcoin-steady-above-usd85-000"/>
+        <updated>2026-09-22T04:33:11.000Z</updated>
+        <summary type="html"><![CDATA[A wave of forced buying that cost short sellers $844 million has run its course, leaving the largest cryptocurrency flat over the past hour and ZEC the only major token in the red.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cardano joins Solana, XRP Ledger in race to power AI agent payments]]></title>
+        <id>9edbaaa4-df04-48f6-a080-fa24798ace78</id>
+        <link href="https://www.coindesk.com/tech/2026/09/21/cardano-joins-solana-xrp-ledger-in-race-to-power-ai-agent-payments"/>
+        <updated>2026-09-22T04:15:45.000Z</updated>
+        <summary type="html"><![CDATA[The official x402 kit now includes Cardano tools for apps and AI agents to pay with ADA and other network tokens, though the facilitator has so far only been tested on pre-production.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Amazfit T-Rex Dual Solar Specs Leaked; May Feature Incredibly Long 180-Day Battery Life]]></title>
+        <id>https://www.lowyat.net/?p=404912</id>
+        <link href="https://www.lowyat.net/2026/404912/amazfit-t-rex-dual-solar-specs-leak/"/>
+        <updated>2026-09-22T03:52:23.000Z</updated>
+        <summary type="html"><![CDATA[Not too long ago, the Amazfit T-Rex Dual Solar appeared on the SIRIM database, suggesting that a launch is imminent. At the time, not a lot of information was available on the upcoming device beyond its possible design. Now, a new leak has revealed more details on the smartwatch, including it’s key specifications. This information […]
+The post Amazfit T-Rex Dual Solar Specs Leaked; May Feature Incredibly Long 180-Day Battery Life appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Nurul Kamil</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Qualcomm Snapdragon X Elite Chips To Power Googlebooks]]></title>
+        <id>https://www.lowyat.net/?p=404915</id>
+        <link href="https://www.lowyat.net/2026/404915/qualcomm-snapdragon-x-elite-googlebooks/"/>
+        <updated>2026-09-22T03:42:53.000Z</updated>
+        <summary type="html"><![CDATA[Qualcomm has announced that it is bringing its Snapdragon X Elite chips to Googlebooks. Naturally, this doesn’t apply to all Googlebooks, as Acer has already announced its own that’s running an Intel processor. Instead, the chipmaker says two other brands will be the first to bring to market Googlebooks with its Snapdragon X Elite chips. […]
+The post Qualcomm Snapdragon X Elite Chips To Power Googlebooks appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Ian Chee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Proton Launches Proton Capital, Its Own Financing Arm For New Car Buyers]]></title>
+        <id>https://www.lowyat.net/?p=404906</id>
+        <link href="https://www.lowyat.net/2026/404906/proton-launch-proton-capital-financing/"/>
+        <updated>2026-09-22T03:11:23.000Z</updated>
+        <summary type="html"><![CDATA[Proton has officially launched Proton Capital, its dedicated automotive financing arm, giving customers a new way to finance the purchase of a vehicle from the national carmaker. The move also provides an additional tool to drive vehicle sales, according to The Edge Malaysia. For its initial phase, Proton Capital will serve individual customers purchasing new […]
+The post Proton Launches Proton Capital, Its Own Financing Arm For New Car Buyers appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Kiran Ganesan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Huawei Opens Reservations For Watch GT 7 Series Ahead Of Malaysian Launch]]></title>
+        <id>https://www.lowyat.net/?p=404895</id>
+        <link href="https://www.lowyat.net/2026/404895/huawei-watch-gt-7-series-reservations/"/>
+        <updated>2026-09-22T02:01:26.000Z</updated>
+        <summary type="html"><![CDATA[Huawei will be launching the Watch GT 7 series on our shores next week on 29 September 2026. Ahead of the announcement, the company has opened reservations for the wearables. As we’ve previously covered, the two smartwatches have already launched globally, so their specifications have already been revealed. With this in mind, the brand has […]
+The post Huawei Opens Reservations For Watch GT 7 Series Ahead Of Malaysian Launch appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Nurul Kamil</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Samsung Galaxy Z Fold8: The Culmination Of Eight Generations Of Innovation]]></title>
+        <id>https://www.lowyat.net/?p=404882</id>
+        <link href="https://www.lowyat.net/2026/404882/samsung-galaxy-z-fold8-the-culmination-of-eight-generations-of-innovation/"/>
+        <updated>2026-09-22T01:44:20.000Z</updated>
+        <summary type="html"><![CDATA[Out of all of Samsung’s bookstyle foldables, the Galaxy Z Fold8 is the company’s most popular folding phone to date. And how could it not be? As its name suggests, it is a culmination of eight painstaking generations and development and growth that allowed it to evolve from an experimental first step to a premium […]
+The post Samsung Galaxy Z Fold8: The Culmination Of Eight Generations Of Innovation appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Lynette</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Claude Status – Elevated errors for multiple models]]></title>
+        <id>https://status.claude.com/incidents/7g1qpkyz5gxh</id>
+        <link href="https://status.claude.com/incidents/7g1qpkyz5gxh"/>
+        <updated>2026-09-22T01:05:19.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[eKYC Providers Updating Systems To Support New-Generation MyKad]]></title>
+        <id>https://www.lowyat.net/?p=404877</id>
+        <link href="https://www.lowyat.net/2026/404877/ekyc-updating-systems-new-gen-mykad/"/>
+        <updated>2026-09-22T00:56:37.000Z</updated>
+        <summary type="html"><![CDATA[Electronic Know Your Customer (eKYC) service providers are updating their systems to recognise the design and features of the new-generation MyKad. The National Registration Department (JPN) said the updates are needed after some holders encountered difficulties completing identity verification through eKYC systems. According to the department, several engagement sessions have been and are being conducted […]
+The post eKYC Providers Updating Systems To Support New-Generation MyKad appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Heirul Kamel</name>
         </author>
     </entry>
     <entry>
@@ -27,204 +413,13 @@ The post Acer Googlebook 14 Debuts As Convertible Laptop With Gemini Intelligenc
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Domain Verification vs Email Confirmation for Workspace Joining — Control in 2026]]></title>
-        <id>https://dev.to/oskarholm4968/domain-verification-vs-email-confirmation-for-workspace-joining-control-in-2026-30o2</id>
-        <link href="https://dev.to/oskarholm4968/domain-verification-vs-email-confirmation-for-workspace-joining-control-in-2026-30o2"/>
-        <updated>2026-09-22T00:17:01.000Z</updated>
-        <summary type="html"><![CDATA[Short answer: use DNS domain verification to establish organisational control, use email confirmation to establish a person's current mailbox access, and require both for high-impact workspace joining; record each observation so later drift can be explained rather than guessed.
-That distinction matters in healthtech onboarding. A user who confirms billing@clinic.example has demonstrated access to one mailbox. The organisation that controls clinic.example has demonstrated authority over a namespace. Those are different claims, with different owners and different expiry conditions.
-Start with the claim, not the challenge message. The claim is usually: “this applicant may join the workspace governed by this organisation.” A DNS TXT challenge asks an administrator who controls the domain to pu…]]></summary>
-        <author>
-            <name>oskarholm4968</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[MCP Debate: Token Tax, Context Bloat, and What Devs Can Do]]></title>
-        <id>https://dev.to/cogumellum/mcp-debate-token-tax-context-bloat-and-what-devs-can-do-2npo</id>
-        <link href="https://dev.to/cogumellum/mcp-debate-token-tax-context-bloat-and-what-devs-can-do-2npo"/>
-        <updated>2026-09-22T00:03:34.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR: A post on maharship.com argues MCP was designed for 2024-era models and now causes context bloat and a token tax, sparking a ~165-point Hacker News thread with 100+ comments and pushback on X. If you run agents today, the debate is a prompt to audit what your tools actually cost in context and dollars before you add another server.
-A blog post titled "Why MCP was always a bad idea" (maharship.com) argues that the Model Context Protocol was designed for 2024 models and that it generates context bloat and a token tax. The post is the seed of a renewed debate, not a formal specification change.
-The discussion landed on Hacker News as a thread with roughly 165 points and more than 100 comments in the last ~13 hours (news.ycombinator.com/item?id=49779329). The thread is active and divide…]]></summary>
-        <author>
-            <name>Cogumellum</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[06 — Chat Works. Does the Agent Actually Retrieve Memory?]]></title>
-        <id>https://dev.to/liuyuyan6100/06-chat-works-does-the-agent-actually-retrieve-memory-21hf</id>
-        <link href="https://dev.to/liuyuyan6100/06-chat-works-does-the-agent-actually-retrieve-memory-21hf"/>
-        <updated>2026-09-22T00:03:16.000Z</updated>
-        <summary type="html"><![CDATA[The images in this article are explanatory diagrams with Chinese labels, not screenshots of test results. Each caption summarizes the diagram in English.
-I wanted to make projects easier to resume across conversations and agents. Before testing whether the next agent could pick up where the previous one stopped, I checked something more basic: could it actively retrieve memory?
-In the Docker deployment I was investigating, retrieval requests timed out while ordinary conversation continued. That combination was easy to misread. The assistant still answered, and memory content appeared in its context. Neither observation proved that its retrieval tools worked.
-Chat and tool execution involve different requests. A working conversation showed that the client could communicate with the gateway.…]]></summary>
-        <author>
-            <name>liuyuyan6100</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[05 - After Wiring Up TencentDB Agent Memory, Why I'm Still Reading About Mnemosyne OS]]></title>
-        <id>https://dev.to/liuyuyan6100/05-after-wiring-up-tencentdb-agent-memory-why-im-still-reading-about-mnemosyne-os-11a2</id>
-        <link href="https://dev.to/liuyuyan6100/05-after-wiring-up-tencentdb-agent-memory-why-im-still-reading-about-mnemosyne-os-11a2"/>
-        <updated>2026-09-22T00:03:02.000Z</updated>
-        <summary type="html"><![CDATA[Cover: accumulated project experience leading into the next handoff. AI-generated concept illustration.
-A note before we start: all five diagrams below carry Chinese labels; the English captions summarize what each one shows.
-In the previous post I finished digging into DSH's plugin loading — DSH being the agent environment I've been working in across this series. Installing a plugin requires a restart; changing user configuration hot-reloads. They touch different layers.
-That post left two threads open: build a plugin myself, and go deeper on memory integration. I said I'd write whichever produced something worth telling first. This time it's memory — but the trigger was a draft that came back wrong.
-I handed my reference material to WorkBuddy and asked for a draft combining my recent stu…]]></summary>
-        <author>
-            <name>liuyuyan6100</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Media Encryption & Port Protection Deep Dive: USB Control, Encryption & Device Authorization]]></title>
-        <id>https://dev.to/jorgeluiznim/media-encryption-port-protection-deep-dive-usb-control-encryption-device-authorization-3oml</id>
-        <link href="https://dev.to/jorgeluiznim/media-encryption-port-protection-deep-dive-usb-control-encryption-device-authorization-3oml"/>
-        <updated>2026-09-22T00:02:24.000Z</updated>
-        <summary type="html"><![CDATA[This article is part of my Harmony Endpoint Deep Dives series, originally published on Check Point CheckMates. It is written for a cloud-managed deployment (Infinity Portal / Web Management); where an on-premises Management Server behaves differently, that is called out.
-The USB port is one of the easiest ways data walks out of a company, and one of the easiest ways malware walks in. This article dissects Media Encryption & Port Protection (ME&PP): the write-action encryption modes, storage vs peripheral device control, device exceptions with wildcards, offline access, device scanning and authorization, media lockout, and the UUID "Site" trust model that decides who can open an encrypted stick.
-ME&PP protects sensitive information by encrypting data and requiring authorization to access de…]]></summary>
-        <author>
-            <name>Jorge Dias Jr</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Quarkus + GraalVM Advanced Obfuscation]]></title>
-        <id>https://dev.to/aeells/quarkus-graalvm-advanced-obfuscation-5hd4</id>
-        <link href="https://dev.to/aeells/quarkus-graalvm-advanced-obfuscation-5hd4"/>
-        <updated>2026-09-22T00:00:56.000Z</updated>
-        <summary type="html"><![CDATA[How to open-source your runtime without open-sourcing your IP
-
-
-I've spent the last 18 months building Backbone, a production platform bootstrap for SaaS startup engineering teams.
-I recently open-sourced the Community edition. Community is meant to be genuinely usable for local development: run the platform services, scaffold product domain services, build against a real runtime. What I didn't want to do is open source the entire codebase.
-That's an awkward distribution problem. Java bytecode is a weak boundary. Even without source, a normal JVM artifact still leaves a lot of useful structure behind.
-GraalVM Native Image already helps: you ship machine code, not class files, and closed-world analysis strips unreachable code. GraalVM 25 adds another layer - Advanced Obfuscation (AO) - whic…]]></summary>
-        <author>
-            <name>Andrew Eells</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Shifting the Bottleneck: Re-engineering CI/CD Pipelines for the AI Coding Era]]></title>
-        <id>https://dev.to/tamizuddin/shifting-the-bottleneck-re-engineering-cicd-pipelines-for-the-ai-coding-era-fpe</id>
-        <link href="https://dev.to/tamizuddin/shifting-the-bottleneck-re-engineering-cicd-pipelines-for-the-ai-coding-era-fpe"/>
-        <updated>2026-09-22T00:00:36.000Z</updated>
-        <summary type="html"><![CDATA[Originally published on tamiz.pro.
-For over a decade, the definition of developer velocity has been tied to the time it takes to merge a pull request. The era of AI coding agents and large language model (LLM) integration has fundamentally broken this traditional model. Because AI tools have collapsed the time required to generate code from hours to minutes, the traditional Continuous Integration and Continuous Deployment (CI/CD) pipeline has emerged as the critical path limiting team velocity.
-When code generation is nearly instantaneous, the friction that remains is not in typing; it is in verifying, testing, and deploying that code. Software engineers and systems architects must now look past their IDEs and focus on the execution environment. This deep-dive analyzes the mechanical shifts required in modern DevOps architectures to keep pace with AI-generated code volume and to prevent pipeline starvation.]]></summary>
-        <author>
-            <name>Tamiz Uddin</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Landlock LSM: Sandbox-Linux ohne Root-Rechte sichern]]></title>
-        <id>https://dev.to/uhltak/landlock-lsm-sandbox-linux-ohne-root-rechte-sichern-36io</id>
-        <link href="https://dev.to/uhltak/landlock-lsm-sandbox-linux-ohne-root-rechte-sichern-36io"/>
-        <updated>2026-09-22T00:00:23.000Z</updated>
-        <summary type="html"><![CDATA[Landlock LSM: Anwendungs-Sandboxing direkt im Linux-Kernel ohne Root
-
-
-Stellen Sie sich vor, Sie öffnen eine unbekannte PDF-Datei oder starten ein skriptartiges Tool aus einem verdächtigen Repository. Normalerweise müsste man entweder den gesamten Host infizieren riskieren oder aufwändige Virtualisierung (VMs, LXC) aufsetzen. Was wäre, wenn der Linux-Kernel jede beliebige Anwendung in einen Käfig sperren könnte – und das alles ohne Root-Rechte und komplizierte Profile? Willkommen in der Welt von Landlock. Ich habe jahrelang AppArmor-Profile für Distributions-Packages geschrieben, nur um bei jedem Update zu beten, dass die Pfade nicht wechseln. Landlock löst dieses Problem elegant und bringt echte Sicherheit für Endnutzer und Server-Admins in den Alltag.
-In diesem Artikel zeige ich Ihnen pr…]]></summary>
-        <author>
-            <name>Uhltak Therestismysecret</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[7 out of 9 Planetary Boundaries are breached]]></title>
-        <id>https://www.planetaryhealthcheck.org/</id>
-        <link href="https://www.planetaryhealthcheck.org/"/>
-        <updated>2026-09-21T23:53:36.000Z</updated>
+        <title type="html"><![CDATA[Socrates vs. the Written Word (2011)]]></title>
+        <id>https://wondermark.com/socrates-vs-writing/</id>
+        <link href="https://wondermark.com/socrates-vs-writing/"/>
+        <updated>2026-09-22T00:06:55.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[6 Lessons From 20 Years of SQL Migration Tools (Applied to a NoSQL Migrator in 2026)]]></title>
-        <id>https://dev.to/keymelgaston/6-lessons-from-20-years-of-sql-migration-tools-applied-to-a-nosql-migrator-in-2026-1ah</id>
-        <link href="https://dev.to/keymelgaston/6-lessons-from-20-years-of-sql-migration-tools-applied-to-a-nosql-migrator-in-2026-1ah"/>
-        <updated>2026-09-21T23:51:41.000Z</updated>
-        <summary type="html"><![CDATA[Flyway has been around since 2010. Liquibase since 2006. dbmate is newer but built on the same lineage. Between them, that's decades of hard-won engineering on one narrow problem: how do you change a database schema safely, repeatedly, without losing anyone's data.
-Here's the part that surprised me: none of that engineering ever made it over to NoSQL-to-SQL migrations. Not because it's secret knowledge — it's all open source, well documented, battle-tested in production at companies most of us have heard of. It just never got ported. Every NoSQL migration tool I've looked at (fireway, mad-migration, a handful of others) was built from scratch, by someone solving their own one-time problem, without borrowing the patterns that already exist one layer over.
-So before designing anything new, I…]]></summary>
-        <author>
-            <name>Keymel Gaston</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I built IMFMSynth - 8-op FM x Wavetable Synthesizer]]></title>
-        <id>https://dev.to/skpub/i-built-imfmsynth-8-op-fm-x-wavetable-synthesizer-2h7i</id>
-        <link href="https://dev.to/skpub/i-built-imfmsynth-8-op-fm-x-wavetable-synthesizer-2h7i"/>
-        <updated>2026-09-21T23:51:40.000Z</updated>
-        <summary type="html"><![CDATA[Hi everyone!
-I love FM synthesis. I grew up listening to everything from video game music to Ryuichi Sakamoto, and I have always been drawn to those sounds.
-Since this is my first post, I should probably share a few of my other interests too. I like cats, tea, fountain pens, cats, and cats!
-Now, back to the main subject. First, here is a short demo:
-  
-  
-
-
-
-  
-  
-  Why I built this synth
-
-
-FM synthesis can sound incredible, but creating your own presets with it is notoriously difficult. The purpose behind this synth is to make FM easier to understand through modern web interface design, while also bringing wavetables into the system as operators.
-The aim is to help music producers, composers, and arrangers create their own sounds without losing sight of what the modulation is doing.
-My ho…]]></summary>
-        <author>
-            <name>Kaito Sato</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Built an MCP Server That Tracks AI Quota Resets — Here's How]]></title>
-        <id>https://dev.to/sunny_su/i-built-an-mcp-server-that-tracks-ai-quota-resets-heres-how-4kn9</id>
-        <link href="https://dev.to/sunny_su/i-built-an-mcp-server-that-tracks-ai-quota-resets-heres-how-4kn9"/>
-        <updated>2026-09-21T23:46:38.000Z</updated>
-        <summary type="html"><![CDATA[TL;DR: I built a Model Context Protocol server that lets AI assistants like Claude and Cursor query real-time AI quota reset signals across 15+ products.
-If you're paying for AI subscriptions (OpenAI Codex at $20-200/mo, Claude Pro, Gemini Advanced), quota resets are money. When your quota resets, you want to know immediately.
-The problem: resets are scattered across multiple status pages, happen at unpredictable times, and there's no unified API to track them.
-I built Reset Beer — a dashboard that aggregates official status pages from 15+ AI products and sends alerts when quota reset signals drop.
-The MCP integration is what makes it interesting. Instead of just receiving emails, Pro users can connect Reset Beer to their AI assistants and ask: "Any recent quota resets for Codex?"
-The MCP server is a single Next.js API route that implements JSON-RPC 2.0 over HTTP (Streamable HTTP transport per MCP spec 2025-03-26).
-Three tools are exposed:
-list_recent_resets — Query reset events by time range, product, and limit
-get_product_status — Get the latest event for a specific product
-list_products — List all tracked AI products
-Each Pro user gets a cryptographically random API key (rb_ prefix, 64 hex chars). The key is stored as SHA-256 hash in the database.
-MCP is easier than expected — The spec is well-designed
-API key auth > OAuth for first-party tools — Bearer tokens are simpler
-Calendar rules ≠ actionable signals — Filter predictable events
-Static generation + cookies don't mix — Use client components with Suspense
-Product: https://reset.beer
-
-npm: npm install reset-beer-mcp
-
-GitHub: https://github.com/suxinsk/reset-beer-mcp
-
-
-
-Pro is $9.99 one-time (lifetime, no subscription). Free tier available.
-Built solo with Next.js 15, Neon Postgres, Better Auth, Resend, and Vercel. Follow on X.]]></summary>
-        <author>
-            <name>Sunny Su</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Central NAT on FortiGate: what changes, what breaks, and the order you have to do it in]]></title>
-        <id>https://dev.to/hexwardlabs/central-nat-on-fortigate-what-changes-what-breaks-and-the-order-you-have-to-do-it-in-42nf</id>
-        <link href="https://dev.to/hexwardlabs/central-nat-on-fortigate-what-changes-what-breaks-and-the-order-you-have-to-do-it-in-42nf"/>
-        <updated>2026-09-21T23:45:08.000Z</updated>
-        <summary type="html"><![CDATA[First note in a series on cross-vendor firewall migration: where two platforms disagree, verified against vendor docs and real migrations.
-If you are moving a policy set onto FortiGate from an ASA or a Palo Alto, there is a decision you have to make before you write a single rule, and FortiOS will not let you unmake it afterwards without tearing the policies down.
-This is about central NAT. Not what it is — the documentation covers that — but what it does to a migration, and why it has to be the first thing you decide rather than the last.
-Per-policy NAT is the FortiGate default, and for a greenfield FortiGate it is usually the right choice. Each firewall policy carries its own nat enable and optionally an IP pool. Simple, local, readable.
-The trouble is that neither an ASA nor a PAN-OS po…]]></summary>
-        <author>
-            <name>Nizar Tuanku</name>
         </author>
     </entry>
     <entry>
@@ -248,16 +443,6 @@ The trouble is that neither an ASA nor a PAN-OS po…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Data Protection Commission fines Google €403M over processing of location data]]></title>
-        <id>https://www.dataprotection.ie/en/news-media/latest-news/data-protection-commission-fines-google-eu403-million-following-inquiry-googles-processing-location</id>
-        <link href="https://www.dataprotection.ie/en/news-media/latest-news/data-protection-commission-fines-google-eu403-million-following-inquiry-googles-processing-location"/>
-        <updated>2026-09-21T22:33:45.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[I don't want to read what you didn't write]]></title>
         <id>https://blog.colinbreck.com/i-dont-want-to-read-what-you-didnt-write/</id>
         <link href="https://blog.colinbreck.com/i-dont-want-to-read-what-you-didnt-write/"/>
@@ -268,13 +453,13 @@ The trouble is that neither an ASA nor a PAN-OS po…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Suspension of the de minimis administrative exemption for imports $800 or less]]></title>
-        <id>https://www.personalimportation.org/advocacy</id>
-        <link href="https://www.personalimportation.org/advocacy"/>
-        <updated>2026-09-21T20:58:17.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
+        <title type="html"><![CDATA[How to Port a Jekyll Blog Theme to Python: Lessons From Actually Doing It]]></title>
+        <id>6ab19a268fed0cf1f0fe1645</id>
+        <link href="https://www.freecodecamp.org/news/how-to-build-a-reading-focused-blog-with-python-markdown-and-github-pages-for-free/"/>
+        <updated>2026-09-21T20:57:10.000Z</updated>
+        <summary type="html"><![CDATA[I've been following a tufte-jekyll styled blog for a couple of years and that led me to discover Edward Tufte's book layout. Edward Tufte is renowned for his work on data visualization and information]]></summary>
         <author>
-            <name>Hacker News</name>
+            <name>brooklyn</name>
         </author>
     </entry>
     <entry>
@@ -288,7 +473,7 @@ The trouble is that neither an ASA nor a PAN-OS po…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Xiaomi MiMo v2.6]]></title>
+        <title type="html"><![CDATA[MiMo v2.6]]></title>
         <id>https://mimo.xiaomi.com/mimo-v2-6</id>
         <link href="https://mimo.xiaomi.com/mimo-v2-6"/>
         <updated>2026-09-21T20:12:12.000Z</updated>
@@ -348,16 +533,6 @@ The trouble is that neither an ASA nor a PAN-OS po…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[In Search of a Compositional Theory of Self-Stabilization]]></title>
-        <id>http://muratbuffalo.blogspot.com/2026/09/in-search-of-compositional-theory-of.html</id>
-        <link href="http://muratbuffalo.blogspot.com/2026/09/in-search-of-compositional-theory-of.html"/>
-        <updated>2026-09-21T19:04:36.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Roboharm: Do frontier robot policies refuse unsafe instructions?]]></title>
         <id>https://robocurve.org/roboharm/</id>
         <link href="https://robocurve.org/roboharm/"/>
@@ -372,16 +547,6 @@ The trouble is that neither an ASA nor a PAN-OS po…]]></summary>
         <id>https://timdettmers.com/2026/09/21/dlab-open-source-week/</id>
         <link href="https://timdettmers.com/2026/09/21/dlab-open-source-week/"/>
         <updated>2026-09-21T18:53:01.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[US halts flights at busy East Coast airports, says fiber line cut]]></title>
-        <id>https://www.reuters.com/world/us/faa-halts-some-us-east-coast-flights-due-communication-issues-2026-09-21/</id>
-        <link href="https://www.reuters.com/world/us/faa-halts-some-us-east-coast-flights-due-communication-issues-2026-09-21/"/>
-        <updated>2026-09-21T18:41:59.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -428,7 +593,7 @@ The trouble is that neither an ASA nor a PAN-OS po…]]></summary>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How do Traffic Signals Work (2019)]]></title>
+        <title type="html"><![CDATA[How do traffic signals work? (2019)]]></title>
         <id>https://practical.engineering/blog/2019/5/11/how-do-traffic-signals-work</id>
         <link href="https://practical.engineering/blog/2019/5/11/how-do-traffic-signals-work"/>
         <updated>2026-09-21T16:06:44.000Z</updated>
@@ -690,17 +855,6 @@ The post Hisense RoamView Is A Moveable 32-Inch Touchscreen TV With A Built-In B
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Realme 16 Pro Harry Potter Edition Now Official In Malaysia]]></title>
-        <id>https://www.lowyat.net/?p=404819</id>
-        <link href="https://www.lowyat.net/2026/404819/realme-16-pro-harry-potter-edition/"/>
-        <updated>2026-09-21T09:13:20.000Z</updated>
-        <summary type="html"><![CDATA[Earlier in the month, we saw teasers for what looks like a Harry Potter Edition for the realme 16 Pro. Today, the brand has officially revealed the special edition phone, and it looks like the tie-in comes with a pair of TWS buds as well. More specifically, it’s the realme Buds T500 Pro. Unfortunately, both […]
-The post Realme 16 Pro Harry Potter Edition Now Official In Malaysia appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Ian Chee</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Crypto enjoys bullish bounce post-Fed rate hike: Crypto Week Ahead]]></title>
         <id>cf3c413b-1962-4605-bdb9-4a8ee074c4aa</id>
         <link href="https://www.coindesk.com/markets/2026/09/21/crypto-week-ahead"/>
@@ -741,28 +895,6 @@ The post Realme 16 Pro Harry Potter Edition Now Official In Malaysia appeared fi
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Huawei Watch GT 7 Series Officially Launching Locally Next Week]]></title>
-        <id>https://www.lowyat.net/?p=404778</id>
-        <link href="https://www.lowyat.net/2026/404778/huawei-watch-gt-7-series-launch/"/>
-        <updated>2026-09-21T06:41:02.000Z</updated>
-        <summary type="html"><![CDATA[Huawei is preparing to release some new products in Malaysia soon. Last week, the brand began sharing a few teasers on its social media platforms, revealing that a launch event will be taking place in the very near future. And now, the company has confirmed that this event will mark the arrival of the Watch […]
-The post Huawei Watch GT 7 Series Officially Launching Locally Next Week appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Nurul Kamil</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iPhone 18 Pro Teardown By iFixit Reveals Variable Aperture Details]]></title>
-        <id>https://www.lowyat.net/?p=404774</id>
-        <link href="https://www.lowyat.net/2026/404774/iphone-18-pro-teardown-ifixit/"/>
-        <updated>2026-09-21T06:26:01.000Z</updated>
-        <summary type="html"><![CDATA[Apple announced the new iPhone 18 Pro and Pro Max, which are essentially identical phones in different sizes. The new party piece for both is the variable aperture, which, while new among Apple phones, is not new for smartphones as a whole. At any rate, the folks at iFixit gave both variants the usual teardown […]
-The post iPhone 18 Pro Teardown By iFixit Reveals Variable Aperture Details appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Ian Chee</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Kalshi faces ‘fake crypto volume’ allegations as critic flags identical $5,500 trades]]></title>
         <id>6f01b0fb-9791-4b62-90da-e6233b55ef1c</id>
         <link href="https://www.coindesk.com/markets/2026/09/21/kalshi-s-crypto-chief-responds-to-fake-crypto-volume-allegations-as-critic-flags-identical-usd5-500-trades"/>
@@ -770,17 +902,6 @@ The post iPhone 18 Pro Teardown By iFixit Reveals Variable Aperture Details appe
         <summary type="html"><![CDATA[A trader alleged on X that Kalshi is inflating trading volumes in its ether perpetual futures.]]></summary>
         <author>
             <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CXMT’s New G5 DRAM Platform Enters Mass Production With 50% More Dies Per Wafer]]></title>
-        <id>https://www.lowyat.net/?p=404775</id>
-        <link href="https://www.lowyat.net/2026/404775/cxmt-new-g5-dram-enters-mass-production/"/>
-        <updated>2026-09-21T05:27:24.000Z</updated>
-        <summary type="html"><![CDATA[For years, Samsung, SK Hynix, and Micron have dominated the global memory chip market, supplying DRAM for everything from smartphones and PCs to servers. However, that dominance could face a stronger challenge from China, as the country’s leading DRAM maker, ChangXin Memory Technologies (CXMT), has announced that its fifth-generation technology platform has entered mass production. […]
-The post CXMT’s New G5 DRAM Platform Enters Mass Production With 50% More Dies Per Wafer appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Kiran Ganesan</name>
         </author>
     </entry>
     <entry>
@@ -814,36 +935,23 @@ The post CXMT’s New G5 DRAM Platform Enters Mass Production With 50% More Dies
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Microsoft Patent Describes Freezing Games To Show Players Ads]]></title>
-        <id>https://www.lowyat.net/?p=404770</id>
-        <link href="https://www.lowyat.net/2026/404770/microsoft-patent-freezing-games-show-ad/"/>
-        <updated>2026-09-21T03:37:14.000Z</updated>
-        <summary type="html"><![CDATA[Ads in videogames have always been seen as a negative, but it’s often justified in free-to-play titles because the developers have to make money in some other way. So it’s always a little worrying when there’s news about new ad tech appearing in the videogames space. Microsoft appears to have a new patent describing just […]
-The post Microsoft Patent Describes Freezing Games To Show Players Ads appeared first on Lowyat.NET.]]></summary>
+        <title type="html"><![CDATA[Epoll and Kqueue: How Operating Systems Learned to Wait Efficiently]]></title>
+        <id>https://thecodinggopher.substack.com/p/epoll-and-kqueue-how-operating-systems</id>
+        <link href="https://thecodinggopher.substack.com/p/epoll-and-kqueue-how-operating-systems"/>
+        <updated>2026-09-20T18:23:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Ian Chee</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Xiaomi 18 Pro Series To Launch In China On 23 September With Dual 200MP Cameras]]></title>
-        <id>https://www.lowyat.net/?p=404763</id>
-        <link href="https://www.lowyat.net/2026/404763/xiaomi-18-pro-series-china-on-23-sept/"/>
-        <updated>2026-09-21T03:00:43.000Z</updated>
-        <summary type="html"><![CDATA[After multiple reports and speculation, Xiaomi has officially confirmed that it will launch the Xiaomi 18 Pro series in China soon. According to the company’s official Weibo post, the lineup will make its debut in its home market on 23 September. The company is expected to launch the 18 Pro and 18 Pro Max models. […]
-The post Xiaomi 18 Pro Series To Launch In China On 23 September With Dual 200MP Cameras appeared first on Lowyat.NET.]]></summary>
+        <title type="html"><![CDATA[Truman World]]></title>
+        <id>https://trumanworld.live/</id>
+        <link href="https://trumanworld.live/"/>
+        <updated>2026-09-20T16:58:34.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Kiran Ganesan</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[DJI Neo 3 Packaging Leak Reveals New Design, Fly More Combo Contents]]></title>
-        <id>https://www.lowyat.net/?p=404755</id>
-        <link href="https://www.lowyat.net/2026/404755/dji-neo-3-packaging-leak/"/>
-        <updated>2026-09-21T02:36:56.000Z</updated>
-        <summary type="html"><![CDATA[It looks like DJI is planning to release a new compact aerial drone sometime in the near future. The Neo 3 has cropped up in a recent leak, offering us an idea of what to expect. Last week, seasoned tipster Igor Bogdanov posted an image of the device’s retail packaging on X. Then, over the […]
-The post DJI Neo 3 Packaging Leak Reveals New Design, Fly More Combo Contents appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Nurul Kamil</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -857,16 +965,6 @@ The post DJI Neo 3 Packaging Leak Reveals New Design, Fly More Combo Contents ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Journey of a Migratory Shorebird]]></title>
-        <id>https://www.newyorker.com/magazine/2026/09/21/the-incredible-journey-of-a-migratory-shorebird</id>
-        <link href="https://www.newyorker.com/magazine/2026/09/21/the-incredible-journey-of-a-migratory-shorebird"/>
-        <updated>2026-09-20T14:44:27.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Coinbase, Robinhood, Circle could be early winners of SEC's tokenized-stock push, analysts say]]></title>
         <id>2fa40f0a-0ec7-47a1-a78f-2c40fc9727de</id>
         <link href="https://www.coindesk.com/business/2026/09/20/coinbase-robinhood-circle-could-be-early-winners-of-sec-s-tokenized-stock-push-analysts-say"/>
@@ -877,20 +975,30 @@ The post DJI Neo 3 Packaging Leak Reveals New Design, Fly More Combo Contents ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Crypto traders braced for a total wipeout this week but Bitcoin had other plans]]></title>
-        <id>8f30bfdc-d65d-43bf-ad75-3d8859dde468</id>
-        <link href="https://www.coindesk.com/markets/2026/09/18/crypto-traders-braced-for-a-total-wipeout-this-week-but-bitcoin-had-other-plans"/>
-        <updated>2026-09-20T12:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Market experts view bitcoin’s price stability as evidence of its fundamental independence from Washington, maintaining that global liquidity and adoption cycles remain the primary growth drivers.]]></summary>
+        <title type="html"><![CDATA[PDF Forgeries Are Surprisingly Rare (2022)]]></title>
+        <id>https://gwern.net/blog/2022/pdf-forgery</id>
+        <link href="https://gwern.net/blog/2022/pdf-forgery"/>
+        <updated>2026-09-20T09:57:35.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Olivier Acuna</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[There Are Over 1M NYC Street Signs. Here is How They Are Made.]]></title>
-        <id>https://www.nytimes.com/2026/08/15/nyregion/nyc-street-sign-shop.html</id>
-        <link href="https://www.nytimes.com/2026/08/15/nyregion/nyc-street-sign-shop.html"/>
-        <updated>2026-09-19T21:57:17.000Z</updated>
+        <title type="html"><![CDATA[More floating point alternatives]]></title>
+        <id>https://wizardzines.com/comics/floating-point-alternatives/</id>
+        <link href="https://wizardzines.com/comics/floating-point-alternatives/"/>
+        <updated>2026-09-20T00:55:27.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Paper Models of Polyhedra]]></title>
+        <id>https://www.polyhedra.net/en/</id>
+        <link href="https://www.polyhedra.net/en/"/>
+        <updated>2026-09-20T00:28:33.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -934,26 +1042,6 @@ The post DJI Neo 3 Packaging Leak Reveals New Design, Fly More Combo Contents ap
         <summary type="html"><![CDATA[Hold an iPhone near a sticker and something happens. A business card lands in your contacts, a focus session ends, or a door opens. The chip costs about twenty pence and holds roughly a hundred and th]]></summary>
         <author>
             <name>Farouq Seriki</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Clarity Act, we hardly knew ye: We look at what was in the bill and what's replacing it]]></title>
-        <id>cbea7a9a-be9e-4077-a4d1-2c99e18923d8</id>
-        <link href="https://www.coindesk.com/news-analysis/2026/09/18/clarity-act-we-hardly-knew-ye-we-look-at-what-was-in-the-bill-and-what-s-replacing-it"/>
-        <updated>2026-09-19T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[U.S. agencies are racing to substitute their regulations for the law that was meant to set crypto markets in governmental bedrock, but will the stand-ins last?]]></summary>
-        <author>
-            <name>Jesse Hamilton</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA['We have lost control': Crypto pioneer warns AI could trigger systemic banking and infrastructure shocks]]></title>
-        <id>ff3bb4f6-46a0-464f-90d5-29c5d4d34ef7</id>
-        <link href="https://www.coindesk.com/markets/2026/09/17/we-have-lost-control-crypto-pioneer-warns-ai-could-trigger-systemic-banking-and-infrastructure-shocks"/>
-        <updated>2026-09-19T14:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Marc van der Chijs sold much of his bitcoin to invest in AI. Now, growing concerns about the technology accompany a move to put some profits back into crypto.]]></summary>
-        <author>
-            <name>James Van Straten</name>
         </author>
     </entry>
     <entry>
@@ -1044,16 +1132,6 @@ The post DJI Neo 3 Packaging Leak Reveals New Design, Fly More Combo Contents ap
         <summary type="html"><![CDATA[Large legacy migrations often fail long before the final cutover. The failure usually starts when the migration is framed as a single event. Move the application. Move the database. Move all the users]]></summary>
         <author>
             <name>Hugo Teijiz</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hands-On Evolution of Deep Learning – Geoffrey Hinton’s AI Legacy]]></title>
-        <id>6aac2aabd02a5d838577063a</id>
-        <link href="https://www.freecodecamp.org/news/hands-on-evolution-of-deep-learning-geoffrey-hinton-s-ai-legacy/"/>
-        <updated>2026-09-17T18:00:11.000Z</updated>
-        <summary type="html"><![CDATA[Geoffrey Hinton is known as the "the Godfather of AI". We just published a course on the freeCodeCamp.org YouTube channel that will help you master modern neural networks by recreating the groundbreak]]></summary>
-        <author>
-            <name>Beau Carnes</name>
         </author>
     </entry>
     <entry>
