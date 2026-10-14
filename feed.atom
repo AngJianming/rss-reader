@@ -1,232 +1,375 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-10-14T18:16:57.107Z</id>
+    <id>urn:2026-10-14T22:01:33.115Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-10-14T18:16:57.107Z</updated>
+    <updated>2026-10-14T22:01:33.115Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-10-14T18:15:58.000Z</updated>
+        <updated>2026-10-14T22:01:01.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Verify before you run]]></title>
-        <id>https://dev.to/allmightyleobyte/verify-before-you-run-2edn</id>
-        <link href="https://dev.to/allmightyleobyte/verify-before-you-run-2edn"/>
-        <updated>2026-10-14T18:11:45.000Z</updated>
-        <summary type="html"><![CDATA[You know the workflow. You describe the task, the AI writes the PowerShell, it looks right, you run it. Most days this works fine.
-Then September happened. A story went around about an rmdir suggested by AI landing in the wrong place, and a drive disappearing. Generation is a solved problem now. Verification is the part most of us skip.
-Here is the pass I run before any script written by AI touches a production box. It takes about five minutes.
-First, read every destructive cmdlet. Search the script for Remove, Stop, Set, Clear, Disable, and Format. For each hit, ask one question: if this runs against the wrong scope, what breaks? AI is confident about syntax and careless about scope. A Remove ADUser with a bad filter is a resume event.
-Second, run it with WhatIf. It is free information. But know its limits. Not every cmdlet honors WhatIf, and it will not catch logic errors. It catches the obvious disasters, which are the ones that end careers.
-Third, limit the blast radius before the real run. Run against one test object, one OU, one mailbox. Confirm the output, then widen. If the script has no natural scope limit, that is the review finding. Add one.
-Two honest caveats. This pass catches accidents, not malice. If you do not trust the source of the script, no checklist saves you. And WhatIf lies by omission. It shows what would happen, not what the script meant to do. Read the logic, not just the preview.
-The free tool from my last post fits here too. Same idea, other direction. Sanitize logs before they go into the AI, verify scripts before they come out of it. It is free here: https://mightyleo.gumroad.com/l/ojbhki
-Full disclosure, it is also one of ten tools in a bigger bundle I sell for $19. Thirty environment aware prompts, ten PowerShell tools, ten checklists: https://mightyleo.gumroad.com/l/ai-playbook-for-it-engineers. The sanitizer stays free regardless. If your verify pass catches something good, tell me in the comments. I collect war stories.]]></summary>
+        <title type="html"><![CDATA[Learning to Triage Vulnerabilities and Their Real Product Impact — or How Product Security Turns a Finding into a Risk Decision]]></title>
+        <id>https://dev.to/bulwark-advisory/learning-to-triage-vulnerabilities-and-their-real-product-impact-or-how-product-security-turns-a-2o0p</id>
+        <link href="https://dev.to/bulwark-advisory/learning-to-triage-vulnerabilities-and-their-real-product-impact-or-how-product-security-turns-a-2o0p"/>
+        <updated>2026-10-14T22:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A practical playbook: triage → applicability → exposure → reachability → exploitability → blast radius → business impact → treatment → verification.
+When I was working in SecOps, one of the most useful lessons I learned was painfully simple: a red CVSS number or a “High Impact” scanner alert is not, by itself, proof of a real product risk. If the dashboard is screaming 9.8 in bright red, congratulations — you have a signal. The thinking part still belongs to you.
+A scanner can tell you that a vulnerability has a CVSS score of 9.8. An SCA tool can flag a vulnerable dependency. SAST can identify a potentially dangerous sink. DAST can confirm behavior in a running application. A CNAPP can surface a cloud misconfiguration. And a bug bounty researcher can send you a PoC and, quite reasonably, a…]]></summary>
         <author>
-            <name>Leo</name>
+            <name>Ivan Piskunov</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What a health startup actually has to build before its first feature (and what you can skip)]]></title>
-        <id>https://dev.to/adrian_kereky_23e9b987b1b/what-a-health-startup-actually-has-to-build-before-its-first-feature-and-what-you-can-skip-16ih</id>
-        <link href="https://dev.to/adrian_kereky_23e9b987b1b/what-a-health-startup-actually-has-to-build-before-its-first-feature-and-what-you-can-skip-16ih"/>
-        <updated>2026-10-14T18:11:26.000Z</updated>
-        <summary type="html"><![CDATA[Every health app starts the same way. You have an idea (a symptom tracker, an AI assistant for lab results, a remote-monitoring dashboard), and before you can ship the first screen that matters, you are designing a database for “a patient’s medical record”.
-That is where months go. Here is the list we kept running into, and what we decided you should not have to build yourself.
-The invisible backlog. Before the first real feature, a health product needs:
-A data model for medical records (measurements, labs, conditions, medications, documents, with units, reference ranges and real measurement dates).
-None of these is your product. All of them are required before anyone trusts it.
-Use the standard instead of inventing one. HL7 FHIR R4… the catch is that running a FHIR server well is its own product. That is the part we built as Anpheros: a managed FHIR R4 record per patient, REST API, consent and provenance, hosted in the EU.
-What the backend looks like on top of it. A code snippet from backend-ts (summary of a record + writing a weight with a LOINC code). Plus two practices worth copying even without Anpheros: it refuses a production key without ALLOW_LIVE=1, and it maps upstream errors to answers the UI can show (401 → 502, 429 → 503, request_id).
-Try it in about ten minutes. The 30 synthetic patients, curl, npm install @anpheros/sdk / flutter pub add anpheros_sdk, and the other starters (lab, consent, ai-context).
-What it is not, honestly. Not an EHR. Private beta, single-zone hosting, no contractual SLA, no ISO 27001 / SOC 2 / medical-device certification claimed. Production needs a verified organisation and a signed DPA.
-It ends with a question to readers: what did they end up building from scratch in their own health project.]]></summary>
+        <title type="html"><![CDATA[WhatsApp lead bot with human handover]]></title>
+        <id>https://dev.to/sahilsheoran851/whatsapp-lead-bot-with-human-handover-50kg</id>
+        <link href="https://dev.to/sahilsheoran851/whatsapp-lead-bot-with-human-handover-50kg"/>
+        <updated>2026-10-14T21:58:42.000Z</updated>
+        <summary type="html"><![CDATA[Most WhatsApp bot tutorials stop at "receive a message, call an LLM, reply". The parts that matter in production are the ones around that: when the bot must stay quiet, what happens when the model API is down, and how you avoid pestering people. This is how those parts work in the bot we run for ApexFlow Digital in Dubai.
+Node.js with @whiskeysockets/baileys for the WhatsApp connection
+OpenRouter for the LLM calls
+JSON files on disk for session, lead and follow-up state
+A small HTTP server for a health check
+Caveat first. Baileys speaks the WhatsApp Web protocol and is not the official Business Cloud API. It is quick to set up and needs no template approval, but it is unofficial and WhatsApp can restrict numbers that behave like spam. If you need guaranteed uptime or high volume, use the C…]]></summary>
         <author>
-            <name>Adrian Kereky</name>
+            <name>Apex Flow</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Realtime Notification Preferences Testing — Stock Trading Watchlists Without Flaky Timing]]></title>
-        <id>https://dev.to/brennancross2167/realtime-notification-preferences-testing-stock-trading-watchlists-without-flaky-timing-53ac</id>
-        <link href="https://dev.to/brennancross2167/realtime-notification-preferences-testing-stock-trading-watchlists-without-flaky-timing-53ac"/>
-        <updated>2026-10-14T18:10:11.000Z</updated>
-        <summary type="html"><![CDATA[Short answer: test a realtime stock trading watchlist with a deterministic event log, a controllable clock, and an explicit reconnect cursor; never make the assertion wait for a wall-clock delay and hope a notification arrives.
-The deciding constraint is recovery, not raw delivery speed. A watchlist can look correct on a clean connection and still duplicate, omit, or misroute an update after a preference change and reconnect. The same failure boundary appears in a healthtech dashboard that streams device status: a disconnected clinician's screen must resume from a known position, while the preference snapshot used for each notification remains explainable.
-This is an architecture decision record for that boundary. It treats transport as replaceable and makes reconnect and backfill observab…]]></summary>
+        <title type="html"><![CDATA[Certified Backstage Associate: I Passed by Five Points]]></title>
+        <id>https://dev.to/yetmike/certified-backstage-associate-i-passed-by-five-points-4hmm</id>
+        <link href="https://dev.to/yetmike/certified-backstage-associate-i-passed-by-five-points-4hmm"/>
+        <updated>2026-10-14T21:57:53.000Z</updated>
+        <summary type="html"><![CDATA[I wrote the longer version, with every config detail I studied and the full prep timeline, on my blog.
+I scored 80 on the Certified Backstage Associate exam. Passing is 75.
+No single domain sank me. I gave two or three soft answers in each of the four domains, and they stacked up until I was a couple of bad guesses away from a retake. CBA takes a point here and a point there, wherever you were pretty sure instead of certain.
+CBA was one of my last exams on the Golden Kubestronaut track. Other CNCF certs test you on operating something. CBA is 60 multiple choice questions in 90 minutes about how a framework works. No kubectl, no cluster to fix.
+The wrong answers are written to catch people who learned Backstage by osmosis. I felt confident going in.
+What made it click: Backstage is a TypeSc…]]></summary>
         <author>
-            <name>BrennanCross2167</name>
+            <name>Mykhailo</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Is This How Frontend Developers Work Now? My 2026 Coding Setup]]></title>
-        <id>https://dev.to/erikch/is-this-how-frontend-developers-work-now-my-2026-coding-setup-13ma</id>
-        <link href="https://dev.to/erikch/is-this-how-frontend-developers-work-now-my-2026-coding-setup-13ma"/>
-        <updated>2026-10-14T18:09:55.000Z</updated>
-        <summary type="html"><![CDATA[Software development is moving fast! The same setup I had six weeks ago, is not the same I have now. In fact, I've been doing software development on my phone!
-Just last week I was on vacation at Yellowstone, and I built an app from my phone. I chatted with an agent, it pushed the code to GitHub, and I reviewed the PRs. It was wild!
-
-This post walks through the setup that makes that work. It runs on a server in my house, and I can reach it from anywhere.
-  
-  
-
-
-Full disclosure, I'm a developer advocate at AWS, and a couple of the tools here are Kiro tools.
-Years ago I bought an old Intel Xeon server and loaded it with hard drives. It's been my home lab ever since, running TrueNAS. For this setup I created a new Ubuntu VM on it called Kiro Crew and do all my coding there.
-I went with Ubunt…]]></summary>
+        <title type="html"><![CDATA[Building PromoForge: my solution to promoting a small YouTube channel]]></title>
+        <id>https://dev.to/mchambers/building-promoforge-my-solution-to-promoting-a-small-youtube-channel-fic</id>
+        <link href="https://dev.to/mchambers/building-promoforge-my-solution-to-promoting-a-small-youtube-channel-fic"/>
+        <updated>2026-10-14T21:57:51.000Z</updated>
+        <summary type="html"><![CDATA[This is the build log from PromoForge’s first ten days. For what it does now, see the PromoForge project page.
+Over the past few years I’ve been running a gaming YouTube channel, Chambers Plays Games, and like most small creators I’ve found that making the content is only half the battle. The other half is the relentless work of promoting it… writing tweets, scheduling posts, engaging with other channels, and keeping track of which accounts in your following list are actually worth keeping around. I was doing all of this manually, which was both time-consuming and inconsistent. So, as I’ve done more than once before with problems that annoy me enough, I decided to write a tool to solve it.
+That tool is PromoForge.
+This isn’t my first attempt at Twitter automation. Back in early 2018, as pa…]]></summary>
         <author>
-            <name>Erik Hanchett</name>
+            <name>Michael Chambers</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[skilles]]></title>
-        <id>https://dev.to/shreya_raundale_20/skilles-2j44</id>
-        <link href="https://dev.to/shreya_raundale_20/skilles-2j44"/>
-        <updated>2026-10-14T18:09:29.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for the Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle
-QuickShot Extension — a browser extension that captures webpage screenshots or selected UI elements and uses local open-source AI to instantly draft product copy, listing descriptions, or social media blurbs directly inside your browser.
-It solves a daily pain point for content creators, indie hackers, and e-commerce sellers who spend hours typing repetitive product descriptions or paying monthly SaaS fees for cloud copywriting assistants. QuickShot keeps content generation fast, offline-first, and completely free of recurring subscription costs.
-Repository & Demo: https://github.com/vinitpatil-8/quickshot-extension
-
-
-
-
-  
-  
-  How I Built It
-
-
-QuickShot Extension is built with a privacy-first, local-in…]]></summary>
+        <title type="html"><![CDATA[The Microcosm Framework]]></title>
+        <id>https://dev.to/mchambers/the-microcosm-framework-15ek</id>
+        <link href="https://dev.to/mchambers/the-microcosm-framework-15ek"/>
+        <updated>2026-10-14T21:57:34.000Z</updated>
+        <summary type="html"><![CDATA[Over the course of my past few game development projects, I’ve had to write a lot of code multiple times and every time I’ve been slightly more inconvenienced by it. This ends up wasting valuable time that could be spent doing fun stuff. So I decided enough was enough and I’d create a reusable framework for use with all of my future projects. The premise was simple, I’d outline a set of basic requirements that every project I work on will have and then create a unity package I can import at the start of development to avoid having to try bodge implementations from other projects into a new one.
+The initial requirements were simple; a menu system, basic AdMob integration, generic object pooling and simple game management systems to track state/play sounds/etc. These were picked as the requi…]]></summary>
         <author>
-            <name>Shreya Raundale</name>
+            <name>Michael Chambers</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[CodeRef.xyz: A Better Way to Find Code References and Syntax Examples]]></title>
-        <id>https://dev.to/asrarihaque/coderefxyz-a-better-way-to-find-code-references-and-syntax-examples-34n4</id>
-        <link href="https://dev.to/asrarihaque/coderefxyz-a-better-way-to-find-code-references-and-syntax-examples-34n4"/>
-        <updated>2026-10-14T18:09:03.000Z</updated>
-        <summary type="html"><![CDATA[As developers, we regularly search for code examples, syntax references, API usage, and programming documentation. Sometimes, finding the exact reference we need takes longer than actually writing the code.
-You might search through documentation, browse GitHub repositories, revisit old projects, or open multiple websites just to find a small syntax example.
-That got me thinking: What if developers had a simple place to look up code references and useful programming resources?
-CodeRef.xyz is a project I'm working on with the idea of making code references easier to discover and access.
-The goal is simple: help developers spend less time searching and more time building.
-A developer reference platform can bring useful programming information together, making it easier to look up syntax, expl…]]></summary>
+        <title type="html"><![CDATA[AI Layoffs or AI Washing? What Monday.com Layoffs and Airtable Layoffs Really Say About AI Restructuring]]></title>
+        <id>https://dev.to/ashkan/ai-layoffs-or-ai-washing-what-mondaycom-layoffs-and-airtable-layoffs-really-say-about-ai-14mk</id>
+        <link href="https://dev.to/ashkan/ai-layoffs-or-ai-washing-what-mondaycom-layoffs-and-airtable-layoffs-really-say-about-ai-14mk"/>
+        <updated>2026-10-14T21:57:16.000Z</updated>
+        <summary type="html"><![CDATA[By Ashkan Rajaee, Founder, TDZ Pro (tdzpro.com)
+"AI restructuring" has become the most powerful two-word phrase in tech. Say it in a layoff memo and the headline writes itself. Investors nod. Commentators argue. And almost nobody asks the next question.
+What, exactly, did the AI do?
+Two recent cases make the point. Monday.com cut about 20% of its workforce. Bending Spoons is cutting a "large part" of Airtable weeks after buying it. Both got filed under "AI layoffs" in plenty of feeds this month. So I went and read what each company actually said.
+Let me be clear up front. I'm not accusing these companies of misrepresenting anything. I'm saying that when AI is the frame, and the detail stops there, it begs the question. And the answer matters to a lot of people.
+First, a correction to the n…]]></summary>
         <author>
-            <name>ANWAARUL HAQUE</name>
+            <name>Ashkan Rajaee</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ListingCraft AI]]></title>
-        <id>https://dev.to/sartaj_77/listingcraft-ai-42gd</id>
-        <link href="https://dev.to/sartaj_77/listingcraft-ai-42gd"/>
-        <updated>2026-10-14T18:08:35.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for the Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle
-I built ListingCraft AI, a local AI-powered product listing generator designed for small business owners, online sellers, and creators.
-Creating attractive product listings takes time. Sellers need clear titles, engaging descriptions, useful product features, and relevant search tags. ListingCraft AI helps simplify this process by turning basic product information into structured, ready-to-review listing content.
-Users can enter a product name, category, platform, product details, target audience, writing tone, and keywords. The application generates:
-Product titles
-Product descriptions
-Key features
-Search tags
-Users can copy individual sections or the complete listing. If the local AI is unavailable, t…]]></summary>
+        <title type="html"><![CDATA[Security Audit Report: Reentrancy & Access Control Review: Rocket Pool]]></title>
+        <id>https://dev.to/dannydoes_2abdf9c/security-audit-report-reentrancy-access-control-review-rocket-pool-3aa7</id>
+        <link href="https://dev.to/dannydoes_2abdf9c/security-audit-report-reentrancy-access-control-review-rocket-pool-3aa7"/>
+        <updated>2026-10-14T21:57:16.000Z</updated>
+        <summary type="html"><![CDATA[Security Audit Report: Reentrancy & Access Control Review: Rocket Pool
+
+
+Target Protocol: Rocket Pool (TVL: $1267.6M)
+Security Audit Report – Reentrancy & Access‑Control Review
+
+
+Protocol: Rocket Pool (Ethereum & L2) – TVL ≈ $1.27 B
+
+Date: 14 Oct 2026
+
+Prepared by: Senior DeFi Security Researcher – Confidential  
+Rocket Pool is a decentralized liquid‑staking protocol that allows users to pool ETH (or L2 equivalents) and receive rETH tokens representing a share of the staking rewards. The protocol’s core contracts manage large amounts of capital, perform cross‑chain message passing, and expose a rich set of user‑facing functions (deposit, withdraw, claim rewards, node‑operator registration, etc.).  
+Our audit focused on two high‑impact security domains:
+
+
+
+Domain
+Scope
+Primary Concern
+
+
+
+
+R…]]></summary>
         <author>
-            <name>Sartaj Alam</name>
+            <name>DannyDoes</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A Local-First Plan, Then 4 Days of Scope Creep]]></title>
-        <id>https://dev.to/ji_ai/a-local-first-plan-then-4-days-of-scope-creep-400o</id>
-        <link href="https://dev.to/ji_ai/a-local-first-plan-then-4-days-of-scope-creep-400o"/>
-        <updated>2026-10-14T18:08:23.000Z</updated>
-        <summary type="html"><![CDATA[The product plan my agent team wrote on September 21, 2026 had a rule in it: never tell users their data stays on their PC. By September 25 the same project had guestbooks, gifts and a cosmetics gacha with 266 items.
-This is post 2 of "Building Refmade". Refmade is an independent desktop app (not affiliated with Anthropic or OpenAI) that draws your Claude Code and Codex sessions as a pixel-art office. Post 1 covered the agent team I couldn't see and the dashboard that went empty whenever an agent skipped its status report. Claude Code and Codex agents wrote most of the code and documents here at my direction; I made the calls and reviewed the results.
-On September 21 I asked for a plan for a customer-facing version: other people install it locally, watch their agents on the web, and maybe …]]></summary>
+        <title type="html"><![CDATA[How to read any Shopify store's product catalog with products.json (no API key)]]></title>
+        <id>https://dev.to/siftwright_data/how-to-read-any-shopify-stores-product-catalog-with-productsjson-no-api-key-40nl</id>
+        <link href="https://dev.to/siftwright_data/how-to-read-any-shopify-stores-product-catalog-with-productsjson-no-api-key-40nl"/>
+        <updated>2026-10-14T21:56:34.000Z</updated>
+        <summary type="html"><![CDATA[Almost every Shopify store publishes its whole public catalog as JSON. There's no API key, no app and no scraping of HTML. Add /products.json to the store's domain:
+https://example-store.com/products.json
+
+That returns the store's products, with titles, descriptions, prices, variants, SKUs, stock flags and image URLs. It's handy for competitor price checks, catalog audits, building a comparison site, or simply exporting your own store to a spreadsheet.
+Here's how it works, how to page through big catalogs, and a few things to watch for.
+Each request returns {"products": [...]}. A trimmed product looks like this:
+{
+  "id": 7340901859408,
+  "title": "Women's Flip Flop - Dusty Pink",
+  "handle": "womens-flip-flop-dusty-pink",
+  "body_html": "<p>Sun on your feet. Comfort underneath...</p>",
+  …]]></summary>
         <author>
-            <name>jidonglab</name>
+            <name>Siftwright Data</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Escape Analysis: How Can a Compiler Eliminate a Heap Allocation Without Changing Your Code?]]></title>
-        <id>https://dev.to/aditya_d_sharma/escape-analysis-how-can-a-compiler-eliminate-a-heap-allocation-without-changing-your-code-1n7a</id>
-        <link href="https://dev.to/aditya_d_sharma/escape-analysis-how-can-a-compiler-eliminate-a-heap-allocation-without-changing-your-code-1n7a"/>
-        <updated>2026-10-14T18:08:23.000Z</updated>
-        <summary type="html"><![CDATA[Consider this Java method:
-double distanceBetween(double x1, double y1, double x2, double y2) {
-    Point a = new Point(x1, y1);
-    Point b = new Point(x2, y2);
-    return Math.sqrt(
-        Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2)
-    );
-}
+        <title type="html"><![CDATA[What I Learned Self-Hosting My Cloud for Two Years]]></title>
+        <id>https://dev.to/scsoi/what-i-learned-self-hosting-my-cloud-for-two-years-28n9</id>
+        <link href="https://dev.to/scsoi/what-i-learned-self-hosting-my-cloud-for-two-years-28n9"/>
+        <updated>2026-10-14T21:56:19.000Z</updated>
+        <summary type="html"><![CDATA[Two years of self-hosted cloud storage
 
-Two Point objects are created, used in a calculation, and then discarded. The source code calls new, which in Java means heap allocation, object initialization, and eventually garbage collection. But if you look at this from a different angle: both objects are born at the start of the method, used for arithmetic, and are completely useless after the return statement. Nothing outside the method ever sees them. No other thread can observe them. They exist solely to hold two doubles each.
-Does the runtime actually need to allocate heap memory for …]]></summary>
+
+I've been running my own Nextcloud + MinIO + ScsDriver stack since early 2024. Here's what I learned, what surprised me, and what I'd do differently.
+Hetzner AX41-NVMe: $30/month, plenty of CPU/RAM/disk
+Nextcloud 27+ on Docker: stable, well-documented, lots of plugins
+MinIO for raw object storage: S3-compatible, single binary
+ScsDriver on every client: $5.5 lifetime, drive-letter mount, local cache
+BorgBackup → Backblaze B2: weekly encrypted backups
+This ran for 24 months with maybe 3 hours of unplanned maintenance per quarter.
+Mounting Nextcloud + MinIO as drive letters changed how I work. I edit video from N:\Projects\ in Premiere, photos from N:\Photos\ in Lightroom. I don't think about whether files are local or remote anymore.
+The local cache l…]]></summary>
         <author>
-            <name>Aditya Sharma</name>
+            <name>疏影</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Test a login flow without writing Playwright]]></title>
-        <id>https://dev.to/keyral/test-a-login-flow-without-writing-playwright-12g9</id>
-        <link href="https://dev.to/keyral/test-a-login-flow-without-writing-playwright-12g9"/>
-        <updated>2026-10-14T18:08:07.000Z</updated>
-        <summary type="html"><![CDATA[Pathly watches the path. Ping if it's up. Flow if a user can walk it. Chain if the services behind it hold. Login is a Flow. A Ping on /login only proves the URL answered. This article is the steps a real Chrome run already understands, including the login template that ships in the product. You can try a journey without writing a script from try Flow.
-A Flow opens Chromium, follows a list of at most 50 steps, and stops. The default run cap is two minutes. A step timeout you do not set falls back to two seconds for a selector wait. Two clicks in a row wait two seconds between them unless you set clickDelayMs to something else, including 0. The viewport you do not set is desktop 1280 by 720. Locale defaults to fr-FR and the timezone to Europe/Paris. Set those when the page changes language …]]></summary>
+        <title type="html"><![CDATA[Green Checks Lie: Backend Error Tracking for Cron Jobs, Workers, and Silent Web APIs]]></title>
+        <id>https://dev.to/ulyssesdonovan1529/green-checks-lie-backend-error-tracking-for-cron-jobs-workers-and-silent-web-apis-a3h</id>
+        <link href="https://dev.to/ulyssesdonovan1529/green-checks-lie-backend-error-tracking-for-cron-jobs-workers-and-silent-web-apis-a3h"/>
+        <updated>2026-10-14T21:55:39.000Z</updated>
+        <summary type="html"><![CDATA[Short answer: use separate signals for an exception, a missed schedule, an unfinished run, and an invalid result. Exception capture is necessary for cron jobs, workers, and web APIs, but it cannot see work that never starts or output that is wrong while the process exits normally.
+That distinction is the starting point for an error-tracking design I can evaluate from a notebook through production. The simple approach is one try/except around each entry point. The more useful approach gives every run a lifecycle, checks the application contract, and sends searchable context without copying prompts or customer data into an incident system.
+Think in four questions: did execution start, did it finish, did code raise, and was the result acceptable? A scheduler heartbeat answers the first. A com…]]></summary>
         <author>
-            <name>Simon Raynaud</name>
+            <name>UlyssesDonovan1529</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[How TokenCap Traces Taint Flow from Sources to Sinks Using AST Traversal]]></title>
-        <id>https://dev.to/vansharora21/how-tokencap-traces-taint-flow-from-sources-to-sinks-using-ast-traversal-2nm3</id>
-        <link href="https://dev.to/vansharora21/how-tokencap-traces-taint-flow-from-sources-to-sinks-using-ast-traversal-2nm3"/>
-        <updated>2026-10-14T18:08:05.000Z</updated>
-        <summary type="html"><![CDATA[Generative AI is great at writing features, but notorious for re-introducing classic security vulnerabilities like SQL injection, Command Injection, and Path Traversal.
-In TokenCap, we implemented intra-procedural static taint flow analysis in src/security/taint/ to flag tainted data paths before code changes are committed.
-Sources: HTTP request properties (req.body, req.query, req.params, event.body).
-Propagation: Data flow tracking across variable assignments, template strings, and object destructuring within the function scope.
-Sinks: Unescaped database execution calls (db.raw, query()), shell executions (exec, spawn), and filesystem operations (fs.readFile).
-Sanitizers: Validating functions that cleanse taint (such as parameterized queries or validator schemas).
-tokencap analyze security
-
-CLI Output:
-Inspecting 62 route handlers for static taint flow...
-[WARNING] Potential SQL Injection Sink:
-  - Source: req.query.filter (src/api/users.js:34)
-  - Taint Path: filter -> rawFilterClause -> queryStr
-  - Sink: db.raw(queryStr) (src/api/users.js:48)
-  - Recommendation: Use parameterized binding (:filter) or validate through zod schema.
-
-This security finding is embedded into .tokencap/risk-map.md, alerting any coding agent working on src/api/users.js to avoid raw string concatenation.
-Read our security architecture at tokencap.vansharora.app]]></summary>
+        <title type="html"><![CDATA[Catching Terraform Drift Early: Scheduled Plans in GitHub Actions with AWS OIDC (No Long-Lived Keys)]]></title>
+        <id>https://dev.to/team_bytebridgetalentllc/catching-terraform-drift-early-scheduled-plans-in-github-actions-with-aws-oidc-no-long-lived-keys-1l1e</id>
+        <link href="https://dev.to/team_bytebridgetalentllc/catching-terraform-drift-early-scheduled-plans-in-github-actions-with-aws-oidc-no-long-lived-keys-1l1e"/>
+        <updated>2026-10-14T21:55:14.000Z</updated>
+        <summary type="html"><![CDATA[Terraform state describes what you think is deployed. Drift is the gap between that and reality: someone changes a security group in the console during an incident, an autoscaling event edits a tag, or a teammate runs apply from a stale branch. Drift is rarely dramatic on the day it happens. It hurts later, when an unrelated change produces a plan full of surprises and nobody is sure which side is right.
+The fix is cheap: run terraform plan on a schedule, read the exit code, and open an issue when something differs. This post builds that pipeline in GitHub Actions, authenticates to AWS with OIDC so there are no stored access keys, and fans out across multiple workspaces with a matrix.
+An IAM OIDC identity provider for GitHub and a read-only IAM role that only this repository's workflow can…]]></summary>
         <author>
-            <name>VANSH ARORA</name>
+            <name>ByteBridge Talent LLC Team</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Animating brain rot: a crew of brain cells that switch off one by one]]></title>
-        <id>https://dev.to/cynxio/animating-brain-rot-a-crew-of-brain-cells-that-switch-off-one-by-one-33ae</id>
-        <link href="https://dev.to/cynxio/animating-brain-rot-a-crew-of-brain-cells-that-switch-off-one-by-one-33ae"/>
-        <updated>2026-10-14T18:07:28.000Z</updated>
-        <summary type="html"><![CDATA[Animating brain rot: a crew of brain cells that switch off one by one
+        <title type="html"><![CDATA[The Difference Between Vibe Coding and Real Software Development]]></title>
+        <id>https://dev.to/saint-ij/the-difference-between-vibe-coding-and-real-software-development-f8d</id>
+        <link href="https://dev.to/saint-ij/the-difference-between-vibe-coding-and-real-software-development-f8d"/>
+        <updated>2026-10-14T21:55:04.000Z</updated>
+        <summary type="html"><![CDATA[I remember back in 2020 when I started learning how to code, chatgpt has not seen the light of the day yet.
+But Hold On!
 
+So why did I say Vibe coding sucks?
+1. Planning
 
-One More is a music video about doomscrolling. At 11:58 pm someone picks up their phone to do one thing. Inside their head a crew of brain cells is at work, and one of them, the cell that keeps the list, spends the song trying to remember what the thing was.
-  
-  
+2. Analysis
+3. Design
 
+4. Coding
+5. Testing
 
-The film was written and animated in TypeScript with Claude Opus 5.5 in Claude Code, with direction and many rounds of notes from Derwin Oesmanto at Cynxio. The song was generated with Suno from our lyrics. The pictures were generated with an AI image model as separate layers; the motion, light, timing and lettering are code. No video generator was used.
-The song was written before any picture: a lead who can lose something, and a verse that costs it someth…]]></summary>
+6. Deployment
+
+7. Maintenance
+
+Alright buddies, we've gone through a ride through what actual and real software development looks like and this is just a glimpse. you might ask me, how in the world is a single person suppose to do that. the answer is No, One person cannot do that. most softwares are build in teams , teams of different specialties. for instance for every SDLC we have a specialist in charge. for planning , we have the Project Manager, system analyst for second phase, UI/UX and software architect for the third phase, programmer, QA Engineer (Quality Assurance), De…]]></summary>
         <author>
-            <name>Cynxio</name>
+            <name>Ibrahim Aminu</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[We’re releasing Jev 1.14.0 along with experimental features for dreamers]]></title>
+        <id>https://typesafe.ai/blog/jev-1-14</id>
+        <link href="https://typesafe.ai/blog/jev-1-14"/>
+        <updated>2026-10-14T21:11:03.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sally Rooney can no longer sell books in UK due to Palestine Action support]]></title>
+        <id>https://www.theguardian.com/uk-news/2026/oct/14/sally-rooney-says-she-can-no-longer-sell-books-in-the-uk-because-of-palestine-action-support</id>
+        <link href="https://www.theguardian.com/uk-news/2026/oct/14/sally-rooney-says-she-can-no-longer-sell-books-in-the-uk-because-of-palestine-action-support"/>
+        <updated>2026-10-14T20:51:39.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[OpenCode 2.0]]></title>
+        <id>https://anoma.ly/notes/opencode-2-0/</id>
+        <link href="https://anoma.ly/notes/opencode-2-0/"/>
+        <updated>2026-10-14T20:48:24.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Anthropic's Scion is heavily inspired by Mononoke]]></title>
+        <id>https://sunshowers.io/posts/anthropic-mononoke/</id>
+        <link href="https://sunshowers.io/posts/anthropic-mononoke/"/>
+        <updated>2026-10-14T20:30:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Patrick Witt exits White House crypto role as Clarity Act stalls]]></title>
+        <id>d6dbfa6f-48d0-5f1c-94f8-fc4f68f91d32</id>
+        <link href="https://www.theblock.co/news/regulation/2026-10-14-white-house-crypto-adviser-patrick-witt-departs-418611"/>
+        <updated>2026-10-14T20:30:15.000Z</updated>
+        <summary type="html"><![CDATA[Leadership at the White House is shifting once again, as Patrick Witt’s tenure as the administration’s top crypto adviser comes to an end.]]></summary>
+        <author>
+            <name>Sarah Wynn</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Yandex outage: data shows that instead of going dark, malicious bots moved]]></title>
+        <id>https://blog.cloudflare.com/yandex-outage/</id>
+        <link href="https://blog.cloudflare.com/yandex-outage/"/>
+        <updated>2026-10-14T20:29:13.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fancy Curl Sites]]></title>
+        <id>https://nytpu.com/gemlog/2026-03-18</id>
+        <link href="https://nytpu.com/gemlog/2026-03-18"/>
+        <updated>2026-10-14T19:29:12.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Things to know when you get cancer – 2026 Edition]]></title>
+        <id>https://jjmaxwell4.com/writing/things-to-know-when-you-get-cancer/</id>
+        <link href="https://jjmaxwell4.com/writing/things-to-know-when-you-get-cancer/"/>
+        <updated>2026-10-14T19:26:30.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Suicide rates highest ever among middle-aged men]]></title>
+        <id>https://www.telegraph.co.uk/news/2026/10/13/suicide-rates-highest-ever-among-middle-aged-men/</id>
+        <link href="https://www.telegraph.co.uk/news/2026/10/13/suicide-rates-highest-ever-among-middle-aged-men/"/>
+        <updated>2026-10-14T19:03:58.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fire at Starlink site in Bulgaria after suspected sabotage in Poland]]></title>
+        <id>https://dpa-international.com/politics/urn:newsml:dpa.com:20090101:261014-930-839530/</id>
+        <link href="https://dpa-international.com/politics/urn:newsml:dpa.com:20090101:261014-930-839530/"/>
+        <updated>2026-10-14T18:37:21.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Banks are now trying to offload the AI data center debt they just underwrote]]></title>
+        <id>https://startupfortune.com/banks-are-now-trying-to-offload-the-ai-data-center-debt-they-just-underwrote/</id>
+        <link href="https://startupfortune.com/banks-are-now-trying-to-offload-the-ai-data-center-debt-they-just-underwrote/"/>
+        <updated>2026-10-14T18:32:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Major shareholder presses SkyAI on Solana sales after treasury shrinks 70% in a month]]></title>
+        <id>ed7ed84c-f8bc-5143-9d2b-756442b900c8</id>
+        <link href="https://www.theblock.co/news/business/2026-10-14-solana-treasury-skyai-bastion-sol-sales-tender-offer-418598"/>
+        <updated>2026-10-14T18:25:54.000Z</updated>
+        <summary type="html"><![CDATA[SkyAI's SOL treasury fell 70% in under a month, with 400,000 SOL unexplained. Bastion Trading won't tender at $3 a share and wants $3.50.]]></summary>
+        <author>
+            <name>Kyle Baird</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show HN: Petal, open-source CoScreen/ScreenHero finally free]]></title>
+        <id>https://petal.live/</id>
+        <link href="https://petal.live/"/>
+        <updated>2026-10-14T18:23:14.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Virtual Oxide Labs: Emulating a Full Oxide Rack]]></title>
+        <id>https://oxide.computer/blog/voxel-labs</id>
+        <link href="https://oxide.computer/blog/voxel-labs"/>
+        <updated>2026-10-14T18:21:14.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[America didn't lose its rare earth industry, it sold it]]></title>
+        <id>https://www.lawfaremedia.org/article/america-didn-t-lose-its-rare-earth-industry.-it-sold-it</id>
+        <link href="https://www.lawfaremedia.org/article/america-didn-t-lose-its-rare-earth-industry.-it-sold-it"/>
+        <updated>2026-10-14T17:50:26.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -251,7 +394,7 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Neckbeard – a DevOps/platform/SRE plugin for your agent]]></title>
+        <title type="html"><![CDATA[Neckbeard – A DevOps/platform/SRE plugin for your agent]]></title>
         <id>https://github.com/bealesh/neckbeard</id>
         <link href="https://github.com/bealesh/neckbeard"/>
         <updated>2026-10-14T17:45:34.000Z</updated>
@@ -261,20 +404,10 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AI agents aren't 'going rogue.' Frontier labs are skipping security basics]]></title>
+        <title type="html"><![CDATA[Containment and monitoring failures are to blame for AI hacking reports: experts]]></title>
         <id>https://www.csoonline.com/article/4234854/ai-agents-arent-going-rogue-frontier-labs-are-skipping-security-basics.html</id>
         <link href="https://www.csoonline.com/article/4234854/ai-agents-arent-going-rogue-frontier-labs-are-skipping-security-basics.html"/>
         <updated>2026-10-14T17:45:23.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[US report details extent of 'devastating' dating-app scams]]></title>
-        <id>https://www.theguardian.com/us-news/2026/oct/14/dating-app-scams-us-congress</id>
-        <link href="https://www.theguardian.com/us-news/2026/oct/14/dating-app-scams-us-congress"/>
-        <updated>2026-10-14T17:31:24.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -291,17 +424,7 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Linus Torvalds's first LLM-assisted patch series]]></title>
-        <id>https://lwn.net/Articles/1100449/</id>
-        <link href="https://lwn.net/Articles/1100449/"/>
-        <updated>2026-10-14T16:55:07.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Has AI Tells]]></title>
+        <title type="html"><![CDATA[Has AI tells]]></title>
         <id>https://theconsensus.dev/blog/2026/10/14/has-ai-tells.html?focus=1</id>
         <link href="https://theconsensus.dev/blog/2026/10/14/has-ai-tells.html?focus=1"/>
         <updated>2026-10-14T16:52:42.000Z</updated>
@@ -321,16 +444,6 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Tesla's Robotaxis Blow Through School Zones, NHTSA Petition Alleges]]></title>
-        <id>https://www.extremetech.com/cars/teslas-robotaxis-blow-through-school-zones-nhtsa-petition-alleges</id>
-        <link href="https://www.extremetech.com/cars/teslas-robotaxis-blow-through-school-zones-nhtsa-petition-alleges"/>
-        <updated>2026-10-14T16:45:19.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Kalshi CEO says state-led oversight of U.S. prediction markets would push them out]]></title>
         <id>48bc7e33-73fc-4ea8-9885-219313246e4e</id>
         <link href="https://www.coindesk.com/policy/2026/10/14/kalshi-ceo-says-state-led-oversight-of-u-s-prediction-markets-would-push-them-out"/>
@@ -338,16 +451,6 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         <summary type="html"><![CDATA[CEO Tarek Mansour said he feels "pretty good" about the pending outcome of the current legal fight over who has the right to regulate prediction markets.]]></summary>
         <author>
             <name>Jesse Hamilton</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why do LLM pelicans look like this?]]></title>
-        <id>https://arcfu.com/post/the-emperor-pelican-has-no-clothes/</id>
-        <link href="https://arcfu.com/post/the-emperor-pelican-has-no-clothes/"/>
-        <updated>2026-10-14T16:33:34.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -371,10 +474,10 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ICE Planning $100M 'Nightmare' Domestic Spy Program]]></title>
-        <id>https://prospect.org/2026/10/14/ice-planning-nightmare-domestic-spy-program-ero-one/</id>
-        <link href="https://prospect.org/2026/10/14/ice-planning-nightmare-domestic-spy-program-ero-one/"/>
-        <updated>2026-10-14T16:24:11.000Z</updated>
+        <title type="html"><![CDATA[Americans' social activity has steeply declined in the past 30 years]]></title>
+        <id>https://www.dataforprogress.org/blog/2026/9/29/americans-social-activity-has-steeply-declined-in-the-past-30-years</id>
+        <link href="https://www.dataforprogress.org/blog/2026/9/29/americans-social-activity-has-steeply-declined-in-the-past-30-years"/>
+        <updated>2026-10-14T16:09:00.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -411,10 +514,30 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[How to Stop an AI Agent from Inventing Nigerian Postcodes]]></title>
+        <id>6acfa07df5672c904a1a970e</id>
+        <link href="https://www.freecodecamp.org/news/how-to-stop-an-ai-agent-from-inventing-nigerian-postcodes/"/>
+        <updated>2026-10-14T15:32:13.000Z</updated>
+        <summary type="html"><![CDATA[On 1 October 2026, Nigeria's postcode changed from six digits to an 11-character code that identifies a single building, such as EK-01-A03-FK-01. Language models trained before that date still describ]]></summary>
+        <author>
+            <name>Kayode Adeniyi</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Submarine cable resilience]]></title>
         <id>https://blog.apnic.net/2026/10/14/submarine-cable-resilience/</id>
         <link href="https://blog.apnic.net/2026/10/14/submarine-cable-resilience/"/>
         <updated>2026-10-14T15:31:15.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Passkeys are not a trap]]></title>
+        <id>https://scotthelme.co.uk/passkeys-are-not-a-trap/</id>
+        <link href="https://scotthelme.co.uk/passkeys-are-not-a-trap/"/>
+        <updated>2026-10-14T15:15:45.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -431,16 +554,6 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Show HN: Graphicle, a Rust port of Graphify with memory for coding agents]]></title>
-        <id>https://github.com/graphicle-ai/graphicle</id>
-        <link href="https://github.com/graphicle-ai/graphicle"/>
-        <updated>2026-10-14T15:00:41.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[StarkWare launches OffMarket to let Polymarket users trade more privately]]></title>
         <id>6cddcb2f-e349-5284-9f7b-fcf238749580</id>
         <link href="https://www.theblock.co/news/ecosystems/2026-10-14-starkware-launches-offmarket-to-let-polymarket-users-trade-more-privately-418567"/>
@@ -451,16 +564,6 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Running Windows desktop tests from Linux with disposable VMs]]></title>
-        <id>https://www.qawolf.com/blog/how-we-solved-windows-desktop-automation</id>
-        <link href="https://www.qawolf.com/blog/how-we-solved-windows-desktop-automation"/>
-        <updated>2026-10-14T14:55:19.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[EasyA hits $1.1 billion valuation, targets 2027 public listing and tokenized shares]]></title>
         <id>cdddc9f1-006c-4292-9e7c-55613b1e5745</id>
         <link href="https://www.coindesk.com/business/2026/10/14/easya-hits-usd1-1-billion-valuation-targets-2027-public-listing-and-tokenized-shares"/>
@@ -468,26 +571,6 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         <summary type="html"><![CDATA[The blockchain and AI developer platform has completed two years of audits and wants its shares available onchain from the first day of trading.]]></summary>
         <author>
             <name>Olivier Acuna</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Strands Decider: Why Not an Encoder?]]></title>
-        <id>https://brooker.co.za/blog/2026/10/04/encoders.html</id>
-        <link href="https://brooker.co.za/blog/2026/10/04/encoders.html"/>
-        <updated>2026-10-14T14:40:03.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ASML's strong orders ease fears AI spending boom is running out of steam]]></title>
-        <id>https://www.reuters.com/business/asml-forecasts-q4-sales-above-expectations-ai-chip-demand-2026-10-14/</id>
-        <link href="https://www.reuters.com/business/asml-forecasts-q4-sales-above-expectations-ai-chip-demand-2026-10-14/"/>
-        <updated>2026-10-14T14:38:55.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -551,16 +634,6 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Scientists Are Teaching Birds to Sing Lost Songs]]></title>
-        <id>https://e360.yale.edu/digest/teaching-birds-lost-songs</id>
-        <link href="https://e360.yale.edu/digest/teaching-birds-lost-songs"/>
-        <updated>2026-10-14T13:20:44.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Kraken parent Payward to become first crypto firm to buy a EU bank as it expands into deposits, lending]]></title>
         <id>fbbd284a-47ea-41ec-b535-699e14a42a6a</id>
         <link href="https://www.coindesk.com/business/2026/10/14/kraken-parent-payward-to-become-first-crypto-firm-to-buy-a-eu-bank-as-it-expands-into-deposits-lending"/>
@@ -608,16 +681,6 @@ The post Samsung Showcases Its AI-Enabled Range Of Home Appliances During The Br
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. The US military’s race to make fake blood In February 2007, a US military helicopter carrying blood to a field hospital was shot down in Iraq, killing all seven crew members.…]]></summary>
         <author>
             <name>Thomas Macaulay</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Nvidia's first GPU: GeForce 256]]></title>
-        <id>https://dfarq.homeip.net/nvidias-first-gpu-geforce-256/</id>
-        <link href="https://dfarq.homeip.net/nvidias-first-gpu-geforce-256/"/>
-        <updated>2026-10-14T12:05:44.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -702,36 +765,6 @@ The post Govt Proposes Licensing Regime For E-Commerce Platforms Under New Bill 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[TV4 postpones show after AI agent erases edited material]]></title>
-        <id>https://swedenherald.com/article/tv4-postpones-the-challenge-until-2027-after-technical-failure-erases-edited-footage</id>
-        <link href="https://swedenherald.com/article/tv4-postpones-the-challenge-until-2027-after-technical-failure-erases-edited-footage"/>
-        <updated>2026-10-14T10:28:26.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Pulsar at ESUG 2026 (new Smalltalk IDE)]]></title>
-        <id>https://blog.lorenzano.eu/pulsar-at-esug-2026/</id>
-        <link href="https://blog.lorenzano.eu/pulsar-at-esug-2026/"/>
-        <updated>2026-10-14T10:26:53.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Show HN: A guided 3D Leonardo da Vinci museum, built in code]]></title>
-        <id>https://museumofages.org/w/vinci</id>
-        <link href="https://museumofages.org/w/vinci"/>
-        <updated>2026-10-14T10:00:24.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Anthropic Warns Of Self-Replicating AI Worms Targeting Smart Devices]]></title>
         <id>https://www.lowyat.net/?p=407342</id>
         <link href="https://www.lowyat.net/2026/407342/anthropic-ai-worms-smart-devices/"/>
@@ -747,7 +780,7 @@ The post Anthropic Warns Of Self-Replicating AI Worms Targeting Smart Devices ap
         <id>868b43d6-fec7-4d62-91e8-0aa8a02ceae4</id>
         <link href="https://www.coindesk.com/business/2026/10/14/live-updates-bitcoin-tumbles-from-near-usd84-000-ahead-of-u-s-inflation-data"/>
         <updated>2026-10-14T09:45:53.000Z</updated>
-        <summary type="html"><![CDATA[Bond yields and Fed rate hike expectations are jumping higher after the September CPI report was hotter than expected at both the headline and core levels.]]></summary>
+        <summary type="html"><![CDATA[An historic turnaround lower in interest rates suggests the possibility that the bond bear market may have run its course.]]></summary>
         <author>
             <name>Shaurya Malwa</name>
         </author>
@@ -788,7 +821,7 @@ The post SALAM Submarine Cable Project Expected To Begin In Q1 2027 appeared fir
         <id>0caa13ae-c76a-4fc5-9a14-2ddbf71d8d73</id>
         <link href="https://www.coindesk.com/policy/2026/10/14/proposed-french-tax-on-regulated-stablecoins-could-drive-crypto-traders-offshore"/>
         <updated>2026-10-14T08:48:11.000Z</updated>
-        <summary type="html"><![CDATA[Chainalysis CEO in France Francois Volpoet warned the proposed 31.4% tax on regulated stablecoins could push traders toward unmonitored offshore channels.]]></summary>
+        <summary type="html"><![CDATA[Chainalysis' regional sales director in France Francois Volpoet warned the proposed 31.4% tax on regulated stablecoins could push traders toward unmonitored offshore channels.]]></summary>
         <author>
             <name>Olivier Acuna</name>
         </author>
@@ -811,6 +844,16 @@ The post SALAM Submarine Cable Project Expected To Begin In Q1 2027 appeared fir
         <summary type="html"><![CDATA[The bank manages custody and settlement in-house via a closed-loop model, removing the need for separate crypto wallets.]]></summary>
         <author>
             <name>Francisco Rodrigues</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why is every rationalist blog post way too long?]]></title>
+        <id>https://alexwennerberg.com/blog/2026-10-13-long.html</id>
+        <link href="https://alexwennerberg.com/blog/2026-10-13-long.html"/>
+        <updated>2026-10-14T06:02:16.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -970,6 +1013,16 @@ The post Apple Home Collection Debuts With LG and Schneider Electric Collaborati
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Marshall Islands Stick Chart]]></title>
+        <id>https://en.wikipedia.org/wiki/Marshall_Islands_stick_chart</id>
+        <link href="https://en.wikipedia.org/wiki/Marshall_Islands_stick_chart"/>
+        <updated>2026-10-13T21:06:33.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Ripple, Stripe-owned Privy partner to bring embedded wallets to XRP Ledger]]></title>
         <id>3fe5b87f-65c8-56bd-a3e3-7746313ebf9a</id>
         <link href="https://www.theblock.co/news/business/2026-10-13-stripe-privy-ripple-xrp-ledger-wallets-418463"/>
@@ -1030,16 +1083,6 @@ The post Apple Home Collection Debuts With LG and Schneider Electric Collaborati
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Strive buys 3,311 bitcoin for $280 million in largest acquisition since January]]></title>
-        <id>200fd462-f5cb-5d34-b734-daa2e57d4774</id>
-        <link href="https://www.theblock.co/news/business/2026-10-13-strive-buys-3311-bitcoin-280-million-largest-acquisition-since-january-418430"/>
-        <updated>2026-10-13T13:42:25.000Z</updated>
-        <summary type="html"><![CDATA[Strive added 3,311 BTC between Oct. 5 and Oct. 9, bringing holdings to 32,773 BTC and narrowing the gap with MARA.]]></summary>
-        <author>
-            <name>James Hunt</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Download: open model trade-offs and geothermal power’s promise]]></title>
         <id>https://www.technologyreview.com/?p=1146382</id>
         <link href="https://www.technologyreview.com/2026/10/13/1146382/the-download-open-models-trade-offs-geothermal-power/"/>
@@ -1047,16 +1090,6 @@ The post Apple Home Collection Debuts With LG and Schneider Electric Collaborati
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Open models have real benefits. Do they outweigh the risks? Anthropic recently released a report arguing that a powerful new model released by the Chinese company Z.ai, poses a major cyberattack…]]></summary>
         <author>
             <name>Thomas Macaulay</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Binance to shut down mining pool, cloud mining and related services]]></title>
-        <id>462a7cc3-37dd-5058-9eb3-c0545f891b73</id>
-        <link href="https://www.theblock.co/news/business/2026-10-13-binance-to-shut-down-mining-pool-cloud-mining-and-related-services-418410"/>
-        <updated>2026-10-13T11:40:56.000Z</updated>
-        <summary type="html"><![CDATA[Binance said it will shut down its mining pool, cloud mining, and Pool Savings services on Nov. 10.]]></summary>
-        <author>
-            <name>Brian Danga</name>
         </author>
     </entry>
     <entry>
@@ -1090,36 +1123,6 @@ The post Apple Home Collection Debuts With LG and Schneider Electric Collaborati
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Origin Story of Kid Pix]]></title>
-        <id>http://red-green-blue.com/kid-pix-the-early-years</id>
-        <link href="http://red-green-blue.com/kid-pix-the-early-years"/>
-        <updated>2026-10-12T23:52:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Genealogy of Eliza]]></title>
-        <id>https://elizagen.org/genealogy.html</id>
-        <link href="https://elizagen.org/genealogy.html"/>
-        <updated>2026-10-12T20:29:25.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Gold-Bug: Edgar Allan Poe's story that taught me about cryptography (2024)]]></title>
-        <id>https://robotsinplainenglish.com/e/2024-01-21-gold-bug.html</id>
-        <link href="https://robotsinplainenglish.com/e/2024-01-21-gold-bug.html"/>
-        <updated>2026-10-12T12:44:42.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[The Download: moon city problems and drone traffic controllers]]></title>
         <id>https://www.technologyreview.com/?p=1146376</id>
         <link href="https://www.technologyreview.com/2026/10/12/1146376/the-download-moon-city-drone-air-traffic-controllers/"/>
@@ -1127,6 +1130,16 @@ The post Apple Home Collection Debuts With LG and Schneider Electric Collaborati
         <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Mars may be a hellhole, but the moon is not far behind The US and China are racing to build bases on the moon, with NASA hoping to establish a small…]]></summary>
         <author>
             <name>Thomas Macaulay</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Phloem: Git history grown like a slime mold]]></title>
+        <id>https://phloem.stemdeck.app/</id>
+        <link href="https://phloem.stemdeck.app/"/>
+        <updated>2026-10-12T10:52:25.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1164,16 +1177,6 @@ The post Apple Home Collection Debuts With LG and Schneider Electric Collaborati
         <id>https://mapwriting.substack.com/p/dentists</id>
         <link href="https://mapwriting.substack.com/p/dentists"/>
         <updated>2026-10-12T02:21:54.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Sound (2022)]]></title>
-        <id>https://ciechanow.ski/sound/</id>
-        <link href="https://ciechanow.ski/sound/"/>
-        <updated>2026-10-11T16:46:43.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -1287,16 +1290,6 @@ The post Apple Home Collection Debuts With LG and Schneider Electric Collaborati
         <summary type="html"><![CDATA[Quicknode led the daily Solana RPC latency comparison vs Alchemy on all 82 scored days, with lower latency in 91.4% of 11,136 head-to-head measurements.]]></summary>
         <author>
             <name>Quicknode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[What Claude Code Can and Can't Do with Full Access Inside a Docker Sandbox]]></title>
-        <id>6ac49165464372e77035c728</id>
-        <link href="https://www.freecodecamp.org/news/claude-code-in-a-docker-sandbox/"/>
-        <updated>2026-10-06T06:12:53.000Z</updated>
-        <summary type="html"><![CDATA[Claude Code can do more than suggest a fix. It can edit files, install dependencies, run tests, and start your application. But letting it finish a task on its own raises a practical question: how muc]]></summary>
-        <author>
-            <name>Chirag Agrawal</name>
         </author>
     </entry>
     <entry>
