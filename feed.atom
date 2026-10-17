@@ -1,281 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-10-17T07:27:51.034Z</id>
+    <id>urn:2026-10-17T11:56:48.346Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-10-17T07:27:51.034Z</updated>
+    <updated>2026-10-17T11:56:48.346Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-10-17T07:27:25.000Z</updated>
+        <updated>2026-10-17T11:56:05.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Your MCP Server Returns the Source. Does the Answer Still Cite It?]]></title>
-        <id>https://dev.to/ayanarshad02/your-mcp-server-returns-the-source-does-the-answer-still-cite-it-26n8</id>
-        <link href="https://dev.to/ayanarshad02/your-mcp-server-returns-the-source-does-the-answer-still-cite-it-26n8"/>
-        <updated>2026-10-17T07:26:58.000Z</updated>
-        <summary type="html"><![CDATA[A benchmark for what happens to citations after a retrieval server hands its results to an AI
+        <title type="html"><![CDATA[Keeping a browser timer accurate in background tabs (what I learned building ClockAura)]]></title>
+        <id>https://dev.to/om_vaghani_9f90828ac042e7/keeping-a-browser-timer-accurate-in-background-tabs-what-i-learned-building-clockaura-3461</id>
+        <link href="https://dev.to/om_vaghani_9f90828ac042e7/keeping-a-browser-timer-accurate-in-background-tabs-what-i-learned-building-clockaura-3461"/>
+        <updated>2026-10-17T11:45:49.000Z</updated>
+        <summary type="html"><![CDATA[I run ClockAura, a free site of online timers: countdowns, a Pomodoro timer, a stopwatch, interval timers for the gym. The first versions had the bug I suspect every browser timer has at some point: start a countdown, switch to another tab, and it rings late. Sometimes minutes late.
+The bug wasn't in one line of code. It came from an assumption: that the browser keeps running your code at the same pace when nobody is looking. It doesn't. This post covers what I changed and why. The code snippets are lightly trimmed from the real hook that runs every countdown on the site.
+My first countdown looked like most tutorials:
+// Don't do this
+const id = setInterval(() => {
+  setRemaining((r) => r - 1000);
+}, 1000);
 
+Two separate things are wrong here.
+First, setInterval(fn, 1000) doesn't promise a…]]></summary>
+        <author>
+            <name>Om Vaghani</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BirthStar: One Birthday, Four Traditions, One Star Chart]]></title>
+        <id>https://dev.to/robertgilbert75/birthstar-one-birthday-four-traditions-one-star-chart-4g2j</id>
+        <link href="https://dev.to/robertgilbert75/birthstar-one-birthday-four-traditions-one-star-chart-4g2j"/>
+        <updated>2026-10-17T11:45:04.000Z</updated>
+        <summary type="html"><![CDATA[This is a submission for the Hacktoberfest Open-Source AI Challenge: Week 2 — Side Hustle.
+BirthStar — a single-file web app that turns one birthday into a star chart and a detailed horoscope. Not one horoscope, though: four traditions at once.
+Enter a birthday and BirthStar computes, entirely in your browser:
+Your Western sun sign, its element, and its ruling planet
+Your Chinese zodiac animal, element, and yin/yang from the birth year
+The moon phase on the day you were born, with how lit it was
+Your life path number from the digits of the date
+It draws those onto a zodiac wheel, then hands the chart to an open-weight model, which writes an original reading that weaves the four sources together — including a "cross-currents" section where the traditions agree with each other, and where the…]]></summary>
+        <author>
+            <name>Robert Gilbert</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A 180-page reference site for the price of a domain (Astro + Cloudflare Workers)]]></title>
+        <id>https://dev.to/anders_lee_28dbcc2fd8e034/a-180-page-reference-site-for-the-price-of-a-domain-astro-cloudflare-workers-2fi5</id>
+        <link href="https://dev.to/anders_lee_28dbcc2fd8e034/a-180-page-reference-site-for-the-price-of-a-domain-astro-cloudflare-workers-2fi5"/>
+        <updated>2026-10-17T11:44:30.000Z</updated>
+        <summary type="html"><![CDATA[I built steelweight-calculator.com, a reference site for
+The site is Astro in fully static mode. A handful of Python scripts turn the
+src/data/, and each
+getStaticPaths():
+// src/pages/beams/[slug].astro
+export function getStaticPaths() {
+  return publishedOfKind("beam").map((section) => ({ params: { slug: section.slug }, props: { section } }));
+}
 
-
-Part 1 of 6 in the series Citations at the MCP Boundary. This is where the series starts. The parts after this one go deeper into each finding; the full list is at the end of this post.
-Here's a situation that's becoming normal very quickly.
-A company turns its documentation into a search tool. It exposes that tool over MCP (the Model Context Protocol), so any agent can use it: Claude, ChatGPT, a coding assistant in someone's IDE, an agent a customer built with LangGraph or the OpenAI Agents SDK. The tool does its job well. For every query it returns the most relevant chunks of documentation, and each chunk comes with its source URL:
+The page then renders everything from that one row: weight in kg/m and lb/ft, a table of standard
+The calculators are small TypeScript modules that Astro bundles into the page, sharing the same
+build.inlineStylesheets: "always", so there is no render-blocking CSS
+Cloudflare Workers can serve a directory of static files without any script:
+// wrangler.jsonc
 {
-  "source_url": "https://fastapi.tiangolo.com/tutorial/body…]]></summary>
+  "name": "steelweight-calculator",
+  "compatibility_date": "2026-09-01",
+  "assets": { …]]></summary>
         <author>
-            <name>Md Ayan Arshad</name>
+            <name>anders lee</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[We Searched eBay for 237 Recalled Products. Only 45 of 12,562 Listings Named the Model.]]></title>
-        <id>https://dev.to/dronzer2code/we-searched-ebay-for-237-recalled-products-only-45-of-12562-listings-named-the-model-2efi</id>
-        <link href="https://dev.to/dronzer2code/we-searched-ebay-for-237-recalled-products-only-45-of-12562-listings-named-the-model-2efi"/>
-        <updated>2026-10-17T07:26:20.000Z</updated>
+        <title type="html"><![CDATA[Shipping my Chrome extension on merge, with no stored secrets]]></title>
+        <id>https://dev.to/amsyeung/shipping-my-chrome-extension-on-merge-with-no-stored-secrets-24o3</id>
+        <link href="https://dev.to/amsyeung/shipping-my-chrome-extension-on-merge-with-no-stored-secrets-24o3"/>
+        <updated>2026-10-17T11:43:51.000Z</updated>
+        <summary type="html"><![CDATA[I maintain a small Chrome extension that translates text with Chrome's built-in AI. It doesn't have many users, but I update it now and then, and every update meant the same routine: bump the version, write the changelog, build, zip, sign in to the store dashboard, upload and submit. None of it was hard. It was just easy to get wrong, like the time I forgot the version number and the store refused the upload.
+Most guides for automating this put a long-lived credential in your CI secrets, either a service account key or an OAuth refresh token. That works, but it means a key that never expires sits next to your code. If it leaks, anyone can publish as you.
+I wanted the automation without a key to lose.
+
+1. Let the commits decide the version. I write commit messages in the Conventional Commit…]]></summary>
+        <author>
+            <name>Andy Yeung</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Why Is Keeping Time Correctly So Difficult for Distributed Systems?]]></title>
+        <id>https://dev.to/tanu_priya/why-is-keeping-time-correctly-so-difficult-for-distributed-systems-lcl</id>
+        <link href="https://dev.to/tanu_priya/why-is-keeping-time-correctly-so-difficult-for-distributed-systems-lcl"/>
+        <updated>2026-10-17T11:42:41.000Z</updated>
+        <summary type="html"><![CDATA[Imagine a payment succeeds, but your system records a related database event before the payment itself. The payment service logs the transaction at 10:00:00.120, while the database records the event at 10:00:00.095.
+When you inspect the logs, it looks as though the database event happened first. But what if the application logic is correct and the real problem is that the two servers disagree about the current time?
+This is one of the more frustrating problems in distributed systems. Timestamps look like reliable facts, yet they can tell a misleading story when events happen across multiple machines.
+Developers use timestamps to track transactions, process messages, expire sessions, and resolve database conflicts. Understanding where these timestamps fail is essential when building systems…]]></summary>
+        <author>
+            <name>Tanu Priya</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Five gaps between the AI Act high-risk criteria and our MDR QMS]]></title>
+        <id>https://dev.to/priya_nair_ree/five-gaps-between-the-ai-act-high-risk-criteria-and-our-mdr-qms-185</id>
+        <link href="https://dev.to/priya_nair_ree/five-gaps-between-the-ai-act-high-risk-criteria-and-our-mdr-qms-185"/>
+        <updated>2026-10-17T11:42:23.000Z</updated>
+        <summary type="html"><![CDATA[A SaMD manufacturer pinged me last week asking whether the AI Act's high-risk classification overlapped with their existing MDR Class IIa SaMD. The short answer is yes. The longer answer is that the overlap is messier than the Commission guidance suggests, and the gaps between the two frameworks are showing up in our QMS workflows in ways I did not anticipate.
+I have spent the last few weeks walking through Article 6 of the AI Act (the high-risk classification rules), Article 17 (the QMS requirement for providers of high-risk AI systems), and the relevant Annexes against our existing MDR Technical File structure. Here is what is landing for me in practice.
+The AI Act's recitals and the joint Commission guidance are clear: where a medical device is also a high-risk AI system under Annex I, …]]></summary>
+        <author>
+            <name>Priya Nair</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Dangerous package 'imgdecode' downloaded 979 times from npm library]]></title>
+        <id>https://dev.to/hacksgr/dangerous-package-imgdecode-downloaded-979-times-from-npm-library-2foa</id>
+        <link href="https://dev.to/hacksgr/dangerous-package-imgdecode-downloaded-979-times-from-npm-library-2foa"/>
+        <updated>2026-10-17T11:42:23.000Z</updated>
+        <summary type="html"><![CDATA[SafeDep reports that a malicious npm package named imgdecode, downloaded 979 times, conceals a loader within a compiled Node.js addon that executes a Windows dynamic-link library.
+Linked to the long-running MALFEX supply chain campaign, the package exemplifies ongoing risks in package registry security.
+According to researchers, “imgdecode” hides malicious code in a translated add-on that loads Windows system files. This action is part of a long-running software chain attack called MALFEX, which has been recorded by security companies and has been targeting Windows computers since August 6, 2023.
+As part of this campaign, the perpetrators have used various usernames to upload packages, such as “malfexkkj,” “malfex_user,” “malfexteste2,” “malfexteste3,” and “malfexteste4.” Some of the packa…]]></summary>
+        <author>
+            <name>Hacks.gr</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I gave NPCs a graph database. Now the whole village knows I stole an apple.]]></title>
+        <id>https://dev.to/yash_gurav_31d3dc3cc193d1/i-gave-npcs-a-graph-database-now-the-whole-village-knows-i-stole-an-apple-18p0</id>
+        <link href="https://dev.to/yash_gurav_31d3dc3cc193d1/i-gave-npcs-a-graph-database-now-the-whole-village-knows-i-stole-an-apple-18p0"/>
+        <updated>2026-10-17T11:41:38.000Z</updated>
+        <summary type="html"><![CDATA[description: Hearsay is a memory-and-gossip engine for game characters built on FalkorDB. Villagers remember what they see, spread rumours along trust, exaggerate them, and can explain exactly who told whom.
+I stole an apple in a video game. Only the merchant saw it.
+By evening, the innkeeper had heard I robbed his stall. By night, the town guard had heard I robbed the market. Next morning, the guard, who never saw a thing, blocked the town gate.
+So I asked her why. She told me: "I heard it from Bertha; Bertha heard it from Old Tomas; Old Tomas saw it first-hand."
+That's Hearsay, the project I built for Graph Hacks: Context for AI Agents (WeMakeDevs × FalkorDB). It's a small 3D game, but the real thing is the engine underneath: game characters whose memories, beliefs and relationships live…]]></summary>
+        <author>
+            <name>Yash Gurav</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[What to answer when the questionnaire asks 'is MFA enforced for all users?']]></title>
+        <id>https://dev.to/securityanswerkit1/what-to-answer-when-the-questionnaire-asks-is-mfa-enforced-for-all-users-1fg8</id>
+        <link href="https://dev.to/securityanswerkit1/what-to-answer-when-the-questionnaire-asks-is-mfa-enforced-for-all-users-1fg8"/>
+        <updated>2026-10-17T11:41:07.000Z</updated>
+        <summary type="html"><![CDATA[MFA questions appear in almost every vendor questionnaire, in many wordings. The same few controls sit behind all of them. If you know the controls, you can answer every variant the same way.
+Is multi-factor authentication enforced for all users?
+Is MFA required for remote and administrative access?
+Is MFA enforced on your email system?
+Is MFA enforced on your source code repositories?
+They want to know that a stolen password is not enough to reach their data. They do not expect a small vendor to run a hardware token programme. They expect you to name the systems and be accurate.
+Name the systems: email, code hosting, cloud consoles and admin panels. Say that authenticator apps or security keys are used where the service supports them. One sentence is enough.
+Do not answer yes. Say which s…]]></summary>
+        <author>
+            <name>security answer kit</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CVE-2026-87799 Versus CVE-2026-85185: Symlink Replay and Unvalidated Subvolume Paths Compared]]></title>
+        <id>https://dev.to/bianliang/cve-2026-87799-versus-cve-2026-85185-symlink-replay-and-unvalidated-subvolume-paths-compared-3lgm</id>
+        <link href="https://dev.to/bianliang/cve-2026-87799-versus-cve-2026-85185-symlink-replay-and-unvalidated-subvolume-paths-compared-3lgm"/>
+        <updated>2026-10-17T11:40:41.000Z</updated>
+        <summary type="html"><![CDATA[CVE-2026-87799 Versus CVE-2026-85185: Symlink Replay and Unvalidated Subvolume Paths Compared
+
+
+
+  
+  
+  Two ways to escape the same volume
+
+
+CVE-2026-87799 and CVE-2026-85185 both let LXD act outside the storage volume it was asked to write to. They differ in mechanism, in the code that fails, and in which hosts they reach.
+This is CWE-59, rated 9.9. LXD receives an instance or custom volume through migration and delegates the replay to rsync or to btrfs receive. Both tools use path-based system calls and neither refuses to traverse a symlink planted earlier in the same stream. Later entries travel through the link and are written as root outside the destination volume.
+This is CWE-22, rated 9.6. The btrfs storage driver reads a subvolume path field from attacker-supplied backup or migrat…]]></summary>
+        <author>
+            <name>yutianle</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle]]></title>
+        <id>https://dev.to/sabeenaviklar/hacktoberfest-open-source-ai-challenge-week-2-side-hustle-772</id>
+        <link href="https://dev.to/sabeenaviklar/hacktoberfest-open-source-ai-challenge-week-2-side-hustle-772"/>
+        <updated>2026-10-17T11:39:48.000Z</updated>
         <summary type="html"><![CDATA[This is a submission for the Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle
-Built by @dronzer2code and @soumyadeepdey.
-Picture a Thursday afternoon at a kids' consignment shop (a composite, not a real store). A parent drops a bag at the intake desk: a toy fire truck, a wooden learning tower, a sleep machine, some toddler pyjamas. The staffer has about two minutes per item. That morning the U.S. Consumer Product Safety Commission posted its weekly batch of a dozen or so recalls. Nobody at the desk has read them.
-Here's the part of one notice that matters, from September 17, for the Melissa & Doug Lights and Sound Fire Truck (about 84,000 sold at Target):
-Affected units will have one arrow pointing to the number 25 and the second arrow pointing to the number 4 or 5 or they will h…]]></summary>
+
+Maintainers usually find out a dependency is dead when something breaks. DepExit finds the risky ones up front, asks Gemma 4 for a replacement plan for each, and then refuses to trust the plan until it has applied it to an isolated copy, reinstalled everything and run the tests. Each dependency gets a Dependency Exit Capsule: a JSON record, a readable Markdown page and a patch. Every fact in it is tagged OBSERVED, MEASURED, AI-SUGGESTED or AI · VERIFIED, so you can see which claims came from files, which came from running code, and which are only the model's suggestion.
+Who would pay: freelancers and small agencies who take on neglected Python codebases, and small teams who inherited one. Today that au…]]></summary>
         <author>
-            <name>Subarna Maity</name>
+            <name>Sabeena Viklar</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[DabbaETA: a 'will this tiffin be late?' predictor that never sends a customer's address to the cloud]]></title>
-        <id>https://dev.to/harsh_vardhanpandey_08fc/dabbaeta-a-will-this-tiffin-be-late-predictor-that-never-sends-a-customers-address-to-the-cloud-50n4</id>
-        <link href="https://dev.to/harsh_vardhanpandey_08fc/dabbaeta-a-will-this-tiffin-be-late-predictor-that-never-sends-a-customers-address-to-the-cloud-50n4"/>
-        <updated>2026-10-17T07:25:54.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for the HF26 Challenge: Side Hustle
-If you run a small tiffin service in India, you know this day. It started raining at 12. One rider is new. Eight orders went out together. By 1 PM, customers are calling: "Bhaiya, khana kab aayega?"
-The owner has months of delivery history in a notebook or a spreadsheet. Nobody has ever used it to see this coming. Swiggy has an ML team for that. A 40-order kitchen doesn't, and that owner isn't going to upload customer names, phone numbers and home addresses to a random SaaS to fix it.
-So I built the version that runs on the laptop they already have.
-DabbaETA is a local-first dispatch assistant for small delivery businesses: tiffin services, bakeries, local couriers.
-Upload past deliveries as a CSV (schema is validated and stored in a…]]></summary>
+        <title type="html"><![CDATA[WhatsApp Is Where Business Happens — I Automated It with 4 n8n Workflows]]></title>
+        <id>https://dev.to/mohsinakram91/whatsapp-is-where-business-happens-i-automated-it-with-4-n8n-workflows-4cc1</id>
+        <link href="https://dev.to/mohsinakram91/whatsapp-is-where-business-happens-i-automated-it-with-4-n8n-workflows-4cc1"/>
+        <updated>2026-10-17T11:37:48.000Z</updated>
+        <summary type="html"><![CDATA[Every small business runs on WhatsApp. Orders, questions, follow-ups — it all happens there.
+But answering the same questions 50 times a day? That's not a business, that's a treadmill.
+So I built WhatsAppKit — 4 production-ready n8n workflows that turn WhatsApp into your hardest-working employee.
+Customer messages on WhatsApp — sees your menu — places an order by name or number — gets confirmation. Everything logged to Google Sheets, you get an instant alert. No app to install, no website needed.
+Every inquiry gets scored 1-10 by AI (Ollama locally, or OpenAI). Hot leads (7+) ping you immediately with the details. Cold ones get logged quietly. You stop chasing, start closing.
+Answers from YOUR knowledge base — in English and Roman Urdu. It can't hallucinate because it can only answer from what you taught it. Unmatched questions get forwarded to you.
+Send personalized WhatsApp messages to customers who said yes. Template-based (Meta-compliant), logged, respectful. No spam — consent is checked before every send.
+WhatsApp Cloud API (free tier: 1,000 conversations/month) via a free Meta developer app
+n8n self-hosted (free)
+Ollama for local AI (free) or OpenAI
+Google Sheets as the database
+Every workflow has a CONFIG node (all keys in one place) and a setup sticky in Roman Urdu + English.
+You need your own Meta app + WhatsApp Cloud API — setup steps included, free tier is generous
+n8n needs a public HTTPS URL for Meta webhooks (localhost won't work)
+Dashboard tokens expire in 24h — the guide shows how to get a permanent System User token
+WhatsAppKit — $49 one-time, commercial license included:
+https://mohsina91.gumroad.com/l/ttxqw
+Launch code WHATSAPP10 takes $10 off.
+This is the companion to my AgentKit (5 Telegram AI agents) — same local-first philosophy, different battlefield.
+
+
+  
+  
+  What would you automate on WhatsApp first?]]></summary>
         <author>
-            <name>Harsh Vardhan Pandey</name>
+            <name>Muhammad Mohsin</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ICS-Sniper: Estimating Critical Time Windows in Encrypted SCADA Traffic for Targeted Packet Dropping]]></title>
-        <id>https://dev.to/anoymask/ics-sniper-estimating-critical-time-windows-in-encrypted-scada-traffic-for-targeted-packet-dropping-4f0m</id>
-        <link href="https://dev.to/anoymask/ics-sniper-estimating-critical-time-windows-in-encrypted-scada-traffic-for-targeted-packet-dropping-4f0m"/>
-        <updated>2026-10-17T07:25:36.000Z</updated>
-        <summary type="html"><![CDATA[1. Basic Information
-
-
-
-
-Article Name: ICS-Sniper: A Targeted Blackhole Attack on Encrypted ICS Traffic
-Source: University of British Columbia researchers
-Published Date: 2023-12-11
-Updated Date: 2026-10-06
-Original: University of British Columbia researchers
-
-
-Related Sources: UBC Dependable Systems Lab: ICS-Sniper, SecurityWeek: ICS-Sniper attack roundup
-
-
-Related Malware: None
-Related Threat Groups: None
-Related CVEs: None
-Related Products: OpenVPN, S-SWaT, H-SWaT, SCADA/ICS networks
-Severity: High
-This is academic research evaluating the impact on control system availability within a research testbed environment. Active exploitation in real-world environments has not been confirmed. Across the five evaluated scenarios, process performance degraded before alerts were raised by both netw…]]></summary>
+        <title type="html"><![CDATA[Modder Solves Melting RTX 5090 12VHPWR Connector By Replacing It With Four 8-Pin Ports]]></title>
+        <id>https://www.lowyat.net/?p=407691</id>
+        <link href="https://www.lowyat.net/2026/407691/modder-solves-melting-rtx-5090-melting-12vhpwr-connector-by-replacing-it-with-four-8-pin-ports/"/>
+        <updated>2026-10-17T10:43:13.000Z</updated>
+        <summary type="html"><![CDATA[Modder and Redditor DallasGrave recently posted their modding efforts on Reddit, where they replaced the 16-pin 12VHPWR power connector on their Gigabyte RTX 5090 with four 8-pin PCIe Power ports. Well, we say replace, but it’s more a modification that mounts those 8-pins directly onto a custom PCB, while “Some of you may have seen […]
+The post Modder Solves Melting RTX 5090 12VHPWR Connector By Replacing It With Four 8-Pin Ports appeared first on Lowyat.NET.]]></summary>
         <author>
-            <name>Anoymask</name>
+            <name>John Law</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[BlockStrap / CVE-2026-103849: Unauthenticated RCE via Two-Stage Directive Processing in Magento and Adobe Commerce]]></title>
-        <id>https://dev.to/anoymask/blockstrap-cve-2026-103849-unauthenticated-rce-via-two-stage-directive-processing-in-magento-and-3og2</id>
-        <link href="https://dev.to/anoymask/blockstrap-cve-2026-103849-unauthenticated-rce-via-two-stage-directive-processing-in-magento-and-3og2"/>
-        <updated>2026-10-17T07:25:32.000Z</updated>
-        <summary type="html"><![CDATA[1. Basic Information
-
-
-
-
-Article Name: BlockStrap: Magento and Adobe Commerce RCE (CVE-2026-103849)
-Published By: Sansec
-Publication Date: 2026-10-15
-Updated Date: None
-Original Source: Sansec
-
-
-Related Sources: Adobe Security Bulletin APSB26-153, BleepingComputer: Critical BlockStrap flaw lets hackers run code on Magento servers, Adobe Official KB: APSB26-153 Isolated Patch Application Conditions
-
-
-Related Malware: None
-Related Threat Groups: None
-Related CVE: CVE-2026-103849
-Related Products: Adobe Commerce 2.4.4 through 2.4.9 branches (2026-sep releases and earlier), Adobe Commerce B2B 1.3.3 / 1.3.4 / 1.4.2 / 1.5.2 / 1.5.3 (2026-sep releases and earlier), Magento Open Source 2.4.9 and earlier (refer to APSB26-153 for branch-specific affected releases), Mage-OS 3.5.0 and earlier
-Severity…]]></summary>
+        <title type="html"><![CDATA[DeepSeek: DeepSeek v4.1 Flash 1017]]></title>
+        <id>https://openrouter.ai/deepseek/deepseek-v4.1-flash-1017</id>
+        <link href="https://openrouter.ai/deepseek/deepseek-v4.1-flash-1017"/>
+        <updated>2026-10-17T08:37:46.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Anoymask</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Langflow CVE-2026-105740: RCE via Authenticated MCP Stdio, 2,023 Exploitation Attempts Observed]]></title>
-        <id>https://dev.to/anoymask/langflow-cve-2026-105740-rce-via-authenticated-mcp-stdio-2023-exploitation-attempts-observed-759</id>
-        <link href="https://dev.to/anoymask/langflow-cve-2026-105740-rce-via-authenticated-mcp-stdio-2023-exploitation-attempts-observed-759"/>
-        <updated>2026-10-17T07:25:28.000Z</updated>
-        <summary type="html"><![CDATA[1. Basic Information
-
-
-
-
-Article Name: CVE-2026-105740 Exploitation Observed — langflow
-Source: Previdian
-Published Date: 2026-10-05
-Updated Date: 2026-10-17
-Original: Previdian
-
-
-Related Sources: Langflow Security Advisory GHSA-7w94-79vh-5mr2, SecurityWeek roundup: Langflow exploitation, CVE CNA record: CVE-2026-105740
-
-
-Related Malware: None
-Related Threat Groups: None
-Related CVE: CVE-2026-105740
-Related Products: Langflow before 1.9.0, MCP Stdio transport
-Severity: Critical
-This is a severe vulnerability with a CVSS score of 9.9, allowing low-privileged accounts to achieve code execution on the server. Although observed by a single sensor, continuous exploitation attempts have been recorded from 28 source IPs across 16 countries, including Japan.
-In Langflow before 1.9.0, authenticated…]]></summary>
+        <title type="html"><![CDATA[DeepSeek-v4.1-Flash-1017]]></title>
+        <id>https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017</id>
+        <link href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017"/>
+        <updated>2026-10-17T08:21:25.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Anoymask</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[BeyondTrust CVE-2026-102764: ARMORY CASTLE Exploits Zero-Day to Deploy SAWFLY and BARECLAW]]></title>
-        <id>https://dev.to/anoymask/beyondtrust-cve-2026-102764-armory-castle-exploits-zero-day-to-deploy-sawfly-and-bareclaw-1hhp</id>
-        <link href="https://dev.to/anoymask/beyondtrust-cve-2026-102764-armory-castle-exploits-zero-day-to-deploy-sawfly-and-bareclaw-1hhp"/>
-        <updated>2026-10-17T07:25:23.000Z</updated>
-        <summary type="html"><![CDATA[1. Overview
-
-
-
-
-Report Title: ARMORY CASTLE Exploits BeyondTrust
-Source: Google Threat Intelligence Group
-Publication Date: 2026-10-15
-Updated Date: None
-Original Source: Google Threat Intelligence Group
-
-
-Related Sources: BeyondTrust Security Advisory BT26-05, BeyondTrust: BT26-05 FAQ and timeline, BleepingComputer: BeyondTrust patches zero-day exploited in attacks since August
-
-
-Associated Malware: SAWFLY, BARECLAW
-Associated Threat Groups: ARMORY CASTLE, UNC5221
-Associated CVE: CVE-2026-102764
-Affected Products: BeyondTrust Remote Support versions 26.2.3 and earlier
-Severity: Critical
-A pre-authentication file operation vulnerability was exploited in active attacks. Observed activity includes web shell deployment, subsequent privilege escalation, establishment of an inbound WebSocket tu…]]></summary>
+        <title type="html"><![CDATA[Show HN: I got tired of btop not seeing my Mac's chip, so I built siltop]]></title>
+        <id>https://github.com/CLoaKY233/siltop</id>
+        <link href="https://github.com/CLoaKY233/siltop"/>
+        <updated>2026-10-17T07:01:07.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
         <author>
-            <name>Anoymask</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[AI-Assisted OT Lab: Equipment Control in Just Over 16 Minutes from a Breached Perimeter; Robotic Arm Moved in a Separate Test]]></title>
-        <id>https://dev.to/anoymask/ai-assisted-ot-lab-equipment-control-in-just-over-16-minutes-from-a-breached-perimeter-robotic-i1d</id>
-        <link href="https://dev.to/anoymask/ai-assisted-ot-lab-equipment-control-in-just-over-16-minutes-from-a-breached-perimeter-robotic-i1d"/>
-        <updated>2026-10-17T07:25:20.000Z</updated>
-        <summary type="html"><![CDATA[1. Basic Information
-
-
-
-
-Article Title: AI Takes Control of Robotic Arm in 16 Minutes Flat
-Source: Dark Reading
-Publication Date: 2026-10-16
-Updated Date: None
-Original Article: Dark Reading
-
-
-Related Information Sources: Booz Allen: Frontier AI Reaches OT Systems
-
-
-Related Malware: None
-Related Threat Groups: None
-Related CVEs: None
-Related Products: Frontier AI agents, SCADA, industrial robotic arm, OT controllers
-Severity: High
-This is not a real-world exploitation report, but rather the evaluation results of eight scenarios conducted in an isolated lab environment. Human approval was involved in all exploit executions and operations with physical impacts. All test objectives were achieved under the assumption that known unpatched vulnerabilities and existing connections were already pr…]]></summary>
-        <author>
-            <name>Anoymask</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ReplyDesk: a 4B model that answers Google reviews and stops promising refunds it can't give]]></title>
-        <id>https://dev.to/anishisbusy/replydesk-a-4b-model-that-answers-google-reviews-and-stops-promising-refunds-it-cant-give-5e7j</id>
-        <link href="https://dev.to/anishisbusy/replydesk-a-4b-model-that-answers-google-reviews-and-stops-promising-refunds-it-cant-give-5e7j"/>
-        <updated>2026-10-17T07:25:08.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for the Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle
-ReplyDesk writes replies to Google reviews for small shops: garages, salons, dentists, cafes, plumbers, small stores.
-Every shop owner I know has the same pile of unanswered reviews. Replying matters, because people read the replies before they pick a shop. But a good reply takes ten minutes, and the ones a chat assistant writes all sound the same: "Thank you for taking the time to share your valuable feedback, we strive to..." Customers can tell.
-So ReplyDesk does one thing. You get an inbox of reviews. Click one and you get:
-a draft reply in an owner's voice, from a small open model I fine-tuned
-a check that flags any promise in the draft your shop facts don't back ("we'll refund you", "we'll call you…]]></summary>
-        <author>
-            <name>Anish Kumar</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Your Agent Forgot Again: A Cross-Session Memory Restart Checklist]]></title>
-        <id>https://dev.to/plur9/your-agent-forgot-again-a-cross-session-memory-restart-checklist-3380</id>
-        <link href="https://dev.to/plur9/your-agent-forgot-again-a-cross-session-memory-restart-checklist-3380"/>
-        <updated>2026-10-17T07:24:58.000Z</updated>
-        <summary type="html"><![CDATA[If your agent forgets a project decision after a restart, test four things separately: was the decision saved, did the next session open the intended memory store, was the decision retrieved, and did the agent use it? Treat these as separate checks rather than taking a successful installation as proof of working memory.
-This guide proposes a small acceptance test you can adapt to your own setup. It does not rank memory products or promise a retrieval success rate.
-Use a synthetic project convention, not a password or customer record. For example:
-In the demo-orchard project, put generated reports in the orchard-output directory.
-Make the fact distinctive enough to recognize later. Record the intended project scope and the exact statement in your test notes. Do not use a convention the agen…]]></summary>
-        <author>
-            <name>gregor</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ListingLab: Turn Product Details into Marketplace-Ready Listings with Open-Weight AI]]></title>
-        <id>https://dev.to/tanmay_patil_25/listinglab-turn-product-details-into-marketplace-ready-listings-with-open-weight-ai-35n2</id>
-        <link href="https://dev.to/tanmay_patil_25/listinglab-turn-product-details-into-marketplace-ready-listings-with-open-weight-ai-35n2"/>
-        <updated>2026-10-17T07:23:55.000Z</updated>
-        <summary type="html"><![CDATA[This is a submission for the Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle.
-ListingLab is an AI-powered product listing generator designed for independent sellers, small businesses, and people running side hustles.
-Writing product descriptions for multiple marketplaces can be repetitive. Sellers need clear titles, useful selling points, detailed descriptions, and search tags — and adapting that content for different platforms takes time.
-ListingLab turns basic product details into an editable listing containing:
-A product title and short hook
-Five key selling points
-A detailed product description
-Search tags
-A social media caption
-It supports marketplace-specific generation for platforms such as Shopify, Etsy, Amazon, eBay, and WooCommerce. Users can edit the generated content…]]></summary>
-        <author>
-            <name>Tanmay Patil</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How to choose an AI coding assistant in 2026: a workflow-first checklist]]></title>
-        <id>https://dev.to/kaviyarasu-viswanath/how-to-choose-an-ai-coding-assistant-in-2026-a-workflow-first-checklist-3paa</id>
-        <link href="https://dev.to/kaviyarasu-viswanath/how-to-choose-an-ai-coding-assistant-in-2026-a-workflow-first-checklist-3paa"/>
-        <updated>2026-10-17T07:22:56.000Z</updated>
-        <summary type="html"><![CDATA[There are now dozens of credible AI coding assistants, and every one of them will show you a demo where it writes a working function in seconds. The demo is the easy part. The decision — which one fits how your team actually writes software — is where most teams get it backwards, because they start with the model and end with their workflow, when the order should be reversed.
-This checklist runs in the order that predicts adoption six months out. Work through it top to bottom before you open a pricing page.
-"Software development" is not a use case. For one week, log the concrete requests you'd want help with:
-Boilerplate and scaffolding
-Writing tests for untested legacy code
-Explaining unfamiliar codebases
-Debugging a failing CI run
-Refactoring across files
-Writing documentation or commit …]]></summary>
-        <author>
-            <name>Kaviyarasu Viswanathan</name>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -307,16 +298,6 @@ Writing documentation or commit …]]></summary>
 The post First Batch Of iPhone Duo Pre-Orders In Malaysia Selling Out Fast appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Heirul Kamel</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA["In every study that considered the question"]]></title>
-        <id>https://unsung.aresluna.org/in-every-study-that-considered-the-question/</id>
-        <link href="https://unsung.aresluna.org/in-every-study-that-considered-the-question/"/>
-        <updated>2026-10-17T04:08:27.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -415,16 +396,6 @@ The post Sony Xperia 10 VI To Miss Out On Previously Promised Android 17 Upgrade
         <id>https://www.anthropic.com/research/ecdsa-curve-origins</id>
         <link href="https://www.anthropic.com/research/ecdsa-curve-origins"/>
         <updated>2026-10-16T18:55:59.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[C++26: The New Debugging Header]]></title>
-        <id>https://www.sandordargo.com/blog/2026/09/30/cpp26-debugging</id>
-        <link href="https://www.sandordargo.com/blog/2026/09/30/cpp26-debugging"/>
-        <updated>2026-10-16T18:52:39.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -551,16 +522,6 @@ The post Sony Xperia 10 VI To Miss Out On Previously Promised Android 17 Upgrade
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Big Fish: Exploiting a 37-Year-Old Kernel Bug in OpenBSD]]></title>
-        <id>https://calif.io/research/big-fish</id>
-        <link href="https://calif.io/research/big-fish"/>
-        <updated>2026-10-16T14:44:02.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Show HN: Gemini 4 Argon plays StarCraft]]></title>
         <id>https://starskirmish.com/bench/v0-2/</id>
         <link href="https://starskirmish.com/bench/v0-2/"/>
@@ -588,16 +549,6 @@ The post Sony Xperia 10 VI To Miss Out On Previously Promised Android 17 Upgrade
         <summary type="html"><![CDATA[The focus is how Ethereum works under the hood: how it tracks and updates state, how transactions flow through the network, how computation is priced through gas, how smart contracts and token standards make Ethereum programmable, and how other Layer 1 blockchains approach the same problems in different ways.]]></summary>
         <author>
             <name>The Block Research</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I love software rendering]]></title>
-        <id>https://www.jamesfmackenzie.com/2026/10/13/i-love-software-rendering/</id>
-        <link href="https://www.jamesfmackenzie.com/2026/10/13/i-love-software-rendering/"/>
-        <updated>2026-10-16T12:52:08.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -898,17 +849,6 @@ The post Apple Reportedly Unveiling Its Touchscreen MacBooks On 28 October appea
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Microsoft Says Windows 11 Is Now More Responsive, Especially On 8GB RAM PCs]]></title>
-        <id>https://www.lowyat.net/?p=407610</id>
-        <link href="https://www.lowyat.net/2026/407610/microsoft-windows-11-more-responsive/"/>
-        <updated>2026-10-16T05:07:08.000Z</updated>
-        <summary type="html"><![CDATA[Microsoft has announced a series of performance improvements for Windows 11, claiming that the operating system is now up to 20% more responsive following months of optimisation work. The changes focus on making better use of system resources, particularly on PCs with limited memory. According to Navjot Virk, Microsoft’s corporate vice president of Windows Experiences, […]
-The post Microsoft Says Windows 11 Is Now More Responsive, Especially On 8GB RAM PCs appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Heirul Kamel</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[An OpenAI agent ran out of Ethereum funds, and took from a wallet it did not own]]></title>
         <id>6b007e26-5c9c-466f-8968-d087f0467650</id>
         <link href="https://www.coindesk.com/tech/2026/10/16/an-openai-agent-ran-out-of-ethereum-funds-and-took-from-a-wallet-it-did-not-own"/>
@@ -1006,6 +946,16 @@ The post Microsoft Says Windows 11 Is Now More Responsive, Especially On 8GB RAM
         <summary type="html"><![CDATA[DeFi Development is raising the dividend rate on its CHAD preferred stock to 14% from 13% as it taps CHAD sales to grow its Solana treasury.]]></summary>
         <author>
             <name>Jason Shubnell</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Recipes Are Moving from Maven Central to the Code Genome Project]]></title>
+        <id>https://docs.openrewrite.org/reference/latest-versions-of-every-openrewrite-module</id>
+        <link href="https://docs.openrewrite.org/reference/latest-versions-of-every-openrewrite-module"/>
+        <updated>2026-10-15T15:06:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1219,6 +1169,16 @@ The post Microsoft Says Windows 11 Is Now More Responsive, Especially On 8GB RAM
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[We Still Use Paper]]></title>
+        <id>https://humanpro.co/articles/we-still-use-paper/</id>
+        <link href="https://humanpro.co/articles/we-still-use-paper/"/>
+        <updated>2026-10-15T07:27:55.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[How to Give an AI Agent Safe Access to an Internal API with MCP]]></title>
         <id>6ad05e6261108f0421f7f3d4</id>
         <link href="https://www.freecodecamp.org/news/how-to-give-ai-agent-safe-access-internal-api-mcp/"/>
@@ -1249,6 +1209,26 @@ The post Microsoft Says Windows 11 Is Now More Responsive, Especially On 8GB RAM
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Orbital Angular Momentum of Light]]></title>
+        <id>https://en.wikipedia.org/wiki/Orbital_angular_momentum_of_light</id>
+        <link href="https://en.wikipedia.org/wiki/Orbital_angular_momentum_of_light"/>
+        <updated>2026-10-14T21:39:50.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Tell HN: Remember to migrate away from .name domain]]></title>
+        <id>https://news.ycombinator.com/item?id=50089577</id>
+        <link href="https://news.ycombinator.com/item?id=50089577"/>
+        <updated>2026-10-14T15:49:31.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[How to Stop an AI Agent from Inventing Nigerian Postcodes]]></title>
         <id>6acfa07df5672c904a1a970e</id>
         <link href="https://www.freecodecamp.org/news/how-to-stop-an-ai-agent-from-inventing-nigerian-postcodes/"/>
@@ -1256,16 +1236,6 @@ The post Microsoft Says Windows 11 Is Now More Responsive, Especially On 8GB RAM
         <summary type="html"><![CDATA[On 1 October 2026, Nigeria's postcode changed from six digits to an 11-character code that identifies a single building, such as EK-01-A03-FK-01. Language models trained before that date still describ]]></summary>
         <author>
             <name>Kayode Adeniyi</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[California is building a $400M shield for Yosemite's most dangerous highway]]></title>
-        <id>https://www.sfchronicle.com/california/article/yosemite-national-park-highway-140-22463847.php</id>
-        <link href="https://www.sfchronicle.com/california/article/yosemite-national-park-highway-140-22463847.php"/>
-        <updated>2026-10-14T15:15:58.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1309,30 +1279,10 @@ The post Microsoft Says Windows 11 Is Now More Responsive, Especially On 8GB RAM
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[New 'super ice' 10 times stronger, bringing it close to the strength of concrete]]></title>
-        <id>https://www.sciencealert.com/a-new-super-ice-is-10-times-stronger-bringing-it-close-to-the-strength-of-concrete</id>
-        <link href="https://www.sciencealert.com/a-new-super-ice-is-10-times-stronger-bringing-it-close-to-the-strength-of-concrete"/>
-        <updated>2026-10-13T21:42:38.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Monte-Carlo Simulations]]></title>
         <id>https://eli.thegreenplace.net/2026/monte-carlo-simulations/</id>
         <link href="https://eli.thegreenplace.net/2026/monte-carlo-simulations/"/>
         <updated>2026-10-13T18:11:46.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Stolen Renoir paintings found hidden, and damaged, behind cinder block wall]]></title>
-        <id>https://www.cbsnews.com/news/stolen-renoir-paintings-found-behind-wall-france/</id>
-        <link href="https://www.cbsnews.com/news/stolen-renoir-paintings-found-behind-wall-france/"/>
-        <updated>2026-10-13T16:26:03.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
