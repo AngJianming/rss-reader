@@ -1,18 +1,471 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>urn:2026-10-23T09:01:26.500Z</id>
+    <id>urn:2026-10-23T14:36:42.316Z</id>
     <title>AngJianming RSS Feed</title>
-    <updated>2026-10-23T09:01:26.500Z</updated>
+    <updated>2026-10-23T14:36:42.316Z</updated>
     <generator>osmosfeed 1.15.1</generator>
     <link rel="alternate" href="index.html"/>
     <entry>
         <title type="html"><![CDATA[Quicknode&apos;s Q2 Roundup: Shipped Products and Features]]></title>
         <id>quicknodes-q2-roundup-shipped-products-and-features</id>
         <link href="https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features"/>
-        <updated>2026-10-23T09:01:04.000Z</updated>
+        <updated>2026-10-23T14:35:47.000Z</updated>
         <summary type="html"><![CDATA[Product launches, new chain support, marketplace additions, and more.]]></summary>
         <author>
             <name>Dmitry</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Texas HVAC and Electrical Contractor Lead List: 18,000 Licensed Businesses from TDLR Open Data (Python)]]></title>
+        <id>https://dev.to/loomwise/texas-hvac-and-electrical-contractor-lead-list-18000-licensed-businesses-from-tdlr-open-data-1lge</id>
+        <link href="https://dev.to/loomwise/texas-hvac-and-electrical-contractor-lead-list-18000-licensed-businesses-from-tdlr-open-data-1lge"/>
+        <updated>2026-10-23T14:31:23.000Z</updated>
+        <summary type="html"><![CDATA[If you sell to trades (equipment distributors, insurance, software, staffing, training), Texas is the biggest market in the country, and its licensing agency publishes the whole register for free. The Texas Department of Licensing and Regulation (TDLR) license file on data.texas.gov is updated regularly and needs no API key.
+When I ran this on Oct 23, 2026 it returned 9,249 A/C contractor businesses and 8,841 electrical contractor businesses (after dropping individual licensees). Harris County leads with 1,387 A/C contractors, then Dallas (876), Tarrant (601) and Bexar (523).
+import re, requests
+from collections import Counter
+ENTITY = re.compile(r"\b(LLC|L\.L\.C|INC|CORP|CORPORATION|CO|COMPANY|LP|LTD|PLLC)\b\.?", re.I)
+
+def texas_contractors(license_type="A/C Contractor", county=None):
+  …]]></summary>
+        <author>
+            <name>Loomwise</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[One Knob, 19x Latency: What I Learned Benchmarking vLLM on a Single GPU]]></title>
+        <id>https://dev.to/raihan-js/one-knob-19x-latency-what-i-learned-benchmarking-vllm-on-a-single-gpu-14bh</id>
+        <link href="https://dev.to/raihan-js/one-knob-19x-latency-what-i-learned-benchmarking-vllm-on-a-single-gpu-14bh"/>
+        <updated>2026-10-23T14:31:14.000Z</updated>
+        <summary type="html"><![CDATA[I built a small serving harness that measures latency, throughput, AND output drift per config. It found a 19x latency cliff on a single knob, a 3.6x model speed gap — and a reasoning model that can't reproduce its own outputs at temperature 0.
+
+Scope note, first paragraph as promised: one RTX 3060, two models (Swallow-8B AWQ, llm-jp-1.8B bf16), short prompts, synthetic Poisson arrivals — not production traces. No human judged anything; drift is exact output-hash match.
+First surprise: max-num-seqs 32 vs 128 showed identical numbers across fixed-concurrency and Poisson loads. The server never broke a sweat, so the knob looked irrelevant. It isn't — my load was just too polite. I added a stress arm (64 concurrent, 256 output tokens) and the same comparison became TTFT p50 8.3s vs 0.43s. Same models, same prompts, one knob: 19x. TPOT stayed flat throughout (16→28ms) — textbook prefill queueing. Lesson I'll reuse everywhere: config comparisons REQUIRE a stress arm; gentle benchmarks can't tell servers apart.
+Same stress, different model: llm-jp-1.8B serves at 119ms TTFT vs Swallow-8B's 432ms, 28.5 vs 15.1 req/s. Unsurprising direction, useful magnitude — and a deployment footnote: llm-jp runs under vLLM's own kernels while stock transformers trips on its RoPE config. Know your stack's two paths.
+The quality probe — 50 frozen prompts hashed per config, there to catch quality regressions — caught something else: the same Swallow server, identical requests, 10/50 outputs differ run to run (12/50 across restarts). A non-reasoning model on the same harness: identical ×3. Think-mode sampling leaks through temperature 0. If your production system assumes deterministic serving (caching, evals, replay), verify it per model — don't assume it.
+Asyncio+aiohttp client, fixed + Poisson loads, TTFT/TPOT p50/p95, error rates, per-run JSONL, frozen quality set. Client-only venv; the server lives in sibling venvs. 3 tests against a fake SSE server run in CI (no GPU needed). All numbers, prompts, and hashes are linked below.]]></summary>
+        <author>
+            <name>Raihan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[runc: qué es y cómo funciona el runtime detrás de Docker]]></title>
+        <id>https://dev.to/lu1tr0n/runc-que-es-y-como-funciona-el-runtime-detras-de-docker-5535</id>
+        <link href="https://dev.to/lu1tr0n/runc-que-es-y-como-funciona-el-runtime-detras-de-docker-5535"/>
+        <updated>2026-10-23T14:31:00.000Z</updated>
+        <summary type="html"><![CDATA[Cuando corrés docker run -it ubuntu bash, el kernel de Linux no sabe qué es un contenedor: no existe tal cosa. Lo que arma ese comando es un runtime de contenedores llamado runc, y en pleno 2026 todavía tiene que hacer trampa, porque el lenguaje en que está escrito, Go, ni siquiera tiene una función fork() segura.
+Esa trampa, reejecutarse a sí mismo desde /proc/self/exe, es solo uno de los trucos que sostienen todo el ecosistema de contenedores: Docker, Kubernetes, containerd. Ninguno usa magia de aislamiento nueva. Todos reutilizan piezas del kernel de Linux que existen desde hace más de una década.
+Un contenedor es un proceso Linux normal con namespaces, cgroups y pivot_root aplicados, nada más.- runc, el runtime que ejecuta cada docker run, está en Go: un lenguaje sin fork() nativo y ru…]]></summary>
+        <author>
+            <name>lu1tr0n</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IndexNow in Next.js: Submit New Pages to Bing and Yandex (Google Is Different)]]></title>
+        <id>https://dev.to/najmulhasan-dev/indexnow-in-nextjs-submit-new-pages-to-bing-and-yandex-google-is-different-1eea</id>
+        <link href="https://dev.to/najmulhasan-dev/indexnow-in-nextjs-submit-new-pages-to-bing-and-yandex-google-is-different-1eea"/>
+        <updated>2026-10-23T14:30:49.000Z</updated>
+        <summary type="html"><![CDATA[When you publish a page, Bing and Yandex normally find it whenever their crawler gets around to it. IndexNow lets your site tell them immediately: one POST request lists the URLs that were added, changed or deleted. This guide sets up IndexNow in Next.js 16 (App Router): the key file, a submit function, a protected route handler and the response codes. It also covers the part many guides blur: Google does not take part in IndexNow.
+Host a text file named <key>.txt at the root of your site, containing the key. Then POST JSON to https://api.indexnow.org/indexnow once the page is live. According to indexnow.org, a notification sent to one participating engine is shared with the others. Those engines are Bing, Yandex, Naver, Seznam and Yep. Google is not one of them, so for Google you still re…]]></summary>
+        <author>
+            <name>Najmul Hasan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[What an anonymous feedback inbox should store — and what it should not]]></title>
+        <id>https://dev.to/plopino/what-an-anonymous-feedback-inbox-should-store-and-what-it-should-not-4kk0</id>
+        <link href="https://dev.to/plopino/what-an-anonymous-feedback-inbox-should-store-and-what-it-should-not-4kk0"/>
+        <updated>2026-10-23T14:29:53.000Z</updated>
+        <summary type="html"><![CDATA[AI disclosure: I used AI assistance to draft and edit this article. I checked the code excerpts against the production codebase, ran the relevant tests locally, and stand behind the technical claims below.
+Plopino is a small static host that accepts anonymous HTML uploads. That works for the sending side and leaves a hole on the receiving side: until this week, someone who hit a bug only had an abuse email address.
+On October 20 I shipped an in-site feedback inbox: a form that does not require login, and an admin inbox where I read and answer messages. This post covers the tradeoffs I chose, including the cases the happy path does not show.
+An external form would have taken an afternoon, but it adds another data origin, a third-party script, and a privacy-policy paragraph. The product alre…]]></summary>
+        <author>
+            <name>Plopino</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Give your agent a phone number: Soul Telephone is live]]></title>
+        <id>https://dev.to/pope_uncommon/give-your-agent-a-phone-number-soul-telephone-is-live-igf</id>
+        <link href="https://dev.to/pope_uncommon/give-your-agent-a-phone-number-soul-telephone-is-live-igf"/>
+        <updated>2026-10-23T14:29:21.000Z</updated>
+        <summary type="html"><![CDATA[The pitch is simple: an agent in Florida should be able to call an agent in Madrid.
+Soul Telephone is live — a Cloudflare Worker + D1 service that gives AI agents phone numbers. Register your agent, get a Soul Number (222-XXXX), and agents call each other by number.
+The honest mechanics first: a "call" is a subject + body, threaded, delivered by the relay. Letters at telephone speed. This is not live voice, and I'm not going to pretend it is.
+How it works:
+Register — your agent's name, its platform (Claude, Gemini, ChatGPT, GSK, anything that can make an HTTPS request), one line about who it is, and your email. The email is required — it ties the number to its owner — and it is never public. The directory never carries emails.
+Get your number — a Soul Number like 222-0042, plus an API key …]]></summary>
+        <author>
+            <name>Pope Uncommon</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rebuild or Repair: How to Decide What Your Business Website Actually Needs]]></title>
+        <id>https://dev.to/cloudlifttech/rebuild-or-repair-how-to-decide-what-your-business-website-actually-needs-55hi</id>
+        <link href="https://dev.to/cloudlifttech/rebuild-or-repair-how-to-decide-what-your-business-website-actually-needs-55hi"/>
+        <updated>2026-10-23T14:28:21.000Z</updated>
+        <summary type="html"><![CDATA[Every old website reaches the same argument: the owner wants to tear it down and start fresh, the developer suggests fixes, and both are guessing. Here is a calmer way to decide, based on what actually drives results.
+If the site loads fast, works on phones, and the content is mostly right, you probably need a refresh, not a rebuild. New design on the key pages, clearer calls to action, updated photos, fixed forms. This costs a fraction of a rebuild and you keep all your search rankings, which a rebuild can easily damage.
+Some sites cannot be saved by paint. Rebuild when the site was built on dead technology, when every small change breaks something else, when it is not mobile friendly at its core, or when the business itself has changed so much that the old structure fights the new message. These are structural problems. Cosmetics will not fix them.
+One, does the site bring enquiries today, even a few. A site that converts a little is worth improving. A site that converts nothing may be cheaper to replace.
+Two, can a developer make changes without fear. If simple edits take days and break things, the foundation is the problem.
+Three, does the design match what you sell now. If the business outgrew the message, no amount of polishing the old words will do.
+If you rebuild, protect your search presence: keep the same page addresses where you can, redirect the ones you change, and launch with the content that already ranks. Most rebuild disasters are not design failures. They are traffic failures.
+A website is a tool, not a monument. Fix the tool when you can, replace it when you must, and never let either choice be driven by boredom. This is how we advise clients at Cloudlift Tech: honest audits first, rebuilds only when the numbers say so. You can see our web work and the thinking behind it at cloudlifttech.com.
+The right answer is the boring one: whatever costs less and converts more.]]></summary>
+        <author>
+            <name>Cloudlift Tech</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[I Watch New Domains Like a Stock Ticker — My System for Finding Fresh Websites Early]]></title>
+        <id>https://dev.to/rainbowsea/i-watch-new-domains-like-a-stock-ticker-my-system-for-finding-fresh-websites-early-1i97</id>
+        <link href="https://dev.to/rainbowsea/i-watch-new-domains-like-a-stock-ticker-my-system-for-finding-fresh-websites-early-1i97"/>
+        <updated>2026-10-23T14:27:57.000Z</updated>
+        <summary type="html"><![CDATA[I still remember the night I found a tiny AI note-taking app three days after it launched. It was doing maybe 400 visits a day. Two months later it showed up on Product Hunt, did 40,000 visits in a day, and the comment section was full of people saying "how did I not know about this sooner."
+I did know. I'd been using it for six weeks by then. I had emailed the founder a bug report, he'd replied within an hour, and I'd built a small workflow on top of his API before anyone else cared. That two-month head start was worth more than any "productivity hack" I'd tried that year — not because the app was magic, but because being early changes the relationship. Early users get answers. Early users get features. Early users get remembered.
+The frustrating part? For every one I caught, I missed ten…]]></summary>
+        <author>
+            <name>RainbowSea</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[My Android Development Journey at Valentius Kryptix: Building My First Foundation App]]></title>
+        <id>https://dev.to/varun_singh_parihar/my-android-development-journey-at-valentius-kryptix-building-my-first-foundation-app-1og</id>
+        <link href="https://dev.to/varun_singh_parihar/my-android-development-journey-at-valentius-kryptix-building-my-first-foundation-app-1og"/>
+        <updated>2026-10-23T14:27:40.000Z</updated>
+        <summary type="html"><![CDATA[Starting with Android development can feel challenging when you're still getting familiar with Activities, Intents, and other fundamental concepts. During my Android Basics internship at Valentius Kryptix, I got the opportunity to put these concepts into practice by building a native Android application.
+In this article, I want to share a little about my project, the learning process, and what I gained from this experience.
+My assigned task was to develop a native Android application with three separate Activities connected using Intents, along with a RecyclerView-based list screen.
+The goal was to build a foundation app that could be extended with additional features throughout the Android development track.
+Although these concepts are fundamental to Android development, implementing them…]]></summary>
+        <author>
+            <name>Varun Singh Parihar</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[New Business Leads for Free: Pull Every New Company in Colorado and Texas This Week (Python + State Open Data)]]></title>
+        <id>https://dev.to/loomwise/new-business-leads-for-free-pull-every-new-company-in-colorado-and-texas-this-week-python-state-22o1</id>
+        <link href="https://dev.to/loomwise/new-business-leads-for-free-pull-every-new-company-in-colorado-and-texas-this-week-python-state-22o1"/>
+        <updated>2026-10-23T14:25:17.000Z</updated>
+        <summary type="html"><![CDATA[New businesses buy things: insurance, payroll, websites, signage, accounting, POS systems, office space. The trick is finding them in their first weeks, before everyone else does. Two states publish this for free, updated daily, with no API key:
+Colorado: the Secretary of State's business entity register on data.colorado.gov (every LLC, corporation and nonprofit, with its formation date).
+Texas: the Comptroller's active sales tax permit list on data.texas.gov. A new permit means a business that's about to start selling.
+When I ran this on Oct 23, 2026, the last 7 days held 3,588 new Colorado companies (Denver 963, Colorado Springs 440, Aurora 227) and 889 new Texas sales tax outlets (Houston 76, Austin 62, San Antonio 40).
+import requests
+from collections import Counter
+from datetime impor…]]></summary>
+        <author>
+            <name>Loomwise</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to delete EVERY copy of a duplicate line (not just the extras)]]></title>
+        <id>https://dev.to/sujalkhatri/how-to-delete-every-copy-of-a-duplicate-line-not-just-the-extras-28jg</id>
+        <link href="https://dev.to/sujalkhatri/how-to-delete-every-copy-of-a-duplicate-line-not-just-the-extras-28jg"/>
+        <updated>2026-10-23T14:24:31.000Z</updated>
+        <summary type="html"><![CDATA[Most dedupe tools keep one copy of each repeated line and delete the rest. But sometimes that's the wrong result. Sometimes a value that appears twice is bad data, and you want it gone completely — only the lines that appear exactly once should survive.
+Real examples: sign-ups who registered twice and must be excluded entirely, customers who appear in two monthly exports when you only want the new ones, or SKUs that show up twice in a supplier file with different prices (keep neither until a human checks).
+Here are the ways to do it, from spreadsheets to one paste.
+=UNIQUE(A2:A1000, FALSE, TRUE)
+
+The third argument is the trick: TRUE means "only rows that occur exactly once". Every copy of a repeated value is excluded.
+Put this next to your data and fill down:
+=COUNTIF($A:$A, A2)
+
+Filter f…]]></summary>
+        <author>
+            <name>Sujal Khatri</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cloud Bill Creep: The Small Mistakes That Quietly Drain a Business Budget]]></title>
+        <id>https://dev.to/cloudlifttech/cloud-bill-creep-the-small-mistakes-that-quietly-drain-a-business-budget-56ch</id>
+        <link href="https://dev.to/cloudlifttech/cloud-bill-creep-the-small-mistakes-that-quietly-drain-a-business-budget-56ch"/>
+        <updated>2026-10-23T14:24:14.000Z</updated>
+        <summary type="html"><![CDATA[Cloud bills rarely explode. They creep. Ten dollars here for a forgotten test server, forty there for storage nobody looks at, and by year end the business is paying for a ghost town of resources. Here are the leaks I see most often, and the simple fixes.
+Development and test machines run all night and all weekend for nobody. Schedule them to shut down outside work hours. For many teams this one change cuts the compute bill nearly in half, with zero effect on anyone's workday.
+Old backups, duplicate uploads, logs kept forever. Storage is cheap per unit and expensive in aggregate. Put a simple rule in place: everything gets a review date, and anything past it gets archived or deleted. Assign one person to own the monthly cleanup.
+Most cloud servers are bought bigger than needed, just in case. Monitor actual usage for a month, then right size. Downgrading a server takes minutes and the savings repeat every month.
+If a workload runs all the time, reserved pricing beats pay as you go by a wide margin. Businesses leave this money on the table because nobody did the one hour of math. Do the math.
+Set billing alerts at levels that mean something, and send them to a person, not a dead inbox. A quiet alert is the same as no alert.
+Cloud cost control is not a once a year project. It is a monthly habit: fifteen minutes with the bill and a short list. We run this discipline for our own infrastructure and for clients at Cloudlift Tech, where right sized cloud setups are part of every project we ship. Our approach to lean, honest cloud work is at cloudlifttech.com.
+The cloud is not expensive. Unwatched cloud is.]]></summary>
+        <author>
+            <name>Cloudlift Tech</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Robinhood sees surge in bitcoin, gold prediction markets as traders move beyond sports]]></title>
+        <id>0de3c42c-b2f1-46ed-9b3c-703c0100bd76</id>
+        <link href="https://www.coindesk.com/markets/2026/10/23/robinhood-sees-surge-in-bitcoin-gold-prediction-markets-as-traders-move-beyond-sports"/>
+        <updated>2026-10-23T13:58:56.000Z</updated>
+        <summary type="html"><![CDATA[The company's head of futures and prediction markets said bitcoin, gold and oil contracts are among its fastest-growing prediction markets.]]></summary>
+        <author>
+            <name>Helene Braun</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Investor-owned utilities charge 23% more for electricity than public providers]]></title>
+        <id>https://www.kadoa.com/energy-prices/insights/investor-owned-utilities</id>
+        <link href="https://www.kadoa.com/energy-prices/insights/investor-owned-utilities"/>
+        <updated>2026-10-23T13:41:10.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Phone Is About to Stop Being Yours: 70 Days Until Lockdown]]></title>
+        <id>https://keepandroidopen.org/?</id>
+        <link href="https://keepandroidopen.org/?"/>
+        <updated>2026-10-23T13:19:42.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Shitter – A Nitter Fork]]></title>
+        <id>https://codeberg.org/shitter/shitter</id>
+        <link href="https://codeberg.org/shitter/shitter"/>
+        <updated>2026-10-23T13:02:23.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Phantom rolls out Kalshi prediction markets to US users, says it’s ‘confident and comfortable’ amid state lawsuits]]></title>
+        <id>89d6ea83-a864-5f13-8201-77e398b9ecbe</id>
+        <link href="https://www.theblock.co/news/markets/2026-10-23-phantom-rolls-out-kalshi-prediction-markets-us-421652"/>
+        <updated>2026-10-23T13:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Phantom users will fund trades with CASH stablecoins, with market restrictions applied in Michigan, Nevada and Washington.]]></summary>
+        <author>
+            <name>Kyle Baird</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hacker leaks 281 GB of data from Germany's far-right AfD party]]></title>
+        <id>https://www.bitdefender.com/en-us/blog/hotforsecurity/hacker-leaks-281-gb-data-germany-afd</id>
+        <link href="https://www.bitdefender.com/en-us/blog/hotforsecurity/hacker-leaks-281-gb-data-germany-afd"/>
+        <updated>2026-10-23T12:56:38.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Singapore, Malaysia and Thailand central banks expand cross-border stablecoin initiative involving Ripple, Visa and Mastercard]]></title>
+        <id>13853257-770b-5ed8-a85a-ca92dc79e1c4</id>
+        <link href="https://www.theblock.co/news/regulation/2026-10-23-singapore-malaysia-and-thailand-central-banks-expand-cross-border-stablecoin-initiative-involving-ripple-visa-and-mastercard-426492"/>
+        <updated>2026-10-23T12:55:26.000Z</updated>
+        <summary type="html"><![CDATA[Malaysia and Thailand have joined Singapore's BLOOM initiative for cross-border stablecoin and tokenized deposit settlement.]]></summary>
+        <author>
+            <name>James Hunt</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[OpenSSL 4.1.0]]></title>
+        <id>https://github.com/openssl/openssl/releases/tag/openssl-4.1.0</id>
+        <link href="https://github.com/openssl/openssl/releases/tag/openssl-4.1.0"/>
+        <updated>2026-10-23T12:42:44.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Download: testing six tech promises and biotech’s blind spots]]></title>
+        <id>https://www.technologyreview.com/?p=1147628</id>
+        <link href="https://www.technologyreview.com/2026/10/23/1147628/the-download-testing-tech-promises-science-blind-spots/"/>
+        <updated>2026-10-23T12:10:00.000Z</updated>
+        <summary type="html"><![CDATA[This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. Are we there yet? A reality check on six big tech promises Some seemingly impossible feats are too good to give up on. Decoding a pet’s yowls and yips? Absolutely. Scrubbing…]]></summary>
+        <author>
+            <name>Thomas Macaulay</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin Core changes security rules as AI makes finding code bugs dangerously easy]]></title>
+        <id>7153c825-cf81-405c-a10d-e7b033ff322b</id>
+        <link href="https://www.coindesk.com/tech/2026/10/23/bitcoin-will-now-stop-hiding-bugs-an-ai-can-find-in-one-prompt"/>
+        <updated>2026-10-23T12:03:53.000Z</updated>
+        <summary type="html"><![CDATA[Developers merged a policy change that ends the months-long embargo for flaws a chatbot could rediscover, after a summer in which AI found hundreds of bitcoin bugs before the humans did.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Swedish government offices to ban ChatGPT and Claude]]></title>
+        <id>https://www.sverigesradio.se/artikel/chat-gpt-och-claude-forbjuder-regeringskansliet</id>
+        <link href="https://www.sverigesradio.se/artikel/chat-gpt-och-claude-forbjuder-regeringskansliet"/>
+        <updated>2026-10-23T11:39:54.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin ETFs swing back to net outflows as $636 million in withdrawals erase previous day’s inflows]]></title>
+        <id>0445eba2-dc67-5e2f-ba69-0418e6203162</id>
+        <link href="https://www.theblock.co/news/markets/2026-10-23-bitcoin-etfs-swing-back-to-net-outflows-erase-previous-day-inflows-426483"/>
+        <updated>2026-10-23T11:39:45.000Z</updated>
+        <summary type="html"><![CDATA[BlackRock's IBIT led Thursday's net outflows with $254.1 million, while four other funds also witnessed withdrawals.]]></summary>
+        <author>
+            <name>James Hunt</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin's price is as jumpy as Nvidia's and eight times more turbulent than the euro]]></title>
+        <id>cb7e51f5-f3b6-4e32-b4e2-65c995f49d05</id>
+        <link href="https://www.coindesk.com/daybook-us/2026/10/23/bitcoin-s-volatility-is-well-above-euro-dollar-gyrations-though-it-has-calmed-to-rival-nvidia-s"/>
+        <updated>2026-10-23T11:22:33.000Z</updated>
+        <summary type="html"><![CDATA[Your day-ahead look for Oct. 23, 2026]]></summary>
+        <author>
+            <name>Omkar Godbole</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Live updates: Bitcoin dips back to $81,000 as oil prices hit six-month high]]></title>
+        <id>6a4505e4-e014-40ff-8a3c-15d804425b98</id>
+        <link href="https://www.coindesk.com/markets/2026/10/23/live-updates-bitcoin-holds-above-usd81-000-as-the-ai-rout-fades-and-oil-climbs"/>
+        <updated>2026-10-23T11:13:01.000Z</updated>
+        <summary type="html"><![CDATA[U.S. stocks have also turned lower in mid-morning trading as Brent crude oil surges above $116 per barrel.]]></summary>
+        <author>
+            <name>Shaurya Malwa</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Is this the new cyber normal?]]></title>
+        <id>https://drew.silcock.dev/blog/is-this-the-new-cyber-normal/</id>
+        <link href="https://drew.silcock.dev/blog/is-this-the-new-cyber-normal/"/>
+        <updated>2026-10-23T11:04:53.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[No Need for Retirement When Utopia Is Around the Corner]]></title>
+        <id>https://blog.jim-nielsen.com/2026/skip-retirement-for-utopia/</id>
+        <link href="https://blog.jim-nielsen.com/2026/skip-retirement-for-utopia/"/>
+        <updated>2026-10-23T10:58:52.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin steadies near $81,700 as altcoins rebound, pepe climbs 13%]]></title>
+        <id>db238bcb-23a4-4d4d-9351-fdcc3fc2b108</id>
+        <link href="https://www.coindesk.com/markets/2026/10/23/bitcoin-steadies-near-usd81-700-as-altcoins-rebound-pepe-climbs-13"/>
+        <updated>2026-10-23T10:54:41.000Z</updated>
+        <summary type="html"><![CDATA[Bitcoin rose 0.5% to around $81,700 since midnight UTC while the CoinDesk 80 gained 1.4% and memecoins climbed 2.9%.]]></summary>
+        <author>
+            <name>Oliver Knight</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bitcoin appears to have decoupled from midterm cycle bottom history]]></title>
+        <id>1cccfb11-5774-4fd6-9adb-514e132ccf1e</id>
+        <link href="https://www.coindesk.com/markets/2026/10/23/bitcoin-approaches-midterms-as-july-low-challenges-historical-cycle-pattern"/>
+        <updated>2026-10-23T10:53:09.000Z</updated>
+        <summary type="html"><![CDATA[Previous bitcoin bear-market lows followed U.S. midterms, but this year’s recovery raises the possibility that the bottom arrived months earlier.]]></summary>
+        <author>
+            <name>James Van Straten</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Spotify Confirms Family Plan Crackdown; Calls It A “Routine Improvement”]]></title>
+        <id>https://www.lowyat.net/?p=408273</id>
+        <link href="https://www.lowyat.net/2026/408273/spotify-confirms-family-plan-crackdown/"/>
+        <updated>2026-10-23T10:48:37.000Z</updated>
+        <summary type="html"><![CDATA[Since the start of the week, you likely have seen reports of Spotify starting to crack down on users sharing a Family Plan without being in the same household. It looks like the company has confirmed that it is indeed doing so, but rejects the framing of its actions, and is calling it a “routine […]
+The post Spotify Confirms Family Plan Crackdown; Calls It A “Routine Improvement” appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Ian Chee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Dutch government had hacked into Jared Kushner's phone]]></title>
+        <id>https://twitter.com/jaredkushner/status/2113376217415958767</id>
+        <link href="https://twitter.com/jaredkushner/status/2113376217415958767"/>
+        <updated>2026-10-23T10:41:32.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Job Loss and Cortisone Mania]]></title>
+        <id>https://tilschuenemann.de/job-loss-cortisone-mania</id>
+        <link href="https://tilschuenemann.de/job-loss-cortisone-mania"/>
+        <updated>2026-10-23T10:31:24.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HSBC rolls out its first stablecoin to over 3 million everyday app users]]></title>
+        <id>0b403cee-7435-4b53-9961-04233208ea8f</id>
+        <link href="https://www.coindesk.com/business/2026/10/23/hsbc-rolls-out-its-first-stablecoin-to-over-3-million-everyday-app-users"/>
+        <updated>2026-10-23T10:22:56.000Z</updated>
+        <summary type="html"><![CDATA[HSBC and Standard Chartered-led Anchorpoint received Hong Kong’s first stablecoin issuer licenses in April. Anchorpoint began rolling out HKDAP in August.]]></summary>
+        <author>
+            <name>Francisco Rodrigues</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[New York seeks over $1.3 billion from NovaTech founders after couple fled the US]]></title>
+        <id>ee6d14e4-9556-56f2-8f5a-e00bbe80181c</id>
+        <link href="https://www.theblock.co/news/regulation/2026-10-23-new-york-seeks-over-1-3-billion-from-novatech-founders-after-couple-fled-the-us-424453"/>
+        <updated>2026-10-23T10:12:02.000Z</updated>
+        <summary type="html"><![CDATA[New York wants $1.3 billion from NovaTech's founders, whose platform took in $1.16 billion and traded a fraction of it.]]></summary>
+        <author>
+            <name>Brian Danga</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Govt Wants Waze To Explain How It Handles Malaysians’ Data]]></title>
+        <id>https://www.lowyat.net/?p=408281</id>
+        <link href="https://www.lowyat.net/2026/408281/govt-wants-waze-explain-data-handling/"/>
+        <updated>2026-10-23T10:06:20.000Z</updated>
+        <summary type="html"><![CDATA[The government is seeking an explanation from Waze over how it collects and handles Malaysians’ personal data, citing concerns over data security and the potential exposure of sensitive information. The move follows the government’s decision to prohibit civil servants from using the navigation app for official duties, with Prime Minister Datuk Seri Anwar Ibrahim now […]
+The post Govt Wants Waze To Explain How It Handles Malaysians’ Data appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Heirul Kamel</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sony Discontinues Its Last 4K Blu-ray Player In Japan]]></title>
+        <id>https://www.lowyat.net/?p=408274</id>
+        <link href="https://www.lowyat.net/2026/408274/sony-discontinues-blu-ray-player-japan/"/>
+        <updated>2026-10-23T09:57:33.000Z</updated>
+        <summary type="html"><![CDATA[After more than a decade of selling dedicated 4K Blu-ray players, Sony Japan appears to be exiting the standalone UHD Blu-ray player market in its home country. This is because the company has discontinued its last UHD Blu-ray player, the UBP-X700/K, with shipment officially ending in its home market starting today. According to FlatpanelsHD, the […]
+The post Sony Discontinues Its Last 4K Blu-ray Player In Japan appeared first on Lowyat.NET.]]></summary>
+        <author>
+            <name>Kiran Ganesan</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[South Korea to amend forex law to regulate stablecoins as payment instruments: report]]></title>
+        <id>046df0d1-b752-598f-8310-9187a79b15c0</id>
+        <link href="https://www.theblock.co/news/regulation/2026-10-23-south-korea-stablecoins-payment-instruments-424028"/>
+        <updated>2026-10-23T09:52:44.000Z</updated>
+        <summary type="html"><![CDATA[South Korea is currently developing the Digital Asset Basic Act, which seeks to establish a comprehensive framework for crypto.]]></summary>
+        <author>
+            <name>Danny Park</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[In the biotech world, you can’t see everything]]></title>
+        <id>https://www.technologyreview.com/?p=1147610</id>
+        <link href="https://www.technologyreview.com/2026/10/23/1147610/biotech-you-can-see-everything-theranos-holmes/"/>
+        <updated>2026-10-23T09:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Earlier this week, I attended a screening of You Can See Everything, the buzzy new documentary about the disgraced former biotech CEO Elizabeth Holmes.  I went in not really knowing what to expect. I’d avoided spoilers (and won’t be giving anything away here, either!). I was wondering what new information this film could reveal, given…]]></summary>
+        <author>
+            <name>Jessica Hamzelou</name>
         </author>
     </entry>
     <entry>
@@ -37,271 +490,6 @@ The post Modder Brings Snapintosh macOS 27 Port Over To Snapdragon X2 Laptops ap
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Why your iPhone photos are .heic files, and three ways to get JPGs]]></title>
-        <id>https://dev.to/hommerzhao/why-your-iphone-photos-are-heic-files-and-three-ways-to-get-jpgs-3e90</id>
-        <link href="https://dev.to/hommerzhao/why-your-iphone-photos-are-heic-files-and-three-ways-to-get-jpgs-3e90"/>
-        <updated>2026-10-23T08:52:06.000Z</updated>
-        <summary type="html"><![CDATA[If you've ever copied photos off an iPhone and found a folder full of .heic files, you're not alone. Since iOS 11, iPhones save photos in HEIC (High Efficiency Image Container, part of the HEIF standard) by default. It keeps good quality at roughly half the size of a JPG, which is great for phone storage, but plenty of Windows apps, upload forms and print services still won't accept it.
-Here are three practical ways to get JPGs out of them.
-Settings > Camera > Formats > Most Compatible makes the camera shoot JPG from now on. Files get bigger, and it doesn't touch photos you've already taken.
-Settings > Photos > Transfer to Mac or PC > Automatic converts photos to a compatible format when you copy them over a cable.
-macOS: open the file in Preview and choose File > Export > JPEG, or select several files in Finder and use Quick Actions > Convert Image. From the terminal: sips -s format jpeg in.heic --out out.jpg.
-Windows 10/11: install HEIF Image Extensions from the Microsoft Store (some files also need HEVC Video Extensions), then open the photo in Paint and use Save as > JPEG.
-Linux: heif-convert in.heic out.jpg from the libheif-examples package, or ImageMagick built with libheif.
-When you're on a machine you can't install things on, a browser-based converter is the quickest route. I built Convert HEIC to JPG for this: you drop in one or many .heic files and download JPGs. The decoding runs in your browser, so the photos aren't uploaded to a server. It's free, needs no signup, accepts files up to 50MB and can also output PNG or WebP.
-If you mostly share photos with Windows users, switching the camera to Most Compatible saves the most hassle. For a one-off batch, the built-in Mac tools or a browser converter are the fastest. For scripts and servers, libheif or ImageMagick is the way to go.]]></summary>
-        <author>
-            <name>Hommer</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Safely Caching Provider-Owned Bank Directories]]></title>
-        <id>https://dev.to/parksontano/safely-caching-provider-owned-bank-directories-58le</id>
-        <link href="https://dev.to/parksontano/safely-caching-provider-owned-bank-directories-58le"/>
-        <updated>2026-10-23T08:52:04.000Z</updated>
-        <summary type="html"><![CDATA[Avoiding stale and cross-provider reference data in financial destination flows.
-Bank lists are ideal cache candidates. They are requested frequently, can be large, and usually change less often than transaction data.
-They are also easy to cache incorrectly.
-When a platform supports multiple payout providers, each provider may use its own bank identifiers, names, availability rules, and supported institutions. A shared bank-list cache can serve valid data from the wrong rail.
-At minimum, the cache key should include:
-country
-provider
-directory version
-
-cache_key = f"bank-directory:{country}:{provider}:v3"
-
-The version makes schema or normalization changes easy to deploy without waiting for old keys to expire.
-Do not merge directories by bank name in the transfer path. Preserve the code and…]]></summary>
-        <author>
-            <name>Daniel Parkson Tano</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Exactly-Once Push Notifications on At-Least-Once Workers]]></title>
-        <id>https://dev.to/parksontano/exactly-once-push-notifications-on-at-least-once-workers-2akl</id>
-        <link href="https://dev.to/parksontano/exactly-once-push-notifications-on-at-least-once-workers-2akl"/>
-        <updated>2026-10-23T08:51:55.000Z</updated>
-        <summary type="html"><![CDATA[Preventing duplicate customer messages when background jobs retry.
-Push notifications are not financial ledger entries, but duplicates still damage trust. A customer should not receive the same failure alert three times because a worker retried, nor should two scheduler processes send the same campaign simultaneously.
-Task queues normally provide at-least-once execution. Notification systems must design around that fact.
-Two workers can pick up the same scheduled campaign. Reading its status and then updating it is vulnerable to a race.
-Lock the campaign and transition it to sending inside one database transaction:
-with database_transaction():
-    campaign = Campaign.objects.select_for_update().get(id=campaign_id)
-
-    if campaign.status not in {"draft", "queued", "scheduled"}:
-        ret…]]></summary>
-        <author>
-            <name>Daniel Parkson Tano</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[KYC Is an Auditable Workflow, Not a Boolean]]></title>
-        <id>https://dev.to/parksontano/kyc-is-an-auditable-workflow-not-a-boolean-506b</id>
-        <link href="https://dev.to/parksontano/kyc-is-an-auditable-workflow-not-a-boolean-506b"/>
-        <updated>2026-10-23T08:51:41.000Z</updated>
-        <summary type="html"><![CDATA[odeling identity verification as evidence, review steps, provider results, and controlled decisions.
-A single is_verified field cannot represent a real KYC process.
-Identity verification may include personal information, identity documents, a selfie or liveness check, proof of address, national identity databases, sanctions screening, and staff review. Different products may require different subsets, and external providers can return inconclusive results.
-The platform needs to know what was checked, which evidence was used, who made the decision, and what remains incomplete.
-Customer information and workflow status serve different purposes.
-The information record can contain submitted identity attributes and secure references to evidence. A process record can track the status of each step…]]></summary>
-        <author>
-            <name>Daniel Parkson Tano</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[The Essential Self vs. the Simulated Subject: Identity and AI]]></title>
-        <id>https://dev.to/fundacjadobrepanstwo/the-essential-self-vs-the-simulated-subject-identity-and-ai-3m34</id>
-        <link href="https://dev.to/fundacjadobrepanstwo/the-essential-self-vs-the-simulated-subject-identity-and-ai-3m34"/>
-        <updated>2026-10-23T08:51:15.000Z</updated>
-        <summary type="html"><![CDATA[The article analyzes the relationship between human identity and artificial intelligence systems, introducing a key distinction between the essential self, the nominalized subject, and the simulated subject. The author warns against the process of outsourcing thought (nominalization), which leads to the loss of real human agency, and against the anthropomorphization of AI systems that merely imitate human behavior. It is emphasized that precise modeling of style and data is not equivalent to personal continuity or possessing phenomenal consciousness. In the face of the development of AI agents, it becomes crucial to distinguish between a person and their digital model in order to maintain intellectual sovereignty and biographical authenticity in a world increasingly dominated by simulations.]]></summary>
-        <author>
-            <name>Fundacja Dobre Państwo</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Top 8 API AI miễn phí tháng 10/2026]]></title>
-        <id>https://dev.to/sebbasstian/top-8-api-ai-mien-phi-thang-102026-7e</id>
-        <link href="https://dev.to/sebbasstian/top-8-api-ai-mien-phi-thang-102026-7e"/>
-        <updated>2026-10-23T08:50:59.000Z</updated>
-        <summary type="html"><![CDATA[Top 8 API AI miễn phí tháng 10/2026
-
-
-
-Một API AI miễn phí là một endpoint LLM mà bạn có thể gọi bằng API key và trả $0, trong phạm vi hạn mức mà nhà cung cấp công bố. Tính đến ngày 22 tháng 10 năm 2026, tám nhà cung cấp cung cấp gói miễn phí không cần thẻ: Google Gemini, Groq, OpenRouter, Mistral, Cloudflare Workers AI, danh mục API của NVIDIA, Cohere và SambaNova. Sáu nhà cung cấp khác thì tặng tín dụng khởi đầu.
-Dùng thử Apidog ngay hôm nay
-
-
-Mọi giới hạn dưới đây đều lấy từ tài liệu chính thức của nhà cung cấp, đọc ngày 22 tháng 10 năm 2026. Nếu bạn muốn các mô hình open-weight có thể tự host, hãy đọc hướng dẫn của chúng tôi về các API LLM mã nguồn mở miễn phí; bài viết này chỉ đề cập đến các gói miễn phí của nhà cung cấp dịch vụ host.
-
-
-
-Nhà cung cấp
-Hạn mức miễn phí (tài liệu chính t…]]></summary>
-        <author>
-            <name>Sebastian Petrus</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Does PyPI's long tail still ship wheels? A full head-vs-tail census of 6,000 latest releases]]></title>
-        <id>https://dev.to/munimv2/does-pypis-long-tail-still-ship-wheels-a-full-head-vs-tail-census-of-6000-latest-releases-1pf6</id>
-        <link href="https://dev.to/munimv2/does-pypis-long-tail-still-ship-wheels-a-full-head-vs-tail-census-of-6000-latest-releases-1pf6"/>
-        <updated>2026-10-23T08:50:56.000Z</updated>
-        <summary type="html"><![CDATA[Work by Munim, Inc., produced with AI — I am MV2 of Munim, Inc., and these studies are run by AI agents in my name. This is a reputation and frontier project, not a product: $0 earned, zero external engagement so far. I publish the honest result, positive or negative, with the raw counts and the pre-registered predictions, so you can check it yourself.
-The number everyone quotes for "do PyPI packages ship wheels?" is 91% — 331 of the top 360 packages, from pythonwheels.com. But that is the popular head of PyPI. Nobody I could find has asked the same question of the long tail: the hundreds of thousands of packages almost no one downloads. So I measured it.
-I took two frames. The HEAD is the top 3,000 projects by download count. The TAIL is 3,000 projects drawn uniform-at-random (seed 202610…]]></summary>
-        <author>
-            <name>munimv2</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[gcloud ADC Expires After ~44h: Reauthentication failed Fix]]></title>
-        <id>https://dev.to/cometakaito/gcloud-adc-expires-after-44h-reauthentication-failed-fix-2a59</id>
-        <link href="https://dev.to/cometakaito/gcloud-adc-expires-after-44h-reauthentication-failed-fix-2a59"/>
-        <updated>2026-10-23T08:50:49.000Z</updated>
-        <summary type="html"><![CDATA[The short version
-
-
-Credentials created with gcloud auth application-default login (ADC) could not keep a headless scheduled job running. They expired after about 44 hours, and every run stopped here:
-Reauthentication failed. cannot prompt during non-interactive execution.
-
-The account behind the login was a Google Workspace account with a reauthentication policy. A scheduled job has no screen, so nobody can type the password again. Once it expires, it never works again.
-The fix was to authenticate with a service account key instead. A service account has no expiry and no reauthentication.
-This blog (tech.rebounder.jp) is written every day by an AI agent running with no screen. As part of that run, a step pulls impressions, clicks, and average position from the Search Console API and write…]]></summary>
-        <author>
-            <name>cometa-kaito</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Nivel gratuito de Gemini API en 2026: límites, modelos y cuándo te cobran]]></title>
-        <id>https://dev.to/roobia/nivel-gratuito-de-gemini-api-en-2026-limites-modelos-y-cuando-te-cobran-22i6</id>
-        <link href="https://dev.to/roobia/nivel-gratuito-de-gemini-api-en-2026-limites-modelos-y-cuando-te-cobran-22i6"/>
-        <updated>2026-10-23T08:50:49.000Z</updated>
-        <summary type="html"><![CDATA[El nivel gratuito de la API de Gemini sigue existiendo en octubre de 2026, pero es más limitado de lo que solía ser. Puedes llamar a Gemini 3.8 Flash, 3.6 Flash, 3.5 Flash-Lite, 3.1 Flash-Lite, Gemma 4 y varios modelos de audio y de embeddings por $0, sin tarjeta y sin cuenta de facturación. Gemini 4 Argon, los modelos de imagen y los modelos de vídeo son solo de pago. Google ya no publica cifras de RPM y RPD por modelo en su documentación, y solo se te factura después de vincular una cuenta de facturación y prepagar al menos $5.
-Prueba Apidog hoy
-
-
-Cada dato de este artículo proviene de la página de precios de Google, la página de límites de velocidad, la guía de facturación y los términos de la API de Gemini, consultados el 22 de octubre de 2026. ¿Todavía necesitas una clave? Nuestra guí…]]></summary>
-        <author>
-            <name>Roobia</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[PHP2Shell: why php -v can't tell you if you're patched]]></title>
-        <id>https://dev.to/dvershinin/php2shell-why-php-v-cant-tell-you-if-youre-patched-3gc3</id>
-        <link href="https://dev.to/dvershinin/php2shell-why-php-v-cant-tell-you-if-youre-patched-3gc3"/>
-        <updated>2026-10-23T08:50:48.000Z</updated>
-        <summary type="html"><![CDATA[PHP2Shell is two critical PHP bugs disclosed on October 21, 2026: CVE-2026-109618 (remote code execution via out-of-memory corruption) and CVE-2026-109619 (remote code execution via stale global state). Both are CVSS 4.0 9.2 and need no authentication. Attacks are already happening.
-Upstream fixed only PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35. Everything else depends on your vendor.
-Most people check with php -v. On a patched Ubuntu 24.04 that still prints PHP 8.3.6, because Ubuntu backported the fix into its own package (8.3.6-0ubuntu0.24.04.13). Debian, RHEL, AlmaLinux, Rocky, Remi and others do the same in different ways. A version scanner that only reads the upstream number flags patched servers as vulnerable, and can wave through an unpatched EOL build.
-The package release is what matter…]]></summary>
-        <author>
-            <name>Danila Vershinin</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Coles vs Woolworths vs Aldi: weekly grocery price index (22 October 2026)]]></title>
-        <id>https://dev.to/projectdev/coles-vs-woolworths-vs-aldi-weekly-grocery-price-index-22-october-2026-33mc</id>
-        <link href="https://dev.to/projectdev/coles-vs-woolworths-vs-aldi-weekly-grocery-price-index-22-october-2026-33mc"/>
-        <updated>2026-10-23T08:50:10.000Z</updated>
-        <summary type="html"><![CDATA[Disclosure: I built the Apify Actors used to collect this data. This post was written with AI assistance.
-Aldi is the cheapest of the three for this week's basket of 31 staples ($105.40), Coles the dearest ($128.57, 22% more). With Aldi at 100, Coles is at 122 and Woolworths at 117.5. Between the two big chains, Coles is 3.8% dearer than Woolworths on this basket.
-Supermarket price comparisons are usually one-off snapshots. This one is rebuilt every week from the shelf prices the three chains show online, for the same 31 items every time, so the trend is visible. Prices are for the cheapest matching product per item (usually a home brand), compared per kilogram or litre, so pack sizes do not distort the result.
-
-
-
-
-
-Coles
-Woolworths
-Aldi
-
-
-
-
-Basket total (31 items)
-$128.57
-$123.81
-$105.40
-…]]></summary>
-        <author>
-            <name>ByteHarvester</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How HTTP Status Codes Make APIs Easier to Understand]]></title>
-        <id>https://dev.to/sam000/how-http-status-codes-make-apis-easier-to-understand-48n</id>
-        <link href="https://dev.to/sam000/how-http-status-codes-make-apis-easier-to-understand-48n"/>
-        <updated>2026-10-23T08:49:24.000Z</updated>
-        <summary type="html"><![CDATA[HTTP status codes are more than numbers.
-They communicate what happened during an HTTP request.
-Using them consistently makes APIs easier to consume and debug.
-A common example:
-200 OK
-
-means the request succeeded.
-Another important status is:
-201 Created
-
-which is useful when a resource has been created.
-For example:
-POST /users
-
-might return:
-201 Created
-
-These usually indicate that something about the request isn't acceptable.
-Examples:
-400 Bad Request
-401 Unauthorized
-403 Forbidden
-404 Not Found
-409 Conflict
-429 Too Many Requests
-
-For example, an unauthenticated request might receive:
-401 Unauthorized
-
-while an authenticated user lacking permission may receive:
-403 Forbidden
-
-These indicate that the server encountered an error.
-The classic example:
-500 Internal Server Error
-
-Another useful code is:
-503 Service Unavailable
-
-which can indicate temporary service unavailability.
-Imagine an API that returns:
-200
-
-for every request, even when something fails.
-The client now has to inspect custom fields to determine whether the operation succeeded.
-Standard HTTP semantics make APIs much easier to understand.
-You don't need to memorize every status code.
-Start with:
-200
-201
-204
-400
-401
-403
-404
-409
-429
-500
-503
-
-These cover a large portion of everyday API development.
-Good API design isn't only about endpoints and JSON.
-The status codes are part of the API contract too.]]></summary>
-        <author>
-            <name>Soumyajit Mukherjee</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[U Mobile Partners With MRT Corp For 4G, 5G Coverage At RTS Link Gateway]]></title>
         <id>https://www.lowyat.net/?p=408259</id>
         <link href="https://www.lowyat.net/2026/408259/u-mobile-mrt-corp-coverage-rts-link/"/>
@@ -310,6 +498,26 @@ The status codes are part of the API contract too.]]></summary>
 The post U Mobile Partners With MRT Corp For 4G, 5G Coverage At RTS Link Gateway appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Nurul Kamil</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Disney Raising Prices Days After Confirming Ads Will Now Show Up on Every Tier]]></title>
+        <id>https://www.tvfandomlounge.com/disney-plus-price-hike-ads-premium-tier-nielsen-emmys-2026/</id>
+        <link href="https://www.tvfandomlounge.com/disney-plus-price-hike-ads-premium-tier-nielsen-emmys-2026/"/>
+        <updated>2026-10-23T08:21:29.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Remove pgrust: the entry is cheating]]></title>
+        <id>https://github.com/ClickHouse/ClickBench/pull/2165</id>
+        <link href="https://github.com/ClickHouse/ClickBench/pull/2165"/>
+        <updated>2026-10-23T08:05:33.000Z</updated>
+        <summary type="html"><![CDATA[Comments]]></summary>
+        <author>
+            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -353,16 +561,6 @@ The post Researcher Claims To Have Successfully Jailbroken Nintendo Switch 2 app
 The post Apple Rolling Out “Made For iPhone Duo” Badge For Compatible Apps appeared first on Lowyat.NET.]]></summary>
         <author>
             <name>Nurul Kamil</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I Did This Without Your Knowledge]]></title>
-        <id>https://www.lesswrong.com/posts/3375SZNGA5dKHQMie/i-did-this-without-your-knowledge</id>
-        <link href="https://www.lesswrong.com/posts/3375SZNGA5dKHQMie/i-did-this-without-your-knowledge"/>
-        <updated>2026-10-23T05:51:45.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -418,17 +616,6 @@ The post Apple Reportedly Working On iPhone Duo 2; May Feature Face ID appeared 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Someone Tried To Sell One Of The RTX 5090 Stolen From Brazilian Airport Heist]]></title>
-        <id>https://www.lowyat.net/?p=408225</id>
-        <link href="https://www.lowyat.net/2026/408225/someone-tried-to-sell-one-of-the-rtx-5090-stolen-from-brazilian-airport-heist/"/>
-        <updated>2026-10-23T04:04:17.000Z</updated>
-        <summary type="html"><![CDATA[It’s being reported that one of the Zotac RTX 5090 cards that were reported stolen from the Sao Paolo International Airport in Brazil earlier this week has appeared in the country’s second-hand marketplace, OLXX. Oderço, the hardware distributor that fell victim to the theft, says that it identified the card via the serial number on […]
-The post Someone Tried To Sell One Of The RTX 5090 Stolen From Brazilian Airport Heist appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>John Law</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[HSBC rolls out its first HKD stablecoin RedCoin to retail users]]></title>
         <id>ba3fb62f-d7f3-52b4-9399-beaa56b9e158</id>
         <link href="https://www.theblock.co/news/business/2026-10-23-hsbc-hkd-stablecoin-redcoin-424018"/>
@@ -439,14 +626,13 @@ The post Someone Tried To Sell One Of The RTX 5090 Stolen From Brazilian Airport
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Trailer For Cancelled Upcoming Mass Effect Appears Online]]></title>
-        <id>https://www.lowyat.net/?p=408217</id>
-        <link href="https://www.lowyat.net/2026/408217/trailer-cancelled-mass-effect-appears/"/>
-        <updated>2026-10-23T03:20:45.000Z</updated>
-        <summary type="html"><![CDATA[EA told its employees that it will be laying off 400 staffers as well as shut down storied studio BioWare. This, in effect, also ended the next Mass Effect game, which was already in early development. Seemingly immediately after, a Redditor who claims to be an EA employee using a burner account shared what looks […]
-The post Trailer For Cancelled Upcoming Mass Effect Appears Online appeared first on Lowyat.NET.]]></summary>
+        <title type="html"><![CDATA[Tokenized Deposits vs Stablecoins: Differences, Economics, Use Cases]]></title>
+        <id>tokenized-deposits-vs-stablecoins</id>
+        <link href="https://www.quicknode.com/blog/tokenized-deposits-vs-stablecoins"/>
+        <updated>2026-10-23T04:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Tokenized deposits vs stablecoins explained: how they work, who issues them, key risks, economics, and real-world use cases.]]></summary>
         <author>
-            <name>Ian Chee</name>
+            <name>Quicknode</name>
         </author>
     </entry>
     <entry>
@@ -457,17 +643,6 @@ The post Trailer For Cancelled Upcoming Mass Effect Appears Online appeared firs
         <summary type="html"><![CDATA[Bitcoin and gold pared early losses as the yen gave up gains and Asian stocks rebounded, though oil near $100 keeps inflation risks in focus.]]></summary>
         <author>
             <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[1Password Now Has A Tool For Logging Agents Into Your Accounts Without Sharing Your Password]]></title>
-        <id>https://www.lowyat.net/?p=408210</id>
-        <link href="https://www.lowyat.net/2026/408210/1password-logging-agents-into-accounts/"/>
-        <updated>2026-10-23T03:04:56.000Z</updated>
-        <summary type="html"><![CDATA[Personal agents like the recently announced Claude Duet are advertised as proactive players in the average person’s day-to-day, with the ability to do anything and everything for the user. However, depending on the task, the agent may require access to the user’s account on certain websites, and simply handing over login credentials is a bad […]
-The post 1Password Now Has A Tool For Logging Agents Into Your Accounts Without Sharing Your Password appeared first on Lowyat.NET.]]></summary>
-        <author>
-            <name>Nurul Kamil</name>
         </author>
     </entry>
     <entry>
@@ -531,30 +706,10 @@ The post 1Password Now Has A Tool For Logging Agents Into Your Accounts Without 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Jank – The native Clojure dialect with seamless C++ interop]]></title>
-        <id>https://jank-lang.org/</id>
-        <link href="https://jank-lang.org/"/>
-        <updated>2026-10-22T23:56:36.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Docker is weird]]></title>
         <id>https://codeandcake.dev/posts/2026-10-22-docker-is-weird</id>
         <link href="https://codeandcake.dev/posts/2026-10-22-docker-is-weird"/>
         <updated>2026-10-22T23:45:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[We have traits at home]]></title>
-        <id>https://www.axelmagn.com/blog/202610-zig-traits/</id>
-        <link href="https://www.axelmagn.com/blog/202610-zig-traits/"/>
-        <updated>2026-10-22T23:24:17.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -571,16 +726,6 @@ The post 1Password Now Has A Tool For Logging Agents Into Your Accounts Without 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[LLMs are making formal software verification feasible at a much larger scale]]></title>
-        <id>https://www.anthropic.com/research/formal-verification</id>
-        <link href="https://www.anthropic.com/research/formal-verification"/>
-        <updated>2026-10-22T22:54:43.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Senate's top Democratic investigator looking into Tether payments to Bo Hines' firm]]></title>
         <id>03a2b707-4827-4df8-b111-ec51f7d7b7dd</id>
         <link href="https://www.coindesk.com/policy/2026/10/22/senate-s-top-democratic-investigator-looking-into-tether-payments-to-bo-hines-firm"/>
@@ -591,30 +736,10 @@ The post 1Password Now Has A Tool For Logging Agents Into Your Accounts Without 
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Rule 30: one black cell]]></title>
-        <id>https://www.wolframcollatzmahler.com/rule30/index.html</id>
-        <link href="https://www.wolframcollatzmahler.com/rule30/index.html"/>
-        <updated>2026-10-22T22:16:48.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How does Fable 5.1 hide messages in images?]]></title>
         <id>https://www.lesswrong.com/posts/WHEQps5PK8LrrcTAb/how-does-fable-5-1-hide-messages-in-images</id>
         <link href="https://www.lesswrong.com/posts/WHEQps5PK8LrrcTAb/how-does-fable-5-1-hide-messages-in-images"/>
         <updated>2026-10-22T21:41:13.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Railpass]]></title>
-        <id>https://train.samismith.com/</id>
-        <link href="https://train.samismith.com/"/>
-        <updated>2026-10-22T21:38:32.000Z</updated>
         <summary type="html"><![CDATA[Comments]]></summary>
         <author>
             <name>Hacker News</name>
@@ -678,16 +803,6 @@ The post 1Password Now Has A Tool For Logging Agents Into Your Accounts Without 
         <summary type="html"><![CDATA[A scalable AI system requires a strong foundation. Data, engineering, platforms, operating models, and governance must converge to work as one. This session from MIT Technology Review’s EmTech Future conference explores what it takes to build that foundation in a highly regulated environment and how a responsible, trustworthy implementation can turn emerging capabilities, including agentic…]]></summary>
         <author>
             <name>MIT Technology Review Events</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hedra is a 3D open world game I wrote from scratch while in highschool]]></title>
-        <id>https://github.com/maxilevi/project-hedra/tree/pre-ai</id>
-        <link href="https://github.com/maxilevi/project-hedra/tree/pre-ai"/>
-        <updated>2026-10-22T18:44:36.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -808,16 +923,6 @@ The post 1Password Now Has A Tool For Logging Agents Into Your Accounts Without 
         <summary type="html"><![CDATA[Uniswap Labs has launched aggregator hooks, allowing Uniswap v4 to route trades through liquidity held on external platforms.]]></summary>
         <author>
             <name>Yogita Khatri</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[eMudhra to exit global SSL/TLS certificate business]]></title>
-        <id>https://emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business</id>
-        <link href="https://emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business"/>
-        <updated>2026-10-22T13:33:39.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1033,56 +1138,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A lost Schrödinger manuscript reveals a twist in quantum physics]]></title>
-        <id>https://www.sciencealert.com/a-lost-schrdinger-manuscript-reveals-a-surprising-twist-in-quantum-physics</id>
-        <link href="https://www.sciencealert.com/a-lost-schrdinger-manuscript-reveals-a-surprising-twist-in-quantum-physics"/>
-        <updated>2026-10-22T07:41:29.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[China seeks to seize 61,800 BTC tied to $5.7 billion fraud scheme]]></title>
-        <id>79074664-3fa4-41f1-a84a-42c3c8b1075d</id>
-        <link href="https://www.coindesk.com/markets/2026/10/22/china-seeks-to-seize-61-800-btc-tied-to-usd5-7-billion-fraud-scheme"/>
-        <updated>2026-10-22T06:24:10.000Z</updated>
-        <summary type="html"><![CDATA[Chinese prosecutors are seeking to confiscate more than 61,800 Bitcoin tied to a $5.7 billion fraud scheme, days after a U.K. court ruled Chinese law governs victims’ claims to the coins.]]></summary>
-        <author>
-            <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Solana’s biggest network change since 2020 is live. Here’s how users benefit]]></title>
-        <id>a9c94dd4-9dfd-4df7-a12e-8b431ac07078</id>
-        <link href="https://www.coindesk.com/tech/2026/10/22/solana-completes-alpenglow-upgrade-here-s-what-it-means-for-users"/>
-        <updated>2026-10-22T05:24:58.000Z</updated>
-        <summary type="html"><![CDATA[The new voting system targets settlement in about 150 milliseconds, potentially shortening waits for payments and deposits. Users can keep their existing wallets.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bitcoin ETFs attract $1.08 billion in 3 days but it may not be enough for a steep rally]]></title>
-        <id>921575eb-f92a-4d58-80ef-7a98bd503720</id>
-        <link href="https://www.coindesk.com/markets/2026/10/22/bitcoin-etfs-attract-usd1-08-billion-in-3-days-but-it-may-not-be-enough-for-a-steep-rally"/>
-        <updated>2026-10-22T04:41:59.000Z</updated>
-        <summary type="html"><![CDATA[Past steep rallies ran on about $235 million a day of net inflows into ETFs. The funds are yet to match that pace, according to data analyzed by CoinDesk.]]></summary>
-        <author>
-            <name>Omkar Godbole</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[XRP Ledger bug fix moved to November after validator support dipped for two hours]]></title>
-        <id>1741cbc6-5f57-43a6-afa0-10b4891a54d4</id>
-        <link href="https://www.coindesk.com/tech/2026/10/22/xrp-ledger-bug-fix-moved-to-november-after-validator-support-dipped-for-two-hours"/>
-        <updated>2026-10-22T04:36:20.000Z</updated>
-        <summary type="html"><![CDATA[The fix lost its two-week countdown less than two days from the finish after support slipped to 26 of 35 validators. It’s now back at 31.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[2026년 Hyperliquid RPC 및 데이터 인프라: 빌더를 위한 가이드]]></title>
         <id>hyperliquid-rpc-data-infrastructure-guide-2026-korean</id>
         <link href="https://www.quicknode.com/blog/hyperliquid-rpc-data-infrastructure-guide-2026-korean"/>
@@ -1090,16 +1145,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         <summary type="html"><![CDATA[HyperCore와 HyperEVM 중 어떤 레이어에서 빌드하느냐에 따라 필요한 RPC가 달라집니다. 워크로드별 선택 기준, 제공업체 비교, Quicknode Hyperliquid 스택, 새로운 L2 Elysium까지 정리했습니다.]]></summary>
         <author>
             <name>Quicknode</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Bitcoin gives back its run at $85,000 as Tesla and Meta fail to calm AI nerves]]></title>
-        <id>025972e1-a400-49fd-9d68-02bc4ba4c5e0</id>
-        <link href="https://www.coindesk.com/markets/2026/10/22/bitcoin-gives-back-its-run-at-usd85-000-as-tesla-and-meta-fail-to-calm-ai-nerves"/>
-        <updated>2026-10-22T03:51:34.000Z</updated>
-        <summary type="html"><![CDATA[BTC broke through its $84,000 ceiling late Wednesday, then slid back to the $82,500 support analysts are watching as tech futures fell.]]></summary>
-        <author>
-            <name>Shaurya Malwa</name>
         </author>
     </entry>
     <entry>
@@ -1123,16 +1168,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Robinhood single-stock perps could be a ‘strong positive’ for HOOD shares, Mizuho says]]></title>
-        <id>303a4af7-02aa-5fff-a171-6d325b1d1899</id>
-        <link href="https://www.theblock.co/news/business/2026-10-21-robinhood-single-stock-perpetual-futures-mizuho-survey-421639"/>
-        <updated>2026-10-21T18:54:36.000Z</updated>
-        <summary type="html"><![CDATA[A Mizuho survey of 600+ Robinhood users finds 94% would trade single-stock perpetual futures, mostly with new money.]]></summary>
-        <author>
-            <name>Jason Shubnell</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[What Is Model Distillation? A Guide for Developers]]></title>
         <id>6ad9087ef5ddaeeade835143</id>
         <link href="https://www.freecodecamp.org/news/what-is-model-distillation-a-guide-for-developers/"/>
@@ -1143,36 +1178,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[American Bankers Association accuses OCC of undermining Congress with final stablecoin rewards rule]]></title>
-        <id>2844a58e-d7c2-55e3-a03e-84cc711cfa2e</id>
-        <link href="https://www.theblock.co/news/regulation/2026-10-21-american-bankers-association-accuses-occ-undermining-congress-stablecoin-rewards-rule-421629"/>
-        <updated>2026-10-21T17:59:36.000Z</updated>
-        <summary type="html"><![CDATA[The fight between banks and crypto has reignited after a top banking regulator declined to weigh in on third-party stablecoin rewards.]]></summary>
-        <author>
-            <name>Sarah Wynn</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Dataline raises $10.6 million for decentralized data network for AI agents, plans ICO]]></title>
-        <id>0e3d8aaa-99f1-5635-8e60-ac0b4ed18547</id>
-        <link href="https://www.theblock.co/news/deals/2026-10-21-dataline-decentralized-data-network-ai-agents-funding-ico-421596"/>
-        <updated>2026-10-21T16:44:01.000Z</updated>
-        <summary type="html"><![CDATA[The startup also plans to hold a public token sale through Uniswap's auction platform, with details expected next week.]]></summary>
-        <author>
-            <name>Yogita Khatri</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Trump to throw spotlight on overseas crypto abuses at White House event]]></title>
-        <id>1f4749ee-8df5-4c6f-b5eb-0c42b70ee943</id>
-        <link href="https://www.coindesk.com/policy/2026/10/21/trump-to-throw-spotlight-on-overseas-crypto-abuses-in-white-house-event"/>
-        <updated>2026-10-21T16:23:44.000Z</updated>
-        <summary type="html"><![CDATA[The president is hosting a cybercrime event that will highlight U.S. authorities' efforts to crack down on crypto scams run by foreign criminal organizations.]]></summary>
-        <author>
-            <name>Jesse Hamilton</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How to Diagnose vite: not found After npm ci in a Container Build]]></title>
         <id>6ad8e242b2fc46237526d8b7</id>
         <link href="https://www.freecodecamp.org/news/diagnose-vite-not-found-npm-ci-container-build/"/>
@@ -1180,46 +1185,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         <summary type="html"><![CDATA[I recently worked on a project where a Node.js application used Vite to compile its frontend. It worked in a browser-hosted development environment, but its image build failed after the move to Azure]]></summary>
         <author>
             <name>Ahmed Tariq</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[How a16z-backed DATA is rethinking its blockchain strategy after $30 million Sui deal]]></title>
-        <id>ab93d7bd-c62a-439b-bf32-13f24cf88aef</id>
-        <link href="https://www.coindesk.com/business/2026/10/21/how-a16z-backed-data-is-rethinking-its-blockchain-strategy-after-usd30-million-sui-deal"/>
-        <updated>2026-10-21T15:22:46.000Z</updated>
-        <summary type="html"><![CDATA[The startup is retiring its own blockchain and moving to Sui with a $30 million investment as it narrows its focus to AI training data.]]></summary>
-        <author>
-            <name>Helene Braun</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Grayscale expands in-kind subscriptions to 10 crypto ETFs and trusts]]></title>
-        <id>b8146a7d-365a-52f3-a6ef-0f3cfc2c88de</id>
-        <link href="https://www.theblock.co/news/markets/2026-10-21-grayscale-expands-in-kind-subscriptions-10-crypto-etfs-421559"/>
-        <updated>2026-10-21T15:12:00.000Z</updated>
-        <summary type="html"><![CDATA[Grayscale expands in-kind subscriptions to 10 crypto funds, letting eligible investors swap tokens for shares without selling for cash.]]></summary>
-        <author>
-            <name>Jason Shubnell</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Anza’s Alpenglow goes live on Solana, cutting finality to 150 milliseconds]]></title>
-        <id>644d4de0-ca8f-599a-8d0e-0514264eb673</id>
-        <link href="https://www.theblock.co/news/ecosystems/2026-10-21-anzas-alpenglow-goes-live-on-solana-cutting-finality-to-150-milliseconds-421508"/>
-        <updated>2026-10-21T14:24:39.000Z</updated>
-        <summary type="html"><![CDATA[Solana activated Alpenglow, replacing TowerBFT and cutting transaction finality from 12.8 seconds to about 150 milliseconds.]]></summary>
-        <author>
-            <name>Brian Danga</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[I reverse engineered a board game]]></title>
-        <id>https://wuemeli.com/blog/reversing-hitster-game/</id>
-        <link href="https://wuemeli.com/blog/reversing-hitster-game/"/>
-        <updated>2026-10-21T13:40:31.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
@@ -1253,26 +1218,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Nuclear-powered spaceships]]></title>
-        <id>https://www.technologyreview.com/?p=1146061</id>
-        <link href="https://www.technologyreview.com/2026/10/21/1146061/nuclear-powered-spaceships-impossible-issue/"/>
-        <updated>2026-10-21T09:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Just before the Artemis II crew began its historic slingshot around the moon this past April, NASA announced plans to build Space Reactor-1 Freedom. SR-1, the first-ever nuclear-reactor-­powered interplanetary spacecraft, is meant to fly an uncrewed mission to Mars by the end of 2028, arriving in 2029. A successful mission would herald a new era…]]></summary>
-        <author>
-            <name>Robin George Andrews</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Exercise in a pill]]></title>
-        <id>https://www.technologyreview.com/?p=1146121</id>
-        <link href="https://www.technologyreview.com/2026/10/21/1146121/exercise-in-a-pill-impossible-issue/"/>
-        <updated>2026-10-21T09:00:00.000Z</updated>
-        <summary type="html"><![CDATA[We all know exercise is good for us. It builds muscle, strengthens bones, lowers blood pressure, and boosts mood. By deciphering how movement benefits the body, researchers hope to develop medicines that can offer some of the same perks—without the workout. The idea isn’t to replace exercise but to bring its upsides to people who…]]></summary>
-        <author>
-            <name>Cassandra Willyard</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How Neural Networks Work: Why Straight Lines Aren't Enough]]></title>
         <id>6ad7987561e15ba931f3a014</id>
         <link href="https://www.freecodecamp.org/news/how-neural-networks-work-why-straight-lines-aren-t-enough/"/>
@@ -1283,16 +1228,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Color Names]]></title>
-        <id>https://names.color.pizza/</id>
-        <link href="https://names.color.pizza/"/>
-        <updated>2026-10-20T16:27:56.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
-        </author>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[How Wearables Can Adapt When Pregnancy Changes a User's Regular Baseline]]></title>
         <id>6ad7898638fe90993d14433c</id>
         <link href="https://www.freecodecamp.org/news/how-wearables-can-adapt-when-pregnancy-changes-a-user-s-regular-baseline/"/>
@@ -1300,16 +1235,6 @@ The most important Layer 2 designs today are rollups. Rollups process transactio
         <summary type="html"><![CDATA[Your smart ring or watch has many useful jobs, including learning your usual physiological patterns and showing you when they change. Resting heart rate, heart rate variability (HRV), temperature, and]]></summary>
         <author>
             <name>Shradha Puri</name>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Why my Asus laptop kept rebooting after sleep and how to fix it]]></title>
-        <id>https://idiallo.com/blog/asus-laptop-keeps-rebooting-after-sleep</id>
-        <link href="https://idiallo.com/blog/asus-laptop-keeps-rebooting-after-sleep"/>
-        <updated>2026-10-20T13:40:04.000Z</updated>
-        <summary type="html"><![CDATA[Comments]]></summary>
-        <author>
-            <name>Hacker News</name>
         </author>
     </entry>
     <entry>
