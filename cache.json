@@ -18,124 +18,124 @@
       "siteUrl": "https://dev.to",
       "articles": [
         {
-          "id": "https://dev.to/mudassirworks/vercel-ai-gateway-virtual-models-swap-providers-safely-33e9",
-          "author": "Mudassir Khan",
-          "description": "Vercel just shipped virtual model IDs on AI Gateway, so you can change the provider, the fallback chain and the model behind a request centrally, without deploying a single line of application code. That's a great escape hatch. It's also a new way to change production behavior with no pull request, no diff and no test run. This post is the guardrail kit I'd wire up before the first person flips a route in the dashboard.\nTL;DR\nTreat a Vercel AI Gateway virtual model ID as a contract: one stable name in your code, routing decisions owned somewhere else, and a written list of which errors may fall back.\nLog the model that actually answered on every call, using the OpenTelemetry GenAI attribute names, so a route change shows up in your traces the minute it happens.\nKeep a pinned concrete model…",
-          "link": "https://dev.to/mudassirworks/vercel-ai-gateway-virtual-models-swap-providers-safely-33e9",
-          "publishedOn": "2026-11-19T18:41:30.000Z",
-          "wordCount": 2866,
-          "title": "Vercel AI Gateway Virtual Models: Swap Providers Safely",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fz0srsdw5gejyprcvc42a.jpg"
+          "id": "https://dev.to/vildandenai/draft-a-github-pull-request-in-claude-code-with-a-pr-slash-command-4ai4",
+          "author": "Vildanden",
+          "description": "If you keep pasting the branch diff and \"write a PR title and body, then wait\" into Claude Code, turn that prompt into a slash command. The file name becomes the command; $ARGUMENTS lets you name the base branch or add extra instructions.\nSave this as .claude/commands/pr.md:\n---\ndescription: \"Draft a GitHub pull request from the current branch\"\nargument-hint: \"[base branch | extra instructions]\"\n---\n\nDraft a GitHub pull request for the current branch. Do not create it until I confirm.\n\n1. Run `git status -sb`, `git log --oneline -15`, and `git diff origin/HEAD...HEAD` (or `main...HEAD` if `origin/HEAD` is missing). If there is no unique commit versus the base, stop and say so.\n2. If I passed arguments (`$ARGUMENTS`), treat the first token as a base branch when it looks like one (`main`, `master`, `develop`, or `origin/...`). Treat the rest as extra instructions.\n3. Propose a PR title and a body with a short summary, a test plan, and any follow-ups. Do not add AI attribution unless I ask.\n4. Show the title and body and wait for me to confirm before running `gh pr create`. Never force-push, never merge, and never add reviewers I did not name.\n\nUse it as /pr, /pr main, or /pr develop include a migration note.\nSlash commands are markdown files in .claude/commands. Claude Code injects the file as the prompt and replaces $ARGUMENTS with whatever you type after the command. Keeping \"wait for confirm\" and \"never force-push or merge\" in the command reduces unattended PR creation.\nPair this with an \"ask\" permission rule for gh pr create if you also want a permissions bump.\nCommit the command file so every teammate gets the same workflow.\nPair with a /commit command so the branch messages and the PR body stay consistent.\nI keep copy-ready Claude Code configs (CLAUDE.md templates, slash commands, hooks, permission rules) in Vildanden Agent Config. There's a free sample: https://justly-mia-429.rehost.page/",
+          "link": "https://dev.to/vildandenai/draft-a-github-pull-request-in-claude-code-with-a-pr-slash-command-4ai4",
+          "publishedOn": "2026-11-20T00:56:33.000Z",
+          "wordCount": 1639,
+          "title": "Draft a GitHub pull request in Claude Code with a /pr slash command",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Frs2fa56z7rxrcjik0qjp.png"
         },
         {
-          "id": "https://dev.to/kozhevniko/an-incident-response-checklist-for-possible-cve-2026-113867-account-abuse-4lf3",
-          "author": "kozhevniko",
-          "description": "An incident response checklist for possible CVE-2026-113867 account abuse\n\n\nAn investigation into CVE-2026-113867 should begin with a version and configuration question, then move to account history only when the relevant XMPP path was present. The flaw could inject outbound stanzas through Thunderbird, but the reviewed sources do not show a universal compromise marker. A disciplined timeline can separate vulnerable systems from confirmed abuse.\nMozilla documented CVE-2026-113867 in MFSA 2026-114 and MFSA 2026-115. Thunderbird did not escape attribute values when serializing outgoing XMPP stanzas. Incoming request values echoed through automatic replies could inject arbitrary stanzas into the authenticated connection.\nThe flaw was fixed in Thunderbird 158.0.1 and 153.5.1. Mozilla assigns h…",
-          "link": "https://dev.to/kozhevniko/an-incident-response-checklist-for-possible-cve-2026-113867-account-abuse-4lf3",
-          "publishedOn": "2026-11-19T18:41:18.000Z",
-          "wordCount": 1889,
-          "title": "An incident response checklist for possible CVE-2026-113867 account abuse",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9jqxutaxmsw9smlwe56w.png"
+          "id": "https://dev.to/build_master_5fc54ebe3f3d/what-i-learned-building-an-audio-to-suno-v6-prompt-tool-language-regional-genres-and-provider-1o6k",
+          "author": "Build Master",
+          "description": "Disclosure: I'm the solo developer of music2prompt, the tool this post is about. This post is about what broke, not a sales pitch. Everything in it applies to any audio + LLM project. I drafted this post with help from an AI assistant; the numbers come from my own logs.\nSuno v6 launched on September 9, 2026 and retired the older models. Overnight, a lot of people's prompts stopped working the way they used to. The most common request I see is simple: \"I have a song I like. Write me the v6 prompt that sounds like it.\"\nSo I built a tool that listens to a reference track and writes two things: a Styles line and an Exclude Styles list. This is what I learned along the way.\nMy first version asked the audio model for everything: genre, mood, instruments, BPM. The genre and instruments were usual…",
+          "link": "https://dev.to/build_master_5fc54ebe3f3d/what-i-learned-building-an-audio-to-suno-v6-prompt-tool-language-regional-genres-and-provider-1o6k",
+          "publishedOn": "2026-11-20T00:56:20.000Z",
+          "wordCount": 2587,
+          "title": "What I learned building an audio-to-Suno-v6 prompt tool: language, regional genres and provider outages",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fo56zity1b8w7waa5muwt.png"
         },
         {
-          "id": "https://dev.to/altradits/a-dead-mans-switch-that-survives-an-internet-shutdown-inside-kengeles-deadline-engine-in-go-3j2l",
-          "author": "Stanley Chege Thuita",
-          "description": "The short version, for everyone: Kengele is a free, open-source alarm for activists. If an activist stops checking in, their trusted contacts are alerted. The hard part is that governments switch the internet off at exactly the moments abductions happen, and during a shutdown everyone goes quiet. This post walks through the Go code that tells \"the activist went silent\" apart from \"the network went silent\", with a scenario you can run on your own machine.\nKengele (Swahili for \"bell\") is an alarm for activists in East Africa. Ukinyamaza, kengele inalia: \"if you go quiet, the bell rings.\" An activist sets a watch window before a protest, a court date or a border crossing (\"2pm to 10pm, check in every 90 minutes\"). Their check-ins go to three to five guardians. If a check-in does not arrive, e…",
-          "link": "https://dev.to/altradits/a-dead-mans-switch-that-survives-an-internet-shutdown-inside-kengeles-deadline-engine-in-go-3j2l",
-          "publishedOn": "2026-11-19T18:37:49.000Z",
-          "wordCount": 6009,
-          "title": "A dead man's switch that survives an internet shutdown: inside Kengele's deadline engine in Go",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fa2hqwdqn2zytk8le902p.png"
+          "id": "https://dev.to/jaggerblack5781/how-to-govern-marketplace-avatars-direct-browser-upload-to-private-object-storage-k93",
+          "author": "JaggerBlack5781",
+          "description": "Retention, not bandwidth, should decide an avatar upload architecture. Short answer: use browser direct upload only when every production origin works with the storage provider's existing CORS behavior; otherwise proxy the upload through your backend, and in both cases make your database own the deletion deadline.\n\n\n\nSystem shape\nChoose it when\nRetention invariant\nCost you accept\n\n\n\n\nBrowser to private storage\nCORS behavior is already compatible with every runtime origin\nA pending database record exists before a signed upload starts\nThe browser sees expiry and CORS failures\n\n\nBrowser to app to private storage\nOrigin behavior is uncertain or server-side inspection must happen first\nThe app accepts bytes only for an authorized pending record\nThe app carries upload bandwidth\n\n\n\nMy conditional…",
+          "link": "https://dev.to/jaggerblack5781/how-to-govern-marketplace-avatars-direct-browser-upload-to-private-object-storage-k93",
+          "publishedOn": "2026-11-20T00:55:29.000Z",
+          "wordCount": 2876,
+          "title": "How to Govern Marketplace Avatars: Direct Browser Upload to Private Object Storage",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Feahlvfyftfb33b8x4q81.png"
         },
         {
-          "id": "https://dev.to/switchbyskill/migrating-secrets-management-aws-parameter-store-vs-azure-key-vault-4c7n",
-          "author": "Switch by Skill",
-          "description": "Why Secrets Management Is the First Thing You’ll Hit When Switching Clouds\n\n\nWhen you move an application from Amazon Web Services to Microsoft Azure, the first thing that usually breaks isn’t the compute layer—it’s the way you keep passwords, API keys, and certificates safe. In AWS many teams rely on AWS Systems Manager Parameter Store (or the older AWS Secrets Manager) to fetch values at runtime. Azure’s counterpart is Azure Key Vault.  \nBoth services provide encryption‑at‑rest, fine‑grained IAM, and versioning, but their SDKs, authentication flows, and naming conventions differ enough that a naïve copy‑paste will throw a ResourceNotFound or an authentication error. This post walks through a concrete, minimal example: reading a secret string from the store in a Node.js Lambda‑style funct…",
-          "link": "https://dev.to/switchbyskill/migrating-secrets-management-aws-parameter-store-vs-azure-key-vault-4c7n",
-          "publishedOn": "2026-11-19T18:37:20.000Z",
-          "wordCount": 2718,
-          "title": "Migrating Secrets Management: AWS Parameter Store vs Azure Key Vault",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Foz4dk6aqm6qcmg2cg1tg.png"
+          "id": "https://dev.to/shadie_ai/from-curious-to-confident-how-i-use-ai-apis-without-being-a-machine-learning-expert-51n",
+          "author": "Shaw Sha",
+          "description": "I remember the exact moment I realized I didn't need a PhD to build with AI. I was staring at a blank terminal, frozen by the thought of \"machine learning\" and \"neural networks\" and all the intimidating jargon that had kept me away for years. I'd been writing JavaScript professionally for a while, but every time I tried to dip my toes into AI, I hit the same wall: tutorials that assumed I knew what transformer meant, or that I had a spare GPU cluster to train models.\nSpoiler alert: I didn't, and I still don't. But here I am, building real AI-powered features in production, and I want to show you how you can do the same.\nThe shift happened when I stopped thinking about AI as this mystical discipline and started treating it as what it really is: a plumbing problem.\nHere's the thing nobody te…",
+          "link": "https://dev.to/shadie_ai/from-curious-to-confident-how-i-use-ai-apis-without-being-a-machine-learning-expert-51n",
+          "publishedOn": "2026-11-20T00:55:26.000Z",
+          "wordCount": 7331,
+          "title": "From Curious to Confident: How I Use AI APIs Without Being a Machine Learning Expert",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fplacehold.co%2F1000x420%2F6c5ce7%2Fffffff%3Ftext%3Dai"
         },
         {
-          "id": "https://dev.to/rapheal_clinton_d0fd9308f/the-role-of-human-feedback-in-improving-large-language-models-10he",
-          "author": "Rapheal Clinton",
-          "description": "If you have used ChatGPT or any other AI tool, you have probably noticed that some answers are genuinely helpful while others miss the point completely.\nSometimes the answer is correct but does not address what you actually asked. Other times, it sounds convincing but contains information that is not quite right.\nThis raises an important question. How do these AI models get better at responding to people?\nOne important part of the process is human feedback.\nLarge language models are trained using large amounts of text. This helps them learn patterns in language, understand questions and generate responses that sound natural.\nHowever, being able to generate a good sounding response does not mean a model always understands what a person needs.\nFor example, imagine asking an AI tool to explai…",
-          "link": "https://dev.to/rapheal_clinton_d0fd9308f/the-role-of-human-feedback-in-improving-large-language-models-10he",
-          "publishedOn": "2026-11-19T18:36:28.000Z",
-          "wordCount": 2240,
-          "title": "The Role of Human Feedback in Improving Large Language Models",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fz5hjobe6zevtt87m1idl.png"
+          "id": "https://dev.to/mmllllzcn/gbase-database-page-size-why-2kb-to-16kb-must-be-decided-before-creation-29li",
+          "author": "mmllllzcn",
+          "description": "Summary: Page size is one of the most important storage decisions in GBase Database(GBase 8s). It is configured when a dbspace is created and cannot be changed afterward. This guide explains how to configure page size, choose the right value for your workload, understand its relationship with BUFFERPOOL, and avoid costly storage migrations.\nPage size is one of the few database storage parameters that cannot be adjusted after a dbspace has been created.\nIn GBase Database(GBase 8s), the default page size is 2KB, with four supported options:\n2KB\n4KB\n8KB\n16KB\nThe maximum supported page size is 16KB, and each option is a multiple of 2KB.\nYou specify the page size during dbspace creation using the -k parameter of onspaces.\nFor example:\ntouch /data/gbase/datachk01\nchown gbasedbt:gbasedbt /data/gb…",
+          "link": "https://dev.to/mmllllzcn/gbase-database-page-size-why-2kb-to-16kb-must-be-decided-before-creation-29li",
+          "publishedOn": "2026-11-20T00:55:26.000Z",
+          "wordCount": 2219,
+          "title": "GBase Database Page Size: Why 2KB to 16KB Must Be Decided Before Creation",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9eh3xrqqehq283wgoddq.png"
         },
         {
-          "id": "https://dev.to/innovatorved/sql-in-depth-interactive-wasm-sqlite-3-workbench-database-internals-from-first-principles-2hdl",
-          "author": "Ved Gupta",
-          "description": "Most SQL tutorials stop at syntax (JOIN, GROUP BY, window functions) and leave you guessing when a real production query suddenly slows down.\nUnderstanding why a query is slow means understanding how the database engine actually parses, plans, indexes, and executes it. Passive reading about B-Trees, query plans, and transaction isolation only gets you so far—it clicks much faster when you can run queries and watch the internals step by step.\nThat's why I built SQL in Depth, a free, open-source interactive textbook covering SQL and database internals from first principles. Everything runs right in the browser with no accounts, no paywalls, and no local DB setup.\nTry it live: sql-in-depth.vedgupta.in\n\n\nSource code on GitHub: github.com/innovatorved/sql-in-depth\n\n\n\n\n  \n  \n  What's Inside\n\n\n\n\nInteractive WASM SQLite 3 Workbench — write and run real SQLite 3 queries directly in the browser alongside each lesson.\nTable-Level Relational Visualizer — watch how joins, filters, groupings, and transformations operate on actual rows step by step.\n180 Structured Units — from relational algebra and core SQL semantics to indexing, query optimization, storage internals, and transactions.\n36 Interactive Simulators — experiment hands-on with database internals and see how design trade-offs behave.\nIf you're preparing for backend interviews, sharpening your SQL fundamentals, or curious about how relational engines work under the hood, give it a spin!\nIf you find it useful, a star on GitHub helps others discover it—and issues, PRs, or ideas for new simulators are always welcome in the comments or on GitHub.",
-          "link": "https://dev.to/innovatorved/sql-in-depth-interactive-wasm-sqlite-3-workbench-database-internals-from-first-principles-2hdl",
-          "publishedOn": "2026-11-19T18:34:22.000Z",
-          "wordCount": 1545,
-          "title": "SQL in Depth: Interactive WASM SQLite 3 Workbench & Database Internals from First Principles",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Ffesjoz48muv54nb5833i.png"
+          "id": "https://dev.to/kaelvyn47/how-to-schedule-daily-email-reports-reliable-webhook-fan-out-1njm",
+          "author": "Kaelvyn47",
+          "description": "A daily report is not a cron-expression problem. It is a delivery contract: start the work once, tell many subscribers about the same shipment state, and make a retry harmless. For a healthtech system, that contract matters more than shaving a few lines from the scheduler configuration.\nShort answer: schedule a public Node.js webhook to enqueue the report, keep the webhook short, and let a worker send email tasks idempotently. Treat the scheduler as a trigger, not as the place where the report is rendered. This design fits a daily email report when the work can be handed off quickly; a workflow engine is a better boundary for long-running dependencies or joins.\nInfrai fits the trigger-and-handoff slice when one REST interface and one key reduce integration friction across backend services.…",
+          "link": "https://dev.to/kaelvyn47/how-to-schedule-daily-email-reports-reliable-webhook-fan-out-1njm",
+          "publishedOn": "2026-11-20T00:54:57.000Z",
+          "wordCount": 2884,
+          "title": "How to Schedule Daily Email Reports: Reliable Webhook Fan-Out",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzyl5fcsfpc5z8x0f3c15.png"
         },
         {
-          "id": "https://dev.to/amananandrai/i-built-a-ghibli-style-mughal-tudor-palace-with-world-labs-atlas-chisel-heres-what-it-can-do-l21",
-          "author": "amananandrai",
-          "description": "Last week World Labs opened Atlas, its world model, to everyone. I wanted to see what it could actually do, so I gave it a hard brief: an architectural mash-up that doesn't exist anywhere in its training data, in a hand-painted animation style, with a camera move I could turn into video.\nThis post covers what I made, how the tool works under the hood, where it fits for 3D scenes, games and video, and how it compares with the other options in 2026.\nTL;DR: Atlas's Chisel app takes a prompt, builds a rough 3D blockout of your scene with an AI agent, then \"paints\" that geometry into consistent images, camera-path videos and an explorable 3D Gaussian splat. Because every output comes from the same 3D layout, the palace looks the same from every angle and in every frame. That's the big differenc…",
-          "link": "https://dev.to/amananandrai/i-built-a-ghibli-style-mughal-tudor-palace-with-world-labs-atlas-chisel-heres-what-it-can-do-l21",
-          "publishedOn": "2026-11-19T18:33:22.000Z",
-          "wordCount": 3913,
-          "title": "I Built a Ghibli-Style Mughal-Tudor Palace With World Labs Atlas (Chisel). Here's What It Can Do for 3D, Games and Video",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fdsv64lhetp3iz3uxqdc3.png"
+          "id": "https://dev.to/_c90f6e21f863f7b9c78/5-things-about-japanese-hiring-that-foreigners-always-get-wrong-2ba",
+          "author": "Yama",
+          "description": "Disclosure: This article may contain affiliate links.\nFrom the outside, Japanese hiring looks like a machine with very strict inputs: the right university, the right major, perfect Japanese, a black suit, and out the other side comes a salaryman. I believed some of that myself, once.\nThen I went through the system — a final-year life-science student who will start at one of Japan's largest IT companies next spring — and now advise juniors on it as an official offer-holder mentor at my university. Here are the five assumptions I hear from foreigners most often, and what the system actually looks like from inside.\nThis is the biggest one, and it is close to backwards. Large Japanese companies hire new graduates by potential, not by specialization, and then train them from zero after they joi…",
+          "link": "https://dev.to/_c90f6e21f863f7b9c78/5-things-about-japanese-hiring-that-foreigners-always-get-wrong-2ba",
+          "publishedOn": "2026-11-20T00:54:15.000Z",
+          "wordCount": 2181,
+          "title": "5 Things About Japanese Hiring That Foreigners Always Get Wrong",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F0r5b4wgqw3zjumhambe7.png"
         },
         {
-          "id": "https://dev.to/rel8ble/tracking-sephora-prices-sales-and-new-launches-with-python-no-browser-no-api-key-2pme",
-          "author": "Gio Rich",
-          "description": "I built this actor; it's a paid tool on Apify with a free trial credit. This article was drafted with AI and published by me.\nSephora is where beauty brands launch, so its catalog answers a lot of practical questions: what does a brand actually sell there and at what prices, which products are on sale this week, what launched in the last month, which face serums are rated 4 stars and up. The site has no export and no public API, and the obvious route (search page HTML in a headless browser) is slow and gets blocked.\nI'm an 18-year-old engineering student, and I built Sephora Products Scraper to turn keyword searches, categories, brand pages and product URLs into clean JSON rows over plain HTTP. This post covers how it works, calling it from Python and Node, what a row looks like, and a sma…",
-          "link": "https://dev.to/rel8ble/tracking-sephora-prices-sales-and-new-launches-with-python-no-browser-no-api-key-2pme",
-          "publishedOn": "2026-11-19T18:32:54.000Z",
-          "wordCount": 2455,
-          "title": "Tracking Sephora prices, sales and new launches with Python (no browser, no API key)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fbpth46yqle8o0zb2ifjc.png"
+          "id": "https://dev.to/lazypanic999/restivra-restoring-postgresql-backups-in-disposable-containers-12pl",
+          "author": "Doğukan Sağlık",
+          "description": "Restivra restores an existing PostgreSQL backup into a disposable container, runs your SQL checks against the restored data, and keeps the result in a local web dashboard. It is free, open source under MIT, and runs with Docker Compose.\n\nClick the preview to watch the video on GitHub. It has sound and uses synthetic data. The current pilot also adds retained-history filters and CSV exports.\nView the project on GitHub · Try the pinned pilot\nBelow is the restore workflow, two recovery edge cases from testing, and a runnable setup.\nRestivra starts with a completed PostgreSQL 17 custom-format archive produced by pg_dump 17 with -Fc. It does not connect to your production database to create a backup.\nA Go worker takes a private snapshot of the archive, calculates its SHA-256, and restores it in…",
+          "link": "https://dev.to/lazypanic999/restivra-restoring-postgresql-backups-in-disposable-containers-12pl",
+          "publishedOn": "2026-11-20T00:52:58.000Z",
+          "wordCount": 2134,
+          "title": "Restivra: verify PostgreSQL backups with real restore tests",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fuqvdo5u5y6edgjs6lxmu.png"
         },
         {
-          "id": "https://dev.to/mohnasr137/building-a-self-hosted-authentication-gateway-with-go-and-keycloak-3cjc",
-          "author": "mohnasr137",
-          "description": "A lightweight, self-hosted authentication gateway built with Go, Gin, and Keycloak, designed to simplify authentication in microservices architectures.\nAuthentication is one of those things that can become unnecessarily complicated when building backend systems, especially microservices.\nYou have two common options:\nManaged authentication services like Auth0 and Clerk. They're convenient, but costs can grow as your application scales.\nSelf-hosted Identity Providers like Keycloak. They're powerful and flexible, but integrating them directly into your applications requires dealing with clients, scopes, OAuth2/OIDC flows, token lifecycles, roles, permissions, and more.\nKeycloak is an excellent Identity Provider. However, I wanted a simpler way to use its capabilities without having to handle …",
-          "link": "https://dev.to/mohnasr137/building-a-self-hosted-authentication-gateway-with-go-and-keycloak-3cjc",
-          "publishedOn": "2026-11-19T18:32:50.000Z",
-          "wordCount": 2121,
-          "title": "Building a Self-Hosted Authentication Gateway with Go and Keycloak",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F6adbfj4qk85bw177vnce.png"
+          "id": "https://dev.to/donghp/securing-android-applications-in-the-real-world-moving-beyond-client-side-illusions-4d6n",
+          "author": "Dong Hong",
+          "description": "AI coding assistants can generate an Android screen, connect an API, and produce a working APK surprisingly quickly.\nBut a working APK is not the same as a secure application.\nConsider a delivery platform. A driver opens the app, sees an available order, and taps Accept. The UI looks correct. The API returns success. The feature passes a happy-path test.\nNow ask a different set of questions:\nWhat happens if the APK has been modified?\nCan another driver submit the same request?\nCan a client change an order ID or workflow status?\nDoes the backend independently verify that this driver is allowed to accept this order?\nWhat evidence proves that the security controls actually work?\nThese are not questions that can be answered by adding another Android library.\nThey require security engineering a…",
+          "link": "https://dev.to/donghp/securing-android-applications-in-the-real-world-moving-beyond-client-side-illusions-4d6n",
+          "publishedOn": "2026-11-20T00:51:16.000Z",
+          "wordCount": 3264,
+          "title": "Securing Android Applications in the Real World: Moving Beyond Client-Side Illusions",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fk0eq2b1g4zkef2unpt53.png"
         },
         {
-          "id": "https://dev.to/storcentredk/a-tiny-open-dataset-of-danish-shopping-centre-names-and-how-to-use-it-4a0d",
-          "author": "Storcentre.dk",
-          "description": "Most “open data” about places is heavier than you need. Opening hours change, shop directories go stale, and a wide schema makes a simple demo harder than the problem you actually have. Sometimes you just want a short, stable list of names — for a typeahead, a test fixture, or a collation example.\ndanske-storcentre is that kind of list: 65 names of shopping centres currently operating in Denmark, in two files that contain the same data. storcentre.csv has a single column, navn. storcentre.json is a JSON array of strings. Both are dedicated to the public domain under CC0 1.0. The same files are also on Hugging Face.\nThe list is not exhaustive, and it is names only on purpose. Names change less often than hours or tenant lists, and they are enough when the job is “load some real-world Danish…",
-          "link": "https://dev.to/storcentredk/a-tiny-open-dataset-of-danish-shopping-centre-names-and-how-to-use-it-4a0d",
-          "publishedOn": "2026-11-19T18:32:34.000Z",
-          "wordCount": 2160,
-          "title": "A tiny open dataset of Danish shopping centre names (and how to use it)",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fzd8xeqlc8je5qbwir72n.png"
+          "id": "https://dev.to/sinoziqi/clearlens-v100-zero-backend-bec-incident-triage-outbound-dlp-and-multi-currency-net-loss-48p0",
+          "author": "Ziqi",
+          "description": "When a finance team or incident responder enters the first 72 hours of a Business Email Compromise (BEC) vendor-invoice interception or wire-diversion incident, three operational mistakes show up repeatedly:\nUploading raw evidence to cloud SaaS tools: Pasting spoofed invoices, bank statements, or internal account numbers into web PDF converters or cloud chat assistants leaks confidential financial PII outside legal privilege.\nAccidental operational tip-offs (Outbound DLP gap): Sending an unvetted external reply that mentions SWIFT recall, police report, freeze order, or an unmasked OTP/IBAN warns the threat actor to disperse funds across downstream accounts before bank holds land.\nDouble-counted multi-currency exposure: Corporate treasuries routinely sweep liquidity across internal same-en…",
+          "link": "https://dev.to/sinoziqi/clearlens-v100-zero-backend-bec-incident-triage-outbound-dlp-and-multi-currency-net-loss-48p0",
+          "publishedOn": "2026-11-20T00:50:48.000Z",
+          "wordCount": 1972,
+          "title": "ClearLens v1.0.0: Zero-Backend BEC Incident Triage, Outbound DLP, and Multi-Currency Net-Loss Reconciliation",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fbbwvg17n1c0ug6r2dett.png"
         },
         {
-          "id": "https://dev.to/zyxist/spec-driven-development-the-new-waterfall-and-its-a-good-thing-4fm5",
-          "author": "Tomasz Jędrzejewski",
-          "description": "It's been almost a year now since I stepped into the world of agentic coding and Spec-Driven Development. Before, I really hated it, because the quality of LLM-s was poor. I spent more time fixing the generated code than I saved on letting the agent write it. But this has changed. Writing specifications, refining them with the agents, validation against rules, system design and existing requirements - it became new routine in my projects.\nAgentic coding did not increase my speed in many places, but instead shifted the effort from writing code to the discovery and design phase. And there are some new extra benefits of it: things that previously happened in my head, are now documented. There are written artifacts: specifications, decision logs, architecture documentations, that previously we…",
-          "link": "https://dev.to/zyxist/spec-driven-development-the-new-waterfall-and-its-a-good-thing-4fm5",
-          "publishedOn": "2026-11-19T18:32:10.000Z",
-          "wordCount": 2445,
-          "title": "Spec-Driven Development: The New Waterfall, and It's a Good Thing",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F9e6g4k18awb91m5gu9d8.jpg"
+          "id": "https://dev.to/danial6/a-free-html-to-react-jsx-converter-that-runs-in-your-browser-1emj",
+          "author": "Danial",
+          "description": "I made a small tool: paste HTML, get React JSX or a typed component. It's free, needs no signup, and runs in your browser. The link is at the end.\nHTML and JSX look alike, but they differ in small, annoying ways. class has to become className, for becomes htmlFor, inline style=\"...\" strings must turn into objects, and void tags like <img> and <input> must be self-closing. When you paste a big chunk of markup from a template, a design export or an old page, fixing all of this by hand is slow and easy to get wrong.\nConverts attributes to their JSX names (class to className, for to htmlFor)\nTurns inline style strings into style objects with camelCase properties (background-color becomes backgroundColor)\nSelf-closes void elements\nConverts hyphenated SVG attributes to camelCase (viewBox, stroke…",
+          "link": "https://dev.to/danial6/a-free-html-to-react-jsx-converter-that-runs-in-your-browser-1emj",
+          "publishedOn": "2026-11-20T00:48:16.000Z",
+          "wordCount": 1610,
+          "title": "A free HTML to React (JSX) converter that runs in your browser",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fov5zqwyh294rmyppofkb.png"
         },
         {
-          "id": "https://dev.to/arbabrlku_ad533b61afc9654/m-a-student-learning-web-development-heres-my-honest-journey-so-far-25c7",
-          "author": "Techcrown",
-          "description": "everyone! I'm Techcrown 👋\nI'm a student and I'm learning web development right now.\nI'm starting with HTML, CSS and JavaScript. Some days everything feels easy, and some days even a small error takes hours to fix.\nBut I'm not giving up. My goal is to build real projects, learn in public, and one day work as a developer.\nIf you are also a beginner, let's connect and learn together.\nMy question for you: What was the first project you built when you were learning?\nThanks for reading!",
-          "link": "https://dev.to/arbabrlku_ad533b61afc9654/m-a-student-learning-web-development-heres-my-honest-journey-so-far-25c7",
-          "publishedOn": "2026-11-19T18:31:46.000Z",
-          "wordCount": 1436,
-          "title": "Im a Student Learning Web Development - Here's My Honest Journey So Far",
-          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F7950e08kz365jn6ya84o.jpg"
+          "id": "https://dev.to/karleeov/rust-rewrites-faster-llms-ai-app-security-video-clipping-and-blender-mcp-5c9",
+          "author": "karleeov",
+          "description": "The latest developer-tool signal is clustering around five practical workflows: incremental Rust rewrites, local LLM performance tuning, AI-app security, self-hosted video clipping, and AI-controlled Blender scenes.\nThe GitHub star counts below are point-in-time signals from November 20, not proof that a tool is production-ready. The useful next step is to test each project against a small, measurable workload.\nWhat it is: Rust Anything is a workflow for converting existing software to Rust incrementally. It records the original program’s behavior, rewrites one component, and compares the Rust implementation against that recorded behavior before moving forward.\nWhy now: The project was created on November 16 and reached 5,188 GitHub stars by the November 20 signal—the strongest traction am…",
+          "link": "https://dev.to/karleeov/rust-rewrites-faster-llms-ai-app-security-video-clipping-and-blender-mcp-5c9",
+          "publishedOn": "2026-11-20T00:47:36.000Z",
+          "wordCount": 2580,
+          "title": "Rust Rewrites, Faster LLMs, AI App Security, Video Clipping, and Blender MCP",
+          "imageUrl": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fkarleeov%2Fblog-assets%40main%2Fcovers%2F2026-11-20-cover.png"
         }
       ]
     },
@@ -145,12 +145,22 @@
       "siteUrl": "https://www.freecodecamp.org/news/",
       "articles": [
         {
+          "id": "6aff718ab7bbd995ee693880",
+          "author": "Lakshmi Mahabaleshwara",
+          "description": "Healthcare generates huge amounts of data every day, from patient visits and lab results to diagnoses, medications, and medical imaging. For developers and data engineers building healthcare applicati",
+          "link": "https://www.freecodecamp.org/news/how-to-generate-synthetic-healthcare-data-using-synthea-a-hands-on-tutorial/",
+          "publishedOn": "2026-11-19T22:00:42.000Z",
+          "wordCount": 5000,
+          "title": "How to Generate Synthetic Healthcare Data Using Synthea: A Hands On Tutorial",
+          "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/17f495db-a70b-427b-a69d-4b200d573081.png"
+        },
+        {
           "id": "6aff37e26fa61df077387de3",
           "author": "Bala Priya C",
           "description": "Web scraping in Python usually starts with requests and Beautiful Soup. While this works well for static pages, it gets harder when a site loads content with JavaScript, blocks repeated requests, or c",
           "link": "https://www.freecodecamp.org/news/how-to-scrape-websites-in-python-with-olostep/",
           "publishedOn": "2026-11-19T17:54:42.000Z",
-          "wordCount": 2484,
+          "wordCount": 2968,
           "title": "How to Scrape Websites in Python with Olostep",
           "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/b1f48704-57ee-42f1-8687-766ff3abb630.png"
         },
@@ -160,7 +170,7 @@
           "description": "Contracts, invoices, medical reports, and scanned ID cards are often converted to PDF files. And if one of them ends up in the wrong inbox or on a shared drive, anyone can open it. Adding a password f",
           "link": "https://www.freecodecamp.org/news/build-pdf-password-protector-javascript/",
           "publishedOn": "2026-11-19T17:20:58.000Z",
-          "wordCount": 6646,
+          "wordCount": 8036,
           "title": "How to Build a Browser-Based PDF Password Protector Using JavaScript",
           "imageUrl": "https://cdn.hashnode.com/uploads/covers/5e1e335a7a1d3fcc59028c64/3ad5640f-31b1-412d-a20c-d1180ae363f2.png"
         },
@@ -233,16 +243,6 @@
           "wordCount": 9854,
           "title": "How to Build a Browser-Based Image Storyboard to PDF Tool Using JavaScript",
           "imageUrl": "https://cdn.hashnode.com/uploads/covers/5fc16e412cae9c5b190b6cdd/eb2e1525-11db-47ef-a27c-b0672184efe8.png"
-        },
-        {
-          "id": "6af33ff6e6a1d476dd025c20",
-          "author": "Beau Carnes",
-          "description": "AI coding agents such as Codex read your codebase, edit multiple files, and run commands and tests while they work through larger tasks with you. In Codex, an AGENTS.md file holds persistent instructi",
-          "link": "https://www.freecodecamp.org/news/learn-agentic-coding-with-codex-ai-coding-agents/",
-          "publishedOn": "2026-11-10T16:01:58.000Z",
-          "wordCount": 1685,
-          "title": "Learn Agentic Coding with Codex & AI Coding Agents",
-          "imageUrl": "https://i.ytimg.com/vi/ajfQWhGQGLE/maxresdefault.jpg"
         }
       ]
     },
@@ -252,14 +252,74 @@
       "siteUrl": "https://news.ycombinator.com/",
       "articles": [
         {
-          "id": "https://inexplicata.blogspot.com/2026/08/chile-ufo-sightings-by-18th-century.html",
+          "id": "https://git-aarvin.github.io/mei/",
           "author": null,
           "description": "Comments",
-          "link": "https://inexplicata.blogspot.com/2026/08/chile-ufo-sightings-by-18th-century.html",
-          "publishedOn": "2026-11-19T18:26:28.000Z",
-          "wordCount": 1701,
-          "title": "Chile: UFO Sightings by 18th Century Jesuits",
+          "link": "https://git-aarvin.github.io/mei/",
+          "publishedOn": "2026-11-19T23:35:35.000Z",
+          "wordCount": 207,
+          "title": "Gemini 4 Neon is the new #1 on the Models Engineering Index",
+          "imageUrl": "https://git-aarvin.github.io/mei/scatter/cost.png"
+        },
+        {
+          "id": "https://www.wsj.com/finance/banking/visa-mastercard-and-jpmorgan-customer-data-leaked-by-hackers-3b5a0f87",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.wsj.com/finance/banking/visa-mastercard-and-jpmorgan-customer-data-leaked-by-hackers-3b5a0f87",
+          "publishedOn": "2026-11-19T23:32:11.000Z",
+          "wordCount": null,
+          "title": "Visa, Mastercard and JPMorgan Customer Data Leaked by Hackers",
           "imageUrl": null
+        },
+        {
+          "id": "https://regexr.com/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://regexr.com/",
+          "publishedOn": "2026-11-19T22:27:07.000Z",
+          "wordCount": null,
+          "title": "RegExr: Temporarily Offline",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.synology.com/en-uk/security/advisory/Synology_SA_26_21",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.synology.com/en-uk/security/advisory/Synology_SA_26_21",
+          "publishedOn": "2026-11-19T22:13:40.000Z",
+          "wordCount": 2602,
+          "title": "Synology Security Advisory",
+          "imageUrl": "https://fileres.synology.com/images/common/meta-tag-preview-image/img_synology.jpg"
+        },
+        {
+          "id": "https://blog.platypush.tech/article/Rewriting-my-voice-assistant-pipeline",
+          "author": null,
+          "description": "Comments",
+          "link": "https://blog.platypush.tech/article/Rewriting-my-voice-assistant-pipeline",
+          "publishedOn": "2026-11-19T20:57:14.000Z",
+          "wordCount": 2386,
+          "title": "Rebuilding my local voice assistant pipeline",
+          "imageUrl": "https://s3.platypush.tech/static/images/voice-assistant-pipeline.png"
+        },
+        {
+          "id": "https://www.youtube.com/watch?v=lwfewYL7X0o",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.youtube.com/watch?v=lwfewYL7X0o",
+          "publishedOn": "2026-11-19T18:47:16.000Z",
+          "wordCount": null,
+          "title": "Should governments slow frontier AI? Jacob Coxon and Robin Hanson debate [video]",
+          "imageUrl": null
+        },
+        {
+          "id": "https://globalcommercegraph.com/writing/the-ninety-eight-percent-slot-machine",
+          "author": null,
+          "description": "Comments",
+          "link": "https://globalcommercegraph.com/writing/the-ninety-eight-percent-slot-machine",
+          "publishedOn": "2026-11-19T18:35:17.000Z",
+          "wordCount": 73,
+          "title": "The 98% Slot Machine: How Paid Advertising Became an Extraction Tax",
+          "imageUrl": "https://globalcommercegraph.com/og-image.png"
         },
         {
           "id": "https://www.anthropic.com/research/claude-black-hole-physics",
@@ -268,8 +328,18 @@
           "link": "https://www.anthropic.com/research/claude-black-hole-physics",
           "publishedOn": "2026-11-19T17:30:44.000Z",
           "wordCount": 11244,
-          "title": "Claude Fable 5.2 solves two open problems in the physics of black holes",
+          "title": "Claude solves two open problems in the physics of black holes",
           "imageUrl": "https://assets.claude.com/57a443b51d13727573b7c1290130d09c5f434b2c.jpg"
+        },
+        {
+          "id": "https://www.newscientist.com/article/2528235-pancreatic-cancer-halted-by-virus-injection-in-three-patients/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.newscientist.com/article/2528235-pancreatic-cancer-halted-by-virus-injection-in-three-patients/",
+          "publishedOn": "2026-11-19T17:25:33.000Z",
+          "wordCount": 4158,
+          "title": "Pancreatic cancer halted by virus injection in three patients",
+          "imageUrl": "https://www.newscientist.com/wp-content/uploads/2026/05/28111438/SEI_299218241.jpg"
         },
         {
           "id": "https://www.reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19/",
@@ -278,17 +348,7 @@
           "link": "https://www.reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19/",
           "publishedOn": "2026-11-19T17:02:40.000Z",
           "wordCount": null,
-          "title": "Anthropic hits $2T in Nasdaq debut",
-          "imageUrl": null
-        },
-        {
-          "id": "https://perishablepress.com/chrome-ai-wasting-much-bandwidth/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://perishablepress.com/chrome-ai-wasting-much-bandwidth/",
-          "publishedOn": "2026-11-19T16:54:25.000Z",
-          "wordCount": 993,
-          "title": "Chrome AI features wasting much bandwidth",
+          "title": "Anthropic’s Nasdaq debut",
           "imageUrl": null
         },
         {
@@ -297,19 +357,9 @@
           "description": "Comments",
           "link": "https://github.com/onlook-dev/onlook/",
           "publishedOn": "2026-11-19T16:34:04.000Z",
-          "wordCount": 4773,
+          "wordCount": 4775,
           "title": "Launch HN: Onlook (YC W25) – An open-source developer tool for designers",
-          "imageUrl": "https://opengraph.githubassets.com/e591769a005135a5a688f18ca66c76732fd3998555c194f686ea8f5c7161450e/onlook-dev/onlook"
-        },
-        {
-          "id": "https://ounapuu.ee/posts/2026/11/19/unsafeguards/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://ounapuu.ee/posts/2026/11/19/unsafeguards/",
-          "publishedOn": "2026-11-19T16:30:18.000Z",
-          "wordCount": 739,
-          "title": "Fuck Your AI Safeguards",
-          "imageUrl": "https://ounapuu.ee/posts/2026/11/19/unsafeguards/media/cover_hu_5a6285e4518135fc.jpg"
+          "imageUrl": "https://opengraph.githubassets.com/d8fb243c2cb7a110f014885f9528f28700dea817f674465bde93ee7650f29874/onlook-dev/onlook"
         },
         {
           "id": "https://macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order/",
@@ -318,7 +368,7 @@
           "link": "https://macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order/",
           "publishedOn": "2026-11-19T16:21:03.000Z",
           "wordCount": null,
-          "title": "UK Government Forced to Admit It Issued Apple a Secret Encryption Order",
+          "title": "UK government forced to admit it issued Apple a secret encryption order",
           "imageUrl": null
         },
         {
@@ -327,8 +377,8 @@
           "description": "Comments",
           "link": "https://cornholenews.news/",
           "publishedOn": "2026-11-19T15:38:32.000Z",
-          "wordCount": 1973,
-          "title": "I built Cornhole News. A Hacker News inspired site for news across the Midwest",
+          "wordCount": 2310,
+          "title": "Show HN: Cornhole News – A Hacker News inspired site for news across the Midwest",
           "imageUrl": "https://cornholenews.news/opengraph-image"
         },
         {
@@ -337,19 +387,9 @@
           "description": "Comments",
           "link": "https://thedataexchange.media/pete-warden-moonshine/",
           "publishedOn": "2026-11-19T15:38:12.000Z",
-          "wordCount": 8459,
+          "wordCount": 8465,
           "title": "Pete warden on local AI, open models, voice interfaces, the future of hardware",
           "imageUrl": "https://thedataexchange.media/wp-content/uploads/2026/11/pete-warden-local-ai.001.jpeg"
-        },
-        {
-          "id": "https://tabbyml.github.io/weight-space-playground/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://tabbyml.github.io/weight-space-playground/",
-          "publishedOn": "2026-11-19T15:32:47.000Z",
-          "wordCount": 1009,
-          "title": "Show HN: Watch weight-space programming in action with WebGPU",
-          "imageUrl": "https://tabbyml.github.io/weight-space-playground/og-cover.png"
         },
         {
           "id": "https://lithub.com/how-to-make-the-ink-used-to-write-hamlet-the-declaration-of-independence-and-beethovens-fifth/",
@@ -360,26 +400,6 @@
           "wordCount": 3345,
           "title": "How to Make the Ink Used to Write Hamlet and the Declaration of Independence",
           "imageUrl": "https://s26162.pcdn.co/wp-content/uploads/2026/11/pen-and-ink.png"
-        },
-        {
-          "id": "https://maccus.fr/en/cooling-overtaking-heating/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://maccus.fr/en/cooling-overtaking-heating/",
-          "publishedOn": "2026-11-19T14:57:14.000Z",
-          "wordCount": 3369,
-          "title": "Cooling buildings is overtaking heating them as an energy need, IEA says",
-          "imageUrl": "https://maccus.fr/wp-content/uploads/2026/11/cooling-electricity-demand-2035-en.jpg"
-        },
-        {
-          "id": "https://lastbook.org/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://lastbook.org/",
-          "publishedOn": "2026-11-19T14:47:18.000Z",
-          "wordCount": 595,
-          "title": "Everything you need to survive and rebuild society",
-          "imageUrl": "https://lastbook.org/og-survive-rebuild-v2.png"
         },
         {
           "id": "https://krthr.co/paper-folds-and-whats-new-in-fanzines-app/",
@@ -407,9 +427,9 @@
           "description": "Comments",
           "link": "https://github.com/openjdk/jdk/pull/32781",
           "publishedOn": "2026-11-19T11:47:03.000Z",
-          "wordCount": 1648,
+          "wordCount": 1942,
           "title": "Someone reported java4shell bug in September 2026",
-          "imageUrl": "https://opengraph.githubassets.com/135519046b46ca3a3a2d090f275de4de1d05df4e79fb1c077da71ec4f7f24286/openjdk/jdk/pull/32781"
+          "imageUrl": "https://opengraph.githubassets.com/7a36da7556b6f11ff4f63cae23b892a1cf60131e662d716bd7d63bdffeea007e/openjdk/jdk/pull/32781"
         },
         {
           "id": "https://element.io/blog/how-the-european-commission-rolled-out-matrix-to-more-than-40-000-staff/",
@@ -432,16 +452,6 @@
           "imageUrl": "https://www.php.net/images/php8/php_8_6_released.png"
         },
         {
-          "id": "https://www.drivevault.io/blog/when-will-hard-drive-prices-come-down.html",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.drivevault.io/blog/when-will-hard-drive-prices-come-down.html",
-          "publishedOn": "2026-11-19T09:05:34.000Z",
-          "wordCount": 3952,
-          "title": "SSD prices may begin to decline in the latter half of 2027",
-          "imageUrl": "https://images.unsplash.com/photo-1779896412126-ed004b6eb80c?auto=format&fit=crop&w=1600&q=80"
-        },
-        {
           "id": "https://curiousbits.nl/blog/do-not-buy-ram-compress/",
           "author": null,
           "description": "Comments",
@@ -462,34 +472,14 @@
           "imageUrl": "https://zerodha.tech//static/images/blobasaur-og.png"
         },
         {
-          "id": "https://kapteko.com/15-million-webservers/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://kapteko.com/15-million-webservers/",
-          "publishedOn": "2026-11-19T05:56:36.000Z",
-          "wordCount": 2935,
-          "title": "15M web servers on one VM – smoltcp, DPDK, AF_XDP",
-          "imageUrl": "https://kapteko.com/15-million-webservers/webservers-benchmark-social.png"
-        },
-        {
           "id": "https://verialabs.com/ruby2shell/",
           "author": null,
           "description": "Comments",
           "link": "https://verialabs.com/ruby2shell/",
           "publishedOn": "2026-11-19T05:09:11.000Z",
-          "wordCount": 1449,
+          "wordCount": 1567,
           "title": "Ruby2ßhell: Pre-authentication RCE on stock Rails",
           "imageUrl": "https://verialabs.com/og/ruby2shell.png"
-        },
-        {
-          "id": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
-          "author": null,
-          "description": "Comments",
-          "link": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
-          "publishedOn": "2026-11-18T23:30:09.000Z",
-          "wordCount": 1849,
-          "title": "Anthropic prices initial public offering",
-          "imageUrl": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
         },
         {
           "id": "https://www.youtube.com/watch?v=-TLCGUpoD6c",
@@ -499,6 +489,16 @@
           "publishedOn": "2026-11-18T14:56:04.000Z",
           "wordCount": null,
           "title": "Nintendo takes Picofly firmware down from GitHub [video]",
+          "imageUrl": null
+        },
+        {
+          "id": "https://www.gabrielgambetta.com/computer-graphics-from-scratch/index.html",
+          "author": null,
+          "description": "Comments",
+          "link": "https://www.gabrielgambetta.com/computer-graphics-from-scratch/index.html",
+          "publishedOn": "2026-11-17T20:37:53.000Z",
+          "wordCount": 321,
+          "title": "Computer Graphics from Scratch (2021)",
           "imageUrl": null
         },
         {
@@ -512,6 +512,26 @@
           "imageUrl": null
         },
         {
+          "id": "https://chipsandcheese.com/p/talking-venice-with-mahesh-subramony",
+          "author": null,
+          "description": "Comments",
+          "link": "https://chipsandcheese.com/p/talking-venice-with-mahesh-subramony",
+          "publishedOn": "2026-11-17T11:41:08.000Z",
+          "wordCount": 4608,
+          "title": "Talking Venice with Mahesh Subramony at AMD In-Depth",
+          "imageUrl": "https://substackcdn.com/image/youtube/w_728,c_limit/-d1XliQ0BQg"
+        },
+        {
+          "id": "https://ocw.mit.edu/courses/res-16-002-how-to-cad-almost-anything-january-iap-2024/",
+          "author": null,
+          "description": "Comments",
+          "link": "https://ocw.mit.edu/courses/res-16-002-how-to-cad-almost-anything-january-iap-2024/",
+          "publishedOn": "2026-11-17T06:29:57.000Z",
+          "wordCount": 1229,
+          "title": "How to CAD Almost Anything",
+          "imageUrl": "https://ocw.mit.edu/courses/res-16-002-how-to-cad-almost-anything-january-iap-2024/mit_res_16_002_s24.png"
+        },
+        {
           "id": "https://blog.harrison.page/garage-door-spam/",
           "author": null,
           "description": "Comments",
@@ -522,34 +542,14 @@
           "imageUrl": "https://harrison.page/harrison.jpg"
         },
         {
-          "id": "https://dl.acm.org/doi/fullHtml/10.1145/3366423.3380062",
+          "id": "https://www.tisonkun.io/posts/ai-repair-program/",
           "author": null,
           "description": "Comments",
-          "link": "https://dl.acm.org/doi/fullHtml/10.1145/3366423.3380062",
-          "publishedOn": "2026-11-16T15:26:09.000Z",
-          "wordCount": null,
-          "title": "I've Got Your Packages: Harvesting Customers' Delivery Order Information (2020)",
-          "imageUrl": null
-        },
-        {
-          "id": "https://github.com/neoma-pcam/pcam-live",
-          "author": null,
-          "description": "Comments",
-          "link": "https://github.com/neoma-pcam/pcam-live",
-          "publishedOn": "2026-11-16T14:12:22.000Z",
-          "wordCount": 13731,
-          "title": "Show HN: Neoma P-CAM – Sub-millisecond physical equilibrium and 64-spin Ising",
-          "imageUrl": "https://opengraph.githubassets.com/1da119a5e8a4db152197c5fe62b56f24d84b903edb805372747804a1c90b9be8/neoma-pcam/pcam-live"
-        },
-        {
-          "id": "https://aarol.dev/posts/zig-allocator/",
-          "author": null,
-          "description": "Comments",
-          "link": "https://aarol.dev/posts/zig-allocator/",
-          "publishedOn": "2026-11-15T03:34:58.000Z",
-          "wordCount": 1888,
-          "title": "It's all about the allocator",
-          "imageUrl": "https://aarol.dev/posts/zig-allocator/og.png"
+          "link": "https://www.tisonkun.io/posts/ai-repair-program/",
+          "publishedOn": "2026-11-16T13:58:56.000Z",
+          "wordCount": 7045,
+          "title": "Reverse-Engineering Kevin J. Lang's Lost OCaml Code in Apache DataSketches",
+          "imageUrl": "https://www.tisonkun.io/images/og.png"
         }
       ]
     },
@@ -671,7 +671,7 @@
           "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. A human liver has been kept alive outside the body for a record seven weeks Researchers in Australia claim they’ve kept a human liver alive on life support outside the body…",
           "link": "https://www.technologyreview.com/2026/11/19/1148979/the-download-liver-kept-alive-sila-battery-deal-ai-hype/",
           "publishedOn": "2026-11-19T13:10:00.000Z",
-          "wordCount": 6212,
+          "wordCount": 6209,
           "title": "The Download: a living liver, a billion-dollar battery deal, and AI hype",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/11/EOPS-V1.1-.jpg?resize=1200,600"
         },
@@ -711,7 +711,7 @@
           "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. This smell startup says its AI nose is as good as a human’s In a New Jersey lab, researchers are trying to sniff every odor on Earth. Their careful notes—“nutty,” “peachy,”…",
           "link": "https://www.technologyreview.com/2026/11/18/1148845/the-download-ai-learns-to-smell-hydropower-struggles/",
           "publishedOn": "2026-11-18T13:10:00.000Z",
-          "wordCount": 6246,
+          "wordCount": 6243,
           "title": "The Download: AI learns to smell and hydropower struggles",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/11/osmo-nose2.jpg?resize=1200,600"
         },
@@ -761,7 +761,7 @@
           "description": "This is today’s edition of The Download, our weekday newsletter that provides a daily dose of what’s going on in the world of technology. The open-source movement wants Jensen Huang back A petition to reinstate Jensen Huang as Nvidia CEO has attracted more than 115,000 signatures, including Elon Musk, but comb through the names, and…",
           "link": "https://www.technologyreview.com/2026/11/17/1148679/the-download-jensen-huang-open-source-ai-cognitive-immortality/",
           "publishedOn": "2026-11-17T13:10:00.000Z",
-          "wordCount": 6071,
+          "wordCount": 6068,
           "title": "The Download: Jensen Huang’s open-source dilemma and cognitive immortality",
           "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/11/AP26289708196110.jpg?resize=1200,600"
         }
@@ -772,6 +772,16 @@
       "feedUrl": "https://www.coindesk.com/arc/outboundfeeds/rss",
       "siteUrl": "https://www.coindesk.com/",
       "articles": [
+        {
+          "id": "c4e393c3-c981-4caa-9469-99cd8586ae3e",
+          "author": "Krisztian Sandor",
+          "description": "USDS held its $1 peg as a large holder linked to Poloniex withdrew much of decentralized protocol Sky's USDC liquidity backing its stablecoins.",
+          "link": "https://www.coindesk.com/business/2026/11/19/sky-s-usds-stablecoin-shrinks-35-as-usd1-5-billion-exits-reserves-after-illicit-finance-report",
+          "publishedOn": "2026-11-19T19:53:42.000Z",
+          "wordCount": null,
+          "title": "Sky's USDS stablecoin shrinks 35% as $1.5 billion exits reserves after illicit-finance report",
+          "imageUrl": null
+        },
         {
           "id": "ff85d1c2-f6b5-4ff8-9362-c579ceae634c",
           "author": "Jesse Hamilton",
@@ -785,11 +795,11 @@
         {
           "id": "ccbbc1b5-409d-46e3-a399-e4c466ecb6e1",
           "author": "James Van Straten",
-          "description": "At that opening price, the company would be valued at more than $2 trillion",
+          "description": "After opening at $111.50, ANT quickly slipped back under $100, still above its $83 offering price.",
           "link": "https://www.coindesk.com/markets/2026/11/19/anthropic-opens-for-trade-at-usd11-50-up-34-from-ipo-price",
           "publishedOn": "2026-11-19T17:01:47.000Z",
           "wordCount": null,
-          "title": "Anthropic opens for trade at $111.50, up 34% from IPO price",
+          "title": "Anthropic gains after IPO, but pulls off highest levels",
           "imageUrl": null
         },
         {
@@ -885,11 +895,11 @@
         {
           "id": "71d78148-a674-480c-b6be-d89cae654274",
           "author": "Shaurya Malwa",
-          "description": "Ahead by 2% early in the day, the Nasdaq had reversed lower in highly volatile action.",
+          "description": "The Nasdaq, S&P 500, and DJIA all fell by more than 2% on Thursday as Anthropic rose about 16% from its IPO price.",
           "link": "https://www.coindesk.com/markets/2026/11/19/live-updates-bitcoin-nears-usd64-000-as-anthropic-s-record-ipo-lifts-tech",
           "publishedOn": "2026-11-19T10:48:26.000Z",
           "wordCount": null,
-          "title": "Live updates: Bitcoin falls as strong Anthropic opening fails to lift animal spirits",
+          "title": "Live updates: Bitcoin plunges to lowest since July as Anthropic gains, but broader markets tumble",
           "imageUrl": null
         },
         {
@@ -1011,16 +1021,6 @@
           "wordCount": null,
           "title": "Hong Kong wants banks to use AI to catch crypto crime before money disappears",
           "imageUrl": null
-        },
-        {
-          "id": "6b4cd988-e90c-45e3-a8b6-a7335327545b",
-          "author": "Shaurya Malwa",
-          "description": "The bitcoin miner is taking on borrowing tied to an Ohio power plant as it shifts more of its business toward AI infrastructure.",
-          "link": "https://www.coindesk.com/markets/2026/11/18/bitcoin-miner-mara-raises-usd185-million-in-debt-after-selling-usd1-billion-btc-to-repay-loans",
-          "publishedOn": "2026-11-18T12:53:34.000Z",
-          "wordCount": null,
-          "title": "Bitcoin miner MARA raises $185 million in debt after selling $1 billion BTC to repay loans",
-          "imageUrl": null
         }
       ]
     },
@@ -1029,6 +1029,26 @@
       "feedUrl": "https://www.theblock.co/rss",
       "siteUrl": "https://www.theblock.co",
       "articles": [
+        {
+          "id": "20f61924-106f-512e-91bf-13548ef8355a",
+          "author": "Yogita Khatri",
+          "description": "Quintenz said the possibility of insider trading doesn't make a market illegal and that enforcement should back up exchanges' efforts to prevent it.",
+          "link": "https://www.theblock.co/news/markets/2026-11-19-kalshi-quintenz-insider-trading-prediction-markets-stocks-444133",
+          "publishedOn": "2026-11-19T20:20:59.000Z",
+          "wordCount": null,
+          "title": "Kalshi’s Quintenz says insider trading is ‘just easier to see’ in prediction markets than stocks",
+          "imageUrl": null
+        },
+        {
+          "id": "f9b7b7d5-a0c8-5627-9750-784ebf920757",
+          "author": "Kyle Baird",
+          "description": "Ripple’s Alderoty backs durable agency rules as hopes for crypto market structure legislation fade.",
+          "link": "https://www.theblock.co/news/regulation/2026-11-19-ripple-alderoty-elizabeth-warren-wont-set-crypto-policy-backs-durable-agency-rules-444105",
+          "publishedOn": "2026-11-19T18:47:30.000Z",
+          "wordCount": null,
+          "title": "Ripple’s Alderoty doubts Elizabeth Warren will ‘set crypto policy in this country,’ backs durable agency rules",
+          "imageUrl": null
+        },
         {
           "id": "0928159b-fe5d-57f5-b238-b41256828a32",
           "author": "Yogita Khatri",
@@ -1145,7 +1165,7 @@
           "description": "The deal will add private-market sourcing, underwriting, and fund management capabilities to Payward's platform.",
           "link": "https://www.theblock.co/news/business/2026-11-18-kraken-parent-payward-tribe-capital-443522",
           "publishedOn": "2026-11-19T03:18:53.000Z",
-          "wordCount": 8193,
+          "wordCount": 8306,
           "title": "Kraken parent Payward to acquire Tribe Capital to expand private-market offerings",
           "imageUrl": "https://www.tbstat.com/cdn-cgi/image/width=1600,height=900,fit=cover,format=jpeg,quality=80/wp/uploads/2026/11/kraken-unsplash-crop.jpg"
         },
@@ -1208,26 +1228,6 @@
           "wordCount": null,
           "title": "Bullish’s Q3 adjusted profit rises 35%, digital asset sales fall 23%",
           "imageUrl": null
-        },
-        {
-          "id": "01698cb3-ab1a-507f-9994-ff4fc774b7fb",
-          "author": "James Hunt",
-          "description": "Visa plans to let eligible Visa Direct clients in Asia-Pacific fund cross-border payouts with stablecoins.",
-          "link": "https://www.theblock.co/news/business/2026-11-18-visa-direct-extend-stablecoin-prefunding-cross-border-payouts-asia-pacific-443457",
-          "publishedOn": "2026-11-18T16:30:41.000Z",
-          "wordCount": null,
-          "title": "Visa Direct to extend stablecoin prefunding for cross-border payouts to Asia-Pacific",
-          "imageUrl": null
-        },
-        {
-          "id": "fce88612-3633-53a6-9ac0-12156c6fb9aa",
-          "author": "Jason Shubnell",
-          "description": "The derivatives protocol’s Omni platform has processed over $475 billion in volume as it expands into traditional markets.",
-          "link": "https://www.theblock.co/news/deals/2026-11-18-variational-raises-110-million-at-1-5-billion-valuation-to-expand-onchain-derivatives-trading-443445",
-          "publishedOn": "2026-11-18T15:51:42.000Z",
-          "wordCount": null,
-          "title": "Variational raises $110 million at $1.5 billion valuation to expand onchain derivatives trading",
-          "imageUrl": null
         }
       ]
     },
@@ -1247,8 +1247,8 @@
           "author": "Dmitry",
           "description": "Product launches, new chain support, marketplace additions, and more.",
           "link": "https://www.quicknode.com/blog/quicknodes-q2-roundup-shipped-products-and-features",
-          "publishedOn": "2026-11-19T18:46:44.000Z",
-          "wordCount": 9566,
+          "publishedOn": "2026-11-20T00:58:51.000Z",
+          "wordCount": 9553,
           "title": "Quicknode&apos;s Q2 Roundup: Shipped Products and Features",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/6YIDfmHqKYpnqAMqbBG2At/97bca9094d9acb6deab36714592ce44d/q2-roundup-summary.png"
         },
@@ -1258,7 +1258,7 @@
           "description": "Add or remove USDC on a live strategy, cap what a rebalance can cost, and ask your agent how your strategy is doing.",
           "link": "https://www.quicknode.com/blog/whats-new-in-quicknode-earn",
           "publishedOn": "2026-11-17T00:00:00.000Z",
-          "wordCount": 9920,
+          "wordCount": 9907,
           "title": "What’s new in Quicknode Earn",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/2pgKR96ShFtn0OD2UGDSd2/1034d34e931c4f6de9ab58ea0d14efa3/hero.png"
         },
@@ -1268,7 +1268,7 @@
           "description": "Higher limits, tighter controls, and an engineer who knows your workload.",
           "link": "https://www.quicknode.com/blog/what-enterprise-means-at-quicknode",
           "publishedOn": "2026-11-12T19:42:00.000Z",
-          "wordCount": 8416,
+          "wordCount": 8403,
           "title": "What Enterprise Means at Quicknode",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/EAkqUxnjDtBOASCjkfbmH/e1fc12d213d9f4b03ec64a01b2cb9c3a/what-enterprise-means-at-quicknode-hero-v2.jpg"
         },
@@ -1278,7 +1278,7 @@
           "description": "Why do USDC yield rates change? Explore how major DeFi platforms calculate APY and what determines the return depositors actually earn.",
           "link": "https://www.quicknode.com/blog/usdc-yield-apy-explained",
           "publishedOn": "2026-11-12T05:00:00.000Z",
-          "wordCount": 12704,
+          "wordCount": 12691,
           "title": "How USDC Yield Platforms Calculate APY, Explained Across 5 Platforms",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/7lIMmd5szt8wRNoBe8aMcm/165e9d94691433cd50ff0127200fea52/usdc-yield-apy-explained-hero.jpg"
         },
@@ -1288,7 +1288,7 @@
           "description": "A new book by Mike MacCana on how exchanges, lending markets, funds, and options trading platforms work as programs on Solana. Free to read online.",
           "link": "https://www.quicknode.com/blog/building-financial-software-on-solana",
           "publishedOn": "2026-11-10T14:00:00.000Z",
-          "wordCount": 9358,
+          "wordCount": 9345,
           "title": "Quicknode Releases New Book, “Building Financial Software on Solana”",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/1bqqoGF4XqiYESsxPUvrDN/1844e4ced7519be57befa9980a73021c/building-financial-software-on-solana-header-16x9.jpg"
         },
@@ -1298,7 +1298,7 @@
           "description": "Elysium Mainnet is live on Quicknode. Create RPC endpoints for Kinetiq's Hyperliquid L2 and build with Foundry, Hardhat, viem, and ethers unchanged.",
           "link": "https://www.quicknode.com/blog/quicknode-now-supports-elysium-mainnet",
           "publishedOn": "2026-11-09T05:00:00.000Z",
-          "wordCount": 8057,
+          "wordCount": 8044,
           "title": "Elysium Mainnet is now live on Quicknode",
           "imageUrl": "https://images.ctfassets.net/23fkqdsgbpuj/5OxKvKMG58Y3aDBd0jy3R0/6cb2b3673634059495b98d06f1e0cdfd/quicknode-now-supports-elysium-mainnet.jpg"
         }
